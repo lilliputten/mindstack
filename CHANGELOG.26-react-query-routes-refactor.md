@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/26
+https://github.com/lilliputten/mindstack/issues/26
 Migrate data interchage methods to react query
 26-react-query
 2025.08.26

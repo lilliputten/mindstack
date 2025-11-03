@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/23
+https://github.com/lilliputten/mindstack/issues/23
 Collect statistics, show statistics (and progress?) info.
 23-collect-statistics-show-statistics-and-progress-info
 

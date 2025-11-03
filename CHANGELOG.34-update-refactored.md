@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/34
+https://github.com/lilliputten/mindstack/issues/34
 Update refactored components and layouts
 34-update-refactored
 2025.10.17

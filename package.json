@@ -1,12 +1,12 @@
 {
-  "name": "liolucido",
-  "description": "NextJS memory training application",
+  "name": "mindstack",
+  "description": "NextJS Memory Training Application",
   "keywords": [],
   "author": "lilliputten@gmail.com",
   "license": "ISC",
   "version": "0.0.2",
   "timestamp": "2025.10.22 16:04:53 +0300",
-  "changed": "2025.10.19, 15:22",
+  "changed": "2025.11.04, 00:20",
   "private": false,
   "main": "src/app/page.tsx",
   "lint-staged": {
@@ -206,7 +206,7 @@
     "test-update-snapshots": "echo --Run tests and update snapshots-- && jest --updateSnapshot",
     "test-watch": "echo --Run tests in a watch mode-- && jest --watch",
     "test:ci": "echo --Run tests in a CI mode-- && jest --ci",
-    "vercel-clean": "vercel remove --safe --yes liolucido",
+    "vercel-clean": "vercel remove --safe --yes mindstack",
     "scripts-help": "echo --List all available script commands-- && npm-package-user-scripts-list"
   }
 }

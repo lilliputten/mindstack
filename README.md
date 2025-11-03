@@ -3,7 +3,7 @@
  @changed 2025.10.26, 21:58
 -->
 
-# líolúcido
+# mindstack
 
 NextJS memory training app
 
@@ -15,9 +15,9 @@ NextJS memory training app
 
 ## Resources
 
-- Vercel deployment: https://liolucido.vercel.app/
-- Repository: https://github.com/lilliputten/liolucido/
-- Project reference: https://lilliputten.com/projects/2025/liolucido/
+- Vercel deployment: https://mindstack.vercel.app/
+- Repository: https://github.com/lilliputten/mindstack/
+- Project reference: https://lilliputten.com/projects/2025/mindstack/
 
 ## Installation
 
