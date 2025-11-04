@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/20
+https://github.com/lilliputten/mindstack/issues/20
 Create learning page for the available topic.
 20-learning-page
 

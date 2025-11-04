@@ -1,23 +1,23 @@
 <!--
  @since 2025.07.05
- @changed 2025.10.26, 21:58
+ @changed 2025.11.04, 02:49
 -->
 
-# líolúcido
+# MindStack
 
-NextJS memory training app
+NextJS Memory Training App
 
 ## Build info (auto-generated)
 
 ![Application](public/static/opengraph-image.jpg 'Application')
 
-- Project info: v.0.0.2 / 2025.10.22 16:04:53 +0300
+- Project info: v.0.0.3 / 2025.11.04 04:38:43 +0300
 
 ## Resources
 
-- Vercel deployment: https://liolucido.vercel.app/
-- Repository: https://github.com/lilliputten/liolucido/
-- Project reference: https://lilliputten.com/projects/2025/liolucido/
+- Vercel deployment: https://mind-stack-trainer.vercel.app/
+- Repository: https://github.com/lilliputten/mindstack/
+- Project reference: https://lilliputten.com/projects/2025/mindstack/
 
 ## Installation
 

@@ -7,7 +7,7 @@ import { ensureBoolean } from '../lib/helpers/types';
 // System
 export const versionInfo = appInfo.versionInfo;
 
-export const appId = process.env.NEXT_PUBLIC_APP_ID;
+export const appId = String(process.env.NEXT_PUBLIC_APP_ID || 'mindstack');
 
 // Environment
 export const isDev = process.env.NODE_ENV === 'development';
@@ -31,11 +31,11 @@ export const suppressMissingTranslations = ensureBoolean(
   process.env.NEXT_PUBLIC_SUPPRESS_MISSING_TRANSLATIONS,
 );
 
-export const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://liolucido.vercel.app/';
+export const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mindstack.vercel.app/';
 
 export const dataContentType = 'application/json; charset=utf-8';
 
-export const siteTitle = 'líolúcido';
+export const siteTitle = 'mindstack';
 export const siteDescription = 'NextJS memory training application';
 export const siteKeywords = [
   // ...

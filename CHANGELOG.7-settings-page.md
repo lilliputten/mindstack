@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/7
+https://github.com/lilliputten/mindstack/issues/7
 Add settings page.
 7-settings-page
 

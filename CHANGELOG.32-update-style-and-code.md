@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/32
+https://github.com/lilliputten/mindstack/issues/32
 Update style & code
 32-update-style-and-code
 2025.10.07

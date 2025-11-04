@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/17
+https://github.com/lilliputten/mindstack/issues/17
 Add public pages to show topics.
 17-public-pages
 
