@@ -53,12 +53,12 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   // const allowedTraining = !!questionsCount;
 
   const handleResumeWorkout = React.useCallback(() => {
-    console.log('[WorkoutControl:handleResumeWorkout]');
+    // console.log('[WorkoutControl:handleResumeWorkout]');
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
   }, [goToTheRoute, topicId]);
 
   const handleStartWorkout = React.useCallback(() => {
-    console.log('[WorkoutControl:handleStartWorkout]');
+    // console.log('[WorkoutControl:handleStartWorkout]');
     startWorkout();
     setTimeout(handleResumeWorkout, 10);
   }, [handleResumeWorkout, startWorkout]);

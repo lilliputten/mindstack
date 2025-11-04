@@ -15,10 +15,11 @@ import { WorkoutStateDetails } from './WorkoutStateDetails';
 
 interface TWorkoutControlProps {
   className?: string;
+  omitNoWorkoutMessage?: boolean;
 }
 
 export function WorkoutControl(props: TWorkoutControlProps) {
-  const { className } = props;
+  const { className, omitNoWorkoutMessage } = props;
 
   const workoutContext = useWorkoutContext();
   const { topicId, workout, pending, startWorkout, questionIds } = workoutContext;
@@ -26,22 +27,15 @@ export function WorkoutControl(props: TWorkoutControlProps) {
   const questionsCount = questionIds?.length || 0;
   const allowedTraining = !!questionsCount;
 
-  console.log('[WorkoutControl:DEBUG', {
-    topicId,
-    workout,
-    pending,
-    isWorkoutInProgress,
-  });
-
   const goToTheRoute = useGoToTheRoute();
 
   const handleResumeWorkout = () => {
-    console.log('[WorkoutControl:handleResumeWorkout]');
+    // console.log('[WorkoutControl:handleResumeWorkout]');
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
   };
 
   const handleStartWorkout = () => {
-    console.log('[WorkoutControl:handleStartWorkout]');
+    // console.log('[WorkoutControl:handleStartWorkout]');
     startWorkout();
     setTimeout(handleResumeWorkout, 10);
   };
@@ -62,7 +56,9 @@ export function WorkoutControl(props: TWorkoutControlProps) {
   if (!workout) {
     return (
       <div className={cn(isDev && '__WorkoutControl_NoWorkout', 'flex flex-col gap-4', className)}>
-        <p className="text-sm text-muted-foreground">No active training found.</p>
+        {!omitNoWorkoutMessage && (
+          <p className="text-sm text-muted-foreground">No active training found.</p>
+        )}
         <Button onClick={handleStartWorkout} disabled={pending} className="flex w-fit gap-2">
           <Icons.Activity className="size-4 opacity-50" />
           <span>Start New Training</span>

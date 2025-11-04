@@ -160,9 +160,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
         return;
       }
       const updatedData = memo.workout ? { ...memo.workout, ...data } : (data as TWorkoutData);
-      console.log('[useWorkoutQuery:updateWorkoutData]', {
-        updatedData,
-      });
       // Always save to localStorage
       saveToLocalStorage(updatedData);
       setLocalWorkout(updatedData);

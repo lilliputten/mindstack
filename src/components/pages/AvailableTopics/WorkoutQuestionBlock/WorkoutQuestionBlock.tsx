@@ -44,9 +44,9 @@ export function WorkoutQuestionBlock() {
   const goToTheRoute = useGoToTheRoute();
 
   const handleFinishWorkout = React.useCallback(() => {
-    console.log('[WorkoutQuestionBlock:handleFinishWorkout]', {
-      workoutRoutePath,
-    });
+    // console.log('[WorkoutQuestionBlock:handleFinishWorkout]', {
+    //   workoutRoutePath,
+    // });
     finishWorkout();
     setTimeout(() => {
       goToTheRoute(workoutRoutePath);

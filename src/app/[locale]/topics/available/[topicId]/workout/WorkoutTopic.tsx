@@ -124,7 +124,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
             )}
           >
             <WorkoutStats full />
-            <WorkoutControl />
+            <WorkoutControl omitNoWorkoutMessage />
           </CardContent>
         </ScrollArea>
       </Card>

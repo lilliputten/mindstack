@@ -38,11 +38,14 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const { workout, questionIds, pending: isWorkoutPending, topicId } = workoutContext;
 
   // Fetch historical data
+  const workoutStatsHistoryQuery = useWorkoutStatsHistory(topicId);
   const {
     data: historicalData,
     isLoading: isHistoricalLoading,
+    // isFetched: isHistoricalFetched,
     error: historicalError,
-  } = useWorkoutStatsHistory(topicId);
+  } = workoutStatsHistoryQuery;
+
   const historicalErrorText = historicalError && getErrorText(historicalError);
 
   const questionsCount = questionIds?.length || 0;
@@ -60,6 +63,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     : 0;
   const averageTimePerQuestion =
     workout?.stepIndex && timeElapsed > 0 ? Math.round(timeElapsed / (workout.stepIndex + 1)) : 0;
+
+  // TODO?
   const _estimatedTimeRemaining =
     averageTimePerQuestion > 0 && questionsCount > 0
       ? Math.round(averageTimePerQuestion * (questionsCount - (workout?.stepIndex || 0) - 1))
@@ -83,16 +88,39 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     consistencyScore: 0,
   };
 
-  // React.useEffect(() => {
-  //   console.log('[WorkoutStats:DEBUG', {
-  //     isWorkoutPending,
-  //     isHistoricalLoading,
-  //   });
-  // }, [isWorkoutPending, isHistoricalLoading]);
+  /* // DEBUG
+   * React.useEffect(() => {
+   *   console.log('[WorkoutStats:DEBUG', {
+   *     // isWorkoutPending,
+   *     isHistoricalLoading,
+   *     // isHistoricalFetched,
+   *     workoutStatsHistoryQuery: {...workoutStatsHistoryQuery},
+   *     workoutStatsHistoryQueryJson: JSON.stringify(workoutStatsHistoryQuery, null, 2),
+   *   });
+   * }, [
+   *   // DEBUG
+   *   // isWorkoutPending,
+   *   isHistoricalLoading,
+   *   // isHistoricalFetched,
+   *   workoutStatsHistoryQuery,
+   * ]);
+   */
 
   if (isWorkoutPending || isHistoricalLoading) {
     return (
-      <div className={cn(isDev && '__WorkoutStats_Skeleton', 'space-y-4', className)}>
+      <div
+        className={cn(
+          isDev && '__WorkoutStats_Skeleton', // DEBUG
+          'space-y-4',
+          className,
+        )}
+      >
+        {isDev && (
+          <p className="opacity-50">
+            __WorkoutStats_Skeleton {isWorkoutPending && 'isWorkoutPending'}{' '}
+            {isHistoricalLoading && 'isHistoricalLoading'}
+          </p>
+        )}
         <Skeleton className="h-32 w-full" />
         <Skeleton className="h-24 w-full" />
         <Skeleton className="h-48 w-full" />
@@ -107,7 +135,13 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   if (historicalErrorText) {
     // TODO: Display statistics based on the recent local data?
     return (
-      <div className={cn(isDev && '__WorkoutStats_Error', 'space-y-4', className)}>
+      <div
+        className={cn(
+          isDev && '__WorkoutStats_Error', // DEBUG
+          'space-y-4',
+          className,
+        )}
+      >
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
@@ -172,10 +206,36 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         );
       }
       return null;
+      /* return (
+       *   <Card>
+       *     <CardHeader>
+       *       <CardTitle className="flex items-center gap-2">
+       *         <Icons.Activity className="size-4" />
+       *         Ready to Start
+       *       </CardTitle>
+       *       <CardDescription>Begin your first workout for this topic</CardDescription>
+       *     </CardHeader>
+       *     <CardContent className="space-y-4">
+       *       <div className="py-4 text-center">
+       *         <Icons.Activity className="mx-auto mb-2 size-8 text-muted-foreground opacity-50" />
+       *         <p className="text-sm text-muted-foreground">
+       *           No workout data available yet. Start training to see your progress!
+       *         </p>
+       *       </div>
+       *     </CardContent>
+       *   </Card>
+       * );
+       */
     }
 
     return (
-      <Card>
+      <Card
+        className={cn(
+          isDev && '__WorkoutStats_Card', // DEBUG
+          'space-y-4',
+          className,
+        )}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Icons.Activity className="size-4" />
@@ -290,8 +350,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             <CardDescription>Your learning progress over time</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="py-8 text-center">
-              <Icons.Activity className="mx-auto mb-4 size-12 text-muted-foreground opacity-50" />
+            <div className="__py-8 text-center">
+              <Icons.Activity className="mx-auto mb-4 size-12 text-theme opacity-50" />
               <h3 className="mb-2 text-lg font-semibold">No Training History Yet</h3>
               <p className="mb-4 text-sm text-muted-foreground">
                 Complete your first workout to start tracking your progress and see detailed

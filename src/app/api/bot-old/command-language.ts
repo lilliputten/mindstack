@@ -5,7 +5,7 @@ import { TCommandContext } from '@/features/bot/core/botTypes';
 import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
 import { localeNames } from '@/i18n';
-import { defaultLocale, localesList } from '@/i18n/types';
+import { localesList } from '@/i18n/types';
 
 const bot = getBot();
 

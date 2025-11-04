@@ -14,8 +14,9 @@ export type TAIGenerationErrorCode = keyof typeof AIGenerationErrorTexts;
 
 export class AIGenerationError extends GenericIDError<typeof AIGenerationErrorTexts> {
   static texts = AIGenerationErrorTexts;
+  declare message: TAIGenerationErrorCode;
 
-  constructor(code: TAIGenerationErrorCode) {
-    super(code);
+  constructor(message: TAIGenerationErrorCode) {
+    super(message);
   }
 }

@@ -44,7 +44,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
       <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
       <WorkoutInfo className="flex-1" />
       <WorkoutStats />
-      <WorkoutControl />
+      <WorkoutControl omitNoWorkoutMessage />
     </ScrollArea>
   );
 }

@@ -2,8 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { ServerAuthError } from '@/lib/errors';
+import { getErrorText, isErrorInstance } from '@/lib/helpers';
 import { TTopicId } from '@/features/topics/types';
 import { getWorkoutStatsHistory } from '@/features/workout-stats/actions/getWorkoutStatsHistory';
+import { WorkoutStats } from '@/generated/prisma';
+
+import { useSessionUser } from '../useSessionUser';
 
 interface TWorkoutStatsHistoryData {
   totalWorkouts: number;
@@ -29,30 +34,41 @@ interface TWorkoutStatsHistoryData {
 }
 
 export function useWorkoutStatsHistory(topicId?: TTopicId) {
+  const user = useSessionUser();
+  const userId = user?.id;
   const query = useQuery({
-    queryKey: ['workout-stats-history', topicId],
+    // Use user id just as an anti-cache agent
+    queryKey: ['workout-stats-history', topicId, userId],
     queryFn: async () => {
-      if (!topicId) return null;
+      if (!topicId || !userId) {
+        return null;
+      }
+      let workoutStats: WorkoutStats[] | null = null;
+      try {
+        workoutStats = await getWorkoutStatsHistory(topicId);
+      } catch (error) {
+        const errMsg = getErrorText(error);
+        const isServerAuthError = isErrorInstance(error, ServerAuthError);
+        const isUnathorizedError =
+          isServerAuthError && (error as ServerAuthError).message === 'UNATHORIZED';
+        if (isUnathorizedError) {
+          // eslint-disable-next-line no-console
+          console.warn('[useWorkoutStatsHistory]', error);
+          return null;
+        }
+        // eslint-disable-next-line no-console
+        console.error('[useWorkoutStatsHistory]', {
+          isServerAuthError,
+          ServerAuthError,
+          errMsg,
+          error,
+        });
+        debugger; // eslint-disable-line no-debugger
+        throw error;
+      }
 
-      const workoutStats = await getWorkoutStatsHistory(topicId);
-
-      if (workoutStats.length === 0) {
-        return {
-          totalWorkouts: 0,
-          averageAccuracy: 0,
-          bestAccuracy: 0,
-          worstAccuracy: 0,
-          averageTime: 0,
-          fastestTime: 0,
-          slowestTime: 0,
-          totalTimeSpent: 0,
-          streak: 0,
-          lastWorkout: null,
-          recentWorkouts: [],
-          accuracyTrend: 'stable' as const,
-          speedTrend: 'stable' as const,
-          consistencyScore: 0,
-        };
+      if (!workoutStats?.length) {
+        return null;
       }
 
       // Calculate basic metrics
@@ -82,7 +98,6 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
         const daysDiff = Math.floor(
           (today.getTime() - workoutDate.getTime()) / (1000 * 60 * 60 * 24),
         );
-
         if (daysDiff === i) {
           streak++;
         } else {
@@ -93,8 +108,11 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
       // Get last workout date
       const lastWorkout = workoutStats[0]?.createdAt || null;
 
+      const recentWorkoutStats = workoutStats.slice(0, 5);
+      const olderWorkoutStats = workoutStats.slice(5, 10);
+
       // Prepare recent workouts data
-      const recentWorkouts = workoutStats.slice(0, 5).map((stat) => ({
+      const recentWorkouts = recentWorkoutStats.map((stat) => ({
         id: stat.id,
         accuracy: stat.ratio,
         timeSeconds: stat.timeSeconds,
@@ -103,8 +121,8 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
       }));
 
       // Calculate trends
-      const recentAccuracies = workoutStats.slice(0, 5).map((stat) => stat.ratio);
-      const olderAccuracies = workoutStats.slice(5, 10).map((stat) => stat.ratio);
+      const recentAccuracies = recentWorkoutStats.map((stat) => stat.ratio);
+      const olderAccuracies = olderWorkoutStats.map((stat) => stat.ratio);
 
       let accuracyTrend: 'improving' | 'declining' | 'stable' = 'stable';
       if (recentAccuracies.length >= 3 && olderAccuracies.length >= 3) {
@@ -112,13 +130,12 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
           recentAccuracies.reduce((sum, acc) => sum + acc, 0) / recentAccuracies.length;
         const olderAvg =
           olderAccuracies.reduce((sum, acc) => sum + acc, 0) / olderAccuracies.length;
-
         if (recentAvg > olderAvg + 5) accuracyTrend = 'improving';
         else if (recentAvg < olderAvg - 5) accuracyTrend = 'declining';
       }
 
-      const recentTimes = workoutStats.slice(0, 5).map((stat) => stat.timeSeconds);
-      const olderTimes = workoutStats.slice(5, 10).map((stat) => stat.timeSeconds);
+      const recentTimes = recentWorkoutStats.map((stat) => stat.timeSeconds);
+      const olderTimes = olderWorkoutStats.map((stat) => stat.timeSeconds);
 
       let speedTrend: 'improving' | 'declining' | 'stable' = 'stable';
       if (recentTimes.length >= 3 && olderTimes.length >= 3) {
