@@ -6,7 +6,7 @@ import '@/jest/jestReactSetup';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { getErrorText } from '@/lib/helpers/strings';
+import { getErrorText } from '@/lib/helpers';
 
 import { NavBarBrand } from '../NavBarBrand';
 

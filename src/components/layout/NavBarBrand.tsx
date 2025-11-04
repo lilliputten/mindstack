@@ -10,6 +10,7 @@ import { infoRoute, welcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import logoOnWhiteSvg from '@/assets/logo/logo-with-sign-in-circle.svg';
 import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
 import { isDev } from '@/constants';
 import { Link } from '@/i18n/routing';
@@ -17,6 +18,7 @@ import { TLocale } from '@/i18n/types';
 
 interface NavBarBrandProps {
   isUser?: boolean;
+  onSidebar?: boolean;
 }
 
 function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) {
@@ -49,13 +51,14 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
 }
 
 export function NavBarBrand(props: NavBarBrandProps) {
+  const { onSidebar } = props;
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   return (
     <BrandWrapper {...props} className="h-12">
       <Image
         data-testid="NavBarBrandImage"
-        src={logoSvg}
+        src={!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
         className="h-14 w-auto"
         priority={false}
         alt={siteTitle}

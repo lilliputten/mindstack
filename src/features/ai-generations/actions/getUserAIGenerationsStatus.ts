@@ -12,7 +12,7 @@ export async function getUserAIGenerationsStatus(): Promise<TAIGenerationsStatus
   const user = await getCurrentUser();
 
   if (!user) {
-    return { ...invalidResult, reasonCode: 'USER_NOT_LOGGED' };
+    return { ...invalidResult, reasonCode: 'UNATHORIZED' };
   }
 
   const { grade, role } = user;

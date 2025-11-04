@@ -26,8 +26,10 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
         className={cn(
           isDev && '__WelcomeScreen_Info', // DEBUG
           'relative m-6 flex flex-1 flex-col rounded-xl',
-          'bg-theme-500/10',
-          'lg:overflow-auto',
+          'bg-theme-500/5',
+          // 'lg:overflow-auto',
+          'decorative-card shadow-sm',
+          'border border-theme-400/20',
         )}
       >
         <div

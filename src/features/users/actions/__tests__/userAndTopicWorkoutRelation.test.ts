@@ -1,7 +1,7 @@
 import { Topic, User, UserTopicWorkout } from '@prisma/client';
 
 import { jestPrisma } from '@/lib/db/jestPrisma';
-import { getErrorText } from '@/lib/helpers/strings';
+import { getErrorText } from '@/lib/helpers';
 
 test('should create relation and remove it if topic removed', async () => {
   const users: User[] = [];

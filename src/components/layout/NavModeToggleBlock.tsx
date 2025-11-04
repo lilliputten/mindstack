@@ -24,7 +24,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
       align={align}
       className={cn(
         isDev && '__NavModeToggleBlock', // DEBUG
-        onSidebar && 'flex-row',
+        onSidebar && 'flex-row flex-wrap gap-y-0',
         className,
       )}
     >
@@ -35,7 +35,8 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
             key={thisTheme}
             className={cn(
               isDev && '__NavModeToggleBlock_MenuItem', // DEBUG
-              'flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 text-sm',
+              // 'flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 text-sm',
+              'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500 hover:text-white',
             )}
             disabled={thisTheme === currentTheme}
             onSelect={() => setTheme(thisTheme)}

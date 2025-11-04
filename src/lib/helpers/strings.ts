@@ -1,31 +1,3 @@
-interface TGetErrorTextOpts {
-  omitErrorName?: boolean;
-}
-
-export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string {
-  if (!err) {
-    return '';
-  }
-  // if (err instanceof APIError) {
-  //   return err.details;
-  // }
-  // Error object
-  if (err instanceof Error) {
-    return [
-      // prettier-ignore
-      !opts.omitErrorName && err.name !== 'Error' ? err.name : '',
-      err.message,
-    ]
-      .filter(Boolean)
-      .join(': ');
-  }
-  // An object with the `digest` property
-  if (err instanceof Object && Object.prototype.hasOwnProperty.call(err, 'digest')) {
-    return String((err as { digest: string }).digest);
-  }
-  return String(err);
-}
-
 export function getRandomHashString(len: number = 4) {
   const randVal = Math.random();
   const hash = (randVal + 1).toString(36).substring(2, 2 + len);

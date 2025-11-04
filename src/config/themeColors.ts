@@ -9,6 +9,8 @@ export const primaryForegroundColor = '#fff';
 export const secondaryColor = '#fa3';
 export const secondaryForegroundColor = '#000';
 
+export const darkBlueColor = '#224';
+
 type TPredefinedColor = keyof typeof colors;
 function getPredefinedColor(id: TPredefinedColor) {
   const colorSet = colors[id];

@@ -17,7 +17,7 @@ export async function saveAIGeneration(data: TData) {
 
   const user = await getCurrentUser();
   if (!user) {
-    throw new AIGenerationError('USER_NOT_LOGGED');
+    throw new AIGenerationError('UNATHORIZED');
   }
 
   try {

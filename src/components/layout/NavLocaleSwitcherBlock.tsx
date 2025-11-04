@@ -40,7 +40,7 @@ export function NavLocaleSwitcherBlock(props: TSidebarBlockProps) {
       align={align}
       className={cn(
         isDev && '__NavLocaleSwitcherBlock', // DEBUG
-        onSidebar && 'flex-row',
+        onSidebar && 'flex-row flex-wrap gap-y-0',
         className,
       )}
     >

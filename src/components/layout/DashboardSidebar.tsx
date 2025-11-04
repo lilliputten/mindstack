@@ -315,7 +315,7 @@ export function MobileSheetSidebar(props: DashboardSidebarProps & TMobileSheetPr
       )}
     >
       <nav className="flex flex-1 flex-col gap-y-8 p-6 text-lg font-medium">
-        <NavBarBrand isUser={isUser} />
+        <NavBarBrand isUser={isUser} onSidebar />
 
         {<ProjectSwitcher large />}
 
