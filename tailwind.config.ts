@@ -31,7 +31,7 @@ export default {
         foreground: 'var(--foregroundColor)',
         ...primaryColorSpread,
         ...secondaryColorSpread,
-        border: 'rgba(var(--color-theme-500-RGB) / 10%)',
+        border: 'rgba(var(--color-theme-200-RGB) / 20%)',
         input: 'rgba(var(--color-theme-500-RGB) / 20%)',
         // input: 'var(--inputColor)',
         ring: 'rgba(var(--color-theme-500-RGB) / 50%)',

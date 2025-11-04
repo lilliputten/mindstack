@@ -1,11 +1,11 @@
 <!--
  @since 2025.07.05
- @changed 2025.10.26, 21:58
+ @changed 2025.11.04, 02:49
 -->
 
-# mindstack
+# MindStack
 
-NextJS memory training app
+NextJS Memory Training App
 
 ## Build info (auto-generated)
 
@@ -15,7 +15,7 @@ NextJS memory training app
 
 ## Resources
 
-- Vercel deployment: https://mindstack.vercel.app/
+- Vercel deployment: https://mind-stack-trainer.vercel.app/
 - Repository: https://github.com/lilliputten/mindstack/
 - Project reference: https://lilliputten.com/projects/2025/mindstack/
 
