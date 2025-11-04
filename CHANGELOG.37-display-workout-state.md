@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/37
+https://github.com/lilliputten/mindstack/issues/37
 Display intermediate and final workout statististics, current workout state, etc
 37-display-workout-state
 2025.10.31

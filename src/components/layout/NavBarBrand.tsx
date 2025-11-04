@@ -10,8 +10,7 @@ import { infoRoute, welcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import logoSvg from '@/assets/logo/logo-full-line-w.svg';
-import logoWhiteSvg from '@/assets/logo/logo-full-line-w.svg';
+import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
 import { isDev } from '@/constants';
 import { Link } from '@/i18n/routing';
 import { TLocale } from '@/i18n/types';
@@ -56,7 +55,7 @@ export function NavBarBrand(props: NavBarBrandProps) {
     <BrandWrapper {...props} className="h-12">
       <Image
         data-testid="NavBarBrandImage"
-        src={isDark ? logoWhiteSvg : logoSvg}
+        src={logoSvg}
         className="h-14 w-auto"
         priority={false}
         alt={siteTitle}

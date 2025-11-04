@@ -1,4 +1,4 @@
-https://github.com/lilliputten/liolucido/issues/18
+https://github.com/lilliputten/mindstack/issues/18
 Add AI generation features
 18-ai-features
 2025.10.22

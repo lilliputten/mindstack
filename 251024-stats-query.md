@@ -26,7 +26,7 @@ First suggest table structure and ongoing changes review to confirm.
 
 ---
 
-Generate a text for the welcome user page, to describe the current application, líolúcido, for the following cases:
+Generate a text for the welcome user page, to describe the current application, mindstack, for the following cases:
 
 - A regular user: it can view and work with public trainings, created by other people.
 - A logged in user (isLogged): Can create it's own trainings, can view detailed statistics and historical progress.

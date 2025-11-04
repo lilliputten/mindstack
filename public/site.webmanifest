@@ -1,6 +1,6 @@
 {
-  "name": "TrainWizzz!",
-  "short_name": "TrainWizzz!",
+  "name": "MindStack",
+  "short_name": "MindStack",
   "icons": [
     {
       "src": "/static/favicons/android-chrome-256x256.png",
@@ -14,6 +14,6 @@
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "background_color": "#222244",
   "display": "standalone"
 }

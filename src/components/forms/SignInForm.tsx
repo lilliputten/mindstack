@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
-import logoWhiteSvg from '@/assets/logo/logo-image-w.svg';
-import logoSvg from '@/assets/logo/logo-image.svg';
+import logoSvg from '@/assets/logo/logo-on-dark.svg';
 import { isDev } from '@/constants';
 import { Link, useT } from '@/i18n';
 
@@ -90,19 +89,12 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
   const t = useT('SignInForm');
   const Title = inBody ? 'h3' : DialogTitle;
   const Descr = inBody ? 'p' : DialogDescription;
+  const showLogo = false && !inBody;
   return (
     <>
-      {false && !inBody && (
+      {showLogo && (
         <Link href={rootRoute} className="transition hover:opacity-80">
-          {/*
-        <Logo className="size-32" dark={dark} />
-         */}
-          <Image
-            src={dark ? logoWhiteSvg : logoSvg}
-            className="h-24 w-auto"
-            alt={siteTitle}
-            priority={false}
-          />
+          <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
         </Link>
       )}
       <Title className="font-urban text-2xl font-bold">{t('sign-in')}</Title>

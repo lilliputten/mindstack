@@ -6,28 +6,35 @@ import { SmallWelcomeText } from '@/components/screens/SmallWelcomeText';
 import svgArt from '@/assets/arts/girl-with-a-book.svg';
 import { isDev } from '@/constants';
 
+import { ScrollArea } from '../ui/ScrollArea';
+
 export function WelcomeVisualBlock(props: TPropsWithClassName) {
   const { className } = props;
   return (
-    <div
+    <ScrollArea
       className={cn(
-        isDev && '__WelcomeVisualBlock', // DEBUG
-        className,
-        'm-6 gap-4',
-        'flex flex-1 flex-col',
-        'items-center justify-center',
+        isDev && '__WelcomeVisualBlock_Scroll', // DEBUG
       )}
     >
-      <Image
-        src={svgArt}
-        alt="Intro illustration"
+      <div
         className={cn(
-          isDev && '__WelcomeVisualBlock_Art', // DEBUG
-          'mx-auto mt-4',
-          'w-full sm:max-w-md',
+          isDev && '__WelcomeVisualBlock', // DEBUG
+          className,
+          'm-6 gap-4',
+          'flex flex-1 flex-col',
+          'items-center justify-center',
         )}
-      />
-      {/* // XXX: Alternate layout: the art as a background
+      >
+        <Image
+          src={svgArt}
+          alt="Intro illustration"
+          className={cn(
+            isDev && '__WelcomeVisualBlock_Art', // DEBUG
+            'mx-auto mt-4',
+            'w-full sm:max-w-md',
+          )}
+        />
+        {/* // XXX: Alternate layout: the art as a background
       <div
         className={cn(
           isDev && '__WelcomeVisualBlock_Art', // DEBUG
@@ -42,7 +49,8 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
         }}
       />
       */}
-      <SmallWelcomeText />
-    </div>
+        <SmallWelcomeText />
+      </div>
+    </ScrollArea>
   );
 }
