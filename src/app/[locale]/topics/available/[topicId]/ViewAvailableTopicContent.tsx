@@ -7,7 +7,6 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
-import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TAvailableTopic } from '@/features/topics/types';
 import { WorkoutControl, WorkoutInfo, WorkoutStats } from '@/features/workouts/components';
 
@@ -41,7 +40,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
           '__ViewAvailableTopicContent_ScrollViewport flex-1 items-start max-sm:flex-col-reverse',
         )}
       />
-      <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
+      {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
       <WorkoutInfo className="flex-1" />
       <WorkoutStats />
       <WorkoutControl omitNoWorkoutMessage />

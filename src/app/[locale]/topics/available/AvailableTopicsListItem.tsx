@@ -65,7 +65,12 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
           'max-sm:flex-col-reverse',
         )}
       >
-        <TopicHeader scope={manageScope} topic={topic} className="flex-1 max-sm:flex-col-reverse" />
+        <TopicHeader
+          scope={manageScope}
+          topic={topic}
+          className="flex-1 max-sm:flex-col-reverse"
+          showProperties={false}
+        />
       </CardHeader>
       {!!description && (
         <CardContent
@@ -82,11 +87,23 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap gap-4 text-xs md:items-end',
+          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-center',
         )}
       >
-        <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
-        <div id="right-actions" className="flex flex-wrap items-center gap-4">
+        <div
+          className={cn(
+            isDev && '__AvailableTopicsList_TopicItem__TopicProperties', // DEBUG
+            'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+          )}
+        >
+          <TopicProperties topic={topic} showDates />
+        </div>
+        <div
+          className={cn(
+            isDev && '__AvailableTopicsList_TopicItem__RightActions', // DEBUG
+            'flex flex-wrap items-center gap-4 md:items-end',
+          )}
+        >
           {allowedTraining && (
             <Button variant="theme" onClick={startWorkout} className="flex gap-2">
               <Icons.ArrowRight className="hidden size-4 opacity-50 sm:flex" />

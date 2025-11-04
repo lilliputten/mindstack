@@ -158,6 +158,7 @@ export function WorkoutQuestionBlock() {
         className={cn(
           isDev && '__WorkoutQuestionBlock_Skeleton', // DEBUG
         )}
+        answersCount={answers?.length || question?._count?.answers}
       />
     );
   }
@@ -192,6 +193,7 @@ export function WorkoutQuestionBlock() {
     <WorkoutQuestion
       questionText={question?.text || ''}
       answers={answers}
+      answersCount={answers?.length || question?._count?.answers}
       isAnswersLoading={isAnswersLoading}
       onAnswerSelect={onAnswerSelect}
       onSkip={onSkip}

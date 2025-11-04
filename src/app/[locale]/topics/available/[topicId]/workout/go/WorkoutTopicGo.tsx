@@ -14,9 +14,14 @@ import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
-import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
-import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
+import {
+  useAvailableQuestionById,
+  useAvailableTopicById,
+  useGoBack,
+  useGoToTheRoute,
+  useSessionUser,
+} from '@/hooks';
 
 import { ContentSkeleton } from './ContentSkeleton';
 import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
@@ -54,6 +59,13 @@ export function WorkoutTopicGo() {
     const currentIndex = workout.stepIndex || 0;
     return questionsOrder[currentIndex] || null;
   }, [workout?.questionsOrder, workout?.stepIndex]);
+
+  const availableQuestionQuery = useAvailableQuestionById({ id: currentQuestionId || '' });
+  const {
+    question,
+    // isFetched: isQuestionFetched,
+    // isLoading: isQuestionLoading,
+  } = availableQuestionQuery;
 
   React.useEffect(() => {
     if ((!workout || !isWorkoutInProgress) && !pending) {
@@ -109,7 +121,7 @@ export function WorkoutTopicGo() {
 
   const content =
     isTopicPending || !topic ? (
-      <ContentSkeleton omitHeader />
+      <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
     ) : (
       <Card
         className={cn(
@@ -139,7 +151,7 @@ export function WorkoutTopicGo() {
               showName={false}
               showDescription
             />
-            <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
+            {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
           </CardHeader>
           <CardContent
             className={cn(

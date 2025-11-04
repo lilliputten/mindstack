@@ -7,9 +7,10 @@ import { isDev } from '@/constants';
 
 interface TProps {
   className?: string;
+  answersCount?: number;
 }
 
-export function WorkoutQuestionBlockSkeleton({ className }: TProps) {
+export function WorkoutQuestionBlockSkeleton({ className, answersCount = 2 }: TProps) {
   return (
     <div
       className={cn(
@@ -18,10 +19,11 @@ export function WorkoutQuestionBlockSkeleton({ className }: TProps) {
         className,
       )}
     >
+      {isDev && <p className="text-sm opacity-50">__WorkoutQuestionBlockSkeleton</p>}
       <Skeleton className="h-10 w-full" />
       {/* Emulate answers */}
       <div className="grid gap-4 py-2 lg:grid-cols-2">
-        {generateArray(2).map((i) => (
+        {generateArray(answersCount).map((i) => (
           <Skeleton key={i} className="h-14 w-full" />
         ))}
       </div>

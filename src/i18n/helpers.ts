@@ -1,9 +1,10 @@
 import { localesPathPrefixRegExp } from './types';
 
-export function removePathLocalPrefix(path: string) {
+function removePathLocalePrefix(path: string) {
   return path.replace(localesPathPrefixRegExp, '');
 }
 
-export function comparePathsWithoutLocalePrefix(path: string, cmpPath: string) {
-  return path === cmpPath || path === removePathLocalPrefix(cmpPath);
+/** Compare test path with the current route */
+export function comparePathsWithoutLocalePrefix(testPath: string, currentRoutePath: string) {
+  return testPath === currentRoutePath || testPath === removePathLocalePrefix(currentRoutePath);
 }

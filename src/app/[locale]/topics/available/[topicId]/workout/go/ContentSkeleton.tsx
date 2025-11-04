@@ -6,9 +6,10 @@ import { isDev } from '@/constants';
 interface TProps {
   className?: string;
   omitHeader?: boolean;
+  answersCount?: number;
 }
 
-export function ContentSkeleton({ className, omitHeader }: TProps) {
+export function ContentSkeleton({ className, omitHeader, answersCount = 2 }: TProps) {
   return (
     <div
       className={cn(
@@ -17,6 +18,7 @@ export function ContentSkeleton({ className, omitHeader }: TProps) {
         className,
       )}
     >
+      {isDev && <p className="text-sm opacity-50">__WorkoutTopicGo_ContentSkeleton</p>}
       {!omitHeader && (
         <>
           <div className="flex flex-col gap-4">
@@ -36,7 +38,7 @@ export function ContentSkeleton({ className, omitHeader }: TProps) {
         <Skeleton className="h-4 w-1/3 rounded-lg" />
         <Skeleton className="h-2 w-full rounded-lg" />
 
-        <WorkoutQuestionBlockSkeleton />
+        <WorkoutQuestionBlockSkeleton answersCount={answersCount} />
       </div>
     </div>
   );

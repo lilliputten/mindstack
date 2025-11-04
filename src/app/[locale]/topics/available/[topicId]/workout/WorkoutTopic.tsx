@@ -15,7 +15,6 @@ import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
-import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
@@ -115,7 +114,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
               showName={false}
               showDescription
             />
-            <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
+            {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
           </CardHeader>
           <CardContent
             className={cn(

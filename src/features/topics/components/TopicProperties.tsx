@@ -4,9 +4,7 @@ import React from 'react';
 import { useFormatter } from 'next-intl';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
-import { cn } from '@/lib/utils';
 import * as Icons from '@/components/shared/Icons';
-import { isDev } from '@/constants';
 import { TAvailableTopic } from '@/features/topics/types';
 
 interface TTopicPropertiesOptions {
@@ -14,13 +12,11 @@ interface TTopicPropertiesOptions {
 }
 interface TTopicPropertiesProps {
   topic: TAvailableTopic;
-  className?: string;
 }
 
 export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesOptions) {
   const {
     topic,
-    className,
     // Options...
     showDates,
   } = props;
@@ -59,13 +55,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
   ].filter(Boolean);
   const userName = user && (user.name || user.email);
   return (
-    <div
-      className={cn(
-        isDev && '__TopicProperties', // DEBUG
-        'flex flex-wrap items-center gap-4',
-        className,
-      )}
-    >
+    <>
       {!!questionsCount && (
         <span id="questions" className="flex items-center gap-1" title="Questions count">
           <Icons.Questions className="mr-1 size-4 opacity-50" /> {questionsCount}
@@ -98,6 +88,6 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
           {getFormattedRelativeDate(format, updatedAt)}
         </span>
       )}
-    </div>
+    </>
   );
 }
