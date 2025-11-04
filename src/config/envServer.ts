@@ -54,7 +54,7 @@ const envSchema = z.object({
   // Authentication (NextAuth.js)
   // @see https://nextjs.org/learn/dashboard-app/adding-authentication
   AUTH_SECRET: z.string().min(1),
-  NEXTAUTH_URL: z.string().url().min(1),
+  NEXTAUTH_URL: z.string().url().optional(),
   GITHUB_CLIENT_ID: z.string().min(1),
   GITHUB_CLIENT_SECRET: z.string().min(1),
   GOOGLE_CLIENT_ID: z.string().min(1),
