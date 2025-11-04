@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
   return constructMetadata({
     locale,
+    icons: '/favicon.ico',
   });
 }
 
@@ -94,6 +95,8 @@ async function RootLayout(props: TRootLayoutProps) {
       suppressHydrationWarning
     >
       <head>
+        <link rel="icon shortcut" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/static/favicons/favicon-64x64.png" sizes="64x64" />
         {/* // TODO: Set SEO and OG meta tags
         <meta property="og:url" content="https://vanilla-tasks.lilliputten.com/" />
         <meta property="og:title" content="Vanilla Tasks Tracker" />
