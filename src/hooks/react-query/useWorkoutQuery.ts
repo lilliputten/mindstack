@@ -213,7 +213,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
      *   newWorkout,
      * });
      */
-    updateWorkoutData(newWorkout);
+    return updateWorkoutData(newWorkout);
   }, [createNewWorkoutData, updateWorkoutData]);
 
   const startWorkout = React.useCallback(() => {
@@ -236,7 +236,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
      *   updatedWorkout,
      * });
      */
-    updateWorkoutData(updatedWorkout);
+    return updateWorkoutData(updatedWorkout);
   }, [createNewWorkoutData, memo.workout, updateWorkoutData]);
 
   const finishWorkout = React.useCallback(async () => {
@@ -290,7 +290,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
      * });
      */
 
-    updateWorkoutData(updateData);
+    return updateWorkoutData(updateData);
   }, [memo, questionIds, updateWorkoutData, topicId, userId, queryClient]);
 
   const goPrevQuestion = React.useCallback(() => {
@@ -304,7 +304,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
      *   updateData,
      * });
      */
-    updateWorkoutData(updateData);
+    return updateWorkoutData(updateData);
   }, [memo, updateWorkoutData]);
 
   const goNextQuestion = React.useCallback(() => {
@@ -322,7 +322,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
      *   updateData,
      * });
      */
-    updateWorkoutData(updateData);
+    return updateWorkoutData(updateData);
   }, [memo, questionIds, finishWorkout, updateWorkoutData]);
 
   const saveResult = React.useCallback(
@@ -343,7 +343,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
        *   updateData,
        * });
        */
-      updateWorkoutData(updateData);
+      return updateWorkoutData(updateData);
     },
     [memo, updateWorkoutData],
   );
@@ -357,7 +357,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
        *   updateData,
        * });
        */
-      updateWorkoutData(updateData);
+      return updateWorkoutData(updateData);
     },
     [updateWorkoutData],
   );

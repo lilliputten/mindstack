@@ -100,8 +100,23 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
           <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
         </Link>
       )}
-      <Title className="font-urban text-2xl text-theme">{t('sign-in')}</Title>
-      <Descr className="text-center text-sm">{t('intro')}</Descr>
+      <Title
+        className={cn(
+          isDev && '__SignInFormHeader_Title', // DEBUG
+          'font-urban text-2xl',
+          inBody && 'text-theme',
+        )}
+      >
+        {t('sign-in')}
+      </Title>
+      <Descr
+        className={cn(
+          isDev && '__SignInFormHeader_Intro', // DEBUG
+          'text-center text-sm',
+        )}
+      >
+        {t('intro')}
+      </Descr>
     </>
   );
 }

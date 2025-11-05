@@ -13,8 +13,10 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { TQuestionId } from '@/features/questions/types';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
+import { WorkoutControl } from '@/features/workouts/components';
 import {
   useAvailableQuestionById,
   useAvailableTopicById,
@@ -28,8 +30,17 @@ import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
 
 const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
+interface TMemo {
+  questionId?: TQuestionId;
+  finished?: boolean;
+  // Detect any question changes to determinde if we should to (re-)start a workout if none
+  hasWorkoutUpdated?: boolean;
+  isStarting?: boolean;
+}
+
 export function WorkoutTopicGo() {
-  const { topicId, workout, pending } = useWorkoutContext();
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+  const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
 
   if (!topicId) {
     throw new Error('No workout topic ID found');
@@ -39,7 +50,9 @@ export function WorkoutTopicGo() {
   const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
 
-  const isWorkoutInProgress = workout?.started && !workout?.finished;
+  const isWorkoutFinished = workout?.finished;
+  const isWorkoutInProgress = workout?.started && !isWorkoutFinished;
+  const hasActiveWorkout = workout && isWorkoutInProgress;
 
   const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
 
@@ -60,6 +73,21 @@ export function WorkoutTopicGo() {
     return questionsOrder[currentIndex] || null;
   }, [workout?.questionsOrder, workout?.stepIndex]);
 
+  // Effect: Detect any question changes to determinde if we should to (re-)start a workout if none
+  React.useEffect(() => {
+    if (currentQuestionId) {
+      const hasFinishedRightNow = !!memo.questionId && Boolean(memo.finished) !== isWorkoutFinished;
+      if (!isWorkoutPending && (currentQuestionId !== memo.questionId || hasFinishedRightNow)) {
+        // Real change (or just initializtion otherwise)
+        if (memo.questionId || hasFinishedRightNow) {
+          memo.hasWorkoutUpdated = true;
+        }
+        memo.questionId = currentQuestionId;
+        memo.finished = isWorkoutFinished;
+      }
+    }
+  }, [memo, isWorkoutPending, currentQuestionId, isWorkoutFinished]);
+
   const availableQuestionQuery = useAvailableQuestionById({ id: currentQuestionId || '' });
   const {
     question,
@@ -67,16 +95,17 @@ export function WorkoutTopicGo() {
     // isLoading: isQuestionLoading,
   } = availableQuestionQuery;
 
+  // Effect: Start workout if no active one (and hasn't been any activity yet)
   React.useEffect(() => {
-    if ((!workout || !isWorkoutInProgress) && !pending) {
+    if (!memo.isStarting && !memo.hasWorkoutUpdated && !hasActiveWorkout && !isWorkoutPending) {
       // eslint-disable-next-line no-console
-      console.warn('[WorkoutTopicGo] No active training: go to the workout review page', {
-        workout,
+      console.warn('[WorkoutTopicGo] No active training: startaing it now!');
+      memo.isStarting = true;
+      startWorkout().finally(() => {
+        memo.isStarting = false;
       });
-      goBack();
-      // goToTheRoute(workoutRoutePath);
     }
-  }, [goBack, workoutRoutePath, workout, isWorkoutInProgress, pending]);
+  }, [memo, startWorkout, hasActiveWorkout, isWorkoutPending, isWorkoutFinished]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -120,8 +149,14 @@ export function WorkoutTopicGo() {
   });
 
   const content =
-    isTopicPending || !topic ? (
+    isTopicPending || !topic || isWorkoutPending || !workout ? (
       <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+    ) : isWorkoutFinished ? (
+      <div className="flex flex-col items-center gap-2 py-4 text-center">
+        <Icons.Activity className="mx-auto size-8 text-theme" />
+        <p className="text-lg text-foreground">The training is already completed.</p>
+        <WorkoutControl className="items-center" />
+      </div>
     ) : (
       <Card
         className={cn(

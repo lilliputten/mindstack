@@ -92,12 +92,6 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     );
   }
 
-  console.log('[]', {
-    isOnWorkoutRoute,
-    isHistoricalPending,
-    hasHistoricalData,
-  });
-
   return (
     <div className={cn(isDev && '__WorkoutControl', 'flex flex-col gap-4', className)}>
       <p className="text-sm text-muted-foreground">
@@ -125,7 +119,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           ) : isHistoricalPending ? (
             <Skeleton className="h-10 w-40" />
           ) : null)}
-        {workout.started && (
+        {workout.started && !workout.finished && (
           <Button onClick={finishWorkout} variant="default" className="flex gap-2">
             <Icons.Flag className="size-4 opacity-50" />
             <span>Finish Training</span>
