@@ -17,7 +17,7 @@ import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
-import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionData } from '@/hooks';
 
 import { ContentSkeleton } from './ContentSkeleton';
 
@@ -35,7 +35,8 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
 
-  const user = useSessionUser();
+  const { user } = useSessionData();
+
   const isOwner = topic?.userId && topic?.userId === user?.id;
   const isAdminMode = user?.role === 'ADMIN';
   const allowedEdit = isAdminMode || isOwner;
@@ -62,10 +63,11 @@ export function WorkoutTopic(props: TPropsWithClassName) {
         icon: Icons.Edit,
         visibleFor: 'xl',
         disabled: !allowedEdit,
+        hidden: !user,
         onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}`),
       },
     ],
-    [allowedEdit, goBack, goToTheRoute, topicId],
+    [allowedEdit, goBack, goToTheRoute, topicId, user],
   );
 
   const breadcrumbs = useTopicsBreadcrumbsItems({

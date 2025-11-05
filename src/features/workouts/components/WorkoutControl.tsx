@@ -29,8 +29,9 @@ export function WorkoutControl(props: TWorkoutControlProps) {
   const {
     topicId,
     workout,
-    pending,
+    pending: isWorkoutPending,
     // startWorkout,
+    finishWorkout,
     questionIds,
   } = workoutContext;
   // const isWorkoutInProgress = workout?.started && !workout?.finished;
@@ -64,7 +65,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
    * };
    */
 
-  if (pending) {
+  if (isWorkoutPending) {
     return (
       <div className={cn(isDev && '__WorkoutControl_Skeleton', 'flex flex-col gap-4', className)}>
         <Skeleton className="h-4 w-48" />
@@ -83,7 +84,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
         {!omitNoWorkoutMessage && (
           <p className="text-sm text-muted-foreground">No active training found.</p>
         )}
-        <Button onClick={handleGoWorkout} disabled={pending} className="flex w-fit gap-2">
+        <Button onClick={handleGoWorkout} disabled={isWorkoutPending} className="flex w-fit gap-2">
           <Icons.Activity className="size-4 opacity-50" />
           <span>Start New Training</span>
         </Button>
@@ -91,18 +92,19 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     );
   }
 
+  console.log('[]', {
+    isOnWorkoutRoute,
+    isHistoricalPending,
+    hasHistoricalData,
+  });
+
   return (
     <div className={cn(isDev && '__WorkoutControl', 'flex flex-col gap-4', className)}>
       <p className="text-sm text-muted-foreground">
         <WorkoutStateDetails workout={workout} />
       </p>
       <div className="flex gap-2">
-        <Button
-          onClick={handleGoWorkout}
-          variant="default"
-          className="flex gap-2"
-          disabled={pending}
-        >
+        <Button onClick={handleGoWorkout} variant="default" className="flex gap-2">
           <Icons.Activity className="size-4 opacity-50" />
           <span>
             {workout.finished
@@ -113,16 +115,22 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           </span>
         </Button>
         {!isOnWorkoutRoute &&
-          (isHistoricalPending ? (
-            <Skeleton className="h-10 w-40" />
-          ) : hasHistoricalData ? (
+          ((hasHistoricalData && !isHistoricalPending) || workout.started ? (
             <Button variant="theme">
               <Link href={workoutRoute as TRoutePath} className="flex items-center gap-2">
                 <Icons.ExternalLink className="size-4 opacity-50" />
                 <span>Review Training</span>
               </Link>
             </Button>
+          ) : isHistoricalPending ? (
+            <Skeleton className="h-10 w-40" />
           ) : null)}
+        {workout.started && (
+          <Button onClick={finishWorkout} variant="default" className="flex gap-2">
+            <Icons.Flag className="size-4 opacity-50" />
+            <span>Finish Training</span>
+          </Button>
+        )}
       </div>
     </div>
   );

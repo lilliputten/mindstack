@@ -10,3 +10,11 @@ export function useSessionUser() {
   const user: TUser | undefined = session.data?.user;
   return user;
 }
+
+export function useSessionData() {
+  const session = useSession();
+  const { data, status } = session;
+  const user: TUser | undefined = session.data?.user;
+  const loading = status === 'loading';
+  return { data, status, loading, user };
+}

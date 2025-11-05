@@ -161,7 +161,7 @@ export function WorkoutQuestion({
               onClick={onContinue}
             >
               <Icons.ArrowRight className="size-5 opacity-50" />
-              Continue
+              <span>Continue</span>
             </Button>
           ) : (
             <>
@@ -174,7 +174,7 @@ export function WorkoutQuestion({
                   onClick={onSkip}
                 >
                   <Icons.ArrowRight className="size-5 opacity-50" />
-                  Skip
+                  <span>Skip</span>
                 </Button>
               )}
             </>
@@ -191,7 +191,7 @@ export function WorkoutQuestion({
           onClick={onFinish}
         >
           <Icons.Flag className="size-5 opacity-50" />
-          Finish
+          <span>Finish</span>
         </Button>
       </div>
     ),

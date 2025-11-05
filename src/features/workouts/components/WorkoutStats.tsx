@@ -23,6 +23,7 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { useSessionData } from '@/hooks';
 import { Link } from '@/i18n/routing';
 
 interface TWorkoutStatsProps {
@@ -33,6 +34,8 @@ interface TWorkoutStatsProps {
 export function WorkoutStats(props: TWorkoutStatsProps) {
   const { className, full } = props;
   const format = useFormatter();
+
+  const { user, loading: isUserLoading } = useSessionData();
 
   const workoutContext = useWorkoutContext();
   const { workout, questionIds, pending: isWorkoutPending, topicId } = workoutContext;
@@ -172,7 +175,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Icons.Activity className="size-4" />
+                <Icons.Activity className="size-4 text-theme" />
                 Your Progress
               </CardTitle>
               <CardDescription>
@@ -210,7 +213,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
        *   <Card>
        *     <CardHeader>
        *       <CardTitle className="flex items-center gap-2">
-       *         <Icons.Activity className="size-4" />
+       *         <Icons.Activity className="size-4 text-theme" />
        *         Ready to Start
        *       </CardTitle>
        *       <CardDescription>Begin your first workout for this topic</CardDescription>
@@ -238,7 +241,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Icons.Activity className="size-4" />
+            <Icons.Activity className="size-4 text-theme" />
             Current Training
           </CardTitle>
           <CardDescription>
@@ -319,17 +322,32 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             </div>
           )}
 
-          {!workout.started && (
+          {isUserLoading || isWorkoutPending ? (
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_NotStarted_Skelton', // DEBUG
+                'flex flex-col items-center gap-4 py-4',
+              )}
+            >
+              <Skeleton className="size-8 !rounded-full" />
+              <Skeleton className="h-6 w-1/3 rounded" />
+              <Skeleton className="h-4 w-2/3 rounded" />
+            </div>
+          ) : !workout?.started ? (
             <div className="py-4 text-center">
-              <Icons.Activity className="mx-auto mb-2 size-8 text-orange-500 opacity-50" />
-              <p className="text-sm text-foreground">No workout started yet</p>
+              <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
+              <p className="mb-2 text-lg text-foreground">
+                {user ? 'No workout started yet' : "Guest users can't see their training history"}
+              </p>
               {historicalStats.totalWorkouts === 0 && (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  This will be your first workout for this topic!
+                <p className="text-sm text-muted-foreground">
+                  {user
+                    ? 'This will be your first workout for this topic!'
+                    : 'Sign in to start collecting and monitoring your history tracks.'}
                 </p>
               )}
             </div>
-          )}
+          ) : null}
         </CardContent>
       </Card>
     );
@@ -344,20 +362,20 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Icons.LineChart className="size-4" />
+              <Icons.LineChart className="size-4 text-theme" />
               Historical Performance
             </CardTitle>
             <CardDescription>Your learning progress over time</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="__py-8 text-center">
-              <Icons.Activity className="mx-auto mb-4 size-12 text-theme opacity-50" />
+              <Icons.Activity className="mx-auto mb-4 size-8 text-theme" />
               <h3 className="mb-2 text-lg font-semibold">No Training History Yet</h3>
               <p className="mb-4 text-sm text-muted-foreground">
                 Complete your first workout to start tracking your progress and see detailed
                 analytics.
               </p>
-              <div className="rounded-lg bg-muted/50 p-4 text-left">
+              <div className="rounded-lg bg-muted/50 py-4 text-center">
                 <h4 className="mb-2 text-sm font-medium">
                   What you'll see after your first workout:
                 </h4>
@@ -378,7 +396,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Icons.LineChart className="size-4" />
+            <Icons.LineChart className="size-4 text-theme" />
             Historical Performance
           </CardTitle>
           <CardDescription>Your learning progress over time</CardDescription>
