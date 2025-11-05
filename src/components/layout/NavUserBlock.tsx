@@ -1,5 +1,6 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
 import { settingsRoute } from '@/config/routesConfig';
@@ -67,6 +68,8 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const { data: session } = useSession();
   const user = session?.user;
   const t = useT('NavUserAccount');
+
+  const queryClient = useQueryClient();
 
   if (!user) {
     return null;
@@ -172,6 +175,8 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         onSelect={(event) => {
           event.preventDefault();
           closeOuterMenu?.();
+          // Clear react-query and local caches
+          queryClient.clear();
           localStorage.clear();
           signOut({
             callbackUrl: `${window.location.origin}/`,
