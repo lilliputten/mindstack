@@ -6,6 +6,7 @@ import { availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
@@ -127,7 +128,9 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   return (
     <>
       <DashboardHeader
-        heading={truncateMarkdown(topic?.name, 100)}
+        heading={
+          topic?.name ? truncateMarkdown(topic?.name, 100) : <Skeleton className="h-8 w-1/2" />
+        }
         className={cn(
           isDev && '__ViewAvailableTopic_DashboardHeader', // DEBUG
           'mx-6',

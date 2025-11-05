@@ -8,6 +8,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
@@ -134,7 +135,9 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   return (
     <>
       <DashboardHeader
-        heading={truncateMarkdown(topic?.name || '...', 100)}
+        heading={
+          topic?.name ? truncateMarkdown(topic?.name, 100) : <Skeleton className="h-8 w-1/2" />
+        }
         className={cn(
           isDev && '__WorkoutTopic_DashboardHeader', // DEBUG
           'mx-6',

@@ -16,6 +16,7 @@ export function ContentSkeleton({ className, omitHeader }: TProps) {
         className,
       )}
     >
+      {isDev && <p className="text-sm opacity-50">__WorkoutTopic_ContentSkeleton</p>}
       {!omitHeader && (
         <div className="flex flex-col gap-4">
           <Skeleton className="h-4 w-2/3 rounded-lg" />

@@ -4,11 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 
 import { ServerAuthError } from '@/lib/errors';
 import { getErrorText, isErrorInstance } from '@/lib/helpers';
+import { isDev } from '@/config';
+import { dayMs, minuteMs } from '@/constants';
 import { TTopicId } from '@/features/topics/types';
 import { getWorkoutStatsHistory } from '@/features/workout-stats/actions/getWorkoutStatsHistory';
 import { WorkoutStats } from '@/generated/prisma';
 
 import { useSessionUser } from '../useSessionUser';
+
+const recentWorkoutsCount = isDev ? 5 : 5;
+const olderWorkoutsCount = recentWorkoutsCount * 2;
 
 interface TWorkoutStatsHistoryData {
   totalWorkouts: number;
@@ -95,9 +100,7 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
       for (let i = 0; i < workoutStats.length; i++) {
         const workoutDate = new Date(workoutStats[i].createdAt);
         workoutDate.setHours(0, 0, 0, 0);
-        const daysDiff = Math.floor(
-          (today.getTime() - workoutDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
+        const daysDiff = Math.floor((today.getTime() - workoutDate.getTime()) / dayMs);
         if (daysDiff === i) {
           streak++;
         } else {
@@ -108,8 +111,8 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
       // Get last workout date
       const lastWorkout = workoutStats[0]?.createdAt || null;
 
-      const recentWorkoutStats = workoutStats.slice(0, 5);
-      const olderWorkoutStats = workoutStats.slice(5, 10);
+      const recentWorkoutStats = workoutStats.slice(0, recentWorkoutsCount);
+      const olderWorkoutStats = workoutStats.slice(recentWorkoutsCount, olderWorkoutsCount);
 
       // Prepare recent workouts data
       const recentWorkouts = recentWorkoutStats.map((stat) => ({
@@ -172,7 +175,7 @@ export function useWorkoutStatsHistory(topicId?: TTopicId) {
       } as TWorkoutStatsHistoryData;
     },
     enabled: !!topicId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * minuteMs, // 5 minutes
   });
 
   return query;

@@ -91,6 +91,10 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     consistencyScore: 0,
   };
 
+  const totalWorkouts = historicalStats.totalWorkouts;
+  const recentWorkouts = historicalStats.recentWorkouts;
+  const hasMoreWorkouts = totalWorkouts !== recentWorkouts.length;
+
   /* // DEBUG
    * React.useEffect(() => {
    *   console.log('[WorkoutStats:DEBUG', {
@@ -170,7 +174,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const renderCurrentWorkoutStats = () => {
     if (!workout) {
       // Show historical summary when no current workout but there's history
-      if (historicalStats.totalWorkouts > 0) {
+      if (totalWorkouts > 0) {
         return (
           <Card>
             <CardHeader>
@@ -179,8 +183,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 Your Progress
               </CardTitle>
               <CardDescription>
-                Summary of your {historicalStats.totalWorkouts} completed workout
-                {historicalStats.totalWorkouts !== 1 ? 's' : ''}
+                Summary of your {totalWorkouts} completed workout
+                {totalWorkouts !== 1 ? 's' : ''}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -299,8 +303,13 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           )}
 
           {isWorkoutCompleted && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_CompletedInfo', // DEBUG
+                'space-y-4',
+              )}
+            >
+              <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2">
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground">Final Accuracy</p>
                   <p className="text-2xl font-bold">{workout.currentRatio || 0}%</p>
@@ -312,7 +321,6 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   </p>
                 </div>
               </div>
-
               <div className="flex items-center gap-2">
                 <Icons.CircleCheck className="size-4 text-green-500" />
                 <span className="text-sm text-muted-foreground">
@@ -334,19 +342,27 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               <Skeleton className="h-4 w-2/3 rounded" />
             </div>
           ) : !workout?.started ? (
-            <div className="py-4 text-center">
-              <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
-              <p className="mb-2 text-lg text-foreground">
-                {user ? 'No workout started yet' : "Guest users can't see their training history"}
-              </p>
-              {historicalStats.totalWorkouts === 0 && (
-                <p className="text-sm text-muted-foreground">
+            !totalWorkouts || totalWorkouts < 1 ? (
+              <div className="py-4 text-center">
+                <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
+                <p className="mb-2 text-lg text-foreground">
                   {user
-                    ? 'This will be your first workout for this topic!'
-                    : 'Sign in to start collecting and monitoring your history tracks.'}
+                    ? 'No training history has been collected yet'
+                    : "Guest users can't see their training history"}
                 </p>
-              )}
-            </div>
+                {!totalWorkouts ? (
+                  <p className="text-sm text-muted-foreground">
+                    {user
+                      ? 'This will be your first workout for this topic!'
+                      : 'Sign in to start collecting and monitoring your history tracks.'}
+                  </p>
+                ) : totalWorkouts === 1 ? (
+                  <p className="text-sm text-muted-foreground">
+                    There is only one history record now.
+                  </p>
+                ) : null}
+              </div>
+            ) : null
           ) : null}
         </CardContent>
       </Card>
@@ -357,7 +373,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     if (!full) return null;
 
     // Show empty state when no historical data
-    if (historicalStats.totalWorkouts === 0) {
+    if (totalWorkouts === 0) {
       return (
         <Card>
           <CardHeader>
@@ -380,10 +396,10 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   What you'll see after your first workout:
                 </h4>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>• Performance trends and accuracy tracking</li>
-                  <li>• Study streaks and consistency metrics</li>
-                  <li>• Personalized learning insights</li>
-                  <li>• Achievement badges and progress milestones</li>
+                  <li>Performance trends and accuracy tracking</li>
+                  <li>Study streaks and consistency metrics</li>
+                  <li>Personalized learning insights</li>
+                  <li>Achievement badges and progress milestones</li>
                 </ul>
               </div>
             </div>
@@ -403,9 +419,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Key Metrics */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-4">
             <div className="space-y-1 text-center">
-              <p className="text-2xl font-bold">{historicalStats.totalWorkouts}</p>
+              <p className="text-2xl font-bold">{totalWorkouts}</p>
               <p className="text-sm text-muted-foreground">Total Trainings</p>
             </div>
             <div className="space-y-1 text-center">
@@ -444,49 +460,64 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           </div>
 
           {/* Performance Table */}
-          <div className="space-y-2">
-            <h4 className="font-semibold">Recent Performance</h4>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Accuracy</TableHead>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Questions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {historicalStats.recentWorkouts.length > 0 ? (
-                  historicalStats.recentWorkouts.map((workout) => (
-                    <TableRow key={workout.id}>
-                      <TableCell>{getFormattedRelativeDate(format, workout.createdAt)}</TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            workout.accuracy >= 90
-                              ? 'success'
-                              : workout.accuracy >= 70
-                                ? 'default'
-                                : 'destructive'
-                          }
-                        >
-                          {workout.accuracy}%
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{formatSecondsDuration(workout.timeSeconds)}</TableCell>
-                      <TableCell>{workout.questionsCount}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
+          {!!totalWorkouts && (
+            <div className="space-y-2">
+              <h4 className="font-semibold">Recent Performance</h4>
+              {hasMoreWorkouts && (
+                <p className="text-sm opacity-50">
+                  Displaying {recentWorkouts.length} last results out of total {totalWorkouts}
+                </p>
+              )}
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground">
-                      No workout history available
-                    </TableCell>
+                    <TableHead id="Date">Date</TableHead>
+                    <TableHead id="Accuracy" className="truncate text-center">
+                      Accuracy
+                    </TableHead>
+                    <TableHead id="Time" className="truncate text-right max-md:hidden">
+                      Time
+                    </TableHead>
+                    {/* <TableHead>Questions</TableHead> */}
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {recentWorkouts.length > 0 ? (
+                    recentWorkouts.map((workout) => (
+                      <TableRow key={workout.id}>
+                        <TableCell id="Date">
+                          {getFormattedRelativeDate(format, workout.createdAt)}
+                        </TableCell>
+                        <TableCell id="Accuracy" className="truncate text-center">
+                          <Badge
+                            variant={
+                              workout.accuracy >= 70
+                                ? 'success'
+                                : workout.accuracy >= 30
+                                  ? 'default'
+                                  : 'destructive'
+                            }
+                          >
+                            {workout.accuracy}%
+                          </Badge>
+                        </TableCell>
+                        <TableCell id="Time" className="truncate text-right max-md:hidden">
+                          {formatSecondsDuration(workout.timeSeconds)}
+                        </TableCell>
+                        {/* <TableCell>{workout.questionsCount}</TableCell> */}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground">
+                        No workout history available
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          )}
 
           {/* Learning Insights */}
           <div className="space-y-4">
@@ -536,7 +567,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   </div>
                 </div>
               )}
-              {historicalStats.totalWorkouts === 0 && (
+              {totalWorkouts === 0 && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.Activity className="mt-0.5 size-4 text-blue-500" />
                   <div>
@@ -558,7 +589,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     if (full) return null;
 
     // Show empty state for quick stats when no workout data
-    if (!workout && historicalStats.totalWorkouts === 0) {
+    if (!workout && totalWorkouts === 0) {
       return (
         <Card>
           <CardContent className="pt-6">

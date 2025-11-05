@@ -23,12 +23,24 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
       <div
         className={cn(
           isDev && '__WorkoutInfo_NoWorkout', // DEBUG
-          'flex items-center gap-2 text-muted-foreground',
+          'flex flex-col items-center gap-2 text-muted-foreground',
+          'py-4 text-center',
           className,
         )}
       >
+        {/*
         <Icons.Activity className="size-4 opacity-50" />
-        <span>No workout started yet</span>
+        <span>No training started yet</span>
+        */}
+        <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
+        <p className="mb-2 text-lg text-foreground">No training started yet</p>
+        {/*historicalStats.totalWorkouts === 0 && (
+          <p className="text-sm text-muted-foreground">
+            {user
+              ? 'This will be your first workout for this topic!'
+              : 'Sign in to start collecting and monitoring your history tracks.'}
+          </p>
+          )*/}
       </div>
     );
   }

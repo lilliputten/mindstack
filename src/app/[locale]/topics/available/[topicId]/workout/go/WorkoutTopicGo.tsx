@@ -7,6 +7,7 @@ import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
@@ -18,6 +19,7 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { WorkoutControl } from '@/features/workouts/components';
 import {
+  useAvailableAnswers,
   useAvailableQuestionById,
   useAvailableTopicById,
   useGoBack,
@@ -30,17 +32,46 @@ import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
 
 const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
+function NextQuestionPrefetcher({ questionId }: { questionId?: TQuestionId }) {
+  useAvailableQuestionById({ id: questionId || '' });
+  useAvailableAnswers({
+    itemsLimit: null,
+    questionId: questionId || '',
+  });
+  /* // DEBUG
+   * const { isFetched: isQuestionFetched, isLoading: isQuestionLoading } = nextQuestionQuery;
+   * const isQuestionReady = isQuestionFetched && !isQuestionLoading;
+   * const { isFetched: isAnswersFetched, isLoading: isAnswersLoading } = nextAnswersQuery;
+   * const isAnswersReady = isAnswersFetched && !isAnswersLoading;
+   * React.useEffect(() => {
+   *   if (questionId) {
+   *     console.log('[NextQuestionPrefetcher]', {
+   *       questionId,
+   *       isQuestionReady,
+   *       isAnswersReady,
+   *     });
+   *   }
+   * }, [questionId, isQuestionReady, isAnswersReady]);
+   */
+  return null;
+}
+
 interface TMemo {
   questionId?: TQuestionId;
   finished?: boolean;
   // Detect any question changes to determinde if we should to (re-)start a workout if none
   hasWorkoutUpdated?: boolean;
   isStarting?: boolean;
+  // Init timeout handler, if not resolved (true)
+  // initTimeoutHandler?: ReturnType<typeof setTimeout> | true;
 }
 
 export function WorkoutTopicGo() {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
+
+  const [inited, setInited] = React.useState(false);
+  const [isStarting, setIsStarting] = React.useState(false);
 
   if (!topicId) {
     throw new Error('No workout topic ID found');
@@ -49,6 +80,9 @@ export function WorkoutTopicGo() {
   const availableTopicQuery = useAvailableTopicById({ id: topicId });
   const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
+
+  const questionsOrder = workout?.questionsOrder;
+  const stepIndex = workout?.stepIndex || 0;
 
   const isWorkoutFinished = workout?.finished;
   const isWorkoutInProgress = workout?.started && !isWorkoutFinished;
@@ -66,12 +100,12 @@ export function WorkoutTopicGo() {
   // const questionsCount = _count?.questions;
   // const allowedTraining = !!questionsCount;
 
-  const currentQuestionId = React.useMemo(() => {
-    if (!workout?.questionsOrder) return null;
-    const questionsOrder = workout.questionsOrder ? workout.questionsOrder.split(' ') : [];
-    const currentIndex = workout.stepIndex || 0;
-    return questionsOrder[currentIndex] || null;
-  }, [workout?.questionsOrder, workout?.stepIndex]);
+  const unpackedQuestionsOrder = React.useMemo(() => {
+    return questionsOrder ? questionsOrder.split(' ') : [];
+  }, [questionsOrder]);
+
+  const currentQuestionId = unpackedQuestionsOrder[stepIndex] || '';
+  const nextQuestionId = unpackedQuestionsOrder[stepIndex + 1] || '';
 
   // Effect: Detect any question changes to determinde if we should to (re-)start a workout if none
   React.useEffect(() => {
@@ -84,6 +118,7 @@ export function WorkoutTopicGo() {
         }
         memo.questionId = currentQuestionId;
         memo.finished = isWorkoutFinished;
+        setInited(true);
       }
     }
   }, [memo, isWorkoutPending, currentQuestionId, isWorkoutFinished]);
@@ -101,9 +136,15 @@ export function WorkoutTopicGo() {
       // eslint-disable-next-line no-console
       console.warn('[WorkoutTopicGo] No active training: startaing it now!');
       memo.isStarting = true;
-      startWorkout().finally(() => {
-        memo.isStarting = false;
-      });
+      setIsStarting(true);
+      startWorkout()
+        .then(() => {
+          setInited(true);
+        })
+        .finally(() => {
+          memo.isStarting = false;
+          setIsStarting(false);
+        });
     }
   }, [memo, startWorkout, hasActiveWorkout, isWorkoutPending, isWorkoutFinished]);
 
@@ -133,7 +174,8 @@ export function WorkoutTopicGo() {
         icon: Icons.Questions,
         visibleFor: 'xl',
         hidden: !isWorkoutInProgress || !allowedEdit,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId}`),
+        onClick: () =>
+          goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`),
       },
     ],
     [allowedEdit, goBack, goToTheRoute, topicId, isWorkoutInProgress, currentQuestionId],
@@ -151,10 +193,15 @@ export function WorkoutTopicGo() {
   const content =
     isTopicPending || !topic || isWorkoutPending || !workout ? (
       <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+    ) : isStarting ? (
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+        <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
+        <p>The training is starting...</p>
+      </div>
     ) : isWorkoutFinished ? (
-      <div className="flex flex-col items-center gap-2 py-4 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
         <Icons.Activity className="mx-auto size-8 text-theme" />
-        <p className="text-lg text-foreground">The training is already completed.</p>
+        <p className="text-lg">The training is already completed.</p>
         <WorkoutControl className="items-center" />
       </div>
     ) : (
@@ -209,7 +256,9 @@ export function WorkoutTopicGo() {
   return (
     <>
       <DashboardHeader
-        heading={truncateMarkdown(topic?.name || '...', 100)}
+        heading={
+          topic?.name ? truncateMarkdown(topic?.name, 100) : <Skeleton className="h-8 w-1/2" />
+        }
         className={cn(
           isDev && '__WorkoutTopicGo_DashboardHeader', // DEBUG
           'mx-6',
@@ -218,6 +267,7 @@ export function WorkoutTopicGo() {
         actions={actions}
       />
       {content}
+      {inited && !!nextQuestionId && <NextQuestionPrefetcher questionId={nextQuestionId} />}
     </>
   );
 }
