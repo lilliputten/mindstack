@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { Switch } from '@/components/ui/Switch';
+import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
@@ -28,6 +30,7 @@ export interface TAddTopicFormProps {
 
 export interface TFormData {
   name: TTopic['name'];
+  isPublic: TTopic['isPublic'];
 }
 
 export function AddTopicForm(props: TAddTopicFormProps) {
@@ -37,6 +40,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
     () =>
       z.object({
         name: z.string().min(minNameLength).max(maxNameLength),
+        isPublic: z.boolean(),
       }),
     [],
   );
@@ -44,6 +48,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   const defaultValues: TFormData = React.useMemo(() => {
     return {
       name: '',
+      isPublic: false,
     };
   }, []);
 
@@ -79,8 +84,8 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
   const onSubmit = handleSubmit((formData) => {
-    const { name } = formData;
-    const newTopic: TNewTopic = { name };
+    const { name, isPublic } = formData;
+    const newTopic: TNewTopic = { name, isPublic };
     return handleAddTopic(newTopic)
       .then(() => {
         // reset();
@@ -106,6 +111,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   };
 
   const nameKey = React.useId();
+  const isPublicKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
   const buttonText = isPending ? 'Adding' : 'Add';
@@ -138,6 +144,22 @@ export function AddTopicForm(props: TAddTopicFormProps) {
                   onChange={(ev) => field.onChange(ev)}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="isPublic"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="m-0" htmlFor={isPublicKey}>
+                Is the topic public?
+              </Label>
+              <FormControl>
+                <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormHint>Public topics can be viewed and used by other users.</FormHint>
               <FormMessage />
             </FormItem>
           )}

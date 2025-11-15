@@ -35,6 +35,7 @@ This PR implements comprehensive enhancements to the workout system, including U
 - Telegram bot: Don't use empty callback url in registration links
 - Updated select popper styles (affected max dropdown viewport width)
 - Fixed default locale selector name in the settings form
+- Added the bulk public actions to the `ManageTopicsListCard`
 
 ### Performance & Data Management
 
