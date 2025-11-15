@@ -112,7 +112,7 @@ export function BotControlPage() {
         icon: Icons.Check,
         pending: isShowServerInfoRunning,
         onClick: showServerInfo,
-        visibleFor: 'lg',
+        visibleFor: 'xl',
       },
       {
         id: 'Initialize webhook',
@@ -139,7 +139,7 @@ export function BotControlPage() {
         icon: Icons.Close,
         disabled: !hasLogs || isPending,
         onClick: clearLogs,
-        visibleFor: 'lg',
+        // visibleFor: 'xl',
       },
     ],
     [
