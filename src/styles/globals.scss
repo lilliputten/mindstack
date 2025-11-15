@@ -228,6 +228,12 @@
       border: none;
     }
   }
+
+  // Radix popper overrides...
+  [data-radix-popper-content-wrapper] {
+    min-width: auto !important;
+    max-width: var(--radix-popper-available-width);
+  }
 }
 
 @layer utilities {
