@@ -14,6 +14,7 @@ import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Switch } from '@/components/ui/Switch';
 import {
   Table,
   TableBody,
@@ -30,7 +31,7 @@ import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
-import { deleteTopics } from '@/features/topics/actions';
+import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useT } from '@/i18n';
@@ -113,6 +114,9 @@ function TopicTableHeader({
         <TableHead id="keywords" className="truncate max-xl:hidden">
           Keywords
         </TableHead>
+        <TableHead id="isPublic" className="truncate max-lg:hidden">
+          Public
+        </TableHead>
       </TableRow>
     </TableHeader>
   );
@@ -128,6 +132,7 @@ interface TTopicTableRowProps {
   cachedUsers: TCachedUsers;
   isSelected: boolean;
   toggleSelected: (topicId: TTopicId) => void;
+  availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
 }
 
 function TopicTableRow(props: TTopicTableRowProps) {
@@ -141,8 +146,47 @@ function TopicTableRow(props: TTopicTableRowProps) {
     idx,
     isSelected,
     toggleSelected,
+    availableTopicsQuery,
   } = props;
-  const { id, name, langCode, langName, keywords, userId, _count } = topic;
+  const { id, name, langCode, langName, keywords, userId, _count, isPublic } = topic;
+
+  const [isPending, startTransition] = React.useTransition();
+  const queryClient = useQueryClient();
+
+  const updateAndInvalidateTopic = React.useCallback(
+    async (updatedTopic: TTopic) => {
+      await updateTopic(updatedTopic);
+      availableTopicsQuery.updateTopic(updatedTopic);
+      const invalidatePrefixes = [['available-topic', topic.id], ['available-topics']].map(
+        makeQueryKeyPrefix,
+      );
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [availableTopicsQuery.queryKey]);
+    },
+    [topic.id, availableTopicsQuery, queryClient],
+  );
+
+  const handleTogglePublic = React.useCallback(
+    (checked: boolean) => {
+      startTransition(async () => {
+        const updatedTopic = { ...topic, isPublic: checked };
+        try {
+          await updateAndInvalidateTopic(updatedTopic);
+        } catch (error) {
+          const details = error instanceof APIError ? error.details : null;
+          const message = 'Cannot update topic public status';
+          // eslint-disable-next-line no-console
+          console.error('[TopicTableRow:handleTogglePublic]', message, {
+            details,
+            error,
+            topicId: topic.id,
+          });
+          debugger; // eslint-disable-line no-debugger
+          toast.error(message);
+        }
+      });
+    },
+    [topic, updateAndInvalidateTopic],
+  );
   const questionsCount = _count?.questions;
   const topicUser = isAdminMode ? cachedUsers[userId] : undefined;
   const { manageScope } = useManageTopicsStore();
@@ -206,6 +250,13 @@ function TopicTableRow(props: TTopicTableRowProps) {
       </TableCell>
       <TableCell id="keywords" className="max-w-[8em] truncate max-xl:hidden">
         <div className="truncate">{keywords}</div>
+      </TableCell>
+      <TableCell id="isPublic" className="w-[8em] max-lg:hidden">
+        <Switch
+          checked={isPublic || false}
+          onCheckedChange={handleTogglePublic}
+          disabled={isPending}
+        />
       </TableCell>
       <TableCell className="text-right">
         <div className="flex justify-end gap-1">
@@ -394,6 +445,7 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
                 cachedUsers={cachedUsers}
                 isSelected={selectedTopics.has(topic.id)}
                 toggleSelected={toggleSelected}
+                availableTopicsQuery={availableTopicsQuery}
               />
             ))}
           </TableBody>
