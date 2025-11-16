@@ -97,7 +97,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
       <p className="text-sm text-muted-foreground">
         <WorkoutStateDetails workout={workout} />
       </p>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button onClick={handleGoWorkout} variant="default" className="flex gap-2">
           <Icons.Activity className="size-4 opacity-50" />
           <span>
@@ -112,8 +112,8 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           ((hasHistoricalData && !isHistoricalPending) || workout.started ? (
             <Button variant="theme">
               <Link href={workoutRoute as TRoutePath} className="flex items-center gap-2">
-                <Icons.ExternalLink className="size-4 opacity-50" />
-                <span>Review Training</span>
+                <Icons.LineChart className="size-4 opacity-50" />
+                <span>Training Details</span>
               </Link>
             </Button>
           ) : isHistoricalPending ? (

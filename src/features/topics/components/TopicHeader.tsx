@@ -116,6 +116,8 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
   const hasDescription = showDescription && !!description;
   const hasMainSection = hasName || hasDescription;
 
+  const showDetails = !hasMainSection || showProperties;
+
   return (
     <div
       className={cn(
@@ -172,19 +174,18 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
           </div>
         </div>
       )}
-      {!hasMainSection ||
-        (showProperties && (
-          <div
-            className={cn(
-              isDev && '__TopicHeader_DetailsSection', // DEBUG
-              'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
-              'text-xs opacity-50',
-            )}
-          >
-            {!hasMainSection && <ShowDetails topic={topic} showDates={showDates} />}
-            {showProperties && <TopicProperties topic={topic} showDates />}
-          </div>
-        ))}
+      {showDetails && (
+        <div
+          className={cn(
+            isDev && '__TopicHeader_DetailsSection', // DEBUG
+            'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+            'text-xs opacity-50',
+          )}
+        >
+          {!hasMainSection && <ShowDetails topic={topic} showDates={showDates} />}
+          {showProperties && <TopicProperties topic={topic} showDates />}
+        </div>
+      )}
     </div>
   );
 }

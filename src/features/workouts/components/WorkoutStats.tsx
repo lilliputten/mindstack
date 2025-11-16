@@ -29,10 +29,11 @@ import { Link } from '@/i18n/routing';
 interface TWorkoutStatsProps {
   className?: string;
   full?: boolean;
+  hideTimes?: boolean;
 }
 
 export function WorkoutStats(props: TWorkoutStatsProps) {
-  const { className, full } = props;
+  const { className, full, hideTimes } = props;
   const format = useFormatter();
 
   const { user, loading: isUserLoading } = useSessionData();
@@ -94,24 +95,6 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const totalWorkouts = historicalStats.totalWorkouts;
   const recentWorkouts = historicalStats.recentWorkouts;
   const hasMoreWorkouts = totalWorkouts !== recentWorkouts.length;
-
-  /* // DEBUG
-   * React.useEffect(() => {
-   *   console.log('[WorkoutStats:DEBUG', {
-   *     // isWorkoutPending,
-   *     isHistoricalLoading,
-   *     // isHistoricalFetched,
-   *     workoutStatsHistoryQuery: {...workoutStatsHistoryQuery},
-   *     workoutStatsHistoryQueryJson: JSON.stringify(workoutStatsHistoryQuery, null, 2),
-   *   });
-   * }, [
-   *   // DEBUG
-   *   // isWorkoutPending,
-   *   isHistoricalLoading,
-   *   // isHistoricalFetched,
-   *   workoutStatsHistoryQuery,
-   * ]);
-   */
 
   if (isWorkoutPending || isHistoricalLoading) {
     return (
@@ -189,11 +172,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Best Accuracy</p>
                   <p className="text-2xl font-bold">{historicalStats.bestAccuracy}%</p>
                 </div>
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Average Time</p>
                   <p className="text-2xl font-bold">
                     {formatSecondsDuration(historicalStats.averageTime)}
@@ -213,26 +196,6 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         );
       }
       return null;
-      /* return (
-       *   <Card>
-       *     <CardHeader>
-       *       <CardTitle className="flex items-center gap-2">
-       *         <Icons.Activity className="size-4 text-theme" />
-       *         Ready to Start
-       *       </CardTitle>
-       *       <CardDescription>Begin your first workout for this topic</CardDescription>
-       *     </CardHeader>
-       *     <CardContent className="space-y-4">
-       *       <div className="py-4 text-center">
-       *         <Icons.Activity className="mx-auto mb-2 size-8 text-muted-foreground opacity-50" />
-       *         <p className="text-sm text-muted-foreground">
-       *           No workout data available yet. Start training to see your progress!
-       *         </p>
-       *       </div>
-       *     </CardContent>
-       *   </Card>
-       * );
-       */
     }
 
     return (
@@ -243,11 +206,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           className,
         )}
       >
-        <CardHeader>
+        <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2">
             <Icons.Activity className="size-4 text-theme" />
-            Current Training
+            Recent Training
           </CardTitle>
+          {/*
           <CardDescription>
             {isWorkoutInProgress
               ? 'Training in progress'
@@ -255,6 +219,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 ? 'Training completed'
                 : 'No active training'}
           </CardDescription>
+          */}
         </CardHeader>
         <CardContent className="space-y-4">
           {isWorkoutInProgress && (
@@ -274,11 +239,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Current Accuracy</p>
                   <p className="text-2xl font-bold">{Math.round(currentAccuracy)}%</p>
                 </div>
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Time Elapsed</p>
                   <p className="flex items-baseline gap-2">
                     <span className="text-2xl font-bold">{formatSecondsDuration(timeElapsed)}</span>
@@ -288,11 +253,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Correct Answers</p>
                   <p className="text-lg font-semibold">{workout.correctAnswers || 0}</p>
                 </div>
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Avg Time/Question</p>
                   <p className="text-lg font-semibold">
                     {formatSecondsDuration(averageTimePerQuestion)}
@@ -310,23 +275,25 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               )}
             >
               <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2">
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Final Accuracy</p>
                   <p className="text-2xl font-bold">{workout.currentRatio || 0}%</p>
                 </div>
-                <div className="space-y-1">
+                <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">Total Time</p>
                   <p className="text-2xl font-bold">
                     {formatSecondsDuration(workout.currentTime || 0)}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Icons.CircleCheck className="size-4 text-green-500" />
-                <span className="text-sm text-muted-foreground">
-                  Completed {getFormattedRelativeDate(format, workout.finishedAt || new Date())}
-                </span>
-              </div>
+              {!hideTimes && (
+                <div className="flex items-center gap-2">
+                  <Icons.CircleCheck className="size-4 text-green-500" />
+                  <span className="text-sm text-muted-foreground">
+                    Completed {getFormattedRelativeDate(format, workout.finishedAt || new Date())}
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
@@ -375,7 +342,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     // Show empty state when no historical data
     if (totalWorkouts === 0) {
       return (
-        <Card>
+        <Card
+          className={cn(
+            isDev && '__WorkoutStats_HistoricalStats_NoTotal', // DEBUG
+          )}
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Icons.LineChart className="size-4 text-theme" />
@@ -409,7 +380,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     }
 
     return (
-      <Card>
+      <Card
+        className={cn(
+          isDev && '__WorkoutStats__HistoricalStats_WithTotal', // DEBUG
+        )}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Icons.LineChart className="size-4 text-theme" />
@@ -419,7 +394,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Key Metrics */}
-          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-4">
+          <div
+            className={cn(
+              isDev && '__WorkoutStats_KeyMetrics', // DEBUG
+              'flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-4',
+            )}
+          >
             <div className="space-y-1 text-center">
               <p className="text-2xl font-bold">{totalWorkouts}</p>
               <p className="text-sm text-muted-foreground">Total Trainings</p>
@@ -441,7 +421,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           </div>
 
           {/* Performance Badges */}
-          <div className="space-y-2">
+          <div
+            className={cn(
+              isDev && '__WorkoutStats_PerformanceBadges', // DEBUG
+              'space-y-2',
+            )}
+          >
             <h4 className="font-semibold">Achievements</h4>
             <div className="flex flex-wrap gap-2">
               <Badge variant="success" className="flex items-center gap-1">
@@ -461,7 +446,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
 
           {/* Performance Table */}
           {!!totalWorkouts && (
-            <div className="space-y-2">
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_PerformanceTable', // DEBUG
+                'space-y-2',
+              )}
+            >
               <h4 className="font-semibold">Recent Performance</h4>
               {hasMoreWorkouts && (
                 <p className="text-sm opacity-50">
@@ -520,12 +510,23 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           )}
 
           {/* Learning Insights */}
-          <div className="space-y-4">
+          <div
+            className={cn(
+              isDev && '__WorkoutStats_LearningInsights', // DEBUG
+              'space-y-4',
+            )}
+          >
             <h4 className="font-semibold">Learning Insights</h4>
-            <div className="grid gap-3">
+            {/* // TODO: Determine the amount of the insight items and limit grid count to the maximum */}
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_LearningInsights_Blocks', // DEBUG
+                'grid gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
+              )}
+            >
               {historicalStats.speedTrend === 'improving' && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
-                  <Icons.LineChart className="mt-0.5 size-4 text-blue-500" />
+                  <Icons.LineChart className="mt-0.5 size-4 shrink-0 text-blue-500" />
                   <div>
                     <p className="text-sm font-medium">Improving Speed</p>
                     <p className="text-xs text-muted-foreground">
@@ -534,9 +535,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   </div>
                 </div>
               )}
-              {historicalStats.accuracyTrend === 'improving' && (
+              {historicalStats.speedTrend === 'improving' && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
-                  <Icons.CircleCheck className="mt-0.5 size-4 text-green-500" />
+                  <Icons.CircleCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
                   <div>
                     <p className="text-sm font-medium">Accuracy Trend</p>
                     <p className="text-xs text-muted-foreground">
@@ -547,7 +548,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               )}
               {historicalStats.streak > 0 && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
-                  <Icons.Activity className="mt-0.5 size-4 text-orange-500" />
+                  <Icons.Activity className="mt-0.5 size-4 shrink-0 text-orange-500" />
                   <div>
                     <p className="text-sm font-medium">Study Streak</p>
                     <p className="text-xs text-muted-foreground">
@@ -558,7 +559,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               )}
               {historicalStats.consistencyScore > 80 && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
-                  <Icons.CircleCheck className="mt-0.5 size-4 text-green-500" />
+                  <Icons.CircleCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
                   <div>
                     <p className="text-sm font-medium">Consistent Performance</p>
                     <p className="text-xs text-muted-foreground">
@@ -569,7 +570,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               )}
               {totalWorkouts === 0 && (
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
-                  <Icons.Activity className="mt-0.5 size-4 text-blue-500" />
+                  <Icons.Activity className="mt-0.5 size-4 shrink-0 text-blue-500" />
                   <div>
                     <p className="text-sm font-medium">Start Your Journey</p>
                     <p className="text-xs text-muted-foreground">

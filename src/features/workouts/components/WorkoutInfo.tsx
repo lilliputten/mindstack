@@ -7,18 +7,23 @@ import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { TWorkout } from '@/features/workouts/types';
+import { TWorkoutData } from '@/features/workouts/types';
 
 interface TWorkoutInfoProps {
-  workout?: TWorkout;
+  workout: TWorkoutData | null;
   className?: string;
+  omitNoWorkoutMessage?: boolean;
+  hideTimes?: boolean;
 }
 
 export function WorkoutInfo(props: TWorkoutInfoProps) {
-  const { workout, className } = props;
+  const { workout, className, omitNoWorkoutMessage, hideTimes } = props;
   const format = useFormatter();
 
   if (!workout) {
+    if (omitNoWorkoutMessage) {
+      return null;
+    }
     return (
       <div
         className={cn(
@@ -33,7 +38,9 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
         <span>No training started yet</span>
         */}
         <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
-        <p className="mb-2 text-lg text-foreground">No training started yet</p>
+        <p className="mb-2 text-lg text-foreground">
+          Training progress data has not yet been collected
+        </p>
         {/*historicalStats.totalWorkouts === 0 && (
           <p className="text-sm text-muted-foreground">
             {user
@@ -66,8 +73,11 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
       <span className="flex items-center gap-1" title="Training status">
         <Icons.Activity className="mr-1 size-4 opacity-50" />
         {isInProgress && <span className="text-blue-600">In Progress</span>}
-        {finished && <span className="text-green-600">Completed</span>}
-        {!started && <span className="text-gray-500">Not Started</span>}
+        {finished ? (
+          <span className="text-green-600">Completed</span>
+        ) : !started ? (
+          <span className="text-gray-500">Not Started</span>
+        ) : null}
       </span>
 
       {/* Progress for active training */}
@@ -87,18 +97,18 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
       )}
 
       {/* Started date */}
-      {startedAt && (
+      {!hideTimes && isInProgress && startedAt && (
         <span className="flex items-center gap-1" title="Started at">
-          <Icons.ArrowRight className="mr-1 size-4 opacity-50" />
-          {getFormattedRelativeDate(format, startedAt)}
+          <Icons.Clock className="mr-1 size-4 opacity-50" />
+          Started {getFormattedRelativeDate(format, startedAt)}
         </span>
       )}
 
       {/* Finished date */}
-      {finishedAt && (
+      {!hideTimes && !isInProgress && finishedAt && (
         <span className="flex items-center gap-1" title="Finished at">
-          <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
-          {getFormattedRelativeDate(format, finishedAt)}
+          <Icons.Clock className="mr-1 size-4 opacity-50" />
+          Finished {getFormattedRelativeDate(format, finishedAt)}
         </span>
       )}
     </div>

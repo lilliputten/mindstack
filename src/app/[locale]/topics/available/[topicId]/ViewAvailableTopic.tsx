@@ -38,34 +38,32 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
     // userId,
     workout,
     // pending,
-    startWorkout,
+    // startWorkout,
     questionIds,
     // topic,
   } = workoutContext;
 
+  // const nothingToDisplay = !workout;
   const questionsCount = questionIds?.length || 0;
   const allowedTraining = !!questionsCount;
-  const isWorkoutInProgress = workout?.started && !workout?.finished;
+  // const isWorkoutInProgress = workout?.started && !workout?.finished;
 
   const user = useSessionUser();
   const isOwner = topic?.userId && topic?.userId === user?.id;
   const isAdminMode = user?.role === 'ADMIN';
   const allowedEdit = isAdminMode || isOwner;
-  // const questionsCount = _count?.questions;
-  // const allowedTraining = !!questionsCount;
 
   const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
 
   const handleResumeWorkout = React.useCallback(() => {
-    // console.log('[WorkoutControl:handleResumeWorkout]');
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
   }, [goToTheRoute, topicId]);
 
-  const handleStartWorkout = React.useCallback(() => {
-    // console.log('[WorkoutControl:handleStartWorkout]');
-    startWorkout();
-    setTimeout(handleResumeWorkout, 10);
-  }, [handleResumeWorkout, startWorkout]);
+  // const handleStartWorkout = React.useCallback(() => {
+  //   // console.log('[WorkoutControl:handleStartWorkout]');
+  //   startWorkout();
+  //   setTimeout(handleResumeWorkout, 10);
+  // }, [handleResumeWorkout, startWorkout]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -86,17 +84,17 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
             : 'Start Training',
         variant: 'theme',
         icon: Icons.Activity,
-        visibleFor: 'sm',
+        visibleFor: 'xs',
         disabled: !allowedTraining,
-        onClick: isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
+        onClick: handleResumeWorkout, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
       },
       {
         id: 'ReviewTraining',
-        content: 'Review Training',
+        content: 'Training Details',
         variant: 'ghost',
         icon: Icons.LineChart,
         visibleFor: 'lg',
-        // disabled: !workout,
+        hidden: !workout,
         onClick: () => goToTheRoute(`${availableTopicsRoute}/${topicId}/workout`),
       },
       {
@@ -110,16 +108,13 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       },
     ],
     [
-      allowedEdit,
-      allowedTraining,
       goBack,
-      goToTheRoute,
+      workout,
+      allowedTraining,
       handleResumeWorkout,
-      handleStartWorkout,
-      isWorkoutInProgress,
+      allowedEdit,
+      goToTheRoute,
       topicId,
-      workout?.finished,
-      workout?.started,
       manageTopicsRoute,
     ],
   );

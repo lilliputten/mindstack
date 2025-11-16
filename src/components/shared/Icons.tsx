@@ -28,6 +28,7 @@ export const {
   ChevronUp,
   CircleCheck,
   CircleUserRound,
+  Clock,
   Columns3,
   Copy,
   Dot,
