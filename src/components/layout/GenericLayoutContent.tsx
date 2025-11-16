@@ -16,7 +16,8 @@ import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
 import { TLocale } from '@/i18n';
 
-import { DashboardSidebar, MobileSheetSidebar, MobileSheetWrapper } from './DashboardSidebar';
+import { DashboardSidebar } from './DashboardSidebar';
+import { MobileSheetSidebar, MobileSheetWrapper } from './MobileSheetSidebar';
 
 interface TGenericLayoutContentProps extends TPropsWithChildren {
   user?: ExtendedUser;

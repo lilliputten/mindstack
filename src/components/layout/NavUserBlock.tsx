@@ -49,7 +49,19 @@ function SidebarMenuItem(
   const { className, children, onSelect } = props;
   const onClick = onSelect as unknown as (event: React.MouseEvent) => void;
   return (
-    <div className={className} onClick={onClick}>
+    <div
+      className={cn(
+        isDev && '__NavUserBlock_SidebarMenuItem', // DEBUG
+        'cursor-pointer',
+        'flex items-center gap-2',
+        'rounded-sm',
+        'px-2 py-1.5',
+        'text-sm',
+        'hover:bg-theme-500',
+        className,
+      )}
+      onClick={onClick}
+    >
       {children}
     </div>
   );
@@ -99,6 +111,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       align={align}
       className={cn(
         isDev && '__NavUserBlock', // DEBUG
+        onSidebar && 'items-start',
         className,
       )}
     >
@@ -135,7 +148,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         </div>
       </div>
 
-      <DropdownMenuSeparator />
+      <DropdownMenuSeparator className="w-full" />
 
       {/*isAdmin && (
       <MenuItem asChild>
@@ -168,12 +181,18 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             </Link>
           </MenuItem>
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="w-full" />
         </>
       )}
 
       {/* Sign Out button */}
-      <MenuItem className="cursor-pointer" onSelect={handleSignOut}>
+      <MenuItem
+        className={cn(
+          isDev && '__NavUserBlock_SignOut_Button', // DEBUG
+          'cursor-pointer',
+        )}
+        onSelect={handleSignOut}
+      >
         <div className="flex items-center space-x-2.5">
           <Icons.LogOut className="size-4" />
           <p className="text-sm">{t('Sign Out')}</p>
