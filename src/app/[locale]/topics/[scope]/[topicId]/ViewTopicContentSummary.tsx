@@ -125,7 +125,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               .split(',')
               .filter(Boolean)
               .map((keyword, idx) => (
-                <span key={idx} className="rounded-sm bg-theme-300/10 px-2 text-sm">
+                <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
                   {/* <Icons.Tags className="mr-1 size-3 opacity-50" /> */}
                   {keyword.trim()}
                 </span>

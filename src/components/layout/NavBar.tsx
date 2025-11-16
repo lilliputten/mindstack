@@ -41,7 +41,7 @@ export function NavBar(props: NavBarProps) {
         'z-40',
         'flex',
         'w-full',
-        'bg-theme-400/70',
+        'bg-theme-600/70',
         'px-6',
         'justify-stretch',
         'transition-all',
@@ -126,11 +126,11 @@ export function NavBar(props: NavBarProps) {
             'p-4',
             'transition-all',
             'duration-200',
-            'text-theme-foreground hover:bg-theme-400/50',
+            'text-theme-foreground hover:bg-theme-600/50',
             'focus:outline-none',
-            'active:bg-theme-300',
+            'active:bg-theme-700',
             'md:hidden',
-            open && 'opacity-50 hover:bg-theme-400',
+            open && 'opacity-50 hover:bg-theme-600',
           )}
         >
           <Icons.Menu className="size-5 text-theme-foreground" />

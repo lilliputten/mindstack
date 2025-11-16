@@ -45,7 +45,7 @@ export function ViewQuestionContentSummary(props: TProps) {
       <div className="flex items-center gap-2">
         <h3 className="text-lg font-semibold">Question Text</h3>
         {question.isGenerated && (
-          <div className="flex items-center gap-1 rounded-md bg-theme-100 px-2 py-1 text-xs text-theme-600">
+          <div className="flex items-center gap-1 rounded-md bg-theme-900 px-2 py-1 text-xs text-theme-400">
             <Icons.WandSparkles className="size-3 opacity-50" />
             AI Generated
           </div>

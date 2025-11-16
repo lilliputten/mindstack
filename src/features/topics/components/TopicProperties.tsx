@@ -41,7 +41,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     .map((s) => s.trim())
     .filter(Boolean);
   const keywordsContent = keywordsList?.map((kw, idx) => (
-    <span key={`${idx}-${kw}`} className="rounded-sm bg-theme-300/10 px-2">
+    <span key={`${idx}-${kw}`} className="rounded-sm bg-theme-700/10 px-2">
       {kw}
     </span>
   ));

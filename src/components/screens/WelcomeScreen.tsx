@@ -58,7 +58,7 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
         viewportClassName={cn(
           isDev && '__WelcomeScreen_Visual_ScrollViewport', // DEBUG
           'decorative-card !rounded-xl shadow-sm',
-          'border border-theme-400/20',
+          'border border-theme-600/20',
           'flex-1 flex',
           '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
         )}

@@ -25,8 +25,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-theme text-theme-foreground hover:bg-theme/90',
-        primary: 'bg-primary text-primary-foreground hover:bg-primary-400',
-        theme: 'bg-theme text-theme-foreground hover:bg-theme-400',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary-600',
+        theme: 'bg-theme text-theme-foreground hover:bg-theme-600',
         destructive: 'bg-destructive hover:opacity-90 text-destructive-foreground',
         success: 'bg-success hover:opacity-90 text-success-foreground',
         outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
@@ -50,8 +50,8 @@ const buttonVariants = cva(
         // ghostBlue: 'hover:bg-blue-300/20 hover:text-accent-foreground active:bg-blue-500',
         // ghostDark: 'hover:bg-black/20 hover:text-accent-foreground',
         // ghostGray: 'hover:bg-gray-500/15 hover:text-accent-foreground',
-        // ghostOnPrimary: 'text-primary-foreground hover:bg-primary-400/50',
-        ghostOnTheme: 'text-theme-foreground hover:bg-theme-400/50',
+        // ghostOnPrimary: 'text-primary-foreground hover:bg-primary-600/50',
+        ghostOnTheme: 'text-theme-foreground hover:bg-theme-600/50',
         link: 'text-theme underline-offset-4 hover:underline',
         disabled: 'cursor-default border border-input bg-transparent text-foreground opacity-30',
       },

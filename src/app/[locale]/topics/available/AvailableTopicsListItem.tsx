@@ -127,7 +127,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         isDev && '__AvailableTopicsList_TopicItem_Card', // DEBUG
         'relative flex flex-1 flex-col',
         'overflow-visible',
-        'cursor-pointer border border-theme-200/10 transition',
+        'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',
         'hover:bg-theme/15',
       )}

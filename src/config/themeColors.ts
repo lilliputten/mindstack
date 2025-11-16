@@ -67,11 +67,12 @@ const predefinedColorsData = predefinedColors.reduce(
 export const themeColorData: Record<string, TThemeColorData> = {
   brand: {
     color: primaryColor,
-    // fix: 18,
+    // fix: -10,
   },
   ...predefinedColorsData,
 };
 // Fixes for all the predefined colors
+themeColorData.brand.fix = -10;
 themeColorData.red.fix = -11;
 themeColorData.orange.fix = -4;
 themeColorData.lime.fix = 3;

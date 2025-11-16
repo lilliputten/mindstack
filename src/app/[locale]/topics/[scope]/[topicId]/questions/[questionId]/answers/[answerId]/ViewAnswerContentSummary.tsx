@@ -116,7 +116,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
             variant="outline"
             className={cn(
               'flex items-center gap-1 px-2 py-1',
-              'bg-theme-100 text-xs text-theme-600',
+              'bg-theme-900 text-xs text-theme-400',
             )}
           >
             <Icons.WandSparkles className="size-3 opacity-50" />

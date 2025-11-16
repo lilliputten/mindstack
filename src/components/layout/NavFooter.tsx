@@ -15,7 +15,7 @@ export function NavFooter() {
       className={cn(
         isDev && '__NavFooter', // DEBUG
         'relative flex w-full px-6',
-        'bg-theme-400/70',
+        'bg-theme-600/70',
         'text-white',
       )}
     >
