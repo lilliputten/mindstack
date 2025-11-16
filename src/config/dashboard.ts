@@ -19,6 +19,12 @@ import {
 // prettier-ignore
 export const dashboardLinks: SidebarNavItem[] = [
   {
+    titleId: 'Application',
+    items: [
+      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'Available Topics' },
+    ],
+  },
+  {
     titleId: 'My Data',
     authorizedOnly: true,
     items: [
@@ -36,12 +42,6 @@ export const dashboardLinks: SidebarNavItem[] = [
       { href: adminAiTestTextQueryRoute, icon: Icons.Bug, titleId: 'Test AI Text Query' },
       // { href: adminRoute, icon: Icons.Laptop, titleId: 'Admin Panel', authorizedOnly: 'ADMIN', disabled: true },
       // { href: dashboardRoute, icon: Icons.Dashboard, titleId: 'Dashboard', disabled: true },
-    ],
-  },
-  {
-    titleId: 'Application',
-    items: [
-      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'Available Topics' },
     ],
   },
   {

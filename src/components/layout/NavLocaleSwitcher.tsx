@@ -42,7 +42,7 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
           <span className="sr-only">{t('label')}</span>
         </Button>
       </DropdownMenuTrigger>
-      <NavLocaleSwitcherBlock align="end" onPrimary={onPrimary} onSidebar={onSidebar} />
+      <NavLocaleSwitcherBlock align="start" onPrimary={onPrimary} onSidebar={onSidebar} />
     </DropdownMenu>
   );
 }

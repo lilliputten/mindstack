@@ -32,6 +32,9 @@ export function getAllRouteSynonyms(route: string, locale: TLocale) {
     // All the paths represent the root path
     route,
     prefixedRoute,
+    prefixedRoute &&
+      prefixedRoute.endsWith('/') &&
+      prefixedRoute.substring(0, prefixedRoute.length - 1),
     localizedRoute,
     prefixedLocalizedRoute,
   ].filter(Boolean);

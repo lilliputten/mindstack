@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
+import { isDev } from '@/config';
 
 type ProjectType = {
   title: string;
@@ -29,7 +30,7 @@ const projects: ProjectType[] = [
 ];
 const selected: ProjectType = projects[1];
 
-export function ProjectSwitcher({ large = false }: { large?: boolean }) {
+export function ProjectSwitcher({ large, className }: { large?: boolean; className?: string }) {
   const {
     // data: session,
     status,
@@ -37,11 +38,23 @@ export function ProjectSwitcher({ large = false }: { large?: boolean }) {
   const [openPopover, setOpenPopover] = React.useState(false);
 
   if (!projects || status === 'loading') {
-    return <ProjectSwitcherPlaceholder />;
+    return (
+      <ProjectSwitcherPlaceholder
+        className={cn(
+          isDev && '__ProjectSwitcher_Placeholder', // DEBUG
+          className,
+        )}
+      />
+    );
   }
 
   return (
-    <div>
+    <div
+      className={cn(
+        isDev && '__ProjectSwitcher', // DEBUG
+        className,
+      )}
+    >
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
         <PopoverTrigger
           className="flex h-8 items-center px-2"
@@ -120,9 +133,14 @@ function ProjectList({
   );
 }
 
-function ProjectSwitcherPlaceholder() {
+function ProjectSwitcherPlaceholder({ className }: { className?: string }) {
   return (
-    <div className="flex animate-pulse items-center space-x-1.5 rounded-lg px-1.5 py-2 sm:w-60">
+    <div
+      className={cn(
+        'flex animate-pulse items-center space-x-1.5 rounded-lg px-1.5 py-2 sm:w-60',
+        className,
+      )}
+    >
       <div className="h-8 w-36 animate-pulse rounded-md bg-muted xl:w-[180px]" />
     </div>
   );

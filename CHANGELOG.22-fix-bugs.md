@@ -17,6 +17,8 @@ This PR implements comprehensive enhancements to the workout system, including U
 - Workout Skeletons: Improved display with proper answers count rendering
 - Topic Display: Enhanced topic header, properties, and details presentation
 - Sign-in Form: Fixed title styling issues
+- Added LandingPage, updated AppIntroBlock texts, updated DashboardSidebar and related blocks (ProjectSwitcher), updated GenericLayoutContent (sidebar is hidden for root page)
+-
 
 ### Workout Logic & Flow
 

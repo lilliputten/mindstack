@@ -22,7 +22,7 @@ import { NavLocaleSwitcherBlock } from '@/components/layout/NavLocaleSwitcherBlo
 import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useMediaQuery } from '@/hooks';
+import { useMediaMinDevices, useMediaQuery } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 
 import { NavBarBrand } from './NavBarBrand';
@@ -37,43 +37,56 @@ interface TMobileSheetProps {
   setOpen: (p: boolean) => void;
 }
 
+/** Show upgrade box at the bottom */
+const showUpgradeCard = true;
+
+/** Show project selector at the top */
+const showSelector = false;
+
 const saveScrollHash = getRandomHashString();
 
-type TMemo = { inited?: boolean; restored?: boolean };
+type TMemo = { inited?: boolean; restored?: boolean; isExpanded?: boolean };
 
 export function DashboardSidebar({ links }: DashboardSidebarProps) {
   const path = usePathname();
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
-  const { isTablet } = useMediaQuery();
+  const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
+  const isLg = isMediaInited && mediaWidths.includes('lg');
+  const isXl = isMediaInited && mediaWidths.includes('xl');
+  const allowMediaExpanded = isLg;
 
-  const [isSidebarExpanded, setIsSidebarExpanded] = React.useState<boolean>(isTablet);
-  React.useEffect(() => {
-    if (memo.inited && typeof window !== 'undefined') {
-      window.localStorage.setItem('sidebarExpanded', JSON.stringify(isSidebarExpanded));
-    }
-  }, [memo, isSidebarExpanded]);
+  const [isUserExpanded, setUserExpanded] = React.useState<boolean | undefined>();
+  const [isMediaExpanded, setMediaExpanded] = React.useState<boolean>(true);
+  const noUserExpanded = isUserExpanded === undefined;
+  const isExpanded = noUserExpanded ? isMediaExpanded : isUserExpanded;
+  memo.isExpanded = isExpanded;
+
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = window.localStorage.getItem('sidebarExpanded');
       if (saved) {
-        setIsSidebarExpanded(JSON.parse(saved));
+        setUserExpanded(JSON.parse(saved));
         memo.restored = true;
       }
     }
     memo.inited = true;
   }, [memo]);
-
-  const toggleSidebar = () => {
-    setIsSidebarExpanded(!isSidebarExpanded);
-  };
-
   React.useEffect(() => {
     if (!memo.restored) {
-      setIsSidebarExpanded(!isTablet);
+      setMediaExpanded(allowMediaExpanded);
     }
-  }, [memo, isTablet]);
+  }, [memo, allowMediaExpanded]);
+
+  const toggleSidebar = React.useCallback(() => {
+    const value = !memo.isExpanded; // isUserExpanded;
+    setUserExpanded(value);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('sidebarExpanded', JSON.stringify(value));
+    }
+    return value;
+  }, [memo]);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -98,57 +111,84 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
         >
           <aside
             className={cn(
-              isSidebarExpanded ? 'w-[220px] xl:w-[260px]' : 'w-[68px]',
-              '__h-screen hidden h-full md:block',
+              isDev && '__DashboardSidebar_Aside', // DEBUG
+              noUserExpanded && 'max-lg:w-[68px]',
+              isExpanded ? 'w-[200px] xl:w-[264px]' : 'w-[68px]',
+              'hidden h-full md:block',
             )}
           >
             <div className="flex h-full flex-1 flex-col gap-2">
-              <div className="flex h-14 items-center p-4 lg:h-[60px]">
-                {/* DEMO: Switch project/profile/whatever example */}
-                {isSidebarExpanded && <ProjectSwitcher />}
+              <div
+                className={cn(
+                  isDev && '__DashboardSidebar_TopLine', // DEBUG
+                  '__h-[60px] flex h-14 items-center py-4 pt-12',
+                  isXl ? 'px-6' : 'px-2',
+                )}
+                suppressHydrationWarning
+              >
+                {showSelector && (
+                  <ProjectSwitcher
+                    className={cn(noUserExpanded && 'max-lg:hidden', !isExpanded && 'hidden')}
+                  />
+                )}
                 <Tooltip key={`tooltip-expand`}>
                   <TooltipTrigger asChild>
                     <Button
                       variant="ghost"
-                      size="icon"
-                      className="ml-auto', 'size-9', 'opacity-50', 'hover:bg-theme', 'hover:text-theme-foreground', 'hover:opacity-100', 'lg:size-8"
-                      onClick={toggleSidebar}
-                      // title="Expand panel"
-                    >
-                      {isSidebarExpanded ? (
-                        <Icons.PanelLeftClose size={18} />
-                      ) : (
-                        <Icons.PanelRightClose size={18} />
+                      className={cn(
+                        'size-10 px-2 py-0 [&>svg]:m-auto',
+                        'hover:bg-theme',
+                        'hover:text-theme-foreground',
+                        'hover:opacity-100',
+                        'flex items-center gap-2',
+                        'text-theme-400 dark:text-theme-500',
+                        'w-full',
                       )}
-                      <span className="sr-only">Toggle Sidebar</span>
+                      onClick={toggleSidebar}
+                    >
+                      <Icons.PanelLeft className="size-5 min-w-5" />
+                      <span
+                        className={cn(
+                          'flex-1 truncate text-left',
+                          noUserExpanded && 'max-lg:hidden',
+                          (!isExpanded || showSelector) && 'sr-only',
+                        )}
+                      >
+                        Toggle Panel
+                      </span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="right">
-                    {isSidebarExpanded ? 'Collapse Panel' : 'Expand Panel'}
+                  <TooltipContent
+                    side="right"
+                    className={cn(
+                      noUserExpanded && 'lg:hidden',
+                      isExpanded && 'hidden',
+                      // !showSelector && isExpanded && 'lg:hidden',
+                    )}
+                  >
+                    Toggle Panel
                   </TooltipContent>
                 </Tooltip>
               </div>
-
               <nav
                 className={cn(
                   isDev && '__DashboardSidebar_Section', // DEBUG
-                  'flex flex-1 flex-col gap-8 px-4 pt-4',
+                  'flex flex-1 flex-col gap-8 pt-4',
+                  isXl ? 'px-6' : 'px-2',
                 )}
               >
                 {links.map((section) => (
                   <section key={section.titleId} className="flex flex-col gap-0.5">
-                    {isSidebarExpanded ? (
-                      <p
-                        className={cn(
-                          isDev && '__DashboardSidebar_Section_Title', // DEBUG
-                          'mb-4 text-xs uppercase text-muted-foreground',
-                        )}
-                      >
-                        {section.titleId}
-                      </p>
-                    ) : (
-                      <div className="h-4" />
-                    )}
+                    <p
+                      className={cn(
+                        isDev && '__DashboardSidebar_Section_Title', // DEBUG
+                        'mb-4 text-xs uppercase text-muted-foreground',
+                        noUserExpanded && 'max-lg:hidden',
+                        !isExpanded && 'hidden',
+                      )}
+                    >
+                      {section.titleId}
+                    </p>
                     {/* Show sections menu */}
                     {section.items.map((item) => {
                       const Icon = item.icon || Icons.ArrowRight;
@@ -156,52 +196,53 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                       return (
                         item.href && (
                           <React.Fragment key={`link-fragment-${item.titleId}`}>
-                            {isSidebarExpanded ? (
-                              <Link
-                                key={`link-${item.titleId}`}
-                                href={item.disabled ? '#' : item.href}
-                                className={cn(
-                                  'flex',
-                                  'items-center',
-                                  'gap-3',
-                                  'rounded-md',
-                                  'p-2',
-                                  'text-sm',
-                                  'font-medium',
-                                  'hover:bg-theme/20',
-                                  isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
-                                  item.disabled && 'pointer-events-none cursor-default opacity-30',
-                                )}
-                              >
-                                <Icon className="size-5" />
-                                {item.titleId}
-                                {item.badge && (
-                                  <Badge className="flex size-5 shrink-0 items-center justify-center rounded-full">
-                                    {item.badge}
-                                  </Badge>
-                                )}
-                              </Link>
-                            ) : (
-                              <Tooltip key={`tooltip-${item.titleId}`}>
-                                <TooltipTrigger asChild>
-                                  <Link
-                                    key={`link-tooltip-${item.titleId}`}
-                                    href={item.disabled ? '#' : item.href}
+                            <Tooltip key={`tooltip-${item.titleId}`}>
+                              <TooltipTrigger asChild>
+                                <Link
+                                  key={`link-${item.titleId}`}
+                                  href={item.disabled ? '#' : item.href}
+                                  className={cn(
+                                    isDev && '__DashboardSidebar_Section_Item', // DEBUG
+                                    'flex',
+                                    'items-center',
+                                    'gap-3',
+                                    'rounded-md',
+                                    'p-2',
+                                    'text-sm',
+                                    'font-medium',
+                                    'hover:bg-theme/20',
+                                    isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
+                                    item.disabled &&
+                                      'pointer-events-none cursor-default opacity-30',
+                                  )}
+                                >
+                                  <Icon className="size-5 min-w-5" />
+                                  <span
                                     className={cn(
-                                      'flex items-center gap-3 rounded-md py-2 text-sm font-medium hover:bg-theme/20',
-                                      isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
-                                      item.disabled &&
-                                        'pointer-events-none cursor-default opacity-30',
+                                      'truncate',
+                                      noUserExpanded && 'max-lg:hidden',
+                                      !isExpanded && 'hidden',
                                     )}
                                   >
-                                    <span className="flex size-full items-center justify-center">
-                                      <Icon className="size-5" />
-                                    </span>
-                                  </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right">{item.titleId}</TooltipContent>
-                              </Tooltip>
-                            )}
+                                    {item.titleId}
+                                  </span>
+                                  {item.badge && (
+                                    <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
+                                      {item.badge}
+                                    </Badge>
+                                  )}
+                                </Link>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                className={cn(
+                                  noUserExpanded && 'lg:hidden',
+                                  isExpanded && 'hidden',
+                                )}
+                                side="right"
+                              >
+                                {item.titleId}
+                              </TooltipContent>
+                            </Tooltip>
                           </React.Fragment>
                         )
                       );
@@ -209,8 +250,18 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                   </section>
                 ))}
               </nav>
-
-              <div className="mt-auto xl:p-4">{isSidebarExpanded ? <UpgradeCard /> : null}</div>
+              {showUpgradeCard && (
+                <div
+                  className={cn(
+                    isDev && '__DashboardSidebar_UpgradeCard', // DEBUG
+                    'mt-auto xl:p-6',
+                    noUserExpanded && 'max-lg:hidden',
+                    !isExpanded && 'hidden',
+                  )}
+                >
+                  <UpgradeCard />
+                </div>
+              )}
             </div>
           </aside>
         </ScrollArea>
@@ -288,10 +339,10 @@ function MenuSections(props: DashboardSidebarProps & TMobileSheetProps) {
                     item.disabled && 'pointer-events-none cursor-default opacity-30',
                   )}
                 >
-                  <Icon className="size-5" />
+                  <Icon className="size-5 min-w-5" />
                   {item.titleId}
                   {item.badge && (
-                    <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                    <Badge className="ml-auto flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
                       {item.badge}
                     </Badge>
                   )}
@@ -314,7 +365,7 @@ export function MobileSheetSidebar(props: DashboardSidebarProps & TMobileSheetPr
         'flex h-screen flex-col',
       )}
     >
-      <nav className="flex flex-1 flex-col gap-y-8 p-6 text-lg font-medium">
+      <nav className={cn('flex flex-1 flex-col gap-y-8 py-6 text-lg font-medium')}>
         <NavBarBrand isUser={isUser} onSidebar />
 
         {<ProjectSwitcher large />}

@@ -55,6 +55,7 @@ export const {
   MonitorPlay,
   Moon,
   Package,
+  PanelLeft,
   PanelLeftClose,
   PanelRightClose,
   Pencil,

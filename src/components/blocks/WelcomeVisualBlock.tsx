@@ -15,16 +15,14 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
       className={cn(
         isDev && '__WelcomeVisualBlock_Scroll', // DEBUG
         'flex flex-1 flex-col items-center justify-center',
+        className,
       )}
     >
       <div
         className={cn(
           isDev && '__WelcomeVisualBlock', // DEBUG
-          className,
-          'gap-4',
-          'flex flex-1 flex-col',
-          'items-center justify-center',
-          'relative',
+          'relative w-full',
+          'flex flex-1 flex-col items-center justify-center',
         )}
       >
         <Image
@@ -40,18 +38,16 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
         <div
           className={cn(
             isDev && '__WelcomeVisualBlock_Logo', // DEBUG
-            'absolute right-4 top-4',
-            'flex flex-1 flex-col',
-            'items-center justify-center',
+            'absolute right-4 top-4 p-1',
+            'flex flex-1 flex-col items-center justify-center',
             'bg-blue-900/80 dark:bg-transparent',
             'rounded-full',
-            'p-1',
             'select-none',
           )}
         >
           <Image src={logoSvg} className="h-12 w-auto" alt={siteTitle} priority={false} />
         </div>
-        <SmallWelcomeText className="p-6" />
+        <SmallWelcomeText className="p-6 pb-8 pt-0" />
       </div>
     </div>
   );

@@ -17,10 +17,11 @@ const saveSignInScrollHash = getRandomHashString();
 
 export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }) {
   const { className, isLogged } = props;
-  const { mediaWidths } = useMediaMinDevices();
-  const isLg = mediaWidths.includes('lg');
+  const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
+  const isLg = isMediaInited && mediaWidths.includes('lg');
   return (
     <ScrollArea
+      // suppressHydrationWarning
       disableScroll={isLg}
       saveScrollKey="WelcomeScreen"
       saveScrollHash={saveScrollHash}

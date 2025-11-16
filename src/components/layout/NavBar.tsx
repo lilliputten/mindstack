@@ -42,7 +42,6 @@ export function NavBar(props: NavBarProps) {
         'flex',
         'w-full',
         'bg-theme-400/70',
-        'backdrop-blur',
         'px-6',
         'justify-stretch',
         'transition-all',
@@ -124,7 +123,7 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
-            'p-2',
+            'p-4',
             'transition-all',
             'duration-200',
             'text-theme-foreground hover:bg-theme-400/50',

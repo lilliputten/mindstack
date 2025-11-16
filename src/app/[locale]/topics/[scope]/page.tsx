@@ -1,6 +1,9 @@
+import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { welcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
+import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
@@ -44,10 +47,17 @@ export default async function ManageTopicsPageWrapper(props: TManageTopicsPageWr
     from,
     // params,
   } = props;
+
   // const resolvedParams = await params;
   // const { locale, scope } = resolvedParams;
   // const namespace = topicsNamespaces[scope];
   // const t = await getTranslations({ locale, namespace });
+
+  // Check if logged user
+  const isLogged = await isLoggedUser();
+  if (!isLogged) {
+    redirect(welcomeRoute);
+  }
   return (
     <PageWrapper
       className={cn(

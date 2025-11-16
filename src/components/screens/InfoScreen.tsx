@@ -35,7 +35,7 @@ export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
       <InfoVisualBlock className="z-10" />
       <div
         className={cn(
-          isDev && '__IntroText', // DEBUG
+          isDev && '__InfoScreen_IntroText', // DEBUG
           className,
           'flex flex-col gap-4',
           'max-w-xl',

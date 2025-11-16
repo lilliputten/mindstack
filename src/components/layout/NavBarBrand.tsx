@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 
 import { siteTitle } from '@/config/env';
-import { aboutRoute, welcomeRoute } from '@/config/routesConfig';
+import { rootRoute, welcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -22,12 +22,13 @@ interface NavBarBrandProps {
 }
 
 function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) {
-  const { isUser, children, className: parentClassName } = props;
+  const { children, className: parentClassName } = props;
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  const rootRoute = isUser ? aboutRoute : welcomeRoute;
+  // const rootRoute = isUser ? aboutRoute : welcomeRoute;
   const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
   const isRoot = !pathname || rootRoutesList.includes(pathname);
+  const urlRoute = isRoot ? welcomeRoute : rootRoute;
   const className = cn(
     isDev && '__BrandWrapper', // DEBUG
     parentClassName,
@@ -38,13 +39,13 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
     'transition-all',
     'mr-10',
     'select-none',
-    !isRoot && 'hover:opacity-80',
+    'hover:opacity-80',
   );
-  if (isRoot) {
-    return <div className={className}>{children}</div>;
-  }
+  // if (isRoot) {
+  //   return <div className={className}>{children}</div>;
+  // }
   return (
-    <Link href={rootRoute} className={className}>
+    <Link href={urlRoute} className={className}>
       {children}
     </Link>
   );
@@ -64,23 +65,6 @@ export function NavBarBrand(props: NavBarBrandProps) {
         priority={false}
         alt={siteTitle}
       />
-      {/*
-      <h1
-        role="heading"
-        data-testid="NavBarBrandTitle"
-        className={cn(
-          'font-urban',
-          'text-xl',
-          'text-theme-foreground',
-          'font-bold',
-          'whitespace-nowrap',
-          'overflow-hidden',
-          'text-ellipsis',
-        )}
-      >
-        {siteTitle}
-      </h1>
-      */}
     </BrandWrapper>
   );
 }
