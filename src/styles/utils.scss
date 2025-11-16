@@ -47,41 +47,78 @@
 }
 
 @mixin defineThemeSpread($color, $fix: 0%) {
-  --color-theme-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
-  --color-theme-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
-  --color-theme-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
-  --color-theme-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
-  --color-theme-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  // Reversed: From the lightest to the darkest (as in tailwind schemas)
+  --color-theme-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
+  --color-theme-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
+  --color-theme-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
+  --color-theme-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
+  --color-theme-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
   --color-theme-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
-  --color-theme-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
-  --color-theme-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
-  --color-theme-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
-  --color-theme-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
-  --color-theme-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
+  --color-theme-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  --color-theme-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
+  --color-theme-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
+  --color-theme-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
+  --color-theme-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
+  // // Original, wrong spreads: from the darkest to the lightest
+  // --color-theme-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
+  // --color-theme-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
+  // --color-theme-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
+  // --color-theme-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
+  // --color-theme-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  // --color-theme-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
+  // --color-theme-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
+  // --color-theme-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
+  // --color-theme-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
+  // --color-theme-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
+  // --color-theme-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
 }
 @mixin defineThemeColor($id, $color, $fix: 0%) {
-  --color-#{'' + $id}-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
-  --color-#{'' + $id}-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
-  --color-#{'' + $id}-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
-  --color-#{'' + $id}-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
-  --color-#{'' + $id}-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  // Reversed: From the lightest to the darkest (as in tailwind schemas)
+  --color-#{'' + $id}-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
+  --color-#{'' + $id}-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
+  --color-#{'' + $id}-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
+  --color-#{'' + $id}-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
+  --color-#{'' + $id}-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
   --color-#{'' + $id}-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
-  --color-#{'' + $id}-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
-  --color-#{'' + $id}-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
-  --color-#{'' + $id}-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
-  --color-#{'' + $id}-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
-  --color-#{'' + $id}-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
-  --color-#{'' + $id}-50: #{hexColor(color.adjust($color, $lightness: $fix - 45%))};
-  --color-#{'' + $id}-100: #{hexColor(color.adjust($color, $lightness: $fix - 40%))};
-  --color-#{'' + $id}-200: #{hexColor(color.adjust($color, $lightness: $fix - 30%))};
-  --color-#{'' + $id}-300: #{hexColor(color.adjust($color, $lightness: $fix - 20%))};
-  --color-#{'' + $id}-400: #{hexColor(color.adjust($color, $lightness: $fix - 10%))};
+  --color-#{'' + $id}-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  --color-#{'' + $id}-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
+  --color-#{'' + $id}-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
+  --color-#{'' + $id}-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
+  --color-#{'' + $id}-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
+  --color-#{'' + $id}-50: #{hexColor(color.adjust($color, $lightness: $fix + 45%))};
+  --color-#{'' + $id}-100: #{hexColor(color.adjust($color, $lightness: $fix + 40%))};
+  --color-#{'' + $id}-200: #{hexColor(color.adjust($color, $lightness: $fix + 30%))};
+  --color-#{'' + $id}-300: #{hexColor(color.adjust($color, $lightness: $fix + 20%))};
+  --color-#{'' + $id}-400: #{hexColor(color.adjust($color, $lightness: $fix + 10%))};
   --color-#{'' + $id}-500: #{hexColor(color.adjust($color, $lightness: $fix))};
-  --color-#{'' + $id}-600: #{hexColor(color.adjust($color, $lightness: $fix + 10%))};
-  --color-#{'' + $id}-700: #{hexColor(color.adjust($color, $lightness: $fix + 20%))};
-  --color-#{'' + $id}-800: #{hexColor(color.adjust($color, $lightness: $fix + 30%))};
-  --color-#{'' + $id}-900: #{hexColor(color.adjust($color, $lightness: $fix + 40%))};
-  --color-#{'' + $id}-950: #{hexColor(color.adjust($color, $lightness: $fix + 45%))};
+  --color-#{'' + $id}-600: #{hexColor(color.adjust($color, $lightness: $fix - 10%))};
+  --color-#{'' + $id}-700: #{hexColor(color.adjust($color, $lightness: $fix - 20%))};
+  --color-#{'' + $id}-800: #{hexColor(color.adjust($color, $lightness: $fix - 30%))};
+  --color-#{'' + $id}-900: #{hexColor(color.adjust($color, $lightness: $fix - 40%))};
+  --color-#{'' + $id}-950: #{hexColor(color.adjust($color, $lightness: $fix - 45%))};
+  // // Original, wrong spreads: from the darkest to the lightest
+  // --color-#{'' + $id}-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
+  // --color-#{'' + $id}-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
+  // --color-#{'' + $id}-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
+  // --color-#{'' + $id}-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
+  // --color-#{'' + $id}-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  // --color-#{'' + $id}-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
+  // --color-#{'' + $id}-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
+  // --color-#{'' + $id}-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
+  // --color-#{'' + $id}-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
+  // --color-#{'' + $id}-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
+  // --color-#{'' + $id}-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
+  // --color-#{'' + $id}-50: #{hexColor(color.adjust($color, $lightness: $fix - 45%))};
+  // --color-#{'' + $id}-100: #{hexColor(color.adjust($color, $lightness: $fix - 40%))};
+  // --color-#{'' + $id}-200: #{hexColor(color.adjust($color, $lightness: $fix - 30%))};
+  // --color-#{'' + $id}-300: #{hexColor(color.adjust($color, $lightness: $fix - 20%))};
+  // --color-#{'' + $id}-400: #{hexColor(color.adjust($color, $lightness: $fix - 10%))};
+  // --color-#{'' + $id}-500: #{hexColor(color.adjust($color, $lightness: $fix))};
+  // --color-#{'' + $id}-600: #{hexColor(color.adjust($color, $lightness: $fix + 10%))};
+  // --color-#{'' + $id}-700: #{hexColor(color.adjust($color, $lightness: $fix + 20%))};
+  // --color-#{'' + $id}-800: #{hexColor(color.adjust($color, $lightness: $fix + 30%))};
+  // --color-#{'' + $id}-900: #{hexColor(color.adjust($color, $lightness: $fix + 40%))};
+  // --color-#{'' + $id}-950: #{hexColor(color.adjust($color, $lightness: $fix + 45%))};
 }
 
 // Define themes (from a global variable `$themes`, see definition in the `src/config/themeColors.ts`)
