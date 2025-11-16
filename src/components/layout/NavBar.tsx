@@ -1,9 +1,9 @@
 'use client';
 
+import React from 'react';
 import { useLocale } from 'next-intl';
 
 import { siteMenu } from '@/config/siteMenu';
-import { commonXPaddingTwStyle } from '@/config/ui';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { NavUserAuthButton } from '@/components/layout/NavAuthButton';
@@ -29,6 +29,9 @@ export function NavBar(props: NavBarProps) {
   const t = useT('SiteMenu');
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname());
+  const openSidebar = () => {
+    setOpen(!open);
+  };
   return (
     <header
       className={cn(
@@ -40,12 +43,12 @@ export function NavBar(props: NavBarProps) {
         'w-full',
         'bg-theme-400/70',
         'backdrop-blur',
-        commonXPaddingTwStyle,
+        'px-6',
         'justify-stretch',
         'transition-all',
       )}
     >
-      <div // Ex: MaxWidthWrapper
+      <div
         className={cn(
           isDev && '__NavBar_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
@@ -53,7 +56,7 @@ export function NavBar(props: NavBarProps) {
           'z-0',
         )}
       />
-      <div // Ex: MaxWidthWrapper
+      <div
         className={cn(
           isDev && '__NavBar_Wrapper', // DEBUG
           'flex',
@@ -63,7 +66,6 @@ export function NavBar(props: NavBarProps) {
           'py-2',
           'z-10',
         )}
-        // large={large}
       >
         <NavBarBrand isUser={isUser} />
 
@@ -118,12 +120,11 @@ export function NavBar(props: NavBarProps) {
 
         {/* Mobile panel toggler icon */}
         <button
-          onClick={() => setOpen(!open)}
+          onClick={openSidebar}
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
             'p-2',
-            // commonXMarginTwStyle,
             'transition-all',
             'duration-200',
             'text-theme-foreground hover:bg-theme-400/50',

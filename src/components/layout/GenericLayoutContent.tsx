@@ -8,7 +8,7 @@ import { dashboardLinks } from '@/config/dashboard';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { NavBar } from '@/components/layout/NavBar';
-import { SiteFooter } from '@/components/layout/SiteFooter';
+import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
 
 import { DashboardSidebar, MobileSheetSidebar, MobileSheetWrapper } from './DashboardSidebar';
@@ -45,8 +45,8 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
     <div
       className={cn(
         isDev && '__GenericLayoutContent', // DEBUG
-        'relative flex size-full flex-col',
-        'flex-1 flex-col items-center',
+        'fixed inset-0',
+        'flex flex-1 flex-col items-center',
         'layout-follow',
       )}
     >
@@ -64,7 +64,7 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
         <DashboardSidebar links={filteredLinks} />
         {children}
       </div>
-      <SiteFooter />
+      <NavFooter />
     </div>
   );
 }

@@ -30,6 +30,7 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
         'flex',
         'flex-1',
         'flex-col',
+        // 'overflow-auto',
         className,
       )}
       viewportClassName={cn(
@@ -49,13 +50,14 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
         saveScrollHash={saveVisualScrollHash}
         className={cn(
           isDev && '__WelcomeScreen_Visual_Scroll', // DEBUG
-          'flex-1 overflow-visible',
-          'decorative-card rounded-xl shadow-sm',
-          'border border-theme-400/20',
-          'm-6',
+          'flex-1',
+          'w-full',
+          'p-6',
         )}
         viewportClassName={cn(
           isDev && '__WelcomeScreen_Visual_ScrollViewport', // DEBUG
+          'decorative-card !rounded-xl shadow-sm',
+          'border border-theme-400/20',
           'flex-1 flex',
           '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
         )}

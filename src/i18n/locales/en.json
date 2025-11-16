@@ -65,7 +65,7 @@
   "WelcomePage": {
     "title": "Welcome!"
   },
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>instruction manual</AboutLink>.</p>",
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "NavAuthButton": {
     "sign-in": "Sign In",
     "Dashboard": "Dashboard"
