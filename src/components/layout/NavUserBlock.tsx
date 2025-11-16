@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -25,13 +26,7 @@ interface TNavUserBlockProps extends TPropsWithClassName {
 }
 
 function SidebarWrapper(props: TNavUserBlockProps & { children: React.ReactNode }) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-  } = props;
+  const { className, children } = props;
   return (
     <div
       className={cn(
@@ -45,16 +40,19 @@ function SidebarWrapper(props: TNavUserBlockProps & { children: React.ReactNode 
   );
 }
 function SidebarMenuItem(
-  props: TNavUserBlockProps & { children: React.ReactNode; asChild?: boolean },
+  props: TNavUserBlockProps & {
+    children: React.ReactNode;
+    asChild?: boolean;
+    onSelect?: (event: Event) => void;
+  },
 ) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-  } = props;
-  return <div className={className}>{children}</div>;
+  const { className, children, onSelect } = props;
+  const onClick = onSelect as unknown as (event: React.MouseEvent) => void;
+  return (
+    <div className={className} onClick={onClick}>
+      {children}
+    </div>
+  );
 }
 
 export function NavUserBlock(props: TNavUserBlockProps) {
@@ -70,6 +68,22 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const t = useT('NavUserAccount');
 
   const queryClient = useQueryClient();
+
+  const handleSignOut = React.useCallback(
+    (event: Event) => {
+      event.preventDefault();
+      closeOuterMenu?.();
+      // Clear react-query and local caches
+      queryClient.clear();
+      if (typeof localStorage !== 'undefined') {
+        localStorage.clear();
+      }
+      signOut({
+        callbackUrl: `${window.location.origin}/`,
+      });
+    },
+    [closeOuterMenu, queryClient],
+  );
 
   if (!user) {
     return null;
@@ -127,10 +141,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       <MenuItem asChild>
         <Link
           href="/admin"
-          className={cn(
-            'flex items-center space-x-2.5',
-            'disabled', // UNUSED
-          )}
+          className="flex items-center space-x-2.5 disabled"
         >
           <Lock className="size-4" />
           <p className="text-sm">{t('Admin')}</p>
@@ -143,10 +154,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           <MenuItem asChild>
             <Link
               href="/" // dashboard
-              className={cn(
-                'flex items-center space-x-2.5',
-                'disabled', // UNUSED
-              )}
+              className="disabled flex items-center space-x-2.5"
             >
               <Icons.LayoutDashboard className="size-4" />
               <p className="text-sm">{t('Dashboard')}</p>
@@ -154,13 +162,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           </MenuItem>
 
           <MenuItem asChild>
-            <Link
-              href={settingsRoute}
-              className={cn(
-                'flex items-center space-x-2.5',
-                // 'disabled', // UNUSED
-              )}
-            >
+            <Link href={settingsRoute} className="flex items-center space-x-2.5">
               <Icons.Settings className="size-4" />
               <p className="text-sm">{t('Settings')}</p>
             </Link>
@@ -170,22 +172,11 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         </>
       )}
 
-      <MenuItem
-        className="cursor-pointer"
-        onSelect={(event) => {
-          event.preventDefault();
-          closeOuterMenu?.();
-          // Clear react-query and local caches
-          queryClient.clear();
-          localStorage.clear();
-          signOut({
-            callbackUrl: `${window.location.origin}/`,
-          });
-        }}
-      >
+      {/* Sign Out button */}
+      <MenuItem className="cursor-pointer" onSelect={handleSignOut}>
         <div className="flex items-center space-x-2.5">
           <Icons.LogOut className="size-4" />
-          <p className="text-sm">{t('Log out')}</p>
+          <p className="text-sm">{t('Sign Out')}</p>
         </div>
       </MenuItem>
     </Wrapper>

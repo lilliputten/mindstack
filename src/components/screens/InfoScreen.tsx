@@ -2,56 +2,56 @@
 
 import React from 'react';
 
+import { getRandomHashString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { InfoVisualBlock } from '@/components/blocks/InfoVisualBlock';
 import { AppIntroBlock } from '@/components/content/AppIntroBlock';
-import { UseScrollableLayout } from '@/components/shared/ScrollableLayout';
 import { isDev } from '@/constants';
+
+const saveScrollHash = getRandomHashString();
 
 export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
   const { className } = props;
   return (
-    <div
+    <ScrollArea
+      // disableScroll
+      saveScrollKey="InfoScreen"
+      saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__InfoScreen', // DEBUG
+        isDev && '__InfoScreen_Scroll', // DEBUG
+        'flex flex-1 flex-col overflow-hidden',
+        'bg-theme-500/5',
         className,
-        'lg:layout-follow flex flex-1 flex-col items-stretch justify-stretch gap-8 overflow-auto lg:flex-row lg:overflow-hidden',
+      )}
+      viewportClassName={cn(
+        isDev && '__InfoScreen_ScrollViewport', // DEBUG
+        'flex flex-1 flex-col',
+        'bg-decorative-gradient',
+        '[&>div]:flex-col [&>div]:p-6 [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
       )}
     >
-      <UseScrollableLayout type="clippable" />
+      <InfoVisualBlock className="z-10" />
       <div
         className={cn(
-          isDev && '__InfoScreen_Info', // DEBUG
-          'relative flex flex-1 flex-col items-center justify-center gap-4',
-          'bg-theme-500/10 p-6 lg:overflow-auto',
+          isDev && '__IntroText', // DEBUG
+          className,
+          'flex flex-col gap-4',
+          'max-w-xl',
+          'w-full',
+          'text-content',
+          // 'text-center', // Only for small texts
         )}
       >
-        <div
-          className={cn(
-            isDev && '__InfoScreen_Gradient', // DEBUG
-            'absolute bottom-0 left-0 right-0 top-0 lg:overflow-hidden',
-            'bg-decorative-gradient',
-            'pointer-events-none',
-          )}
-        />
-        <InfoVisualBlock className="z-10" />
-        <div
-          className={cn(
-            isDev && '__IntroText', // DEBUG
-            className,
-            'flex max-w-md flex-col gap-4',
-            'text-content',
-            // 'text-center', // Only for small texts
-          )}
-        >
-          <h1 className="text-center">Information</h1>
-          <AppIntroBlock />
-          {/*generateArray(20).map((n) => (
-            <p key={n}>Text {n + 1}</p>
-          ))*/}
-        </div>
+        <h1 className="text-center">Information</h1>
+        <AppIntroBlock />
+        {/*
+        {generateArray(20).map((n) => (
+          <p key={n}>Text {n + 1}</p>
+        ))}
+        */}
       </div>
-    </div>
+    </ScrollArea>
   );
 }

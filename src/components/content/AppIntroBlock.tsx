@@ -1,6 +1,6 @@
 'use client';
 
-import { infoRoute, myTopicsRoute, welcomeRoute } from '@/config/routesConfig';
+import { aboutRoute, myTopicsRoute, welcomeRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { isDev } from '@/constants';
@@ -25,7 +25,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
     >
       {t.rich('AppIntroBlockContent', {
         p: (chunks) => <p>{chunks}</p>,
-        infolink: (chunks) => <Link href={infoRoute}>{chunks}</Link>,
+        AboutLink: (chunks) => <Link href={aboutRoute}>{chunks}</Link>,
       })}
       <p>You're currently {getUserStatusText(user)}.</p>
       <p>

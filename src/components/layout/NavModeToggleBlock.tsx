@@ -15,7 +15,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
   const { onSidebar, className, align } = props;
   const Wrapper = onSidebar ? SidebarWrapper : DropdownMenuContent;
   const MenuItem = onSidebar ? SidebarMenuItem : DropdownMenuItem;
-  const { theme: currentTheme = defaultSystemTheme, themes } = useTheme();
+  const { resolvedTheme: currentTheme = defaultSystemTheme, themes } = useTheme();
   const { setTheme } = useSettingsContext();
   const t = useT('NavModeToggle');
   return (
@@ -36,7 +36,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
             className={cn(
               isDev && '__NavModeToggleBlock_MenuItem', // DEBUG
               // 'flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 text-sm',
-              'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500 hover:text-white',
+              'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500',
             )}
             disabled={thisTheme === currentTheme}
             onSelect={() => setTheme(thisTheme)}

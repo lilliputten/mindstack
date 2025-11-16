@@ -12,6 +12,10 @@ export function useMediaMinDevices() {
   useEffect(() => {
     const checkDevice = () => {
       const mediaWidths: TMediaWidth[] = ['xs'];
+      /* // TODO: Use predefined width variables, see tailwind variables:
+       * - tailwind.config.ts
+       * - src/lib/types/ui/TMediaWidth.ts
+       */
       if (window.matchMedia('(width > 640px)').matches) {
         mediaWidths.push('sm');
       }

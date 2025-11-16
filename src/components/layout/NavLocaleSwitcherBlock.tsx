@@ -52,7 +52,7 @@ export function NavLocaleSwitcherBlock(props: TSidebarBlockProps) {
           disabled={cur === locale}
           className={cn(
             isDev && '__NavLocaleSwitcherBlock_MenuItem', // DEBUG
-            'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500 hover:text-white',
+            'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500',
           )}
         >
           <span>{localeSymbols[cur]}</span>

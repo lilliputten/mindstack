@@ -2,67 +2,93 @@
 
 import React from 'react';
 
+import { getRandomHashString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { SignInBlock } from '@/components/blocks/SignInBlock';
 import { WelcomeVisualBlock } from '@/components/blocks/WelcomeVisualBlock';
-import { UseScrollableLayout } from '@/components/shared/ScrollableLayout';
 import { isDev } from '@/constants';
+import { useMediaMinDevices } from '@/hooks';
 
-import { ScrollArea } from '../ui/ScrollArea';
+const saveScrollHash = getRandomHashString();
+const saveVisualScrollHash = getRandomHashString();
+const saveSignInScrollHash = getRandomHashString();
 
 export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }) {
   const { className, isLogged } = props;
+  const { mediaWidths } = useMediaMinDevices();
+  const isLg = mediaWidths.includes('lg');
   return (
-    <div
+    <ScrollArea
+      disableScroll={isLg}
+      saveScrollKey="WelcomeScreen"
+      saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__WelcomeScreen', // DEBUG
+        isDev && '__WelcomeScreen_Scroll', // DEBUG
+        'bg-theme-500/5',
+        'flex',
+        'flex-1',
+        'flex-col',
         className,
-        'lg:layout-follow flex flex-1 flex-col items-stretch justify-stretch overflow-auto lg:flex-row lg:overflow-hidden',
+      )}
+      viewportClassName={cn(
+        isDev && '__WelcomeScreen_ScrollViewport', // DEBUG
+        'flex flex-1 flex-col',
+        '[&>div]:items-stretch',
+        '[&>div]:justify-stretch',
+        '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+        '[&>div]:lg:flex-row',
+        '[&>div]:lg:overflow-hidden',
+        '[&>div]:lg:items-stretch',
+        'lg:items-stretch',
       )}
     >
-      <UseScrollableLayout type="clippable" />
-      <div
+      <ScrollArea
+        saveScrollKey="WelcomeScreen_Visual_Scroll"
+        saveScrollHash={saveVisualScrollHash}
         className={cn(
-          isDev && '__WelcomeScreen_Info', // DEBUG
-          'relative m-6 flex flex-1 flex-col rounded-xl',
-          'bg-theme-500/5',
-          // 'lg:overflow-auto',
-          'decorative-card shadow-sm',
+          isDev && '__WelcomeScreen_Visual_Scroll', // DEBUG
+          'flex-1 overflow-visible',
+          'decorative-card rounded-xl shadow-sm',
           'border border-theme-400/20',
+          'm-6',
+        )}
+        viewportClassName={cn(
+          isDev && '__WelcomeScreen_Visual_ScrollViewport', // DEBUG
+          'flex-1 flex',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
         )}
       >
-        <div
+        <WelcomeVisualBlock
           className={cn(
-            isDev && '__WelcomeScreen_Gradient', // DEBUG
-            'absolute bottom-0 left-0 right-0 top-0 overflow-hidden rounded-xl',
+            isDev && '__WelcomeScreen_Visual_Content', // DEBUG
+            'w-full',
             'bg-decorative-gradient',
           )}
         />
-        <WelcomeVisualBlock className="z-10" />
-      </div>
+      </ScrollArea>
       {!isLogged && (
         <ScrollArea
+          saveScrollKey="WelcomeScreen_SignIn_Scroll"
+          saveScrollHash={saveSignInScrollHash}
           className={cn(
-            isDev && '__WelcomeScreen_Scroll', // DEBUG
+            isDev && '__WelcomeScreen_SignIn_Scroll', // DEBUG
             'flex-1 overflow-visible',
           )}
           viewportClassName={cn(
-            isDev && '__WelcomeScreen_ScrollViewport', // DEBUG
+            isDev && '__WelcomeScreen_SignIn_ScrollViewport', // DEBUG
+            'flex-1 flex',
             '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
           )}
         >
-          <div
+          <SignInBlock
             className={cn(
-              isDev && '__WelcomeScreen_SignIn', // DEBUG
-              'flex flex-col lg:mr-6',
-              // 'lg:overflow-auto',
+              isDev && '__WelcomeScreen_SignIn_Content', // DEBUG
             )}
-          >
-            <SignInBlock />
-          </div>
+          />
         </ScrollArea>
       )}
-    </div>
+    </ScrollArea>
   );
 }

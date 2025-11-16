@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 
 import { siteTitle } from '@/config/env';
-import { infoRoute, welcomeRoute } from '@/config/routesConfig';
+import { aboutRoute, welcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
   const { isUser, children, className: parentClassName } = props;
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  const rootRoute = isUser ? infoRoute : welcomeRoute;
+  const rootRoute = isUser ? aboutRoute : welcomeRoute;
   const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
   const isRoot = !pathname || rootRoutesList.includes(pathname);
   const className = cn(
@@ -59,7 +59,8 @@ export function NavBarBrand(props: NavBarBrandProps) {
       <Image
         data-testid="NavBarBrandImage"
         src={!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
-        className="h-14 w-auto"
+        className="h-auto w-48 select-none"
+        // className="h-14 w-auto"
         priority={false}
         alt={siteTitle}
       />

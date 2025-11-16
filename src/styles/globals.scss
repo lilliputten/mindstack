@@ -189,6 +189,13 @@
       'calt' 1;
   }
 
+  html,
+  body {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+
   code,
   pre {
     font-size: 0.75rem;
@@ -231,7 +238,8 @@
 
   // Radix popper overrides...
   [data-radix-popper-content-wrapper] {
-    min-width: auto !important;
+    // min-width: auto !important;
+    min-width: var(--radix-popper-anchor-width);
     max-width: var(--radix-popper-available-width);
   }
 }
