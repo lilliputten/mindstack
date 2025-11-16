@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   }
 }
 
-interface TManageTopicsPageWrapperProps extends TAwaitedProps {
+interface TManageTopicsPageHolderProps extends TAwaitedProps {
   showAddModal?: boolean;
   deleteTopicId?: TTopicId;
   editTopicId?: TTopicId;
@@ -38,7 +38,7 @@ interface TManageTopicsPageWrapperProps extends TAwaitedProps {
   from?: string;
 }
 
-export default async function ManageTopicsPageWrapper(props: TManageTopicsPageWrapperProps) {
+export default async function ManageTopicsPageHolder(props: TManageTopicsPageHolderProps) {
   const {
     showAddModal,
     deleteTopicId,
@@ -61,10 +61,10 @@ export default async function ManageTopicsPageWrapper(props: TManageTopicsPageWr
   return (
     <PageWrapper
       className={cn(
-        isDev && '__ManageTopicsPageWrapper', // DEBUG
+        isDev && '__ManageTopicsPageHolder', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__ManageTopicsPageWrapper_Inner', // DEBUG
+        isDev && '__ManageTopicsPageHolder_Inner', // DEBUG
         'w-full rounded-lg gap-6 py-6',
       )}
       limitWidth

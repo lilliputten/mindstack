@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -100,6 +100,8 @@ export function WorkoutTopicGo() {
   // const questionsCount = _count?.questions;
   // const allowedTraining = !!questionsCount;
 
+  const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
+
   const unpackedQuestionsOrder = React.useMemo(() => {
     return questionsOrder ? questionsOrder.split(' ') : [];
   }, [questionsOrder]);
@@ -165,7 +167,7 @@ export function WorkoutTopicGo() {
         icon: Icons.Edit,
         visibleFor: 'xl',
         hidden: !allowedEdit,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}`),
+        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
       },
       {
         id: 'ManageQuestion',
@@ -178,7 +180,15 @@ export function WorkoutTopicGo() {
           goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`),
       },
     ],
-    [allowedEdit, goBack, goToTheRoute, topicId, isWorkoutInProgress, currentQuestionId],
+    [
+      allowedEdit,
+      goBack,
+      goToTheRoute,
+      topicId,
+      isWorkoutInProgress,
+      currentQuestionId,
+      manageTopicsRoute,
+    ],
   );
 
   const breadcrumbs = useTopicsBreadcrumbsItems({

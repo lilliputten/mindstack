@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
@@ -35,11 +35,12 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   const workoutContext = useWorkoutContext();
   const {
     //  topicId, topic,
-    userId,
+    // userId,
     workout,
     // pending,
     startWorkout,
     questionIds,
+    // topic,
   } = workoutContext;
 
   const questionsCount = questionIds?.length || 0;
@@ -47,11 +48,13 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   const isWorkoutInProgress = workout?.started && !workout?.finished;
 
   const user = useSessionUser();
-  const isOwner = userId && userId === user?.id;
+  const isOwner = topic?.userId && topic?.userId === user?.id;
   const isAdminMode = user?.role === 'ADMIN';
   const allowedEdit = isAdminMode || isOwner;
   // const questionsCount = _count?.questions;
   // const allowedTraining = !!questionsCount;
+
+  const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
 
   const handleResumeWorkout = React.useCallback(() => {
     // console.log('[WorkoutControl:handleResumeWorkout]');
@@ -103,7 +106,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
         icon: Icons.Edit,
         visibleFor: 'xl',
         disabled: !allowedEdit,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}`),
+        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
       },
     ],
     [
@@ -117,6 +120,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       topicId,
       workout?.finished,
       workout?.started,
+      manageTopicsRoute,
     ],
   );
 

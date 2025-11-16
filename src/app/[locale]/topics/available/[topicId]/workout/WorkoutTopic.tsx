@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { myTopicsRoute } from '@/config/routesConfig';
+import { allTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -44,6 +44,8 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   // const questionsCount = _count?.questions;
   // const allowedTraining = !!questionsCount;
 
+  const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
+
   const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(`${routePath}/${topicId}`); // topicsContext.routePath);
 
@@ -65,10 +67,10 @@ export function WorkoutTopic(props: TPropsWithClassName) {
         visibleFor: 'xl',
         disabled: !allowedEdit,
         hidden: !user,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}`),
+        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
       },
     ],
-    [allowedEdit, goBack, goToTheRoute, topicId, user],
+    [allowedEdit, goBack, goToTheRoute, topicId, user, manageTopicsRoute],
   );
 
   const breadcrumbs = useTopicsBreadcrumbsItems({

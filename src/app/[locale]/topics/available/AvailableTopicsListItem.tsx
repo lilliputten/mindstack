@@ -61,7 +61,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardHeader
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardHeader', // DEBUG
-          'flex flex-1 flex-row gap-2',
+          'flex flex-1 flex-row gap-2 pb-4',
           'max-sm:flex-col-reverse',
         )}
       >
@@ -93,7 +93,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         <div
           className={cn(
             isDev && '__AvailableTopicsList_TopicItem__TopicProperties', // DEBUG
-            'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+            'flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
           )}
         >
           <TopicProperties topic={topic} showDates />

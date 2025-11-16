@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
-export default async function ViewTopicPageWrapper({ params }: TAwaitedProps) {
+export default async function ViewTopicPageHolder({ params }: TAwaitedProps) {
   const { topicId } = await params;
 
   if (!topicId) {
@@ -29,10 +29,10 @@ export default async function ViewTopicPageWrapper({ params }: TAwaitedProps) {
   return (
     <PageWrapper
       className={cn(
-        isDev && '__ViewTopicPageWrapper', // DEBUG
+        isDev && '__ViewTopicPageHolder', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__ViewTopicPageWrapper_Inner', // DEBUG
+        isDev && '__ViewTopicPageHolder_Inner', // DEBUG
         'w-full rounded-lg gap-4 py-6',
       )}
       limitWidth

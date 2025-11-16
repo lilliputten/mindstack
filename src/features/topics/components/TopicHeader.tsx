@@ -28,6 +28,8 @@ interface TTopicHeaderProps {
   className?: string;
 }
 
+const TRUNCATE_TITLE = false;
+
 function ShowDetails(
   props: Pick<TTopicHeaderOptions, 'showDates'> & {
     topic: TAvailableTopic;
@@ -45,7 +47,7 @@ function ShowDetails(
     <>
       {isOwner && (
         <span id="isOwner" title="Your Topic">
-          <Icons.ShieldCheck className="size-4 text-green-500" />
+          <Icons.ShieldCheck className="size-4 text-green-600" />
         </span>
       )}
       {isPublic && (
@@ -133,6 +135,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
             className={cn(
               isDev && '__TopicHeader_Texts', // DEBUG
               'flex flex-1 flex-col gap-2',
+              TRUNCATE_TITLE ? 'truncate' : 'overflow-hidden text-ellipsis',
             )}
           >
             {hasName && (
@@ -140,7 +143,8 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
                 id="name"
                 className={cn(
                   isDev && '__TopicHeader_Name', // DEBUG
-                  'truncate text-2xl',
+                  TRUNCATE_TITLE ? 'truncate' : 'overflow-hidden text-ellipsis',
+                  'text-xl',
                 )}
               >
                 {nameContent}
