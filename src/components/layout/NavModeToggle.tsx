@@ -27,6 +27,9 @@ export function NavModeToggle(props: TNavModeToggleProps) {
           className={cn(
             isDev && '__NavModeToggle', // DEBUG
             'relative size-8 px-2',
+            'hover:bg-theme-400/50',
+            'hover:border-white/10',
+
             className,
           )}
           title={t('label')}

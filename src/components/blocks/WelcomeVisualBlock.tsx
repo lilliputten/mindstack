@@ -40,7 +40,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
             isDev && '__WelcomeVisualBlock_Logo', // DEBUG
             'absolute right-4 top-4 p-1',
             'flex flex-1 flex-col items-center justify-center',
-            'bg-blue-900/80 dark:bg-transparent',
+            'bg-theme-700/70 dark:bg-transparent',
             'rounded-full',
             'select-none',
           )}

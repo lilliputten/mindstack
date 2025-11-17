@@ -32,6 +32,8 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
           className={cn(
             isDev && '__NavLocaleSwitcher', // DEBUG
             'flex gap-2',
+            'hover:bg-theme-400/50',
+            'hover:border-white/10',
             className,
           )}
           title={t('label')}

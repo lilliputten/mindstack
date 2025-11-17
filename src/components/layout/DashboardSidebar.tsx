@@ -36,7 +36,6 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
 
   const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
   const isLg = isMediaInited && mediaWidths.includes('lg');
-  const isXl = isMediaInited && mediaWidths.includes('xl');
   const allowMediaExpanded = isLg;
 
   const [isUserExpanded, setUserExpanded] = React.useState<boolean | undefined>();
@@ -88,7 +87,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
           className={cn(
             isDev && '__DashboardSidebar_Aside', // DEBUG
             noUserExpanded && 'max-lg:w-[68px]',
-            isExpanded ? 'w-[200px] xl:w-[264px]' : 'w-[68px]',
+            isExpanded ? 'w-[220px] xl:w-[272px]' : 'w-[68px]',
             'hidden h-full pt-6 md:block',
           )}
         >
@@ -96,8 +95,9 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
             <div
               className={cn(
                 isDev && '__DashboardSidebar_TopLine', // DEBUG
-                '__h-[60px] flex h-14 items-center',
-                isXl ? 'px-6' : 'px-2',
+                'flex items-center',
+                'px-4',
+                isExpanded && 'xl:px-6',
               )}
               suppressHydrationWarning
             >
@@ -111,12 +111,11 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                   <Button
                     variant="ghost"
                     className={cn(
-                      'size-10 px-2 py-0 [&>svg]:m-auto',
+                      'h-9 px-2 py-0 [&>svg]:m-auto',
                       'w-full',
                       'flex items-center gap-2',
                       'text-theme-600 dark:text-theme',
-                      'hover:bg-theme',
-                      'hover:text-white',
+                      'hover:bg-theme/20',
                       'dark:hover:text-white',
                     )}
                     onClick={toggleSidebar}
@@ -145,7 +144,8 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
               className={cn(
                 isDev && '__DashboardSidebar_Section', // DEBUG
                 'flex flex-1 flex-col gap-8 pt-4',
-                isXl ? 'px-6' : 'px-2',
+                'px-4',
+                isExpanded && 'xl:px-6',
               )}
             >
               {links.map((section) => (
@@ -186,6 +186,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                   'hover:bg-theme/20',
                                   isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
                                   item.disabled && 'pointer-events-none cursor-default opacity-30',
+                                  'active:bg-theme active:text-theme-foreground',
                                 )}
                               >
                                 <Icon className="size-5 min-w-5" />
