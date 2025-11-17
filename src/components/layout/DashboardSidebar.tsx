@@ -62,7 +62,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
   }, [memo, allowMediaExpanded]);
 
   const toggleSidebar = React.useCallback(() => {
-    const value = !memo.isExpanded; // isUserExpanded;
+    const value = !memo.isExpanded;
     setUserExpanded(value);
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('sidebarExpanded', JSON.stringify(value));
@@ -72,181 +72,168 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <div
+      <ScrollArea
+        saveScrollKey="DashboardSidebar"
+        saveScrollHash={saveScrollHash}
         className={cn(
           isDev && '__DashboardSidebar', // DEBUG
-          'bg-theme/10',
+          'h-full border-r bg-theme/10',
         )}
-        suppressHydrationWarning
+        viewportClassName={cn(
+          isDev && '__DashboardSidebar_ScrollViewport', // DEBUG
+          '[&>div]:h-full',
+        )}
       >
-        <ScrollArea
-          saveScrollKey="DashboardSidebar"
-          saveScrollHash={saveScrollHash}
+        <aside
           className={cn(
-            isDev && '__DashboardSidebar_Scroll', // DEBUG
-            'h-full overflow-y-auto border-r',
-          )}
-          viewportClassName={cn(
-            isDev && '__DashboardSidebar_ScrollViewport', // DEBUG
-            '[&>div]:h-full',
+            isDev && '__DashboardSidebar_Aside', // DEBUG
+            noUserExpanded && 'max-lg:w-[68px]',
+            isExpanded ? 'w-[200px] xl:w-[264px]' : 'w-[68px]',
+            'hidden h-full pt-6 md:block',
           )}
         >
-          <aside
-            className={cn(
-              isDev && '__DashboardSidebar_Aside', // DEBUG
-              noUserExpanded && 'max-lg:w-[68px]',
-              isExpanded ? 'w-[200px] xl:w-[264px]' : 'w-[68px]',
-              'hidden h-full md:block',
-            )}
-          >
-            <div className="flex h-full flex-1 flex-col gap-2">
-              <div
-                className={cn(
-                  isDev && '__DashboardSidebar_TopLine', // DEBUG
-                  '__h-[60px] flex h-14 items-center py-4 pt-12',
-                  isXl ? 'px-6' : 'px-2',
-                )}
-                suppressHydrationWarning
-              >
-                {showProjectsSelector && (
-                  <ProjectSwitcher
-                    className={cn(noUserExpanded && 'max-lg:hidden', !isExpanded && 'hidden')}
-                  />
-                )}
-                <Tooltip key={`tooltip-expand`}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        'size-10 px-2 py-0 [&>svg]:m-auto',
-                        'w-full',
-                        'flex items-center gap-2',
-                        'text-theme-600 dark:text-theme',
-                        'hover:bg-theme',
-                        'hover:text-white',
-                        'dark:hover:text-white',
-                        // 'hover:opacity-100',
-                      )}
-                      onClick={toggleSidebar}
-                    >
-                      <Icons.PanelLeft className="size-5 min-w-5" />
-                      <span
-                        className={cn(
-                          'flex-1 truncate text-left',
-                          noUserExpanded && 'max-lg:hidden',
-                          (!isExpanded || showProjectsSelector) && 'sr-only',
-                        )}
-                      >
-                        Toggle Panel
-                      </span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="right"
-                    className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
+          <div className="flex h-full flex-1 flex-col gap-2">
+            <div
+              className={cn(
+                isDev && '__DashboardSidebar_TopLine', // DEBUG
+                '__h-[60px] flex h-14 items-center',
+                isXl ? 'px-6' : 'px-2',
+              )}
+              suppressHydrationWarning
+            >
+              {showProjectsSelector && (
+                <ProjectSwitcher
+                  className={cn(noUserExpanded && 'max-lg:hidden', !isExpanded && 'hidden')}
+                />
+              )}
+              <Tooltip key={`tooltip-expand`}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      'size-10 px-2 py-0 [&>svg]:m-auto',
+                      'w-full',
+                      'flex items-center gap-2',
+                      'text-theme-600 dark:text-theme',
+                      'hover:bg-theme',
+                      'hover:text-white',
+                      'dark:hover:text-white',
+                    )}
+                    onClick={toggleSidebar}
                   >
-                    Toggle Panel
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <nav
-                className={cn(
-                  isDev && '__DashboardSidebar_Section', // DEBUG
-                  'flex flex-1 flex-col gap-8 pt-4',
-                  isXl ? 'px-6' : 'px-2',
-                )}
-              >
-                {links.map((section) => (
-                  <section key={section.titleId} className="flex flex-col gap-0.5">
-                    <p
+                    <Icons.PanelLeft className="size-5 min-w-5" />
+                    <span
                       className={cn(
-                        isDev && '__DashboardSidebar_Section_Title', // DEBUG
-                        'mb-4 text-xs uppercase text-muted-foreground',
+                        'flex-1 truncate text-left',
                         noUserExpanded && 'max-lg:hidden',
-                        !isExpanded && 'hidden',
+                        (!isExpanded || showProjectsSelector) && 'sr-only',
                       )}
                     >
-                      {section.titleId}
-                    </p>
-                    {/* Show sections menu */}
-                    {section.items.map((item) => {
-                      const Icon = item.icon || Icons.ArrowRight;
-                      const isCurrentPath = comparePathsWithoutLocalePrefix(item.href, path);
-                      return (
-                        item.href && (
-                          <React.Fragment key={`link-fragment-${item.titleId}`}>
-                            <Tooltip key={`tooltip-${item.titleId}`}>
-                              <TooltipTrigger asChild>
-                                <Link
-                                  key={`link-${item.titleId}`}
-                                  href={item.disabled ? '#' : item.href}
+                      Toggle Panel
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
+                >
+                  Toggle Panel
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <nav
+              className={cn(
+                isDev && '__DashboardSidebar_Section', // DEBUG
+                'flex flex-1 flex-col gap-8 pt-4',
+                isXl ? 'px-6' : 'px-2',
+              )}
+            >
+              {links.map((section) => (
+                <section key={section.titleId} className="flex flex-col gap-0.5">
+                  <p
+                    className={cn(
+                      isDev && '__DashboardSidebar_Section_Title', // DEBUG
+                      'mb-4 text-xs uppercase text-muted-foreground',
+                      noUserExpanded && 'max-lg:hidden',
+                      !isExpanded && 'hidden',
+                    )}
+                  >
+                    {section.titleId}
+                  </p>
+                  {/* Show sections menu */}
+                  {section.items.map((item) => {
+                    const Icon = item.icon || Icons.ArrowRight;
+                    const isCurrentPath = comparePathsWithoutLocalePrefix(item.href, path);
+                    return (
+                      item.href && (
+                        <React.Fragment key={`link-fragment-${item.titleId}`}>
+                          <Tooltip key={`tooltip-${item.titleId}`}>
+                            <TooltipTrigger asChild>
+                              <Link
+                                key={`link-${item.titleId}`}
+                                href={item.disabled ? '#' : item.href}
+                                className={cn(
+                                  isDev && '__DashboardSidebar_Section_Item', // DEBUG
+                                  'flex',
+                                  'items-center',
+                                  noUserExpanded && 'max-lg:justify-center',
+                                  !isExpanded && 'justify-center',
+                                  'gap-3',
+                                  'rounded-md',
+                                  'p-2',
+                                  'text-sm',
+                                  'font-medium',
+                                  'hover:bg-theme/20',
+                                  isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
+                                  item.disabled && 'pointer-events-none cursor-default opacity-30',
+                                )}
+                              >
+                                <Icon className="size-5 min-w-5" />
+                                <span
                                   className={cn(
-                                    isDev && '__DashboardSidebar_Section_Item', // DEBUG
-                                    'flex',
-                                    'items-center',
-                                    noUserExpanded && 'max-lg:justify-center',
-                                    !isExpanded && 'justify-center',
-                                    'gap-3',
-                                    'rounded-md',
-                                    'p-2',
-                                    'text-sm',
-                                    'font-medium',
-                                    'hover:bg-theme/20',
-                                    isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
-                                    item.disabled &&
-                                      'pointer-events-none cursor-default opacity-30',
+                                    'truncate',
+                                    noUserExpanded && 'max-lg:hidden',
+                                    !isExpanded && 'hidden',
                                   )}
                                 >
-                                  <Icon className="size-5 min-w-5" />
-                                  <span
-                                    className={cn(
-                                      'truncate',
-                                      noUserExpanded && 'max-lg:hidden',
-                                      !isExpanded && 'hidden',
-                                    )}
-                                  >
-                                    {item.titleId}
-                                  </span>
-                                  {item.badge && (
-                                    <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
-                                      {item.badge}
-                                    </Badge>
-                                  )}
-                                </Link>
-                              </TooltipTrigger>
-                              <TooltipContent
-                                className={cn(
-                                  noUserExpanded && 'lg:hidden',
-                                  isExpanded && 'hidden',
+                                  {item.titleId}
+                                </span>
+                                {item.badge && (
+                                  <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
+                                    {item.badge}
+                                  </Badge>
                                 )}
-                                side="right"
-                              >
-                                {item.titleId}
-                              </TooltipContent>
-                            </Tooltip>
-                          </React.Fragment>
-                        )
-                      );
-                    })}
-                  </section>
-                ))}
-              </nav>
-              {showUpgradeCard && (
-                <div
-                  className={cn(
-                    isDev && '__DashboardSidebar_UpgradeCard', // DEBUG
-                    'mt-auto xl:p-6',
-                    noUserExpanded && 'max-lg:hidden',
-                    !isExpanded && 'hidden',
-                  )}
-                >
-                  <UpgradeCard />
-                </div>
-              )}
-            </div>
-          </aside>
-        </ScrollArea>
-      </div>
+                              </Link>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
+                              side="right"
+                            >
+                              {item.titleId}
+                            </TooltipContent>
+                          </Tooltip>
+                        </React.Fragment>
+                      )
+                    );
+                  })}
+                </section>
+              ))}
+            </nav>
+            {showUpgradeCard && (
+              <div
+                className={cn(
+                  isDev && '__DashboardSidebar_UpgradeCard', // DEBUG
+                  'mt-auto xl:p-6',
+                  noUserExpanded && 'max-lg:hidden',
+                  !isExpanded && 'hidden',
+                )}
+              >
+                <UpgradeCard />
+              </div>
+            )}
+          </div>
+        </aside>
+      </ScrollArea>
     </TooltipProvider>
   );
 }

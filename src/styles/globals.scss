@@ -377,6 +377,20 @@
     }
   }
 
+  .after-header-decor {
+    &:after {
+      overflow: hidden;
+      position: absolute;
+      inset: 0;
+      content: '';
+      background-image: url('/static/decor/waves-wide.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.05;
+    }
+  }
+
   .disabled {
     pointer-events: none;
     opacity: 50%;

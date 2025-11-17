@@ -36,6 +36,7 @@ export function NavBar(props: NavBarProps) {
     <header
       className={cn(
         isDev && '__NavBar', // DEBUG
+        'relative',
         'sticky',
         'top-0',
         'z-40',
@@ -51,7 +52,7 @@ export function NavBar(props: NavBarProps) {
         className={cn(
           isDev && '__NavBar_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
-          'bg-header-gradient',
+          'bg-header-gradient after-header-decor',
           'z-0',
         )}
       />
