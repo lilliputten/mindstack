@@ -348,6 +348,7 @@ export function ManageTopicQuestionsListCardContent(
         title="No questions have been created yet"
         description="You dont have any questions yet. Add any question to your profile."
         framed={false}
+        showAIInfo
         buttons={
           <>
             <Button onClick={handleAddQuestion} className="flex gap-2">

@@ -24,13 +24,13 @@ export function SettingsPageWrapper(props: TProps) {
       )}
       innerClassName={cn(
         isDev && '__SettingsPageWrapper_Inner', // DEBUG
-        'w-full rounded-lg gap-4',
+        'w-full rounded-lg gap-4 py-6',
         // !inError && 'border border-solid border-gray-500/30',
       )}
       // scrollable={!inSkeleton}
       limitWidth
       // xPadded
-      vPadded
+      // vPadded
     >
       {children}
     </PageWrapper>

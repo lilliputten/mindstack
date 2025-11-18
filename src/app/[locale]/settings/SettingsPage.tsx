@@ -113,7 +113,7 @@ export function SettingsPage(props: TSettingsPageProps) {
         content: 'Save',
         variant: 'theme',
         icon: Icons.Save,
-        visibleFor: 'sm',
+        visibleFor: 'xs',
         disabled: !isSubmitEnabled,
         onClick: form.handleSubmit(handleFormSubmit),
       },

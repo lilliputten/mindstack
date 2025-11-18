@@ -40,7 +40,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
             disabled={thisTheme === currentTheme}
             onSelect={() => setTheme(thisTheme)}
           >
-            {ThemeIcon && <ThemeIcon className="mr-2 size-4" />}
+            {ThemeIcon && <ThemeIcon className="size-4" />}
             <span>{t(thisTheme)}</span>
           </MenuItem>
         );

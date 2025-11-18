@@ -60,7 +60,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
 
   const goToTheRoute = useGoToTheRoute();
-  const goBack = useGoBack(`${routePath}/${topicId}`); // topicsContext.routePath);
+  const goBack = useGoBack(`${routePath}/${topicId}`);
 
   const handleResumeWorkout = React.useCallback(() => {
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);

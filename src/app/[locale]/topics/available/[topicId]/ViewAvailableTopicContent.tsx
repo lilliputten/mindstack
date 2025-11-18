@@ -58,7 +58,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
           showDescription
           className={cn(
             isDev && '__ViewAvailableTopicContent_TopicHeader', // DEBUG
-            'items-start max-sm:flex-col-reverse',
+            'items-stretch max-sm:flex-col-reverse',
           )}
         />
         {/*

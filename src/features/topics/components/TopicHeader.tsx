@@ -130,7 +130,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
         <div
           className={cn(
             isDev && '__TopicHeader_MainSection', // DEBUG
-            'flex flex-1 items-start gap-2',
+            'flex flex-1 items-start gap-2 max-sm:flex-col',
           )}
         >
           <div

@@ -14,8 +14,13 @@ import { Link } from '@/i18n/routing';
 import { useAIGenerationsStatus } from '../query-hooks/useAIGenerationsStatus';
 import { unlimitedGenerations } from '../types/TAIGenerationsStatus';
 
-export function AIGenerationsStatusInfo(props: TPropsWithClassName) {
-  const { className } = props;
+interface TProps extends TPropsWithClassName {
+  noFrame?: boolean;
+}
+
+export function AIGenerationsStatusInfo(props: TProps) {
+  const { className, noFrame } = props;
+  const showFrame = !noFrame;
 
   const aiGenerationsStatusQuery = useAIGenerationsStatus();
 
@@ -73,11 +78,11 @@ export function AIGenerationsStatusInfo(props: TPropsWithClassName) {
         'gap-4',
         'gap-y-1',
         'rounded-md',
-        'border',
-        'border-theme-600/5',
-        'bg-theme-600/5',
-        'p-3',
-        'py-2',
+        showFrame && 'border',
+        showFrame && 'border-theme-600/5',
+        showFrame && 'bg-theme-600/5',
+        showFrame && 'p-3',
+        showFrame && 'py-2',
         'text-sm',
         // 'opacity-50',
         className,

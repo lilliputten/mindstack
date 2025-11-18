@@ -13,7 +13,6 @@ export function ContentSkeleton({ className }: TProps) {
       className={cn(
         isDev && '__ViewAvailableTopic_ContentSkeleton', // DEBUG
         'flex size-full flex-1 flex-col gap-4 px-6',
-        // 'flex size-full flex-1 flex-col gap-4 rounded-lg',
         className,
       )}
     >

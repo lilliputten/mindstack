@@ -2,18 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { availableTopicsRoute } from '@/config/routesConfig';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
-import { MarkdownText } from '@/components/ui/MarkdownText';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TTopic } from '@/features/topics/types';
-import { useAvailableTopicsByScope } from '@/hooks';
+import { useAvailableTopicsByScope, useGoToTheRoute, useSessionUser } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
 
@@ -27,10 +26,10 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
   const { topic, style } = props;
   const {
-    id,
+    id: topicId,
     // userId,
     // name,
-    description,
+    // description,
     // isPublic,
     // langCode,
     // langName,
@@ -39,23 +38,38 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
     // updatedAt,
     _count,
   } = topic;
+
   const questionsCount = _count?.questions;
   const allowedTraining = !!questionsCount;
+
   const { routePath } = useAvailableTopicsByScope({ manageScope });
   const router = useRouter();
   const pathname = usePathname();
-  const topicsRoutePath = `${routePath}/${id}`;
-  const workoutRoutePath = `${availableTopicsRoute}/${id}/workout`;
+  const topicsRoutePath = `${routePath}/${topicId}`;
+  const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
+
+  const user = useSessionUser();
+  const isOwner = topic?.userId && topic?.userId === user?.id;
+  const isAdminMode = user?.role === 'ADMIN';
+  const allowedEdit = isAdminMode || isOwner;
+
+  const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
+
+  const goToTheRoute = useGoToTheRoute();
+  // const goBack = useGoBack(`${routePath}/${topic.id}`);
+
   const isCurrentTopicRoutePath = comparePathsWithoutLocalePrefix(topicsRoutePath, pathname);
   const startWorkout = (ev: React.MouseEvent) => {
     ev.stopPropagation();
     router.push(workoutRoutePath);
   };
+
   /* const defaultAction = (ev: React.MouseEvent) => {
    *   ev.stopPropagation();
    *   router.push(topicRoutePath);
    * };
    */
+
   let cardContent = (
     <>
       <CardHeader
@@ -72,7 +86,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
           showProperties={false}
         />
       </CardHeader>
-      {!!description && (
+      {/*!!description && ( // NOTE: The description is displaying in the `TopicHeader` (above)
         <CardContent
           className={cn(
             isDev && '__AvailableTopicsList_TopicItem_CardContent_Description', // DEBUG
@@ -83,7 +97,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
             <MarkdownText omitLinks>{description}</MarkdownText>
           </div>
         </CardContent>
-      )}
+      )*/}
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
@@ -101,9 +115,20 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         <div
           className={cn(
             isDev && '__AvailableTopicsList_TopicItem__RightActions', // DEBUG
-            'flex flex-wrap items-center gap-4 md:items-end',
+            'flex flex-wrap items-center gap-2 md:items-end',
           )}
         >
+          {allowedEdit && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => goToTheRoute(`${manageTopicsRoute}/${topicId}`)}
+              className="flex gap-2"
+              title="Manage Topic"
+            >
+              <Icons.Edit className="size-4" />
+            </Button>
+          )}
           {allowedTraining && (
             <Button variant="theme" onClick={startWorkout} className="flex gap-2">
               <Icons.ArrowRight className="hidden size-4 opacity-50 sm:flex" />

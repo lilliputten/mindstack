@@ -1,68 +1,51 @@
 https://github.com/lilliputten/mindstack/issues/22
 Fix existing bugs
 22-fix-bugs
-2025.11.15
+2025.11.18
 
-fix: Enhance workout flow, UI improvements, and error handling for Issue #22
+feat: Enhanced workout system, UI improvements, and topic management features
 
-This PR implements comprehensive enhancements to the workout system, including UI/UX improvements, error handling refinements, and performance optimizations for workout flow management.
+This PR introduces comprehensive improvements to the workout system, UI/UX enhancements, and new topic management capabilities. The changes span across multiple components including workout flows, authentication handling, layout systems, and admin features.
 
-## Changes
+Workout System Enhancements
 
-### UI/UX Improvements
+- Improved workout flow: Added automatic workout start in `WorkoutTopicGo` when no activity exists
+- Enhanced workout controls: Added "Finish Training" button and review functionality
+- Better stats handling: Fixed `useWorkoutStatsHistory` hook to properly handle unauthorized users
+- Performance optimization: Implemented next question prefetching via `NextQuestionPrefetcher`
+- Updated skeletons: Workout skeletons now display answers blocks based on proper counts
 
-- WelcomeScreen: Updated layout, decorative card, and gradient styles
-- Dashboard: Enhanced sidebar menu styles and logotypes in sidebar/top nav
-- Progress Component: Added multi-color styling support with segmented progress bars
-- Workout Skeletons: Improved display with proper answers count rendering
-- Topic Display: Enhanced topic header, properties, and details presentation
-- Sign-in Form: Fixed title styling issues
-- Added LandingPage, updated AppIntroBlock texts, updated DashboardSidebar and related blocks (ProjectSwitcher), updated GenericLayoutContent (sidebar is hidden for root page)
--
+UI/UX Improvements
 
-### Workout Logic & Flow
+- Layout fixes: Updated WelcomeScreen, InfoScreen, and mobile clipping issues
+- Design system: Reversed Tailwind color scheme to standard progression (50 → 950)
+- Component updates: Enhanced Progress component with multi-color segment support
+- Navigation: Updated DashboardSidebar, NavBar links, and added waves decoration asset
+- Responsive design: Improved mobile layout support and MobileSheet components
 
-- Workout Control: Added "Finish Training" button and review button functionality
-- Workout Start: Streamlined workout initiation with direct 'go' route redirection
-- WorkoutTopicGo: Implemented automatic workout start for inactive sessions
-- Workout Stats: Updated display logic with `omitNoWorkoutMessage` property
-- Activity Tracking: Added checks for user activity before workout operations
+Authentication & Error Handling
 
-### Error Handling & Authentication
+- Enhanced error processing: Moved `getErrorText` to errors handlers module
+- New error types: Added `GenericIDError`, `AIGenerationError`, and `ServerAuthError`
+- Cache management: Added React Query cache cleaning on logout
+- Authorization fixes: Proper handling of unauthorized states across workout components
 
-- Error Management: Centralized error processing with `getErrorText` in errors handlers module
-- Error Types: Introduced `GenericIDError` with derived `AIGenerationError` and `ServerAuthError`
-- Auth Handling: Fixed unauthorized user treatment in `useWorkoutStatsHistory` hook
-- ID-based Errors: Improved processing for `ServerAuthError` and `AIGenerationError`
-- Telegram bot: Don't use empty callback url in registration links
-- Updated select popper styles (affected max dropdown viewport width)
-- Fixed default locale selector name in the settings form
-- Added the bulk public actions to the `ManageTopicsListCard`
+Topic Management
 
-### Performance & Data Management
+- Public/private control: Added Public column and toggle functionality in `ManageTopicsListCard`
+- Bulk operations: Implemented bulk public actions for topic management
+- Access control: Added 'Manage Topic' buttons with proper foreign topic handling
+- Content display: Improved topic header, properties, and details presentation
 
-- React Query: Added cache cleaning on user logout
-- Data Prefetching: Implemented next question prefetching via `NextQuestionPrefetcher` in `WorkoutTopicGo`
-- Hook Optimization: Fixed permanent update issue in `useWorkoutStatsHistory` for unauthorized users
+Internationalization & Settings
 
-### Design System
+- Locale fixes: Updated default locale selector in settings form
+- Select components: Improved select popper styles and dropdown viewport width
+- Telegram integration: Fixed empty callback URL in registration links
 
-- Color Palette: Added `darkBlueColor` for logo background usage
-- Layout Fixes: Resolved body overflow clipping issues
-- Gradient Styles: Updated across multiple components
+Structural Changes
 
-## Technical Details
-
-- Fixed bug with overflown body clip
-- Improved error propagation and handling mechanisms
-- Enhanced workout state management and user experience
-- Added proper skeleton loading states with dynamic content adaptation
-
-## Testing Notes
-
-- Verify workout flow from start to completion
-- Test error scenarios with unauthorized users
-- Validate UI consistency across different screen sizes
-- Confirm proper cache clearing on logout
-
-This PR completes the foundational work for Issue #22, delivering a more robust and user-friendly workout experience.
+- New landing page: Added LandingPage as root page (cloned from AboutPage)
+- Layout optimization: Sidebar hidden for root page in `GenericLayoutContent`
+- Resource cleanup: Removed unused logos and assets
+- Component refactoring: Updated multiple shared components and layouts
