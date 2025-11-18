@@ -1,17 +1,23 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { ExtendedUser } from '@/@types/next-auth';
+import { useLocale } from 'next-intl';
 
 import { NavItemBase } from '@/lib/types/site/NavItem';
 import { dashboardLinks } from '@/config/dashboard';
+import { rootRoute } from '@/config/routesConfig';
+import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { NavBar } from '@/components/layout/NavBar';
-import { SiteFooter } from '@/components/layout/SiteFooter';
+import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
+import { TLocale } from '@/i18n';
 
-import { DashboardSidebar, MobileSheetSidebar, MobileSheetWrapper } from './DashboardSidebar';
+import { DashboardSidebar } from './DashboardSidebar';
+import { MobileSheetSidebar, MobileSheetWrapper } from './MobileSheetSidebar';
 
 interface TGenericLayoutContentProps extends TPropsWithChildren {
   user?: ExtendedUser;
@@ -28,11 +34,19 @@ function checkIfLinkIsAllowedForUser(user: ExtendedUser | undefined, navItem: Na
   return authorizedOnly === user?.role;
 }
 
+const HIDE_SIDEBAR_FOR_ROOT_LANDING = true;
+
 export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const { children, user } = props;
   const isUser = !!user;
 
   const [open, setOpen] = React.useState(false);
+
+  const pathname = usePathname();
+  const locale = useLocale() as TLocale;
+  const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
+  const isRoot = !pathname || rootRoutesList.includes(pathname);
+  const hideSidebar = HIDE_SIDEBAR_FOR_ROOT_LANDING && isRoot;
 
   const checkNavItem = checkIfLinkIsAllowedForUser.bind(undefined, user);
 
@@ -45,8 +59,8 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
     <div
       className={cn(
         isDev && '__GenericLayoutContent', // DEBUG
-        'relative flex size-full flex-col',
-        'flex-1 flex-col items-center',
+        'fixed inset-0',
+        'flex flex-1 flex-col items-center',
         'layout-follow',
       )}
     >
@@ -61,10 +75,10 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
           'layout-follow',
         )}
       >
-        <DashboardSidebar links={filteredLinks} />
+        {!hideSidebar && <DashboardSidebar links={filteredLinks} />}
         {children}
       </div>
-      <SiteFooter />
+      <NavFooter />
     </div>
   );
 }

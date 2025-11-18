@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/db';
 import { DatabaseError } from '@/lib/errors';
-import { getErrorText } from '@/lib/helpers/strings';
+import { getErrorText } from '@/lib/helpers';
 
 import { TUserId } from '../types/TUser';
 

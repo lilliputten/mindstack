@@ -155,7 +155,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Label htmlFor={langCodeKey}>Topic Language</Label>
                 <Button
                   id={langCodeKey}
-                  variant="outline"
+                  variant="ghostForm"
                   onClick={selectLanguage}
                   className="flex w-full justify-stretch gap-4 text-left"
                 >

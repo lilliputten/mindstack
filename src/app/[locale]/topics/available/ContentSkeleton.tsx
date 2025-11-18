@@ -17,7 +17,7 @@ export function ContentSkeleton({ className }: TProps) {
         className,
       )}
     >
-      {isDev && <p>AvailableTopicsPage_ContentSkeleton</p>}
+      {isDev && <p className="opacity-50">AvailableTopicsPage_ContentSkeleton</p>}
       <Skeleton className="h-9 w-full rounded" />
       {generateArray(3).map((i) => (
         <Skeleton key={i} className="h-32 w-full rounded-xl" />

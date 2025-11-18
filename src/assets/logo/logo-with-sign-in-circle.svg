@@ -1,0 +1,345 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="300" height="80" viewBox="0 0 300 80">
+  <circle cx="154.4" cy="40" r="32.4" fill="#224"/>
+  <linearGradient id="uwu__logo-with-sign-in-circle_svg__a" x1="193.494" x2="290.712" y1="40" y2="40" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#40ffc6"/>
+    <stop offset=".508" stop-color="#ffbf29"/>
+    <stop offset="1" stop-color="#d663b3"/>
+  </linearGradient>
+  <path fill="url(#uwu__logo-with-sign-in-circle_svg__a)" d="m202.4 46.2-1.6-.8c-1.2-.6-2-1.1-2.4-1.6-.4-.4-.6-1-.6-1.7 0-.9.3-1.7.9-2.3s1.4-.9 2.3-.9c.6 0 1.2.2 2 .6s1.5.9 2 1.4c.6.6 1 1.2 1.1 1.8h.9l-.9-4.6c-2-.3-3.4-.4-4.3-.4-1.4 0-2.7.3-3.8.9s-2 1.3-2.6 2.2-.9 1.8-.9 2.6c0 1.1.3 1.9 1 2.6s1.6 1.3 2.8 1.9l2 .9c1.1.6 2.1 1.2 3 2s1.3 1.8 1.3 3-.4 2-1.3 2.3-1.7.5-2.5.5c-1.2 0-2.2-.3-3.2-.9s-1.8-1.3-2.3-2.1c-.6-.8-.9-1.3-.9-1.7l-.9-.1c.1.4.3 1 .4 1.7.2.8.2 1.4.2 1.8 0 .3-.1.8-.2 1.5.2.1.6.2 1.3.4s1.1.3 1.4.4.7.1 1.4.2 1.2.1 1.5.1c1 0 2-.1 3-.4s2.2-.9 3.7-1.8q.75-.45 1.2-1.5c.3-.7.4-1.4.4-2 0-1.7-.5-3-1.6-3.9-1.1-.6-2.4-1.4-3.8-2.1m23.3 8.7q-1.65.75-3 1.2c-.9.3-1.6.4-2.2.4-1.5 0-2.5-.5-2.9-1.6-.4-1-.6-2.4-.5-4l.1-8.4c0-.6 0-1.1.1-1.6 0-.5.1-.8.1-1 .1-.2.2-.3.3-.4.2-.1.4-.1.8-.1 1.3.1 2.2.1 2.8.1h1c1 0 1.9-.1 2.9-.2l.1-1.7c-1 0-2 .1-2.9.1-1.8 0-3.5-.1-5-.2l.3-4.8c-1.2 1.6-2.2 2.8-3.1 3.6q-1.35 1.35-3.6 2.7c0 .3 0 .5-.1.7 1.1 0 2 .1 2.9.2l-.1 10.4V53c0 1.9.4 3.3 1.2 4.1q1.2 1.2 3 1.2c1.3 0 2.8-.3 4.5-1s2.8-1.3 3.4-2v-.2s0-.1-.1-.2m16.7.3q-.3-1.2-.3-2.4c0-.6 0-1.3.1-2.3l.1-2c.1-2.1.1-3.3.1-3.6 0-1.2-.1-2.1-.2-2.9-.2-.7-.3-1.3-.5-1.6s-.5-.7-.9-1.1-1-.9-1.7-1.3q-1.05-.6-1.8-.6c-.6 0-1.5.2-2.9.7s-2.7 1.1-3.8 1.9-1.7 1.6-1.7 2.5c0 .3.1.7.2 1.3l3.3-1.5q-.3-.75-.3-1.2c0-.6.3-1 .8-1.3.6-.3 1.1-.5 1.7-.5 1.2 0 2.2.4 3 1.3.9.9 1.3 2.1 1.3 3.6v.9l-.1 3.3c-1.6.2-3.2.5-4.7.8s-2.9.8-4.3 1.5c-.7.3-1.1.8-1.4 1.4s-.4 1.5-.4 2.7c0 1.3.3 2.2.8 2.9.6.6 1.4 1 2.5 1 1.8 0 4.3-.9 7.6-2.8.3.8.6 1.4 1 1.9s.8.8 1.2.8c.1 0 .6-.1 1.3-.4l3.9-1.6v-1.1c-1.2.5-2.1.8-2.8.8-.5.1-1-.3-1.1-1.1m-3.7-.2c-2.6 1.3-4.3 1.9-5.2 1.9-.8 0-1.4-.4-1.8-1.1s-.7-1.5-.7-2.3c0-1.1.7-2 2.1-2.8q2.1-1.05 5.7-.9c-.1 2.9-.1 4.6-.1 5.2m18.7-15.3q1.95 0 4.8 1.2c.6.3 1.1.6 1.3.7.3.1.5.2.6.2.3 0 .7-.4 1.2-1.1.5-.8.7-1.2.7-1.4 0-.4-.8-.9-2.4-1.4s-2.9-.8-3.8-.8c-1.5 0-3.1.5-4.9 1.5-1.7 1-3.2 2.4-4.4 4.3-1.2 1.8-1.8 3.9-1.8 6.1 0 1.1.2 2.3.5 3.4.3 1.2.7 2.1 1.3 2.8.9.9 2.1 1.7 3.6 2.3q2.25.9 4.5.9c2.5 0 5-1 7.3-2.9l-.4-.8c-.9.5-1.8 1-2.6 1.3s-1.7.5-2.6.5c-1.1 0-2.3-.3-3.7-1-1.3-.7-2.5-1.8-3.4-3.2-.9-1.5-1.4-3.3-1.4-5.5 0-2.4.5-4.1 1.4-5.3 1-1.2 2.3-1.8 4.2-1.8m30.7 16.5c-.9-.6-2.4-1.9-4.5-4-4.1-4-6.4-6.2-7-6.8l4.6-3.1c1.8-1.2 3.3-2 4.2-2.5 1-.4 2.1-.7 3.2-.8l.1-1c-2.1 0-3.5.1-4.4.1-1.9 0-3 0-3.6-.1l-2.5-.1v.8q1.05.15 1.5.3c.3.2.5.5.5.9 0 .6-.5 1.3-1.4 2.2s-2 1.7-3.3 2.6c-1.2.8-2 1.3-2.4 1.4l.1-3.7v-3.6c0-2 .1-4.3.2-7.1s.2-5 .4-6.8.3-3 .5-3.6h-.8c-.3.4-.6.7-1.2 1-.5.3-1.3.7-2.5 1.1-.3.1-.7.3-1 .5s-.6.3-.8.4-.5.2-.8.4-.5.3-.7.4l-.1.9c.2-.1.4-.2.8-.3.3-.1.7-.2 1-.2.6 0 1 .4 1.3 1.2.3 1.2.5 3.9.5 7.8 0 1.5 0 3.6-.1 6.3 0 2.7-.1 5.4-.1 8-.1 2.7-.1 4.7-.3 6.1-.1.6-.2 1.1-.4 1.4s-.5.6-.9.7c-.4.2-1 .3-1.9.4v.9c2.3-.1 4.4-.2 6.4-.2 1.3 0 2.5.1 3.4.2l.1-.9c-1.3-.2-2.1-.4-2.6-.5-.2-.1-.4-.3-.5-.7-.1-.3-.1-.9-.2-1.6V48c0-.6.2-.9.5-.9.1 0 .4.2.8.5s.7.6.8.7l1.8 1.6c1.2 1.1 2.5 2.5 4 3.9.4.4.8.9 1.4 1.6s.9 1.1.9 1.3q0 .15-.3.3c-.2.1-.5.1-1 .2-.4.1-.7.1-.9.2v.9c1.2-.1 2.8-.2 4.7-.2h3.5c.2 0 .4 0 .7.1.3 0 .5.1.8.1v-.9c-.7-.3-1.6-.7-2.5-1.2"/>
+  <path fill="#224" d="M47.4 56.5c-.4-.1-.7-.2-.8-.3-.2-.2-.2-.5-.3-1 0-.5 0-1.5.1-2.8v-4.8c0-2.3-.1-4-.3-5.2s-.6-2.2-1.4-3-2-1.2-3.8-1.2c-2.4 0-5.3.9-8.6 2.6-.3-1.2-1-2.1-1.9-2.6s-1.8-.8-2.7-.8c-.6 0-1.4.1-2.3.4s-1.6.5-2.1.8-1.3.6-2.3 1.2c-1 .5-1.6.9-2 1.1q.15-1.05 0-2.4c-.1-.9-.3-1.4-.7-1.4-.1 0-.3.1-.5.2-2 1.2-4 2-5.9 2.5v.9c1.1 0 1.9.2 2.3.4.5.2.8.9 1.1 1.9.2 1 .4 2.7.4 5.1 0 2.5-.1 4.3-.3 5.5s-.6 2-1.1 2.4-1.3.7-2.3.9v.9l6.2-.1c.3 0 1 0 2.4.1 1.3.1 2.1.1 2.3.1V57c-1.5-.2-2.4-.5-2.9-.7-.4-.3-.7-.5-.8-.9-.1-.3-.1-2-.2-5.2v-2.7c0-.8 0-1.8.1-3.1 0-1.2 0-2 .1-2.3q.75-.45 1.8-.9c.7-.3 1.4-.6 2.2-.9.8-.2 1.5-.4 2.2-.4 1.4 0 2.5.6 3.1 1.7.6 1.2 1 2.8 1 5l.1 2.6c0 2.3 0 4-.2 5s-.5 1.7-1 2c-.5.4-1.4.7-2.5.9l.2.8c.4 0 1.5 0 3.5-.1 1.9-.1 3.1-.1 3.4-.1h3.3v-.8c-1.1-.2-1.9-.3-2.2-.4s-.6-.2-.7-.4-.2-.5-.2-1c0-.6 0-1.8-.1-3.8s-.1-3.8-.1-5.7c0-1.8-.1-3.1-.2-3.9 2.1-1 4-1.5 5.6-1.5q1.95 0 3 .9c.7.6 1.2 1.5 1.5 2.6s.4 2.5.4 4.2c0 2.8-.1 4.7-.3 5.8s-.5 1.8-.9 2.2-1.2.7-2.3.9l.2.7h10l.4-.7q-.15 0-1.5-.3c-.8.1-1.3 0-1.5 0M58 27.9q.9 0 1.5-.6t.6-1.5-.6-1.5c-.4-.4-.9-.6-1.4-.6q-.9 0-1.5.6t-.6 1.5.6 1.5c.4.4.9.6 1.4.6m2.5 28.8c-.6-.1-1.1-.1-1.3-.2s-.4-.3-.5-.6c-.2-.6-.3-1.7-.3-3.4-.1-1.7-.1-3-.1-3.8 0-1.2 0-2.6.1-4.1.1-1.6.2-3 .3-4.4s.3-2.5.5-3.2c-.2-.1-.4-.1-.5-.1-2 1.7-4.1 2.8-6.2 3.5-.3.1-.5.3-.5.5 0 .1.4.3 1.2.3.8.1 1.3.2 1.3.3.2.3.4.8.5 1.5s.1 2.3.1 4.9c0 .2 0 1.1-.1 2.6 0 1.5-.1 2.9-.2 4s-.2 1.8-.2 1.9c-.2.4-1.1.7-2.6.8l-.1.8 10.8-.3-.3-.8c-.7-.1-1.3-.2-1.9-.2m26.5-.1c-.8-.2-1.2-.3-1.4-.5s-.3-1.6-.3-4.1v-6.4c0-1.8-.1-3.2-.3-4.3s-.7-2-1.5-2.8-2.1-1.1-3.8-1.1c-1.2 0-2.4.2-3.6.7q-1.95.75-4.8 2.4c0-1.2 0-2.1-.1-2.6s-.2-.8-.5-.8c-.1 0-.5.2-1.2.5-.1.1-.7.4-2 1s-2.3.9-3.1 1.1c0 .1.1.3.1.5 1.2.1 2 .3 2.5.5.4.2.7.7.9 1.4.1.7.2 2.1.2 4.2 0 1.5 0 2.9-.1 4.3q-.15 2.1-.3 3.6c-.1.4-.2.8-.3 1-.1.3-.4.5-.9.7-.4.2-1.2.4-2.1.6l.1.8h5.9c1.1 0 2.1.1 2.8.1.7.1 1.3.1 1.7.1l.1-.8c-1.1-.1-1.9-.3-2.4-.4q-.75-.3-.9-.6c-.1-.2-.2-.5-.3-1-.1-1-.1-3-.1-6l.2-7.1c1.6-.8 2.9-1.3 4.1-1.6 1.2-.2 2-.3 2.6-.3 1.3 0 2.2.4 2.8 1.1s1 1.6 1.1 2.6.2 2.3.2 3.9c0 1.1 0 2.5-.1 4.4s-.3 3.1-.5 3.7q-.6 1.05-3 1.5v.8q3.15-.3 5.4-.3c1.8 0 3.3.1 4.7.3l-.1-.8c-.4 0-.9-.1-1.7-.3m26.2 0c-.6.2-1.1.3-1.2.3-.3 0-.6-.6-.7-1.9s-.3-3.2-.3-5.7v-2.6l.2-10.8.1-2.7c.1-3 .3-5.5.4-7.6s.3-3.6.5-4.5l-.6-.3c-1.4 1-3.8 2.2-7.1 3.6l.1.8q1.05-.3 1.8-.3c.4 0 .8.1 1 .2.2.2.4.5.5.9.1.5.2 1.3.3 2.5v3.7c0 1.9-.1 3.8-.2 5.8-1.2-.3-2.2-.5-3.1-.7-.9-.1-1.6-.2-2.1-.2-.4 0-1.2.2-2.5.5s-2.6.9-4 1.7-2.6 2-3.7 3.6-1.6 3.6-1.6 6c0 1.7.4 3.3 1.2 4.6s1.9 2.3 3.1 3c1.3.7 2.6 1 3.9 1q1.95 0 3.6-.6c1.1-.4 2.7-1.2 4.6-2.2 0 1.4.1 2.5.2 3.3.1.7.3 1.1.6 1.1s2.6-.7 6.8-2.2v-1c-.5.3-1.1.5-1.8.7m-5.6-5.7v2.6c-.9.6-1.8 1-2.6 1.4s-1.8.5-2.8.5c-1.5 0-2.8-.4-4-1.1-1.2-.8-2.2-1.8-2.9-3.3-.7-1.4-1.1-3.1-1.1-5.1 0-1.3.3-2.4.9-3.5.6-1 1.4-1.9 2.5-2.5q1.5-.9 3.3-.9c.1 0 .7.1 1.6.2s1.7.3 2.5.5c.7.2 1.4.4 2 .8.6.3.9.7.9 1.1z"/>
+  <defs>
+    <path id="uwu__logo-with-sign-in-circle_svg__b" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+  </defs>
+  <clipPath id="uwu__logo-with-sign-in-circle_svg__d">
+    <use xlink:href="#uwu__logo-with-sign-in-circle_svg__b" overflow="visible"/>
+  </clipPath>
+  <linearGradient id="uwu__logo-with-sign-in-circle_svg__c" x1="126.423" x2="182.662" y1="-966.986" y2="-966.986" gradientTransform="matrix(1 0 0 -1 0 -926.893)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#40ffc6"/>
+    <stop offset=".508" stop-color="#ffbf29"/>
+    <stop offset="1" stop-color="#d663b3"/>
+  </linearGradient>
+  <path fill="url(#uwu__logo-with-sign-in-circle_svg__c)" d="M126.4 11.9h56.2v56.4h-56.2z" clip-path="url(#uwu__logo-with-sign-in-circle_svg__d)"/>
+  <defs>
+    <path id="uwu__logo-with-sign-in-circle_svg__e" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+  </defs>
+  <clipPath id="uwu__logo-with-sign-in-circle_svg__f">
+    <use xlink:href="#uwu__logo-with-sign-in-circle_svg__e" overflow="visible"/>
+  </clipPath>
+  <g clip-path="url(#uwu__logo-with-sign-in-circle_svg__f)">
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__g" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__h">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__g" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M95.1 63.6c5.7-5.5 6.1-13.8 13.3-18.3 5.7-4.5 10.7-9.9 16.6-14.2 6.4-5.5 13.8-10.6 17-18.7 3.5-6.6 12.9-3.3 18.8-3 2.7.2 5.6.3 7.9-1.1 7.3-5.5 7-16.6 13.7-22.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__h)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__i" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__j">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__i" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M95 64.4c4.1-3.9 5.9-9.4 9.4-13.8 2-2.7 4.9-4.3 7.3-6.7 3.3-3.2 6.3-6.7 9.7-9.8 3.2-2.8 6.6-5.3 9.9-7.9 4.6-3.5 9.2-7.5 11.4-13 3.7-7 13.4-3.2 19.7-3 4.5.4 7.7-.6 10.2-4.5 4.3-6.1 5.1-14.4 10.7-19.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__j)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__k" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__l">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__k" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.8 65.2c4.4-4.1 6.8-9.9 11-14.3 2.2-2.3 4.9-4 6.9-6.5 3.3-3.7 6-7.9 9.7-11.2q4.2-3.6 8.7-6.6c4.2-2.9 8.7-6 11.4-10.5.9-1.7 1.6-3.6 3.3-4.7 5-3.3 11.6-.8 17.1-.5 4.7.5 8-.5 10.6-4.7 4.2-6.2 5.1-14.6 10.8-19.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__l)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__m" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__n">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__m" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.5 66c3.9-3.6 6.7-8.1 10.2-12.1 2.5-3 6-5.1 8.3-8.3 8.5-12 7.9-13 21.2-20.7 3-1.9 6-3.9 8.2-6.7 2.4-3.1 2.6-6.1 7.1-7.1 6-1.3 12.1 1.5 18.2.8 9.7-1.4 10.4-19.1 17.5-24.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__n)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__o" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__p">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__o" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.1 66.8c3.8-3.3 6.9-7.2 10.4-10.8 2.1-2.3 4.6-4.1 6.7-6.4 3.7-4.1 5.6-9.4 8.7-14 5.2-8.1 15.7-9.4 22.2-15.9 2-1.7 2.7-4.5 4.7-6.3 5.1-4 12.1-1 18-.8 5.2.5 8.2-1.6 10.7-6.1 3.7-6.3 4.9-14.2 10.4-19.4" clip-path="url(#uwu__logo-with-sign-in-circle_svg__p)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__q" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__r">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__q" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M93.7 67.6c4.1-3.4 7.8-7.2 11.8-10.8 4.3-3.8 7-5.5 9.5-11 3.8-8.1 5.3-14.3 14.4-18 4.6-2.2 9.7-3.8 13.6-7.2 2.5-1.9 3.1-5.4 6-6.9 6.6-3.3 14 1.4 20.9-.2 2.5-.6 4.2-2.6 5.5-4.6 4.4-6.6 5.4-15.4 11.3-21.1" clip-path="url(#uwu__logo-with-sign-in-circle_svg__r)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__s" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__t">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__s" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="m93.3 68.4 12.6-10.2c3.3-2.6 6.7-4.9 8.4-9 3.4-6.6 4-15.6 11-19.6 5.4-3 11.7-4 16.9-7.3 4.5-2.6 4.1-5.6 7.6-7.8 8-4.5 19.9 5.3 25.9-4.1 5-6.9 5.9-16.2 12-22.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__t)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__u" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__v">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__u" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.9 69.2c4.2-3.3 8.7-6.2 13.1-9.3 3.4-2.5 7-4.6 8.6-8.7 3.1-6.5 3-14.7 8.2-20.1 5-3.8 11.6-4.3 17.3-6.7 2.5-1 5.1-2.4 6.8-4.6.9-1.2 1.5-2.6 2.7-3.5 6.7-5.5 16.2 1.9 23.4-1.6 7.8-5.4 8.5-19.6 15.6-26.1" clip-path="url(#uwu__logo-with-sign-in-circle_svg__v)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__w" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__x">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__w" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.5 70c4.4-3.3 9.2-5.8 13.8-8.6 3.4-2.2 7-4.2 8.5-8.1 3.2-7.1 2.2-16.6 7.9-22.5 2.6-1.9 5.8-2.7 8.9-3.5 5.1-1.3 10.8-2 15-5.5 1.2-1 1.9-2.4 2.9-3.6 2.2-2.8 6.1-3.4 9.4-3 4.6.3 9.5 2.4 14.1.7 8.2-4.5 9.3-20.5 16.5-26.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__x)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__y" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__z">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__y" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.1 70.8c4.6-3.3 10-5.5 15-8.3 4.8-2.7 7.4-4.2 8.9-9.7 2.1-6.9 1.2-14.8 5.5-20.9 1.5-2.1 4.2-2.8 6.6-3.5 5-1.3 10.3-1.7 15.2-3.5 2.2-.8 4.3-1.9 5.7-3.7.6-.8 1.1-1.7 1.8-2.5 3.6-3.9 9.3-2.7 13.9-1.8 3.7.7 8.2 1.5 11.1-1.6 4-4.1 5.8-9.9 8.1-15 1.7-3.9 3.4-8 6.5-10.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__z)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__A" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__B">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__A" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.8 71.7c4.9-3.4 10.7-5.2 16-7.9 4.8-2.5 7.3-3.9 8.6-9.4 1.4-5.7 1.1-11.8 2.6-17.5 1.3-4.8 2.9-6.8 7.8-7.9 5.5-1.5 11.2-1.6 16.7-3.1 2.2-.7 4.5-1.6 6.1-3.4 3-4.6 6-6 11.5-5.3 4.4.4 9.1 2.5 13.4.7 8.3-4.8 9.6-21.3 16.9-27.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__B)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__C" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__D">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__C" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.5 72.6c5.2-3.5 11.5-5 17.2-7.6 4.8-2.3 7.1-3.6 8.3-9.1 1.2-5.6.8-11.4 1.7-17.1.5-2.7 1.2-5.5 3.2-7.5 1.2-.9 2.6-1.4 4-1.8 5.8-1.6 11.9-1.4 17.7-2.8 2.5-.6 5-1.4 6.8-3.3 2.6-3.7 4.8-5.7 9.6-5.5 4.9 0 9.8 2.6 14.7 1.1 8.6-3.7 10.5-22.1 17.8-28.6" clip-path="url(#uwu__logo-with-sign-in-circle_svg__D)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__E" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__F">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__E" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.3 73.5c5.4-3.5 11.8-4.7 17.7-7.2 4.7-2.1 7.4-3.4 8.4-8.9 1.1-5.4.6-10.9 1.1-16.4.3-3.3.8-6.8 3.2-9.3 1-.8 2.3-1.3 3.6-1.7 7.6-2.5 20.9-.3 26.4-6.1 1.7-2.6 4.2-4.9 7.5-5.2 5.2-.6 10.2 2.2 15.3 1.3 9.3-2.2 11.6-22.9 19-29.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__F)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__G" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__H">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__G" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.2 74.5c5.5-3.6 12.1-4.5 18.1-6.9 4.6-1.9 7.6-3.3 8.6-8.6 1-5.1.4-10.3.6-15.4.2-4.8.6-11.4 6.1-12.7 7.9-2.7 20.8-.2 27.2-5.5 2.2-2.5 3.3-4.7 6.8-5.5 5.2-1.2 10.3 1.7 15.5 1.3 10.1-.7 12.6-23.4 20.2-29.8" clip-path="url(#uwu__logo-with-sign-in-circle_svg__H)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__I" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__J">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__I" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.2 75.5c5.7-3.8 12.7-4.4 18.9-6.8 4.6-1.9 7.6-3.5 8.3-8.8.8-5.2.2-10.4.2-15.6 0-4.8.5-11.3 6.1-12.6 8.2-2.8 20.6-.1 27.5-5 .9-.7 1.5-1.7 2.2-2.5 1.1-1.4 2.5-2.5 4.2-3.1 5.2-1.8 10.4 1.1 15.7 1 10.7.1 13.3-23.6 21.1-30.2" clip-path="url(#uwu__logo-with-sign-in-circle_svg__J)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__K" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__L">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__K" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.3 76.6c5.7-3.9 12.8-4.3 19.1-6.7 4.3-1.7 7.8-3.6 8.5-8.5.8-5.2.1-10.5 0-15.7-.1-4.8.2-11.3 5.7-12.9 8.4-3.1 20.5-.1 28-4.9 1.1-.7 1.7-1.8 2.5-2.8 1-1.3 2.3-2.4 3.8-3 5.2-2.3 10.6.8 15.9.8 11 .4 13.6-23.8 21.6-30.4" clip-path="url(#uwu__logo-with-sign-in-circle_svg__L)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__M" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__N">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__M" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.5 77.7c5.5-3.7 12.4-4.4 18.6-6.6 4.4-1.7 8.3-3.4 9-8.5.8-5.1.1-10.3 0-15.5-.1-5 .1-11.6 5.8-13.3 5.5-1.9 11.5-1.6 17.2-2.1 3.6-.3 7.4-.7 10.6-2.6 2.4-1.4 3.5-4.2 6-5.5 4.9-3.1 10.7-.6 16-.4 2.1.1 4.3-.3 6-1.6 2.7-2.4 4.4-5.7 6-8.9 3.4-6.6 5.6-14.2 10.9-19.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__N)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__O" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__P">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__O" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M91.8 78.9c5.1-3.4 11.3-4.4 17-6.3 2.9-1 5.8-2.2 8.2-4.1 1.2-1.2 1.8-2.7 2.1-4.3.9-4.6.4-9.3.2-14 0-5.1-.7-12.3 5-14.7 9-4 26.2.4 32.2-7.9 4.2-5 9.8-4.8 15.8-4.2 8.2.8 10.3-1.7 14.2-8.4 4.2-7.1 6.8-15.2 12.4-21.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__P)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__Q" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__R">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__Q" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92 80.1c4.6-3.1 10.2-4.3 15.4-6.1 2.7-.9 5.3-1.9 7.7-3.3 2-1 3.5-2.8 4-5.1 2.4-7.4-2.7-24.4 4.9-28.2 3.2-1.6 6.9-1.9 10.4-2.2 4.8-.4 9.6-.4 14.3-1.3 2.6-.5 5.4-1.3 7.4-3.2 2.5-3 5.8-5.6 9.8-6.2 5-1 10.5.4 15.2-2.1 1.3-.7 2.2-2 3.1-3.1 1.4-1.8 2.7-3.8 3.9-5.8 3.9-6.3 7-13.2 12.1-18.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__R)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__S" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__T">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__S" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.3 81.3c4-2.7 8.7-4.1 13.2-5.7 3.1-1.1 6.3-2.2 9.2-3.8 2-1 3.7-2.5 4.4-4.7 2.9-7.6-1.7-22 4.5-27.4 4.7-3.1 12.7-2.6 18.3-3.1 19.5-1.1 12.8-5.2 23.7-10.1 5.6-2.3 12.2-1.2 17.3-4.8 7.4-7.7 11.8-17.8 19.2-25.6" clip-path="url(#uwu__logo-with-sign-in-circle_svg__T)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__U" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__V">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__U" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.6 82.5c3.8-2.7 8.3-4.2 12.6-5.8 3.3-1.2 6.6-2.4 9.6-4.2 1.9-1 3.7-2.4 4.5-4.6 3-7.5-.9-20.1 4.7-26.1 3.7-3.2 11.2-2.9 15.9-3.2 6.3-.4 13.3 0 18.7-3.8 2.1-1.9 3.9-4.1 6.4-5.6 4.9-3.4 11.1-3.9 16.3-6.6 1.6-.7 2.9-1.9 4-3.3 1.6-1.7 3.1-3.6 4.7-5.4 4.6-5.6 8.8-11.5 13.9-16.6" clip-path="url(#uwu__logo-with-sign-in-circle_svg__V)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__W" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__X">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__W" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M92.8 83.7c4.4-3.1 9.4-4.8 14.4-6.8 2.7-1.1 5.5-2.3 8-3.9 1.9-1.1 3.6-2.5 4.4-4.7 3-7.2-.3-19.2 5.4-24.8 3.7-3 10.7-2.6 15.3-2.8 6.6-.3 15 .3 20.4-4.1 2.5-2.6 5.1-5.3 8.2-7.3 4.5-3 9.7-4.8 14.2-7.9 3-2.3 5.5-5.3 8.2-8 4.8-4.9 9.5-9.9 14.4-14.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__X)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__Y" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__Z">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__Y" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M93.1 85c5-3.6 10.9-5.6 16.4-8.2 2.3-1.1 4.6-2.3 6.8-3.8 1.9-1.1 3.2-3 3.9-5.1 2.5-6.7.1-18 6.1-22.8 3.9-2.6 10.8-2.1 15.4-2.3 6.7-.2 15.1.4 20.6-3.9 2.9-3.1 5.8-6.2 9.1-8.9 4-3.3 8.3-6.1 12.4-9.1C191.7 14 199.9 7.4 207.7.5" clip-path="url(#uwu__logo-with-sign-in-circle_svg__Z)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aa" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ab">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aa" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M93.4 86.2c5.1-3.7 11-6 16.6-8.9 3-1.7 6.3-3.2 8.7-5.8 2.8-3.7 2.9-8.6 3.6-13.1.7-4.6 1.6-10.6 6.6-12.5 3.4-1.1 7.1-1 10.6-1.1 5.7 0 11.5.3 17.2-.7 2.8-.5 5.6-1.4 7.6-3.4 2.9-3.3 5.7-6.6 8.7-9.8 3.7-4.1 7.8-7.9 12.1-11.4 7.8-6.4 16.8-11.1 24.6-17.4" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ab)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ac" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ad">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ac" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M93.6 87.5c4.7-3.6 10.2-6 15.4-8.8 2.3-1.2 4.5-2.5 6.7-4 1.9-1.3 3.7-2.8 4.6-5.1 2.2-4.9 2.1-10.5 3.9-15.5 2-5.8 6.1-7 11.8-7.1 8.7-.5 23.2 2.2 30-3.8 7.6-8.5 12.4-19.7 22.2-26 7.6-4.9 16.3-7.9 23.6-13.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ad)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ae" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__af">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ae" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M93.9 88.8c5.6-4.3 12.1-7.3 18.1-11 5.2-3.3 8.4-5.1 10-11.4 1.5-4.9 1.8-10.6 5.4-14.5 3.5-3.6 8.9-2.9 13.5-2.9 5.1.1 10.2.5 15.3.2 3.9-.3 8-.9 11.1-3.4 1.6-1.5 2.7-3.4 4-5.2 5.1-7.4 8-16.7 15.2-22.6 8.4-5.6 19-6.9 27.4-12.6" clip-path="url(#uwu__logo-with-sign-in-circle_svg__af)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ag" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ah">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ag" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.2 90.1c6.8-5.4 14.8-9 21.8-14.2 3.3-2.2 5.1-4.6 6.3-8.4 2.1-5.7 2.8-13.7 9.4-16 3.7-1.2 7.6-.6 11.3-.5 6.9.3 14 1.1 20.7-.5 2-.5 4-1.3 5.6-2.7 2.5-3 4.4-6.5 6.1-10.1 3.1-6.4 6-16 11.8-20.3 8.9-5.3 20-4.9 28.8-10.4" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ah)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ai" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aj">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ai" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.5 91.5c7-5.6 15.1-9.7 22.2-15.3 3.4-2.3 5.1-5.1 6.4-8.9 2.5-7.3 4.5-14.8 13.8-14.7 10 0 22 2.9 31.5-.9 5.5-1.9 8.9-13.8 10.9-19 2-5.3 3.7-11.3 8-15.2 9.4-5.5 21.4-3.3 30.8-8.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aj)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ak" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__al">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ak" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M94.8 92.9c7.2-5.9 15.4-10.5 22.6-16.4 3.7-2.5 5.5-6.6 7-10.6 3-8.5 7-12.5 16.4-11.4 9.3.5 22.3 3.1 30.6-1.6 6.2-4.4 8.4-19.8 11.2-26.9 1.2-3.1 2.7-6.9 5.4-8.9 5.3-2.9 11.6-2.9 17.5-3.4 4.9-.5 10.1-.8 14.4-3.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__al)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__am" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__an">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__am" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M95.1 94.3c7.6-6.2 15.9-11.4 23.4-17.7 9.1-7 5.3-22.6 23.3-20.5 9.6.7 22.7 3.3 31.3-1.6 6.7-4.7 7.9-22 11-29.8 1-2.7 2.2-5.4 4.2-7.5 1.8-1.2 4-1.8 6.1-2.2 8.8-1.7 19.5.8 27.6-3.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__an)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ao" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ap">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ao" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M95.4 95.7c6.8-5.6 14.1-10.6 21-16.2 3-2.4 5.4-4.2 7.1-7.8 4.7-9.8 7.2-15.7 19.6-14.1 9.7.9 22.8 3.3 31.5-1.8 7.1-4.9 7.4-23.1 10.5-31.3 2.2-6.1 3.6-8.5 10.4-9.4 8.8-1.3 20.4 2 28.3-2.1" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ap)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aq" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ar">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aq" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M95.7 97.2c7.1-5.8 14.5-11.2 21.6-17 1.2-1 2.5-1.9 3.6-3 1.3-1.3 2.2-2.9 3.1-4.5 5.2-10.8 8.3-15.4 21.2-13.4 9.7 1 22.1 2.9 30.8-2.4 7.3-4.8 7-23.5 9.9-31.8 2-6.2 3.9-9 10.8-9.6 8.7-1 21.1 2.9 28.7-1.3" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ar)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__as" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__at">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__as" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M96.1 98.6c7.1-5.8 14.4-11.4 21.5-17.2 1.2-1 2.5-1.9 3.6-3 1.3-1.4 2.4-3.1 3.3-4.9 5.1-10.6 8.6-15 21.2-13.1 10.1 1.1 22.2 2.7 31.4-2.8 5.4-3.4 6.1-10.9 7.1-16.6.8-5.2 1.3-10.4 2.8-15.5 2-7.3 5.3-9.8 12.9-9.9 8.1-.4 20.3 3.5 27.2-.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__at)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__au" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__av">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__au" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M96.5 100.2c7.5-5.8 14.7-12 22.2-17.9 3-2 5.1-4.9 6.7-8 5.6-11.6 9.5-14.3 22.4-12.6 10 .7 21.6 1.9 30.4-3.7 5-3.1 5.9-9.5 6.9-14.9 1-5.7 1.4-11.6 3.1-17.2 2-7.4 6.4-9.5 13.8-9.4 7.9-.2 19.7 3.4 26.6-.8" clip-path="url(#uwu__logo-with-sign-in-circle_svg__av)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aw" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__ax">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aw" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M97 102c8.1-6.1 15.3-13.3 23.5-19.4 3.3-2.4 5.1-6.1 6.9-9.6 6.5-12.9 12.9-10.8 25.4-10.5 8.8.1 18.6.8 26.3-4.3 4.8-3 6-8.8 6.9-14 1.1-6 1.5-12.2 3.3-18.1 1.9-6.6 6.1-8.9 12.7-9.1 8.3-.5 20.2 3.1 27.5-1.2" clip-path="url(#uwu__logo-with-sign-in-circle_svg__ax)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__ay" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__az">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__ay" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M97.8 104.1c8.4-6.3 15.3-14.4 23.8-20.5 3.1-2.5 4.9-6.2 6.8-9.7 6.7-12.9 13.2-10.6 25.7-10.8 8.7 0 18.5.8 26.1-4.3 4.5-2.9 5.9-8.3 6.8-13.2 1.2-6.1 1.6-12.5 3.4-18.5 1.7-5.9 5.2-8.6 11.3-9.1 8.9-1.1 20.9 2.6 28.7-1.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__az)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aA" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aB">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aA" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M98.7 106.4c8.6-6.6 15.1-15.6 24-21.9 2.9-2.6 4.6-6.1 6.4-9.5 3.6-7.1 8.1-11.7 16.5-11.3 3.2-.2 6.5-.4 9.7-.3 8.6-.1 18.5 1 26-4.1 4.4-2.9 5.8-8.2 6.8-13.1 1.2-6.1 1.6-12.3 3.4-18.3 1.5-5.3 4.5-8.2 10-9.2 9.3-1.9 21.4 2 29.7-2.8" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aB)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aC" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aD">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aC" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M99.8 108.9c8.7-6.8 14.6-16.7 23.7-23.1 2.9-2.6 4.6-6.2 6.4-9.6 3.4-6.9 7.8-12 16.1-12 3.6-.4 7.1-.6 10.7-.5 8.5-.1 18.6 1.3 25.9-3.7 4.4-2.8 5.8-8.2 6.7-13 1.2-6.1 1.6-12.3 3.4-18.2 4.4-17.1 27.7-5.9 39.2-13.2" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aD)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aE" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aF">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aE" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M100.9 111.6c5.7-4.5 9.8-10.7 14.5-16.2 2.5-3.1 5.6-5.8 8.8-8.3 2.7-2.6 4.4-6.1 6.2-9.4 3.2-6.5 7.3-12.5 15.2-13 1.3 0 2.5-.4 3.8-.5 2.6-.3 5.3-.3 8-.2 8.5 0 19.1 1.7 26.4-3.2 4.6-3 5.9-8.5 6.8-13.6 1.1-5.8 1.5-11.8 3.2-17.6 4.4-17.1 27.2-7 38.6-14.5" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aF)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aG" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aH">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aG" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M102.2 114.4c5.8-4.8 9.6-11.5 14.2-17.4 1.5-1.9 3.1-3.8 5-5.5 1.1-1.1 2.5-1.9 3.6-3.1 2.7-2.7 4.4-6.2 6.1-9.6 2.8-5.9 6.7-12.4 13.7-13.6 1.9-.3 3.8-.7 5.8-.9 2.7-.3 5.4-.2 8.1-.1 8.3.2 19.2 2.2 26.5-2.6 4.6-2.9 5.9-8.6 6.8-13.6 1.1-5.8 1.5-11.8 3.2-17.6 4.3-17 26.6-8.2 37.9-16" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aH)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aI" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aJ">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aI" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M103.5 117.3c5.8-5 9.1-12.1 13.5-18.3 1.4-2 3-4 4.8-5.8 1.2-1.3 2.7-2.2 3.9-3.4 2.7-2.8 4.3-6.4 6-9.8 2.5-5.2 5.4-11 10.9-13.4 5.1-2 10.7-2.3 16.1-2 8.5.3 20.2 2.9 27.6-1.9 4.6-2.9 5.8-8.6 6.8-13.6 1.1-5.7 1.5-11.5 3-17 3.7-17.5 26-10 37.4-18.1" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aJ)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aK" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aL">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aK" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M104.9 120.3c5.9-5.4 8.9-13 13.1-19.6 1.3-2.1 2.8-4.2 4.6-6 1.2-1.3 2.6-2.2 3.8-3.5 2.4-2.6 4-5.9 5.5-9.1 5.5-12.1 9.3-17.5 23.5-17.5 9.4 0 23.7 4.1 32-.8 4.8-2.9 6-8.9 7-14 1-5.5 1.5-11.1 2.8-16.5 3.4-17.8 25.3-11.7 36.7-20.1" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aL)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aM" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aN">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aM" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M106.2 123.3c5.8-5.6 8.5-13.6 12.5-20.5 1.3-2.3 2.8-4.6 4.7-6.6 1-1.2 2.4-2.1 3.4-3.2 2.5-2.6 4.1-5.9 5.6-9.2 5-11.3 8.8-19 22.6-18.9 9.8-.1 24.6 4.8 33.3.3 5.1-2.8 6.4-9 7.4-14.3s1.5-10.7 2.7-15.9c.7-3.1 1.7-6.2 3.8-8.7 8.7-8.6 22.8-6.4 32.3-13.7" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aN)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aO" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aP">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aO" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M107.6 126.3c8.8-9 9.6-23.4 19.7-31.5 2.6-2.8 4.3-6.2 5.9-9.7 4.7-10.9 8.7-20.4 22.4-19.9 10 0 25 5.4 33.9 1.3 5.4-2.7 6.6-9.3 7.7-14.7.9-4.9 1.4-9.9 2.4-14.8.7-3.3 1.6-6.8 3.7-9.6 8.3-9.1 22.5-8 31.8-15.5" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aP)"/>
+    <defs>
+      <path id="uwu__logo-with-sign-in-circle_svg__aQ" d="M177.2 37.4 159 47.7v-5.2l18.2-10.3V27l-22.8-12.9L131.6 27v25.8l22.8 12.9 22.8-12.9zm-4.6 12.9-18.2 10.3-3.7-2.1V42l-3.7-2.1v16.5l-3.7-2.1V37.9l-3.7-2.1v16.5l-3.7-2.1V29.7L154.4 40v15.5l18.2-10.3z"/>
+    </defs>
+    <clipPath id="uwu__logo-with-sign-in-circle_svg__aR">
+      <use xlink:href="#uwu__logo-with-sign-in-circle_svg__aQ" overflow="visible"/>
+    </clipPath>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".124" d="M108.9 129.3c8.5-8.9 8.6-23.1 17.7-31.7 3.3-2.8 5.2-6.8 7-10.6 4.6-10.6 8.5-22.3 22.4-21.3 10.1.2 25.4 6 34.5 2.2 8.3-3.5 8.2-20.2 10-28.1.8-4 1.6-8.1 4.1-11.4 8.1-9.2 21.9-9.2 31.1-16.9" clip-path="url(#uwu__logo-with-sign-in-circle_svg__aR)"/>
+  </g>
+</svg>

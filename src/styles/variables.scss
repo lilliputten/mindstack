@@ -12,6 +12,8 @@ $appDestructiveForegroundColor: #fff;
 $appSuccessColor: #090;
 $appSuccessForegroundColor: #fff;
 
+// $darkBlueColor: #224;
+
 // Themed colors (light)
 
 $backgroundLightColor: #ffffff;
@@ -62,11 +64,14 @@ $chart3Color: #ffd466; // 270 91% 65%;
 $chart4Color: #ffe299; // 269 97% 85%;
 $chart5Color: #fff1cc; // 269 100% 92%;
 
-// Adaptive layouts (TODO: Adjust to radix variables)...
+// Adaptive layouts (TODO: Adjust to tailwind/radix variables)...
+// See also:
+// - tailwind.config.ts
+// - src/hooks/useMediaMinDevices.ts
 
-$smallTreshold: 660px;
-$mobileTreshold: 980px;
-$wideTreshold: 1200px;
+$smallTreshold: 640px; // 660px;
+$mobileTreshold: 1024px; // 980px;
+$wideTreshold: 1280px; // 1200px;
 
 // Delays
 

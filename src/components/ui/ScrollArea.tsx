@@ -13,6 +13,7 @@ interface ScrollAreaExtraProps {
   saveScrollKey?: string;
   saveScrollHash?: string;
   onScrollEvent?: (ev: Event, node?: HTMLDivElement) => void;
+  disableScroll?: boolean;
 }
 type ComponentType = React.ForwardRefExoticComponent<
   ScrollAreaPrimitive.ScrollAreaProps & React.RefAttributes<HTMLDivElement>
@@ -41,6 +42,7 @@ const ScrollArea = React.forwardRef<
     saveScrollKey,
     saveScrollHash,
     onScrollEvent,
+    disableScroll,
     ...rest
   } = props;
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -90,6 +92,38 @@ const ScrollArea = React.forwardRef<
       };
     }
   }, [scrollRef, saveScrollKey, saveScrollHash, onScrollEvent]);
+  if (disableScroll) {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          isDev && '__ScrollArea_Root_DISABLED', // DEBUG
+          'relative flex flex-col overflow-hidden',
+          className,
+        )}
+        {...rest}
+      >
+        <div
+          ref={scrollRef}
+          className={cn(
+            isDev && '__ScrollArea_Viewport_DISABLED', // DEBUG
+            viewportClassName,
+            'size-full rounded-[inherit]',
+          )}
+        >
+          <div
+            ref={scrollRef}
+            className={cn(
+              isDev && '__ScrollArea_Inset_DISABLED', // DEBUG
+              'flex',
+            )}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <ScrollAreaPrimitive.Root
       ref={ref}

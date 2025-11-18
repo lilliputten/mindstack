@@ -4,7 +4,7 @@ export const adminBotControlRoute = '/admin/bot/control';
 export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
 export const chartsRoute = '/charts';
 export const dashboardRoute = '/dashboard';
-export const infoRoute = '/info';
+export const aboutRoute = '/about';
 export const availableTopicsRoute = '/topics/available'; // Example
 export const allTopicsRoute = '/topics/all';
 export const myTopicsRoute = '/topics/my';
@@ -21,7 +21,7 @@ export const pathnames = {
   [chartsRoute]: chartsRoute,
   [dashboardRoute]: dashboardRoute,
   [availableTopicsRoute]: availableTopicsRoute,
-  [infoRoute]: infoRoute,
+  [aboutRoute]: aboutRoute,
   [myTopicsRoute]: myTopicsRoute,
   [allTopicsRoute]: allTopicsRoute,
   [rootRoute]: rootRoute,

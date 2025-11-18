@@ -13,13 +13,9 @@ export function SignInBlock(props: TPropsWithClassName) {
     <div
       className={cn(
         isDev && '__SignInBlock', // DEBUG
+        'm-auto w-full max-w-md',
+        'flex flex-1 flex-col items-center justify-center',
         className,
-        'w-full',
-        'flex flex-1 flex-col',
-        'items-stretch',
-        'justify-center',
-        'max-w-md',
-        'm-auto',
       )}
     >
       <div

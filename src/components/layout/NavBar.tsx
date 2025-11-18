@@ -1,10 +1,8 @@
 'use client';
 
-import { useLocale } from 'next-intl';
+import React from 'react';
 
 import { siteMenu } from '@/config/siteMenu';
-import { commonXPaddingTwStyle } from '@/config/ui';
-import { getAllRouteSynonyms } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { NavUserAuthButton } from '@/components/layout/NavAuthButton';
 import { NavBarBrand } from '@/components/layout/NavBarBrand';
@@ -12,9 +10,8 @@ import { NavLocaleSwitcher } from '@/components/layout/NavLocaleSwitcher';
 import { NavModeToggle } from '@/components/layout/NavModeToggle';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
+import { comparePathsWithoutLocalePrefix, useT } from '@/i18n';
 import { Link, usePathname } from '@/i18n/routing';
-import { TLocale } from '@/i18n/types';
 
 interface NavBarProps {
   large?: boolean;
@@ -27,33 +24,35 @@ export function NavBar(props: NavBarProps) {
   const { isUser, open, setOpen } = props;
   const links = siteMenu.mainNav;
   const t = useT('SiteMenu');
-  const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname());
+  const openSidebar = () => {
+    setOpen(!open);
+  };
   return (
     <header
       className={cn(
         isDev && '__NavBar', // DEBUG
+        'relative',
         'sticky',
         'top-0',
         'z-40',
         'flex',
         'w-full',
-        'bg-theme-400/70',
-        'backdrop-blur',
-        commonXPaddingTwStyle,
+        'bg-theme-600/70',
+        'px-6',
         'justify-stretch',
         'transition-all',
       )}
     >
-      <div // Ex: MaxWidthWrapper
+      <div
         className={cn(
           isDev && '__NavBar_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
-          'bg-header-gradient',
+          'bg-header-gradient after-header-decor',
           'z-0',
         )}
       />
-      <div // Ex: MaxWidthWrapper
+      <div
         className={cn(
           isDev && '__NavBar_Wrapper', // DEBUG
           'flex',
@@ -63,39 +62,45 @@ export function NavBar(props: NavBarProps) {
           'py-2',
           'z-10',
         )}
-        // large={large}
       >
         <NavBarBrand isUser={isUser} />
 
         {links && links.length > 0 ? (
-          <nav className="hidden gap-6 md:flex">
+          <nav
+            className={cn(
+              isDev && '__NavBar_MiddleLinks', // DEBUG
+              'hidden gap-2 md:flex',
+            )}
+          >
             {links
               .filter((item) => !item.userRequiredOnly || isUser)
               .map((item) => {
                 // Check if it's current item using `getAllRouteSynonyms(item.href, locale)`
-                const allHrefs = getAllRouteSynonyms(item.href, locale);
-                const isCurrent = allHrefs.includes(pathname);
+                const isCurrent = comparePathsWithoutLocalePrefix(item.href, pathname);
                 const isDisabled = !!item.disabled || isCurrent;
+                const Icon = item.icon;
                 return (
                   <Link
                     key={'navbar-' + item.href}
                     href={item.href}
                     prefetch
                     className={cn(
-                      'flex',
-                      'items-center',
-                      'text-lg',
-                      'font-medium',
+                      'flex items-center gap-1',
+                      'px-2 py-1.5',
+                      'border border-transparent',
+                      'rounded-md',
+                      'text-sm font-medium',
                       'transition-all',
-                      'text-theme-foreground/80',
-                      'opacity-100',
-                      'hover:opacity-80',
-                      'sm:text-sm',
-                      isCurrent && 'underline',
-                      isDisabled && 'disabled',
+                      'text-theme-foreground',
+                      'hover:bg-theme-400/50',
+                      'hover:border-white/10',
+                      isCurrent && 'border-white/30',
+                      isDisabled && 'pointer-events-none opacity-70',
+                      'active:bg-theme active:text-theme-foreground',
                     )}
                   >
-                    {t(item.titleId)}
+                    {Icon && <Icon className="size-4 min-w-5" />}
+                    <span className={cn('truncate')}>{t(item.titleId)}</span>
                   </Link>
                 );
               })}
@@ -118,19 +123,18 @@ export function NavBar(props: NavBarProps) {
 
         {/* Mobile panel toggler icon */}
         <button
-          onClick={() => setOpen(!open)}
+          onClick={openSidebar}
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
-            'p-2',
-            // commonXMarginTwStyle,
+            'p-4',
             'transition-all',
             'duration-200',
-            'text-theme-foreground hover:bg-theme-400/50',
+            'text-theme-foreground hover:bg-theme-600/50',
             'focus:outline-none',
-            'active:bg-theme-300',
+            'active:bg-theme-700',
             'md:hidden',
-            open && 'opacity-50 hover:bg-theme-400',
+            open && 'opacity-50 hover:bg-theme-600',
           )}
         >
           <Icons.Menu className="size-5 text-theme-foreground" />

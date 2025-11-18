@@ -2,6 +2,7 @@ import { SidebarNavItem } from '@/lib/types/site/NavItem';
 import * as Icons from '@/components/shared/Icons';
 
 import {
+  aboutRoute,
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   allTopicsRoute,
@@ -18,12 +19,19 @@ import {
 // prettier-ignore
 export const dashboardLinks: SidebarNavItem[] = [
   {
+    titleId: 'Application',
+    items: [
+      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'Available Topics' },
+    ],
+  },
+  {
     titleId: 'My Data',
     authorizedOnly: true,
     items: [
       { href: myTopicsRoute, icon: Icons.Topics, titleId: 'My Topics' },
       { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'All Topics', authorizedOnly: 'ADMIN' },
       // Add other data links?
+      { href: chartsRoute, icon: Icons.LineChart, titleId: 'Charts', disabled: true, authorizedOnly: true },
     ],
   },
   {
@@ -32,17 +40,15 @@ export const dashboardLinks: SidebarNavItem[] = [
     items: [
       { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'Bot Control' },
       { href: adminAiTestTextQueryRoute, icon: Icons.Bug, titleId: 'Test AI Text Query' },
+      // { href: adminRoute, icon: Icons.Laptop, titleId: 'Admin Panel', authorizedOnly: 'ADMIN', disabled: true },
+      // { href: dashboardRoute, icon: Icons.Dashboard, titleId: 'Dashboard', disabled: true },
     ],
   },
   {
-    titleId: 'Application',
+    titleId: 'Information',
     items: [
-      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'Available Topics' },
-      // { href: availableTopicsRoute, icon: Icons.Braces, titleId: 'Data' },
-      { href: welcomeRoute, icon: Icons.Hand, titleId: 'Welcome' },
-      // { href: adminRoute, icon: Icons.Laptop, titleId: 'Admin Panel', authorizedOnly: 'ADMIN', disabled: true },
-      // { href: dashboardRoute, icon: Icons.Dashboard, titleId: 'Dashboard', disabled: true },
-      { href: chartsRoute, icon: Icons.LineChart, titleId: 'Charts', disabled: true, authorizedOnly: true },
+      { href: aboutRoute, icon: Icons.Info, titleId: 'About Project' },
+      { href: welcomeRoute, icon: Icons.MonitorPlay, titleId: 'Welcome Page' },
     ],
   },
   {

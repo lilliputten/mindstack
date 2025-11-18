@@ -13,6 +13,7 @@ import { TAvailableAnswer } from '@/features/answers/types';
 interface WorkoutQuestionProps {
   questionText: string;
   answers?: TAvailableAnswer[];
+  answersCount?: number;
   isAnswersLoading?: boolean;
   onAnswerSelect: (answerId: string) => void;
   onSkip: () => void;
@@ -24,6 +25,7 @@ interface WorkoutQuestionProps {
 export function WorkoutQuestion({
   questionText,
   answers,
+  answersCount,
   isAnswersLoading,
   onAnswerSelect,
   onSkip,
@@ -42,17 +44,11 @@ export function WorkoutQuestion({
 
   const isFinished = currentStep >= totalSteps;
 
-  React.useEffect(() => {
-    console.log('[WorkoutQuestion:DEBUG]', {
-      selectedAnswer,
-      workout,
-    });
-  }, [selectedAnswer, workout]);
-
   const answersContent = React.useMemo(() => {
+    const count = answersCount || 2;
     return isAnswersLoading || !answers ? (
       // Show answers skeleton...
-      generateArray(2).map((i) => <Skeleton key={i} className="h-14 w-full" />)
+      generateArray(count).map((i) => <Skeleton key={i} className="h-14 w-full" />)
     ) : !answers.length ? (
       <p className="opacity-50">No answers created here. Just skip it.</p>
     ) : (
@@ -119,7 +115,7 @@ export function WorkoutQuestion({
         );
       })
     );
-  }, [answers, isAnswersLoading, onAnswerSelect, selectedAnswer]);
+  }, [answers, answersCount, isAnswersLoading, onAnswerSelect, selectedAnswer]);
 
   const questionContent = React.useMemo(
     () => (
@@ -165,7 +161,7 @@ export function WorkoutQuestion({
               onClick={onContinue}
             >
               <Icons.ArrowRight className="size-5 opacity-50" />
-              Continue
+              <span>Continue</span>
             </Button>
           ) : (
             <>
@@ -178,7 +174,7 @@ export function WorkoutQuestion({
                   onClick={onSkip}
                 >
                   <Icons.ArrowRight className="size-5 opacity-50" />
-                  Skip
+                  <span>Skip</span>
                 </Button>
               )}
             </>
@@ -195,7 +191,7 @@ export function WorkoutQuestion({
           onClick={onFinish}
         >
           <Icons.Flag className="size-5 opacity-50" />
-          Finish
+          <span>Finish</span>
         </Button>
       </div>
     ),

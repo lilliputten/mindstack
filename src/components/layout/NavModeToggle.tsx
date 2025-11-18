@@ -26,8 +26,10 @@ export function NavModeToggle(props: TNavModeToggleProps) {
           size="sm"
           className={cn(
             isDev && '__NavModeToggle', // DEBUG
-            'relative size-8 px-0',
-            // onSidebar && 'flex justify-start gap-2 px-2',
+            'relative size-8 px-2',
+            'hover:bg-theme-400/50',
+            'hover:border-white/10',
+
             className,
           )}
           title={t('label')}
@@ -37,7 +39,7 @@ export function NavModeToggle(props: TNavModeToggleProps) {
           <span className="sr-only">{t('label')}</span>
         </Button>
       </DropdownMenuTrigger>
-      <NavModeToggleBlock align="end" onPrimary={onPrimary} onSidebar={onSidebar} />
+      <NavModeToggleBlock align="start" onPrimary={onPrimary} onSidebar={onSidebar} />
     </DropdownMenu>
   );
 }

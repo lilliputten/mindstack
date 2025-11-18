@@ -4,7 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { siteTitle } from '@/config/env';
 import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -12,6 +11,7 @@ import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
+import { siteTitle } from '@/config';
 import { isDev } from '@/constants';
 import { Link, useT } from '@/i18n';
 
@@ -85,7 +85,10 @@ interface TSignInFormHeaderProps {
 }
 
 export function SignInFormHeader(props: TSignInFormHeaderProps) {
-  const { dark, inBody } = props;
+  const {
+    // dark,
+    inBody,
+  } = props;
   const t = useT('SignInForm');
   const Title = inBody ? 'h3' : DialogTitle;
   const Descr = inBody ? 'p' : DialogDescription;
@@ -97,8 +100,23 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
           <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
         </Link>
       )}
-      <Title className="font-urban text-2xl font-bold">{t('sign-in')}</Title>
-      <Descr className="text-center text-sm">{t('intro')}</Descr>
+      <Title
+        className={cn(
+          isDev && '__SignInFormHeader_Title', // DEBUG
+          'font-urban text-2xl',
+          inBody && 'text-theme',
+        )}
+      >
+        {t('sign-in')}
+      </Title>
+      <Descr
+        className={cn(
+          isDev && '__SignInFormHeader_Intro', // DEBUG
+          'text-center text-sm',
+        )}
+      >
+        {t('intro')}
+      </Descr>
     </>
   );
 }

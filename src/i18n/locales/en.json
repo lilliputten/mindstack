@@ -65,7 +65,7 @@
   "WelcomePage": {
     "title": "Welcome!"
   },
-  "AppIntroBlockContent": "<p>This is a small quiz cards' application. Take a look at a brief <infolink>instruction manual</infolink>.</p>",
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "NavAuthButton": {
     "sign-in": "Sign In",
     "Dashboard": "Dashboard"
@@ -111,7 +111,7 @@
     "Admin": "Administration",
     "Dashboard": "Dashboard",
     "Settings": "Settings",
-    "Log out": "Sign out"
+    "Sign Out": "Sign Out"
   },
   "SiteMenu": {
     "AvailableTopics": "Available Topics",

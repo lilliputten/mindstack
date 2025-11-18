@@ -1,6 +1,6 @@
 import { NetworkError } from '@/lib/errors/NetworkError';
 
-import { getErrorText } from './strings';
+import { getErrorText } from './errors';
 
 /** fetchJson -- a json data request sample. */
 export async function fetchJson<T = unknown>(input: RequestInfo, init?: RequestInit): Promise<T> {

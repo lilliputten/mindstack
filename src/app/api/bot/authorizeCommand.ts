@@ -56,7 +56,6 @@ export async function authorizeCommand(ctx: TCommandContext) {
 
     // Store verification token in database
     await prisma.verificationToken.create({
-      // TODO: Add name, language and other parameters?
       data: {
         token,
         expires,
@@ -67,9 +66,26 @@ export async function authorizeCommand(ctx: TCommandContext) {
       },
     });
 
+    /* // TODO: Specify callback url
+     * const encodedRootRoute = encodeURIComponent(rootRoute);
+     * const callbackUrl = encodedRootRoute;
+     */
+
     // Create authorization URL
-    const callbackUrl = encodeURIComponent('/');
-    const urlPath = `/api/auth/callback/telegram?callbackUrl=${callbackUrl}&token=${token}`;
+    const query = [
+      // Combine query params
+      // callbackUrl && callbackUrl !== encodedRootRoute && `callbackUrl=${callbackUrl}`,
+      token && `token=${token}`,
+    ]
+      .filter(Boolean)
+      .join('&');
+    const urlPath = [
+      // Combine the full url
+      '/api/auth/callback/telegram',
+      query,
+    ]
+      .filter(Boolean)
+      .join('?');
     const authUrl = `${WEBHOOK_HOST}${urlPath}`;
     const localUrl = `${PUBLIC_URL}${urlPath}`;
 

@@ -24,6 +24,7 @@ interface TProps {
   topic: TAvailableTopic;
   question: TAvailableQuestion;
 }
+
 export function ViewQuestionContentSummary(props: TProps) {
   const { topic, question } = props;
   const { manageScope } = useManageTopicsStore();
@@ -44,7 +45,7 @@ export function ViewQuestionContentSummary(props: TProps) {
       <div className="flex items-center gap-2">
         <h3 className="text-lg font-semibold">Question Text</h3>
         {question.isGenerated && (
-          <div className="flex items-center gap-1 rounded-md bg-theme-100 px-2 py-1 text-xs text-theme-600">
+          <div className="flex items-center gap-1 rounded-md bg-theme-900 px-2 py-1 text-xs text-theme-400">
             <Icons.WandSparkles className="size-3 opacity-50" />
             AI Generated
           </div>
@@ -118,7 +119,7 @@ export function ViewQuestionContentSummary(props: TProps) {
   const topicInfoContent = isTopicLoadingOverall ? (
     <div
       className={cn(
-        isDev && '__Section_Topic_Skeleton', // DEBUG
+        isDev && '___ViewQuestionContentSummary_Section_Topic_Skeleton', // DEBUG
         'flex size-full flex-1 flex-col gap-4',
       )}
     >
@@ -194,7 +195,7 @@ export function ViewQuestionContentSummary(props: TProps) {
       className="flex flex-col gap-4"
     >
       <h3 className="text-lg font-semibold">Timeline</h3>
-      <div className="space-y-2 text-sm">
+      <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
         <div className="flex items-center gap-2">
           <Icons.CalendarDays className="hidden size-4 opacity-50 sm:flex" />
           <span className="opacity-50">Created:</span>

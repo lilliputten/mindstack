@@ -8,7 +8,7 @@ export async function getAllAIGenerations() {
   const user = await getCurrentUser();
 
   if (!user) {
-    throw new AIGenerationError('USER_NOT_LOGGED');
+    throw new AIGenerationError('UNATHORIZED');
   }
 
   const userId = user.id;

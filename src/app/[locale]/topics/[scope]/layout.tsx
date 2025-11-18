@@ -40,6 +40,7 @@ export default async function ManageTopicsLayout(props: TManageTopicsLayoutProps
     notFound();
   }
 
+  // Check if logged user
   const isLogged = await isLoggedUser();
   if (!isLogged) {
     redirect(welcomeRoute);

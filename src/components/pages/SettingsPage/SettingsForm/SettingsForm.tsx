@@ -4,8 +4,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { UseFormReturn } from 'react-hook-form';
 
+import { getErrorText } from '@/lib/helpers';
 import { removeNullUndefinedValues } from '@/lib/helpers/objects';
-import { getErrorText } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { Form } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';

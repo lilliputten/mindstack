@@ -1,6 +1,9 @@
+import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { welcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
+import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
@@ -27,7 +30,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   }
 }
 
-interface TManageTopicsPageWrapperProps extends TAwaitedProps {
+interface TManageTopicsPageHolderProps extends TAwaitedProps {
   showAddModal?: boolean;
   deleteTopicId?: TTopicId;
   editTopicId?: TTopicId;
@@ -35,7 +38,7 @@ interface TManageTopicsPageWrapperProps extends TAwaitedProps {
   from?: string;
 }
 
-export default async function ManageTopicsPageWrapper(props: TManageTopicsPageWrapperProps) {
+export default async function ManageTopicsPageHolder(props: TManageTopicsPageHolderProps) {
   const {
     showAddModal,
     deleteTopicId,
@@ -44,17 +47,24 @@ export default async function ManageTopicsPageWrapper(props: TManageTopicsPageWr
     from,
     // params,
   } = props;
+
   // const resolvedParams = await params;
   // const { locale, scope } = resolvedParams;
   // const namespace = topicsNamespaces[scope];
   // const t = await getTranslations({ locale, namespace });
+
+  // Check if logged user
+  const isLogged = await isLoggedUser();
+  if (!isLogged) {
+    redirect(welcomeRoute);
+  }
   return (
     <PageWrapper
       className={cn(
-        isDev && '__ManageTopicsPageWrapper', // DEBUG
+        isDev && '__ManageTopicsPageHolder', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__ManageTopicsPageWrapper_Inner', // DEBUG
+        isDev && '__ManageTopicsPageHolder_Inner', // DEBUG
         'w-full rounded-lg gap-6 py-6',
       )}
       limitWidth

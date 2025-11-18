@@ -13,10 +13,10 @@ export function ContentSkeleton({ className }: TProps) {
       className={cn(
         isDev && '__ViewAvailableTopic_ContentSkeleton', // DEBUG
         'flex size-full flex-1 flex-col gap-4 px-6',
-        // 'flex size-full flex-1 flex-col gap-4 rounded-lg',
         className,
       )}
     >
+      {isDev && <p className="text-sm opacity-50">__ViewAvailableTopic_ContentSkeleton</p>}
       <div className="flex flex-col gap-4">
         <Skeleton className="h-4 w-2/3 rounded-lg" />
         <Skeleton className="h-8 w-1/3 rounded-lg" />

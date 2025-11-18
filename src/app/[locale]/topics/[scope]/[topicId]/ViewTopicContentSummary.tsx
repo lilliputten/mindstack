@@ -46,7 +46,10 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
 
       {/* Topic Description */}
       {topic.description && (
-        <div data-testid="__Section_TopicDescription" className="flex flex-col gap-4">
+        <div
+          data-testid="__ViewTopicContentSummary_Section_TopicDescription"
+          className="flex flex-col gap-4"
+        >
           <h3 className="text-lg font-semibold">Description</h3>
           <div className="rounded-lg bg-slate-500/10 p-4">
             <MarkdownText>{topic.description}</MarkdownText>
@@ -55,7 +58,10 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       )}
 
       {/* Topic Questions */}
-      <div data-testid="__Section_Questions" className="flex flex-col gap-4">
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Questions"
+        className="flex flex-col gap-4"
+      >
         <h3 className="text-lg font-semibold">Questions</h3>
         <div className="flex flex-wrap gap-4">
           {!!topic._count?.questions && (
@@ -67,14 +73,17 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           <Button variant="theme">
             <Link href={`${routePath}/${topic.id}/questions`} className="flex items-center gap-2">
               <Icons.Edit className="size-4 opacity-50" />
-              <span>Manage</span>
+              <span>Manage questions</span>
             </Link>
           </Button>
         </div>
       </div>
 
       {/* Topic Properties */}
-      <div data-testid="__Section_Properties" className="flex flex-col gap-4">
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Properties"
+        className="flex flex-col gap-4"
+      >
         <h3 className="text-lg font-semibold">Properties</h3>
         <div className="flex flex-wrap gap-2">
           <Badge
@@ -106,14 +115,17 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
 
       {/* Keywords */}
       {topic.keywords && (
-        <div data-testid="__Section_Keywords" className="flex flex-col gap-4">
+        <div
+          data-testid="__ViewTopicContentSummary_Section_Keywords"
+          className="flex flex-col gap-4"
+        >
           <h3 className="text-lg font-semibold">Keywords</h3>
           <div className="flex flex-wrap gap-1">
             {topic.keywords
               .split(',')
               .filter(Boolean)
               .map((keyword, idx) => (
-                <span key={idx} className="rounded-sm bg-theme-300/10 px-2 text-sm">
+                <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
                   {/* <Icons.Tags className="mr-1 size-3 opacity-50" /> */}
                   {keyword.trim()}
                 </span>
@@ -125,9 +137,9 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       <Separator />
 
       {/* Timestamps */}
-      <div data-testid="__Section_Timeline" className="flex flex-col gap-4">
+      <div data-testid="__ViewTopicContentSummary_Section_Timeline" className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Timeline</h3>
-        <div className="space-y-2 text-sm">
+        <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
           <div className="flex items-center gap-2">
             <Icons.CalendarDays className="size-4 text-muted-foreground opacity-50" />
             <span className="text-muted-foreground">Created:</span>
@@ -144,7 +156,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       </div>
 
       {/* Author Info */}
-      <div data-testid="__Section_Author" className="flex flex-col gap-4">
+      <div data-testid="__ViewTopicContentSummary_Section_Author" className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Author</h3>
         <div className="flex items-center gap-2 text-sm">
           {isOwner ? (

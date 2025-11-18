@@ -2,29 +2,76 @@
 
 import React from 'react';
 
-import { availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { TQuestionId } from '@/features/questions/types';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
-import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
-import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { WorkoutControl } from '@/features/workouts/components';
+import {
+  useAvailableAnswers,
+  useAvailableQuestionById,
+  useAvailableTopicById,
+  useGoBack,
+  useGoToTheRoute,
+  useSessionUser,
+} from '@/hooks';
 
 import { ContentSkeleton } from './ContentSkeleton';
 import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
 
 const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
+function NextQuestionPrefetcher({ questionId }: { questionId?: TQuestionId }) {
+  useAvailableQuestionById({ id: questionId || '' });
+  useAvailableAnswers({
+    itemsLimit: null,
+    questionId: questionId || '',
+  });
+  /* // DEBUG
+   * const { isFetched: isQuestionFetched, isLoading: isQuestionLoading } = nextQuestionQuery;
+   * const isQuestionReady = isQuestionFetched && !isQuestionLoading;
+   * const { isFetched: isAnswersFetched, isLoading: isAnswersLoading } = nextAnswersQuery;
+   * const isAnswersReady = isAnswersFetched && !isAnswersLoading;
+   * React.useEffect(() => {
+   *   if (questionId) {
+   *     console.log('[NextQuestionPrefetcher]', {
+   *       questionId,
+   *       isQuestionReady,
+   *       isAnswersReady,
+   *     });
+   *   }
+   * }, [questionId, isQuestionReady, isAnswersReady]);
+   */
+  return null;
+}
+
+interface TMemo {
+  questionId?: TQuestionId;
+  finished?: boolean;
+  // Detect any question changes to determinde if we should to (re-)start a workout if none
+  hasWorkoutUpdated?: boolean;
+  isStarting?: boolean;
+  // Init timeout handler, if not resolved (true)
+  // initTimeoutHandler?: ReturnType<typeof setTimeout> | true;
+}
+
 export function WorkoutTopicGo() {
-  const { topicId, workout, pending } = useWorkoutContext();
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+  const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
+
+  const [inited, setInited] = React.useState(false);
+  const [isStarting, setIsStarting] = React.useState(false);
 
   if (!topicId) {
     throw new Error('No workout topic ID found');
@@ -34,7 +81,12 @@ export function WorkoutTopicGo() {
   const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
 
-  const isWorkoutInProgress = workout?.started && !workout?.finished;
+  const questionsOrder = workout?.questionsOrder;
+  const stepIndex = workout?.stepIndex || 0;
+
+  const isWorkoutFinished = workout?.finished;
+  const isWorkoutInProgress = workout?.started && !isWorkoutFinished;
+  const hasActiveWorkout = workout && isWorkoutInProgress;
 
   const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
 
@@ -48,23 +100,55 @@ export function WorkoutTopicGo() {
   // const questionsCount = _count?.questions;
   // const allowedTraining = !!questionsCount;
 
-  const currentQuestionId = React.useMemo(() => {
-    if (!workout?.questionsOrder) return null;
-    const questionsOrder = workout.questionsOrder ? workout.questionsOrder.split(' ') : [];
-    const currentIndex = workout.stepIndex || 0;
-    return questionsOrder[currentIndex] || null;
-  }, [workout?.questionsOrder, workout?.stepIndex]);
+  const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
 
+  const unpackedQuestionsOrder = React.useMemo(() => {
+    return questionsOrder ? questionsOrder.split(' ') : [];
+  }, [questionsOrder]);
+
+  const currentQuestionId = unpackedQuestionsOrder[stepIndex] || '';
+  const nextQuestionId = unpackedQuestionsOrder[stepIndex + 1] || '';
+
+  // Effect: Detect any question changes to determinde if we should to (re-)start a workout if none
   React.useEffect(() => {
-    if ((!workout || !isWorkoutInProgress) && !pending) {
-      // eslint-disable-next-line no-console
-      console.warn('[WorkoutTopicGo] No active training: go to the workout review page', {
-        workout,
-      });
-      goBack();
-      // goToTheRoute(workoutRoutePath);
+    if (currentQuestionId) {
+      const hasFinishedRightNow = !!memo.questionId && Boolean(memo.finished) !== isWorkoutFinished;
+      if (!isWorkoutPending && (currentQuestionId !== memo.questionId || hasFinishedRightNow)) {
+        // Real change (or just initializtion otherwise)
+        if (memo.questionId || hasFinishedRightNow) {
+          memo.hasWorkoutUpdated = true;
+        }
+        memo.questionId = currentQuestionId;
+        memo.finished = isWorkoutFinished;
+        setInited(true);
+      }
     }
-  }, [goBack, workoutRoutePath, workout, isWorkoutInProgress, pending]);
+  }, [memo, isWorkoutPending, currentQuestionId, isWorkoutFinished]);
+
+  const availableQuestionQuery = useAvailableQuestionById({ id: currentQuestionId || '' });
+  const {
+    question,
+    // isFetched: isQuestionFetched,
+    // isLoading: isQuestionLoading,
+  } = availableQuestionQuery;
+
+  // Effect: Start workout if no active one (and hasn't been any activity yet)
+  React.useEffect(() => {
+    if (!memo.isStarting && !memo.hasWorkoutUpdated && !hasActiveWorkout && !isWorkoutPending) {
+      // eslint-disable-next-line no-console
+      console.warn('[WorkoutTopicGo] No active training: startaing it now!');
+      memo.isStarting = true;
+      setIsStarting(true);
+      startWorkout()
+        .then(() => {
+          setInited(true);
+        })
+        .finally(() => {
+          memo.isStarting = false;
+          setIsStarting(false);
+        });
+    }
+  }, [memo, startWorkout, hasActiveWorkout, isWorkoutPending, isWorkoutFinished]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -83,7 +167,7 @@ export function WorkoutTopicGo() {
         icon: Icons.Edit,
         visibleFor: 'xl',
         hidden: !allowedEdit,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}`),
+        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
       },
       {
         id: 'ManageQuestion',
@@ -92,10 +176,19 @@ export function WorkoutTopicGo() {
         icon: Icons.Questions,
         visibleFor: 'xl',
         hidden: !isWorkoutInProgress || !allowedEdit,
-        onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId}`),
+        onClick: () =>
+          goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`),
       },
     ],
-    [allowedEdit, goBack, goToTheRoute, topicId, isWorkoutInProgress, currentQuestionId],
+    [
+      allowedEdit,
+      goBack,
+      goToTheRoute,
+      topicId,
+      isWorkoutInProgress,
+      currentQuestionId,
+      manageTopicsRoute,
+    ],
   );
 
   const breadcrumbs = useTopicsBreadcrumbsItems({
@@ -108,8 +201,19 @@ export function WorkoutTopicGo() {
   });
 
   const content =
-    isTopicPending || !topic ? (
-      <ContentSkeleton omitHeader />
+    isTopicPending || !topic || isWorkoutPending || !workout ? (
+      <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+    ) : isStarting ? (
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+        <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
+        <p>The training is starting...</p>
+      </div>
+    ) : isWorkoutFinished ? (
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+        <Icons.Activity className="mx-auto size-8 text-theme" />
+        <p className="text-lg">The training is already completed.</p>
+        <WorkoutControl className="items-center" />
+      </div>
     ) : (
       <Card
         className={cn(
@@ -139,7 +243,7 @@ export function WorkoutTopicGo() {
               showName={false}
               showDescription
             />
-            <TopicProperties topic={topic} className="flex-1 text-sm" showDates />
+            {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
           </CardHeader>
           <CardContent
             className={cn(
@@ -162,7 +266,9 @@ export function WorkoutTopicGo() {
   return (
     <>
       <DashboardHeader
-        heading={truncateMarkdown(topic?.name || '...', 100)}
+        heading={
+          topic?.name ? truncateMarkdown(topic?.name, 100) : <Skeleton className="h-8 w-1/2" />
+        }
         className={cn(
           isDev && '__WorkoutTopicGo_DashboardHeader', // DEBUG
           'mx-6',
@@ -171,6 +277,7 @@ export function WorkoutTopicGo() {
         actions={actions}
       />
       {content}
+      {inited && !!nextQuestionId && <NextQuestionPrefetcher questionId={nextQuestionId} />}
     </>
   );
 }

@@ -13,13 +13,13 @@ export function SmallWelcomeText(props: TPropsWithClassName) {
   return (
     <div
       className={cn(
-        isDev && '__IntroText', // DEBUG
+        isDev && '__SmallWelcomeText', // DEBUG
         className,
         'flex max-w-md flex-col gap-4',
         'text-content',
       )}
     >
-      <h1 className="text-center">{t('WelcomePageTitle')}</h1>
+      <h2 className="text-center text-2xl">{t('WelcomePageTitle')}</h2>
       <AppIntroBlock />
     </div>
   );

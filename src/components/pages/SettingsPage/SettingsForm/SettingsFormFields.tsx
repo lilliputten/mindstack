@@ -63,14 +63,18 @@ function FormSection({ children }: TPropsWithChildren) {
 
 export function SettingsFormFields(props: TSettingsFormFieldsProps) {
   const { className, form, selectLanguage } = props;
+
+  // Translations (Issue #39)
+  const tNavModeToggle = useT('NavModeToggle');
+  const tThemes = useT('Themes');
+
+  // Keys...
   const showOnlyMyTopicsKey = React.useId();
   const jumpToNewEntitiesKey = React.useId();
   const localeKey = React.useId();
   const themeColorKey = React.useId();
   const themeKey = React.useId();
   const langCodeKey = React.useId();
-  const tNavModeToggle = useT('NavModeToggle');
-  const tThemes = useT('Themes');
 
   // Reset language
   const resetLang = (ev: React.MouseEvent) => {
@@ -81,6 +85,11 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
     form.setValue('langName', undefined, opts);
     form.setValue('langCustom', undefined, opts);
   };
+
+  const extendedLocaleNames = React.useMemo<Record<string, string>>(
+    () => ({ ...localeNames, auto: 'Auto' }),
+    [],
+  );
 
   return (
     <div
@@ -303,7 +312,10 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   }}
                 >
                   <SelectTrigger
-                    className="__SelectTrigger flex-1"
+                    className={cn(
+                      isDev && '__SettingsFormFields_SelectTrigger', // DEBUG
+                      'flex-1',
+                    )}
                     aria-label="Application language"
                   >
                     <SelectValue placeholder="Select language…" />
@@ -311,7 +323,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   <SelectContent>
                     {extendedLocalesList.map((locale) => (
                       <SelectItem key={locale} value={locale}>
-                        {localeNames[locale]}
+                        {extendedLocaleNames[locale] || locale}
                       </SelectItem>
                     ))}
                   </SelectContent>

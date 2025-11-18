@@ -24,6 +24,7 @@ interface TViewAnswerContentSummaryProps {
   question: TAvailableQuestion;
   answer: TAvailableAnswer;
 }
+
 export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) {
   const { topic, question, answer } = props;
   const { manageScope } = useManageTopicsStore();
@@ -40,7 +41,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
 
   const topicInfoContent = (
-    <div data-testid="__Section_Topic" className="flex flex-col gap-4">
+    <div data-testid="__ViewAnswerContentSummary_Section_Topic" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Topic</h3>
         {isOwner && (
@@ -71,7 +72,10 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   );
 
   const answerTextContent = (
-    <div data-testid="__Section_AnswerText" className="flex flex-col gap-4">
+    <div
+      data-testid="__ViewAnswerContentSummary_Section_AnswerText"
+      className="flex flex-col gap-4"
+    >
       <h3 className="text-lg font-semibold">Answer Text</h3>
       <div className="rounded-lg bg-slate-500/10 p-4">
         <MarkdownText>{answer.text}</MarkdownText>
@@ -80,7 +84,10 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   );
 
   const answerExplanationContent = answer.explanation ? (
-    <div data-testid="__Section_AnswerExplanation" className="flex flex-col gap-4">
+    <div
+      data-testid="__ViewAnswerContentSummary_Section_AnswerExplanation"
+      className="flex flex-col gap-4"
+    >
       <h3 className="text-lg font-semibold">Explanation</h3>
       <div className="rounded-lg bg-slate-500/10 p-4">
         <MarkdownText>{answer.explanation || ''}</MarkdownText>
@@ -89,7 +96,10 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   ) : undefined;
 
   const answerPropertiesContent = (
-    <div data-testid="__Section_Properties" className="flex flex-col gap-4">
+    <div
+      data-testid="__ViewAnswerContentSummary_Section_Properties"
+      className="flex flex-col gap-4"
+    >
       <h3 className="text-lg font-semibold">Properties</h3>
       <div className="flex flex-wrap gap-2">
         <Badge
@@ -106,7 +116,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
             variant="outline"
             className={cn(
               'flex items-center gap-1 px-2 py-1',
-              'bg-theme-100 text-xs text-theme-600',
+              'bg-theme-900 text-xs text-theme-400',
             )}
           >
             <Icons.WandSparkles className="size-3 opacity-50" />
@@ -119,7 +129,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
 
   // TODO: Use skeleton if is lolading
   const questionInfoContent = (
-    <div data-testid="__Section_Question" className="flex flex-col gap-4">
+    <div data-testid="__ViewAnswerContentSummary_Section_Question" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Question</h3>
         {isOwner && (
@@ -150,7 +160,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   );
 
   const authorInfoContent = (
-    <div data-testid="__Section_Author" className="flex flex-col gap-4">
+    <div data-testid="__ViewAnswerContentSummary_Section_Author" className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Author</h3>
       <div className="flex items-center gap-2 text-sm">
         {isOwner ? (
@@ -172,9 +182,9 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   );
 
   const timestampsContent = (
-    <div data-testid="__Section_Timeline" className="flex flex-col gap-4">
+    <div data-testid="__ViewAnswerContentSummary_Section_Timeline" className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Timeline</h3>
-      <div className="space-y-2 text-sm">
+      <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
         <div className="flex items-center gap-2">
           <Icons.CalendarDays className="h-4 w-4 opacity-50" />
           <span className="opacity-50">Created:</span>

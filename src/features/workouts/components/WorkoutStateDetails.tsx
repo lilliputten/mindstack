@@ -8,11 +8,6 @@ import { TWorkoutData } from '@/features/workouts/types';
 
 export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
   const format = useFormatter();
-  React.useEffect(() => {
-    console.log('[WorkoutStateDetails:DEBUG', {
-      workout,
-    });
-  }, [workout]);
   if (!workout) {
     return <>No workout created</>;
   }

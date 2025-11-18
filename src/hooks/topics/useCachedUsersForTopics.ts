@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'sonner';
 
-import { getErrorText } from '@/lib/helpers/strings';
+import { getErrorText } from '@/lib/helpers';
 import { TTopic } from '@/features/topics/types';
 import { getUsersByIdsList } from '@/features/users/actions';
 import { TUser, TUserId } from '@/features/users/types/TUser';

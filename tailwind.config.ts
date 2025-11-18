@@ -5,13 +5,14 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import { getColorSpread } from './build-utils/getColorSpread';
 // NOTE: It's not possible to export css modules on this stage
-import { primaryColor, secondaryColor } from './src/config/themeColors';
+import { darkBlueColor, primaryColor, secondaryColor } from './src/config/themeColors';
 
 // Core app color definitions
 // UNUSED? Construct primary/secondary colors spread tables
 // (with keys 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950) from key colors.
 const primaryColorSpread = getColorSpread('primary', primaryColor);
 const secondaryColorSpread = getColorSpread('secondary', secondaryColor);
+// const darkBlueColorSpread = getColorSpread('dark-blue', darkBlueColor);
 
 export default {
   darkMode: ['class'],
@@ -31,7 +32,9 @@ export default {
         foreground: 'var(--foregroundColor)',
         ...primaryColorSpread,
         ...secondaryColorSpread,
-        border: 'rgba(var(--color-theme-200-RGB) / 20%)',
+        // ...darkBlueColorSpread,
+        'dark-blue': darkBlueColor,
+        border: 'rgba(var(--color-theme-300-RGB) / 20%)',
         input: 'rgba(var(--color-theme-500-RGB) / 20%)',
         // input: 'var(--inputColor)',
         ring: 'rgba(var(--color-theme-500-RGB) / 50%)',

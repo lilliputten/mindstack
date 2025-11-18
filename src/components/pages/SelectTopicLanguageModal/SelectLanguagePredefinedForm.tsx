@@ -119,12 +119,15 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
                 registerSelectField.onChange({ target: { name: 'id', value } })
               }
             >
-              <SelectTrigger className="__SelectTrigger flex-1" aria-label="Language">
+              <SelectTrigger
+                className="SelectLanguagePredefinedForm__SelectTrigger flex-1"
+                aria-label="Language"
+              >
                 <SelectValue placeholder="Select a language…" />
               </SelectTrigger>
-              <SelectContent className="__SelectContent">
+              <SelectContent className="SelectLanguagePredefinedForm__SelectContent">
                 {languagesList.map(({ id, name }) => (
-                  <SelectItem value={id} key={id}>
+                  <SelectItem value={id} key={id} className="text-ellipsis">
                     {name}
                   </SelectItem>
                 ))}

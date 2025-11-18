@@ -32,6 +32,8 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
           className={cn(
             isDev && '__NavLocaleSwitcher', // DEBUG
             'flex gap-2',
+            'hover:bg-theme-400/50',
+            'hover:border-white/10',
             className,
           )}
           title={t('label')}
@@ -42,7 +44,7 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
           <span className="sr-only">{t('label')}</span>
         </Button>
       </DropdownMenuTrigger>
-      <NavLocaleSwitcherBlock align="end" onPrimary={onPrimary} onSidebar={onSidebar} />
+      <NavLocaleSwitcherBlock align="start" onPrimary={onPrimary} onSidebar={onSidebar} />
     </DropdownMenu>
   );
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { rootRoute } from '@/config/routesConfig';
 import { ErrorLike } from '@/lib/errors';
-import { getErrorText } from '@/lib/helpers/strings';
+import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';

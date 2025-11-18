@@ -14,6 +14,7 @@ import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Switch } from '@/components/ui/Switch';
 import {
   Table,
   TableBody,
@@ -30,7 +31,7 @@ import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
-import { deleteTopics } from '@/features/topics/actions';
+import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useT } from '@/i18n';
@@ -113,6 +114,9 @@ function TopicTableHeader({
         <TableHead id="keywords" className="truncate max-xl:hidden">
           Keywords
         </TableHead>
+        <TableHead id="isPublic" className="truncate max-lg:hidden">
+          Public
+        </TableHead>
       </TableRow>
     </TableHeader>
   );
@@ -128,6 +132,7 @@ interface TTopicTableRowProps {
   cachedUsers: TCachedUsers;
   isSelected: boolean;
   toggleSelected: (topicId: TTopicId) => void;
+  availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
 }
 
 function TopicTableRow(props: TTopicTableRowProps) {
@@ -141,8 +146,47 @@ function TopicTableRow(props: TTopicTableRowProps) {
     idx,
     isSelected,
     toggleSelected,
+    availableTopicsQuery,
   } = props;
-  const { id, name, langCode, langName, keywords, userId, _count } = topic;
+  const { id, name, langCode, langName, keywords, userId, _count, isPublic } = topic;
+
+  const [isPending, startTransition] = React.useTransition();
+  const queryClient = useQueryClient();
+
+  const updateAndInvalidateTopic = React.useCallback(
+    async (updatedTopic: TTopic) => {
+      await updateTopic(updatedTopic);
+      availableTopicsQuery.updateTopic(updatedTopic);
+      const invalidatePrefixes = [['available-topic', topic.id], ['available-topics']].map(
+        makeQueryKeyPrefix,
+      );
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [availableTopicsQuery.queryKey]);
+    },
+    [topic.id, availableTopicsQuery, queryClient],
+  );
+
+  const handleTogglePublic = React.useCallback(
+    (checked: boolean) => {
+      startTransition(async () => {
+        const updatedTopic = { ...topic, isPublic: checked };
+        try {
+          await updateAndInvalidateTopic(updatedTopic);
+        } catch (error) {
+          const details = error instanceof APIError ? error.details : null;
+          const message = 'Cannot update topic public status';
+          // eslint-disable-next-line no-console
+          console.error('[TopicTableRow:handleTogglePublic]', message, {
+            details,
+            error,
+            topicId: topic.id,
+          });
+          debugger; // eslint-disable-line no-debugger
+          toast.error(message);
+        }
+      });
+    },
+    [topic, updateAndInvalidateTopic],
+  );
   const questionsCount = _count?.questions;
   const topicUser = isAdminMode ? cachedUsers[userId] : undefined;
   const { manageScope } = useManageTopicsStore();
@@ -206,6 +250,13 @@ function TopicTableRow(props: TTopicTableRowProps) {
       </TableCell>
       <TableCell id="keywords" className="max-w-[8em] truncate max-xl:hidden">
         <div className="truncate">{keywords}</div>
+      </TableCell>
+      <TableCell id="isPublic" className="w-[8em] max-lg:hidden">
+        <Switch
+          checked={isPublic || false}
+          onCheckedChange={handleTogglePublic}
+          disabled={isPending}
+        />
       </TableCell>
       <TableCell className="text-right">
         <div className="flex justify-end gap-1">
@@ -394,6 +445,7 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
                 cachedUsers={cachedUsers}
                 isSelected={selectedTopics.has(topic.id)}
                 toggleSelected={toggleSelected}
+                availableTopicsQuery={availableTopicsQuery}
               />
             ))}
           </TableBody>
@@ -443,6 +495,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         error,
         selectedTopics: Array.from(selectedTopics),
       });
+      debugger; // eslint-disable-line no-debugger
       toast.error(message);
     },
   });
@@ -468,6 +521,78 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
     setShowDeleteConfirm(false);
   }, []);
 
+  const makeSelectedPublicMutation = useMutation({
+    mutationFn: async (topicIds: TTopicId[]) => {
+      const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
+      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: true })));
+      return topics;
+    },
+    onSuccess: (topics) => {
+      topics.forEach((topic) => {
+        availableTopicsQuery.updateTopic({ ...topic, isPublic: true });
+      });
+      const invalidatePrefixes = [['available-topics']].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [availableTopicsQuery.queryKey]);
+      setSelectedTopics(new Set());
+    },
+    onError: (error) => {
+      const message = 'Cannot make selected topics public';
+      // eslint-disable-next-line no-console
+      console.error('[ManageTopicsListCard:makeSelectedPublicMutation]', message, {
+        error,
+      });
+      debugger; // eslint-disable-line no-debugger
+      toast.error(message);
+    },
+  });
+
+  const resetSelectedPublicMutation = useMutation({
+    mutationFn: async (topicIds: TTopicId[]) => {
+      const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
+      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: false })));
+      return topics;
+    },
+    onSuccess: (topics) => {
+      topics.forEach((topic) => {
+        availableTopicsQuery.updateTopic({ ...topic, isPublic: false });
+      });
+      const invalidatePrefixes = [['available-topics']].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [availableTopicsQuery.queryKey]);
+      setSelectedTopics(new Set());
+    },
+    onError: (error) => {
+      const message = 'Cannot reset public status for selected topics';
+      // eslint-disable-next-line no-console
+      console.error('[ManageTopicsListCard:resetSelectedPublicMutation]', message, {
+        error,
+      });
+      debugger; // eslint-disable-line no-debugger
+      toast.error(message);
+    },
+  });
+
+  const handleMakeSelectedPublic = React.useCallback(() => {
+    const selectedIds = Array.from(selectedTopics);
+    if (selectedIds.length === 0) return;
+    const promise = makeSelectedPublicMutation.mutateAsync(selectedIds);
+    toast.promise(promise, {
+      loading: 'Making selected topics public...',
+      success: 'Successfully made selected topics public',
+      error: 'Cannot make selected topics public',
+    });
+  }, [selectedTopics, makeSelectedPublicMutation]);
+
+  const handleResetSelectedPublic = React.useCallback(() => {
+    const selectedIds = Array.from(selectedTopics);
+    if (selectedIds.length === 0) return;
+    const promise = resetSelectedPublicMutation.mutateAsync(selectedIds);
+    toast.promise(promise, {
+      loading: 'Resetting public status for selected topics...',
+      success: 'Successfully reset public status for selected topics',
+      error: 'Cannot reset public status for selected topics',
+    });
+  }, [selectedTopics, resetSelectedPublicMutation]);
+
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
@@ -486,6 +611,26 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         visibleFor: 'lg',
         pending: isRefetching,
         onClick: handleReload,
+      },
+      {
+        id: 'Mark Public',
+        content: 'Mark Selected as Public',
+        variant: 'secondary',
+        icon: Icons.Eye,
+        visibleFor: 'lg',
+        hidden: !selectedTopics.size,
+        pending: makeSelectedPublicMutation.isPending,
+        onClick: handleMakeSelectedPublic,
+      },
+      {
+        id: 'Mark Private',
+        content: 'Mark Selected as Private',
+        variant: 'secondary',
+        icon: Icons.EyeOff,
+        visibleFor: 'lg',
+        hidden: !selectedTopics.size,
+        pending: resetSelectedPublicMutation.isPending,
+        onClick: handleResetSelectedPublic,
       },
       {
         id: 'Delete Selected',
@@ -512,6 +657,10 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       handleReload,
       isRefetching,
       selectedTopics.size,
+      makeSelectedPublicMutation.isPending,
+      handleMakeSelectedPublic,
+      resetSelectedPublicMutation.isPending,
+      handleResetSelectedPublic,
       deleteSelectedMutation.isPending,
       handleShowDeleteConfirm,
     ],

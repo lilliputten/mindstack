@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
 import { settingsRoute } from '@/config/routesConfig';
@@ -24,13 +26,7 @@ interface TNavUserBlockProps extends TPropsWithClassName {
 }
 
 function SidebarWrapper(props: TNavUserBlockProps & { children: React.ReactNode }) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-  } = props;
+  const { className, children } = props;
   return (
     <div
       className={cn(
@@ -44,16 +40,31 @@ function SidebarWrapper(props: TNavUserBlockProps & { children: React.ReactNode 
   );
 }
 function SidebarMenuItem(
-  props: TNavUserBlockProps & { children: React.ReactNode; asChild?: boolean },
+  props: TNavUserBlockProps & {
+    children: React.ReactNode;
+    asChild?: boolean;
+    onSelect?: (event: Event) => void;
+  },
 ) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-  } = props;
-  return <div className={className}>{children}</div>;
+  const { className, children, onSelect } = props;
+  const onClick = onSelect as unknown as (event: React.MouseEvent) => void;
+  return (
+    <div
+      className={cn(
+        isDev && '__NavUserBlock_SidebarMenuItem', // DEBUG
+        'cursor-pointer',
+        'flex items-center gap-2',
+        'rounded-sm',
+        'px-2 py-1.5',
+        'text-sm',
+        'hover:bg-theme-500',
+        className,
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
 }
 
 export function NavUserBlock(props: TNavUserBlockProps) {
@@ -67,6 +78,24 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const { data: session } = useSession();
   const user = session?.user;
   const t = useT('NavUserAccount');
+
+  const queryClient = useQueryClient();
+
+  const handleSignOut = React.useCallback(
+    (event: Event) => {
+      event.preventDefault();
+      closeOuterMenu?.();
+      // Clear react-query and local caches
+      queryClient.clear();
+      if (typeof localStorage !== 'undefined') {
+        localStorage.clear();
+      }
+      signOut({
+        callbackUrl: `${window.location.origin}/`,
+      });
+    },
+    [closeOuterMenu, queryClient],
+  );
 
   if (!user) {
     return null;
@@ -82,6 +111,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       align={align}
       className={cn(
         isDev && '__NavUserBlock', // DEBUG
+        onSidebar && 'items-start',
         className,
       )}
     >
@@ -98,7 +128,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             className={cn(
               isDev && '__NavUserBlock_UserAvatar', // DEBUG
               className,
-              'size-8 rounded-full bg-theme-300/25',
+              'size-8 rounded-full bg-theme-700/25',
               // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
               onSidebar && 'flex',
             )}
@@ -118,16 +148,13 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         </div>
       </div>
 
-      <DropdownMenuSeparator />
+      <DropdownMenuSeparator className="w-full" />
 
       {/*isAdmin && (
       <MenuItem asChild>
         <Link
           href="/admin"
-          className={cn(
-            'flex items-center space-x-2.5',
-            'disabled', // UNUSED
-          )}
+          className="flex items-center space-x-2.5 disabled"
         >
           <Lock className="size-4" />
           <p className="text-sm">{t('Admin')}</p>
@@ -140,10 +167,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           <MenuItem asChild>
             <Link
               href="/" // dashboard
-              className={cn(
-                'flex items-center space-x-2.5',
-                'disabled', // UNUSED
-              )}
+              className="disabled flex items-center space-x-2.5"
             >
               <Icons.LayoutDashboard className="size-4" />
               <p className="text-sm">{t('Dashboard')}</p>
@@ -151,36 +175,27 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           </MenuItem>
 
           <MenuItem asChild>
-            <Link
-              href={settingsRoute}
-              className={cn(
-                'flex items-center space-x-2.5',
-                // 'disabled', // UNUSED
-              )}
-            >
+            <Link href={settingsRoute} className="flex items-center space-x-2.5">
               <Icons.Settings className="size-4" />
               <p className="text-sm">{t('Settings')}</p>
             </Link>
           </MenuItem>
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="w-full" />
         </>
       )}
 
+      {/* Sign Out button */}
       <MenuItem
-        className="cursor-pointer"
-        onSelect={(event) => {
-          event.preventDefault();
-          closeOuterMenu?.();
-          localStorage.clear();
-          signOut({
-            callbackUrl: `${window.location.origin}/`,
-          });
-        }}
+        className={cn(
+          isDev && '__NavUserBlock_SignOut_Button', // DEBUG
+          'cursor-pointer',
+        )}
+        onSelect={handleSignOut}
       >
         <div className="flex items-center space-x-2.5">
           <Icons.LogOut className="size-4" />
-          <p className="text-sm">{t('Log out')}</p>
+          <p className="text-sm">{t('Sign Out')}</p>
         </div>
       </MenuItem>
     </Wrapper>
