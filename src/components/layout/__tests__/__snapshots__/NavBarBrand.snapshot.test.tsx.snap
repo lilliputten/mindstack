@@ -2,12 +2,13 @@
 
 exports[`NavBarBrand snapshot 1`] = `
 <div>
-  <div
-    class="h-12 flex items-center space-x-1.5 gap-2 transition-all mr-10 select-none"
+  <a
+    class="h-12 flex items-center space-x-1.5 gap-2 transition-all mr-10 select-none hover:opacity-80"
+    href="/welcome"
   >
     <img
       alt="mindstack"
-      class="h-14 w-auto"
+      class="h-auto w-48 select-none"
       data-nimg="1"
       data-testid="NavBarBrandImage"
       decoding="async"
@@ -18,6 +19,6 @@ exports[`NavBarBrand snapshot 1`] = `
       style="color: transparent;"
       width="40"
     />
-  </div>
+  </a>
 </div>
 `;

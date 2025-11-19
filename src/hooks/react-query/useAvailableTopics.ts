@@ -65,6 +65,12 @@ function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
   );
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
 
+  console.log('[useAvailableTopics:DEBUG]', {
+    queryProps,
+    queryUrlHash,
+    queryKey,
+  });
+
   const query: UseInfiniteQueryResult<TAvailableTopicsResultsQueryData, Error> = useInfiniteQuery<
     TGetAvailableTopicsResults,
     Error,
