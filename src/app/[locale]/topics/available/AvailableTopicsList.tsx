@@ -40,7 +40,7 @@ export function AvailableTopicsList(props: TProps) {
       viewportClassName={cn(
         isDev && '__AvailableTopicsList_Viewport', // DEBUG
         'relative flex flex-1 flex-col',
-        '[&>div]:gap-4 [&>div]:flex-col',
+        '[&>div]:gap-4 [&>div]:flex-col [&>div]:px-6',
       )}
       containerClassName={cn(
         isDev && '__AvailableTopicsList_Container', // DEBUG

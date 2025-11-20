@@ -9,6 +9,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { useAvailableTopicsByScope, useGoToTheRoute, useSessionUser } from '@/hooks';
 
 import { AvailableTopicsList } from './AvailableTopicsList';
@@ -51,10 +52,17 @@ export function AvailableTopicsListPage(props: TProps) {
         // breadcrumbs={breadcrumbs}
         actions={actions}
       />
+      <AvailableTopicsFilters
+        className={cn(
+          isDev && '__AvailableTopicsListPage_Filters', // DEBUG
+          'mx-6',
+        )}
+      />
       <AvailableTopicsList
         className={cn(
           isDev && '__AvailableTopicsListPage_Content', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden',
+          'relative flex flex-1 flex-col overflow-hidden',
+          // 'mx-6',
         )}
         manageScope={manageScope}
         availableTopicsQuery={availableTopicsQuery}
