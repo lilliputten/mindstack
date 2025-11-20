@@ -11,15 +11,15 @@ import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
-import { TTopic } from '@/features/topics/types';
-import { useAvailableTopicsByScope, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { TAvailableTopic } from '@/features/topics/types';
+import { useGoToTheRoute, useSessionUser } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
 
 interface TAvailableTopicsListItemProps {
   index: number;
   style?: React.CSSProperties;
-  topic: TTopic;
+  topic: TAvailableTopic;
 }
 
 export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
@@ -36,16 +36,19 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
     // keywords,
     // createdAt,
     // updatedAt,
+    userTopicWorkout: workouts,
+    // workoutStats,
     _count,
   } = topic;
+
+  const workout = workouts?.[0];
 
   const questionsCount = _count?.questions;
   const allowedTraining = !!questionsCount;
 
-  const { routePath } = useAvailableTopicsByScope({ manageScope });
   const router = useRouter();
   const pathname = usePathname();
-  const topicsRoutePath = `${routePath}/${topicId}`;
+  const topicsRoutePath = `${pathname}/${topicId}`;
   const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
 
   const user = useSessionUser();
@@ -64,12 +67,6 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
     router.push(workoutRoutePath);
   };
 
-  /* const defaultAction = (ev: React.MouseEvent) => {
-   *   ev.stopPropagation();
-   *   router.push(topicRoutePath);
-   * };
-   */
-
   let cardContent = (
     <>
       <CardHeader
@@ -82,6 +79,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         <TopicHeader
           scope={manageScope}
           topic={topic}
+          workout={workout}
           className="flex-1 max-sm:flex-col-reverse"
           showProperties={false}
         />
@@ -132,7 +130,16 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
           {allowedTraining && (
             <Button variant="theme" onClick={startWorkout} className="flex gap-2">
               <Icons.ArrowRight className="hidden size-4 opacity-50 sm:flex" />
-              <span>Start Training</span>
+              {/*
+              <span>Training</span>
+              */}
+              <span>
+                {workout?.finished
+                  ? 'Restart Training'
+                  : workout?.started
+                    ? 'Resume Training'
+                    : 'Start Training'}
+              </span>
             </Button>
           )}
         </div>

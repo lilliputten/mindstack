@@ -16,11 +16,34 @@ import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { AvailableTopicsListPage } from './AvailableTopicsListPage';
 import { ContentSkeleton } from './ContentSkeleton';
 
+/** Used for tests below */
+// const now = new Date();
+
 export function AvailableTopicsListWrapper() {
   const manageScope: TTopicsManageScopeId = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
-  const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
+  const availableTopicsQuery = useAvailableTopicsByScope({
+    manageScope,
+    // includeWorkout: true,
+    // DEBUG: Test search options
+    // searchText: 'test',
+    // hasWorkoutStats: true,
+    // hasActiveWorkouts: true,
+    // hasQuestions: false,
+    // minCreatedAt: createDateWithDaysDiff(-5, now),
+    // maxCreatedAt: createDateWithDaysDiff(-5, now),
+    // minUpdatedAt: createDateWithDaysDiff(-5, now),
+    // maxUpdatedAt: createDateWithDaysDiff(-5, now),
+    // langCode: 'za', // Exact language conde
+    // langName: 'Zhuang; Chuang', // Exact language name
+    // searchLang: 'Chua', // Fuzzy language name opr code
+  });
   const { isFetched, isError, refetch, error, hasTopics } = availableTopicsQuery;
+
+  /* console.log('[AvailableTopicsListWrapper:DEBUG]', {
+   *   allTopics,
+   * });
+   */
 
   const goBack = useGoBack(rootRoute);
 

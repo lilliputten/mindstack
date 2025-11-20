@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
+import { safeJsonParse } from '@/lib/helpers/json';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { TAvailableTopic } from '@/features/topics/types';
+import { TAvailableTopic, TIncludedUserTopicWorkout } from '@/features/topics/types';
+import { TWorkoutData } from '@/features/workouts/types';
 import { useSessionUser } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
@@ -22,8 +24,11 @@ interface TTopicHeaderOptions {
   showProperties?: boolean;
   withLink?: boolean;
 }
+
 interface TTopicHeaderProps {
   topic: TAvailableTopic;
+  workout?: Partial<TIncludedUserTopicWorkout>;
+  isWorkoutLoading?: boolean;
   scope?: TTopicsManageScopeId;
   className?: string;
 }
@@ -31,20 +36,52 @@ interface TTopicHeaderProps {
 const TRUNCATE_TITLE = false;
 
 function ShowDetails(
-  props: Pick<TTopicHeaderOptions, 'showDates'> & {
-    topic: TAvailableTopic;
-    className?: string;
-  },
+  props: Pick<TTopicHeaderOptions, 'showDates'> &
+    Pick<TTopicHeaderProps, 'topic' | 'workout' | 'isWorkoutLoading'> & {
+      className?: string;
+    },
 ) {
-  const { topic, showDates } = props;
+  const { topic, workout, isWorkoutLoading, showDates } = props;
   const { userId, isPublic, createdAt, updatedAt } = topic;
+
+  const topicId = topic.id;
 
   const user = useSessionUser();
   const isOwner = userId && userId === user?.id;
   const format = useFormatter();
   const PublicIcon = isPublic ? Icons.Eye : Icons.EyeOff;
+
+  // NOTE: Fetch the workout state from the passed workout data (if any) or try to get it from the local storage, otherwise
+  const isActiveWorkout = React.useMemo(() => {
+    let data: Partial<TIncludedUserTopicWorkout> | undefined;
+    if (workout && !isWorkoutLoading) {
+      data = workout;
+    } else if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(`workout-${topicId}`);
+      if (stored) {
+        try {
+          data = safeJsonParse<TWorkoutData | undefined>(stored, undefined);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('[TopicHeader:Memo:isActiveWorkout] Error parsing local workout data', {
+            error,
+            stored,
+            data,
+          });
+          debugger; // eslint-disable-line no-debugger
+        }
+      }
+    }
+    return !!data?.started && !data?.finished;
+  }, [isWorkoutLoading, topicId, workout]);
+
   return (
     <>
+      {isActiveWorkout && (
+        <span id="isOwner" title="The training is active">
+          <Icons.Play className="size-4 text-theme-600" />
+        </span>
+      )}
       {isOwner && (
         <span id="isOwner" title="Your Topic">
           <Icons.ShieldCheck className="size-4 text-green-600" />
@@ -74,6 +111,8 @@ function ShowDetails(
 export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
   const {
     topic,
+    workout,
+    isWorkoutLoading,
     scope = TopicsManageScopeIds.AVAILABLE_TOPICS,
     className,
     // Options...
@@ -170,7 +209,12 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
               'text-xs opacity-50',
             )}
           >
-            <ShowDetails topic={topic} showDates={showDates} />
+            <ShowDetails
+              topic={topic}
+              workout={workout}
+              isWorkoutLoading={isWorkoutLoading}
+              showDates={showDates}
+            />
           </div>
         </div>
       )}
@@ -182,7 +226,14 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
             'text-xs opacity-50',
           )}
         >
-          {!hasMainSection && <ShowDetails topic={topic} showDates={showDates} />}
+          {!hasMainSection && (
+            <ShowDetails
+              topic={topic}
+              workout={workout}
+              isWorkoutLoading={isWorkoutLoading}
+              showDates={showDates}
+            />
+          )}
           {showProperties && <TopicProperties topic={topic} showDates />}
         </div>
       )}

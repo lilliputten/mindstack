@@ -98,7 +98,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
         <WorkoutStateDetails workout={workout} />
       </p>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={handleGoWorkout} variant="default" className="flex gap-2">
+        <Button onClick={handleGoWorkout} variant="theme" className="flex gap-2">
           <Icons.Activity className="size-4 opacity-50" />
           <span>
             {workout.finished
@@ -120,7 +120,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
             <Skeleton className="h-10 w-40" />
           ) : null)}
         {workout.started && !workout.finished && (
-          <Button onClick={finishWorkout} variant="default" className="flex gap-2">
+          <Button onClick={finishWorkout} variant="theme" className="flex gap-2">
             <Icons.Flag className="size-4 opacity-50" />
             <span>Finish Training</span>
           </Button>

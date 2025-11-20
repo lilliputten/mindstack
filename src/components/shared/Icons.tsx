@@ -60,6 +60,7 @@ export const {
   PanelLeftClose,
   PanelRightClose,
   Pencil,
+  Play,
   Plus,
   Rows3,
   Save,

@@ -60,13 +60,16 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
     if (!topicWithWorkouts) {
       throw new Error('No topic found');
     }
+    /* // NOTE: The `userTopicWorkout` field is a list!
+     * const { userTopicWorkout, ...rest } = topicWithWorkouts;
+     * const topic = {
+     *   ...rest,
+     *   userTopicWorkout,
+     *   // workout: userTopicWorkout?.[0],
+     * } satisfies TAvailableTopic;
+     */
 
-    const { userTopicWorkout, ...rest } = topicWithWorkouts;
-
-    const topic = {
-      ...rest,
-      userTopicWorkout: userTopicWorkout?.[0],
-    } satisfies TAvailableTopic;
+    const topic = topicWithWorkouts satisfies TAvailableTopic;
 
     // Check if the current user is allowed to see the topic?
     if (!topic.isPublic && userId !== topic?.userId && user?.role !== 'ADMIN') {
