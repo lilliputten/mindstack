@@ -38,12 +38,22 @@ export function AvailableTopicsFilters(props: TProps) {
     defaultValues: filtersDataDefaults,
   });
 
+  /* // DEBUG: Effect: Watch form values
+   * const watchedValues = form.watch();
+   * React.useEffect(() => {
+   *   console.log('[AvailableTopicsFilters] DEBUG: Effect: Watch form values', {
+   *     watchedValues,
+   *     hasWorkoutStats: watchedValues.hasWorkoutStats,
+   *   });
+   * }, [watchedValues]);
+   */
+
   const hasFilters = true;
 
   const handleFormSubmit = React.useCallback(
     (formData: TFiltersData) => {
       // TODO: Update form data
-      console.log('Apply filters:', formData);
+      console.log('[AvailableTopicsFilters:handleFormSubmit]: Apply filters:', formData);
       debugger;
       hideFilters();
     },
@@ -51,7 +61,7 @@ export function AvailableTopicsFilters(props: TProps) {
   );
 
   const handleReset = React.useCallback(() => {
-    console.log('Reset filters');
+    console.log('[AvailableTopicsFilters:handleReset]: Reset filters');
     debugger;
     form.reset(filtersDataDefaults);
   }, [form]);

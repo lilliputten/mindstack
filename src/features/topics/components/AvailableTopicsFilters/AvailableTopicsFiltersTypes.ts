@@ -34,6 +34,17 @@ export const filtersDataSchema = z.object({
   // keywords: z.string().optional(),
   // answersCountMax: z.union([z.string().optional(), z.number()]),
 });
+/*
+ * // DEBUG: Log the values being validated
+ * .superRefine((data, ctx) => {
+ *   console.log('[AvailableTopicsFiltersTypes:filtersDataSchema:superRefine] DEBUG', {
+ *     hasWorkoutStats: data.hasWorkoutStats,
+ *     data,
+ *     ctx,
+ *   });
+ *   debugger;
+ * })
+ */
 
 export type TFiltersData = z.infer<typeof filtersDataSchema>;
 

@@ -6,8 +6,7 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
-import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { ThreeStateField } from '@/components/ui/ThreeStateField';
@@ -49,22 +48,25 @@ export function AvailableTopicsFiltersFields(props: TProps) {
       <FormField
         name="hasWorkoutStats"
         control={form.control}
-        render={({ field }) => (
-          <FormItem className="flex w-full flex-col gap-2">
-            <Label htmlFor={hasWorkoutStatsKey}>Has Training Statistics</Label>
-            <FormControl>
-              <ThreeStateField
-                id={hasWorkoutStatsKey}
-                {...field}
-                onValueChange={field.onChange}
-                trueText="Yes"
-                falseText="No"
-                nullText="Undefined"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        render={({ field }) => {
+          const { onChange: _, ...restField } = field;
+          return (
+            <FormItem className="flex w-full flex-col gap-2">
+              <Label htmlFor={hasWorkoutStatsKey}>Has Training Statistics</Label>
+              <FormControl>
+                <ThreeStateField
+                  id={hasWorkoutStatsKey}
+                  {...restField}
+                  onValueChange={field.onChange}
+                  trueText="Yes"
+                  falseText="No"
+                  nullText="Undefined"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
       />
     </div>
   );

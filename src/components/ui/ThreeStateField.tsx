@@ -31,11 +31,10 @@ export const ThreeStateField = React.forwardRef<
 >((props, ref) => {
   const { className, value, onValueChange, trueText, falseText, nullText, ...restProps } = props;
 
-  const handleValueChange = (val: string) => {
+  const handleValueChange = (value: string) => {
     if (onValueChange) {
-      if (val === 'true') onValueChange(true);
-      else if (val === 'false') onValueChange(false);
-      else onValueChange(null);
+      const resolvedValue: TThreeState = value === 'true' ? true : value === 'false' ? false : null;
+      onValueChange(resolvedValue);
     }
   };
 
