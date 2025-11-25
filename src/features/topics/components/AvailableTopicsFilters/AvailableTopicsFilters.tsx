@@ -1,28 +1,60 @@
 'use client';
 
 import React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
-import { AvailableTopicsFiltersForm } from './AvailableTopicsFiltersForm';
+import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
+import {
+  filtersDataDefaults,
+  filtersDataSchema,
+  TFiltersData,
+} from './AvailableTopicsFiltersTypes';
 
 type TProps = TPropsWithClassName;
 
 export function AvailableTopicsFilters(props: TProps) {
   const { className } = props;
-  const [isExpanded, setIsExpanded] = React.useState(false);
+  const [isExpanded, setIsExpanded] = React.useState(true);
 
-  const toggleFilters = () => setIsExpanded(!isExpanded);
-  const hideFilters = () => setIsExpanded(false);
+  const toggleFilters = React.useCallback(() => setIsExpanded((isExpanded) => !isExpanded), []);
+  const hideFilters = React.useCallback(() => () => setIsExpanded(false), []);
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
+
+  const form = useForm<TFiltersData>({
+    mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
+    criteriaMode: 'all', // Display all validation errors or one at a time.
+    resolver: zodResolver(filtersDataSchema),
+    defaultValues: filtersDataDefaults,
+  });
+
   const hasFilters = true;
+
+  const handleFormSubmit = React.useCallback(
+    (formData: TFiltersData) => {
+      // TODO: Update form data
+      console.log('Apply filters:', formData);
+      debugger;
+      hideFilters();
+    },
+    [hideFilters],
+  );
+
+  const handleReset = React.useCallback(() => {
+    console.log('Reset filters');
+    debugger;
+    form.reset(filtersDataDefaults);
+  }, [form]);
 
   const filterCaption = React.useMemo(() => {
     if (isExpanded) {
@@ -81,16 +113,11 @@ export function AvailableTopicsFilters(props: TProps) {
             'flex flex-1 flex-col',
             'px-0',
             'py-0',
-            // 'bg-theme-500/10',
-            // 'text-white',
-            // !isExpanded && 'py-2',
           )}
         >
           <ScrollArea
             className={cn(
               isDev && '__AvailableTopicsFilters_Scroll', // DEBUG
-              // 'pt-6',
-              // !isExpanded && 'py-2',
             )}
             viewportClassName={cn(
               isDev && '__AvailableTopicsFilters_ScrollViewport', // DEBUG
@@ -98,7 +125,38 @@ export function AvailableTopicsFilters(props: TProps) {
               '[&>div]:py-6 [&>div]:!flex [&>div]:flex-col [&>div]:gap-6 [&>div]:flex-1',
             )}
           >
-            <AvailableTopicsFiltersForm hideFilters={hideFilters} />
+            <FormProvider {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleFormSubmit)}
+                className={cn(
+                  isDev && '__AvailableTopicsFilters', // DEBUG
+                  'flex flex-col gap-4',
+                  className,
+                )}
+              >
+                <div
+                  className={cn(
+                    isDev && '__AvailableTopicsFilters_Fields', // DEBUG
+                    'flex flex-col gap-4',
+                  )}
+                >
+                  <AvailableTopicsFiltersFields form={form} />
+                </div>
+                <div
+                  className={cn(
+                    isDev && '__AvailableTopicsFilters_Actions', // DEBUG
+                    'flex gap-2 pt-2',
+                  )}
+                >
+                  <Button type="submit" variant="theme">
+                    Apply
+                  </Button>
+                  <Button type="button" variant="outline" onClick={handleReset}>
+                    Reset
+                  </Button>
+                </div>
+              </form>
+            </FormProvider>
           </ScrollArea>
         </CardContent>
       )}

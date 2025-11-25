@@ -4,7 +4,7 @@ import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
-import { Form } from '@/components/ui/Form';
+import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 
@@ -22,7 +22,7 @@ export function EditAnswerForm(props: TEditAnswerFormProps) {
   const { className, form, handleFormSubmit, isPending } = props;
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
         className={cn(
@@ -36,6 +36,6 @@ export function EditAnswerForm(props: TEditAnswerFormProps) {
           <EditAnswerFormFields form={form} />
         </ScrollArea>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

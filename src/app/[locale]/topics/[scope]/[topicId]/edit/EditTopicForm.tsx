@@ -4,7 +4,7 @@ import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
-import { Form } from '@/components/ui/Form';
+import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
@@ -31,7 +31,7 @@ export function EditTopicForm(props: TEditTopicFormProps) {
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
         className={cn(
@@ -52,6 +52,6 @@ export function EditTopicForm(props: TEditTopicFormProps) {
           />
         </ScrollArea>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

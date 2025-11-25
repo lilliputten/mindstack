@@ -3,11 +3,15 @@
 import * as React from 'react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { Circle } from 'lucide-react';
+import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
 
-type TThreeState = null | true | false;
+export const threeStateSchema = z.union([z.literal(null), z.literal(true), z.literal(false)]);
+
+// export type TThreeState = null | true | false;
+export type TThreeState = z.infer<typeof threeStateSchema>;
 
 interface ThreeStateFieldProps
   extends Omit<
@@ -21,7 +25,7 @@ interface ThreeStateFieldProps
   nullText?: string;
 }
 
-const ThreeStateField = React.forwardRef<
+export const ThreeStateField = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   ThreeStateFieldProps
 >((props, ref) => {
@@ -84,6 +88,3 @@ const ThreeStateField = React.forwardRef<
   );
 });
 ThreeStateField.displayName = 'ThreeStateField';
-
-export { ThreeStateField };
-export type { TThreeState, ThreeStateFieldProps };
