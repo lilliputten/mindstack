@@ -32,8 +32,11 @@ export const maxSearchTextLength = isDev ? 10 : 50;
 export const filtersDataSchema = z.object({
   // searchText: AvailableTopicsFiltersSchema.shape.searchText, // z.string().max(maxSearchTextLength),
   searchText: z.string().max(maxSearchTextLength).optional(),
+  searchLang: z.string().max(maxSearchTextLength).optional(),
   showOnlyMyTopics: AvailableTopicsFiltersSchema.shape.showOnlyMyTopics,
   hasWorkoutStats: threeStateSchema, // AvailableTopicsFiltersSchema.shape.hasWorkoutStats,
+  hasActiveWorkouts: threeStateSchema,
+  hasQuestions: threeStateSchema,
   // isPublic: z.boolean().optional(),
   // keywords: z.string().optional(),
   // answersCountMax: z.union([z.string().optional(), z.number()]),
@@ -56,8 +59,11 @@ export type TFiltersDataKey = keyof TFiltersData;
 export const filtersDataDefaults: TFiltersData = {
   // Default filter values
   searchText: '',
+  searchLang: '',
   showOnlyMyTopics: false, // Take from settings
   hasWorkoutStats: null,
+  hasActiveWorkouts: null,
+  hasQuestions: null,
   // isPublic: true,
 };
 
@@ -74,6 +80,14 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
     true: 'With Statistics',
     false: 'Without Statistics',
   },
+  hasActiveWorkouts: {
+    true: 'With Active Workouts',
+    false: 'Without Active Workouts',
+  },
+  hasQuestions: {
+    true: 'With Questions',
+    false: 'Without Questions',
+  },
   showOnlyMyTopics: {
     true: 'Only My Topics',
   },
@@ -81,6 +95,9 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {
   searchText: 'Search for',
+  searchLang: 'Language',
   showOnlyMyTopics: 'Only My',
   hasWorkoutStats: 'Statistics',
+  hasActiveWorkouts: 'Active Workouts',
+  hasQuestions: 'Questions',
 };

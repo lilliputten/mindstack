@@ -206,8 +206,10 @@
   .MarkdownText {
     code {
       font-size: 0.75rem;
-      background-color: rgba(var(--color-theme-600-RGB) / 5%);
-      border: 1px solid rgba(var(--color-theme-600-RGB) / 5%);
+      background-color: rgba(var(--color-theme-600-RGB) / 10%);
+      border: 1px solid rgba(var(--color-theme-600-RGB) / 10%);
+      border-radius: 4px;
+      padding: 0 0.2em;
       font-weight: normal;
       &::before,
       &:after {

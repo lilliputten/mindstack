@@ -125,10 +125,12 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
 export function convertAvailableFiltersToParams(
   filtersData: TFiltersData,
 ): TAvailableTopicsFiltersParams {
-  const { hasWorkoutStats } = filtersData;
+  const { hasWorkoutStats, hasActiveWorkouts, hasQuestions } = filtersData;
   // AvailableTopicsParams
   return {
     ...filtersData,
     hasWorkoutStats: hasWorkoutStats != null ? hasWorkoutStats : undefined,
+    hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
+    hasQuestions: hasQuestions != null ? hasQuestions : undefined,
   };
 }
