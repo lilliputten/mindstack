@@ -94,6 +94,7 @@ export function AvailableTopicsListPage(props: TProps) {
           'mx-6',
         )}
         applyFilters={interceptApplyFilters}
+        augmentDefaults={{ hasQuestions: true }}
       />
       <AvailableTopicsList
         className={cn(

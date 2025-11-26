@@ -62,9 +62,6 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
     <span
       className={cn(
         isDev && '__AvailableTopicsFiltersInfo', // DEBUG
-        // 'me-2 inline-block',
-        // 'flex gap-4 gap-y-0',
-        // isPending && 'pointer-events-none opacity-50',
         className,
       )}
     >

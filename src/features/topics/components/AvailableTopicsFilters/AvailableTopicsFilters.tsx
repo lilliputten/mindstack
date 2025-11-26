@@ -32,6 +32,7 @@ export type TApplyFiltersData = TFiltersData /* & { isInitial: boolean } */;
 
 interface TProps extends TPropsWithClassName {
   applyFilters: (applyFiltersData: TApplyFiltersData) => Promise<unknown> | void;
+  augmentDefaults?: Partial<TFiltersData>;
   storeId?: string;
 }
 
@@ -46,7 +47,7 @@ type TMemo = {
 };
 
 export function AvailableTopicsFilters(props: TProps) {
-  const { className, applyFilters, storeId = 'AvailableTopicsFilters' } = props;
+  const { className, applyFilters, augmentDefaults, storeId = 'AvailableTopicsFilters' } = props;
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -66,15 +67,19 @@ export function AvailableTopicsFilters(props: TProps) {
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
   const defaultFiltersData = React.useMemo<TFiltersData>(() => {
+    const filtersData = {
+      ...filtersDataDefaults,
+      ...augmentDefaults,
+    };
     if (!isSettingsReady || !settings) {
-      return filtersDataDefaults;
+      return filtersData;
     }
     return {
-      ...filtersDataDefaults,
+      ...filtersData,
       showOnlyMyTopics: !!settings.showOnlyMyTopics,
       searchLang: settings.langCode,
     } satisfies TFiltersData;
-  }, [settings, isSettingsReady]);
+  }, [settings, augmentDefaults, isSettingsReady]);
   memo.defaultFiltersData = defaultFiltersData;
 
   const form = useForm<TFiltersData>({
@@ -111,7 +116,7 @@ export function AvailableTopicsFilters(props: TProps) {
 
   const filterCaption = React.useMemo(() => {
     if (!hasFilters) {
-      return 'No active filters';
+      return 'No filters applied';
     }
     return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
   }, [hasFilters, filtersInfo]);

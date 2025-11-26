@@ -64,7 +64,7 @@ export const filtersDataDefaults: TFiltersData = {
 export const fieldUnionStrings = {
   true: 'Yes',
   false: 'No',
-  null: 'Undefined',
+  null: 'Ignore',
 };
 
 export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<string, string>>> = {

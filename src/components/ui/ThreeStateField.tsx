@@ -50,7 +50,7 @@ export const ThreeStateField = React.forwardRef<
       onValueChange={handleValueChange}
       {...restProps}
     >
-      <label className="flex cursor-pointer items-center gap-2 pe-2">
+      <label className="flex cursor-pointer items-center gap-2 pe-2 opacity-50">
         <RadioGroupPrimitive.Item
           className="size-4 rounded-full border border-input ring-offset-background hover:border-theme-500/70 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value="null"
