@@ -52,7 +52,8 @@ type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'>
  */
 const allUsedKeys: TAllUsedKeys = {};
 
-function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
+function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
+  const { enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
@@ -82,6 +83,7 @@ function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
     QueryKey,
     number // Cursor type (from `skip` api parameter)
   >({
+    enabled,
     queryKey,
     staleTime, // Data validity period
     // gcTime: 10 * staleTime, // Inactive cache validity period

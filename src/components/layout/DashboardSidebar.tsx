@@ -82,6 +82,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
           isDev && '__DashboardSidebar_ScrollViewport', // DEBUG
           '[&>div]:h-full',
         )}
+        thumbClassName="bg-theme-600/10"
       >
         <aside
           className={cn(

@@ -572,7 +572,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-searchlang-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: {

@@ -52,7 +52,7 @@ export const ThreeStateField = React.forwardRef<
     >
       <label className="flex cursor-pointer items-center gap-2 pe-2">
         <RadioGroupPrimitive.Item
-          className="size-4 rounded-full border border-input ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="size-4 rounded-full border border-input ring-offset-background hover:border-theme-500/70 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value="null"
         >
           <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
@@ -63,7 +63,7 @@ export const ThreeStateField = React.forwardRef<
       </label>
       <label className="flex cursor-pointer items-center gap-2 pe-2">
         <RadioGroupPrimitive.Item
-          className="size-4 rounded-full border border-input ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="size-4 rounded-full border border-input ring-offset-background hover:border-theme-500/70 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value="true"
         >
           <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
@@ -74,7 +74,7 @@ export const ThreeStateField = React.forwardRef<
       </label>
       <label className="flex cursor-pointer items-center gap-2 pe-2">
         <RadioGroupPrimitive.Item
-          className="size-4 rounded-full border border-input ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="size-4 rounded-full border border-input ring-offset-background hover:border-theme-500/70 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value="false"
         >
           <RadioGroupPrimitive.Indicator className="flex items-center justify-center">

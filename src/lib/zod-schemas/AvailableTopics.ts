@@ -14,6 +14,7 @@ export const zTopicOrderBy = z
 export type TTopicOrderBy = z.infer<typeof zTopicOrderBy>;
 
 export const GetAvailableTopicsParamsSchema = TopicIncludeParamsSchema.extend({
+  enabled: z.coerce.boolean().optional(),
   /** Skip records (start from the nth record), default = 0 */
   skip: z.coerce.number().int().nonnegative().optional(),
   /** Amount of records to return, default = {itemsLimit} */

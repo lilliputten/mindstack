@@ -69,6 +69,7 @@ export const {
   Save,
   Search,
   Settings,
+  Settings2,
   Shield,
   ShieldAlert,
   ShieldCheck,

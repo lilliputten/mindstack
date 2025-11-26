@@ -3,7 +3,7 @@ import { createNavigation } from 'next-intl/navigation';
 import { defineRouting } from 'next-intl/routing';
 
 import { pathnames } from '@/config/routesConfig';
-import { debugLocale, debugTranslations, isDev, suppressMissingTranslations } from '@/config';
+import { debugLocale, suppressMissingTranslations } from '@/config';
 
 import { defaultLocale, localesList } from './types';
 
@@ -20,17 +20,21 @@ export const getIntlMessageFallback = ({
   key,
   error,
 }: TGetMessageFallbackParams): string => {
-  // const match = String(error).match(matchLocaleReg);
-  // const locale = match?.[1];
-  // const suppress = suppressMissingTranslations || locale === debugLocale;
-  const doDebug = debugTranslations || isDev;
-  // eslint-disable-next-line no-console
-  console.warn('[routing:getIntlMessageFallback]', error.code, {
-    doDebug,
-    error,
-    key,
-    namespace,
-  });
+  const match = String(error).match(matchLocaleFromErrorReg);
+  const locale = match?.[1];
+  const isDebugLocale = locale === debugLocale;
+  const doDebug = process.env.NEXT_PUBLIC_DEBUG_TRANSLATIONS === 'true' || isDebugLocale;
+  const suppressMessage = suppressMissingTranslations || isDebugLocale;
+  // const doDebug = debugTranslations || isDev;
+  if (!suppressMessage) {
+    // eslint-disable-next-line no-console
+    console.warn('[routing:getIntlMessageFallback]', error.code, {
+      doDebug,
+      error,
+      key,
+      namespace,
+    });
+  }
   return [doDebug && namespace, key].filter(Boolean).join('.');
 };
 
@@ -38,7 +42,8 @@ export const onIntlError = (error: IntlError) => {
   if (error.code === IntlErrorCode.MISSING_MESSAGE) {
     const match = String(error).match(matchLocaleFromErrorReg);
     const locale = match?.[1];
-    const suppress = suppressMissingTranslations || locale === debugLocale;
+    const isDebugLocale = locale === debugLocale;
+    const suppressMessage = suppressMissingTranslations || isDebugLocale;
     /* console.log('[routing:onIntlError]', {
      *   suppressMissingTranslations,
      *   debugLocale,
@@ -47,7 +52,7 @@ export const onIntlError = (error: IntlError) => {
      * });
      */
     // Suppress missing message error for debug locale
-    if (!suppress) {
+    if (!suppressMessage) {
       // eslint-disable-next-line no-console
       console.warn('[routing:onIntlError] MISSING_MESSAGE', {
         locale,

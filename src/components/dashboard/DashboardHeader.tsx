@@ -53,7 +53,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
       <div
         className={cn(
           isDev && '__DashboardHeader_MainWrapper', // DEBUG
-          'flex items-start justify-between gap-2',
+          'flex min-h-10 items-start justify-between gap-2',
         )}
       >
         <div

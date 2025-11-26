@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
-export default async function AvailableTopicsPageWrapper() {
+export default async function AvailableTopicsPageHolder() {
   return (
     <PageWrapper
       className={cn(

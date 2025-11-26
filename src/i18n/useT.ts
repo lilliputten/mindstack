@@ -27,3 +27,5 @@ export function useT(namespace?: string) {
     return getDebugT(namespace);
   }
 }
+
+export type TTranslator = ReturnType<typeof useT>;

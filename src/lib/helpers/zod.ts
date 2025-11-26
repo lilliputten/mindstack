@@ -1,5 +1,25 @@
 import { z, ZodObject, ZodRawShape, ZodTypeAny } from 'zod';
 
+/**
+ * Unwraps optional and nullable modifiers to get the base field type
+ */
+export function getBaseField(field: ZodTypeAny): ZodTypeAny {
+  let baseField = field;
+
+  // Keep unwrapping until we reach the base type
+  while (baseField.isOptional() || baseField.isNullable()) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const innerType = (baseField as any)._def.innerType;
+    if (innerType) {
+      baseField = innerType;
+    } else {
+      break;
+    }
+  }
+
+  return baseField;
+}
+
 export function makeAllFieldsCoerced<T extends ZodRawShape>(
   schema: ZodObject<T>,
 ): ZodObject<{ [K in keyof T]: ZodTypeAny }> {
@@ -14,16 +34,7 @@ export function makeAllFieldsCoerced<T extends ZodRawShape>(
       const isNullable = field.isNullable();
 
       // Determine base type for coercion
-      let baseField = field;
-      // If optional or nullable, unwrap to get base type
-      if (isOptional) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        baseField = (baseField as any)._def.innerType || baseField;
-      }
-      if (isNullable) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        baseField = (baseField as any)._def.innerType || baseField;
-      }
+      const baseField = getBaseField(field);
 
       let coercedField: ZodTypeAny;
 

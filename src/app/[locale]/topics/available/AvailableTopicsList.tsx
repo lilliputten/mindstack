@@ -1,27 +1,75 @@
 import React from 'react';
 
+import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
 import { getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
+import { PageEmpty } from '@/components/pages/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
-import { useAvailableTopicsByScope } from '@/hooks';
+import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
+import { Link } from '@/i18n/routing';
 
 import { AvailableTopicsListItem } from './AvailableTopicsListItem';
+import { ContentListSkeleton } from './ContentSkeleton';
 
 const saveScrollHash = getRandomHashString();
 
 interface TProps extends TPropsWithClassName {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
   manageScope: TTopicsManageScopeId;
+  isFiltersInited: boolean;
 }
 
 export function AvailableTopicsList(props: TProps) {
-  const { className, availableTopicsQuery } = props;
+  const { className, availableTopicsQuery, isFiltersInited } = props;
 
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, allTopics } =
-    availableTopicsQuery;
+  const goBack = useGoBack(rootRoute);
+
+  const {
+    // error,
+    // isError,
+    // refetch,
+    allTopics,
+    fetchNextPage,
+    hasNextPage,
+    hasTopics,
+    isFetched,
+    isFetchingNextPage,
+    isLoading,
+  } = availableTopicsQuery;
+
+  if (!isFetched || !isFiltersInited) {
+    return <ContentListSkeleton className="px-6" />;
+  }
+
+  if (!hasTopics) {
+    return (
+      <PageEmpty
+        className="mx-6 flex-1"
+        title="No topics available"
+        description="Change filters to allow displaying public topics (if there are any), or create your own ones."
+        buttons={
+          <>
+            <Button variant="ghost" onClick={goBack} className="flex gap-2">
+              <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
+              Go Back
+            </Button>
+            <Link
+              href={myTopicsRoute}
+              className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+            >
+              <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
+              <span>Manage or create your own topics</span>
+            </Link>
+          </>
+        }
+      />
+    );
+  }
 
   return (
     <ScrollAreaInfinite
@@ -46,6 +94,7 @@ export function AvailableTopicsList(props: TProps) {
         isDev && '__AvailableTopicsList_Container', // DEBUG
         'relative flex flex-col gap-4',
       )}
+      // thumbClassName="bg-theme-600/40"
     >
       {allTopics.map((topic, index) => (
         <AvailableTopicsListItem key={topic.id} index={index} topic={topic} />
