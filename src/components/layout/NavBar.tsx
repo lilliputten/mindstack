@@ -84,9 +84,11 @@ export function NavBar(props: NavBarProps) {
                     key={'navbar-' + item.href}
                     href={item.href}
                     prefetch
+                    data-testid="__NavBar_MiddleLinks_Item"
                     className={cn(
-                      'flex items-center gap-1',
-                      'px-2 py-1.5',
+                      isDev && '__NavBar_MiddleLinks_Item', // DEBUG
+                      'flex items-center gap-2',
+                      'px-2 py-2',
                       'border border-transparent',
                       'rounded-md',
                       'text-sm font-medium',
@@ -99,7 +101,7 @@ export function NavBar(props: NavBarProps) {
                       'active:bg-theme active:text-theme-foreground',
                     )}
                   >
-                    {Icon && <Icon className="size-4 min-w-5" />}
+                    {Icon && <Icon className="size-5 min-w-5" />}
                     <span className={cn('truncate')}>{t(item.titleId)}</span>
                   </Link>
                 );
@@ -110,7 +112,7 @@ export function NavBar(props: NavBarProps) {
         <div
           className={cn(
             isDev && '__NavBar_Right', // DEBUG
-            'items-center space-x-3',
+            'flex items-center gap-2',
             'hidden',
             'md:flex',
           )}
@@ -118,7 +120,7 @@ export function NavBar(props: NavBarProps) {
           {/* Right header for extra stuff */}
           <NavModeToggle onPrimary />
           <NavLocaleSwitcher onPrimary />
-          <NavUserAuthButton isUser={isUser} onPrimary />
+          <NavUserAuthButton isUser={isUser} onPrimary className="ml-2" />
         </div>
 
         {/* Mobile panel toggler icon */}
