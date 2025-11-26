@@ -19,14 +19,21 @@ export const AvailableTopicsFiltersSchema = GetAvailableTopicsParamsSchema.pick(
 });
 export type TAvailableTopicsFiltersParams = z.infer<typeof AvailableTopicsFiltersSchema>;
 
+export const maxSearchTextLength = isDev ? 10 : 50;
+
+/* // TODO:
+- [ ] Implement the ability to specify filters via URL query.
+- [ ] Add `byUser` filter to filter by username, email or ID (internal or provider's).
+- [ ] Add `orderBy` filter field to sort topics by update or creation date, or by name, or other (ascending or descending).
+- [ ] Add filters to manage topics page.
+*/
+
 /*
  * These fields should have 3 states: undefined (null), true and false. Use `ThreeStateField` form field.
  * - hasWorkoutStats
  * - hasActiveWorkouts
  * - hasQuestions
  */
-
-export const maxSearchTextLength = isDev ? 10 : 50;
 
 /** Filters data schema. It should be converted to `AvailableTopicsFiltersSchema` schema to apply filters. */
 export const filtersDataSchema = z.object({
@@ -37,21 +44,7 @@ export const filtersDataSchema = z.object({
   hasWorkoutStats: threeStateSchema, // AvailableTopicsFiltersSchema.shape.hasWorkoutStats,
   hasActiveWorkouts: threeStateSchema,
   hasQuestions: threeStateSchema,
-  // isPublic: z.boolean().optional(),
-  // keywords: z.string().optional(),
-  // answersCountMax: z.union([z.string().optional(), z.number()]),
 });
-/*
- * // DEBUG: Log the values being validated
- * .superRefine((data, ctx) => {
- *   console.log('[AvailableTopicsFiltersTypes:filtersDataSchema:superRefine] DEBUG', {
- *     hasWorkoutStats: data.hasWorkoutStats,
- *     data,
- *     ctx,
- *   });
- *   debugger;
- * })
- */
 
 export type TFiltersData = z.infer<typeof filtersDataSchema>;
 export type TFiltersDataKey = keyof TFiltersData;
@@ -64,7 +57,6 @@ export const filtersDataDefaults: TFiltersData = {
   hasWorkoutStats: null,
   hasActiveWorkouts: null,
   hasQuestions: null,
-  // isPublic: true,
 };
 
 // Predefined text values (might be translated)

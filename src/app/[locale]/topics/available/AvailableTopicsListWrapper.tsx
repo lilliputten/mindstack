@@ -26,14 +26,8 @@ export function AvailableTopicsListWrapper() {
     TAvailableTopicsFiltersParams | undefined
   >();
 
-  const applyFilters = React.useCallback(async (applyFiltersData: TApplyFiltersData) => {
-    const { isInitial, ...filtersData } = applyFiltersData;
+  const applyFilters = React.useCallback(async (filtersData: TApplyFiltersData) => {
     const filtersParams = convertAvailableFiltersToParams(filtersData);
-    console.log('[AvailableTopicsListWrapper:applyFilters]', {
-      isInitial,
-      filtersData,
-      filtersParams,
-    });
     setIsFiltersInited(true);
     setFiltersParams(filtersParams);
     if (isDev) {

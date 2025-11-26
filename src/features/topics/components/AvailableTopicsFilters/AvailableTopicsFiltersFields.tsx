@@ -3,7 +3,7 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-import { TPropsWithClassName } from '@/lib/types';
+import { TPropsWithChildren, TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
@@ -27,6 +27,19 @@ interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
 }
 
+function FormSection({ children }: TPropsWithChildren) {
+  return (
+    <div
+      className={cn(
+        isDev && '__AvailableTopicsFiltersFields_FormSection', // DEBUG
+        'flex w-full flex-1 flex-col gap-6 py-2 md:w-[45%]',
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function AvailableTopicsFiltersFields(props: TProps) {
   const { className, form } = props;
   const t = useT();
@@ -46,178 +59,192 @@ export function AvailableTopicsFiltersFields(props: TProps) {
     <div
       className={cn(
         isDev && '__AvailableTopicsFiltersFields', // DEBUG
-        'flex flex-col gap-4',
+        'flex w-full flex-col gap-6 md:flex-row',
         className,
       )}
     >
-      <FormField
-        name="searchText"
-        control={form.control}
-        render={({ field }) => (
-          <FormItem className="flex w-full flex-col gap-2">
-            <Label htmlFor={searchTextKey}>{getFilterFieldName('searchText', t)}</Label>
-            <FormControl>
-              <div className="relative flex gap-2">
-                <Input
-                  id={searchTextKey}
-                  placeholder="Search for text in name, description or keywords..."
-                  {...field}
-                  value={field.value || ''}
-                  className={cn('pr-11')}
-                  maxLength={maxSearchTextLength}
-                />
-                {field.value && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => field.onChange('')}
-                    className={cn(
-                      'absolute right-0 top-1/2 -translate-y-1/2',
-                      'rounded-sm',
-                      'opacity-30 transition hover:opacity-50',
-                    )}
-                    title="Clear text"
-                  >
-                    <Close className="size-4" />
-                  </Button>
-                )}
-              </div>
-            </FormControl>
-            <FormHint>Search for text in name, description or keywords.</FormHint>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="searchLang"
-        control={form.control}
-        render={({ field }) => (
-          <FormItem className="flex w-full flex-col gap-2">
-            <Label htmlFor={searchLangKey}>{getFilterFieldName('searchLang', t)}</Label>
-            <FormControl>
-              <div className="relative flex gap-2">
-                <Input
-                  id={searchLangKey}
-                  placeholder="Search for language code or name..."
-                  {...field}
-                  value={field.value || ''}
-                  className={cn('pr-11')}
-                  maxLength={maxSearchTextLength}
-                />
-                {field.value && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => field.onChange('')}
-                    className={cn(
-                      'absolute right-0 top-1/2 -translate-y-1/2',
-                      'rounded-sm',
-                      'opacity-30 transition hover:opacity-50',
-                    )}
-                    title="Clear text"
-                  >
-                    <Close className="size-4" />
-                  </Button>
-                )}
-              </div>
-            </FormControl>
-            <FormHint className="MarkdownText">
-              Search for language code or name (eg: <code>en</code> or <code>Engl</code>).
-            </FormHint>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="hasWorkoutStats"
-        control={form.control}
-        render={({ field }) => {
-          const { onChange: _, ...restField } = field;
-          return (
+      <FormSection>
+        <FormField
+          name="searchText"
+          control={form.control}
+          render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-2">
-              <Label htmlFor={hasWorkoutStatsKey}>{getFilterFieldName('hasWorkoutStats', t)}</Label>
+              <Label htmlFor={searchTextKey}>{getFilterFieldName('searchText', t)}</Label>
               <FormControl>
-                <ThreeStateField
-                  id={hasWorkoutStatsKey}
-                  {...restField}
-                  onValueChange={field.onChange}
-                  trueText={getFiltersLabelValueString('hasWorkoutStats', true, t)}
-                  falseText={getFiltersLabelValueString('hasWorkoutStats', false, t)}
-                  nullText={getFiltersLabelValueString('hasWorkoutStats', null, t)}
-                />
+                <div className="relative flex gap-2">
+                  <Input
+                    id={searchTextKey}
+                    placeholder="Search for text..."
+                    {...field}
+                    value={field.value || ''}
+                    className={cn('pr-11')}
+                    maxLength={maxSearchTextLength}
+                  />
+                  {field.value && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => field.onChange('')}
+                      className={cn(
+                        'absolute right-0 top-1/2 -translate-y-1/2',
+                        'rounded-sm',
+                        'opacity-30 transition hover:opacity-50',
+                      )}
+                      title="Clear text"
+                    >
+                      <Close className="size-4" />
+                    </Button>
+                  )}
+                </div>
               </FormControl>
+              <FormHint>Search for text in name, description or keywords.</FormHint>
               <FormMessage />
             </FormItem>
-          );
-        }}
-      />
-      <FormField
-        name="hasActiveWorkouts"
-        control={form.control}
-        render={({ field }) => {
-          const { onChange: _, ...restField } = field;
-          return (
+          )}
+        />
+        <FormField
+          name="searchLang"
+          control={form.control}
+          render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-2">
-              <Label htmlFor={hasActiveWorkoutsKey}>
-                {getFilterFieldName('hasActiveWorkouts', t)}
+              <Label htmlFor={searchLangKey}>{getFilterFieldName('searchLang', t)}</Label>
+              <FormControl>
+                <div className="relative flex gap-2">
+                  <Input
+                    id={searchLangKey}
+                    placeholder="Search for language..."
+                    {...field}
+                    value={field.value || ''}
+                    className={cn('pr-11')}
+                    maxLength={maxSearchTextLength}
+                  />
+                  {field.value && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => field.onChange('')}
+                      className={cn(
+                        'absolute right-0 top-1/2 -translate-y-1/2',
+                        'rounded-sm',
+                        'opacity-30 transition hover:opacity-50',
+                      )}
+                      title="Clear text"
+                    >
+                      <Close className="size-4" />
+                    </Button>
+                  )}
+                </div>
+              </FormControl>
+              <FormHint className="MarkdownText">
+                Search for language code or name (eg: <code>en</code> or <code>Engl</code>).
+              </FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="showOnlyMyTopics"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-2">
+              <Label htmlFor={showOnlyMyTopicsKey}>
+                {getFilterFieldName('showOnlyMyTopics', t)}
               </Label>
               <FormControl>
-                <ThreeStateField
-                  id={hasActiveWorkoutsKey}
-                  {...restField}
-                  onValueChange={field.onChange}
-                  trueText={getFiltersLabelValueString('hasActiveWorkouts', true, t)}
-                  falseText={getFiltersLabelValueString('hasActiveWorkouts', false, t)}
-                  nullText={getFiltersLabelValueString('hasActiveWorkouts', null, t)}
+                <Switch
+                  id={showOnlyMyTopicsKey}
+                  checked={!!field.value}
+                  onCheckedChange={field.onChange}
                 />
               </FormControl>
+              <FormHint className="MarkdownText">Show only my own topics.</FormHint>
               <FormMessage />
             </FormItem>
-          );
-        }}
-      />
-      <FormField
-        name="hasQuestions"
-        control={form.control}
-        render={({ field }) => {
-          const { onChange: _, ...restField } = field;
-          return (
-            <FormItem className="flex w-full flex-col gap-2">
-              <Label htmlFor={hasQuestionsKey}>{getFilterFieldName('hasQuestions', t)}</Label>
-              <FormControl>
-                <ThreeStateField
-                  id={hasQuestionsKey}
-                  {...restField}
-                  onValueChange={field.onChange}
-                  trueText={getFiltersLabelValueString('hasQuestions', true, t)}
-                  falseText={getFiltersLabelValueString('hasQuestions', false, t)}
-                  nullText={getFiltersLabelValueString('hasQuestions', null, t)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
-      <FormField
-        name="showOnlyMyTopics"
-        control={form.control}
-        render={({ field }) => (
-          <FormItem className="flex w-full flex-col gap-2">
-            <Label htmlFor={showOnlyMyTopicsKey}>{getFilterFieldName('showOnlyMyTopics', t)}</Label>
-            <FormControl>
-              <Switch
-                id={showOnlyMyTopicsKey}
-                checked={!!field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+          )}
+        />
+      </FormSection>
+      <FormSection>
+        <FormField
+          name="hasWorkoutStats"
+          control={form.control}
+          render={({ field }) => {
+            const { onChange: _, ...restField } = field;
+            return (
+              <FormItem className="flex w-full flex-col gap-2">
+                <Label htmlFor={hasWorkoutStatsKey}>
+                  {getFilterFieldName('hasWorkoutStats', t)}
+                </Label>
+                <FormControl>
+                  <ThreeStateField
+                    id={hasWorkoutStatsKey}
+                    {...restField}
+                    onValueChange={field.onChange}
+                    trueText={getFiltersLabelValueString('hasWorkoutStats', true, t)}
+                    falseText={getFiltersLabelValueString('hasWorkoutStats', false, t)}
+                    nullText={getFiltersLabelValueString('hasWorkoutStats', null, t)}
+                  />
+                </FormControl>
+                <FormHint>
+                  Display topics with or without collected progress statistics data.
+                </FormHint>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+        <FormField
+          name="hasActiveWorkouts"
+          control={form.control}
+          render={({ field }) => {
+            const { onChange: _, ...restField } = field;
+            return (
+              <FormItem className="flex w-full flex-col gap-2">
+                <Label htmlFor={hasActiveWorkoutsKey}>
+                  {getFilterFieldName('hasActiveWorkouts', t)}
+                </Label>
+                <FormControl>
+                  <ThreeStateField
+                    id={hasActiveWorkoutsKey}
+                    {...restField}
+                    onValueChange={field.onChange}
+                    trueText={getFiltersLabelValueString('hasActiveWorkouts', true, t)}
+                    falseText={getFiltersLabelValueString('hasActiveWorkouts', false, t)}
+                    nullText={getFiltersLabelValueString('hasActiveWorkouts', null, t)}
+                  />
+                </FormControl>
+                <FormHint>Display topics with or without active trainings.</FormHint>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+        <FormField
+          name="hasQuestions"
+          control={form.control}
+          render={({ field }) => {
+            const { onChange: _, ...restField } = field;
+            return (
+              <FormItem className="flex w-full flex-col gap-2">
+                <Label htmlFor={hasQuestionsKey}>{getFilterFieldName('hasQuestions', t)}</Label>
+                <FormControl>
+                  <ThreeStateField
+                    id={hasQuestionsKey}
+                    {...restField}
+                    onValueChange={field.onChange}
+                    trueText={getFiltersLabelValueString('hasQuestions', true, t)}
+                    falseText={getFiltersLabelValueString('hasQuestions', false, t)}
+                    nullText={getFiltersLabelValueString('hasQuestions', null, t)}
+                  />
+                </FormControl>
+                <FormHint>Display topics with or without created questions.</FormHint>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+      </FormSection>
     </div>
   );
 }

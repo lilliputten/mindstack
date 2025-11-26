@@ -28,10 +28,11 @@ import {
   TFiltersData,
 } from './AvailableTopicsFiltersTypes';
 
-export type TApplyFiltersData = TFiltersData & { isInitial: boolean };
+export type TApplyFiltersData = TFiltersData /* & { isInitial: boolean } */;
 
 interface TProps extends TPropsWithClassName {
   applyFilters: (applyFiltersData: TApplyFiltersData) => Promise<unknown> | void;
+  storeId?: string;
 }
 
 type TMemo = {
@@ -45,7 +46,7 @@ type TMemo = {
 };
 
 export function AvailableTopicsFilters(props: TProps) {
-  const { className, applyFilters } = props;
+  const { className, applyFilters, storeId = 'AvailableTopicsFilters' } = props;
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -65,13 +66,13 @@ export function AvailableTopicsFilters(props: TProps) {
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
   const defaultFiltersData = React.useMemo<TFiltersData>(() => {
-    // const { settings, isSettingsReady } = memo;
     if (!isSettingsReady || !settings) {
       return filtersDataDefaults;
     }
     return {
       ...filtersDataDefaults,
       showOnlyMyTopics: !!settings.showOnlyMyTopics,
+      searchLang: settings.langCode,
     } satisfies TFiltersData;
   }, [settings, isSettingsReady]);
   memo.defaultFiltersData = defaultFiltersData;
@@ -112,51 +113,27 @@ export function AvailableTopicsFilters(props: TProps) {
     if (!hasFilters) {
       return 'No active filters';
     }
-    return (
-      <span className="flex items-center gap-2 truncate">
-        {/*
-        <span className="truncate font-medium">Filters:</span>
-        */}
-        {filtersInfo}
-      </span>
-    );
+    return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
   }, [hasFilters, filtersInfo]);
 
   const applyFiltersData = React.useCallback(
     (filtersData: TFiltersData) => {
       startTransition(async () => {
-        // TODO: Update form data
         const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
-        const isInitial = !memo.inited;
-        const applyingFiltersData = {
-          ...filtersData,
-          isInitial,
-        };
-        console.log('[AvailableTopicsFilters:applyFiltersData]: start', {
-          isInitial,
-          isDefaults,
-          applyingFiltersData,
-          filtersData,
-          memo,
-        });
         setError(undefined);
         try {
-          await applyFilters(applyingFiltersData);
+          await applyFilters(filtersData);
           form.reset(filtersData);
           setFiltersData(filtersData);
           setOnDefaults(isDefaults);
           if (typeof window !== 'undefined') {
             if (isDefaults) {
-              window.localStorage.removeItem('AvailableTopicsFilters');
+              window.localStorage.removeItem(storeId);
             } else {
-              window.localStorage.setItem('AvailableTopicsFilters', JSON.stringify(filtersData));
+              window.localStorage.setItem(storeId, JSON.stringify(filtersData));
             }
           }
-          console.log('[AvailableTopicsFilters:applyFiltersData]: done', {
-            isDefaults,
-            filtersData,
-          });
-          if (isInitial) {
+          if (memo.inited) {
             memo.inited = true;
             setIsInited(true);
           }
@@ -175,38 +152,23 @@ export function AvailableTopicsFilters(props: TProps) {
         }
       });
     },
-    [memo, form, applyFilters],
+    [memo, form, applyFilters, storeId],
   );
   memo.applyFiltersData = applyFiltersData;
 
   // Effect: Initiazlize & restore saved filters data
   React.useEffect(() => {
-    // const { settings, isSettingsReady } = memo;
-    if (
-      memo.inited ||
-      memo.initialzing ||
-      !isSettingsReady ||
-      // !settings ||
-      !memo.defaultFiltersData
-    ) {
+    if (memo.inited || memo.initialzing || !isSettingsReady || !memo.defaultFiltersData) {
       return;
     }
     memo.initialzing = true;
     let filtersData: TFiltersData = memo.defaultFiltersData;
-    // let filtersData: TFiltersData = {
-    //   ...filtersDataDefaults,
-    //   showOnlyMyTopics: !!settings.showOnlyMyTopics,
-    // };
     if (typeof window !== 'undefined' && !memo.restored) {
-      const jsonStr = window.localStorage.getItem('AvailableTopicsFilters');
+      const jsonStr = window.localStorage.getItem(storeId);
       if (jsonStr) {
         try {
           const rawData = JSON.parse(jsonStr);
           filtersData = filtersDataSchema.parse(rawData);
-          console.log('[AvailableTopicsFilters] Got saved data', {
-            memo,
-            filtersData,
-          });
         } catch (error) {
           const errMsg = 'Can not parse saved filters data';
           // eslint-disable-next-line no-console
@@ -220,21 +182,21 @@ export function AvailableTopicsFilters(props: TProps) {
       }
       memo.restored = true;
     }
-    console.log('[AvailableTopicsFilters] Initializing', {
-      memo,
-      filtersData,
-    });
     memo.applyFiltersData?.(filtersData);
     memo.inited = true;
     setIsInited(true);
     memo.initialzing = false;
-  }, [memo, isSettingsReady, settings]);
+  }, [memo, isSettingsReady, settings, storeId]);
 
   const handleApplyButton = React.useCallback(
     (filtersData: TFiltersData) => {
-      console.log('[AvailableTopicsFilters:handleApplyButton]');
-      // setOnDefaults(true);
-      memo.applyFiltersData?.(filtersData);
+      // Trim searchText and searchLang values
+      const trimmedFiltersData: TFiltersData = {
+        ...filtersData,
+        searchText: filtersData.searchText?.trim() || '',
+        searchLang: filtersData.searchLang?.trim() || '',
+      };
+      memo.applyFiltersData?.(trimmedFiltersData);
       setIsExpanded(false);
     },
     [memo],
@@ -244,7 +206,6 @@ export function AvailableTopicsFilters(props: TProps) {
     if (!memo.defaultFiltersData) {
       return;
     }
-    console.log('[AvailableTopicsFilters:handleResetToDefaults]');
     form.reset(memo.defaultFiltersData);
     // setOnDefaults(true);
     memo.applyFiltersData?.(memo.defaultFiltersData);
@@ -255,9 +216,6 @@ export function AvailableTopicsFilters(props: TProps) {
     if (!memo.defaultFiltersData) {
       return;
     }
-    console.log('[AvailableTopicsFilters:handleClearChanges]', {
-      filtersData,
-    });
     form.reset(filtersData);
     const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
     setOnDefaults(isDefaults);
@@ -271,11 +229,7 @@ export function AvailableTopicsFilters(props: TProps) {
         className={cn(
           isDev && '__AvailableTopicsFilters', // DEBUG
           'flex flex-col',
-          // 'flex-1',
           !isExpanded && 'shrink-0',
-          // isExpanded && 'flex-1',
-          // 'overflow-visible',
-          'overflow-hidden',
           !isReady && 'pointer-events-none opacity-50',
           className,
         )}
@@ -323,7 +277,6 @@ export function AvailableTopicsFilters(props: TProps) {
               isDev && '__AvailableTopicsFilters_Content', // DEBUG
               'overflow-hidden',
               'flex flex-col',
-              // 'flex-1',
               'px-0',
               'py-0',
             )}

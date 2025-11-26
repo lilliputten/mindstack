@@ -5,6 +5,7 @@ import { getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/Button';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
@@ -48,26 +49,39 @@ export function AvailableTopicsList(props: TProps) {
 
   if (!hasTopics) {
     return (
-      <PageEmpty
-        className="mx-6 flex-1"
-        title="No topics available"
-        description="Change filters to allow displaying public topics (if there are any), or create your own ones."
-        buttons={
-          <>
-            <Button variant="ghost" onClick={goBack} className="flex gap-2">
-              <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-              Go Back
-            </Button>
-            <Link
-              href={myTopicsRoute}
-              className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
-            >
-              <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-              <span>Manage or create your own topics</span>
-            </Link>
-          </>
-        }
-      />
+      <ScrollArea
+        className={cn(
+          isDev && '__AvailableTopicsList_PageEmpty', // DEBUG
+          'flex flex-1 flex-col overflow-hidden',
+          className,
+        )}
+        viewportClassName={cn(
+          isDev && '__AvailableTopicsList_ScrollViewport', // DEBUG
+          'flex flex-1 flex-col',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
+        )}
+      >
+        <PageEmpty
+          className="mx-6"
+          title="No topics available"
+          description="Change filters to allow displaying public topics (if there are any), or create your own ones."
+          buttons={
+            <>
+              <Button variant="ghost" onClick={goBack} className="flex gap-2">
+                <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
+                Go Back
+              </Button>
+              <Link
+                href={myTopicsRoute}
+                className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+              >
+                <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
+                <span>Manage or create your own topics</span>
+              </Link>
+            </>
+          }
+        />
+      </ScrollArea>
     );
   }
 
