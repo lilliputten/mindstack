@@ -10,7 +10,7 @@ import { NavLocaleSwitcher } from '@/components/layout/NavLocaleSwitcher';
 import { NavModeToggle } from '@/components/layout/NavModeToggle';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { comparePathsWithoutLocalePrefix, useT } from '@/i18n';
+import { removePathLocalePrefix, useT } from '@/i18n';
 import { Link, usePathname } from '@/i18n/routing';
 
 interface NavBarProps {
@@ -25,6 +25,7 @@ export function NavBar(props: NavBarProps) {
   const links = siteMenu.mainNav;
   const t = useT('SiteMenu');
   const pathname = decodeURI(usePathname());
+  const testPath = removePathLocalePrefix(pathname);
   const openSidebar = () => {
     setOpen(!open);
   };
@@ -75,14 +76,24 @@ export function NavBar(props: NavBarProps) {
             {links
               .filter((item) => !item.userRequiredOnly || isUser)
               .map((item) => {
-                // Check if it's current item using `getAllRouteSynonyms(item.href, locale)`
-                const isCurrent = comparePathsWithoutLocalePrefix(item.href, pathname);
-                const isDisabled = !!item.disabled || isCurrent;
-                const Icon = item.icon;
+                const {
+                  // authorizedOnly,
+                  // badge,
+                  // external,
+                  // userRequiredOnly,
+                  disabled,
+                  href,
+                  icon,
+                  titleId,
+                } = item;
+                const isUnderCurrent = testPath.startsWith(href);
+                const isCurrent = isUnderCurrent && href === testPath;
+                const isDisabled = !!disabled || isCurrent;
+                const Icon = icon;
                 return (
                   <Link
-                    key={'navbar-' + item.href}
-                    href={item.href}
+                    key={'navbar-' + href}
+                    href={href}
                     prefetch
                     data-testid="__NavBar_MiddleLinks_Item"
                     className={cn(
@@ -96,13 +107,13 @@ export function NavBar(props: NavBarProps) {
                       'text-theme-foreground',
                       'hover:bg-theme-400/50',
                       'hover:border-white/10',
-                      isCurrent && 'border-white/30',
+                      isUnderCurrent && 'border-white/30',
                       isDisabled && 'pointer-events-none opacity-70',
                       'active:bg-theme active:text-theme-foreground',
                     )}
                   >
                     {Icon && <Icon className="size-5 min-w-5" />}
-                    <span className={cn('truncate')}>{t(item.titleId)}</span>
+                    <span className={cn('truncate')}>{t(titleId)}</span>
                   </Link>
                 );
               })}

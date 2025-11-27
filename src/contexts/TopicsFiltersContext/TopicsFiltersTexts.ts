@@ -1,4 +1,4 @@
-import { TFiltersDataKey } from './TopicsFiltersTypes';
+import { TFiltersDataKey, TOrderBySelectOption } from './TopicsFiltersTypes';
 
 // NOTE: These texts should be key values in the translation files
 
@@ -29,7 +29,7 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
     byOldest: 'Most Oldest',
     byNameAsc: 'By Name',
     byNameDesc: 'By Name (descending)',
-  },
+  } satisfies Record<TOrderBySelectOption, string>,
 };
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {

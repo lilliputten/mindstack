@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { GetAvailableTopicsParamsSchema } from '@/lib/zod-schemas';
+import { GetAvailableTopicsParamsSchema, TTopicOrderBy } from '@/lib/zod-schemas';
 import { threeStateSchema } from '@/components/ui/ThreeStateField';
 import { isDev } from '@/config';
 
@@ -24,7 +24,8 @@ export const orderBySelectOptions = [
   'byNameAsc',
   'byNameDesc',
 ] as const;
-export const orderBySelectDefault = orderBySelectOptions[0]
+export const orderBySelectDefault = orderBySelectOptions[0];
+export type TOrderBySelectOption = (typeof orderBySelectOptions)[number];
 
 export const orderBySelectSchema = z.enum(orderBySelectOptions);
 
@@ -51,7 +52,7 @@ export const filtersDataDefaults: TFiltersData = {
   orderBySelect: orderBySelectDefault,
 };
 
-export const orderByMap = {
+export const orderByMap: Record<TOrderBySelectOption, TTopicOrderBy> = {
   byRecent: [{ updatedAt: 'desc' as const }, { name: 'asc' as const }],
   byOldest: [{ updatedAt: 'asc' as const }, { name: 'asc' as const }],
   byNameAsc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],

@@ -5,6 +5,7 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { isDev } from '@/config';
 
 import { TGenericIcon } from '../shared/IconTypes';
 
@@ -14,30 +15,15 @@ const Checkbox = React.forwardRef<
   React.ElementRef<TRoot>,
   React.ComponentPropsWithoutRef<TRoot> & {
     icon?: TGenericIcon;
+    indicatorClassName?: string;
   }
 >((allProps, ref) => {
-  const { className, icon: Icon = Check, ...props } = allProps;
-  /* XXX: Attempt to re-throw change event...
-   * // Save the input node ref in the memo...
-   * const memo = React.useMemo<{
-   *   inputNode?: HTMLInputElement;
-   *   // node?: HTMLButtonElement;
-   * }>(() => ({}), []);
-   */
+  const { className, icon: Icon = Check, indicatorClassName, ...props } = allProps;
   return (
     <CheckboxPrimitive.Root
       ref={ref}
-      /* XXX: Attempt to re-throw change event...
-       * ref={(node) => {
-       *   // Save ref and pass to the parent node (via forwardRef)
-       *   memo.inputNode = node?.parentElement?.getElementsByTagName('input')[0];
-       *   if (typeof ref === 'function') {
-       *     ref(node);
-       *   }
-       * }}
-       */
       className={cn(
-        // '__Checkbox',
+        isDev && '__Checkbox', // DEBUG
         'peer',
         'size-4',
         'shrink-0',
@@ -53,29 +39,18 @@ const Checkbox = React.forwardRef<
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
         'data-[state=checked]:border-theme', // Original checkbox styling
-        // 'data-[state=checked]:border-muted-foreground',
         className,
       )}
-      /* XXX: Attempt to re-throw change event...
-       * onCheckedChange={(checked) => {
-       *   const { inputNode } = memo;
-       *   const { onChange } = props;
-       *   if (onChange && inputNode) {
-       *     // @ts-ignore: To create correct typings for the event?
-       *     onChange({ type: 'onChange', currentTarget: inputNode, target: inputNode });
-       *   }
-       * }}
-       */
       {...props}
     >
       <CheckboxPrimitive.Indicator
         className={cn(
-          // '__Checkbox_Indicator',
+          isDev && '__Checkbox_Indicator', // DEBUG
           'flex',
           'items-center',
           'justify-center',
           'text-theme', // Original checkbox styling
-          // 'text-muted-foreground',
+          indicatorClassName,
         )}
       >
         <Icon className="size-4" />
