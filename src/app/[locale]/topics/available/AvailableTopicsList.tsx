@@ -11,6 +11,7 @@ import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
+import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { Link } from '@/i18n/routing';
 
@@ -22,13 +23,23 @@ const saveScrollHash = getRandomHashString();
 interface TProps extends TPropsWithClassName {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
   manageScope: TTopicsManageScopeId;
-  isFiltersInited: boolean;
+  // isFiltersInited: boolean;
 }
 
 export function AvailableTopicsList(props: TProps) {
-  const { className, availableTopicsQuery, isFiltersInited } = props;
+  const {
+    className,
+    availableTopicsQuery,
+    // isFiltersInited,
+  } = props;
 
   const goBack = useGoBack(rootRoute);
+
+  const {
+    isInited: isFiltersInited,
+    isExpanded: isFiltersExpanded,
+    expandFilters,
+  } = useTopicsFiltersContext();
 
   const {
     // error,
@@ -65,12 +76,19 @@ export function AvailableTopicsList(props: TProps) {
           className="mx-6"
           title="No topics available"
           description="Change filters to allow displaying public topics (if there are any), or create your own ones."
+          // TODO: Add a button to open the filters pane (via context?)
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
                 Go Back
               </Button>
+              {!isFiltersExpanded && (
+                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
+                  <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
+                  Change Filters
+                </Button>
+              )}
               <Link
                 href={myTopicsRoute}
                 className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}

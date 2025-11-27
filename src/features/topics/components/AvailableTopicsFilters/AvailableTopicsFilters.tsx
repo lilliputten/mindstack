@@ -1,12 +1,7 @@
 'use client';
 
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
-import { ErrorLike } from '@/lib/errors';
-import { deepCompare, getErrorText } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -16,102 +11,39 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { SettingsContextData, useSettingsContext } from '@/contexts/SettingsContext';
-import { TSettings } from '@/features/settings/types';
+import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 
 import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
-import { getActiveFilterIds } from './AvailableTopicsFiltersHelpers';
 import { AvailableTopicsFiltersInfo } from './AvailableTopicsFiltersInfo';
-import {
-  filtersDataDefaults,
-  filtersDataSchema,
-  TFiltersData,
-} from './AvailableTopicsFiltersTypes';
 
-export type TApplyFiltersData = TFiltersData /* & { isInitial: boolean } */;
-
-interface TProps extends TPropsWithClassName {
-  applyFilters: (applyFiltersData: TApplyFiltersData) => Promise<unknown> | void;
-  augmentDefaults?: Partial<TFiltersData>;
-  storeId?: string;
-}
-
-type TMemo = {
-  inited?: boolean;
-  initialzing?: boolean;
-  restored?: boolean;
-  applyFiltersData?: (filtersData: TFiltersData) => void;
-  settings?: TSettings;
-  isSettingsReady?: boolean;
-  defaultFiltersData?: TFiltersData;
-};
+type TProps = TPropsWithClassName;
 
 export function AvailableTopicsFilters(props: TProps) {
-  const { className, applyFilters, augmentDefaults, storeId = 'AvailableTopicsFilters' } = props;
+  const { className } = props;
 
-  const memo = React.useMemo<TMemo>(() => ({}), []);
-
-  const [isInited, setIsInited] = React.useState(false);
-  const [isPending, startTransition] = React.useTransition();
-  const [isExpanded, setIsExpanded] = React.useState(false);
-  const [onDefaults, setOnDefaults] = React.useState(true);
-  const [error, setError] = React.useState<ErrorLike>();
-
-  const [filtersData, setFiltersData] = React.useState<TFiltersData | undefined>();
-
-  const settingsContext: SettingsContextData = useSettingsContext();
-  const { ready: isSettingsReady, settings } = settingsContext;
-  memo.isSettingsReady = isSettingsReady;
-  memo.settings = settings;
+  const {
+    isExpanded,
+    onDefaults,
+    error,
+    filtersData,
+    form,
+    isReady,
+    isSubmitEnabled,
+    toggleFilters,
+    hideFilters,
+    handleApplyButton,
+    handleResetToDefaults,
+    handleClearChanges,
+  } = useTopicsFiltersContext();
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
-  const defaultFiltersData = React.useMemo<TFiltersData>(() => {
-    const filtersData = {
-      ...filtersDataDefaults,
-      ...augmentDefaults,
-    };
-    if (!isSettingsReady || !settings) {
-      return filtersData;
-    }
-    return {
-      ...filtersData,
-      showOnlyMyTopics: !!settings.showOnlyMyTopics,
-      searchLang: settings.langCode,
-    } satisfies TFiltersData;
-  }, [settings, augmentDefaults, isSettingsReady]);
-  memo.defaultFiltersData = defaultFiltersData;
-
-  const form = useForm<TFiltersData>({
-    mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
-    criteriaMode: 'all', // Display all validation errors or one at a time.
-    resolver: zodResolver(filtersDataSchema),
-    defaultValues: defaultFiltersData, // filtersData,
-  });
-  const { isDirty, isValid } = form.formState;
-  const isReady = isInited && !isPending; // isDataReady && isUserReady;
-  const isSubmitEnabled = isReady && isDirty && isValid;
-
-  /* // DEBUG: Effect: Watch form values
-   * const formData: TFiltersData = form.watch();
-   * React.useEffect(() => {
-   *   console.log('[AvailableTopicsFilters] DEBUG: Effect: Watch form values', {
-   *     formData,
-   *     hasWorkoutStats: formData.hasWorkoutStats,
-   *   });
-   * }, [formData]);
-   */
-
-  const captionFormData = filtersData;
-
   const filtersInfo = React.useMemo(
-    () => (
-      <AvailableTopicsFiltersInfo className="truncate font-normal" filtersData={captionFormData} />
-    ),
-    [captionFormData],
+    () => <AvailableTopicsFiltersInfo className="truncate font-normal" filtersData={filtersData} />,
+    [filtersData],
   );
 
-  const activeFilterIds = getActiveFilterIds(captionFormData);
+  const activeFilterIds = getActiveFilterIds(filtersData);
   const hasFilters = !!activeFilterIds.length;
 
   const filterCaption = React.useMemo(() => {
@@ -120,111 +52,6 @@ export function AvailableTopicsFilters(props: TProps) {
     }
     return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
   }, [hasFilters, filtersInfo]);
-
-  const applyFiltersData = React.useCallback(
-    (filtersData: TFiltersData) => {
-      startTransition(async () => {
-        const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
-        setError(undefined);
-        try {
-          await applyFilters(filtersData);
-          form.reset(filtersData);
-          setFiltersData(filtersData);
-          setOnDefaults(isDefaults);
-          if (typeof window !== 'undefined') {
-            if (isDefaults) {
-              window.localStorage.removeItem(storeId);
-            } else {
-              window.localStorage.setItem(storeId, JSON.stringify(filtersData));
-            }
-          }
-          if (memo.inited) {
-            memo.inited = true;
-            setIsInited(true);
-          }
-        } catch (error) {
-          const details = getErrorText(error);
-          const message = 'Cannot update filters data';
-          // eslint-disable-next-line no-console
-          console.error('[AvailableTopicsFilters:applyFiltersData]', message, {
-            details,
-            error,
-            filtersData,
-          });
-          debugger; // eslint-disable-line no-debugger
-          toast.error(message);
-          setError(message);
-        }
-      });
-    },
-    [memo, form, applyFilters, storeId],
-  );
-  memo.applyFiltersData = applyFiltersData;
-
-  // Effect: Initiazlize & restore saved filters data
-  React.useEffect(() => {
-    if (memo.inited || memo.initialzing || !isSettingsReady || !memo.defaultFiltersData) {
-      return;
-    }
-    memo.initialzing = true;
-    let filtersData: TFiltersData = memo.defaultFiltersData;
-    if (typeof window !== 'undefined' && !memo.restored) {
-      const jsonStr = window.localStorage.getItem(storeId);
-      if (jsonStr) {
-        try {
-          const rawData = JSON.parse(jsonStr);
-          filtersData = filtersDataSchema.parse(rawData);
-        } catch (error) {
-          const errMsg = 'Can not parse saved filters data';
-          // eslint-disable-next-line no-console
-          console.error('[AvailableTopicsFilters]', errMsg, {
-            jsonStr,
-            error,
-          });
-          debugger; // eslint-disable-line no-debugger
-          // toast.error('Can not parse saved filters data');
-        }
-      }
-      memo.restored = true;
-    }
-    memo.applyFiltersData?.(filtersData);
-    memo.inited = true;
-    setIsInited(true);
-    memo.initialzing = false;
-  }, [memo, isSettingsReady, settings, storeId]);
-
-  const handleApplyButton = React.useCallback(
-    (filtersData: TFiltersData) => {
-      // Trim searchText and searchLang values
-      const trimmedFiltersData: TFiltersData = {
-        ...filtersData,
-        searchText: filtersData.searchText?.trim() || '',
-        searchLang: filtersData.searchLang?.trim() || '',
-      };
-      memo.applyFiltersData?.(trimmedFiltersData);
-      setIsExpanded(false);
-    },
-    [memo],
-  );
-
-  const handleResetToDefaults = React.useCallback(() => {
-    if (!memo.defaultFiltersData) {
-      return;
-    }
-    form.reset(memo.defaultFiltersData);
-    // setOnDefaults(true);
-    memo.applyFiltersData?.(memo.defaultFiltersData);
-    setIsExpanded(false);
-  }, [memo, form]);
-
-  const handleClearChanges = React.useCallback(() => {
-    if (!memo.defaultFiltersData) {
-      return;
-    }
-    form.reset(filtersData);
-    const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
-    setOnDefaults(isDefaults);
-  }, [memo, form, filtersData]);
 
   const HeaderIcon = !isReady ? Icons.Spinner : Icons.Settings2;
 
@@ -252,7 +79,7 @@ export function AvailableTopicsFilters(props: TProps) {
               <TooltipTrigger asChild>
                 <Button
                   variant={isExpanded ? 'ghost' : 'theme'}
-                  onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+                  onClick={toggleFilters}
                   className="flex w-full items-center gap-2 rounded-none"
                 >
                   <span className="flex flex-1 items-center gap-2 truncate">
@@ -354,7 +181,7 @@ export function AvailableTopicsFilters(props: TProps) {
                         type="button"
                         variant="outline"
                         onClick={handleClearChanges}
-                        disabled={!isDirty}
+                        disabled={!form.formState.isDirty}
                         className="flex items-center gap-2"
                       >
                         <Icons.Close className="size-4 opacity-50" />
@@ -370,7 +197,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       <Button
                         type="button"
                         variant="ghost"
-                        onClick={() => setIsExpanded(false)}
+                        onClick={hideFilters}
                         className="flex items-center gap-2"
                       >
                         <Icons.ChevronUp className="size-4 opacity-50" />

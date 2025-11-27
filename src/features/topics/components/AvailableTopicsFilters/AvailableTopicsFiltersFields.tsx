@@ -14,14 +14,13 @@ import { ThreeStateField } from '@/components/ui/ThreeStateField';
 import { FormHint } from '@/components/blocks/FormHint';
 import { Close } from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useT } from '@/i18n';
-
 import {
   getFilterFieldName,
   getFiltersLabelValueString,
-  // getFilterUnionString,
-} from './AvailableTopicsFiltersHelpers';
-import { maxSearchTextLength, TFiltersData } from './AvailableTopicsFiltersTypes';
+  maxSearchTextLength,
+  TFiltersData,
+} from '@/contexts/TopicsFiltersContext';
+import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;

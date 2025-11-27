@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { TApplyFiltersData } from '@/features/topics/components';
 import {
   convertAvailableFiltersToParams,
+  TApplyFiltersData,
   TAvailableTopicsFiltersParams,
+  TopicsFiltersProvider,
 } from '@/features/topics/components/AvailableTopicsFilters';
 import { useAvailableTopicsByScope } from '@/hooks';
 
@@ -35,12 +36,15 @@ export function AvailableTopicsListWrapper() {
     }
   }, []);
 
+  const augmentFiltersDefaults = React.useMemo(() => ({ hasQuestions: true }), []);
+
   const availableTopicsQuery = useAvailableTopicsByScope({
     manageScope,
     enabled: isFiltersInited,
     ...filtersParams,
     // includeWorkout: true,
     // DEBUG: Test search options
+    // orderBy: { createdAt: 'desc' },
     // searchText: 'test',
     // hasWorkoutStats: true,
     // hasActiveWorkouts: true,
@@ -76,10 +80,15 @@ export function AvailableTopicsListWrapper() {
   }
 
   return (
-    <AvailableTopicsListPage
-      availableTopicsQuery={availableTopicsQuery}
-      manageScope={manageScope}
+    <TopicsFiltersProvider
+      storeId="AvailableTopicsFilters"
       applyFilters={applyFilters}
-    />
+      augmentDefaults={augmentFiltersDefaults}
+    >
+      <AvailableTopicsListPage
+        availableTopicsQuery={availableTopicsQuery}
+        manageScope={manageScope}
+      />
+    </TopicsFiltersProvider>
   );
 }

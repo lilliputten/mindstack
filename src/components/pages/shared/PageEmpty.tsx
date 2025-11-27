@@ -14,6 +14,7 @@ interface TPageEmptyProps extends TPropsWithClassName {
   buttonTitle?: TReactNode;
   icon?: TGenericIcon;
   buttons?: TReactNode;
+  buttonsClassName?: string;
   framed?: boolean;
   showAIInfo?: boolean;
 }
@@ -26,6 +27,7 @@ export function PageEmpty(props: TPageEmptyProps) {
     buttonTitle,
     onButtonClick,
     buttons,
+    buttonsClassName,
     icon = Icons.Warning,
     framed,
     showAIInfo,
@@ -44,7 +46,13 @@ export function PageEmpty(props: TPageEmptyProps) {
       <EmptyPlaceholder.Title>{title}</EmptyPlaceholder.Title>
       <EmptyPlaceholder.Description>{description}</EmptyPlaceholder.Description>
       {hasAnyButtons && (
-        <div className="flex w-full justify-center gap-2">
+        <div
+          className={cn(
+            isDev && '__PageEmpty_Buttons', // DEBUG
+            'flex w-full flex-wrap justify-center gap-2',
+            buttonsClassName,
+          )}
+        >
           {hasCustomButton && (
             <Button onClick={onButtonClick} className="flex gap-2">
               <Icons.Add className="hidden size-4 opacity-50 sm:flex" />

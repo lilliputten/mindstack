@@ -6,14 +6,13 @@ import { truncateString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
-import { useT } from '@/i18n';
-
 import {
   getActiveFilterIds,
   getFilterFieldName,
   getFiltersDataValueString,
-} from './AvailableTopicsFiltersHelpers';
-import { TFiltersData } from './AvailableTopicsFiltersTypes';
+  TFiltersData,
+} from '@/contexts/TopicsFiltersContext';
+import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   filtersData?: TFiltersData;
