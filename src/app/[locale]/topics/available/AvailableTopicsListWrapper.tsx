@@ -11,7 +11,7 @@ import {
   TApplyFiltersData,
   TAvailableTopicsFiltersParams,
   TopicsFiltersProvider,
-} from '@/features/topics/components/AvailableTopicsFilters';
+} from '@/contexts/TopicsFiltersContext';
 import { useAvailableTopicsByScope } from '@/hooks';
 
 import { AvailableTopicsListPage } from './AvailableTopicsListPage';
@@ -33,16 +33,12 @@ export function AvailableTopicsListWrapper() {
     manageScope,
     enabled: isFiltersInited,
     ...filtersParams,
-    orderBy: [
-      // Sort examples
-      { name: 'asc' },
-      { createdAt: 'desc' },
-      { updatedAt: 'desc' },
-    ],
-    // orderBy: [{ createdAt: 'desc' }, { updatedAt: 'desc' }],
-    // includeWorkout: true,
-    // DEBUG: Test search options
+    // // DEBUG: Sort examples
     // orderBy: { createdAt: 'desc' },
+    // orderBy: [ { name: 'asc' }, { createdAt: 'desc' }, { updatedAt: 'desc' } ],
+    // orderBy: [{ name: 'asc' }, { updatedAt: 'desc' }],
+    // includeWorkout: true,
+    // // DEBUG: Test search options
     // searchText: 'test',
     // hasWorkoutStats: true,
     // hasActiveWorkouts: true,
@@ -65,15 +61,14 @@ export function AvailableTopicsListWrapper() {
     // isFetched,
   } = availableTopicsQuery;
 
-  React.useEffect(() => {
-    console.log(
-      '[AvailableTopicsListWrapper:DEBUG]',
-      queryKey.map(String).map(decodeURIComponent).join(','),
-      {
-        queryKey,
-      },
-    );
-  }, [queryKey]);
+  /* // DEBUG: Show current query key
+   * React.useEffect(() => {
+   *   const debugKey = queryKey.map(String).map(decodeURIComponent).join(', ').replace(/&/g, ' ');
+   *   console.log('[AvailableTopicsListWrapper:DEBUG]', debugKey, {
+   *     queryKey,
+   *   });
+   * }, [queryKey]);
+   */
 
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {
@@ -107,7 +102,7 @@ export function AvailableTopicsListWrapper() {
       storeId="AvailableTopicsFilters"
       applyFilters={applyFilters}
       augmentDefaults={augmentFiltersDefaults}
-      // defaultExpanded
+      // defaultExpanded // DEBUG: Open by default
     >
       <AvailableTopicsListPage
         availableTopicsQuery={availableTopicsQuery}

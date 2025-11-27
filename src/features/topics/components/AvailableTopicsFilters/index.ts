@@ -1,2 +1,2 @@
 export * from './AvailableTopicsFilters';
-export * from '@/contexts/TopicsFiltersContext';
+// export * from '@/contexts/TopicsFiltersContext';

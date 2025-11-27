@@ -6,8 +6,12 @@ import { TTranslator } from '@/i18n';
 import {
   fieldUnionStrings,
   filterFieldNames,
-  filtersDataSchema,
   specifcFieldUnionStrings,
+} from './TopicsFiltersTexts';
+import {
+  dontUseOnlyValueFor,
+  filtersDataSchema,
+  orderByMap,
   TAvailableTopicsFiltersParams,
   TFiltersData,
   TFiltersDataKey,
@@ -49,9 +53,10 @@ export function getFiltersDataRawValueString(
   const baseField = getBaseField(field);
   const isBoolean = baseField instanceof z.ZodBoolean;
   const isUnion = baseField instanceof z.ZodUnion;
+  const isEnum = baseField instanceof z.ZodEnum;
   let strValue = origValue;
   let showOnlyValue = false;
-  if (isBoolean || isUnion) {
+  if (isBoolean || isUnion || isEnum) {
     let unionValue: string | undefined;
     if (specific) {
       const specificData = specifcFieldUnionStrings[fieldId];
@@ -60,7 +65,9 @@ export function getFiltersDataRawValueString(
         if (t && unionValue) {
           unionValue = t(unionValue);
         }
-        showOnlyValue = true;
+        if (!dontUseOnlyValueFor.includes(fieldId)) {
+          showOnlyValue = true;
+        }
       }
     }
     if (!unionValue) {
@@ -119,11 +126,12 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
 export function convertAvailableFiltersToParams(
   filtersData: TFiltersData,
 ): TAvailableTopicsFiltersParams {
-  const { hasWorkoutStats, hasActiveWorkouts, hasQuestions } = filtersData;
+  const { hasWorkoutStats, hasActiveWorkouts, hasQuestions, orderBySelect, ...rest } = filtersData;
   return {
-    ...filtersData,
+    ...rest,
     hasWorkoutStats: hasWorkoutStats != null ? hasWorkoutStats : undefined,
     hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
     hasQuestions: hasQuestions != null ? hasQuestions : undefined,
+    orderBy: orderBySelect ? orderByMap[orderBySelect] : undefined,
   };
 }

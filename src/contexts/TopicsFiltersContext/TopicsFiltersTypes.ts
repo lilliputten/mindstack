@@ -17,6 +17,17 @@ export type TAvailableTopicsFiltersParams = z.infer<typeof AvailableTopicsFilter
 
 export const maxSearchTextLength = isDev ? 10 : 50;
 
+export const orderBySelectOptions = [
+  // Sort options
+  'byRecent',
+  'byOldest',
+  'byNameAsc',
+  'byNameDesc',
+] as const;
+export const orderBySelectDefault = orderBySelectOptions[0]
+
+export const orderBySelectSchema = z.enum(orderBySelectOptions);
+
 export const filtersDataSchema = z.object({
   searchText: z.string().max(maxSearchTextLength).optional(),
   searchLang: z.string().max(maxSearchTextLength).optional(),
@@ -24,6 +35,7 @@ export const filtersDataSchema = z.object({
   hasWorkoutStats: threeStateSchema,
   hasActiveWorkouts: threeStateSchema,
   hasQuestions: threeStateSchema,
+  orderBySelect: orderBySelectSchema.optional(),
 });
 
 export type TFiltersData = z.infer<typeof filtersDataSchema>;
@@ -36,37 +48,15 @@ export const filtersDataDefaults: TFiltersData = {
   hasWorkoutStats: null,
   hasActiveWorkouts: null,
   hasQuestions: null,
+  orderBySelect: orderBySelectDefault,
 };
 
-export const fieldUnionStrings = {
-  true: 'Yes',
-  false: 'No',
-  null: 'Ignore',
+export const orderByMap = {
+  byRecent: [{ updatedAt: 'desc' as const }, { name: 'asc' as const }],
+  byOldest: [{ updatedAt: 'asc' as const }, { name: 'asc' as const }],
+  byNameAsc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],
+  byNameDesc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],
 };
 
-export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<string, string>>> = {
-  hasWorkoutStats: {
-    true: 'With Statistics',
-    false: 'Without Statistics',
-  },
-  hasActiveWorkouts: {
-    true: 'With Active Workouts',
-    false: 'Without Active Workouts',
-  },
-  hasQuestions: {
-    true: 'With Questions',
-    false: 'Without Questions',
-  },
-  showOnlyMyTopics: {
-    true: 'Only My Topics',
-  },
-};
-
-export const filterFieldNames: Record<TFiltersDataKey, string> = {
-  searchText: 'Search for',
-  searchLang: 'Language',
-  showOnlyMyTopics: 'Only My',
-  hasWorkoutStats: 'Statistics',
-  hasActiveWorkouts: 'Active Workouts',
-  hasQuestions: 'Questions',
-};
+/** Don't omit filed label for short info (in the `AvailableTopicsFiltersInfo`) */
+export const dontUseOnlyValueFor: TFiltersDataKey[] = ['orderBySelect'];

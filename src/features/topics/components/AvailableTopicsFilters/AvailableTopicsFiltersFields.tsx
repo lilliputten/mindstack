@@ -24,6 +24,8 @@ import {
   getFilterFieldName,
   getFiltersLabelValueString,
   maxSearchTextLength,
+  orderBySelectDefault,
+  orderBySelectOptions,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
 import { useT } from '@/i18n';
@@ -49,12 +51,14 @@ export function AvailableTopicsFiltersFields(props: TProps) {
   const { className, form } = props;
   const t = useT();
 
+  // Used keys
   const searchTextKey = React.useId();
   const searchLangKey = React.useId();
   const hasWorkoutStatsKey = React.useId();
   const hasActiveWorkoutsKey = React.useId();
   const hasQuestionsKey = React.useId();
   const showOnlyMyTopicsKey = React.useId();
+  const orderBySelectKey = React.useId();
 
   // const trueText = getFilterUnionString('true', t);
   // const falseText = getFilterUnionString('false', t);
@@ -73,7 +77,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="searchText"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-2">
+            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
               <Label htmlFor={searchTextKey}>{getFilterFieldName('searchText', t)}</Label>
               <FormControl>
                 <div className="relative flex gap-2">
@@ -112,7 +116,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="searchLang"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-2">
+            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
               <Label htmlFor={searchLangKey}>{getFilterFieldName('searchLang', t)}</Label>
               <FormControl>
                 <div className="relative flex gap-2">
@@ -153,7 +157,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="showOnlyMyTopics"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-2">
+            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
               <Label htmlFor={showOnlyMyTopicsKey}>
                 {getFilterFieldName('showOnlyMyTopics', t)}
               </Label>
@@ -169,6 +173,36 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
+        <FormField
+          name="orderBySelect"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem
+              className={cn(
+                'flex w-full flex-col gap-2',
+                (!field.value || field.value === orderBySelectDefault) && 'opacity-50',
+              )}
+            >
+              <Label htmlFor={orderBySelectKey}>{getFilterFieldName('orderBySelect', t)}</Label>
+              <FormControl>
+                <Select value={field.value || ''} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select order…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {orderBySelectOptions.map((value) => (
+                      <SelectItem key={value} value={value}>
+                        {getFiltersLabelValueString('orderBySelect', value, t)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormHint>Choose how to sort the topics list.</FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </FormSection>
       <FormSection>
         <FormField
@@ -177,7 +211,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           render={({ field }) => {
             const value = field.value === null ? 'null' : String(field.value);
             return (
-              <FormItem className="flex w-full flex-col gap-2">
+              <FormItem
+                className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
+              >
                 <Label htmlFor={hasWorkoutStatsKey}>
                   {getFilterFieldName('hasWorkoutStats', t)}
                 </Label>
@@ -219,7 +255,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           render={({ field }) => {
             const value = field.value === null ? 'null' : String(field.value);
             return (
-              <FormItem className="flex w-full flex-col gap-2">
+              <FormItem
+                className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
+              >
                 <Label htmlFor={hasActiveWorkoutsKey}>
                   {getFilterFieldName('hasActiveWorkouts', t)}
                 </Label>
@@ -259,7 +297,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           render={({ field }) => {
             const value = field.value === null ? 'null' : String(field.value);
             return (
-              <FormItem className="flex w-full flex-col gap-2">
+              <FormItem
+                className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
+              >
                 <Label htmlFor={hasQuestionsKey}>{getFilterFieldName('hasQuestions', t)}</Label>
                 <FormControl>
                   <Select
