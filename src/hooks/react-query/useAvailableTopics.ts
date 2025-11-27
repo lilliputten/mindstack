@@ -40,7 +40,9 @@ const staleTime = defaultStaleTime;
 
 // TODO: Register all the query keys
 
-type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'>;
+type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'> & {
+  traceId?: string;
+};
 
 /** Collection of the all used query keys (mb, already invalidated).
  *
@@ -53,10 +55,12 @@ type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'>
 const allUsedKeys: TAllUsedKeys = {};
 
 function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
-  const { enabled = true, ...queryProps } = props;
+  const { traceId: _id, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  // console.log('[useAvailableTopics:DEBUG:queryProps]', queryProps);
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
@@ -263,11 +267,21 @@ interface TUseAvailableTopicsByScopeProps extends TUseAvailableTopicsProps {
 }
 
 export function useAvailableTopicsByScope(props: TUseAvailableTopicsByScopeProps = {}) {
-  const { manageScope = defaultTopicsManageScope, ...queryProps } = props;
+  const { traceId, manageScope = defaultTopicsManageScope, ...queryProps } = props;
+  const keys = Object.keys(queryProps);
+  console.log('[useAvailableTopicsByScope:DEBUG:queryProps]', {
+    keys,
+    queryProps,
+    props,
+  });
+  if (!keys.length) {
+    debugger;
+  }
   const user = useSessionUser();
   const passQueryProps: TUseAvailableTopicsProps = React.useMemo(() => {
     const isAdmin = user?.role === 'ADMIN';
     return {
+      traceId,
       // skip, // Skip records (start from the nth record), default = 0 // z.number().int().nonnegative().optional()
       // take, // Amount of records to return, default = {itemsLimit} // z.number().int().positive().optional()
       adminMode: manageScope === TopicsManageScopeIds.ALL_TOPICS && isAdmin, // Get all users' data not only your own (admins only: will return no data for non-admins) ??? // z.boolean().optional()
@@ -280,6 +294,6 @@ export function useAvailableTopicsByScope(props: TUseAvailableTopicsByScopeProps
       // topicIds, // Include only listed topic ids // z.array(z.string()).optional()
       ...queryProps,
     } satisfies TUseAvailableTopicsProps;
-  }, [manageScope, queryProps, user]);
+  }, [traceId, manageScope, queryProps, user]);
   return useAvailableTopics(passQueryProps);
 }

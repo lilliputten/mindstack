@@ -3,11 +3,18 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import {
+  convertAvailableFiltersToParams,
+  TApplyFiltersData,
+  TAvailableTopicsFiltersParams,
+  TopicsFiltersProvider,
+} from '@/contexts/TopicsFiltersContext';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-import { ManageTopicsListWrapper } from './ManageTopicsListWrapper';
+import { ContentSkeleton } from './ContentSkeleton';
+import { ManageTopicsListCard } from './ManageTopicsListCard';
 
 interface TTopicsListProps {
   showAddModal?: boolean;
@@ -28,11 +35,35 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   const { showAddModal, deleteTopicId, editTopicId, editQuestionsTopicId, from } = props;
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
-  const availableTopics = useAvailableTopicsByScope({ manageScope });
-  const { allTopics, isFetched } = availableTopics;
+
+  const [isFiltersInited, setIsFiltersInited] = React.useState(false);
+  const [filtersParams, setFiltersParams] = React.useState<
+    TAvailableTopicsFiltersParams | undefined
+  >();
+
+  const availableTopicsQuery = useAvailableTopicsByScope({
+    manageScope,
+    enabled: isFiltersInited,
+    ...filtersParams,
+  });
+  const { allTopics, isFetched, queryClient, queryKey } = availableTopicsQuery;
   // memo.isFetched = isFetched;
   memo.routePath = routePath;
   memo.allTopics = allTopics;
+
+  const isReady = isFiltersInited;
+
+  // DEBUG: filtersParams
+  React.useEffect(() => {
+    console.log('[ManageTopicsPageModalsWrapper:DEBUG:filtersParams]', filtersParams);
+  }, [filtersParams]);
+  // DEBUG: Show current query key
+  React.useEffect(() => {
+    const debugKey = queryKey.map(String).map(decodeURIComponent).join(', ').replace(/&/g, ' ');
+    console.log('[ManageTopicsPageModalsWrapper:DEBUG:queryKey]', debugKey, {
+      queryKey,
+    });
+  }, [queryKey]);
 
   const goToTheRoute = useGoToTheRoute();
 
@@ -128,12 +159,30 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
     }
   }, [editQuestionsTopicId, openEditQuestionsPage]);
 
+  const applyFilters = React.useCallback(
+    async (filtersData: TApplyFiltersData) => {
+      const filtersParams = convertAvailableFiltersToParams(filtersData);
+      setIsFiltersInited(true);
+      setFiltersParams(filtersParams);
+      queryClient.removeQueries({ queryKey });
+    },
+    [queryClient, queryKey],
+  );
+
   return (
-    <ManageTopicsListWrapper
-      openAddTopicModal={openAddTopicModal}
-      openDeleteTopicModal={openDeleteTopicModal}
-      openEditTopicCard={openEditTopicCard}
-      openEditQuestionsPage={openEditQuestionsPage}
-    />
+    <TopicsFiltersProvider storeId="ManageTopicsFilters" applyFilters={applyFilters}>
+      {isReady ? (
+        <ManageTopicsListCard
+          handleDeleteTopic={openDeleteTopicModal}
+          handleEditTopic={openEditTopicCard}
+          handleEditQuestions={openEditQuestionsPage}
+          handleAddTopic={openAddTopicModal}
+          availableTopicsQuery={availableTopicsQuery}
+          isFiltersInited={isFiltersInited}
+        />
+      ) : (
+        <ContentSkeleton className="px-6 py-0" />
+      )}
+    </TopicsFiltersProvider>
   );
 }
