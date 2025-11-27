@@ -9,8 +9,14 @@ import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
-import { ThreeStateField } from '@/components/ui/ThreeStateField';
 import { FormHint } from '@/components/blocks/FormHint';
 import { Close } from '@/components/shared/Icons';
 import { isDev } from '@/config';
@@ -169,21 +175,35 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="hasWorkoutStats"
           control={form.control}
           render={({ field }) => {
-            const { onChange: _, ...restField } = field;
+            const value = field.value === null ? 'null' : String(field.value);
             return (
               <FormItem className="flex w-full flex-col gap-2">
                 <Label htmlFor={hasWorkoutStatsKey}>
                   {getFilterFieldName('hasWorkoutStats', t)}
                 </Label>
                 <FormControl>
-                  <ThreeStateField
-                    id={hasWorkoutStatsKey}
-                    {...restField}
-                    onValueChange={field.onChange}
-                    trueText={getFiltersLabelValueString('hasWorkoutStats', true, t)}
-                    falseText={getFiltersLabelValueString('hasWorkoutStats', false, t)}
-                    nullText={getFiltersLabelValueString('hasWorkoutStats', null, t)}
-                  />
+                  <Select
+                    value={value}
+                    onValueChange={(value) => {
+                      const newValue = value === 'null' ? null : value === 'true';
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select option…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">
+                        {getFiltersLabelValueString('hasWorkoutStats', null, t)}
+                      </SelectItem>
+                      <SelectItem value="true">
+                        {getFiltersLabelValueString('hasWorkoutStats', true, t)}
+                      </SelectItem>
+                      <SelectItem value="false">
+                        {getFiltersLabelValueString('hasWorkoutStats', false, t)}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormHint>
                   Display topics with or without collected progress statistics data.
@@ -197,21 +217,35 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="hasActiveWorkouts"
           control={form.control}
           render={({ field }) => {
-            const { onChange: _, ...restField } = field;
+            const value = field.value === null ? 'null' : String(field.value);
             return (
               <FormItem className="flex w-full flex-col gap-2">
                 <Label htmlFor={hasActiveWorkoutsKey}>
                   {getFilterFieldName('hasActiveWorkouts', t)}
                 </Label>
                 <FormControl>
-                  <ThreeStateField
-                    id={hasActiveWorkoutsKey}
-                    {...restField}
-                    onValueChange={field.onChange}
-                    trueText={getFiltersLabelValueString('hasActiveWorkouts', true, t)}
-                    falseText={getFiltersLabelValueString('hasActiveWorkouts', false, t)}
-                    nullText={getFiltersLabelValueString('hasActiveWorkouts', null, t)}
-                  />
+                  <Select
+                    value={value}
+                    onValueChange={(value) => {
+                      const newValue = value === 'null' ? null : value === 'true';
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select option…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">
+                        {getFiltersLabelValueString('hasActiveWorkouts', null, t)}
+                      </SelectItem>
+                      <SelectItem value="true">
+                        {getFiltersLabelValueString('hasActiveWorkouts', true, t)}
+                      </SelectItem>
+                      <SelectItem value="false">
+                        {getFiltersLabelValueString('hasActiveWorkouts', false, t)}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormHint>Display topics with or without active trainings.</FormHint>
                 <FormMessage />
@@ -223,19 +257,33 @@ export function AvailableTopicsFiltersFields(props: TProps) {
           name="hasQuestions"
           control={form.control}
           render={({ field }) => {
-            const { onChange: _, ...restField } = field;
+            const value = field.value === null ? 'null' : String(field.value);
             return (
               <FormItem className="flex w-full flex-col gap-2">
                 <Label htmlFor={hasQuestionsKey}>{getFilterFieldName('hasQuestions', t)}</Label>
                 <FormControl>
-                  <ThreeStateField
-                    id={hasQuestionsKey}
-                    {...restField}
-                    onValueChange={field.onChange}
-                    trueText={getFiltersLabelValueString('hasQuestions', true, t)}
-                    falseText={getFiltersLabelValueString('hasQuestions', false, t)}
-                    nullText={getFiltersLabelValueString('hasQuestions', null, t)}
-                  />
+                  <Select
+                    value={value}
+                    onValueChange={(value) => {
+                      const newValue = value === 'null' ? null : value === 'true';
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select option…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">
+                        {getFiltersLabelValueString('hasQuestions', null, t)}
+                      </SelectItem>
+                      <SelectItem value="true">
+                        {getFiltersLabelValueString('hasQuestions', true, t)}
+                      </SelectItem>
+                      <SelectItem value="false">
+                        {getFiltersLabelValueString('hasQuestions', false, t)}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormHint>Display topics with or without created questions.</FormHint>
                 <FormMessage />

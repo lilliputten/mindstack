@@ -84,6 +84,7 @@ export function AvailableTopicsListWrapper() {
       storeId="AvailableTopicsFilters"
       applyFilters={applyFilters}
       augmentDefaults={augmentFiltersDefaults}
+      defaultExpanded
     >
       <AvailableTopicsListPage
         availableTopicsQuery={availableTopicsQuery}

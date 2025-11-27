@@ -37,4 +37,5 @@ export interface TopicsFiltersProviderProps {
   applyFilters: (applyFiltersData: TApplyFiltersData) => Promise<unknown> | void;
   augmentDefaults?: Partial<TFiltersData>;
   storeId?: string;
+  defaultExpanded?: boolean;
 }

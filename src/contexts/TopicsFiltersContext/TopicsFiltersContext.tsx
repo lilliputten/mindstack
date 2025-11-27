@@ -29,13 +29,19 @@ type TMemo = {
 };
 
 export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
-  const { children, applyFilters, augmentDefaults, storeId = 'TopicsFilters' } = props;
+  const {
+    children,
+    applyFilters,
+    augmentDefaults,
+    storeId = 'TopicsFilters',
+    defaultExpanded = false,
+  } = props;
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
   const [isInited, setIsInited] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
-  const [isExpanded, setExpanded] = React.useState(false);
+  const [isExpanded, setExpanded] = React.useState(defaultExpanded);
   const [onDefaults, setOnDefaults] = React.useState(true);
   const [error, setError] = React.useState<ErrorLike>();
   const [filtersData, setFiltersData] = React.useState<TFiltersData | undefined>();
