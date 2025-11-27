@@ -225,6 +225,7 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
   return React.useMemo(() => {
     return {
       ...query,
+      queryClient,
       // Derived data...
       routePath,
       queryProps,
@@ -240,6 +241,7 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
       invalidateAllKeysExcept,
     };
   }, [
+    queryClient,
     query,
     // Derived data...
     routePath,

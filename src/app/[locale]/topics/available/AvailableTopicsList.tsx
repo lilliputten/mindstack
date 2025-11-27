@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
-import { getRandomHashString } from '@/lib/helpers/strings';
+import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/Button';
@@ -18,20 +18,15 @@ import { Link } from '@/i18n/routing';
 import { AvailableTopicsListItem } from './AvailableTopicsListItem';
 import { ContentListSkeleton } from './ContentSkeleton';
 
-const saveScrollHash = getRandomHashString();
+const sessionSaveScrollHash = getRandomHashString();
 
 interface TProps extends TPropsWithClassName {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
   manageScope: TTopicsManageScopeId;
-  // isFiltersInited: boolean;
 }
 
 export function AvailableTopicsList(props: TProps) {
-  const {
-    className,
-    availableTopicsQuery,
-    // isFiltersInited,
-  } = props;
+  const { className, availableTopicsQuery } = props;
 
   const goBack = useGoBack(rootRoute);
 
@@ -45,6 +40,7 @@ export function AvailableTopicsList(props: TProps) {
     // error,
     // isError,
     // refetch,
+    queryUrlHash,
     allTopics,
     fetchNextPage,
     hasNextPage,
@@ -53,6 +49,11 @@ export function AvailableTopicsList(props: TProps) {
     isFetchingNextPage,
     isLoading,
   } = availableTopicsQuery;
+
+  const saveScrollHash = React.useMemo(
+    () => sessionSaveScrollHash + getAbcHashString(queryUrlHash),
+    [queryUrlHash],
+  );
 
   if (!isFetched || !isFiltersInited) {
     return <ContentListSkeleton className="px-6" />;

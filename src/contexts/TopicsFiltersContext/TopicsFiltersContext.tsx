@@ -105,7 +105,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           const details = getErrorText(error);
           const message = 'Cannot update filters data';
           // eslint-disable-next-line no-console
-          console.error('[TopicsFiltersContext:applyFiltersData]', message, {
+          console.error('[TopicsFiltersContext:applyFiltersData]', [message, details].join(': '), {
             details,
             error,
             filtersData,
@@ -133,8 +133,11 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           const rawData = JSON.parse(jsonStr);
           filtersData = filtersDataSchema.parse(rawData);
         } catch (error) {
+          const details = getErrorText(error);
+          const message = 'Cannot parse saved filters data';
           // eslint-disable-next-line no-console
-          console.error('[TopicsFiltersContext] Cannot parse saved filters data', {
+          console.error('[TopicsFiltersContext]', [message, details].join(': '), {
+            details,
             jsonStr,
             error,
           });

@@ -27,21 +27,19 @@ export function AvailableTopicsListWrapper() {
     TAvailableTopicsFiltersParams | undefined
   >();
 
-  const applyFilters = React.useCallback(async (filtersData: TApplyFiltersData) => {
-    const filtersParams = convertAvailableFiltersToParams(filtersData);
-    setIsFiltersInited(true);
-    setFiltersParams(filtersParams);
-    if (isDev) {
-      await new Promise((r) => setTimeout(r, 500));
-    }
-  }, []);
-
   const augmentFiltersDefaults = React.useMemo(() => ({ hasQuestions: true }), []);
 
   const availableTopicsQuery = useAvailableTopicsByScope({
     manageScope,
     enabled: isFiltersInited,
     ...filtersParams,
+    orderBy: [
+      // Sort examples
+      { name: 'asc' },
+      { createdAt: 'desc' },
+      { updatedAt: 'desc' },
+    ],
+    // orderBy: [{ createdAt: 'desc' }, { updatedAt: 'desc' }],
     // includeWorkout: true,
     // DEBUG: Test search options
     // orderBy: { createdAt: 'desc' },
@@ -58,12 +56,37 @@ export function AvailableTopicsListWrapper() {
     // searchLang: 'Chua', // Fuzzy language name opr code
   });
   const {
+    queryClient,
+    queryKey,
     isError,
     refetch,
     error,
     // hasTopics,
     // isFetched,
   } = availableTopicsQuery;
+
+  React.useEffect(() => {
+    console.log(
+      '[AvailableTopicsListWrapper:DEBUG]',
+      queryKey.map(String).map(decodeURIComponent).join(','),
+      {
+        queryKey,
+      },
+    );
+  }, [queryKey]);
+
+  const applyFilters = React.useCallback(
+    async (filtersData: TApplyFiltersData) => {
+      const filtersParams = convertAvailableFiltersToParams(filtersData);
+      setIsFiltersInited(true);
+      setFiltersParams(filtersParams);
+      queryClient.removeQueries({ queryKey });
+      if (isDev) {
+        await new Promise((r) => setTimeout(r, 500));
+      }
+    },
+    [queryClient, queryKey],
+  );
 
   if (isError) {
     return (
@@ -84,7 +107,7 @@ export function AvailableTopicsListWrapper() {
       storeId="AvailableTopicsFilters"
       applyFilters={applyFilters}
       augmentDefaults={augmentFiltersDefaults}
-      defaultExpanded
+      // defaultExpanded
     >
       <AvailableTopicsListPage
         availableTopicsQuery={availableTopicsQuery}
