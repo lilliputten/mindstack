@@ -39,6 +39,8 @@ import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
+import { ContentSkeletonTable } from './ContentSkeleton';
+
 const sessionSaveScrollHash = getRandomHashString();
 
 interface TManageTopicsListCardProps {
@@ -517,9 +519,13 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
 
-  const { refetch, isRefetching, isLoading } = availableTopicsQuery;
+  const { refetch, isFetched, isRefetching, isLoading } = availableTopicsQuery;
 
-  const isDataLoading = isRefetching || isLoading;
+  const { isInited: isFiltersInited, isPending: isFiltersPending } = useTopicsFiltersContext();
+
+  const isDataInited = isFetched && isFiltersInited;
+
+  const isDataLoading = isRefetching || isLoading || isFiltersPending;
 
   const goBack = useGoBack(rootRoute);
 
@@ -726,22 +732,27 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       <AvailableTopicsFilters
         className={cn(
           isDev && '__ManageTopicsListCard_Filters', // DEBUG
-          'mx-6',
+          'mx-6 transition',
+          isFiltersPending && 'opacity-50',
         )}
       />
-      <TopicsTableContent
-        {...props}
-        className={cn(
-          isDev && '__ManageTopicsListCard_CardContent', // DEBUG
-          'flex flex-row flex-wrap items-start',
-          'transition',
-          'overflow-hidden rounded-md',
-          isDataLoading && 'opacity-50',
-        )}
-        goBack={goBack}
-        selectedTopics={selectedTopics}
-        setSelectedTopics={setSelectedTopics}
-      />
+      {isDataInited ? (
+        <TopicsTableContent
+          {...props}
+          className={cn(
+            isDev && '__ManageTopicsListCard_CardContent', // DEBUG
+            'flex flex-row flex-wrap items-start',
+            'transition',
+            'overflow-hidden rounded-md',
+            isDataLoading && 'opacity-50',
+          )}
+          goBack={goBack}
+          selectedTopics={selectedTopics}
+          setSelectedTopics={setSelectedTopics}
+        />
+      ) : (
+        <ContentSkeletonTable className="px-6" />
+      )}
       <ConfirmModal
         dialogTitle="Confirm delete topics"
         confirmButtonVariant="destructive"

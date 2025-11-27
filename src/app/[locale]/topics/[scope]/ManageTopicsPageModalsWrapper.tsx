@@ -51,19 +51,7 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   memo.routePath = routePath;
   memo.allTopics = allTopics;
 
-  const isReady = isFiltersInited;
-
-  // DEBUG: filtersParams
-  React.useEffect(() => {
-    console.log('[ManageTopicsPageModalsWrapper:DEBUG:filtersParams]', filtersParams);
-  }, [filtersParams]);
-  // DEBUG: Show current query key
-  React.useEffect(() => {
-    const debugKey = queryKey.map(String).map(decodeURIComponent).join(', ').replace(/&/g, ' ');
-    console.log('[ManageTopicsPageModalsWrapper:DEBUG:queryKey]', debugKey, {
-      queryKey,
-    });
-  }, [queryKey]);
+  const isInited = isFiltersInited;
 
   const goToTheRoute = useGoToTheRoute();
 
@@ -171,7 +159,7 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
 
   return (
     <TopicsFiltersProvider storeId="ManageTopicsFilters" applyFilters={applyFilters}>
-      {isReady ? (
+      {isInited ? (
         <ManageTopicsListCard
           handleDeleteTopic={openDeleteTopicModal}
           handleEditTopic={openEditTopicCard}

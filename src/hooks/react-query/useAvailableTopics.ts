@@ -60,8 +60,6 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
 
-  // console.log('[useAvailableTopics:DEBUG:queryProps]', queryProps);
-
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
     // Convert Date objects to ISO strings for URL composition
@@ -268,15 +266,6 @@ interface TUseAvailableTopicsByScopeProps extends TUseAvailableTopicsProps {
 
 export function useAvailableTopicsByScope(props: TUseAvailableTopicsByScopeProps = {}) {
   const { traceId, manageScope = defaultTopicsManageScope, ...queryProps } = props;
-  const keys = Object.keys(queryProps);
-  console.log('[useAvailableTopicsByScope:DEBUG:queryProps]', {
-    keys,
-    queryProps,
-    props,
-  });
-  if (!keys.length) {
-    debugger;
-  }
   const user = useSessionUser();
   const passQueryProps: TUseAvailableTopicsProps = React.useMemo(() => {
     const isAdmin = user?.role === 'ADMIN';

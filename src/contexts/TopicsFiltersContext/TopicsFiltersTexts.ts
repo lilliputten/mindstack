@@ -25,8 +25,8 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
     true: 'Only My Topics',
   },
   orderBySelect: {
-    byRecent: 'Most Recent',
-    byOldest: 'Most Oldest',
+    byRecent: 'Recent',
+    byOldest: 'Oldest',
     byNameAsc: 'By Name',
     byNameDesc: 'By Name (descending)',
   } satisfies Record<TOrderBySelectOption, string>,
