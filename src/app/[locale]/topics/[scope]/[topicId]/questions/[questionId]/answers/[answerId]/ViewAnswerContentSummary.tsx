@@ -17,6 +17,7 @@ import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { TAvailableAnswer } from '@/features/answers/types';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
+import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -31,6 +32,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const { manageScope } = useManageTopicsStore();
   const format = useFormatter();
   const user = useSessionUser();
+  const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
   const topicsListPath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListPath}/${topic.id}`;
@@ -117,7 +119,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
             variant="outline"
             className={cn(
               'flex items-center gap-1 px-2 py-1',
-              'bg-theme-900 text-xs text-theme-400',
+              'bg-secondary-500 text-xs text-secondary-foreground',
             )}
           >
             <Icons.WandSparkles className="size-3 opacity-50" />
@@ -160,21 +162,23 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
     </div>
   );
 
-  const authorInfoContent = (
+  const authorInfoContent = (isAuthorLoading || topicAuthor) && (
     <div data-testid="__ViewAnswerContentSummary_Section_Author" className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Author</h3>
       <div className="flex items-center gap-2 text-sm">
-        {isOwner ? (
+        {isAuthorLoading ? (
+          <div className="h-4 w-32 animate-pulse rounded bg-gray-300" />
+        ) : isOwner ? (
           <>
             <Icons.ShieldCheck className="h-4 w-4 opacity-50" />
             <span>You're the author</span>
           </>
         ) : (
-          topic && (
+          topicAuthor && (
             <>
               <Icons.User className="h-4 w-4 opacity-50" />
               <span className="opacity-50">Topic created by:</span>
-              <span>{topic.user?.name || topic.user?.email || 'Unknown'}</span>
+              <span>{topicAuthor.name || topicAuthor.email || 'Unknown'}</span>
             </>
           )
         )}

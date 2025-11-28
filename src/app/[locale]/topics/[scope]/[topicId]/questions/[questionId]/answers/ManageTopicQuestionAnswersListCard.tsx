@@ -79,7 +79,7 @@ function AnswersTableHeader({
         // Dark theme
         useDarkHeader && 'dark-theme bg-theme-500 text-white',
         useDarkHeader &&
-          'before:absolute before:inset-0 before:z-0 before:bg-background before:opacity-25 before:content-[""]',
+          'before:absolute before:inset-0 before:z-0 before:bg-background before:opacity-40 before:content-[""]',
       )}
     >
       <TableRow className="z-1 relative">
@@ -229,6 +229,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
       className={cn(
         isDev && '__ManageTopicQuestionAnswersListCard_AnswersTableRow_Root', // DEBUG
         'truncate',
+        'bg-background/10',
         'hover:bg-theme-500/5',
         isSelected && 'bg-theme-500/10 hover:bg-theme-500/15',
       )}

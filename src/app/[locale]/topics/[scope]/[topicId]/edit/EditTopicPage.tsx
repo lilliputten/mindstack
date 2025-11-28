@@ -172,7 +172,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     availableTopicQuery
       .refetch()
       .then((res) => {
-        const topic = res.data;
+        const topic: TAvailableTopic | undefined = res.data;
         if (topic) {
           const cleanedTopic = removeNullUndefinedValues(topic);
           const convertedTopic = topicFormDataSchema.parse(cleanedTopic);
@@ -214,24 +214,6 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       };
       startTransition(async () => {
         const savePromise = updateTopic(editedTopic);
-        /* // API Way
-         * const url = `/api/topics/${editedTopic.id}`;
-         * const savePromise = handleApiResponse<TAvailableTopic>(
-         *   fetch(url, {
-         *     method: 'PUT',
-         *     headers: { 'Content-Type': 'application/json' },
-         *     body: JSON.stringify(editedTopic),
-         *   }),
-         *   {
-         *     onInvalidateKeys: invalidateKeys,
-         *     debugDetails: {
-         *       initiator: 'EditTopicPage',
-         *       action: 'updateTopic',
-         *       topicId: editedTopic.id,
-         *     },
-         *   },
-         * );
-         */
         toast.promise(savePromise, {
           loading: 'Saving topic data...',
           success: 'Successfully saved the topic',
@@ -239,6 +221,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         });
         try {
           const topic = await savePromise;
+          // Convert topic data
           const cleanedTopic = removeNullUndefinedValues(topic);
           const convertedTopic = topicFormDataSchema.parse(cleanedTopic);
           // Invalidate all possible topic data...
@@ -261,7 +244,6 @@ export function EditTopicPage(props: TEditTopicPageProps) {
           const message = 'Cannot save topic data';
           // eslint-disable-next-line no-console
           console.error('[EditTopicPage]', [message, details].join(': '), {
-            details,
             error,
             topicId: editedTopic.id,
             // url,
@@ -330,7 +312,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -339,7 +321,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         id: 'Reload',
         content: 'Reload',
         title: 'Reload the data from the server',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableTopicQuery.isRefetching,
@@ -350,7 +332,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         id: 'Reset',
         content: 'Reset',
         title: 'Reset form fields to original values',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Close,
         visibleFor: 'lg',
         hidden: !isDirty,

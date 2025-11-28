@@ -44,6 +44,8 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
   const { topic } = availableTopicQuery;
   const { question } = availableQuestionQuery;
 
+  console.log('[ViewQuestionCard] topic', topic);
+
   if (!topic) {
     throw new Error(`No topic exists for ${topicId}`);
   }
