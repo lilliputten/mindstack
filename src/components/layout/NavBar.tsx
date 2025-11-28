@@ -39,7 +39,7 @@ export function NavBar(props: NavBarProps) {
         'z-40',
         'flex',
         'w-full',
-        'bg-theme-600/70',
+        'bg-theme-600',
         'px-6',
         'justify-stretch',
         'transition-all',
@@ -49,7 +49,8 @@ export function NavBar(props: NavBarProps) {
         className={cn(
           isDev && '__NavBar_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
-          'bg-header-gradient after-header-decor',
+          'bg-header-gradient',
+          'after-header-decor',
           'z-0',
         )}
       />

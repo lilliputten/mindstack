@@ -1,12 +1,12 @@
 import React from 'react';
 import { QueryKey, useQuery } from '@tanstack/react-query';
 
-import { defaultStaleTime } from '@/constants';
+import { longStaleTime } from '@/constants';
 
 import { getUserById } from '../actions';
 import { TUser } from '../types';
 
-const staleTime = defaultStaleTime;
+const staleTime = longStaleTime;
 
 export function useUserById(userId: string | undefined) {
   const queryKey: QueryKey = React.useMemo(() => ['user-by-id', userId], [userId]);

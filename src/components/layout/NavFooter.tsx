@@ -7,6 +7,7 @@ import { isDev } from '@/constants';
 export function NavFooter() {
   // Effect: Show app info in the console
   React.useEffect(() => {
+    // NOTE: Show app info
     // eslint-disable-next-line no-console
     console.log('[NavFooter]', siteTitle, versionInfo);
   }, []);
@@ -15,7 +16,7 @@ export function NavFooter() {
       className={cn(
         isDev && '__NavFooter', // DEBUG
         'relative flex w-full px-6',
-        'bg-theme-600/70',
+        'bg-theme-600',
         'text-white',
       )}
     >
@@ -24,6 +25,7 @@ export function NavFooter() {
           isDev && '__NavFooter_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
           'bg-header-gradient',
+          'after-header-decor',
           'opacity-50',
           'z-0',
         )}
