@@ -740,9 +740,8 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
           {...props}
           className={cn(
             isDev && '__ManageTopicsListCard_CardContent', // DEBUG
-            'flex flex-row flex-wrap items-start',
-            'transition',
-            'overflow-hidden rounded-md',
+            'flex flex-col flex-wrap items-start',
+            'overflow-hidden rounded-md transition',
             isDataLoading && 'opacity-50',
           )}
           goBack={goBack}

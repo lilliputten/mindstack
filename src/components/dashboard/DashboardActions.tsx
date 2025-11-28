@@ -130,8 +130,8 @@ export function DashboardActions(props: DashboardActionsProps) {
         <DropdownMenuContent
           align="end"
           className={cn(
-            isDev && '__AllowedUsersPage_DropdownMenuContent', // DEBUG
-            'bg-popover/80',
+            isDev && '__DashboardActions_DropdownMenuContent', // DEBUG
+            'mt-2 rounded-lg bg-popover',
             'flex w-full flex-col gap-1',
           )}
         >

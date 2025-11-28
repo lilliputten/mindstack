@@ -10,7 +10,6 @@ import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/reac
 import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -55,7 +54,9 @@ export interface TManageTopicQuestionAnswersListCardProps {
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
 }
 
-function AnswerTableHeader({
+const useDarkHeader = true;
+
+function AnswersTableHeader({
   isAdminMode,
   selectedAnswers,
   allAnswers,
@@ -71,8 +72,17 @@ function AnswerTableHeader({
   const isIndeterminate = hasSelected && !isAllSelected; // selectedAnswers.size > 0 && selectedAnswers.size < allAnswers.length;
 
   return (
-    <TableHeader>
-      <TableRow>
+    <TableHeader
+      className={cn(
+        isDev && '__ManageTopicQuestionAnswersListCard_AnswersTableHeader_Root', // DEBUG
+        'sticky top-0 z-10',
+        // Dark theme
+        useDarkHeader && 'dark-theme bg-theme-500 text-white',
+        useDarkHeader &&
+          'before:absolute before:inset-0 before:z-0 before:bg-background before:opacity-25 before:content-[""]',
+      )}
+    >
+      <TableRow className="z-1 relative">
         <TableHead
           id="select"
           className={cn(
@@ -86,7 +96,17 @@ function AnswerTableHeader({
           <Checkbox
             checked={hasSelected}
             aria-label="Select/deselect all"
-            className={cn('block', isIndeterminate && 'opacity-50')}
+            className={cn(
+              'block',
+              // Dark theme
+              useDarkHeader &&
+                'border-white/70 hover:!ring-white/70 data-[state=checked]:border-white',
+              // isIndeterminate && 'opacity-70',
+            )}
+            indicatorClassName={cn(
+              // Dark theme
+              useDarkHeader && 'text-white',
+            )}
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
@@ -107,12 +127,13 @@ function AnswerTableHeader({
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
           Generated
         </TableHead>
+        <TableHead id="Actions"></TableHead>
       </TableRow>
     </TableHeader>
   );
 }
 
-interface TAnswerTableRowProps {
+interface TAnswersTableRowProps {
   answer: TAnswer;
   idx: number;
   answersListRoutePath: string;
@@ -122,7 +143,7 @@ interface TAnswerTableRowProps {
   toggleSelected: (answerId: TAnswerId) => void;
 }
 
-function AnswerTableRow(props: TAnswerTableRowProps) {
+function AnswersTableRow(props: TAnswersTableRowProps) {
   const {
     answer,
     answersListRoutePath,
@@ -166,7 +187,7 @@ function AnswerTableRow(props: TAnswerTableRowProps) {
           const details = error instanceof APIError ? error.details : null;
           const message = 'Cannot update answer status';
           // eslint-disable-next-line no-console
-          console.error('[AnswerTableRow:handleToggleCorrect]', message, {
+          console.error('[AnswersTableRow:handleToggleCorrect]', message, {
             details,
             error,
             answerId: answer.id,
@@ -190,7 +211,7 @@ function AnswerTableRow(props: TAnswerTableRowProps) {
           const details = error instanceof APIError ? error.details : null;
           const message = 'Cannot update answer generated status';
           // eslint-disable-next-line no-console
-          console.error('[AnswerTableRow:handleToggleGenerated]', message, {
+          console.error('[AnswersTableRow:handleToggleGenerated]', message, {
             details,
             error,
             answerId: answer.id,
@@ -204,7 +225,15 @@ function AnswerTableRow(props: TAnswerTableRowProps) {
   );
 
   return (
-    <TableRow className="truncate" data-answer-id={id}>
+    <TableRow
+      className={cn(
+        isDev && '__ManageTopicQuestionAnswersListCard_AnswersTableRow_Root', // DEBUG
+        'truncate',
+        'hover:bg-theme-500/5',
+        isSelected && 'bg-theme-500/10 hover:bg-theme-500/15',
+      )}
+      data-answer-id={id}
+    >
       <TableCell
         id="select"
         className={cn(
@@ -283,8 +312,7 @@ function AnswerTableRow(props: TAnswerTableRowProps) {
   );
 }
 
-interface TManageTopicQuestionAnswersListCardContentProps
-  extends TManageTopicQuestionAnswersListCardProps {
+interface TAnswersTableContentProps extends TManageTopicQuestionAnswersListCardProps {
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
   answersListRoutePath: string;
   selectedAnswers: Set<TAnswerId>;
@@ -293,9 +321,7 @@ interface TManageTopicQuestionAnswersListCardContentProps
 
 type TMemo = { allAnswers: TAvailableAnswer[] };
 
-export function ManageTopicQuestionAnswersListCardContent(
-  props: TManageTopicQuestionAnswersListCardContentProps & { className?: string },
-) {
+export function AnswersTableContent(props: TAnswersTableContentProps & { className?: string }) {
   const {
     className,
     availableAnswersQuery,
@@ -355,7 +381,7 @@ export function ManageTopicQuestionAnswersListCardContent(
     return (
       <div
         className={cn(
-          isDev && '__ManageTopicQuestionAnswersListCardContent_Skeleton', // DEBUG
+          isDev && '__AnswersTableContent_Skeleton', // DEBUG
           'flex flex-col gap-4 px-6',
         )}
       >
@@ -406,21 +432,21 @@ export function ManageTopicQuestionAnswersListCardContent(
       saveScrollKey="ManageTopicQuestionAnswersListCard"
       saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__ManageTopicQuestionAnswersListCardContent', // DEBUG
+        isDev && '__AnswersTableContent', // DEBUG
         'relative flex flex-1 flex-col overflow-hidden',
+        'mx-6',
         className,
       )}
       viewportClassName={cn(
-        isDev && '__ManageTopicQuestionAnswersListCardContent_Viewport', // DEBUG
-        'px-6',
+        isDev && '__AnswersTableContent_Viewport', // DEBUG
       )}
       containerClassName={cn(
-        isDev && '__ManageTopicQuestionAnswersListCardContent_Container', // DEBUG
+        isDev && '__AnswersTableContent_Container', // DEBUG
         'relative w-full flex flex-col gap-4',
       )}
     >
       <Table>
-        <AnswerTableHeader
+        <AnswersTableHeader
           isAdminMode={isAdmin}
           selectedAnswers={selectedAnswers}
           allAnswers={allAnswers}
@@ -428,7 +454,7 @@ export function ManageTopicQuestionAnswersListCardContent(
         />
         <TableBody>
           {allAnswers.map((answer, idx) => (
-            <AnswerTableRow
+            <AnswersTableRow
               key={answer.id}
               idx={idx}
               answer={answer}
@@ -556,7 +582,7 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -564,7 +590,7 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Reload',
         content: 'Reload',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isAnswersRefetching,
@@ -573,9 +599,9 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Delete Selected',
         content: 'Delete Selected',
-        variant: 'destructive',
+        // variant: 'destructive',
         icon: Icons.Trash,
-        visibleFor: 'xl',
+        // visibleFor: 'xl',
         hidden: !selectedAnswers.size,
         pending: deleteSelectedMutation.isPending,
         onClick: handleShowDeleteSelectedConfirm,
@@ -583,7 +609,7 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Add New Answer',
         content: 'Add New Answer',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
@@ -591,9 +617,9 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Generate Answers',
         content: 'Generate Answers',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
-        visibleFor: 'lg',
+        // visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
       },
@@ -632,24 +658,19 @@ export function ManageTopicQuestionAnswersListCard(
         breadcrumbs={breadcrumbs}
         inactiveLastBreadcrumb
       />
-      <Card
+      <AnswersTableContent
+        {...props}
         className={cn(
-          isDev && '__ManageTopicQuestionAnswersListCard_Card', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden py-6 xl:col-span-2',
+          isDev && '__ManageTopicQuestionAnswersListCard_CardContent', // DEBUG
+          // 'relative flex flex-1 flex-col px-0',
+          'flex flex-row flex-wrap items-start',
+          'overflow-hidden rounded-md transition',
         )}
-      >
-        <ManageTopicQuestionAnswersListCardContent
-          {...props}
-          className={cn(
-            isDev && '__ManageTopicQuestionAnswersListCard_CardContent', // DEBUG
-            'relative flex flex-1 flex-col overflow-hidden px-0',
-          )}
-          answersListRoutePath={answersListRoutePath}
-          availableAnswersQuery={availableAnswersQuery}
-          selectedAnswers={selectedAnswers}
-          setSelectedAnswers={setSelectedAnswers}
-        />
-      </Card>
+        answersListRoutePath={answersListRoutePath}
+        availableAnswersQuery={availableAnswersQuery}
+        selectedAnswers={selectedAnswers}
+        setSelectedAnswers={setSelectedAnswers}
+      />
       <ConfirmModal
         dialogTitle="Confirm delete selected answers"
         confirmButtonVariant="destructive"
