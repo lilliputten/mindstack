@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
@@ -219,6 +220,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         'mx-6 flex w-full flex-col gap-4',
       )}
     >
+      <AIGenerationsStatusInfo />
       {questionTextContent}
       {questionPropertiesContent}
       <Separator />

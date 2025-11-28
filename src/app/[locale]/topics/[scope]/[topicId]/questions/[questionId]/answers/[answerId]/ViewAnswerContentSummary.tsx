@@ -13,6 +13,7 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { TAvailableAnswer } from '@/features/answers/types';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
@@ -208,6 +209,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
         'mx-6 flex w-full flex-col gap-4',
       )}
     >
+      <AIGenerationsStatusInfo />
       {answerTextContent}
       {answerExplanationContent}
       {answerPropertiesContent}

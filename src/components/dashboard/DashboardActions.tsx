@@ -66,7 +66,7 @@ export function DashboardActions(props: DashboardActionsProps) {
       <div
         className={cn(
           isDev && '__DashboardActions_Skeleton', // DEBUG
-          'flex flex-wrap gap-2',
+          'flex flex-wrap gap-1',
           className,
         )}
       >
@@ -81,7 +81,7 @@ export function DashboardActions(props: DashboardActionsProps) {
       <div
         className={cn(
           isDev && '__DashboardActions', // DEBUG
-          'flex flex-wrap gap-2',
+          'flex flex-wrap gap-1',
           className,
         )}
       >
