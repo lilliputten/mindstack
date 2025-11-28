@@ -28,10 +28,7 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
       className={cn(
         isDev && '__WelcomeScreen_Scroll', // DEBUG
         'bg-theme-500/5',
-        'flex',
-        'flex-1',
-        'flex-col',
-        // 'overflow-auto',
+        'flex flex-1 flex-col items-center',
         className,
       )}
       viewportClassName={cn(
@@ -44,6 +41,7 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
         '[&>div]:lg:overflow-hidden',
         '[&>div]:lg:items-stretch',
         'lg:items-stretch',
+        'max-w-6xl',
       )}
     >
       <ScrollArea

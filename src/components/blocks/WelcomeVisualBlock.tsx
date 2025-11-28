@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { SmallWelcomeText } from '@/components/screens/SmallWelcomeText';
-import svgArt from '@/assets/arts/girl-with-a-book.svg';
+import svgArt from '@/assets/arts/bink-bus-single.svg';
+// import svgArt from '@/assets/arts/girl-with-a-book.svg';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
 import { siteTitle } from '@/config';
 import { isDev } from '@/constants';
@@ -21,7 +22,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
       <div
         className={cn(
           isDev && '__WelcomeVisualBlock', // DEBUG
-          'relative w-full',
+          'relative w-full px-6',
           'flex flex-1 flex-col items-center justify-center',
         )}
       >
@@ -30,7 +31,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
           alt="Intro illustration"
           className={cn(
             isDev && '__WelcomeVisualBlock_Art', // DEBUG
-            'mx-auto mt-4',
+            'mx-auto my-6',
             'w-full sm:max-w-md',
             'select-none',
           )}
