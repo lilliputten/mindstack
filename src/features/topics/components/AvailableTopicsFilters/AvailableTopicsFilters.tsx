@@ -34,6 +34,8 @@ export function AvailableTopicsFilters(props: TProps) {
     handleApplyButton,
     handleResetToDefaults,
     handleClearChanges,
+    // Options...
+    ignoreOnlyMy,
   } = useTopicsFiltersContext();
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
@@ -144,7 +146,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       'flex flex-col gap-4',
                     )}
                   >
-                    <AvailableTopicsFiltersFields form={form} />
+                    <AvailableTopicsFiltersFields form={form} ignoreOnlyMy={ignoreOnlyMy} />
                   </div>
                   <div
                     className={cn(

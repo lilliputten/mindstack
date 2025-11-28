@@ -49,7 +49,6 @@ interface TManageTopicsListCardProps {
   handleEditQuestions: (topicId: TTopicId) => void;
   handleAddTopic: () => void;
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
-  isFiltersInited: boolean;
 }
 interface TTopicsTableContentProps extends TManageTopicsListCardProps {
   className?: string;

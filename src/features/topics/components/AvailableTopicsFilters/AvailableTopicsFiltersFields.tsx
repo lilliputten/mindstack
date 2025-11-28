@@ -32,6 +32,7 @@ import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
+  ignoreOnlyMy?: boolean;
 }
 
 function FormSection({ children }: TPropsWithChildren) {
@@ -48,7 +49,7 @@ function FormSection({ children }: TPropsWithChildren) {
 }
 
 export function AvailableTopicsFiltersFields(props: TProps) {
-  const { className, form } = props;
+  const { className, form, ignoreOnlyMy } = props;
   const t = useT();
 
   // Used keys
@@ -153,26 +154,28 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
-        <FormField
-          name="showOnlyMyTopics"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label htmlFor={showOnlyMyTopicsKey}>
-                {getFilterFieldName('showOnlyMyTopics', t)}
-              </Label>
-              <FormControl>
-                <Switch
-                  id={showOnlyMyTopicsKey}
-                  checked={!!field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormHint className="MarkdownText">Show only my own topics.</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!ignoreOnlyMy && (
+          <FormField
+            name="showOnlyMyTopics"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
+                <Label htmlFor={showOnlyMyTopicsKey}>
+                  {getFilterFieldName('showOnlyMyTopics', t)}
+                </Label>
+                <FormControl>
+                  <Switch
+                    id={showOnlyMyTopicsKey}
+                    checked={!!field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormHint className="MarkdownText">Show only my own topics.</FormHint>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           name="orderBySelect"
           control={form.control}

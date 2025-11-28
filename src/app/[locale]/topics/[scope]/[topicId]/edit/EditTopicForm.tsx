@@ -10,14 +10,14 @@ import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
 
 import { EditTopicFormFields } from './EditTopicFormFields';
-import { TFormData } from './types';
+import { TTopicFormData } from './types';
 
 interface TEditTopicFormProps {
   topic: TTopic;
   className?: string;
   handleCancel: (ev: React.MouseEvent) => void;
-  form: UseFormReturn<TFormData>;
-  handleFormSubmit: (formData: TFormData) => void;
+  form: UseFormReturn<TTopicFormData>;
+  handleFormSubmit: (formData: TTopicFormData) => void;
   selectLanguage: (ev: React.MouseEvent) => void;
   isPending: boolean;
 }

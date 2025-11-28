@@ -30,6 +30,9 @@ export interface TopicsFiltersContextData {
   handleApplyButton: (filtersData: TFiltersData) => void;
   handleResetToDefaults: () => void;
   handleClearChanges: () => void;
+
+  // Options
+  ignoreOnlyMy?: boolean;
 }
 
 export interface TopicsFiltersProviderProps {
@@ -38,4 +41,5 @@ export interface TopicsFiltersProviderProps {
   augmentDefaults?: Partial<TFiltersData>;
   storeId?: string;
   defaultExpanded?: boolean;
+  ignoreOnlyMy?: boolean;
 }

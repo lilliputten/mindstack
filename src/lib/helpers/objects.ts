@@ -10,12 +10,13 @@ export function removeFalsyValues(obj: Record<string, unknown>) {
 
 /** Remove null or undefined values from the object */
 export function removeNullUndefinedValues(obj: Record<string, unknown>) {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === null || obj[key] === undefined) {
-      delete obj[key];
+  const result = { ...obj };
+  Object.keys(result).forEach((key) => {
+    if (result[key] === null || result[key] === undefined) {
+      delete result[key];
     }
   });
-  return obj;
+  return result;
 }
 
 /** Only for debugging purposes */

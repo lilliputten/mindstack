@@ -16,7 +16,7 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
-import { comparePathsWithoutLocalePrefix, removePathLocalePrefix } from '@/i18n/helpers';
+import { removePathLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 

@@ -35,6 +35,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
     augmentDefaults,
     storeId = 'TopicsFilters',
     defaultExpanded = false,
+    ignoreOnlyMy,
   } = props;
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
@@ -83,6 +84,10 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
   const applyFiltersData = React.useCallback(
     (filtersData: TFiltersData) => {
       startTransition(async () => {
+        if (ignoreOnlyMy) {
+          filtersData = { ...filtersData };
+          delete filtersData.showOnlyMyTopics;
+        }
         const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
         setError(undefined);
         try {
@@ -116,7 +121,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
         }
       });
     },
-    [memo, form, applyFilters, storeId],
+    [ignoreOnlyMy, memo, applyFilters, form, storeId],
   );
   memo.applyFiltersData = applyFiltersData;
 
@@ -159,10 +164,13 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
         searchText: filtersData.searchText?.trim() || '',
         searchLang: filtersData.searchLang?.trim() || '',
       };
+      if (ignoreOnlyMy) {
+        delete trimmedFiltersData.showOnlyMyTopics;
+      }
       memo.applyFiltersData?.(trimmedFiltersData);
       setExpanded(false);
     },
-    [memo],
+    [memo, ignoreOnlyMy],
   );
 
   const handleResetToDefaults = React.useCallback(() => {
@@ -201,6 +209,8 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
     handleApplyButton,
     handleResetToDefaults,
     handleClearChanges,
+    // Options...
+    ignoreOnlyMy,
   };
 
   return (

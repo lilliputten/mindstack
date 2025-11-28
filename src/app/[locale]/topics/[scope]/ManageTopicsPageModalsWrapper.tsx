@@ -3,6 +3,7 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import {
   convertAvailableFiltersToParams,
   TApplyFiltersData,
@@ -34,24 +35,23 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { showAddModal, deleteTopicId, editTopicId, editQuestionsTopicId, from } = props;
   const { manageScope } = useManageTopicsStore();
+  const isOnlyMy = manageScope === TopicsManageScopeIds.MY_TOPICS;
   const routePath = `/topics/${manageScope}`;
 
-  const [isFiltersInited, setIsFiltersInited] = React.useState(false);
   const [filtersParams, setFiltersParams] = React.useState<
     TAvailableTopicsFiltersParams | undefined
   >();
 
   const availableTopicsQuery = useAvailableTopicsByScope({
     manageScope,
-    enabled: isFiltersInited,
+    enabled: !!filtersParams,
+    showOnlyMyTopics: isOnlyMy,
     ...filtersParams,
   });
   const { allTopics, isFetched, queryClient, queryKey } = availableTopicsQuery;
   // memo.isFetched = isFetched;
   memo.routePath = routePath;
   memo.allTopics = allTopics;
-
-  const isInited = isFiltersInited;
 
   const goToTheRoute = useGoToTheRoute();
 
@@ -150,7 +150,6 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {
       const filtersParams = convertAvailableFiltersToParams(filtersData);
-      setIsFiltersInited(true);
       setFiltersParams(filtersParams);
       queryClient.removeQueries({ queryKey });
     },
@@ -158,15 +157,18 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   );
 
   return (
-    <TopicsFiltersProvider storeId="ManageTopicsFilters" applyFilters={applyFilters}>
-      {isInited ? (
+    <TopicsFiltersProvider
+      storeId={`manage-topics-filters-${manageScope}`}
+      applyFilters={applyFilters}
+      ignoreOnlyMy={isOnlyMy}
+    >
+      {filtersParams ? (
         <ManageTopicsListCard
           handleDeleteTopic={openDeleteTopicModal}
           handleEditTopic={openEditTopicCard}
           handleEditQuestions={openEditQuestionsPage}
           handleAddTopic={openAddTopicModal}
           availableTopicsQuery={availableTopicsQuery}
-          isFiltersInited={isFiltersInited}
         />
       ) : (
         <ContentSkeleton className="px-6 py-0" />

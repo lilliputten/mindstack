@@ -22,7 +22,6 @@ import { AvailableTopicsListPage } from './AvailableTopicsListPage';
 export function AvailableTopicsListWrapper() {
   const manageScope: TTopicsManageScopeId = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
-  const [isFiltersInited, setIsFiltersInited] = React.useState(false);
   const [filtersParams, setFiltersParams] = React.useState<
     TAvailableTopicsFiltersParams | undefined
   >();
@@ -31,13 +30,13 @@ export function AvailableTopicsListWrapper() {
 
   const availableTopicsQuery = useAvailableTopicsByScope({
     manageScope,
-    enabled: isFiltersInited,
+    enabled: !!filtersParams,
     ...filtersParams,
+    // includeWorkout: true,
     // // DEBUG: Sort examples
     // orderBy: { createdAt: 'desc' },
     // orderBy: [ { name: 'asc' }, { createdAt: 'desc' }, { updatedAt: 'desc' } ],
     // orderBy: [{ name: 'asc' }, { updatedAt: 'desc' }],
-    // includeWorkout: true,
     // // DEBUG: Test search options
     // searchText: 'test',
     // hasWorkoutStats: true,
@@ -73,7 +72,6 @@ export function AvailableTopicsListWrapper() {
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {
       const filtersParams = convertAvailableFiltersToParams(filtersData);
-      setIsFiltersInited(true);
       setFiltersParams(filtersParams);
       queryClient.removeQueries({ queryKey });
       if (isDev) {
@@ -99,7 +97,7 @@ export function AvailableTopicsListWrapper() {
 
   return (
     <TopicsFiltersProvider
-      storeId="AvailableTopicsFilters"
+      storeId="available-topics-filters"
       applyFilters={applyFilters}
       augmentDefaults={augmentFiltersDefaults}
       // defaultExpanded // DEBUG: Open by default
