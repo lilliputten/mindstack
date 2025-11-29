@@ -1,3 +1,5 @@
+'use server';
+
 import { Prisma } from '@prisma/client';
 
 import { TUserId } from '../types/TUser';

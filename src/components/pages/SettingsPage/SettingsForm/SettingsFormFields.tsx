@@ -355,12 +355,12 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                 >
                   <span className="flex-1 truncate">
                     {langName ? (
-                      <strong className="truncate">{langName}</strong>
+                      <span className="truncate font-normal">{langName}</span>
                     ) : (
                       <>Select language</>
                     )}
                   </span>
-                  {langCode && <span className="opacity-50">{langCode}</span>}
+                  {langCode && <span className="truncate font-normal opacity-50">{langCode}</span>}
                   {langCustom && (
                     <span className="opacity-50">
                       <Icons.Edit className="size-3" />

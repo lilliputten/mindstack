@@ -14,7 +14,7 @@ import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
-import { TTopic } from '@/features/topics/types';
+import { TAvailableTopic } from '@/features/topics/types';
 import { useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
 
 import { ViewAvailableTopicContent } from './ViewAvailableTopicContent';
@@ -23,8 +23,9 @@ const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
 const routePath = topicsRoutes[manageScope];
 
 interface TViewAvailableTopicProps {
-  topic: TTopic;
+  topic: TAvailableTopic;
 }
+
 export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   const { topic } = props;
   const topicId = topic.id;

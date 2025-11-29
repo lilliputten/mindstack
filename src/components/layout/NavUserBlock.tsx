@@ -118,7 +118,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       <div
         className={cn(
           isDev && '__NavUserBlock_UserName', // DEBUG
-          'flex items-center justify-start gap-3',
+          'flex items-center justify-center gap-4',
           !onSidebar && 'px-2 py-1',
         )}
       >
@@ -128,7 +128,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             className={cn(
               isDev && '__NavUserBlock_UserAvatar', // DEBUG
               className,
-              'size-8 rounded-full bg-theme-700/25',
+              'rounded-full bg-theme-700/25',
               // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
               onSidebar && 'flex',
             )}

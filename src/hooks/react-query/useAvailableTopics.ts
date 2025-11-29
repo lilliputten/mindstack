@@ -40,7 +40,9 @@ const staleTime = defaultStaleTime;
 
 // TODO: Register all the query keys
 
-type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'>;
+type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'> & {
+  traceId?: string;
+};
 
 /** Collection of the all used query keys (mb, already invalidated).
  *
@@ -52,13 +54,24 @@ type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'>
  */
 const allUsedKeys: TAllUsedKeys = {};
 
-function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
+function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
+  const { traceId: _id, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
 
   /* Use partrial query url as a part of the query key */
-  const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
+  const queryUrlHash = React.useMemo(() => {
+    // Convert Date objects to ISO strings for URL composition
+    const urlParams = {
+      ...queryProps,
+      minCreatedAt: queryProps.minCreatedAt?.toISOString(),
+      maxCreatedAt: queryProps.maxCreatedAt?.toISOString(),
+      minUpdatedAt: queryProps.minUpdatedAt?.toISOString(),
+      maxUpdatedAt: queryProps.maxUpdatedAt?.toISOString(),
+    };
+    return composeUrlQuery(urlParams);
+  }, [queryProps]);
   const queryKey = React.useMemo<QueryKey>(
     () => ['available-topics', queryUrlHash],
     [queryUrlHash],
@@ -72,6 +85,7 @@ function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
     QueryKey,
     number // Cursor type (from `skip` api parameter)
   >({
+    enabled,
     queryKey,
     staleTime, // Data validity period
     // gcTime: 10 * staleTime, // Inactive cache validity period
@@ -210,46 +224,65 @@ function useAvailableTopics(queryProps: TUseAvailableTopicsProps = {}) {
    * promise
    */
 
-  return {
-    ...query,
+  return React.useMemo(() => {
+    return {
+      ...query,
+      queryClient,
+      // Derived data...
+      routePath,
+      queryProps,
+      queryKey,
+      queryUrlHash,
+      allUsedKeys,
+      allTopics,
+      hasTopics: !!allTopics.length, // !!query.data?.pages[0]?.totalCount,
+      // Helpers...
+      addNewTopic,
+      deleteTopic,
+      updateTopic,
+      invalidateAllKeysExcept,
+    };
+  }, [
+    queryClient,
+    query,
     // Derived data...
     routePath,
     queryProps,
     queryKey,
-    allUsedKeys,
+    queryUrlHash,
+    // allUsedKeys,
     allTopics,
-    hasTopics: !!allTopics.length, // !!query.data?.pages[0]?.totalCount,
     // Helpers...
     addNewTopic,
     deleteTopic,
     updateTopic,
     invalidateAllKeysExcept,
-  };
+  ]);
 }
 
-interface TUseAvailableTopicsByScopeProps {
+interface TUseAvailableTopicsByScopeProps extends TUseAvailableTopicsProps {
   manageScope?: TTopicsManageScopeId;
 }
 
 export function useAvailableTopicsByScope(props: TUseAvailableTopicsByScopeProps = {}) {
-  const {
-    manageScope = defaultTopicsManageScope,
-    // user,
-  } = props;
+  const { traceId, manageScope = defaultTopicsManageScope, ...queryProps } = props;
   const user = useSessionUser();
-  const queryProps: TUseAvailableTopicsProps = React.useMemo(() => {
+  const passQueryProps: TUseAvailableTopicsProps = React.useMemo(() => {
     const isAdmin = user?.role === 'ADMIN';
     return {
+      traceId,
       // skip, // Skip records (start from the nth record), default = 0 // z.number().int().nonnegative().optional()
       // take, // Amount of records to return, default = {itemsLimit} // z.number().int().positive().optional()
       adminMode: manageScope === TopicsManageScopeIds.ALL_TOPICS && isAdmin, // Get all users' data not only your own (admins only: will return no data for non-admins) ??? // z.boolean().optional()
       showOnlyMyTopics: manageScope === TopicsManageScopeIds.MY_TOPICS, // Display only current user's topics, TODO: To use the settings value?
-      includeWorkout: true, // Include (limited) workout data // z.boolean().optional()
+      includeWorkout: true, // Include (limited) active workout data // z.boolean().optional()
+      // includeStats: true,  // Include (limited) workout stats data // z.boolean().optional()
       includeUser: true, // Include compact user info data (name, email) in the `user` property of result object // z.boolean().optional()
       includeQuestionsCount: true, // Include related questions count, in `_count: { questions }` // z.boolean().optional()
       orderBy: { updatedAt: 'desc' }, // Sort by parameter, default: `{ updatedAt: 'desc' }`, packed json string // TopicFindManyArgsSchema.shape.orderBy // This approach doesn't work
       // topicIds, // Include only listed topic ids // z.array(z.string()).optional()
+      ...queryProps,
     } satisfies TUseAvailableTopicsProps;
-  }, [manageScope, user]);
-  return useAvailableTopics(queryProps);
+  }, [traceId, manageScope, queryProps, user]);
+  return useAvailableTopics(passQueryProps);
 }

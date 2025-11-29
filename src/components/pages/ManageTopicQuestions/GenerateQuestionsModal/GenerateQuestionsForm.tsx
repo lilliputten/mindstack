@@ -8,7 +8,7 @@ import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
+import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
 import {
   Select,
@@ -115,7 +115,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
   const buttonText = isPending ? 'Generating' : 'Generate';
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={onSubmit}
         className={cn(isDev && '__GenerateQuestionsForm', 'flex w-full flex-col gap-4', className)}
@@ -283,6 +283,6 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

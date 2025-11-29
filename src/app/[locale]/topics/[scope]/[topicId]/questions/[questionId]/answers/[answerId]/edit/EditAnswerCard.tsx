@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { APIError } from '@/lib/types/api';
+import { getErrorText, removeNullUndefinedValues } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
@@ -23,7 +23,7 @@ import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { updateAnswer } from '@/features/answers/actions';
 import { useAnswersBreadcrumbsItems } from '@/features/answers/components/AnswersBreadcrumbs';
-import { TAnswer } from '@/features/answers/types';
+import { TAnswer, TAvailableAnswer } from '@/features/answers/types';
 import {
   useAvailableAnswerById,
   useAvailableAnswers,
@@ -35,7 +35,7 @@ import {
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditAnswerForm } from './EditAnswerForm';
-import { TFormData } from './types';
+import { answerFormDataSchema, TFormData } from './types';
 
 interface TEditAnswerCardProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
@@ -43,6 +43,13 @@ interface TEditAnswerCardProps {
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
   availableAnswerQuery: ReturnType<typeof useAvailableAnswerById>;
 }
+
+const formDataSchema = z.object({
+  text: z.string().min(minTextLength).max(maxTextLength),
+  explanation: z.string().optional(),
+  isCorrect: z.boolean().optional(),
+  isGenerated: z.boolean().optional(),
+});
 
 export function EditAnswerCard(props: TEditAnswerCardProps) {
   const {
@@ -106,17 +113,6 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
 
   const [isPending, startTransition] = React.useTransition();
 
-  const formSchema = React.useMemo(
-    () =>
-      z.object({
-        text: z.string().min(minTextLength).max(maxTextLength),
-        explanation: z.string().optional(),
-        isCorrect: z.boolean().optional(),
-        isGenerated: z.boolean().optional(),
-      }),
-    [],
-  );
-
   const defaultValues: TFormData = React.useMemo(
     () => ({
       text: answer.text || '',
@@ -132,7 +128,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     // @see https://react-hook-form.com/docs/useform
     mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
     criteriaMode: 'all', // Display all validation errors or one at a time.
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formDataSchema),
     defaultValues, // Default values for the form.
   });
   // @see https://react-hook-form.com/docs/useform/formstate
@@ -157,7 +153,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
             success: 'Successfully saved the answer',
             error: 'Can not save the answer data.',
           });
-          const updatedAnswer = await promise;
+          const _updatedAnswer = await promise;
           // Invalidate all possible answer data...
           const invalidatePrefixes = [
             ['available-answer', editedAnswer.id],
@@ -165,17 +161,16 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
           ].map(makeQueryKeyPrefix);
           invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
           // Update the item to the cached react-query data
-          availableAnswersQuery.updateAnswer(updatedAnswer);
+          availableAnswersQuery.updateAnswer(editedAnswer);
           // Invalidate all other keys...
           availableAnswersQuery.invalidateAllKeysExcept([availableAnswersQuery.queryKey]);
           // Reset form to the current data
           form.reset(form.getValues());
         } catch (error) {
-          const details = error instanceof APIError ? error.details : null;
+          const details = getErrorText(error);
           const message = 'Cannot save answer data';
           // eslint-disable-next-line no-console
-          console.error('[EditAnswerForm]', message, {
-            details,
+          console.error('[EditAnswerForm]', [message, details].join(': '), {
             error,
             answerId: editedAnswer.id,
           });
@@ -192,19 +187,26 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     availableAnswerQuery
       .refetch()
       .then((res) => {
-        const answer = res.data;
+        const answer: TAvailableAnswer | undefined = res.data;
         if (answer) {
-          form.reset(answer as TFormData);
+          // Convert answer to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
+          const cleanedAnswer = removeNullUndefinedValues(
+            answer as unknown as Record<string, unknown>,
+          );
+          const convertedAnswer = answerFormDataSchema.parse(cleanedAnswer);
+          // const convertedAnswer = formDataSchema.parse(cleanedAnswer);
+          form.reset(convertedAnswer);
           // Add the created item to the cached react-query data
-          availableAnswersQuery.updateAnswer(answer);
+          availableAnswersQuery.updateAnswer(convertedAnswer as TAvailableAnswer);
           // Invalidate all other keys...
           availableAnswersQuery.invalidateAllKeysExcept([availableAnswersQuery.queryKey]);
         }
       })
       .catch((error) => {
+        const details = getErrorText(error);
         const message = 'Cannot update answer data';
         // eslint-disable-next-line no-console
-        console.error('[EditAnswerCard:handleReload]', message, {
+        console.error('[EditAnswerCard:handleReload]', [message, details].join(': '), {
           error,
         });
         debugger; // eslint-disable-line no-debugger
@@ -217,7 +219,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -236,7 +238,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
         id: 'Reload',
         content: 'Reload',
         title: 'Reload the data from the server',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'xl',
         pending: availableAnswerQuery.isRefetching,
@@ -245,7 +247,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       {
         id: 'Add New Question',
         content: 'Add New Question',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
@@ -253,33 +255,33 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       {
         id: 'Generate Questions',
         content: 'Generate Questions',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
-        visibleFor: 'xl',
+        // visibleFor: 'xl',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${questionsListRoutePath}/generate`),
       },
       {
         id: 'Add New Answer',
         content: 'Add New Answer',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
-        visibleFor: 'xl',
+        // visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
       },
       {
         id: 'Generate Answers',
         content: 'Generate Answers',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
-        visibleFor: 'xl',
+        // visibleFor: 'xl',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
       },
       {
         id: 'Reset',
         content: 'Reset changes',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Close,
         // visibleFor: 'xl',
         onClick: () => form.reset(),

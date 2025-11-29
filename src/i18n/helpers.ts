@@ -1,6 +1,6 @@
 import { localesPathPrefixRegExp } from './types';
 
-function removePathLocalePrefix(path: string) {
+export function removePathLocalePrefix(path: string) {
   return path.replace(localesPathPrefixRegExp, '');
 }
 

@@ -10,7 +10,6 @@ import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -41,7 +40,6 @@ const saveScrollHash = getRandomHashString();
 
 export interface TManageTopicQuestionsListCardProps {
   topicId: TTopicId;
-  // questions: TQuestion[];
   handleDeleteQuestion: (questionId: TQuestionId) => void;
   handleEditQuestion: (questionId: TQuestionId) => void;
   handleAddQuestion: () => void;
@@ -50,8 +48,9 @@ export interface TManageTopicQuestionsListCardProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
 }
 
-function QuestionTableHeader({
-  // isAdminMode,
+const useDarkHeader = true;
+
+function QuestionsTableHeader({
   selectedQuestions,
   allQuestions,
   toggleAll,
@@ -66,8 +65,17 @@ function QuestionTableHeader({
   const isIndeterminate = hasSelected && !isAllSelected;
 
   return (
-    <TableHeader>
-      <TableRow>
+    <TableHeader
+      className={cn(
+        isDev && '__ManageTopicQuestionsListCard_QuestionsTableHeader_Root', // DEBUG
+        'sticky top-0 z-10',
+        // Dark theme
+        useDarkHeader && 'dark-theme bg-theme-500 text-white',
+        useDarkHeader &&
+          'before:absolute before:inset-0 before:z-0 before:bg-background before:opacity-40 before:content-[""]',
+      )}
+    >
+      <TableRow className="z-1 relative">
         <TableHead
           id="select"
           className={cn(
@@ -80,7 +88,17 @@ function QuestionTableHeader({
           <Checkbox
             checked={hasSelected}
             aria-label="Select/deselect all"
-            className={cn('block', isIndeterminate && 'opacity-50')}
+            className={cn(
+              'block',
+              // Dark theme
+              useDarkHeader &&
+                'border-white/70 hover:!ring-white/70 data-[state=checked]:border-white',
+              // isIndeterminate && 'opacity-70',
+            )}
+            indicatorClassName={cn(
+              // Dark theme
+              useDarkHeader && 'text-white',
+            )}
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
@@ -101,12 +119,13 @@ function QuestionTableHeader({
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
           Generated
         </TableHead>
+        <TableHead id="Actions"></TableHead>
       </TableRow>
     </TableHeader>
   );
 }
 
-interface TQuestionTableRowProps {
+interface TQuestionsTableRowProps {
   question: TQuestion;
   idx: number;
   questionsListRoutePath: string;
@@ -119,7 +138,7 @@ interface TQuestionTableRowProps {
   availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
 }
 
-function QuestionTableRow(props: TQuestionTableRowProps) {
+function QuestionsTableRow(props: TQuestionsTableRowProps) {
   const {
     question,
     questionsListRoutePath,
@@ -165,7 +184,7 @@ function QuestionTableRow(props: TQuestionTableRowProps) {
           const details = error instanceof APIError ? error.details : null;
           const message = 'Cannot update question generated status';
           // eslint-disable-next-line no-console
-          console.error('[QuestionTableRow:handleToggleGenerated]', message, {
+          console.error('[QuestionsTableRow:handleToggleGenerated]', message, {
             details,
             error,
             questionId: question.id,
@@ -178,7 +197,16 @@ function QuestionTableRow(props: TQuestionTableRowProps) {
     [question, updateAndInvalidateQuestion],
   );
   return (
-    <TableRow className="truncate" data-question-id={id}>
+    <TableRow
+      className={cn(
+        isDev && '__ManageTopicQuestionsListCard_QuestionsTableRow_Root', // DEBUG
+        'truncate',
+        'bg-background/10',
+        'hover:bg-theme-500/5',
+        isSelected && 'bg-theme-500/10 hover:bg-theme-500/15',
+      )}
+      data-question-id={id}
+    >
       <TableCell
         id="select"
         className={cn(
@@ -262,8 +290,9 @@ function QuestionTableRow(props: TQuestionTableRowProps) {
 
 type TMemo = { allQuestions: TQuestion[] };
 
-export function ManageTopicQuestionsListCardContent(
+export function QuestionsTableContent(
   props: TManageTopicQuestionsListCardProps & {
+    className?: string;
     questionsListRoutePath: string;
     availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
     selectedQuestions: Set<TQuestionId>;
@@ -272,6 +301,7 @@ export function ManageTopicQuestionsListCardContent(
   },
 ) {
   const {
+    className,
     availableQuestionsQuery,
     questionsListRoutePath,
     handleDeleteQuestion,
@@ -377,23 +407,24 @@ export function ManageTopicQuestionsListCardContent(
       isLoading={isQuestionsLoading}
       isFetchingNextPage={isFetchingNextPage}
       hasNextPage={hasNextPage}
-      saveScrollKey="ManageTopicQuestionsListCardContent"
+      saveScrollKey="QuestionsTableContent"
       saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__ManageTopicQuestionsListCardContent_Scroll', // DEBUG
+        isDev && '__QuestionsTableContent_Scroll', // DEBUG
         'relative flex flex-1 flex-col overflow-hidden',
+        'mx-6',
+        className,
       )}
       viewportClassName={cn(
-        isDev && '__ManageTopicQuestionsListCardContent_Scroll_Viewport', // DEBUG
-        'px-6',
+        isDev && '__QuestionsTableContent_Scroll_Viewport', // DEBUG
       )}
       containerClassName={cn(
-        isDev && '__ManageTopicQuestionsListCardContent_Scroll_Container', // DEBUG
+        isDev && '__QuestionsTableContent_Scroll_Container', // DEBUG
         'relative w-full flex flex-col gap-4',
       )}
     >
       <Table>
-        <QuestionTableHeader
+        <QuestionsTableHeader
           isAdminMode={isAdmin}
           selectedQuestions={selectedQuestions}
           allQuestions={allQuestions}
@@ -401,7 +432,7 @@ export function ManageTopicQuestionsListCardContent(
         />
         <TableBody>
           {allQuestions.map((question, idx) => (
-            <QuestionTableRow
+            <QuestionsTableRow
               key={question.id}
               idx={idx}
               question={question}
@@ -498,7 +529,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -506,7 +537,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       {
         id: 'Reload',
         content: 'Reload',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isRefetching,
@@ -515,9 +546,9 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       {
         id: 'Delete Selected',
         content: 'Delete Selected',
-        variant: 'destructive',
+        // variant: 'destructive',
         icon: Icons.Trash,
-        visibleFor: 'lg',
+        // visibleFor: 'lg',
         hidden: !selectedQuestions.size,
         pending: deleteSelectedMutation.isPending,
         onClick: handleShowDeleteSelectedConfirm,
@@ -525,17 +556,17 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       {
         id: 'Add New Question',
         content: 'Add New Question',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
-        visibleFor: 'lg',
+        visibleFor: 'xl',
         onClick: handleAddQuestion,
       },
       {
         id: 'Generate Questions',
         content: 'Generate Questions',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
-        visibleFor: 'lg',
+        // visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${questionsListRoutePath}/generate`),
       },
@@ -572,21 +603,20 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         breadcrumbs={breadcrumbs}
         inactiveLastBreadcrumb
       />
-      <Card
+      <QuestionsTableContent
+        {...props}
         className={cn(
-          isDev && '__ManageTopicQuestionsListCard_Card', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden py-6 xl:col-span-2',
+          isDev && '__ManageTopicQuestionsListCard_CardContent', // DEBUG
+          'flex flex-col flex-wrap items-start',
+          'overflow-hidden rounded-md transition',
+          // isDataLoading && 'opacity-50',
         )}
-      >
-        <ManageTopicQuestionsListCardContent
-          {...props}
-          questionsListRoutePath={questionsListRoutePath}
-          availableQuestionsQuery={availableQuestionsQuery}
-          selectedQuestions={selectedQuestions}
-          setSelectedQuestions={setSelectedQuestions}
-          goToTheRoute={goToTheRoute}
-        />
-      </Card>
+        questionsListRoutePath={questionsListRoutePath}
+        availableQuestionsQuery={availableQuestionsQuery}
+        selectedQuestions={selectedQuestions}
+        setSelectedQuestions={setSelectedQuestions}
+        goToTheRoute={goToTheRoute}
+      />
       <ConfirmModal
         dialogTitle="Confirm delete questions"
         confirmButtonVariant="destructive"

@@ -178,15 +178,19 @@ export function formatDate(input: string | number | Date, locale: TLocale = defa
 }
 
 // Utils from precedent.dev
-export const timeAgo = (timestamp: Date | string, timeOnly?: boolean): string => {
+export function timeAgo(timestamp: Date | string, timeOnly?: boolean): string {
   // Workaround for cases when date has been passed as an ISO string
-  timestamp = ensureDate(timestamp);
+  const now = Date.now();
+  const ticks = timestamp ? ensureDate(timestamp).getTime() : now;
+  return `${ms(now - ticks)}${timeOnly ? '' : ' ago'}`;
+}
 
-  if (!timestamp) {
-    return 'never';
-  }
-  return `${ms(Date.now() - new Date(timestamp).getTime())}${timeOnly ? '' : ' ago'}`;
-};
+/** Create a JavaScript Date object that is N days ago from an existing date */
+export function createDateWithDaysDiff(days: number, timestamp?: Date | string) {
+  const date = new Date(ensureDate(timestamp));
+  date.setDate(date.getDate() + days);
+  return date;
+}
 
 export function formatSecondsDuration(seconds: number = 0, t?: TIntlTranslator): string {
   const days = Math.floor(seconds / 86400);

@@ -24,7 +24,7 @@ import { CustomNextIntlClientProvider } from '@/components/providers/CustomNextI
 import { ReactQueryClientProvider } from '@/components/providers/ReactQueryClientProvider';
 import { TailwindIndicator } from '@/components/service/TailwindIndicator';
 import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
-import { isDev } from '@/config';
+import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
 import { routing } from '@/i18n/routing';
@@ -72,9 +72,11 @@ async function RootLayout(props: TRootLayoutProps) {
   try {
     messages = await getMessages();
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.warn('[layout:messages]', locale, error);
-    // debugger;
+    if (locale !== debugLocale) {
+      // eslint-disable-next-line no-console
+      console.warn('[layout:messages] locale = ', locale, ' error: ', error);
+      debugger; // eslint-disable-line no-debugger
+    }
   }
 
   const user = await getCurrentUser();

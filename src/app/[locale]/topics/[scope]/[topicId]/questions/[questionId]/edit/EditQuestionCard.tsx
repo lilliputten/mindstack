@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 
+import { getErrorText, removeNullUndefinedValues } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
-import { APIError } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
@@ -20,14 +20,14 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { updateQuestion } from '@/features/questions/actions';
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';
-import { TQuestionData, TQuestionId } from '@/features/questions/types';
+import { TAvailableQuestion, TQuestionData, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 // import { topicQuestionDeletedEventId } from '../DeleteQuestionModal';
 import { EditQuestionForm } from './EditQuestionForm';
-import { TFormData } from './types';
+import { questionFormDataSchema, TFormData } from './types';
 
 interface TEditQuestionCardProps {
   topicId: TTopicId;
@@ -36,6 +36,14 @@ interface TEditQuestionCardProps {
   availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
   availableQuestionQuery: ReturnType<typeof useAvailableQuestionById>;
 }
+
+const formDataSchema = z.object({
+  text: z.string().min(minTextLength).max(maxTextLength),
+  answersCountRandom: z.boolean().optional(),
+  answersCountMin: z.union([z.string().optional(), z.number()]),
+  answersCountMax: z.union([z.string().optional(), z.number()]),
+  isGenerated: z.boolean().optional(),
+});
 
 export function EditQuestionCard(props: TEditQuestionCardProps) {
   const {
@@ -60,26 +68,12 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
   const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(questionsListRoutePath);
 
-  // const availableTopicQuery = useAvailableTopicById({ id: topicId });
   const {
     topic,
     // isFetched: isTopicFetched,
     // isLoading: isTopicLoading,
   } = availableTopicQuery;
 
-  // const availableQuestionsQuery = useAvailableQuestions({ topicId });
-  // const {
-  //   // ...
-  //   queryKey: availableQuestionsQueryKey,
-  //   queryProps: availableQuestionsQueryProps,
-  // } = availableQuestionsQuery;
-
-  // const availableQuestionQuery = useAvailableQuestionById({
-  //   id: questionId,
-  //   availableQuestionsQueryKey,
-  //   includeTopic: availableQuestionsQueryProps.includeTopic,
-  //   includeAnswersCount: availableQuestionsQueryProps.includeAnswersCount,
-  // });
   const {
     question,
     // isFetched: isQuestionFetched,
@@ -97,47 +91,39 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
 
   const formSchema = React.useMemo(
     () =>
-      z
-        .object({
-          text: z.string().min(minTextLength).max(maxTextLength),
-          answersCountRandom: z.boolean().optional(),
-          answersCountMin: z.union([z.string().optional(), z.number()]),
-          answersCountMax: z.union([z.string().optional(), z.number()]),
-          isGenerated: z.boolean().optional(),
-        })
-        .superRefine((data, ctx) => {
-          const { answersCountRandom } = data;
-          if (answersCountRandom) {
-            const answersCountMin = Number(data.answersCountMin);
-            const answersCountMax = Number(data.answersCountMax);
-            if (!answersCountMin || answersCountMin < 1) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'It should be a positive number.',
-                path: ['answersCountMin'],
-              });
-            }
-            if (!answersCountMax || answersCountMax < 1) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'It should be a positive number.',
-                path: ['answersCountMax'],
-              });
-            }
-            if (answersCountMin > answersCountMax) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'A minimal value should be less than maximal.',
-                path: ['answersCountMin'],
-              });
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'A minimal value should be less than maximal.',
-                path: ['answersCountMax'],
-              });
-            }
+      formDataSchema.superRefine((data, ctx) => {
+        const { answersCountRandom } = data;
+        if (answersCountRandom) {
+          const answersCountMin = Number(data.answersCountMin);
+          const answersCountMax = Number(data.answersCountMax);
+          if (!answersCountMin || answersCountMin < 1) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'It should be a positive number.',
+              path: ['answersCountMin'],
+            });
           }
-        }),
+          if (!answersCountMax || answersCountMax < 1) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'It should be a positive number.',
+              path: ['answersCountMax'],
+            });
+          }
+          if (answersCountMin > answersCountMax) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'A minimal value should be less than maximal.',
+              path: ['answersCountMin'],
+            });
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'A minimal value should be less than maximal.',
+              path: ['answersCountMax'],
+            });
+          }
+        }
+      }),
     [],
   );
 
@@ -185,7 +171,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
             success: 'Successfully saved the question',
             error: 'Can not save the question data.',
           });
-          const updatedQuestion = await promise;
+          const _updatedQuestion = await promise;
           // Invalidate all possible question data...
           const invalidatePrefixes = [
             ['available-question', editedQuestion.id],
@@ -194,7 +180,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
 
           // Update the item to the cached react-query data
-          availableQuestionsQuery.updateQuestion(updatedQuestion);
+          availableQuestionsQuery.updateQuestion({ ...question, ...editedQuestion });
           // TODO: Update or invalidate all other possible AvailableQuestion and AvailableQuestions cached data
           // Invalidate all other keys...
           availableQuestionsQuery.invalidateAllKeysExcept([availableQuestionsQuery.queryKey]);
@@ -202,11 +188,10 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           form.reset(form.getValues());
           // TODO: Convert `updatedQuestion` to the form data & reset form to these values?
         } catch (error) {
-          const details = error instanceof APIError ? error.details : null;
+          const details = getErrorText(error);
           const message = 'Cannot save question data';
           // eslint-disable-next-line no-console
-          console.error('[EditQuestionCard]', message, {
-            details,
+          console.error('[EditQuestionCard]', [message, details].join(': '), {
             error,
             questionId: editedQuestion.id,
           });
@@ -214,16 +199,22 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         }
       });
     },
-    [availableQuestionsQuery, form, queryClient, question.id, question.topicId],
+    [availableQuestionsQuery, form, queryClient, question],
   );
 
   const handleReload = React.useCallback(() => {
     availableQuestionQuery
       .refetch()
       .then((res) => {
-        const question = res.data;
+        const question: TAvailableQuestion | undefined = res.data;
         if (question) {
-          form.reset(question as TFormData);
+          // Convert question to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
+          const cleanedQuestion = removeNullUndefinedValues(
+            question as unknown as Record<string, unknown>,
+          );
+          const convertedQuestion = questionFormDataSchema.parse(cleanedQuestion);
+          // Set form data
+          form.reset(convertedQuestion);
           // Add the created item to the cached react-query data
           availableQuestionsQuery.updateQuestion(question);
           // Invalidate all other keys...
@@ -231,9 +222,10 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         }
       })
       .catch((error) => {
+        const details = getErrorText(error);
         const message = 'Cannot update question data';
         // eslint-disable-next-line no-console
-        console.error('[EditQuestionCard:handleReload]', message, {
+        console.error('[EditQuestionCard:handleReload]', [message, details].join(': '), {
           error,
         });
         debugger; // eslint-disable-line no-debugger
@@ -248,7 +240,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -257,7 +249,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         id: 'Reload',
         content: 'Reload',
         title: 'Reload the data from the server',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableQuestionQuery.isRefetching,
@@ -266,7 +258,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       {
         id: 'Reset',
         content: 'Reset changes',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Close,
         visibleFor: 'lg',
         onClick: () => form.reset(),
@@ -275,7 +267,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       {
         id: 'Add New Question',
         content: 'Add New Question',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),

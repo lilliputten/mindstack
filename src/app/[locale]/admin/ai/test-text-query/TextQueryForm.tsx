@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { getErrorText, truncateString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
-import { Form } from '@/components/ui/Form';
+import { FormProvider } from '@/components/ui/Form';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
@@ -199,7 +199,7 @@ export function TextQueryForm() {
           )}
         </div>
       </DashboardHeader>
-      <Form {...form}>
+      <FormProvider {...form}>
         <div
           className={cn(
             isDev && '__TextQueryForm', // DEBUG
@@ -214,7 +214,7 @@ export function TextQueryForm() {
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />
           )}
         </div>
-      </Form>
+      </FormProvider>
     </>
   );
 }

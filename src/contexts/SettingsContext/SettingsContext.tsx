@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 import { defaultThemeColor } from '@/config/themeColors';
 import { handleApiResponse } from '@/lib/api';
+import { getErrorText } from '@/lib/helpers';
 import { deleteCookie, setCookie } from '@/lib/helpers/cookies';
 import { removeFalsyValues, removeNullUndefinedValues } from '@/lib/helpers/objects';
 import { getSettings } from '@/features/settings/actions';
@@ -222,14 +223,16 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
     promise
       .then((rawSettings) => {
         if (rawSettings && rawSettings.userId === userId) {
-          removeNullUndefinedValues(rawSettings);
-          const settings: TSettings = settingsSchema.parse(rawSettings);
+          const cleanedSettings = removeNullUndefinedValues(rawSettings);
+          const settings: TSettings = settingsSchema.parse(cleanedSettings);
           setAndMemoizeSettings(settings);
         }
       })
       .catch((error) => {
+        const message = 'Can not load settings from the server';
+        const details = getErrorText(error);
         // eslint-disable-next-line no-console
-        console.error('[SettingsContext:getSettings] Can not load settings from server', {
+        console.error('[SettingsContext:getSettings]', [message, details].join(': '), {
           error,
         });
         debugger; // eslint-disable-line no-debugger

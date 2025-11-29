@@ -28,10 +28,10 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant={onPrimary ? 'ghostOnTheme' : 'ghost'}
-          size="sm"
+          data-testid="__NavLocaleSwitcher"
           className={cn(
             isDev && '__NavLocaleSwitcher', // DEBUG
-            'flex gap-2',
+            'flex gap-2 px-2',
             'hover:bg-theme-400/50',
             'hover:border-white/10',
             className,

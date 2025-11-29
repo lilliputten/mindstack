@@ -1,3 +1,5 @@
+import { ZodError } from 'zod';
+
 import { GenericIDError } from '@/lib/errors/GenericIDError';
 
 import { AIGenerationError, ServerAuthError } from '../errors';
@@ -28,15 +30,23 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
   if (!err) {
     return '';
   }
-  // if (err instanceof APIError) {
-  //   return err.details;
-  // }
+  /* // TODO: APIError?
+   * if (err instanceof APIError) {
+   *   return err.details;
+   * }
+   */
   const isError = err instanceof Error;
   let errorText: string | undefined;
   if (isErrorInstance(err, AIGenerationError)) {
     errorText = getGenericIDErrorText(err, AIGenerationError);
   } else if (isErrorInstance(err, ServerAuthError)) {
     errorText = getGenericIDErrorText(err, ServerAuthError);
+  } else if (err instanceof ZodError) {
+    const issues = err.issues.map((issue) => {
+      const path = issue.path.length > 0 ? `${issue.path.join('.')}: ` : '';
+      return `${path}${issue.message}`;
+    });
+    errorText = issues.join('; ');
   } else if (isError) {
     errorText = err.message;
   } else if (err instanceof Object && Object.prototype.hasOwnProperty.call(err, 'digest')) {

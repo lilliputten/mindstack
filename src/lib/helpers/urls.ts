@@ -37,7 +37,10 @@ export function composeUrlQuery(
   const { omitEmpty = true, omitFalsy } = options;
   const queryString = Object.entries(params)
     // Filter non-empty values
-    .filter(([key, value]) => key && (!omitEmpty || value != undefined) && (!omitFalsy || !!value))
+    .filter(
+      ([key, value]) =>
+        key && (!omitEmpty || (value != undefined && value !== '')) && (!omitFalsy || !!value),
+    )
     // Create a 'key=value' string
     .map((pair) => pair.map(stringifyUrlValue).map(encodeURIComponent).join('='))
     // Combine with '&'

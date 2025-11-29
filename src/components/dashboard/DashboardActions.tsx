@@ -66,7 +66,7 @@ export function DashboardActions(props: DashboardActionsProps) {
       <div
         className={cn(
           isDev && '__DashboardActions_Skeleton', // DEBUG
-          'flex flex-wrap gap-2',
+          'flex flex-wrap gap-1',
           className,
         )}
       >
@@ -81,7 +81,7 @@ export function DashboardActions(props: DashboardActionsProps) {
       <div
         className={cn(
           isDev && '__DashboardActions', // DEBUG
-          'flex flex-wrap gap-2',
+          'flex flex-wrap gap-1',
           className,
         )}
       >
@@ -130,8 +130,8 @@ export function DashboardActions(props: DashboardActionsProps) {
         <DropdownMenuContent
           align="end"
           className={cn(
-            isDev && '__AllowedUsersPage_DropdownMenuContent', // DEBUG
-            'bg-popover/80',
+            isDev && '__DashboardActions_DropdownMenuContent', // DEBUG
+            'mt-2 rounded-lg bg-popover',
             'flex w-full flex-col gap-1',
           )}
         >

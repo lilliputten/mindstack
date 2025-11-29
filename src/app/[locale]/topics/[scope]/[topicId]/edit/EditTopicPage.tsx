@@ -7,8 +7,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 
+import { getErrorText, removeNullUndefinedValues } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
-import { APIError, TPropsWithClassName } from '@/lib/types';
+import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
@@ -36,7 +37,7 @@ import {
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditTopicForm } from './EditTopicForm';
-import { TFormData } from './types';
+import { topicFormDataSchema, TTopicFormData } from './types';
 
 interface TEditTopicPageProps extends TPropsWithClassName {
   topicId: TTopicId;
@@ -137,7 +138,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     [],
   );
 
-  const defaultValues: TFormData = React.useMemo(
+  const defaultValues: TTopicFormData = React.useMemo(
     () => ({
       name: topic.name || '',
       description: topic.description || '',
@@ -154,7 +155,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
   );
 
   // @see https://react-hook-form.com/docs/useform
-  const form = useForm<TFormData>({
+  const form = useForm<TTopicFormData>({
     // @see https://react-hook-form.com/docs/useform
     mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
     criteriaMode: 'all', // Display all validation errors or one at a time.
@@ -171,9 +172,11 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     availableTopicQuery
       .refetch()
       .then((res) => {
-        const topic = res.data;
+        const topic: TAvailableTopic | undefined = res.data;
         if (topic) {
-          form.reset(topic as TFormData);
+          const cleanedTopic = removeNullUndefinedValues(topic);
+          const convertedTopic = topicFormDataSchema.parse(cleanedTopic);
+          form.reset(convertedTopic);
           // Add the created item to the cached react-query data
           availableTopicsQuery.updateTopic(topic);
           // Invalidate all other keys...
@@ -182,8 +185,11 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       })
       .catch((error) => {
         const message = 'Cannot update topic data';
+        const details = getErrorText(error);
         // eslint-disable-next-line no-console
-        console.error('[EditTopicPage:handleReload]', message, {
+        console.error('[EditTopicPage:handleReload]', [message, details].join(': '), {
+          message,
+          details,
           error,
         });
         debugger; // eslint-disable-line no-debugger
@@ -192,7 +198,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
   }, [availableTopicQuery, availableTopicsQuery, form]);
 
   const handleFormSubmit = React.useCallback(
-    (formData: TFormData) => {
+    (formData: TTopicFormData) => {
       const editedTopic: TAvailableTopic = {
         ...topic,
         name: formData.name,
@@ -208,24 +214,6 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       };
       startTransition(async () => {
         const savePromise = updateTopic(editedTopic);
-        /* // API Way
-         * const url = `/api/topics/${editedTopic.id}`;
-         * const savePromise = handleApiResponse<TAvailableTopic>(
-         *   fetch(url, {
-         *     method: 'PUT',
-         *     headers: { 'Content-Type': 'application/json' },
-         *     body: JSON.stringify(editedTopic),
-         *   }),
-         *   {
-         *     onInvalidateKeys: invalidateKeys,
-         *     debugDetails: {
-         *       initiator: 'EditTopicPage',
-         *       action: 'updateTopic',
-         *       topicId: editedTopic.id,
-         *     },
-         *   },
-         * );
-         */
         toast.promise(savePromise, {
           loading: 'Saving topic data...',
           success: 'Successfully saved the topic',
@@ -233,6 +221,9 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         });
         try {
           const topic = await savePromise;
+          // Convert topic data
+          const cleanedTopic = removeNullUndefinedValues(topic);
+          const convertedTopic = topicFormDataSchema.parse(cleanedTopic);
           // Invalidate all possible topic data...
           const invalidatePrefixes = [
             ['available-topic', editedTopic.id],
@@ -242,30 +233,17 @@ export function EditTopicPage(props: TEditTopicPageProps) {
           // Update query data
           availableTopicQuery.queryClient.setQueryData(availableTopicQuery.queryKey, topic);
           // Add the created item to the cached react-query data
-          availableTopicsQuery.updateTopic(topic);
+          availableTopicsQuery.updateTopic(convertedTopic as TAvailableTopic);
           // Invalidate all other keys...
           availableTopicsQuery.invalidateAllKeysExcept([availableTopicsQuery.queryKey]);
           // form.reset(form.getValues());
-          form.reset(topic as TFormData);
-          // TODO: Update/invalidate data for `useAvailableTopicsByScope`
-          /* // API Way
-           * const result = await savePromise;
-           * if (result.ok && result.data) {
-           *   // const updatedTopic = result.data;
-           *   // // Add the created item to the cached react-query data
-           *   // availableTopicsQuery.updateTopic(updatedTopic);
-           *   // // Invalidate all other keys...
-           *   // availableTopicsQuery.invalidateAllKeysExcept([availableTopicsQuery.queryKey]);
-           *   // Reset for state with the current values
-           *   form.reset(form.getValues());
-           * }
-           */
+          form.reset(convertedTopic);
+          // TODO: Update/invalidate data for `useAvailableTopicsByScope`?
         } catch (error) {
-          const details = error instanceof APIError ? error.details : null;
+          const details = getErrorText(error);
           const message = 'Cannot save topic data';
           // eslint-disable-next-line no-console
-          console.error('[EditTopicPage]', message, {
-            details,
+          console.error('[EditTopicPage]', [message, details].join(': '), {
             error,
             topicId: editedTopic.id,
             // url,
@@ -334,7 +312,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -343,7 +321,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         id: 'Reload',
         content: 'Reload',
         title: 'Reload the data from the server',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableTopicQuery.isRefetching,
@@ -354,7 +332,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         id: 'Reset',
         content: 'Reset',
         title: 'Reset form fields to original values',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Close,
         visibleFor: 'lg',
         hidden: !isDirty,

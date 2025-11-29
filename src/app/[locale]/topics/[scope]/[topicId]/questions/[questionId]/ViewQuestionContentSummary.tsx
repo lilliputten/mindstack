@@ -14,9 +14,11 @@ import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
+import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -33,6 +35,7 @@ export function ViewQuestionContentSummary(props: TProps) {
   const user = useSessionUser();
   const isLogged = !!user;
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
@@ -45,7 +48,7 @@ export function ViewQuestionContentSummary(props: TProps) {
       <div className="flex items-center gap-2">
         <h3 className="text-lg font-semibold">Question Text</h3>
         {question.isGenerated && (
-          <div className="flex items-center gap-1 rounded-md bg-theme-900 px-2 py-1 text-xs text-theme-400">
+          <div className="flex items-center gap-1 rounded-md bg-secondary-500 px-2 py-1 text-xs text-secondary-foreground">
             <Icons.WandSparkles className="size-3 opacity-50" />
             AI Generated
           </div>
@@ -167,21 +170,23 @@ export function ViewQuestionContentSummary(props: TProps) {
     </div>
   ) : null;
 
-  const authorInfoContent = (
+  const authorInfoContent = (isAuthorLoading || topicAuthor) && (
     <div data-testid="__ViewQuestionContentSummary_Section_Author" className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Author</h3>
       <div className="flex items-center gap-2 text-sm">
-        {isOwner ? (
+        {isAuthorLoading ? (
+          <Skeleton className="h-4 w-32 rounded" />
+        ) : isOwner ? (
           <>
             <Icons.ShieldCheck className="hidden size-4 opacity-50 sm:flex" />
             <span>You're the author</span>
           </>
         ) : (
-          topic?.user && (
+          topicAuthor && (
             <>
               <Icons.User className="hidden size-4 opacity-50 sm:flex" />
               <span className="opacity-50">Topic created by:</span>
-              <span>{topic.user?.name || topic.user?.email || 'Unknown'}</span>
+              <span>{topicAuthor.name || topicAuthor.email || 'Unknown'}</span>
             </>
           )
         )}
@@ -219,6 +224,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         'mx-6 flex w-full flex-col gap-4',
       )}
     >
+      <AIGenerationsStatusInfo />
       {questionTextContent}
       {questionPropertiesContent}
       <Separator />

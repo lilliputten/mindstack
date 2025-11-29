@@ -1,3 +1,5 @@
+'use server';
+
 import { TelegramUserData } from '@telegram-auth/server';
 
 import { prisma } from '@/lib/db';

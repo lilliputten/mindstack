@@ -1,5 +1,25 @@
 import { z, ZodObject, ZodRawShape, ZodTypeAny } from 'zod';
 
+/**
+ * Unwraps optional and nullable modifiers to get the base field type
+ */
+export function getBaseField(field: ZodTypeAny): ZodTypeAny {
+  let baseField = field;
+
+  // Keep unwrapping until we reach the base type
+  while (baseField.isOptional() || baseField.isNullable()) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const innerType = (baseField as any)._def.innerType;
+    if (innerType) {
+      baseField = innerType;
+    } else {
+      break;
+    }
+  }
+
+  return baseField;
+}
+
 export function makeAllFieldsCoerced<T extends ZodRawShape>(
   schema: ZodObject<T>,
 ): ZodObject<{ [K in keyof T]: ZodTypeAny }> {
@@ -14,16 +34,7 @@ export function makeAllFieldsCoerced<T extends ZodRawShape>(
       const isNullable = field.isNullable();
 
       // Determine base type for coercion
-      let baseField = field;
-      // If optional or nullable, unwrap to get base type
-      if (isOptional) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        baseField = (baseField as any)._def.innerType || baseField;
-      }
-      if (isNullable) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        baseField = (baseField as any)._def.innerType || baseField;
-      }
+      const baseField = getBaseField(field);
 
       let coercedField: ZodTypeAny;
 
@@ -95,4 +106,41 @@ export function makeNullableFieldsOptional<T extends ZodRawShape>(
   }
 
   return z.object(newShape as T);
+}
+
+export function makeNullableFieldsUndefined<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
+  const shape = {} as {
+    [K in keyof T]: T[K] extends z.ZodNullable<infer U> ? z.ZodOptional<U> : T[K];
+  };
+
+  for (const [key, field] of Object.entries(schema.shape)) {
+    if (field instanceof z.ZodNullable) {
+      shape[key as keyof T] = field.unwrap().optional();
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      shape[key as keyof T] = field as any; // Cast to any to satisfy the complex conditional type
+    }
+  }
+
+  return z.object(shape);
+}
+
+export function addNullableFieldsUndefined<T extends z.ZodRawShape>(
+  schema: z.ZodObject<T>,
+): z.ZodObject<{
+  [K in keyof T]: T[K] extends z.ZodNullable<infer U> ? z.ZodOptional<z.ZodNullable<U>> : T[K];
+}> {
+  const shape: Record<string, ZodTypeAny> = {};
+
+  for (const [key, field] of Object.entries(schema.shape)) {
+    if (field instanceof z.ZodNullable) {
+      shape[key] = field.optional();
+    } else {
+      shape[key] = field;
+    }
+  }
+
+  return z.object(shape) as z.ZodObject<{
+    [K in keyof T]: T[K] extends z.ZodNullable<infer U> ? z.ZodOptional<z.ZodNullable<U>> : T[K];
+  }>;
 }

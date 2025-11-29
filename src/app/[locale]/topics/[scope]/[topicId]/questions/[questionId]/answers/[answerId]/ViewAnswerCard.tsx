@@ -45,7 +45,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -54,7 +54,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Edit',
         content: 'Edit',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${answersListRoutePath}/${answer.id}/edit`),
@@ -62,7 +62,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Add New Answer',
         content: 'Add New Answer',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
@@ -70,7 +70,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Generate Answers',
         content: 'Generate Answers',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'xl',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
@@ -79,7 +79,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Delete Answer',
         content: 'Delete Answer',
-        variant: 'destructive',
+        // variant: 'destructive',
         icon: Icons.Trash,
         visibleFor: 'xl',
         onClick: () =>

@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
+import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
@@ -117,7 +117,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   const buttonText = isPending ? 'Adding' : 'Add';
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={onSubmit}
         className={cn(
@@ -181,6 +181,6 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

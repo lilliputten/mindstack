@@ -42,6 +42,7 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     }
     const validatedData: TGeneratedQuestions = generatedQuestionsSchema.parse(rawData);
     // DEBUG
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedTopicQuestions] Parsed validated data', {
       validatedData,
       rawData,

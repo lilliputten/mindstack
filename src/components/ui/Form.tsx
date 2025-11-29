@@ -1,3 +1,5 @@
+// NOTE: Don't import 'Form' component from `react-hook-form` directly!
+
 import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
@@ -13,7 +15,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/Label';
 
-const Form = FormProvider;
+// const FormProvider = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -165,7 +167,7 @@ FormMessage.displayName = 'FormMessage';
 
 export {
   useFormField,
-  Form,
+  FormProvider,
   FormItem,
   FormLabel,
   FormControl,

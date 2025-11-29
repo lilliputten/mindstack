@@ -10,12 +10,13 @@ export function removeFalsyValues(obj: Record<string, unknown>) {
 
 /** Remove null or undefined values from the object */
 export function removeNullUndefinedValues(obj: Record<string, unknown>) {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === null || obj[key] === undefined) {
-      delete obj[key];
+  const result = { ...obj };
+  Object.keys(result).forEach((key) => {
+    if (result[key] === null || result[key] === undefined) {
+      delete result[key];
     }
   });
-  return obj;
+  return result;
 }
 
 /** Only for debugging purposes */
@@ -61,4 +62,26 @@ export function getObjectDiff<T extends object>(obj1?: T, obj2?: T): Partial<T> 
   }
 
   return diff;
+}
+
+export function deepCompare<T>(obj1: T, obj2: T): boolean {
+  if (obj1 === obj2) return true;
+
+  if (obj1 == null || obj2 == null) return false;
+
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return false;
+
+  if (Array.isArray(obj1) !== Array.isArray(obj2)) return false;
+
+  const keys1 = Object.keys(obj1) as (keyof T)[];
+  const keys2 = Object.keys(obj2) as (keyof T)[];
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (!keys2.includes(key)) return false;
+    if (!deepCompare(obj1[key], obj2[key])) return false;
+  }
+
+  return true;
 }

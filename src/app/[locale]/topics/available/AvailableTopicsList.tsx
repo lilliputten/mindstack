@@ -1,16 +1,24 @@
 import React from 'react';
 
-import { getRandomHashString } from '@/lib/helpers/strings';
+import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
+import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Button, buttonVariants } from '@/components/ui/Button';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
+import { PageEmpty } from '@/components/pages/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
-import { useAvailableTopicsByScope } from '@/hooks';
+import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
+import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
+import { Link } from '@/i18n/routing';
 
 import { AvailableTopicsListItem } from './AvailableTopicsListItem';
+import { ContentListSkeleton } from './ContentSkeleton';
 
-const saveScrollHash = getRandomHashString();
+const sessionSaveScrollHash = getRandomHashString();
 
 interface TProps extends TPropsWithClassName {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
@@ -20,8 +28,81 @@ interface TProps extends TPropsWithClassName {
 export function AvailableTopicsList(props: TProps) {
   const { className, availableTopicsQuery } = props;
 
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, allTopics } =
-    availableTopicsQuery;
+  const goBack = useGoBack(rootRoute);
+
+  const {
+    isInited: isFiltersInited,
+    isExpanded: isFiltersExpanded,
+    expandFilters,
+  } = useTopicsFiltersContext();
+
+  const {
+    // error,
+    // isError,
+    // refetch,
+    queryUrlHash,
+    allTopics,
+    fetchNextPage,
+    hasNextPage,
+    hasTopics,
+    isFetched,
+    isFetchingNextPage,
+    isLoading,
+  } = availableTopicsQuery;
+
+  const saveScrollHash = React.useMemo(
+    () => sessionSaveScrollHash + getAbcHashString(queryUrlHash),
+    [queryUrlHash],
+  );
+
+  if (!isFetched || !isFiltersInited) {
+    return <ContentListSkeleton className="px-6" />;
+  }
+
+  if (!hasTopics) {
+    return (
+      <ScrollArea
+        className={cn(
+          isDev && '__AvailableTopicsList_PageEmpty', // DEBUG
+          'flex flex-1 flex-col overflow-hidden',
+          className,
+        )}
+        viewportClassName={cn(
+          isDev && '__AvailableTopicsList_ScrollViewport', // DEBUG
+          'flex flex-1 flex-col',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
+        )}
+      >
+        <PageEmpty
+          className="mx-6"
+          title="No topics available"
+          description="Change filters to allow displaying public topics (if there are any), or create your own ones."
+          // TODO: Add a button to open the filters pane (via context?)
+          buttons={
+            <>
+              <Button variant="ghost" onClick={goBack} className="flex gap-2">
+                <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
+                Go Back
+              </Button>
+              {!isFiltersExpanded && (
+                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
+                  <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
+                  Change Filters
+                </Button>
+              )}
+              <Link
+                href={myTopicsRoute}
+                className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+              >
+                <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
+                <span>Manage or create your own topics</span>
+              </Link>
+            </>
+          }
+        />
+      </ScrollArea>
+    );
+  }
 
   return (
     <ScrollAreaInfinite
@@ -40,12 +121,13 @@ export function AvailableTopicsList(props: TProps) {
       viewportClassName={cn(
         isDev && '__AvailableTopicsList_Viewport', // DEBUG
         'relative flex flex-1 flex-col',
-        '[&>div]:gap-4 [&>div]:flex-col',
+        '[&>div]:gap-4 [&>div]:flex-col [&>div]:px-6',
       )}
       containerClassName={cn(
         isDev && '__AvailableTopicsList_Container', // DEBUG
         'relative flex flex-col gap-4',
       )}
+      // thumbClassName="bg-theme-600/40"
     >
       {allTopics.map((topic, index) => (
         <AvailableTopicsListItem key={topic.id} index={index} topic={topic} />

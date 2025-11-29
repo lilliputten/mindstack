@@ -11,7 +11,7 @@ NextJS Memory Training App
 
 ![Application](public/static/opengraph-image.jpg 'Application')
 
-- Project info: v.0.0.3 / 2025.11.18 03:42:17 +0300
+- Project info: v.0.0.3 / 2025.11.29 03:02:34 +0300
 
 ## Resources
 

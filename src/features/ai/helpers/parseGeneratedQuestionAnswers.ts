@@ -28,6 +28,7 @@ export function parseGeneratedQuestionAnswers(queryData: TAITextQueryData) {
       rawJson = rawJson.substring(mdStart.length, rawJson.length - mdEnd.length).trim();
     }
     rawData = JSON.parse(rawJson);
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedQuestionAnswers] Parsed raw data', {
       rawData,
       rawJson,
@@ -38,6 +39,7 @@ export function parseGeneratedQuestionAnswers(queryData: TAITextQueryData) {
     }
     const validatedData: TGeneratedAnswers = generatedAnswersSchema.parse(rawData);
     // DEBUG
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedQuestionAnswers] Parsed validated data', {
       validatedData,
       rawData,

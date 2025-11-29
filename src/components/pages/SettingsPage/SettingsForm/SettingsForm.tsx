@@ -7,7 +7,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { getErrorText } from '@/lib/helpers';
 import { removeNullUndefinedValues } from '@/lib/helpers/objects';
 import { cn } from '@/lib/utils';
-import { Form } from '@/components/ui/Form';
+import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';
@@ -99,7 +99,7 @@ export function SettingsForm(props: TSettingsFormProps) {
   const handleCancel = undefined;
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
         className={cn(
@@ -120,6 +120,6 @@ export function SettingsForm(props: TSettingsFormProps) {
           />
         </ScrollArea>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

@@ -6,12 +6,12 @@ import { toast } from 'sonner';
 import { APIError } from '@/lib/types/api';
 import { rootRoute } from '@/config/routesConfig';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
-import { getRandomHashString, truncateString } from '@/lib/helpers/strings';
+import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { TCachedUsers, useCachedUsersForTopics } from '@/hooks/topics/useCachedUsersForTopics';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Switch } from '@/components/ui/Switch';
@@ -31,13 +31,17 @@ import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
+import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 import { deleteTopics, updateTopic } from '@/features/topics/actions';
+import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-const saveScrollHash = getRandomHashString();
+import { ContentSkeletonTable } from './ContentSkeleton';
+
+const sessionSaveScrollHash = getRandomHashString();
 
 interface TManageTopicsListCardProps {
   handleDeleteTopic: (topicId: TTopicId, from: string) => void;
@@ -46,7 +50,7 @@ interface TManageTopicsListCardProps {
   handleAddTopic: () => void;
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
 }
-interface TManageTopicsListCardContentProps extends TManageTopicsListCardProps {
+interface TTopicsTableContentProps extends TManageTopicsListCardProps {
   className?: string;
   goBack: () => void;
   selectedTopics: Set<TTopicId>;
@@ -55,7 +59,9 @@ interface TManageTopicsListCardContentProps extends TManageTopicsListCardProps {
 
 type TMemo = { allTopics: TTopic[] };
 
-function TopicTableHeader({
+const useDarkHeader = true;
+
+function TopicsTableHeader({
   isAdminMode,
   selectedTopics,
   allTopics,
@@ -71,8 +77,17 @@ function TopicTableHeader({
   const isIndeterminate = hasSelected && !isAllSelected;
 
   return (
-    <TableHeader>
-      <TableRow>
+    <TableHeader
+      className={cn(
+        isDev && '__ManageTopicsListCard_TopicsTableHeader_Root', // DEBUG
+        'sticky top-0 z-10',
+        // Dark theme
+        useDarkHeader && 'dark-theme bg-theme-500 text-white',
+        useDarkHeader &&
+          'before:absolute before:inset-0 before:z-0 before:bg-background before:opacity-40 before:content-[""]',
+      )}
+    >
+      <TableRow className="z-1 relative">
         <TableHead
           id="select"
           className={cn(
@@ -85,7 +100,17 @@ function TopicTableHeader({
           <Checkbox
             checked={hasSelected}
             aria-label="Select/deselect all"
-            className={cn('block', isIndeterminate && 'opacity-50')}
+            className={cn(
+              'block',
+              // Dark theme
+              useDarkHeader &&
+                'border-white/70 hover:!ring-white/70 data-[state=checked]:border-white',
+              // isIndeterminate && 'opacity-70',
+            )}
+            indicatorClassName={cn(
+              // Dark theme
+              useDarkHeader && 'text-white',
+            )}
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
@@ -117,12 +142,13 @@ function TopicTableHeader({
         <TableHead id="isPublic" className="truncate max-lg:hidden">
           Public
         </TableHead>
+        <TableHead id="Actions"></TableHead>
       </TableRow>
     </TableHeader>
   );
 }
 
-interface TTopicTableRowProps {
+interface TTopicsTableRowProps {
   topic: TTopic;
   idx: number;
   handleDeleteTopic: TManageTopicsListCardProps['handleDeleteTopic'];
@@ -135,7 +161,7 @@ interface TTopicTableRowProps {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
 }
 
-function TopicTableRow(props: TTopicTableRowProps) {
+function TopicsTableRow(props: TTopicsTableRowProps) {
   const {
     topic,
     handleDeleteTopic,
@@ -175,7 +201,7 @@ function TopicTableRow(props: TTopicTableRowProps) {
           const details = error instanceof APIError ? error.details : null;
           const message = 'Cannot update topic public status';
           // eslint-disable-next-line no-console
-          console.error('[TopicTableRow:handleTogglePublic]', message, {
+          console.error('[TopicsTableRow:handleTogglePublic]', message, {
             details,
             error,
             topicId: topic.id,
@@ -192,7 +218,16 @@ function TopicTableRow(props: TTopicTableRowProps) {
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
   return (
-    <TableRow className="truncate" data-topic-id={id}>
+    <TableRow
+      className={cn(
+        isDev && '__ManageTopicsListCard_TopicsTableRow_Root', // DEBUG
+        'truncate',
+        'bg-background/10',
+        'hover:bg-theme-500/5',
+        isSelected && 'bg-theme-500/10 hover:bg-theme-500/15',
+      )}
+      data-topic-id={id}
+    >
       <TableCell
         id="select"
         className={cn(
@@ -226,7 +261,7 @@ function TopicTableRow(props: TTopicTableRowProps) {
       <TableCell id="questions" className="max-w-[8em] truncate max-lg:hidden">
         <div className="truncate">
           {questionsCount ? (
-            <span className="font-bold">{questionsCount}</span>
+            <span className="font-medium">{questionsCount}</span>
           ) : (
             <span className="opacity-30">—</span>
           )}
@@ -258,7 +293,7 @@ function TopicTableRow(props: TTopicTableRowProps) {
           disabled={isPending}
         />
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell id="Actions" className="text-right">
         <div className="flex justify-end gap-1">
           <Button
             variant="ghost"
@@ -296,7 +331,7 @@ function TopicTableRow(props: TTopicTableRowProps) {
   );
 }
 
-export function ManageTopicsListCardContent(props: TManageTopicsListCardContentProps) {
+export function TopicsTableContent(props: TTopicsTableContentProps) {
   const {
     className,
     handleDeleteTopic,
@@ -310,6 +345,9 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
   } = props;
   const { manageScope } = useManageTopicsStore();
   const isAdminMode = manageScope === TopicsManageScopeIds.ALL_TOPICS; // || user?.role === 'ADMIN';
+
+  const { isExpanded: isFiltersExpanded, expandFilters } = useTopicsFiltersContext();
+
   const {
     isLoading,
     hasTopics,
@@ -320,7 +358,13 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
     refetch,
     isError,
     error,
+    queryUrlHash,
   } = availableTopicsQuery;
+
+  const saveScrollHash = React.useMemo(
+    () => sessionSaveScrollHash + getAbcHashString(queryUrlHash),
+    [queryUrlHash],
+  );
 
   const cachedUsers = useCachedUsersForTopics({
     topics: allTopics,
@@ -359,7 +403,8 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
     return (
       <PageError
         className={cn(
-          isDev && '__ManageTopicsListCard_Error', // DEBUG
+          isDev && '__ManageTopicsListCard_TopicsTableContent_Error', // DEBUG
+          className,
         )}
         error={error || 'Error loading available topics data'}
         reset={refetch}
@@ -370,88 +415,98 @@ export function ManageTopicsListCardContent(props: TManageTopicsListCardContentP
 
   if (!hasTopics) {
     return (
-      <PageEmpty
+      <ScrollArea
         className={cn(
-          isDev && '__ManageTopicsListCard_PageEmpty', // DEBUG
-          'mx-6 flex-1',
+          isDev && '__ManageTopicsListCard_TopicsTableContent_PageEmpty_Scroll', // DEBUG
+          'flex flex-1 flex-col overflow-hidden',
+          'mx-6',
+          className,
         )}
-        // onButtonClick={handleAddTopic}
-        // buttonTitle="Add Topic"
-        icon={Icons.Topics}
-        title="No topics have been created yet"
-        description="You dont have any topics yet. Add any topic to your profile."
-        buttons={
-          <>
-            <Button variant="ghost" onClick={goBack} className="flex gap-2">
-              <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-              Go Back
-            </Button>
-            <Button onClick={handleAddTopic} className="flex gap-2">
-              <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-              Add Topic
-            </Button>
-          </>
-        }
-      />
+        viewportClassName={cn(
+          isDev && '__ManageTopicsListCard_TopicsTableContent_ScrollViewport', // DEBUG
+          'flex flex-1 flex-col',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
+        )}
+      >
+        <PageEmpty
+          className={cn(
+            isDev && '__ManageTopicsListCard_TopicsTableContent_PageEmpty', // DEBUG
+          )}
+          icon={Icons.Topics}
+          title="No topics found"
+          description="Change filters to allow displaying topics (if there are any), or create your own ones."
+          buttons={
+            <>
+              <Button variant="ghost" onClick={goBack} className="flex gap-2">
+                <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
+                Go Back
+              </Button>
+              {!isFiltersExpanded && (
+                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
+                  <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
+                  Change Filters
+                </Button>
+              )}
+              <Button onClick={handleAddTopic} className="flex gap-2">
+                <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
+                Add Topic
+              </Button>
+            </>
+          }
+        />
+      </ScrollArea>
     );
   }
 
   return (
-    <Card
+    <ScrollAreaInfinite
+      effectorData={allTopics}
+      fetchNextPage={fetchNextPage}
+      isLoading={isLoading}
+      isFetchingNextPage={isFetchingNextPage}
+      hasNextPage={hasNextPage}
+      saveScrollKey="ManageTopicsListCard"
+      saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__ManageTopicsListCard_CardContent', // DEBUG
-        'relative mx-6 flex flex-1 flex-col overflow-hidden py-6 xl:col-span-2',
+        isDev && '__ManageTopicsListCard_TopicsTableContent_Scroll', // DEBUG
+        'relative flex flex-1 flex-col overflow-hidden',
+        'mx-6',
+        className,
+      )}
+      viewportClassName={cn(
+        isDev && '__ManageTopicsListCard_TopicsTableContent_Scroll_Viewport', // DEBUG
+      )}
+      containerClassName={cn(
+        isDev && '__ManageTopicsListCard_TopicsTableContent_Scroll_Container', // DEBUG
+        'relative w-full flex flex-col gap-4',
       )}
     >
-      <ScrollAreaInfinite
-        effectorData={allTopics}
-        fetchNextPage={fetchNextPage}
-        isLoading={isLoading}
-        isFetchingNextPage={isFetchingNextPage}
-        hasNextPage={hasNextPage}
-        saveScrollKey="ManageTopicsListCard"
-        saveScrollHash={saveScrollHash}
-        className={cn(
-          isDev && '__ManageTopicsListCard_Scroll', // DEBUG
-          'relative flex flex-1 flex-col overflow-hidden',
-          className,
-        )}
-        viewportClassName={cn(
-          isDev && '__ManageTopicsListCard_Scroll_Viewport', // DEBUG
-          'px-6',
-        )}
-        containerClassName={cn(
-          isDev && '__ManageTopicsListCard_Scroll_Container', // DEBUG
-          'relative w-full flex flex-col gap-4',
-        )}
-      >
-        <Table>
-          <TopicTableHeader
-            isAdminMode={isAdminMode}
-            selectedTopics={selectedTopics}
-            allTopics={allTopics}
-            toggleAll={toggleAll}
-          />
-          <TableBody>
-            {allTopics.map((topic, idx) => (
-              <TopicTableRow
-                key={topic.id}
-                idx={idx}
-                topic={topic}
-                handleDeleteTopic={handleDeleteTopic}
-                handleEditTopic={handleEditTopic}
-                handleEditQuestions={handleEditQuestions}
-                isAdminMode={isAdminMode}
-                cachedUsers={cachedUsers}
-                isSelected={selectedTopics.has(topic.id)}
-                toggleSelected={toggleSelected}
-                availableTopicsQuery={availableTopicsQuery}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </ScrollAreaInfinite>
-    </Card>
+      <Table>
+        <TopicsTableHeader
+          isAdminMode={isAdminMode}
+          selectedTopics={selectedTopics}
+          allTopics={allTopics}
+          toggleAll={toggleAll}
+        />
+        <TableBody>
+          {allTopics.map((topic, idx) => (
+            <TopicsTableRow
+              key={topic.id}
+              idx={idx}
+              topic={topic}
+              handleDeleteTopic={handleDeleteTopic}
+              handleEditTopic={handleEditTopic}
+              handleEditQuestions={handleEditQuestions}
+              isAdminMode={isAdminMode}
+              cachedUsers={cachedUsers}
+              isSelected={selectedTopics.has(topic.id)}
+              toggleSelected={toggleSelected}
+              availableTopicsQuery={availableTopicsQuery}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </ScrollAreaInfinite>
   );
 }
 
@@ -464,7 +519,13 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
 
-  const { refetch, isRefetching } = availableTopicsQuery;
+  const { refetch, isFetched, isRefetching, isLoading } = availableTopicsQuery;
+
+  const { isInited: isFiltersInited, isPending: isFiltersPending } = useTopicsFiltersContext();
+
+  const isDataInited = isFetched && isFiltersInited;
+
+  const isDataLoading = isRefetching || isLoading || isFiltersPending;
 
   const goBack = useGoBack(rootRoute);
 
@@ -598,7 +659,6 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -606,7 +666,6 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Reload',
         content: 'Reload',
-        variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isRefetching,
@@ -615,9 +674,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Mark Public',
         content: 'Mark Selected as Public',
-        variant: 'secondary',
         icon: Icons.Eye,
-        visibleFor: 'lg',
         hidden: !selectedTopics.size,
         pending: makeSelectedPublicMutation.isPending,
         onClick: handleMakeSelectedPublic,
@@ -625,9 +682,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Mark Private',
         content: 'Mark Selected as Private',
-        variant: 'secondary',
         icon: Icons.EyeOff,
-        visibleFor: 'lg',
         hidden: !selectedTopics.size,
         pending: resetSelectedPublicMutation.isPending,
         onClick: handleResetSelectedPublic,
@@ -635,9 +690,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Delete Selected',
         content: 'Delete Selected',
-        variant: 'destructive',
         icon: Icons.Trash,
-        visibleFor: 'lg',
         hidden: !selectedTopics.size,
         pending: deleteSelectedMutation.isPending,
         onClick: handleShowDeleteConfirm,
@@ -645,7 +698,6 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       {
         id: 'Add',
         content: 'Add New Topic',
-        variant: 'success',
         icon: Icons.Add,
         visibleFor: 'md',
         onClick: handleAddTopic,
@@ -677,16 +729,29 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         // breadcrumbs={breadcrumbs}
         actions={actions}
       />
-      <ManageTopicsListCardContent
-        {...props}
+      <AvailableTopicsFilters
         className={cn(
-          isDev && '__ManageTopicsListCard_CardContent', // DEBUG
-          'flex flex-row flex-wrap items-start',
+          isDev && '__ManageTopicsListCard_Filters', // DEBUG
+          'mx-6 transition',
+          isFiltersPending && 'opacity-50',
         )}
-        goBack={goBack}
-        selectedTopics={selectedTopics}
-        setSelectedTopics={setSelectedTopics}
       />
+      {isDataInited ? (
+        <TopicsTableContent
+          {...props}
+          className={cn(
+            isDev && '__ManageTopicsListCard_CardContent', // DEBUG
+            'flex flex-col flex-wrap items-start',
+            'overflow-hidden rounded-md transition',
+            isDataLoading && 'opacity-50',
+          )}
+          goBack={goBack}
+          selectedTopics={selectedTopics}
+          setSelectedTopics={setSelectedTopics}
+        />
+      ) : (
+        <ContentSkeletonTable className="px-6" />
+      )}
       <ConfirmModal
         dialogTitle="Confirm delete topics"
         confirmButtonVariant="destructive"

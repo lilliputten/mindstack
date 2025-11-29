@@ -3,7 +3,7 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
 
-import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
+import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import * as Icons from '@/components/shared/Icons';
 import { TAvailableTopic } from '@/features/topics/types';
 
@@ -22,18 +22,18 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
   } = props;
   const format = useFormatter();
   const {
-    // id,
-    // userId,
-    user,
-    // name,
     // description,
+    // id,
     // isPublic,
+    // name,
+    // userId,
+    _count,
+    createdAt,
+    keywords,
     langCode,
     langName,
-    keywords,
-    createdAt,
     updatedAt,
-    _count,
+    user,
   } = topic;
   const questionsCount = _count?.questions;
   const keywordsList = keywords
@@ -41,7 +41,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     .map((s) => s.trim())
     .filter(Boolean);
   const keywordsContent = keywordsList?.map((kw, idx) => (
-    <span key={`${idx}-${kw}`} className="rounded-sm bg-theme-700/10 px-2">
+    <span key={`${idx}-${kw}`} className="rounded-sm bg-theme-700/10 px-1">
       {kw}
     </span>
   ));
@@ -54,13 +54,16 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     ),
   ].filter(Boolean);
   const userName = user && (user.name || user.email);
+  const createdDateStr = getFormattedRelativeDate(format, createdAt);
+  const updatedDateStr = getFormattedRelativeDate(format, updatedAt);
+  const areDifferentDates =
+    /* !!compareDates(updatedAt, createdAt) && */ createdDateStr !== updatedDateStr;
   return (
     <>
-      {!!questionsCount && (
-        <span id="questions" className="flex items-center gap-1" title="Questions count">
-          <Icons.Questions className="mr-1 size-4 opacity-50" /> {questionsCount}
-        </span>
-      )}
+      <span id="questions" className="flex items-center gap-1" title="Questions count">
+        <Icons.Questions className="mr-1 size-4 opacity-50" />{' '}
+        {questionsCount ? questionsCount : 'No questions'}
+      </span>
       {!!(langName || langCode) && (
         <span id="language" className="flex items-center gap-1" title="Topic language">
           <Icons.Languages className="mr-1 size-4 opacity-50" /> {langContent}
@@ -78,14 +81,12 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
       )}
       {showDates && (
         <span id="createdAt" className="flex items-center gap-1 text-xs" title="Creation date">
-          <Icons.CalendarDays className="mr-1 size-4 opacity-50" />{' '}
-          {getFormattedRelativeDate(format, createdAt)}
+          <Icons.CalendarDays className="mr-1 size-4 opacity-50" /> {createdDateStr}
         </span>
       )}
-      {showDates && updatedAt && !!compareDates(updatedAt, createdAt) && (
+      {showDates && updatedAt && areDifferentDates && (
         <span id="createdAt" className="flex items-center gap-1 text-xs" title="Updated date">
-          <Icons.Pencil className="mr-1 size-4 opacity-50" />{' '}
-          {getFormattedRelativeDate(format, updatedAt)}
+          <Icons.Pencil className="mr-1 size-4 opacity-50" /> {updatedDateStr}
         </span>
       )}
     </>

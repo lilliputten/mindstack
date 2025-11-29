@@ -44,6 +44,8 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
   const { topic } = availableTopicQuery;
   const { question } = availableQuestionQuery;
 
+  console.log('[ViewQuestionCard] topic', topic);
+
   if (!topic) {
     throw new Error(`No topic exists for ${topicId}`);
   }
@@ -56,7 +58,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -65,7 +67,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Edit',
         content: 'Edit',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/${question.id}/edit`),
@@ -73,7 +75,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Answers',
         content: 'Answers',
-        variant: 'theme',
+        // variant: 'theme',
         icon: Icons.Answers,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/${question.id}/answers`),
@@ -81,7 +83,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Add New Question',
         content: 'Add New Question',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'xl',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
@@ -89,7 +91,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Delete Question',
         content: 'Delete Question',
-        variant: 'destructive',
+        // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'xl',
         onClick: () =>

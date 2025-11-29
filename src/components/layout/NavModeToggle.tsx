@@ -24,18 +24,19 @@ export function NavModeToggle(props: TNavModeToggleProps) {
         <Button
           variant={onPrimary ? 'ghostOnTheme' : 'ghost'}
           size="sm"
+          data-testid="__NavModeToggle"
           className={cn(
             isDev && '__NavModeToggle', // DEBUG
-            'relative size-8 px-2',
+            'flex items-center',
+            'relative size-10',
             'hover:bg-theme-400/50',
             'hover:border-white/10',
-
             className,
           )}
           title={t('label')}
         >
-          <Icons.Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Icons.Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Icons.Sun className="absolute size-6 dark:hidden" />
+          <Icons.Moon className="absolute hidden size-5 dark:block" />
           <span className="sr-only">{t('label')}</span>
         </Button>
       </DropdownMenuTrigger>

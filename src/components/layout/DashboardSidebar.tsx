@@ -16,7 +16,7 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { removePathLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 
@@ -30,7 +30,8 @@ const saveScrollHash = getRandomHashString();
 type TMemo = { inited?: boolean; restored?: boolean; isExpanded?: boolean };
 
 export function DashboardSidebar({ links }: TDashboardSidebarProps) {
-  const path = usePathname();
+  const pathname = usePathname();
+  const testPath = removePathLocalePrefix(pathname);
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -82,6 +83,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
           isDev && '__DashboardSidebar_ScrollViewport', // DEBUG
           '[&>div]:h-full',
         )}
+        thumbClassName="bg-theme-600/10"
       >
         <aside
           className={cn(
@@ -162,16 +164,27 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                   </p>
                   {/* Show sections menu */}
                   {section.items.map((item) => {
-                    const Icon = item.icon || Icons.ArrowRight;
-                    const isCurrentPath = comparePathsWithoutLocalePrefix(item.href, path);
+                    const {
+                      // authorizedOnly,
+                      // external,
+                      // userRequiredOnly,
+                      badge,
+                      disabled,
+                      href,
+                      icon,
+                      titleId,
+                    } = item;
+                    const Icon = icon || Icons.ArrowRight;
+                    const isUnderCurrent = testPath.startsWith(href);
+                    // const isCurrent = isUnderCurrent && href === testPath;
                     return (
-                      item.href && (
-                        <React.Fragment key={`link-fragment-${item.titleId}`}>
-                          <Tooltip key={`tooltip-${item.titleId}`}>
+                      href && (
+                        <React.Fragment key={`link-fragment-${titleId}`}>
+                          <Tooltip key={`tooltip-${titleId}`}>
                             <TooltipTrigger asChild>
                               <Link
-                                key={`link-${item.titleId}`}
-                                href={item.disabled ? '#' : item.href}
+                                key={`link-${titleId}`}
+                                href={disabled ? '#' : href}
                                 className={cn(
                                   isDev && '__DashboardSidebar_Section_Item', // DEBUG
                                   'flex',
@@ -184,8 +197,8 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                   'text-sm',
                                   'font-medium',
                                   'hover:bg-theme/20',
-                                  isCurrentPath && 'bg-theme-500/10 hover:bg-theme/30',
-                                  item.disabled && 'pointer-events-none cursor-default opacity-30',
+                                  isUnderCurrent && 'bg-theme-500/10 hover:bg-theme/30',
+                                  disabled && 'pointer-events-none cursor-default opacity-30',
                                   'active:bg-theme active:text-theme-foreground',
                                 )}
                               >
@@ -197,11 +210,11 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                     !isExpanded && 'hidden',
                                   )}
                                 >
-                                  {item.titleId}
+                                  {titleId}
                                 </span>
-                                {item.badge && (
+                                {badge && (
                                   <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
-                                    {item.badge}
+                                    {badge}
                                   </Badge>
                                 )}
                               </Link>
@@ -210,7 +223,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                               className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                               side="right"
                             >
-                              {item.titleId}
+                              {titleId}
                             </TooltipContent>
                           </Tooltip>
                         </React.Fragment>

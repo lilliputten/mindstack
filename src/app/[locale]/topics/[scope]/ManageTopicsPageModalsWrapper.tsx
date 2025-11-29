@@ -3,11 +3,19 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
+import {
+  convertAvailableFiltersToParams,
+  TApplyFiltersData,
+  TAvailableTopicsFiltersParams,
+  TopicsFiltersProvider,
+} from '@/contexts/TopicsFiltersContext';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-import { ManageTopicsListWrapper } from './ManageTopicsListWrapper';
+import { ContentSkeleton } from './ContentSkeleton';
+import { ManageTopicsListCard } from './ManageTopicsListCard';
 
 interface TTopicsListProps {
   showAddModal?: boolean;
@@ -27,9 +35,20 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { showAddModal, deleteTopicId, editTopicId, editQuestionsTopicId, from } = props;
   const { manageScope } = useManageTopicsStore();
+  const isOnlyMy = manageScope === TopicsManageScopeIds.MY_TOPICS;
   const routePath = `/topics/${manageScope}`;
-  const availableTopics = useAvailableTopicsByScope({ manageScope });
-  const { allTopics, isFetched } = availableTopics;
+
+  const [filtersParams, setFiltersParams] = React.useState<
+    TAvailableTopicsFiltersParams | undefined
+  >();
+
+  const availableTopicsQuery = useAvailableTopicsByScope({
+    manageScope,
+    enabled: !!filtersParams,
+    showOnlyMyTopics: isOnlyMy,
+    ...filtersParams,
+  });
+  const { allTopics, isFetched, queryClient, queryKey } = availableTopicsQuery;
   // memo.isFetched = isFetched;
   memo.routePath = routePath;
   memo.allTopics = allTopics;
@@ -128,12 +147,32 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
     }
   }, [editQuestionsTopicId, openEditQuestionsPage]);
 
+  const applyFilters = React.useCallback(
+    async (filtersData: TApplyFiltersData) => {
+      const filtersParams = convertAvailableFiltersToParams(filtersData);
+      setFiltersParams(filtersParams);
+      queryClient.removeQueries({ queryKey });
+    },
+    [queryClient, queryKey],
+  );
+
   return (
-    <ManageTopicsListWrapper
-      openAddTopicModal={openAddTopicModal}
-      openDeleteTopicModal={openDeleteTopicModal}
-      openEditTopicCard={openEditTopicCard}
-      openEditQuestionsPage={openEditQuestionsPage}
-    />
+    <TopicsFiltersProvider
+      storeId={`manage-topics-filters-${manageScope}`}
+      applyFilters={applyFilters}
+      ignoreOnlyMy={isOnlyMy}
+    >
+      {filtersParams ? (
+        <ManageTopicsListCard
+          handleDeleteTopic={openDeleteTopicModal}
+          handleEditTopic={openEditTopicCard}
+          handleEditQuestions={openEditQuestionsPage}
+          handleAddTopic={openAddTopicModal}
+          availableTopicsQuery={availableTopicsQuery}
+        />
+      ) : (
+        <ContentSkeleton className="px-6 py-0" />
+      )}
+    </TopicsFiltersProvider>
   );
 }

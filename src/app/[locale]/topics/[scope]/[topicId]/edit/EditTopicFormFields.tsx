@@ -17,14 +17,14 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
 
-import { TFormData } from './types';
+import { TTopicFormData } from './types';
 
 interface TEditTopicFormFieldsProps {
   topic: TTopic;
   isSubmitEnabled?: boolean;
   isPending?: boolean;
   onCancel?: (ev: React.MouseEvent) => void;
-  form: UseFormReturn<TFormData>;
+  form: UseFormReturn<TTopicFormData>;
   className?: string;
   selectLanguage: (ev: React.MouseEvent) => void;
 }
@@ -160,11 +160,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langName ? (
-                      <strong className="truncate">{langName}</strong>
-                    ) : (
-                      <>Select language</>
-                    )}
+                    {langName ? <span className="truncate">{langName}</span> : <>Select language</>}
                   </span>
                   {langCode && <span className="opacity-50">{langCode}</span>}
                   {langCustom && (

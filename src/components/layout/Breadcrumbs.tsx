@@ -36,16 +36,44 @@ function RenderBreadcrumbsItem({
   loading,
 }: TBreadcrumbsItemProps | BreadcrumbsItem) {
   if (loading) {
-    return <Skeleton className="h-1 w-5 truncate rounded" />;
+    return (
+      <Skeleton
+        className={cn(
+          isDev && '__RenderBreadcrumbsItem_Skeleton', // DEBUG
+          'h-1 w-5 rounded',
+          // 'whitespace-nowrap',
+          'truncate',
+        )}
+      />
+    );
   }
   if (!content) {
     return null;
   }
   if (!link) {
-    return <span className="truncate opacity-50">{content}</span>;
+    return (
+      <span
+        className={cn(
+          isDev && '__RenderBreadcrumbsItem_Plain', // DEBUG
+          'opacity-50',
+          // 'whitespace-nowrap',
+          'truncate',
+        )}
+      >
+        {content}
+      </span>
+    );
   }
   return (
-    <Link href={link} className="truncate hover:underline">
+    <Link
+      href={link}
+      className={cn(
+        isDev && '__RenderBreadcrumbsItem_Link', // DEBUG
+        'hover:underline',
+        // 'whitespace-nowrap',
+        'truncate',
+      )}
+    >
       {content}
     </Link>
   );
@@ -80,8 +108,9 @@ export function Breadcrumbs(props: TBreadcrumbsProps) {
     <div
       className={cn(
         isDev && '__Breadcrumbs', // DEBUG
-        'flex gap-1 gap-x-2 overflow-hidden text-sm',
-        // 'truncate-start',
+        'flex gap-1 gap-x-2 text-sm',
+        'overflow-hidden',
+        // 'overflow-x-scroll',
         className,
       )}
     >
