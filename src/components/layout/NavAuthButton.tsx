@@ -31,8 +31,7 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
     <div
       className={cn(
         isDev && '__NavAuthButton', // DEBUG
-        'flex',
-        'items-center',
+        'flex items-center truncate',
         onSidebar && 'flex w-full justify-start gap-2',
         className,
       )}
@@ -45,12 +44,15 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
         <Skeleton className="h-9 w-28 rounded-full lg:flex" />
       ) : (
         <Button
-          className={cn('flex gap-2 px-2', onSidebar && 'hover:bg-theme-500 hover:text-white')}
+          className={cn(
+            'flex gap-2 truncate px-2',
+            onSidebar && 'hover:bg-theme-500 hover:text-white',
+          )}
           variant={onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
           size="sm"
           onClick={() => setSignInModalVisible(true)}
         >
-          <span>{t('sign-in')}</span>
+          <span className="truncate">{t('sign-in')}</span>
           <Icons.ArrowRight className="size-4" />
         </Button>
       )}

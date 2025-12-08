@@ -34,13 +34,14 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
             'flex gap-2 px-2',
             'hover:bg-theme-400/50',
             'hover:border-white/10',
+            'truncate',
             className,
           )}
           title={t('label')}
           data-current-locale={locale}
         >
           <span>{localeSymbols[locale]}</span>
-          <span>{localeNames[locale]}</span>
+          <span className="truncate">{localeNames[locale]}</span>
           <span className="sr-only">{t('label')}</span>
         </Button>
       </DropdownMenuTrigger>

@@ -61,8 +61,10 @@ export function NavBar(props: NavBarProps) {
           'w-full',
           'items-center',
           'justify-between',
-          'py-2',
+          'py-1',
           'z-10',
+          'h-16',
+          'overflow-hidden',
         )}
       >
         <NavBarBrand isUser={isUser} />
@@ -71,53 +73,63 @@ export function NavBar(props: NavBarProps) {
           <nav
             className={cn(
               isDev && '__NavBar_MiddleLinks', // DEBUG
-              'hidden gap-2 md:flex',
+              'hidden sm:block',
             )}
           >
-            {links
-              .filter((item) => !item.userRequiredOnly || isUser)
-              .map((item) => {
-                const {
-                  // authorizedOnly,
-                  // badge,
-                  // external,
-                  // userRequiredOnly,
-                  disabled,
-                  href,
-                  icon,
-                  titleId,
-                } = item;
-                const isUnderCurrent = testPath.startsWith(href);
-                const isCurrent = isUnderCurrent && href === testPath;
-                const isDisabled = !!disabled || isCurrent;
-                const Icon = icon;
-                return (
-                  <Link
-                    key={'navbar-' + href}
-                    href={href}
-                    prefetch
-                    data-testid="__NavBar_MiddleLinks_Item"
-                    className={cn(
-                      isDev && '__NavBar_MiddleLinks_Item', // DEBUG
-                      'flex items-center gap-2',
-                      'px-2 py-2',
-                      'border border-transparent',
-                      'rounded-md',
-                      'text-sm font-medium',
-                      'transition-all',
-                      'text-theme-foreground',
-                      'hover:bg-theme-400/50',
-                      'hover:border-white/10',
-                      isUnderCurrent && 'border-white/30',
-                      isDisabled && 'pointer-events-none opacity-70',
-                      'active:bg-theme active:text-theme-foreground',
-                    )}
-                  >
-                    {Icon && <Icon className="size-5 min-w-5" />}
-                    <span className={cn('truncate')}>{t(titleId)}</span>
-                  </Link>
-                );
-              })}
+            <div
+              className={cn(
+                isDev && '__NavBar_MiddleLinks_Wrapper', // DEBUG
+                'flex flex-wrap justify-center gap-2',
+                'overflow-hidden',
+                'leading-10',
+                'max-h-10',
+              )}
+            >
+              {links
+                .filter((item) => !item.userRequiredOnly || isUser)
+                .map((item) => {
+                  const {
+                    // authorizedOnly,
+                    // badge,
+                    // external,
+                    // userRequiredOnly,
+                    disabled,
+                    href,
+                    icon,
+                    titleId,
+                  } = item;
+                  const isUnderCurrent = testPath.startsWith(href);
+                  const isCurrent = isUnderCurrent && href === testPath;
+                  const isDisabled = !!disabled || isCurrent;
+                  const Icon = icon;
+                  return (
+                    <Link
+                      key={'navbar-' + href}
+                      href={href}
+                      prefetch
+                      data-testid="__NavBar_MiddleLinks_Item"
+                      className={cn(
+                        isDev && '__NavBar_MiddleLinks_Item', // DEBUG
+                        'flex items-center gap-2',
+                        'truncate px-2 py-2',
+                        'border border-transparent',
+                        'rounded-md',
+                        'text-sm font-medium',
+                        'transition-all',
+                        'text-theme-foreground',
+                        'hover:bg-theme-400/50',
+                        'hover:border-white/10',
+                        isUnderCurrent && 'border-white/30',
+                        isDisabled && 'pointer-events-none opacity-70',
+                        'active:bg-theme active:text-theme-foreground',
+                      )}
+                    >
+                      {Icon && <Icon className="size-5 min-w-5" />}
+                      <span className={cn('truncate')}>{t(titleId)}</span>
+                    </Link>
+                  );
+                })}
+            </div>
           </nav>
         ) : null}
 
@@ -125,8 +137,17 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_Right', // DEBUG
             'flex items-center gap-2',
-            'hidden',
-            'md:flex',
+            /* // Fixed section, visible on md and wider screens
+             * 'hidden',
+             * 'sm:flex',
+             */
+            'flex',
+            'leading-10',
+            'max-sm:flex-wrap',
+            'max-sm:overflow-hidden',
+            'max-h-10',
+            'max-lg:flex-1',
+            'max-lg:justify-end',
           )}
         >
           {/* Right header for extra stuff */}
@@ -141,13 +162,13 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
-            'p-4',
+            'ml-4 p-4',
             'transition-all',
             'duration-200',
             'text-theme-foreground hover:bg-theme-600/50',
             'focus:outline-none',
             'active:bg-theme-700',
-            'md:hidden',
+            'lg:hidden',
             open && 'opacity-50 hover:bg-theme-600',
           )}
         >

@@ -19,7 +19,7 @@ import { NavLocaleSwitcherBlock } from '@/components/layout/NavLocaleSwitcherBlo
 import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useMediaQuery } from '@/hooks';
+import { useMediaMinDevices, useMediaQuery } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
@@ -85,8 +85,10 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
 
 export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren) {
   const { children, open, setOpen } = props;
-  const { isSm, isMobile } = useMediaQuery();
-  if (isSm || isMobile) {
+  // const { isSm, isMobile } = useMediaQuery();
+  const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
+  const isLg = isMediaInited && mediaWidths.includes('lg');
+  if (!isLg) {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
         <DialogTitle className="sr-only">Navigation menu</DialogTitle>

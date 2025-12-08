@@ -36,15 +36,23 @@ function checkIfLinkIsAllowedForUser(user: ExtendedUser | undefined, navItem: Na
 
 const HIDE_SIDEBAR_FOR_ROOT_LANDING = true;
 
+const routesWithoutSidebar = [
+  // All routes to display without dashboard sidebar. TODO: Move to config?
+  rootRoute,
+];
+
 export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const { children, user } = props;
   const isUser = !!user;
 
+  // Is mobile sidebar open?
   const [open, setOpen] = React.useState(false);
 
   const pathname = usePathname();
   const locale = useLocale() as TLocale;
-  const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
+  const rootRoutesList = routesWithoutSidebar.flatMap((route) =>
+    getAllRouteSynonyms(route, locale),
+  );
   const isRoot = !pathname || rootRoutesList.includes(pathname);
   const hideSidebar = HIDE_SIDEBAR_FOR_ROOT_LANDING && isRoot;
 
