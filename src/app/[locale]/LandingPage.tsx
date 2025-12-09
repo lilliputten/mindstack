@@ -1,10 +1,11 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { isLoggedUser } from '@/lib/session';
+import { getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { InfoScreen } from '@/components/screens/InfoScreen';
+import { LandingContent } from '@/components/screens/LandingContent';
 import { isDev } from '@/constants';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
@@ -12,17 +13,17 @@ type TLandingPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'InfoPage' });
+  // const t = await getTranslations({ locale, namespace: 'LandingPage' });
   return constructMetadata({
-    title: t('title'),
+    title: 'Mind Stack',
     locale,
   });
 }
 
+const saveScrollHash = getRandomHashString();
+
 export async function LandingPage({ params }: TLandingPageProps) {
   const { locale } = await params;
-
-  const isLogged = await isLoggedUser();
 
   // Enable static rendering
   setRequestLocale(locale);
@@ -40,12 +41,23 @@ export async function LandingPage({ params }: TLandingPageProps) {
       // scrollable
       // limitWidth
     >
-      <InfoScreen
+      <ScrollArea
+        saveScrollKey="LandingPage"
+        saveScrollHash={saveScrollHash}
         className={cn(
-          isDev && '__LandingPage_InfoScreen', // DEBUG
+          isDev && '__LandingPage_Scroll', // DEBUG
+          'flex flex-1 flex-col overflow-hidden',
+          'bg-theme-500/5',
         )}
-        isLogged={isLogged}
-      />
+        viewportClassName={cn(
+          isDev && '__LandingPage_ScrollViewport', // DEBUG
+          'flex flex-1 flex-col',
+          'bg-decorative-gradient',
+          '[&>div]:flex-col [&>div]:p-6 [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+        )}
+      >
+        <LandingContent />
+      </ScrollArea>
     </PageWrapper>
   );
 }

@@ -19,7 +19,7 @@ import { NavLocaleSwitcherBlock } from '@/components/layout/NavLocaleSwitcherBlo
 import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useMediaMinDevices, useMediaQuery } from '@/hooks';
+import { useMediaMinDevices } from '@/hooks';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';

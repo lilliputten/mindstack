@@ -12,6 +12,9 @@ import { TUser } from '@/features/users/types/TUser';
 
 type TParams = Omit<TCheckIfUserExistsParams, 'id'>;
 
+/** Get user data.
+ * NOTE: Use `useSessionData` on the client.
+ */
 export const getCurrentUser = cache<(params?: TParams) => Promise<TUser | undefined>>(
   async (params: TParams = {}) => {
     const session = await auth();
