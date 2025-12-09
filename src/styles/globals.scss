@@ -230,9 +230,8 @@
     pre > .SyntaxHighlighter {
       border-radius: 0.5em;
       // background-color: none !important;
-      // background-color: rgba(var(--color-theme-600-RGB) / 5%) !important;
-      background-color: rgba(var(--backgroundColorRGB) / 40%) !important;
-      border: 1px solid rgba(var(--color-theme-600-RGB) / 5%);
+      // background-color: rgba(var(--backgroundColorRGB) / 40%) !important;
+      // border: 1px solid rgba(var(--color-theme-600-RGB) / 5%);
     }
     pre > .SyntaxHighlighter > code {
       background-color: transparent !important;
@@ -320,13 +319,11 @@
   }
 
   .bg-header-gradient {
-    background:
-      radial-gradient(
-        80% 100% at 80% 0%,
-        rgba(var(--color-theme-700-RGB) / 50%) 50%,
-        rgba(var(--color-theme-800-RGB) / 50%) 100%
-      ),
-      ;
+    background: radial-gradient(
+      80% 100% at 80% 0%,
+      rgba(var(--color-theme-600-RGB) / 50%) 50%,
+      rgba(var(--color-theme-500-RGB) / 70%) 100%
+    );
   }
 
   .after-header-decor {

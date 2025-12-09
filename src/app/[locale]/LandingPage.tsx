@@ -53,7 +53,7 @@ export async function LandingPage({ params }: TLandingPageProps) {
           isDev && '__LandingPage_ScrollViewport', // DEBUG
           'flex flex-1 flex-col',
           'bg-decorative-gradient',
-          '[&>div]:flex-col [&>div]:p-6 [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+          '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
         <LandingContent />
