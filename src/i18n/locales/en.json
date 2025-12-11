@@ -1,24 +1,4 @@
 {
-  "ManageTopicQuestionAnswers": {
-    "title": "Manage Answers",
-    "description": "Answers for the choosen question"
-  },
-  "ManageTopicQuestions": {
-    "title": "Manage Questions",
-    "description": "Questions for the choosen topic"
-  },
-  "AvailableTopicsPage": {
-    "title": "Available Topics",
-    "description": "Topics avaialble to use"
-  },
-  "MyTopicsPage": {
-    "title": "My Topics",
-    "description": "Topics created by me"
-  },
-  "AllTopicsPage": {
-    "title": "All Topics",
-    "description": "Topics by all users"
-  },
   "BotMenu": {
     "status": "Check your status",
     "start": "Start",
@@ -45,26 +25,6 @@
     "help": "Send me some text, and I can make it bold for you.\n\nYou can change my language using the /language command."
   },
   "Language Changed For": "Language has been changed for",
-  "RootPage": {
-    "title": "MindStack",
-    "about": "Main page"
-  },
-  "DataPage": {
-    "title": "Data editor"
-  },
-  "TestPage": {
-    "title": "Test"
-  },
-  "SettingsPage": {
-    "title": "Settings",
-    "description": "Application settings"
-  },
-  "InfoPage": {
-    "title": "Info"
-  },
-  "WelcomePage": {
-    "title": "Welcome!"
-  },
   "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "NavAuthButton": {
     "sign-in": "Sign In",
@@ -75,7 +35,6 @@
     "label": "Change language",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
   },
-  "Settings": {},
   "Themes": {
     "brand": "Basic",
     "red": "Red",
@@ -129,5 +88,84 @@
     "sign-in-with-telegram": "Sign In with Telegram",
     "intro": "Login to be able editing your own data."
   },
-  "WelcomePageTitle": "Welcome!"
+  "WelcomePageTitle": "Welcome!",
+  "Pricing": {
+    "Hero": {
+      "Title": "Pricing",
+      "Subtitle": "Get 20% off with yearly",
+      "Monthly": "Monthly",
+      "Yearly": "Yearly"
+    },
+    "MostPopular": "Most Popular",
+    "Free": "Free",
+    "ContactUs": "Contact Us",
+    "Unlimited": "Unlimited",
+    "PerMonth": "/month",
+    "BilledAnnually": ", billed annually",
+    "BilledMonthly": ", billed monthly",
+    "Plans": {
+      "Basic": {
+        "Name": "Basic",
+        "Description": "For individuals",
+        "Button": "Get Started",
+        "Features": {
+          "Topics": "Create up to 5 topics",
+          "Workouts": "Basic training sessions",
+          "Progress": "Progress tracking",
+          "Community": "Community topics access",
+          "Generations": "10 AI generations total"
+        }
+      },
+      "Pro": {
+        "Name": "Pro",
+        "Description": "For serious learners",
+        "Button": "Choose Pro",
+        "Features": {
+          "Unlimited": "Unlimited topics and questions",
+          "Ai": "AI-powered question generation",
+          "Analytics": "Detailed analytics",
+          "Support": "Priority support",
+          "Generations": "100 AI generations per month"
+        }
+      },
+      "Premium": {
+        "Name": "Premium",
+        "Description": "For organizations",
+        "Button": "Choose Premium",
+        "Features": {
+          "Everything": "Everything in Pro",
+          "UnlimitedGenerations": "Unlimited AI generations",
+          "Priority": "Highest priority support",
+          "Advanced": "Advanced integrations",
+          "Export": "Export/import functionality"
+        }
+      },
+      "Unlimited": {
+        "Name": "Unlimited",
+        "Description": "For organizations requiring the highest level of security and control.",
+        "Button": "Contact Us",
+        "Features": {
+          "Everything": "Everything in Premium",
+          "Enterprise": "Enterprise-grade security",
+          "Security": "Advanced compliance",
+          "Support": "Dedicated support team",
+          "Custom": "Custom integrations"
+        }
+      }
+    },
+    "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
+    "Comparison": {
+      "Topics": "Topics",
+      "AiGenerations": "AI Generations",
+      "WorkoutSessions": "Training Sessions",
+      "ProgressTracking": "Progress Tracking",
+      "CommunityAccess": "Community Access",
+      "Analytics": "Detailed Analytics",
+      "PrioritySupport": "Priority Support",
+      "ExportImport": "Export/Import",
+      "EnterpriseSecurity": "Enterprise Security",
+      "Total": "total",
+      "PerMonth": "per month"
+    }
+  }
 }

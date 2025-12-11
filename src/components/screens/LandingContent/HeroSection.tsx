@@ -24,7 +24,7 @@ export function HeroSection() {
           Version 0.0.3 released!
         </Link>
         */}
-        <h1 className="text-gradient-brand mb-4 mt-0 text-balance text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+        <h1 className="text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
           Master Your Memory with MindStack
         </h1>
         <p className="mb-6 text-balance text-base leading-6 text-muted-foreground lg:text-lg">

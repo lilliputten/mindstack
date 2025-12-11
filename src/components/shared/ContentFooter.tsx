@@ -1,13 +1,21 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import PublicLink from 'next/link';
 
+import {
+  cookiesRoute,
+  docsRoute,
+  pricingRoute,
+  privacyRoute,
+  termsRoute,
+} from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
-import { ExternalLink, Github, Twitter } from '@/components/shared/Icons';
+import { ExternalLink, Github } from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { Link as LocalLink } from '@/i18n/routing';
 
-export function Footer() {
+export function ContentFooter() {
   return (
     <footer
       className={cn(
@@ -37,71 +45,73 @@ export function Footer() {
             NextJS Memory Training Application
             <br />
             Built with{' '}
-            <Link href="https://nextjs.org" target="_blank" className="underline">
+            <PublicLink href="https://nextjs.org" target="_blank" className="underline">
               Next.js
-            </Link>{' '}
+            </PublicLink>{' '}
             and{' '}
-            <Link href="https://vercel.com" target="_blank" className="underline">
+            <PublicLink href="https://vercel.com" target="_blank" className="underline">
               Vercel
-            </Link>
+            </PublicLink>
           </p>
         </div>
         <div>
           <div className="flex flex-col gap-4 pt-3">
-            <Link href="#" className="text-sm underline-offset-4 hover:underline">
+            <LocalLink href={docsRoute} className="text-sm underline-offset-4 hover:underline">
               Documentation
-            </Link>
-            <Link href="#" className="text-sm underline-offset-4 hover:underline">
-              API Reference
-            </Link>
-            <Link
+            </LocalLink>
+            {/*
+            <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
               className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
             >
               GitHub <ExternalLink className="size-3" />
-            </Link>
-            <Link href="#" className="text-sm underline-offset-4 hover:underline">
+            </PublicLink>
+            <LocalLink href={blogLink} className="text-sm underline-offset-4 hover:underline">
               Blog
-            </Link>
-            <Link href="#" className="text-sm underline-offset-4 hover:underline">
+            </LocalLink>
+            <LocalLink href={supportLink} className="text-sm underline-offset-4 hover:underline">
               Support
-            </Link>
+            </LocalLink>
+            */}
           </div>
         </div>
         <div>
           <div className="flex flex-col gap-4 pt-3">
-            <Link
+            <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
               className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
             >
               <Github className="size-4" />
-              GitHub
-            </Link>
+              GitHub <ExternalLink className="size-3" />
+            </PublicLink>
             {/*
-            <Link
+            <PublicLink
               href="https://x.com"
               target="_blank"
               className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
             >
               <Twitter className="size-4" />
               X.com
-            </Link>
+            </PublicLink>
             */}
           </div>
         </div>
       </div>
-      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 px-6">
-        <Link href="#" className="text-sm underline-offset-4 hover:underline">
+      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 max-sm:flex-col">
+        <LocalLink href={privacyRoute} className="text-sm underline-offset-4 hover:underline">
           Privacy Policy
-        </Link>
-        <Link href="#" className="text-sm underline-offset-4 hover:underline">
+        </LocalLink>
+        <LocalLink href={termsRoute} className="text-sm underline-offset-4 hover:underline">
           Terms of Service
-        </Link>
-        <Link href="#" className="text-sm underline-offset-4 hover:underline">
+        </LocalLink>
+        <LocalLink href={cookiesRoute} className="text-sm underline-offset-4 hover:underline">
           Cookie Policy
-        </Link>
+        </LocalLink>
+        <LocalLink href={pricingRoute} className="text-sm underline-offset-4 hover:underline">
+          Pricing
+        </LocalLink>
       </div>
     </footer>
   );

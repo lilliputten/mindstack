@@ -15,6 +15,7 @@ interface ScrollAreaExtraProps {
   saveScrollHash?: string;
   onScrollEvent?: (ev: Event, node?: HTMLDivElement) => void;
   disableScroll?: boolean;
+  orientation?: 'horizontal' | 'vertical';
 }
 type ComponentType = React.ForwardRefExoticComponent<
   ScrollAreaPrimitive.ScrollAreaProps & React.RefAttributes<HTMLDivElement>
@@ -45,6 +46,7 @@ const ScrollArea = React.forwardRef<
     saveScrollHash,
     onScrollEvent,
     disableScroll,
+    orientation,
     ...rest
   } = props;
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -147,7 +149,7 @@ const ScrollArea = React.forwardRef<
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
-      <ScrollBar thumbClassName={thumbClassName} />
+      <ScrollBar orientation={orientation} thumbClassName={thumbClassName} />
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
   );
