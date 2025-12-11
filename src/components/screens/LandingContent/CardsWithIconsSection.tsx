@@ -25,7 +25,7 @@ export function CardsWithIconsSection() {
           effective and enjoyable. Build your knowledge base and practice anywhere, anytime.
         </p>
       </div>
-      <div className="my-3 grid gap-6 py-6 md:grid-cols-3">
+      <div className="my-3 grid gap-6 py-6 lg:grid-cols-3">
         <CardWithIcon
           debugId="AIPoweredLearning"
           icon={Sparkles}

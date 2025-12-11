@@ -2,13 +2,13 @@
 
 import React from 'react';
 
+import { ContentFooter } from '@/components/shared';
+
 import { BigImageCTASection } from './BigImageCTASection';
 import { CardsWithIconsSection } from './CardsWithIconsSection';
-import { ClientsSection } from './ClientsSection';
 import { DescriptionCodeSection } from './DescriptionCodeSection';
 import { FAQSection } from './FAQSection';
 import { FeaturesSection } from './FeaturesSection';
-import { Footer } from './Footer';
 import { HeroSection } from './HeroSection';
 import { PromoCTASection } from './PromoCTASection';
 
@@ -25,7 +25,7 @@ export function LandingContent() {
         <FAQSection />
         <PromoCTASection />
       </main>
-      <Footer />
+      <ContentFooter />
     </>
   );
 }

@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 
 import { NavItemBase } from '@/lib/types/site/NavItem';
 import { dashboardLinks } from '@/config/dashboard';
-import { rootRoute } from '@/config/routesConfig';
+import { routesWithoutSidebar } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -35,11 +35,6 @@ function checkIfLinkIsAllowedForUser(user: ExtendedUser | undefined, navItem: Na
 }
 
 const HIDE_SIDEBAR_FOR_ROOT_LANDING = true;
-
-const routesWithoutSidebar = [
-  // All routes to display without dashboard sidebar. TODO: Move to config?
-  rootRoute,
-];
 
 export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const { children, user } = props;

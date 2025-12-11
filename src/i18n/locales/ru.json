@@ -1,30 +1,4 @@
 {
-  "ManageTopicQuestionAnswers": {
-    "title": "Управление ответами",
-    "description": "Ответы для выбранного вопроса"
-  },
-  "ManageTopicQuestions": {
-    "title": "Управление вопросами",
-    "description": "Вопросы для выбранной темы"
-  },
-  "AvailableTopicsPage": {
-    "title": "Доступные темы",
-    "description": "Темы, доступные для использования"
-  },
-  "MyTopicsPage": {
-    "title": "Мои темы",
-    "description": "Созданные мной темы"
-  },
-  "AllTopicsPage": {
-    "title": "Все темы",
-    "description": "Темы всех пользователей"
-  },
-  "BotMenu": {
-    "status": "Проверить статус",
-    "start": "Начать",
-    "language": "Сменить язык",
-    "help": "Помощь"
-  },
   "Bot": {
     "localeInfo": "Язык бота: {localeText}",
     "registeredAtInfo": "Вы зарегистрировались {createdAt}",
@@ -44,26 +18,6 @@
     "selectLanguage": "Выберите язык",
     "languageChangedFor": "Язык изменён на",
     "help": "Пришлите мне текст, и я покажу его в жирном начертании.\n\nВы можете изменить мой язык, используя команду /language."
-  },
-  "RootPage": {
-    "title": "MindStack",
-    "about": "Главная страница"
-  },
-  "DataPage": {
-    "title": "Редактор данных"
-  },
-  "TestPage": {
-    "title": "Test"
-  },
-  "SettingsPage": {
-    "title": "Настройки",
-    "description": "Настройки приложения"
-  },
-  "InfoPage": {
-    "title": "Информация"
-  },
-  "WelcomePage": {
-    "title": "Добро пожаловать"
   },
   "AppIntroBlock": {
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
@@ -130,5 +84,84 @@
     "sign-in-with-yandex": "Войти с Yandex",
     "sign-in-with-telegram": "Войти с Telegram",
     "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные."
+  },
+  "Pricing": {
+    "Hero": {
+      "Title": "Тарифы",
+      "Subtitle": "Получите скидку 20% при годовой оплате",
+      "Monthly": "Ежемесячно",
+      "Yearly": "Ежегодно"
+    },
+    "MostPopular": "Самый популярный",
+    "Free": "Бесплатно",
+    "ContactUs": "Свяжитесь с нами",
+    "Unlimited": "Неограниченно",
+    "PerMonth": "/месяц",
+    "BilledAnnually": ", оплата ежегодно",
+    "BilledMonthly": ", оплата ежемесячно",
+    "Plans": {
+      "Basic": {
+        "Name": "Базовый",
+        "Description": "Для частных лиц",
+        "Button": "Начать",
+        "Features": {
+          "Topics": "Создание до 5 тем",
+          "Workouts": "Базовые тренировки",
+          "Progress": "Отслеживание прогресса",
+          "Community": "Доступ к темам сообщества",
+          "Generations": "10 ИИ генераций всего"
+        }
+      },
+      "Pro": {
+        "Name": "Про",
+        "Description": "Для серьёзных учеников",
+        "Button": "Выбрать Про",
+        "Features": {
+          "Unlimited": "Неограниченные темы и вопросы",
+          "Ai": "Генерация вопросов с помощью ИИ",
+          "Analytics": "Подробная аналитика",
+          "Support": "Приоритетная поддержка",
+          "Generations": "100 ИИ генераций в месяц"
+        }
+      },
+      "Premium": {
+        "Name": "Премиум",
+        "Description": "Для организаций",
+        "Button": "Выбрать Премиум",
+        "Features": {
+          "Everything": "Всё из Про",
+          "UnlimitedGenerations": "Неограниченные ИИ генерации",
+          "Priority": "Поддержка высшего приоритета",
+          "Advanced": "Продвинутые интеграции",
+          "Export": "Функции экспорта/импорта"
+        }
+      },
+      "Unlimited": {
+        "Name": "Неограниченный",
+        "Description": "Для организаций, которым требуется высочайший уровень безопасности и контроля.",
+        "Button": "Свяжитесь с нами",
+        "Features": {
+          "Everything": "Всё из Премиум",
+          "Enterprise": "Корпоративная безопасность",
+          "Security": "Продвинутое соответствие",
+          "Support": "Выделенная команда поддержки",
+          "Custom": "Пользовательские интеграции"
+        }
+      }
+    },
+    "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
+    "Comparison": {
+      "Topics": "Темы",
+      "AiGenerations": "ИИ генерации",
+      "WorkoutSessions": "Тренировки",
+      "ProgressTracking": "Отслеживание прогресса",
+      "CommunityAccess": "Доступ к сообществу",
+      "Analytics": "Подробная аналитика",
+      "PrioritySupport": "Приоритетная поддержка",
+      "ExportImport": "Экспорт/Импорт",
+      "EnterpriseSecurity": "Корпоративная безопасность",
+      "Total": "всего",
+      "PerMonth": "в месяц"
+    }
   }
 }
