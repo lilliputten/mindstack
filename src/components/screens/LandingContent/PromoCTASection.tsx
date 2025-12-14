@@ -29,7 +29,7 @@ export function PromoCTASection() {
           'opacity-40',
         )}
       />
-      <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center text-center">
+      <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center px-4 text-center">
         <h2 className="mb-6 mt-0 text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
           Ready to Improve Your Memory?
         </h2>
