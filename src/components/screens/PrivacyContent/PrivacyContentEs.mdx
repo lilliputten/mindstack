@@ -1,10 +1,6 @@
-import * as Icons from '@/components/shared/Icons';
-import { contactEmail, publicAddr } from '@/config';
-import { formatDate } from '@/lib/helpers';
-
 # Política de Privacidad
 
-**Fecha de vigencia:** {formatDate(effectiveDate, props.locale)}
+**Fecha de vigencia:** {props.effectiveDate}
 
 ## Introducción
 
@@ -67,5 +63,5 @@ Podemos actualizar esta Política de Privacidad de vez en cuando. Le notificarem
 ## Contáctenos
 
 Si tiene preguntas sobre esta Política de Privacidad, por favor contáctenos en:
-- Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-- Sitio web: <a href="{publicAddr}" target="_blank">{publicAddr} <Icons.ExternalLink className="inline size-3" /></a>
+- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
+- Sitio web: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />

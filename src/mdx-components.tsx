@@ -8,7 +8,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   // @see src/components/ui/MarkdownText.tsx
   return {
     h1: ({ children }) => (
-      <h1 className="text-gradient-brand mb-4 text-balance text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+      <h1 className="text-gradient-brand mb-4 text-balance py-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
         {children}
       </h1>
     ),

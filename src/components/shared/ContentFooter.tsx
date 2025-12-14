@@ -12,7 +12,7 @@ import {
 } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { currentYear, isDev } from '@/config';
 import { Link as LocalLink } from '@/i18n/routing';
 
 export function ContentFooter() {
@@ -20,9 +20,8 @@ export function ContentFooter() {
     <footer
       className={cn(
         isDev && '__Footer', // DEBUG
-        'mt-auto w-full px-6 pb-6 pt-12',
+        'mt-auto w-full pb-6 pt-12',
         'border-t border-theme-700/50',
-        // 'bg-theme-700/70',
         'bg-header-gradient',
         'text-white',
         'relative',
@@ -40,48 +39,60 @@ export function ContentFooter() {
       <div className="z-1 relative mx-auto mb-6 grid max-w-6xl gap-4 px-6 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="text-sm leading-5">
-            © 2025 MindStack
+            © {currentYear} MindStack
             <br />
             NextJS Memory Training Application
             <br />
             Built with{' '}
-            <PublicLink href="https://nextjs.org" target="_blank" className="underline">
+            <PublicLink
+              href="https://nextjs.org"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline"
+            >
               Next.js
             </PublicLink>{' '}
             and{' '}
-            <PublicLink href="https://vercel.com" target="_blank" className="underline">
+            <PublicLink
+              href="https://vercel.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline"
+            >
               Vercel
             </PublicLink>
           </p>
         </div>
         <div>
-          <div className="flex flex-col gap-4 pt-3">
-            <LocalLink href={docsRoute} className="text-sm underline-offset-4 hover:underline">
+          <div className="flex flex-col gap-4 pt-3 text-sm">
+            <LocalLink href={docsRoute} className="hover:underline">
               Documentation
             </LocalLink>
             {/*
             <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
-              className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:underline"
             >
               GitHub <ExternalLink className="size-3" />
             </PublicLink>
-            <LocalLink href={blogLink} className="text-sm underline-offset-4 hover:underline">
+            <LocalLink href={blogLink} className="hover:underline">
               Blog
             </LocalLink>
-            <LocalLink href={supportLink} className="text-sm underline-offset-4 hover:underline">
+            <LocalLink href={supportLink} className="hover:underline">
               Support
             </LocalLink>
             */}
           </div>
         </div>
         <div>
-          <div className="flex flex-col gap-4 pt-3">
+          <div className="flex flex-col gap-4 pt-3 text-sm">
             <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
-              className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:underline"
             >
               <Github className="size-4" />
               GitHub <ExternalLink className="size-3" />
@@ -90,7 +101,8 @@ export function ContentFooter() {
             <PublicLink
               href="https://x.com"
               target="_blank"
-              className="flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:underline"
             >
               <Twitter className="size-4" />
               X.com
@@ -99,17 +111,17 @@ export function ContentFooter() {
           </div>
         </div>
       </div>
-      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 max-sm:flex-col">
-        <LocalLink href={privacyRoute} className="text-sm underline-offset-4 hover:underline">
+      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col">
+        <LocalLink href={privacyRoute} className="hover:underline">
           Privacy Policy
         </LocalLink>
-        <LocalLink href={termsRoute} className="text-sm underline-offset-4 hover:underline">
+        <LocalLink href={termsRoute} className="hover:underline">
           Terms of Service
         </LocalLink>
-        <LocalLink href={cookiesRoute} className="text-sm underline-offset-4 hover:underline">
+        <LocalLink href={cookiesRoute} className="hover:underline">
           Cookie Policy
         </LocalLink>
-        <LocalLink href={pricingRoute} className="text-sm underline-offset-4 hover:underline">
+        <LocalLink href={pricingRoute} className="hover:underline">
           Pricing
         </LocalLink>
       </div>

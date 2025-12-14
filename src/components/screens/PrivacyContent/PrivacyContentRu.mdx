@@ -1,10 +1,6 @@
-import * as Icons from '@/components/shared/Icons';
-import { contactEmail, publicAddr, effectiveDate } from '@/config';
-import { formatDate } from '@/lib/helpers';
-
 # Политика конфиденциальности
 
-**Дата вступления в силу:** {formatDate(effectiveDate, props.locale)}
+**Дата вступления в силу:** {props.effectiveDate}
 
 ## Введение
 
@@ -67,5 +63,5 @@ MindStack («мы», «наш» или «нас») стремится защищ
 ## Свяжитесь с нами
 
 Если у вас есть вопросы по данной Политике конфиденциальности, пожалуйста, свяжитесь с нами:
-- Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-- Веб-сайт: <a href="{publicAddr}" target="_blank">{publicAddr} <Icons.ExternalLink className="inline size-3" /></a>
+- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
+- Веб-сайт: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
