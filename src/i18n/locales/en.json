@@ -89,6 +89,8 @@
     "intro": "Login to be able editing your own data."
   },
   "WelcomePageTitle": "Welcome!",
+  "PrivacyPageTitle": "Privacy Policy",
+  "PricingPageTitle": "Pricing",
   "Pricing": {
     "Hero": {
       "Title": "Pricing",
