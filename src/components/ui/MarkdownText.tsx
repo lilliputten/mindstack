@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useTheme } from 'next-themes';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { materialLight, nightOwl } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { nightOwl } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
 
 import { cn } from '@/lib/utils';
@@ -17,10 +16,10 @@ interface MarkdownProps {
 }
 
 export function MarkdownText({ children, className, omitLinks }: MarkdownProps) {
-  const { resolvedTheme } = useTheme();
+  // const { resolvedTheme } = useTheme();
   // @see https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
   // @see https://www.npmjs.com/package/react-syntax-highlighter
-  const syntax = resolvedTheme === 'dark' ? nightOwl : materialLight;
+  const syntax = nightOwl; // resolvedTheme === 'dark' ? nightOwl : materialLight;
   // @see https://github.com/remarkjs/react-markdown
   return (
     <div

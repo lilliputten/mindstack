@@ -56,6 +56,7 @@ enum UserGrade {
   PRO
   PREMIUM
 }
+// TODO: UNLIMITED
 
 model User {
   id            String    @id @default(cuid())

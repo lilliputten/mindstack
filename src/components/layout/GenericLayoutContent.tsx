@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 
 import { NavItemBase } from '@/lib/types/site/NavItem';
 import { dashboardLinks } from '@/config/dashboard';
-import { rootRoute } from '@/config/routesConfig';
+import { routesWithoutSidebar } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -40,11 +40,14 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const { children, user } = props;
   const isUser = !!user;
 
+  // Is mobile sidebar open?
   const [open, setOpen] = React.useState(false);
 
   const pathname = usePathname();
   const locale = useLocale() as TLocale;
-  const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
+  const rootRoutesList = routesWithoutSidebar.flatMap((route) =>
+    getAllRouteSynonyms(route, locale),
+  );
   const isRoot = !pathname || rootRoutesList.includes(pathname);
   const hideSidebar = HIDE_SIDEBAR_FOR_ROOT_LANDING && isRoot;
 
