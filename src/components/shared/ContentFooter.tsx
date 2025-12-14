@@ -29,7 +29,7 @@ export function ContentFooter() {
     >
       <div
         className={cn(
-          isDev && '__PromoCTASection_Decor', // DEBUG
+          isDev && '__Footer_Decor', // DEBUG
           'absolute inset-0 overflow-hidden',
           'bg-header-gradient',
           'after-header-decor',
@@ -64,7 +64,7 @@ export function ContentFooter() {
           </p>
         </div>
         <div>
-          <div className="flex flex-col gap-4 pt-3 text-sm">
+          <div className="flex flex-col items-start gap-4 pt-3 text-sm">
             <LocalLink href={docsRoute} className="hover:underline">
               Documentation
             </LocalLink>
@@ -87,7 +87,7 @@ export function ContentFooter() {
           </div>
         </div>
         <div>
-          <div className="flex flex-col gap-4 pt-3 text-sm">
+          <div className="flex flex-col items-start gap-4 pt-3 text-sm">
             <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
@@ -111,7 +111,7 @@ export function ContentFooter() {
           </div>
         </div>
       </div>
-      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col">
+      <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col max-sm:items-start">
         <LocalLink href={privacyRoute} className="hover:underline">
           Privacy Policy
         </LocalLink>

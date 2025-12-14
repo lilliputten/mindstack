@@ -73,6 +73,10 @@ export function EmailSignInForm({ className, isLogging }: TProps) {
         if (!result || result?.error) {
           throw result?.error;
         }
+        // Run a client code ona successfull signin
+        if (typeof localStorage !== 'undefined') {
+          localStorage.clear();
+        }
         const msg = 'A login message has been sent. Check your email for a sign-in link.';
         setMessage(msg);
         toast.success(msg);
