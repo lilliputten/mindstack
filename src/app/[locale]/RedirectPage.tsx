@@ -8,9 +8,9 @@ import { TAwaitedLocaleProps } from '@/i18n/types';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getT({ locale, namespace: 'RedirectPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: t('title'),
+    title: t('Pages.RedirectTitle'),
     locale,
   });
 }

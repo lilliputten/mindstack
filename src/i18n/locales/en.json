@@ -51,6 +51,27 @@
     "Settings": "Settings",
     "Sign Out": "Sign Out"
   },
+  "Pages": {
+    "AllTopicsDescription": "Topics by all users",
+    "AllTopicsTitle": "All Topics",
+    "AvailableTopicsDescription": "Topics available to use",
+    "AvailableTopicsTitle": "Available Topics",
+    "EditTopicPropertiesTitle": "Edit Topic Properties",
+    "InfoTitle": "Info",
+    "ManageTopicQuestionAnswersDescription": "Answers for the chosen question",
+    "ManageTopicQuestionAnswersTitle": "Manage Answers",
+    "ManageTopicQuestionsDescription": "Questions for the chosen topic",
+    "ManageTopicQuestionsTitle": "Manage Questions",
+    "MyTopicsDescription": "Topics created by me",
+    "MyTopicsTitle": "My Topics",
+    "PricingTitle": "Pricing",
+    "PrivacyTitle": "Privacy Policy",
+    "RedirectTitle": "Redirecting...",
+    "RootTitle": "Mind Stack Trainer",
+    "SettingsDescription": "Application settings",
+    "SettingsTitle": "Settings",
+    "WelcomeTitle": "Welcome!"
+  },
   "Pricing": {
     "BilledAnnually": ", billed annually",
     "BilledMonthly": ", billed monthly",
@@ -130,8 +151,6 @@
     },
     "Unlimited": "Unlimited"
   },
-  "PricingPageTitle": "Pricing",
-  "PrivacyPageTitle": "Privacy Policy",
   "Select Language": "Select Language",
   "SignInForm": {
     "intro": "Login to be able editing your own data.",
@@ -173,6 +192,5 @@
     "violet": "Violet",
     "yellow": "Yellow",
     "zinc": "Zinc"
-  },
-  "WelcomePageTitle": "Welcome!"
+  }
 }

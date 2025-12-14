@@ -8,6 +8,7 @@
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
     "title": "Добро пожаловать!"
   },
+  "AppIntroBlockContent": "<p>Это небольшое приложение для тренировки памяти. Взгляните на краткую <AboutLink>справку по приложению</AboutLink>.</p>",
   "Bot": {
     "accountCreated": "✅ Акаунт успешно создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
@@ -28,6 +29,13 @@
     "statusNoUser": "Ваши данные не найдены. По-видимому, вы еще не регистрировались на сайте. Вы хотите создать учетную запись?",
     "yes": "Да"
   },
+  "BotMenu": {
+    "help": "Помощь",
+    "language": "Изменить язык",
+    "start": "Начать",
+    "status": "Проверить ваш статус"
+  },
+  "Language Changed For": "Язык изменён на",
   "NavAuthButton": {
     "Dashboard": "Панель",
     "sign-in": "Войти"
@@ -47,6 +55,27 @@
     "Dashboard": "Панель управления",
     "Settings": "Настройки",
     "Sign Out": "Выйти"
+  },
+  "Pages": {
+    "AllTopicsDescription": "Темы всех пользователей",
+    "AllTopicsTitle": "Все темы",
+    "AvailableTopicsDescription": "Темы, доступные для использования",
+    "AvailableTopicsTitle": "Доступные темы",
+    "EditTopicPropertiesTitle": "Редактировать свойства темы",
+    "InfoTitle": "Информация",
+    "ManageTopicQuestionAnswersDescription": "Ответы для выбранного вопроса",
+    "ManageTopicQuestionAnswersTitle": "Управление ответами",
+    "ManageTopicQuestionsDescription": "Вопросы для выбранной темы",
+    "ManageTopicQuestionsTitle": "Управление вопросами",
+    "MyTopicsDescription": "Темы, созданные мной",
+    "MyTopicsTitle": "Мои темы",
+    "PricingTitle": "Тарифы",
+    "PrivacyTitle": "Политика конфиденциальности",
+    "RedirectTitle": "Перенаправление...",
+    "RootTitle": "Mind Stack Trainer",
+    "SettingsDescription": "Настройки приложения",
+    "SettingsTitle": "Настройки",
+    "WelcomeTitle": "Добро пожаловать!"
   },
   "Pricing": {
     "BilledAnnually": ", оплата ежегодно",
@@ -127,6 +156,7 @@
     },
     "Unlimited": "Неограниченно"
   },
+  "Select Language": "Выбрать язык",
   "Settings": {},
   "SignInForm": {
     "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",

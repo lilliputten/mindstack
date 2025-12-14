@@ -13,9 +13,9 @@ type TInfoPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getT({ locale, namespace: 'InfoPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: t('title'),
+    title: t('Pages.InfoTitle'),
     locale,
   });
 }
@@ -38,8 +38,6 @@ export async function InfoPage({ params }: TInfoPageProps) {
         isDev && '__InfoPage_Inner', // DEBUG
         'w-full h-full',
       )}
-      // scrollable
-      // limitWidth
     >
       <InfoScreen
         className={cn(

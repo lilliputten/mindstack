@@ -61,8 +61,6 @@ export default async function ManageTopicsLayout(props: TManageTopicsLayoutProps
     notFound();
   }
 
-  // const t = await getTranslations({ locale, namespace });
-
   // Enable static rendering
   setRequestLocale(locale);
 

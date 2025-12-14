@@ -514,7 +514,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const { handleAddTopic, availableTopicsQuery } = props;
   const { manageScope } = useManageTopicsStore();
   const namespace = topicsNamespaces[manageScope];
-  const t = useT(namespace);
+  const t = useT();
   const [selectedTopics, setSelectedTopics] = React.useState<Set<TTopicId>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
@@ -721,7 +721,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   return (
     <>
       <DashboardHeader
-        heading={t('title')}
+        heading={t(`${namespace}Title`)}
         className={cn(
           isDev && '__ManageTopicsListCard_DashboardHeader', // DEBUG
           'mx-6',

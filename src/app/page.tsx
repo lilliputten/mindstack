@@ -8,10 +8,9 @@ import { defaultLocale, TAwaitedLocaleProps } from '@/i18n/types';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  // const t_ = await getTranslations({ locale, namespace: 'RootPage' });
-  const t = await getT({ locale, namespace: 'RootPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: t('title'),
+    title: t('Pages.RootTitle'),
     locale,
   });
 }

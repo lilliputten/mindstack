@@ -4,6 +4,74 @@
     "LearnMore": "Más información",
     "Message": "Utilizamos cookies para mejorar su experiencia. Al continuar visitando este sitio, acepta nuestro uso de cookies."
   },
+  "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
+  "Bot": {
+    "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
+    "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",
+    "checkingStatus": "Verificando el estado de su aplicación...",
+    "creatingAccount": "Creando una cuenta...",
+    "gettingData": "Obteniendo los datos...",
+    "haveTopicsInfo": "Has creado temas: {topicsCount}",
+    "help": "Envíame algún texto y puedo ponerlo en negrita para ti.\n\nPuedes cambiar mi idioma usando el comando /language.",
+    "localeInfo": "Idioma del bot: {localeText}",
+    "no": "No",
+    "noTopicsInfo": "Aún no tienes ningún tema",
+    "noUserData": "No se encontró información del usuario",
+    "openApp": "Abrir App",
+    "registeredAtInfo": "Te registraste el {createdAt}",
+    "selectLanguage": "Seleccionar idioma",
+    "start": "👋 Hola, ¿cómo puedo /help ayudarte?",
+    "statusNoUser": "No se encontraron tus datos. Aparentemente, aún no te has registrado en el sitio. ¿Quieres crear una cuenta?",
+    "yes": "Sí"
+  },
+  "BotMenu": {
+    "help": "Ayuda",
+    "language": "Cambiar idioma",
+    "start": "Inicio",
+    "status": "Verificar tu estado"
+  },
+  "Language Changed For": "El idioma ha sido cambiado a",
+  "NavAuthButton": {
+    "Dashboard": "Panel",
+    "sign-in": "Iniciar Sesión"
+  },
+  "NavLocaleSwitcher": {
+    "label": "Cambiar idioma",
+    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detectar}}"
+  },
+  "NavModeToggle": {
+    "dark": "Oscuro",
+    "label": "Alternar tema",
+    "light": "Claro",
+    "system": "Sistema"
+  },
+  "NavUserAccount": {
+    "Admin": "Administración",
+    "Dashboard": "Panel",
+    "Settings": "Configuración",
+    "Sign Out": "Cerrar Sesión"
+  },
+  "Pages": {
+    "AllTopicsDescription": "Temas de todos los usuarios",
+    "AllTopicsTitle": "Todos los Temas",
+    "AvailableTopicsDescription": "Temas disponibles para usar",
+    "AvailableTopicsTitle": "Temas Disponibles",
+    "EditTopicPropertiesTitle": "Editar Propiedades del Tema",
+    "InfoTitle": "Información",
+    "ManageTopicQuestionAnswersDescription": "Respuestas para la pregunta elegida",
+    "ManageTopicQuestionAnswersTitle": "Gestionar Respuestas",
+    "ManageTopicQuestionsDescription": "Preguntas para el tema elegido",
+    "ManageTopicQuestionsTitle": "Gestionar Preguntas",
+    "MyTopicsDescription": "Temas creados por mí",
+    "MyTopicsTitle": "Mis Temas",
+    "PricingTitle": "Precios",
+    "PrivacyTitle": "Política de Privacidad",
+    "RedirectTitle": "Redirigiendo...",
+    "RootTitle": "Mind Stack Trainer",
+    "SettingsDescription": "Configuración de la aplicación",
+    "SettingsTitle": "Configuración",
+    "WelcomeTitle": "¡Bienvenido!"
+  },
   "Pricing": {
     "BilledAnnually": ", facturado anualmente",
     "BilledMonthly": ", facturado mensualmente",
@@ -82,5 +150,47 @@
       }
     },
     "Unlimited": "Ilimitado"
+  },
+  "Select Language": "Seleccionar Idioma",
+  "SignInForm": {
+    "intro": "Inicia sesión para poder editar tus propios datos.",
+    "sign-in": "Iniciar Sesión",
+    "sign-in-with-github": "Iniciar Sesión con GitHub",
+    "sign-in-with-google": "Iniciar Sesión con Google",
+    "sign-in-with-telegram": "Iniciar Sesión con Telegram",
+    "sign-in-with-yandex": "Iniciar Sesión con Yandex"
+  },
+  "SiteMenu": {
+    "AllTopics": "Todos los Temas",
+    "AvailableTopics": "Temas Disponibles",
+    "Data": "Datos",
+    "Info": "Información",
+    "MyTopics": "Mis Temas",
+    "Welcome": "Bienvenido"
+  },
+  "Themes": {
+    "amber": "Ámbar",
+    "blue": "Azul",
+    "brand": "Básico",
+    "cyan": "Cian",
+    "emerald": "Esmeralda",
+    "fuchsia": "Fucsia",
+    "gray": "Gris",
+    "green": "Verde",
+    "indigo": "Índigo",
+    "lime": "Lima",
+    "neutral": "Neutral",
+    "orange": "Naranja",
+    "pink": "Rosa",
+    "purple": "Púrpura",
+    "red": "Rojo",
+    "rose": "Rosa",
+    "sky": "Cielo",
+    "slate": "Pizarra",
+    "stone": "Piedra",
+    "teal": "Verde azulado",
+    "violet": "Violeta",
+    "yellow": "Amarillo",
+    "zinc": "Zinc"
   }
 }

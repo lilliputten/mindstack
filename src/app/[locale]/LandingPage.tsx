@@ -7,15 +7,16 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { LandingContent } from '@/components/screens/LandingContent';
 import { isDev } from '@/constants';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TLandingPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  // const t = await getTranslations({ locale, namespace: 'LandingPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: 'Mind Stack',
+    title: t('Pages.RootTitle'),
     locale,
   });
 }

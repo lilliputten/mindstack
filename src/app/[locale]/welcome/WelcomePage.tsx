@@ -9,18 +9,16 @@ import { isDev } from '@/constants';
 import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
-type TWelcomePageProps = TAwaitedLocaleProps;
-
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
   const t = await getT({ locale });
   return constructMetadata({
-    title: t('WelcomePageTitle'),
+    title: t('Pages.WelcomeTitle'),
     locale,
   });
 }
 
-export async function WelcomePage({ params }: TWelcomePageProps) {
+export async function WelcomePage({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
 
   const isLogged = await isLoggedUser();

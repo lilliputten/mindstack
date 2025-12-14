@@ -25,9 +25,9 @@ interface ManageTopicQuestionAnswersPageProps extends TAwaitedProps {
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
-  const t = await getT({ locale, namespace: 'ManageTopicQuestionAnswers' });
-  const title = t('title');
-  const description = t('description');
+  const t = await getT({ locale });
+  const title = t('Pages.ManageTopicQuestionAnswersTitle');
+  const description = t('Pages.ManageTopicQuestionAnswersDescription');
   return constructMetadata({
     locale,
     title,
@@ -49,8 +49,6 @@ export default async function ManageTopicQuestionAnswersPageWrapper(
   if (!questionId) {
     return <PageError error={'No question ID specified.'} />;
   }
-
-  // const t = await getTranslations({ locale, namespace: 'ManageTopicQuestionAnswers' });
 
   return (
     <PageWrapper

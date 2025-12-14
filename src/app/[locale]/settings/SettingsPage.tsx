@@ -43,7 +43,7 @@ export function SettingsPage(props: TSettingsPageProps) {
   const [isPending, startTransition] = React.useTransition();
   const [isReLoading, startReLoading] = React.useTransition();
   const [isReloadConfirmModalVisible, setReloadConfirmModalVisible] = React.useState(false);
-  const t = useT('SettingsPage');
+  const t = useT();
   const formSchema = React.useMemo(() => settingsSchema, []);
   const [isUserReady, setIsUserReady] = React.useState<boolean>(false);
 
@@ -143,8 +143,8 @@ export function SettingsPage(props: TSettingsPageProps) {
   return (
     <>
       <DashboardHeader
-        heading={t('title')}
-        text={t('description')}
+        heading={t('Pages.SettingsTitle')}
+        text={t('Pages.SettingsDescription')}
         className={cn(
           isDev && '__SettingsPage_DashboardHeader', // DEBUG
           'mx-6',
