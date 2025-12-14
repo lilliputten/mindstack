@@ -2,6 +2,8 @@ import type { MDXComponents } from 'mdx/types';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nightOwl } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
+import * as Icons from '@/components/shared/Icons';
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   // @see src/components/ui/MarkdownText.tsx
   return {
@@ -15,13 +17,29 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </h2>
     ),
-    h3: ({ children }) => <h3 className="mb-2 text-2xl font-medium">{children}</h3>,
+    h3: ({ children }) => <h3 className="mb-2 text-xl font-medium">{children}</h3>,
     p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
     ul: ({ children }) => <ul className="mb-4 list-inside list-disc space-y-1">{children}</ul>,
     ol: ({ children }) => <ol className="mb-4 list-inside list-decimal space-y-1">{children}</ol>,
     li: ({ children }) => <li className="ml-4">{children}</li>,
     strong: ({ children }) => <strong className="font-bold">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
+    // Customize link behavior
+    a: ({ href, children, ...props }) => {
+      const isHttp = href?.startsWith('http');
+      return (
+        <a
+          href={href}
+          target={isHttp ? '_blank' : undefined}
+          rel={isHttp ? 'noopener noreferrer' : undefined}
+          {...props}
+          className="inline-flex items-center gap-1"
+        >
+          {children}
+          {isHttp && <Icons.ExternalLink className="size-3" />}
+        </a>
+      );
+    },
     code: ({ children, className }) => {
       const match = /language-(\w+)/.exec(className || '');
       return (

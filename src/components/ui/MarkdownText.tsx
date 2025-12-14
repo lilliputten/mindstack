@@ -57,7 +57,7 @@ export function MarkdownText({ children, className, omitLinks }: MarkdownProps) 
                 className="inline-flex items-center gap-1"
               >
                 {children}
-                {isHttp && <Icons.ExternalLink className="opcaity-50 size-3" />}
+                {isHttp && <Icons.ExternalLink className="size-3" />}
               </a>
             );
           },

@@ -76,8 +76,8 @@ export function PrivacyContent({ locale }: TProps) {
         '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
       )}
     >
-      <MaxWidthWrapper className="flex flex-col p-6">
-        <DynamicComponent />
+      <MaxWidthWrapper className="text-content flex flex-col p-6">
+        <DynamicComponent locale={localeId} />
       </MaxWidthWrapper>
     </ScrollArea>
   );
