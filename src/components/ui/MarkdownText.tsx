@@ -21,6 +21,7 @@ export function MarkdownText({ children, className, omitLinks }: MarkdownProps) 
   // @see https://www.npmjs.com/package/react-syntax-highlighter
   const syntax = nightOwl; // resolvedTheme === 'dark' ? nightOwl : materialLight;
   // @see https://github.com/remarkjs/react-markdown
+  // @see src/mdx-components.tsx
   return (
     <div
       className={cn(
@@ -62,26 +63,18 @@ export function MarkdownText({ children, className, omitLinks }: MarkdownProps) 
           },
           code: (props) => {
             const { children, className, ...rest } = props;
-            const { ref, ...syntaxProps } = rest;
+            const { ref: _ref, ...syntaxProps } = rest;
             const match = /language-(\w+)/.exec(className || '');
-            return match ? (
-              (() => {
-                return (
-                  <SyntaxHighlighter
-                    className="SyntaxHighlighter"
-                    {...syntaxProps}
-                    PreTag="div"
-                    language={match[1]}
-                    style={syntax}
-                  >
-                    {String(children).replace(/\n$/, '')}
-                  </SyntaxHighlighter>
-                );
-              })()
-            ) : (
-              <code ref={ref} {...syntaxProps} className={className}>
-                {children}
-              </code>
+            return (
+              <SyntaxHighlighter
+                className="SyntaxHighlighter"
+                {...syntaxProps}
+                PreTag="div"
+                language={match ? match[1] : undefined}
+                style={syntax}
+              >
+                {String(children).replace(/\n$/, '')}
+              </SyntaxHighlighter>
             );
           },
         }}
