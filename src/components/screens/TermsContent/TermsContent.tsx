@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper, PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TextPageSkeleton } from '@/components/shared/TextPageSkeleton';
-import { contactEmail, effectivePrivacyDate, publicAddr } from '@/config';
+import { contactEmail, effectiveTermsDate, publicAddr } from '@/config';
 import { isDev } from '@/constants';
 import { defaultLocale, TLocale } from '@/i18n';
 
@@ -21,35 +21,21 @@ interface TProps {
   locale: TLocale;
 }
 
-function PrivacyContentSuspense(props: DynamicOptionsLoadingProps) {
-  const {
-    error, // An Error object if the component failed to load, otherwise null.
-    retry, // A function you can call to manually attempt to reload the component if an error occurred.
-    // isLoading, // A boolean indicating if the component is currently loading.
-    // pastDelay, // A boolean that becomes true if the import is still loading after a specified delay (which can be configured in the dynamic options).
-    // timedOut, // A boolean that becomes true if the import request exceeded the specified timeout duration.
-  } = props;
+function TermsContentSuspense(props: DynamicOptionsLoadingProps) {
+  const { error, retry } = props;
   if (error) {
     return (
       <PageError
-        className={cn(
-          isDev && '__PrivacyContentSuspense_error', // DEBUG
-        )}
+        className={cn(isDev && '__TermsContentSuspense_error')}
         error={error}
         reset={retry}
       />
     );
   }
-  return (
-    <TextPageSkeleton
-      className={cn(
-        isDev && '__PrivacyContentSuspense_loading', // DEBUG
-      )}
-    />
-  );
+  return <TextPageSkeleton className={cn(isDev && '__TermsContentSuspense_loading')} />;
 }
 
-export function PrivacyContent({ locale }: TProps) {
+export function TermsContent({ locale }: TProps) {
   const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
 
   const componentCache = React.useMemo(() => new Map<string, React.ComponentType<MDXProps>>(), []);
@@ -57,23 +43,18 @@ export function PrivacyContent({ locale }: TProps) {
   // Dynamically load the appropriate  language component
   const DynamicComponent = React.useMemo(() => {
     const contentId = capitalizeString(localeId);
-    const cacheKey = `PrivacyContent${contentId}`;
+    const cacheKey = `TermsContent${contentId}`;
     if (componentCache.has(cacheKey)) {
       return componentCache.get(cacheKey)!;
     }
     const component = dynamic(
       async () => {
         try {
-          /* // DEBUG
-           * if (isDev) {
-           *   await new Promise((r) => setTimeout(r, 3000));
-           * }
-           */
-          return await import(`./PrivacyContent${contentId}.mdx`);
+          return await import(`./TermsContent${contentId}.mdx`);
         } catch (error) {
           const errMsg = getErrorText(error);
           // eslint-disable-next-line no-console
-          console.error('[PrivacyContent:DynamicComponent]', errMsg, {
+          console.error('[TermsContent:DynamicComponent]', errMsg, {
             error,
             localeId,
             contentId,
@@ -87,14 +68,14 @@ export function PrivacyContent({ locale }: TProps) {
       },
       {
         ssr: true,
-        loading: PrivacyContentSuspense,
+        loading: TermsContentSuspense,
       },
     );
     componentCache.set(cacheKey, component);
     return component;
   }, [localeId, componentCache]);
 
-  const effectiveDate = formatDate(effectivePrivacyDate, localeId);
+  const effectiveDate = formatDate(effectiveTermsDate, localeId);
   const emailHtmlLink = ReactDOMServer.renderToString(
     <a href={`mailto:${contactEmail}`}>{contactEmail}</a>,
   );
@@ -106,15 +87,15 @@ export function PrivacyContent({ locale }: TProps) {
 
   return (
     <ScrollArea
-      saveScrollKey="PrivacyContent"
+      saveScrollKey="TermsContent"
       saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__PrivacyContent_Scroll', // DEBUG
+        isDev && '__TermsContent_Scroll',
         'flex flex-1 flex-col overflow-hidden',
         'bg-theme-500/5',
       )}
       viewportClassName={cn(
-        isDev && '__PrivacyContent_ScrollViewport', // DEBUG
+        isDev && '__TermsContent_ScrollViewport',
         'flex flex-1 flex-col',
         'bg-decorative-gradient',
         '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',

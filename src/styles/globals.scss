@@ -380,6 +380,13 @@
         color: rgb(var(--color-theme-600-RGB));
       }
     }
+    ul {
+      li {
+        &::marker {
+          color: rgb(var(--color-theme-500-RGB));
+        }
+      }
+    }
   }
 
   .truncate-start {

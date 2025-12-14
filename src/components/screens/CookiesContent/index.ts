@@ -1,0 +1,1 @@
+export { CookiesContent } from './CookiesContent';
