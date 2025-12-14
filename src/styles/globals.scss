@@ -365,7 +365,7 @@
       color: rgb(var(--color-theme-500-RGB));
     }
     h1 {
-      font-size: 2rem;
+      font-size: 3rem;
     }
     h2 {
       font-size: 1.75rem;
@@ -379,6 +379,22 @@
         text-decoration: underline;
         color: rgb(var(--color-theme-600-RGB));
       }
+    }
+    ul {
+      li {
+        &::marker {
+          color: rgb(var(--color-theme-500-RGB));
+        }
+      }
+    }
+
+    li > code,
+    p > code {
+      background-color: rgba(var(--color-theme-500-RGB) / 10%);
+      border: 1px solid rgba(var(--color-theme-700-RGB) / 25%);
+      border-radius: 0.25em;
+      display: inline-block;
+      padding: 0 0.25em;
     }
   }
 

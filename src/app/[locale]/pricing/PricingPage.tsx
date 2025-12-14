@@ -7,14 +7,16 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PricingContent } from '@/components/screens/PricingContent';
 import { isDev } from '@/constants';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TPricingPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
+  const t = await getT({ locale });
   return constructMetadata({
-    title: 'Pricing - Mind Stack',
+    title: t('PricingPageTitle'),
     locale,
   });
 }

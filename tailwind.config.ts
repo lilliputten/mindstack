@@ -17,6 +17,7 @@ const secondaryColorSpread = getColorSpread('secondary', secondaryColor);
 export default {
   darkMode: ['class'],
   content: [
+    './src/mdx-components.tsx',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/features/**/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',

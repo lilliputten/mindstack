@@ -1,69 +1,48 @@
 {
-  "BotMenu": {
-    "status": "Check your status",
-    "start": "Start",
-    "language": "Change language",
-    "help": "Help"
+  "AcceptCookiesPopup": {
+    "Accept": "Accept",
+    "LearnMore": "Learn more",
+    "Message": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies."
   },
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "Bot": {
-    "localeInfo": "Bot language: {localeText}",
-    "registeredAtInfo": "You've registered at {createdAt}",
-    "haveTopicsInfo": "You've created topics: {topicsCount}",
-    "noTopicsInfo": "You do not have any topics yet",
-    "gettingData": "Getting the data...",
-    "creatingAccount": "Creating an account...",
     "accountCreated": "✅ Your account has been successfully created.",
-    "no": "No",
-    "yes": "Yes",
     "canNotCreateAccount": "❌ Error creating account profile.",
-    "noUserData": "No user information found",
-    "statusNoUser": "Your data not found. Apparently, you have not registered on the site yet. Do you want to create an account?",
     "checkingStatus": "Checking your application status...",
+    "creatingAccount": "Creating an account...",
+    "gettingData": "Getting the data...",
+    "haveTopicsInfo": "You've created topics: {topicsCount}",
+    "help": "Send me some text, and I can make it bold for you.\n\nYou can change my language using the /language command.",
+    "localeInfo": "Bot language: {localeText}",
+    "no": "No",
+    "noTopicsInfo": "You do not have any topics yet",
+    "noUserData": "No user information found",
     "openApp": "Open App",
-    "start": "👋 Hi, how can I /help you?",
+    "registeredAtInfo": "You've registered at {createdAt}",
     "selectLanguage": "Select language",
-    "help": "Send me some text, and I can make it bold for you.\n\nYou can change my language using the /language command."
+    "start": "👋 Hi, how can I /help you?",
+    "statusNoUser": "Your data not found. Apparently, you have not registered on the site yet. Do you want to create an account?",
+    "yes": "Yes"
+  },
+  "BotMenu": {
+    "help": "Help",
+    "language": "Change language",
+    "start": "Start",
+    "status": "Check your status"
   },
   "Language Changed For": "Language has been changed for",
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "NavAuthButton": {
-    "sign-in": "Sign In",
-    "Dashboard": "Dashboard"
+    "Dashboard": "Dashboard",
+    "sign-in": "Sign In"
   },
-  "Select Language": "Select Language",
   "NavLocaleSwitcher": {
     "label": "Change language",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
   },
-  "Themes": {
-    "brand": "Basic",
-    "red": "Red",
-    "orange": "Orange",
-    "amber": "Amber",
-    "yellow": "Yellow",
-    "lime": "Lime",
-    "green": "Green",
-    "emerald": "Emerald",
-    "teal": "Teal",
-    "cyan": "Cyan",
-    "sky": "Sky",
-    "blue": "Blue",
-    "indigo": "Indigo",
-    "violet": "Violet",
-    "purple": "Purple",
-    "fuchsia": "Fuchsia",
-    "pink": "Pink",
-    "rose": "Rose",
-    "slate": "Slate",
-    "gray": "Gray",
-    "zinc": "Zinc",
-    "neutral": "Neutral",
-    "stone": "Stone"
-  },
   "NavModeToggle": {
+    "dark": "Dark",
     "label": "Toggle theme",
     "light": "Light",
-    "dark": "Dark",
     "system": "System"
   },
   "NavUserAccount": {
@@ -72,100 +51,128 @@
     "Settings": "Settings",
     "Sign Out": "Sign Out"
   },
-  "SiteMenu": {
-    "AvailableTopics": "Available Topics",
-    "MyTopics": "My Topics",
-    "AllTopics": "All Topics",
-    "Welcome": "Welcome",
-    "Data": "Data",
-    "Info": "Information"
-  },
-  "SignInForm": {
-    "sign-in": "Sign In",
-    "sign-in-with-github": "Sign In with GitHub",
-    "sign-in-with-google": "Sign In with Google",
-    "sign-in-with-yandex": "Sign In with Yandex",
-    "sign-in-with-telegram": "Sign In with Telegram",
-    "intro": "Login to be able editing your own data."
-  },
-  "WelcomePageTitle": "Welcome!",
   "Pricing": {
+    "BilledAnnually": ", billed annually",
+    "BilledMonthly": ", billed monthly",
+    "Comparison": {
+      "AiGenerations": "AI Generations",
+      "Analytics": "Detailed Analytics",
+      "CommunityAccess": "Community Access",
+      "EnterpriseSecurity": "Enterprise Security",
+      "ExportImport": "Export/Import",
+      "PerMonth": "per month",
+      "PrioritySupport": "Priority Support",
+      "ProgressTracking": "Progress Tracking",
+      "Topics": "Topics",
+      "Total": "total",
+      "WorkoutSessions": "Training Sessions"
+    },
+    "ContactUs": "Contact Us",
+    "Free": "Free",
+    "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
     "Hero": {
-      "Title": "Pricing",
-      "Subtitle": "Get 20% off with yearly",
       "Monthly": "Monthly",
+      "Subtitle": "Get 20% off with yearly",
+      "Title": "Pricing",
       "Yearly": "Yearly"
     },
     "MostPopular": "Most Popular",
-    "Free": "Free",
-    "ContactUs": "Contact Us",
-    "Unlimited": "Unlimited",
     "PerMonth": "/month",
-    "BilledAnnually": ", billed annually",
-    "BilledMonthly": ", billed monthly",
     "Plans": {
       "Basic": {
-        "Name": "Basic",
-        "Description": "For individuals",
         "Button": "Get Started",
+        "Description": "For individuals",
         "Features": {
-          "Topics": "Create up to 5 topics",
-          "Workouts": "Basic training sessions",
-          "Progress": "Progress tracking",
           "Community": "Community topics access",
-          "Generations": "10 AI generations total"
-        }
-      },
-      "Pro": {
-        "Name": "Pro",
-        "Description": "For serious learners",
-        "Button": "Choose Pro",
-        "Features": {
-          "Unlimited": "Unlimited topics and questions",
-          "Ai": "AI-powered question generation",
-          "Analytics": "Detailed analytics",
-          "Support": "Priority support",
-          "Generations": "100 AI generations per month"
-        }
+          "Generations": "10 AI generations total",
+          "Progress": "Progress tracking",
+          "Topics": "Create up to 5 topics",
+          "Workouts": "Basic training sessions"
+        },
+        "Name": "Basic"
       },
       "Premium": {
-        "Name": "Premium",
-        "Description": "For organizations",
         "Button": "Choose Premium",
+        "Description": "For organizations",
         "Features": {
-          "Everything": "Everything in Pro",
-          "UnlimitedGenerations": "Unlimited AI generations",
-          "Priority": "Highest priority support",
           "Advanced": "Advanced integrations",
-          "Export": "Export/import functionality"
-        }
+          "Everything": "Everything in Pro",
+          "Export": "Export/import functionality",
+          "Priority": "Highest priority support",
+          "UnlimitedGenerations": "Unlimited AI generations"
+        },
+        "Name": "Premium"
+      },
+      "Pro": {
+        "Button": "Choose Pro",
+        "Description": "For serious learners",
+        "Features": {
+          "Ai": "AI-powered question generation",
+          "Analytics": "Detailed analytics",
+          "Generations": "100 AI generations per month",
+          "Support": "Priority support",
+          "Unlimited": "Unlimited topics and questions"
+        },
+        "Name": "Pro"
       },
       "Unlimited": {
-        "Name": "Unlimited",
-        "Description": "For organizations requiring the highest level of security and control.",
         "Button": "Contact Us",
+        "Description": "For organizations requiring the highest level of security and control.",
         "Features": {
-          "Everything": "Everything in Premium",
+          "Custom": "Custom integrations",
           "Enterprise": "Enterprise-grade security",
+          "Everything": "Everything in Premium",
           "Security": "Advanced compliance",
-          "Support": "Dedicated support team",
-          "Custom": "Custom integrations"
-        }
+          "Support": "Dedicated support team"
+        },
+        "Name": "Unlimited"
       }
     },
-    "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
-    "Comparison": {
-      "Topics": "Topics",
-      "AiGenerations": "AI Generations",
-      "WorkoutSessions": "Training Sessions",
-      "ProgressTracking": "Progress Tracking",
-      "CommunityAccess": "Community Access",
-      "Analytics": "Detailed Analytics",
-      "PrioritySupport": "Priority Support",
-      "ExportImport": "Export/Import",
-      "EnterpriseSecurity": "Enterprise Security",
-      "Total": "total",
-      "PerMonth": "per month"
-    }
-  }
+    "Unlimited": "Unlimited"
+  },
+  "PricingPageTitle": "Pricing",
+  "PrivacyPageTitle": "Privacy Policy",
+  "Select Language": "Select Language",
+  "SignInForm": {
+    "intro": "Login to be able editing your own data.",
+    "sign-in": "Sign In",
+    "sign-in-with-github": "Sign In with GitHub",
+    "sign-in-with-google": "Sign In with Google",
+    "sign-in-with-telegram": "Sign In with Telegram",
+    "sign-in-with-yandex": "Sign In with Yandex"
+  },
+  "SiteMenu": {
+    "AllTopics": "All Topics",
+    "AvailableTopics": "Available Topics",
+    "Data": "Data",
+    "Info": "Information",
+    "MyTopics": "My Topics",
+    "Welcome": "Welcome"
+  },
+  "Themes": {
+    "amber": "Amber",
+    "blue": "Blue",
+    "brand": "Basic",
+    "cyan": "Cyan",
+    "emerald": "Emerald",
+    "fuchsia": "Fuchsia",
+    "gray": "Gray",
+    "green": "Green",
+    "indigo": "Indigo",
+    "lime": "Lime",
+    "neutral": "Neutral",
+    "orange": "Orange",
+    "pink": "Pink",
+    "purple": "Purple",
+    "red": "Red",
+    "rose": "Rose",
+    "sky": "Sky",
+    "slate": "Slate",
+    "stone": "Stone",
+    "teal": "Teal",
+    "violet": "Violet",
+    "yellow": "Yellow",
+    "zinc": "Zinc"
+  },
+  "WelcomePageTitle": "Welcome!"
 }

@@ -1,110 +1,69 @@
 {
-  "ManageTopicQuestionAnswers": {
-    "title": "Manage Answers",
-    "description": "Answers for the choosen question"
-  },
-  "ManageTopicQuestions": {
-    "title": "Manage Questions",
-    "description": "Questions for the choosen topic"
-  },
-  "AvailableTopicsPage": {
-    "title": "Available Topics",
-    "description": "Topics avaialble to use"
-  },
-  "MyTopicsPage": {
-    "title": "My Topics",
-    "description": "Topics created by me"
-  },
   "AllTopicsPage": {
-    "title": "All Topics",
-    "description": "Topics by all users"
+    "description": "Topics by all users",
+    "title": "All Topics"
   },
-  "BotMenu": {
-    "status": "Check your status",
-    "start": "Start",
-    "language": "Change language",
-    "help": "Help"
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "AvailableTopicsPage": {
+    "description": "Topics avaialble to use",
+    "title": "Available Topics"
   },
   "Bot": {
-    "localeInfo": "Bot language: {localeText}",
-    "registeredAtInfo": "You've registered at {createdAt}",
-    "haveTopicsInfo": "You've created topics: {topicsCount}",
-    "noTopicsInfo": "You do not have any topics yet",
-    "gettingData": "Getting the data...",
-    "creatingAccount": "Creating an account...",
     "accountCreated": "✅ Your account has been successfully created.",
-    "no": "No",
-    "yes": "Yes",
     "canNotCreateAccount": "❌ Error creating account profile.",
-    "noUserData": "No user information found",
-    "statusNoUser": "Your data not found. Apparently, you have not registered on the site yet. Do you want to create an account?",
     "checkingStatus": "Checking your application status...",
+    "creatingAccount": "Creating an account...",
+    "gettingData": "Getting the data...",
+    "haveTopicsInfo": "You've created topics: {topicsCount}",
+    "help": "Send me some text, and I can make it bold for you.\n\nYou can change my language using the /language command.",
+    "localeInfo": "Bot language: {localeText}",
+    "no": "No",
+    "noTopicsInfo": "You do not have any topics yet",
+    "noUserData": "No user information found",
     "openApp": "Open App",
-    "start": "👋 Hi, how can I /help you?",
+    "registeredAtInfo": "You've registered at {createdAt}",
     "selectLanguage": "Select language",
-    "help": "Send me some text, and I can make it bold for you.\n\nYou can change my language using the /language command."
+    "start": "👋 Hi, how can I /help you?",
+    "statusNoUser": "Your data not found. Apparently, you have not registered on the site yet. Do you want to create an account?",
+    "yes": "Yes"
   },
-  "Language Changed For": "Language has been changed for",
-  "RootPage": {
-    "title": "MindStack",
-    "about": "Main page"
+  "BotMenu": {
+    "help": "Help",
+    "language": "Change language",
+    "start": "Start",
+    "status": "Check your status"
   },
   "DataPage": {
     "title": "Data editor"
   },
-  "TestPage": {
-    "title": "Test"
-  },
-  "SettingsPage": {
-    "title": "Settings",
-    "description": "Application settings"
-  },
   "InfoPage": {
     "title": "Info"
   },
-  "WelcomePage": {
-    "title": "Welcome!"
+  "Language Changed For": "Language has been changed for",
+  "ManageTopicQuestionAnswers": {
+    "description": "Answers for the choosen question",
+    "title": "Manage Answers"
   },
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "ManageTopicQuestions": {
+    "description": "Questions for the choosen topic",
+    "title": "Manage Questions"
+  },
+  "MyTopicsPage": {
+    "description": "Topics created by me",
+    "title": "My Topics"
+  },
   "NavAuthButton": {
-    "sign-in": "Sign In",
-    "Dashboard": "Dashboard"
+    "Dashboard": "Dashboard",
+    "sign-in": "Sign In"
   },
-  "Select Language": "Select Language",
   "NavLocaleSwitcher": {
     "label": "Change language",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
   },
-  "Settings": {},
-  "Themes": {
-    "brand": "Basic",
-    "red": "Red",
-    "orange": "Orange",
-    "amber": "Amber",
-    "yellow": "Yellow",
-    "lime": "Lime",
-    "green": "Green",
-    "emerald": "Emerald",
-    "teal": "Teal",
-    "cyan": "Cyan",
-    "sky": "Sky",
-    "blue": "Blue",
-    "indigo": "Indigo",
-    "violet": "Violet",
-    "purple": "Purple",
-    "fuchsia": "Fuchsia",
-    "pink": "Pink",
-    "rose": "Rose",
-    "slate": "Slate",
-    "gray": "Gray",
-    "zinc": "Zinc",
-    "neutral": "Neutral",
-    "stone": "Stone"
-  },
   "NavModeToggle": {
+    "dark": "Dark",
     "label": "Toggle theme",
     "light": "Light",
-    "dark": "Dark",
     "system": "System"
   },
   "NavUserAccount": {
@@ -113,21 +72,62 @@
     "Settings": "Settings",
     "Sign Out": "Sign Out"
   },
-  "SiteMenu": {
-    "AvailableTopics": "Available Topics",
-    "MyTopics": "My Topics",
-    "AllTopics": "All Topics",
-    "Welcome": "Welcome",
-    "Data": "Data",
-    "Info": "Information"
+  "RootPage": {
+    "about": "Main page",
+    "title": "MindStack"
+  },
+  "Select Language": "Select Language",
+  "Settings": {},
+  "SettingsPage": {
+    "description": "Application settings",
+    "title": "Settings"
   },
   "SignInForm": {
+    "intro": "Login to be able editing your own data.",
     "sign-in": "Sign In",
     "sign-in-with-github": "Sign In with GitHub",
     "sign-in-with-google": "Sign In with Google",
-    "sign-in-with-yandex": "Sign In with Yandex",
     "sign-in-with-telegram": "Sign In with Telegram",
-    "intro": "Login to be able editing your own data."
+    "sign-in-with-yandex": "Sign In with Yandex"
+  },
+  "SiteMenu": {
+    "AllTopics": "All Topics",
+    "AvailableTopics": "Available Topics",
+    "Data": "Data",
+    "Info": "Information",
+    "MyTopics": "My Topics",
+    "Welcome": "Welcome"
+  },
+  "TestPage": {
+    "title": "Test"
+  },
+  "Themes": {
+    "amber": "Amber",
+    "blue": "Blue",
+    "brand": "Basic",
+    "cyan": "Cyan",
+    "emerald": "Emerald",
+    "fuchsia": "Fuchsia",
+    "gray": "Gray",
+    "green": "Green",
+    "indigo": "Indigo",
+    "lime": "Lime",
+    "neutral": "Neutral",
+    "orange": "Orange",
+    "pink": "Pink",
+    "purple": "Purple",
+    "red": "Red",
+    "rose": "Rose",
+    "sky": "Sky",
+    "slate": "Slate",
+    "stone": "Stone",
+    "teal": "Teal",
+    "violet": "Violet",
+    "yellow": "Yellow",
+    "zinc": "Zinc"
+  },
+  "WelcomePage": {
+    "title": "Welcome!"
   },
   "WelcomePageTitle": "Welcome!"
 }

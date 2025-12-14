@@ -46,7 +46,6 @@ export function nFormatter(num: number, digits?: number) {
   return item ? (num / item.value).toFixed(digits || 1).replace(rx, '$1') + item.symbol : '0';
 }
 
-// TODO: Move to helpers/strings
 export function capitalizeString(str: string) {
   if (!str || typeof str !== 'string') {
     return str;

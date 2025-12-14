@@ -17,7 +17,6 @@ export function LandingContent() {
     <>
       <main className="flex w-full max-w-6xl flex-col px-6">
         <HeroSection />
-        {/* <ClientsSection /> */}
         <FeaturesSection />
         <CardsWithIconsSection />
         <BigImageCTASection />

@@ -16,6 +16,7 @@ import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
 import { TLocale } from '@/i18n';
 
+import { AcceptCookiesPopup } from './AcceptCookiesPopup';
 import { DashboardSidebar } from './DashboardSidebar';
 import { MobileSheetSidebar, MobileSheetWrapper } from './MobileSheetSidebar';
 
@@ -81,6 +82,7 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
         {!hideSidebar && <DashboardSidebar links={filteredLinks} />}
         {children}
       </div>
+      <AcceptCookiesPopup />
       <NavFooter />
     </div>
   );

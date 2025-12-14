@@ -51,6 +51,10 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
     }
     // @see https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
     signIn(provider, options).then(() => {
+      // Run a client code ona successfull signin
+      if (typeof localStorage !== 'undefined') {
+        localStorage.clear();
+      }
       if (onSignInDone) {
         onSignInDone(provider);
       }
