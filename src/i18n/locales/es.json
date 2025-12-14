@@ -70,7 +70,9 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración",
-    "WelcomeTitle": "¡Bienvenido!"
+    "WelcomeTitle": "¡Bienvenido!",
+    "Questions": "Preguntas",
+    "Answers": "Respuestas"
   },
   "Pricing": {
     "BilledAnnually": ", facturado anualmente",
@@ -151,6 +153,7 @@
     },
     "Unlimited": "Ilimitado"
   },
+  "Questions": "Preguntas",
   "Select Language": "Seleccionar Idioma",
   "SignInForm": {
     "intro": "Inicia sesión para poder editar tus propios datos.",

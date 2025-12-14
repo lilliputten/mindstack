@@ -53,6 +53,7 @@ $themes: ( ${scssThemes} );
 `;
 
 const nextConfig: NextConfig = {
+  turbopack: {},
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   sassOptions: {
     additionalData: scssVariables,

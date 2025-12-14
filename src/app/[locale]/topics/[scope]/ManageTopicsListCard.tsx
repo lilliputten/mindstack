@@ -721,7 +721,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   return (
     <>
       <DashboardHeader
-        heading={t(`${namespace}Title`)}
+        heading={t(`Pages.${namespace}Title`)}
         className={cn(
           isDev && '__ManageTopicsListCard_DashboardHeader', // DEBUG
           'mx-6',

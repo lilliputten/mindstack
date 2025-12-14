@@ -75,7 +75,9 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Настройки приложения",
     "SettingsTitle": "Настройки",
-    "WelcomeTitle": "Добро пожаловать!"
+    "WelcomeTitle": "Добро пожаловать!",
+    "Questions": "Вопросы",
+    "Answers": "Ответы"
   },
   "Pricing": {
     "BilledAnnually": ", оплата ежегодно",
@@ -157,7 +159,6 @@
     "Unlimited": "Неограниченно"
   },
   "Select Language": "Выбрать язык",
-  "Settings": {},
   "SignInForm": {
     "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",
     "sign-in": "Войти",
@@ -177,7 +178,7 @@
   "Themes": {
     "amber": "Янтарь",
     "blue": "Синий",
-    "brand": "Основная",
+    "brand": "Основной",
     "cyan": "Голубой",
     "emerald": "Изумруд",
     "fuchsia": "Фуксия",

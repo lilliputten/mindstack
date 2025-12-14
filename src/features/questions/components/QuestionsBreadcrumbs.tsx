@@ -17,6 +17,7 @@ import { topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TQuestion } from '@/features/questions/types';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 interface TBreadcrumbsProps {
   scope: TTopicsManageScopeId;
@@ -29,13 +30,14 @@ interface TBreadcrumbsProps {
 
 export function useQuestionsBreadcrumbsItems(props: TBreadcrumbsProps) {
   const { scope, topic, question, lastItem, isLoading } = props;
+  const t = useT();
   const topicsListRoutePath = topicsRoutes[scope];
   const topicRoutePath = topic && `${topicsListRoutePath}/${topic.id}`;
   const questionsListRoutePath = topicRoutePath && `${topicRoutePath}/questions`;
   const questionRoutePath =
     question && questionsListRoutePath && `${questionsListRoutePath}/${question.id}`;
   // TODO: Use i18n translations
-  const listTitle = /* capitalizeString(scope) + ' ' */ 'Questions'; /* + (isDev ? '*' : '') */
+  const listTitle = t('Pages.Questions');
   const topicItems = useTopicsBreadcrumbsItems({ scope, topic });
   if (isLoading) {
     return [];

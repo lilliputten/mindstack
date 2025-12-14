@@ -20,8 +20,8 @@ export const topicsRoutes: Record<TTopicsManageScopeId, TRoutePath> = {
 };
 
 export const topicsNamespaces: Record<TTopicsManageScopeId, string> = {
-  [TopicsManageScopeIds.AVAILABLE_TOPICS]: 'AvailableTopicsPage',
-  [TopicsManageScopeIds.MY_TOPICS]: 'MyTopicsPage',
-  [TopicsManageScopeIds.ALL_TOPICS]: 'AllTopicsPage',
+  [TopicsManageScopeIds.AVAILABLE_TOPICS]: 'AvailableTopics',
+  [TopicsManageScopeIds.MY_TOPICS]: 'MyTopics',
+  [TopicsManageScopeIds.ALL_TOPICS]: 'AllTopics',
 };
 export const defaultTopicsNamespace = topicsNamespaces[TopicsManageScopeIds.MY_TOPICS];

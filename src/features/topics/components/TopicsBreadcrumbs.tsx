@@ -13,8 +13,9 @@ import {
   TBreadcrumbsItemProps,
 } from '@/components/layout/Breadcrumbs';
 import { isDev } from '@/constants';
-import { topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { topicsNamespaces, topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 interface TBreadcrumbsProps {
   scope: TTopicsManageScopeId;
@@ -26,9 +27,11 @@ interface TBreadcrumbsProps {
 
 export function useTopicsBreadcrumbsItems(props: TBreadcrumbsProps) {
   const { scope, topic, lastItem } = props;
+  const t = useT();
   const topicsListRoutePath = topicsRoutes[scope];
+  const namespace = topicsNamespaces[scope];
   // TODO: Use i18n translation by `scope`
-  const listTitle = capitalizeString(scope) + ' ' + 'Topics'; /* + (isDev ? '*' : '') */
+  const listTitle = t(`Pages.${namespace}Title`); // capitalizeString(scope) + ' ' + 'Topics'; /* + (isDev ? '*' : '') */
   const items = filterOutEmpties<TBreadcrumbsItemProps>([
     { link: topicsListRoutePath, content: listTitle },
     !topic

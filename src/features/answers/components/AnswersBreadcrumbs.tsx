@@ -18,6 +18,7 @@ import { TAnswer } from '@/features/answers/types';
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';
 import { TQuestion } from '@/features/questions/types';
 import { TTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 interface TBreadcrumbsProps {
   scope: TTopicsManageScopeId;
@@ -30,6 +31,7 @@ interface TBreadcrumbsProps {
 }
 export function useAnswersBreadcrumbsItems(props: TBreadcrumbsProps) {
   const { scope, topic, question, answer, lastItem, isLoading } = props;
+  const t = useT();
   const topicsListRoutePath = topicsRoutes[scope];
   const topicRoutePath = topic && `${topicsListRoutePath}/${topic.id}`;
   const questionsListRoutePath = topicRoutePath && `${topicRoutePath}/questions`;
@@ -38,7 +40,7 @@ export function useAnswersBreadcrumbsItems(props: TBreadcrumbsProps) {
   const answersListRoutePath = questionRoutePath && `${questionRoutePath}/answers`;
   const answerRoutePath = answer && answersListRoutePath && `${answersListRoutePath}/${answer.id}`;
   // TODO: Use i18n translations
-  const listTitle = /* capitalizeString(scope) + ' ' */ 'Answers'; /* + (isDev ? '*' : '') */
+  const listTitle = t('Pages.Answers');
   const questionItems = useQuestionsBreadcrumbsItems({ scope, topic, question });
   if (isLoading) {
     return [];

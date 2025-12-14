@@ -94,7 +94,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Back',
         content: 'Back',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -103,7 +103,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Start Training',
         content: 'Start Training',
-        variant: 'theme',
+        // variant: 'theme',
         icon: Icons.ArrowRight,
         visibleFor: 'md',
         onClick: () => goToTheRoute(`${availableTopicsRoute}/${topicId}/workout`),
@@ -112,7 +112,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Reload',
         content: 'Reload',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Refresh,
         // visibleFor: 'lg',
         onClick: handleReload,
@@ -120,7 +120,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Edit',
         content: 'Edit',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${topicRoutePath}/edit`),
@@ -128,7 +128,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Questions',
         content: 'Questions',
-        variant: 'ghost',
+        // variant: 'ghost',
         icon: Icons.Questions,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${topicRoutePath}/questions`),
@@ -136,7 +136,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Add New Question',
         content: 'Add New Question',
-        variant: 'success',
+        // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
@@ -144,7 +144,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Generate Questions',
         content: 'Generate Questions',
-        variant: 'secondary',
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
@@ -153,7 +153,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Delete Topic',
         content: 'Delete Topic',
-        variant: 'destructive',
+        // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${routePath}/delete?topicId=${topicId}&from=ViewTopicPage`),
