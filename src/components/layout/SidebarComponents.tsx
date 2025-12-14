@@ -40,6 +40,7 @@ export function SidebarMenuItem(
       className={cn(
         isDev && '__SidebarMenuItem', // DEBUG
         disabled && 'pointer-events-none opacity-50',
+        'hover:bg-theme-500 hover:text-white',
         className,
       )}
       onClick={onSelect}

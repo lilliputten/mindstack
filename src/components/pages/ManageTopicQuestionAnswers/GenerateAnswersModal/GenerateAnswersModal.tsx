@@ -20,7 +20,7 @@ import {
   parseGeneratedQuestionAnswers,
 } from '@/features/ai/helpers';
 import { useUserAIRequest } from '@/features/ai/hooks';
-import { TAITextQueryData } from '@/features/ai/types';
+import { TAIQuerDebugDataId, TAITextQueryData } from '@/features/ai/types';
 import { TGenerateQuestionAnswersParams } from '@/features/ai/types/GenerateAnswersTypes';
 import { addMultipleAnswers } from '@/features/answers/actions/addMultipleAnswers';
 import { TAvailableAnswer, TNewAnswer } from '@/features/answers/types';
@@ -43,8 +43,8 @@ const urlQuestionToken = '/questions/';
 const idToken = '([^/]*)';
 const urlRegExp = new RegExp(idToken + urlQuestionToken + idToken + urlPostfix + '$');
 
-/** A debug data file, relative to `src/features/questions/actions/` */
-const debugDataFile = 'sample-data/GenerateQuestions/answers-query-data-01.json';
+/** A debug data file id */
+const debugDataId: TAIQuerDebugDataId = 'answers-query-data-01';
 
 export function GenerateAnswersModal() {
   const { manageScope } = useManageTopicsStore();
@@ -159,7 +159,7 @@ export function GenerateAnswersModal() {
        */
       const queryData: TAITextQueryData = await userAIRequest(messages, {
         topicId,
-        debugData: debugData ? debugDataFile : undefined,
+        debugData: debugData ? debugDataId : undefined,
       });
       /* console.log('[GenerateAnswersModal:generateAnswersMutation] Generated query data', {
        *   // content: queryData?.content,

@@ -35,7 +35,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
             key={thisTheme}
             className={cn(
               isDev && '__NavModeToggleBlock_MenuItem', // DEBUG
-              'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-theme-500',
+              'flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm',
             )}
             disabled={thisTheme === currentTheme}
             onSelect={() => setTheme(thisTheme)}

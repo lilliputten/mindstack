@@ -57,7 +57,7 @@ function SidebarMenuItem(
         'rounded-sm',
         'px-2 py-1.5',
         'text-sm',
-        'hover:bg-theme-500',
+        'hover:bg-theme-500 hover:text-white',
         className,
       )}
       onClick={onClick}

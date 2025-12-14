@@ -20,7 +20,11 @@ import {
   parseGeneratedTopicQuestions,
 } from '@/features/ai/helpers';
 import { useUserAIRequest } from '@/features/ai/hooks';
-import { TAITextQueryData, TGenerateTopicQuestionsParams } from '@/features/ai/types';
+import {
+  TAIQuerDebugDataId,
+  TAITextQueryData,
+  TGenerateTopicQuestionsParams,
+} from '@/features/ai/types';
 import { addMultipleQuestions } from '@/features/questions/actions';
 import { TAvailableQuestion, TNewQuestion } from '@/features/questions/types';
 import {
@@ -41,8 +45,8 @@ const urlTopicsToken = '/topics/';
 const idToken = '([^/]*)';
 const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostfix + '$');
 
-/** A debug data file, relative to `src/features/questions/actions/` */
-const debugDataFile = 'sample-data/GenerateQuestions/questions-query-data-02.json';
+/** A debug data file id */
+const debugDataId: TAIQuerDebugDataId = 'questions-query-data-01';
 
 export function GenerateQuestionsModal() {
   const { manageScope } = useManageTopicsStore();
@@ -125,7 +129,7 @@ export function GenerateQuestionsModal() {
        */
       const queryData: TAITextQueryData = await userAIRequest(messages, {
         topicId,
-        debugData: debugData ? debugDataFile : undefined,
+        debugData: debugData ? debugDataId : undefined,
       });
       /* // DEBUG
        * const content = __queryData?.content;

@@ -27,8 +27,8 @@ import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
+import { defaultLocale, TAwaitedLocaleProps, TLocale } from '@/i18n';
 import { routing } from '@/i18n/routing';
-import { TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
@@ -49,8 +49,9 @@ export function generateStaticParams() {
 async function RootLayout(props: TRootLayoutProps) {
   const { children, params: paramsPromise } = props;
   const params = await paramsPromise;
-  const { defaultLocale } = routing;
+
   let { locale = defaultLocale } = params;
+
   // Ensure that the incoming `locale` is valid
   if (!routing.locales.includes(locale)) {
     // NOTE: Sometimes we got `.well-known` value here. TODO?
@@ -80,22 +81,14 @@ async function RootLayout(props: TRootLayoutProps) {
   }
 
   const user = await getCurrentUser();
-  // const userId = user?.id;
 
   const settings = await getSettings();
   // Get theme color from setting or from cookie or get the default value
   const themeColor =
     settings?.themeColor || cookieStore.get('themeColor')?.value || defaultThemeColor;
-  // const theme = settings?.theme;
 
   return (
-    <html
-      lang={locale}
-      data-theme-color={themeColor}
-      // style={{ colorScheme: theme }}
-      // className={theme}
-      suppressHydrationWarning
-    >
+    <html lang={locale} data-theme-color={themeColor} suppressHydrationWarning>
       <head>
         <link rel="icon shortcut" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/static/favicons/favicon-64x64.png" sizes="64x64" />

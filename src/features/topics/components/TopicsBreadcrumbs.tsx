@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { capitalizeString, truncateString } from '@/lib/helpers';
+import { truncateString } from '@/lib/helpers';
 import { filterOutEmpties } from '@/lib/helpers/arrays';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';

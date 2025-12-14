@@ -5,27 +5,42 @@ import { GigaChatCallOptions } from 'langchain-gigachat';
 
 import { getAiClient } from '@/lib/ai/getAiClient';
 import { defaultAiClientType } from '@/lib/ai/types/TAiClientType';
+import { getErrorText } from '@/lib/helpers';
 
 import { TPlainMessage } from '../types/messages';
-import { TAIQueryOptions } from '../types/TAIQueryOptions';
+import { TAIQuerDebugDataId, TAIQueryOptions } from '../types/TAIQueryOptions';
 import { TAITextQueryData } from '../types/TAITextQueryData';
 
 type TGenericMessage = HumanMessage | SystemMessage;
 
-const debugDataPrefix = './';
-const defaultDebugData = 'sample-data/GenerateQuestions/questions-query-data-01.json';
+async function getDebugDataContent(debugData: TAIQuerDebugDataId) {
+  switch (debugData) {
+    case 'answers-query-data-01':
+      return await import('./sample-data/GenerateQuestions/answers-query-data-01.json');
+
+    case 'questions-query-data-01':
+    default:
+      return await import('./sample-data/GenerateQuestions/questions-query-data-01.json');
+  }
+}
 
 export async function sendAiTextQuery(messages: TPlainMessage[], opts: TAIQueryOptions = {}) {
   const { clientType = defaultAiClientType, debugData } = opts;
-  try {
-    if (debugData) {
-      await new Promise((r) => setTimeout(r, 1000));
-      const sampleJsonFile =
-        debugDataPrefix + (typeof debugData === 'string' ? debugData : defaultDebugData);
-      const rawData = await import(sampleJsonFile);
-      const data = { ...rawData.default } as TAITextQueryData;
-      return data;
+  if (debugData) {
+    await new Promise((r) => setTimeout(r, 1000));
+    try {
+      const data = await getDebugDataContent(debugData);
+      return data.default as TAITextQueryData;
+    } catch (error) {
+      const details = getErrorText(error);
+      const message = 'Cannot load debug data';
+      // eslint-disable-next-line no-console
+      console.error('[sendAiTextQuery] ❌ Error:', [message, details].join(': '), { error });
+      debugger; // eslint-disable-line no-debugger
+      throw error;
     }
+  }
+  try {
     const prepartedMessages: TGenericMessage[] = messages.map(({ role: type, content: text }) => {
       if (type === 'system') {
         return new SystemMessage(text);
@@ -59,8 +74,12 @@ export async function sendAiTextQuery(messages: TPlainMessage[], opts: TAIQueryO
     };
     return data;
   } catch (error) {
+    const details = getErrorText(error);
+    const message = 'Cannot receive and process AI generated data';
     // eslint-disable-next-line no-console
-    console.error('[sendAiTextQuery] ❌ Error:', error);
+    console.error('[sendAiTextQuery] ❌ Error:', [message, details].join(': '), {
+      error,
+    });
     debugger; // eslint-disable-line no-debugger
     throw error;
   }

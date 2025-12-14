@@ -92,11 +92,11 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
     <div
       className={cn(
         isDev && '__ShowLogRecords', // DEBUG
-        'flex flex-col gap-4 overflow-hidden rounded-md border border-gray-500/10 p-4',
+        'flex flex-col gap-4 overflow-hidden rounded-md border border-gray-500/10 py-4',
         className,
       )}
     >
-      <h2 className="flex">
+      <h2 className="flex px-4">
         <span className="flex-1 text-lg font-semibold">Operation Log</span>{' '}
         <span className="opacity-30">(reversed)</span>
       </h2>
@@ -108,7 +108,7 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
           )}
           viewportClassName={cn(
             isDev && '__ShowLogRecords_ScrollViewport', // DEBUG
-            '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
+            '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1 [&>div]:px-4',
           )}
         >
           {reversedLogs.map((log, i) => {
