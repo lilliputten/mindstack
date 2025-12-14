@@ -1,14 +1,14 @@
 import { CommandGroup } from '@grammyjs/commands';
-import { getTranslations } from 'next-intl/server';
 
 import { BotContext, TCallbackContext, TCommandContext } from '@/features/bot/core/botTypes';
 import { botCommands, getBot } from '@/features/bot/core/getBot';
+import { getT } from '@/i18n';
 
 const bot = getBot();
 
 export async function initBotCommands(locale?: string, ctx?: TCommandContext | TCallbackContext) {
-  const t = await getTranslations({ locale: locale || 'en', namespace: 'BotMenu' });
-  const tRu = await getTranslations({ locale: 'ru', namespace: 'BotMenu' });
+  const t = await getT({ locale: locale || 'en', namespace: 'BotMenu' });
+  const tRu = await getT({ locale: 'ru', namespace: 'BotMenu' });
 
   function addCommand(commandsGroup: CommandGroup<BotContext>, id: string) {
     if (locale) {

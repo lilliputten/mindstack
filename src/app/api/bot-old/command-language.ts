@@ -1,17 +1,16 @@
 import { InlineKeyboard } from 'grammy';
-import { getTranslations } from 'next-intl/server';
 
 import { TCommandContext } from '@/features/bot/core/botTypes';
 import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
-import { localeNames } from '@/i18n';
+import { getT, localeNames } from '@/i18n';
 import { localesList } from '@/i18n/types';
 
 const bot = getBot();
 
 bot.command('language', async (ctx: TCommandContext) => {
   const locale = getContextLocale(ctx);
-  const t = await getTranslations({ locale });
+  const t = await getT({ locale });
   const keyboard = new InlineKeyboard();
   localesList.forEach((locale) => {
     const text = localeNames[locale];
@@ -26,7 +25,7 @@ bot.command('language', async (ctx: TCommandContext) => {
 localesList.forEach(async (locale) => {
   bot.callbackQuery(`select-language-${locale}`, async (ctx) => {
     const session = ctx.session;
-    const t = await getTranslations({ locale });
+    const t = await getT({ locale });
     const localeText = localeNames[locale];
     const text = t('Language Changed For') + ' ' + localeText;
     session.language_code = locale;

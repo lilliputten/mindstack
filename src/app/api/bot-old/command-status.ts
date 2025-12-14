@@ -1,6 +1,6 @@
 import { TelegramUserData } from '@telegram-auth/server';
 import { CallbackQueryContext, InlineKeyboard } from 'grammy';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getFormatter } from 'next-intl/server';
 
 import { prisma } from '@/lib/db';
 import { BotContext, TCommandContext } from '@/features/bot/core/botTypes';
@@ -8,13 +8,13 @@ import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
 import { getTelegramUserAvatarUrl } from '@/features/bot/helpers/getTelegramUserAvatarUrl';
 import { createUserOrUpdateTelegramUser } from '@/features/users/actions';
-import { localeNames } from '@/i18n';
+import { getT, localeNames } from '@/i18n';
 
 const bot = getBot();
 
 bot.command('status', async (ctx: TCommandContext) => {
   const locale = getContextLocale(ctx);
-  const t = await getTranslations({ namespace: 'Bot', locale });
+  const t = await getT({ namespace: 'Bot', locale });
   const ctxUser = ctx.from;
   if (!ctxUser) {
     return await ctx.reply(t('noUserData'), {
@@ -89,7 +89,7 @@ async function createAccountQueryCallback(
 ) {
   // const session = ctx.session;
   const locale = getContextLocale(ctx);
-  const t = await getTranslations({ locale, namespace: 'Bot' });
+  const t = await getT({ locale, namespace: 'Bot' });
   await ctx.editMessageReplyMarkup();
   if (trigger !== 'create-account-yes') {
     return;

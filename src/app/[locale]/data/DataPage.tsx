@@ -1,17 +1,18 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
 import { DemoList } from '@/components/debug/DemoList';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/constants';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TDataPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'DataPage' });
+  const t = await getT({ locale, namespace: 'DataPage' });
   return constructMetadata({
     title: t('title'),
     locale,

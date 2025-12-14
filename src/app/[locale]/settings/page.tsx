@@ -1,14 +1,13 @@
-import { getTranslations } from 'next-intl/server';
-
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { SettingsPage } from './SettingsPage';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'SettingsPage' });
+  const t = await getT({ locale, namespace: 'SettingsPage' });
   const title = t('title');
   const description = t('description');
   return constructMetadata({
