@@ -1,81 +1,86 @@
 {
+  "AcceptCookiesPopup": {
+    "Accept": "Aceptar",
+    "LearnMore": "Más información",
+    "Message": "Utilizamos cookies para mejorar su experiencia. Al continuar visitando este sitio, acepta nuestro uso de cookies."
+  },
   "Pricing": {
+    "BilledAnnually": ", facturado anualmente",
+    "BilledMonthly": ", facturado mensualmente",
+    "Comparison": {
+      "AiGenerations": "Generaciones de IA",
+      "Analytics": "Análisis Detallados",
+      "CommunityAccess": "Acceso a la Comunidad",
+      "EnterpriseSecurity": "Seguridad Empresarial",
+      "ExportImport": "Exportar/Importar",
+      "PerMonth": "por mes",
+      "PrioritySupport": "Soporte Prioritario",
+      "ProgressTracking": "Seguimiento del Progreso",
+      "Topics": "Temas",
+      "Total": "total",
+      "WorkoutSessions": "Sesiones de Entrenamiento"
+    },
+    "ContactUs": "Contáctanos",
+    "Free": "Gratis",
+    "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
     "Hero": {
-      "Title": "Precios",
-      "Subtitle": "Obtén 20% de descuento con el plan anual",
       "Monthly": "Mensual",
+      "Subtitle": "Obtén 20% de descuento con el plan anual",
+      "Title": "Precios",
       "Yearly": "Anual"
     },
     "MostPopular": "Más Popular",
-    "Free": "Gratis",
-    "ContactUs": "Contáctanos",
-    "Unlimited": "Ilimitado",
     "PerMonth": "/mes",
-    "BilledAnnually": ", facturado anualmente",
-    "BilledMonthly": ", facturado mensualmente",
     "Plans": {
       "Basic": {
-        "Name": "Básico",
-        "Description": "Para individuos",
         "Button": "Comenzar",
+        "Description": "Para individuos",
         "Features": {
-          "Topics": "Crear hasta 5 temas",
-          "Workouts": "Sesiones de entrenamiento básicas",
-          "Progress": "Seguimiento del progreso",
           "Community": "Acceso a temas de la comunidad",
-          "Generations": "10 generaciones de IA en total"
-        }
-      },
-      "Pro": {
-        "Name": "Pro",
-        "Description": "Para estudiantes serios",
-        "Button": "Elegir Pro",
-        "Features": {
-          "Unlimited": "Temas y preguntas ilimitados",
-          "Ai": "Generación de preguntas con IA",
-          "Analytics": "Análisis detallados",
-          "Support": "Soporte prioritario",
-          "Generations": "100 generaciones de IA por mes"
-        }
+          "Generations": "10 generaciones de IA en total",
+          "Progress": "Seguimiento del progreso",
+          "Topics": "Crear hasta 5 temas",
+          "Workouts": "Sesiones de entrenamiento básicas"
+        },
+        "Name": "Básico"
       },
       "Premium": {
-        "Name": "Premium",
-        "Description": "Para organizaciones",
         "Button": "Elegir Premium",
+        "Description": "Para organizaciones",
         "Features": {
-          "Everything": "Todo lo de Pro",
-          "UnlimitedGenerations": "Generaciones de IA ilimitadas",
-          "Priority": "Soporte de máxima prioridad",
           "Advanced": "Integraciones avanzadas",
-          "Export": "Funcionalidad de exportar/importar"
-        }
+          "Everything": "Todo lo de Pro",
+          "Export": "Funcionalidad de exportar/importar",
+          "Priority": "Soporte de máxima prioridad",
+          "UnlimitedGenerations": "Generaciones de IA ilimitadas"
+        },
+        "Name": "Premium"
+      },
+      "Pro": {
+        "Button": "Elegir Pro",
+        "Description": "Para estudiantes serios",
+        "Features": {
+          "Ai": "Generación de preguntas con IA",
+          "Analytics": "Análisis detallados",
+          "Generations": "100 generaciones de IA por mes",
+          "Support": "Soporte prioritario",
+          "Unlimited": "Temas y preguntas ilimitados"
+        },
+        "Name": "Pro"
       },
       "Unlimited": {
-        "Name": "Ilimitado",
-        "Description": "Para organizaciones que requieren el más alto nivel de seguridad y control.",
         "Button": "Contáctanos",
+        "Description": "Para organizaciones que requieren el más alto nivel de seguridad y control.",
         "Features": {
-          "Everything": "Todo lo de Premium",
+          "Custom": "Integraciones personalizadas",
           "Enterprise": "Seguridad empresarial",
+          "Everything": "Todo lo de Premium",
           "Security": "Cumplimiento avanzado",
-          "Support": "Equipo de soporte dedicado",
-          "Custom": "Integraciones personalizadas"
-        }
+          "Support": "Equipo de soporte dedicado"
+        },
+        "Name": "Ilimitado"
       }
     },
-    "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
-    "Comparison": {
-      "Topics": "Temas",
-      "AiGenerations": "Generaciones de IA",
-      "WorkoutSessions": "Sesiones de Entrenamiento",
-      "ProgressTracking": "Seguimiento del Progreso",
-      "CommunityAccess": "Acceso a la Comunidad",
-      "Analytics": "Análisis Detallados",
-      "PrioritySupport": "Soporte Prioritario",
-      "ExportImport": "Exportar/Importar",
-      "EnterpriseSecurity": "Seguridad Empresarial",
-      "Total": "total",
-      "PerMonth": "por mes"
-    }
+    "Unlimited": "Ilimitado"
   }
 }

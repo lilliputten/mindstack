@@ -1,66 +1,45 @@
 {
-  "Bot": {
-    "localeInfo": "Язык бота: {localeText}",
-    "registeredAtInfo": "Вы зарегистрировались {createdAt}",
-    "haveTopicsInfo": "Создано тем: {topicsCount}",
-    "noTopicsInfo": "На данный момент не создано ни одной темы",
-    "gettingData": "Получение данных...",
-    "creatingAccount": "Создание акаунта...",
-    "accountCreated": "✅ Акаунт успешно создан.",
-    "no": "Нет",
-    "yes": "Да",
-    "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
-    "noUserData": "Не найдено данных пользователя",
-    "statusNoUser": "Ваши данные не найдены. По-видимому, вы еще не регистрировались на сайте. Вы хотите создать учетную запись?",
-    "checkingStatus": "Проверка статуса в приложении...",
-    "openApp": "Открыть приложение",
-    "start": "👋 Привет, чем я могу помочь? /help",
-    "selectLanguage": "Выберите язык",
-    "languageChangedFor": "Язык изменён на",
-    "help": "Пришлите мне текст, и я покажу его в жирном начертании.\n\nВы можете изменить мой язык, используя команду /language."
+  "AcceptCookiesPopup": {
+    "Accept": "Принять",
+    "LearnMore": "Подробнее",
+    "Message": "Мы используем cookies для улучшения вашего опыта. Продолжая посещать этот сайт, вы соглашаетесь с нашим использованием cookies."
   },
   "AppIntroBlock": {
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
     "title": "Добро пожаловать!"
   },
+  "Bot": {
+    "accountCreated": "✅ Акаунт успешно создан.",
+    "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
+    "checkingStatus": "Проверка статуса в приложении...",
+    "creatingAccount": "Создание акаунта...",
+    "gettingData": "Получение данных...",
+    "haveTopicsInfo": "Создано тем: {topicsCount}",
+    "help": "Пришлите мне текст, и я покажу его в жирном начертании.\n\nВы можете изменить мой язык, используя команду /language.",
+    "languageChangedFor": "Язык изменён на",
+    "localeInfo": "Язык бота: {localeText}",
+    "no": "Нет",
+    "noTopicsInfo": "На данный момент не создано ни одной темы",
+    "noUserData": "Не найдено данных пользователя",
+    "openApp": "Открыть приложение",
+    "registeredAtInfo": "Вы зарегистрировались {createdAt}",
+    "selectLanguage": "Выберите язык",
+    "start": "👋 Привет, чем я могу помочь? /help",
+    "statusNoUser": "Ваши данные не найдены. По-видимому, вы еще не регистрировались на сайте. Вы хотите создать учетную запись?",
+    "yes": "Да"
+  },
   "NavAuthButton": {
-    "sign-in": "Войти",
-    "Dashboard": "Панель"
+    "Dashboard": "Панель",
+    "sign-in": "Войти"
   },
   "NavLocaleSwitcher": {
     "label": "Сменить язык",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} other {Автоматически}}"
   },
-  "Settings": {},
-  "Themes": {
-    "brand": "Основная",
-    "red": "Красный",
-    "orange": "Оранжевый",
-    "amber": "Янтарь",
-    "yellow": "Желтый",
-    "lime": "Лайм",
-    "green": "Зеленый",
-    "emerald": "Изумруд",
-    "teal": "Чирок",
-    "cyan": "Голубой",
-    "sky": "Небо",
-    "blue": "Синий",
-    "indigo": "Индиго",
-    "violet": "Фиолетовый",
-    "purple": "Фиолетовый",
-    "fuchsia": "Фуксия",
-    "pink": "Розовый",
-    "rose": "Роза",
-    "slate": "Шифер",
-    "gray": "Серый",
-    "zinc": "Цинк",
-    "neutral": "Нейтральный",
-    "stone": "Камень"
-  },
   "NavModeToggle": {
+    "dark": "Темная",
     "label": "Переключить тему",
     "light": "Светлая",
-    "dark": "Темная",
     "system": "Системная"
   },
   "NavUserAccount": {
@@ -69,99 +48,125 @@
     "Settings": "Настройки",
     "Sign Out": "Выйти"
   },
-  "SiteMenu": {
-    "AvailableTopics": "Доступные темы",
-    "MyTopics": "Мои темы",
-    "AllTopics": "Все темы",
-    "Welcome": "Добро пожаловать",
-    "Data": "Данные",
-    "Info": "Информация"
-  },
-  "SignInForm": {
-    "sign-in": "Войти",
-    "sign-in-with-github": "Войти с GitHub",
-    "sign-in-with-google": "Войти с Google",
-    "sign-in-with-yandex": "Войти с Yandex",
-    "sign-in-with-telegram": "Войти с Telegram",
-    "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные."
-  },
   "Pricing": {
+    "BilledAnnually": ", оплата ежегодно",
+    "BilledMonthly": ", оплата ежемесячно",
+    "Comparison": {
+      "AiGenerations": "ИИ генерации",
+      "Analytics": "Подробная аналитика",
+      "CommunityAccess": "Доступ к сообществу",
+      "EnterpriseSecurity": "Корпоративная безопасность",
+      "ExportImport": "Экспорт/Импорт",
+      "PerMonth": "в месяц",
+      "PrioritySupport": "Приоритетная поддержка",
+      "ProgressTracking": "Отслеживание прогресса",
+      "Topics": "Темы",
+      "Total": "всего",
+      "WorkoutSessions": "Тренировки"
+    },
+    "ContactUs": "Свяжитесь с нами",
+    "Free": "Бесплатно",
+    "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
     "Hero": {
-      "Title": "Тарифы",
-      "Subtitle": "Получите скидку 20% при годовой оплате",
       "Monthly": "Ежемесячно",
+      "Subtitle": "Получите скидку 20% при годовой оплате",
+      "Title": "Тарифы",
       "Yearly": "Ежегодно"
     },
     "MostPopular": "Самый популярный",
-    "Free": "Бесплатно",
-    "ContactUs": "Свяжитесь с нами",
-    "Unlimited": "Неограниченно",
     "PerMonth": "/месяц",
-    "BilledAnnually": ", оплата ежегодно",
-    "BilledMonthly": ", оплата ежемесячно",
     "Plans": {
       "Basic": {
-        "Name": "Базовый",
-        "Description": "Для частных лиц",
         "Button": "Начать",
+        "Description": "Для частных лиц",
         "Features": {
-          "Topics": "Создание до 5 тем",
-          "Workouts": "Базовые тренировки",
-          "Progress": "Отслеживание прогресса",
           "Community": "Доступ к темам сообщества",
-          "Generations": "10 ИИ генераций всего"
-        }
-      },
-      "Pro": {
-        "Name": "Про",
-        "Description": "Для серьёзных учеников",
-        "Button": "Выбрать Про",
-        "Features": {
-          "Unlimited": "Неограниченные темы и вопросы",
-          "Ai": "Генерация вопросов с помощью ИИ",
-          "Analytics": "Подробная аналитика",
-          "Support": "Приоритетная поддержка",
-          "Generations": "100 ИИ генераций в месяц"
-        }
+          "Generations": "10 ИИ генераций всего",
+          "Progress": "Отслеживание прогресса",
+          "Topics": "Создание до 5 тем",
+          "Workouts": "Базовые тренировки"
+        },
+        "Name": "Базовый"
       },
       "Premium": {
-        "Name": "Премиум",
-        "Description": "Для организаций",
         "Button": "Выбрать Премиум",
+        "Description": "Для организаций",
         "Features": {
-          "Everything": "Всё из Про",
-          "UnlimitedGenerations": "Неограниченные ИИ генерации",
-          "Priority": "Поддержка высшего приоритета",
           "Advanced": "Продвинутые интеграции",
-          "Export": "Функции экспорта/импорта"
-        }
+          "Everything": "Всё из Про",
+          "Export": "Функции экспорта/импорта",
+          "Priority": "Поддержка высшего приоритета",
+          "UnlimitedGenerations": "Неограниченные ИИ генерации"
+        },
+        "Name": "Премиум"
+      },
+      "Pro": {
+        "Button": "Выбрать Про",
+        "Description": "Для серьёзных учеников",
+        "Features": {
+          "Ai": "Генерация вопросов с помощью ИИ",
+          "Analytics": "Подробная аналитика",
+          "Generations": "100 ИИ генераций в месяц",
+          "Support": "Приоритетная поддержка",
+          "Unlimited": "Неограниченные темы и вопросы"
+        },
+        "Name": "Про"
       },
       "Unlimited": {
-        "Name": "Неограниченный",
-        "Description": "Для организаций, которым требуется высочайший уровень безопасности и контроля.",
         "Button": "Свяжитесь с нами",
+        "Description": "Для организаций, которым требуется высочайший уровень безопасности и контроля.",
         "Features": {
-          "Everything": "Всё из Премиум",
+          "Custom": "Пользовательские интеграции",
           "Enterprise": "Корпоративная безопасность",
+          "Everything": "Всё из Премиум",
           "Security": "Продвинутое соответствие",
-          "Support": "Выделенная команда поддержки",
-          "Custom": "Пользовательские интеграции"
-        }
+          "Support": "Выделенная команда поддержки"
+        },
+        "Name": "Неограниченный"
       }
     },
-    "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
-    "Comparison": {
-      "Topics": "Темы",
-      "AiGenerations": "ИИ генерации",
-      "WorkoutSessions": "Тренировки",
-      "ProgressTracking": "Отслеживание прогресса",
-      "CommunityAccess": "Доступ к сообществу",
-      "Analytics": "Подробная аналитика",
-      "PrioritySupport": "Приоритетная поддержка",
-      "ExportImport": "Экспорт/Импорт",
-      "EnterpriseSecurity": "Корпоративная безопасность",
-      "Total": "всего",
-      "PerMonth": "в месяц"
-    }
+    "Unlimited": "Неограниченно"
+  },
+  "Settings": {},
+  "SignInForm": {
+    "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",
+    "sign-in": "Войти",
+    "sign-in-with-github": "Войти с GitHub",
+    "sign-in-with-google": "Войти с Google",
+    "sign-in-with-telegram": "Войти с Telegram",
+    "sign-in-with-yandex": "Войти с Yandex"
+  },
+  "SiteMenu": {
+    "AllTopics": "Все темы",
+    "AvailableTopics": "Доступные темы",
+    "Data": "Данные",
+    "Info": "Информация",
+    "MyTopics": "Мои темы",
+    "Welcome": "Добро пожаловать"
+  },
+  "Themes": {
+    "amber": "Янтарь",
+    "blue": "Синий",
+    "brand": "Основная",
+    "cyan": "Голубой",
+    "emerald": "Изумруд",
+    "fuchsia": "Фуксия",
+    "gray": "Серый",
+    "green": "Зеленый",
+    "indigo": "Индиго",
+    "lime": "Лайм",
+    "neutral": "Нейтральный",
+    "orange": "Оранжевый",
+    "pink": "Розовый",
+    "purple": "Фиолетовый",
+    "red": "Красный",
+    "rose": "Роза",
+    "sky": "Небо",
+    "slate": "Шифер",
+    "stone": "Камень",
+    "teal": "Чирок",
+    "violet": "Фиолетовый",
+    "yellow": "Желтый",
+    "zinc": "Цинк"
   }
 }
