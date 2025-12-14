@@ -6,19 +6,21 @@ export const allTopicsRoute = '/topics/all';
 export const authErrorRoute = '/auth/error';
 export const availableTopicsRoute = '/topics/available'; // Example
 export const chartsRoute = '/charts';
-export const cookiesRoute = '/cookies';
 export const dashboardRoute = '/dashboard';
-export const docsRoute = '/docs';
 export const myTopicsRoute = '/topics/my';
 export const settingsRoute = '/settings';
-export const startRoute = '/start';
-export const welcomeRoute = '/welcome';
 
-// Public routes (without sidebar)
+// Root route
 export const rootRoute = '/';
+
+// Public content routes (without sidebar)
+export const cookiesRoute = '/cookies';
+export const docsRoute = '/docs';
 export const pricingRoute = '/pricing';
 export const privacyRoute = '/privacy';
+export const startRoute = '/start';
 export const termsRoute = '/terms';
+export const welcomeRoute = '/welcome';
 
 /** NOTE: That's used only to mock real intl context */
 export const pathnames = {
@@ -43,12 +45,19 @@ export const pathnames = {
   [termsRoute]: termsRoute,
 };
 
+/** All routes to display without dashboard sidebar. */
 export const routesWithoutSidebar = [
-  // All routes to display without dashboard sidebar. TODO: Move to config?
+  // Root route
   rootRoute,
+
+  // Public content routes (without sidebar)
+  cookiesRoute,
+  docsRoute,
   pricingRoute,
   privacyRoute,
+  startRoute,
   termsRoute,
+  welcomeRoute,
 ];
 
 export type TRoutePathKey = keyof typeof pathnames;

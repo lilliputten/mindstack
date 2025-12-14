@@ -24,6 +24,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     li: ({ children }) => <li className="ml-4">{children}</li>,
     strong: ({ children }) => <strong className="font-bold">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
+    hr: ({ children }) => <hr className="my-4 bg-theme-800/5">{children}</hr>,
     // Customize link behavior
     a: ({ href, children, ...props }) => {
       const isHttp = href?.startsWith('http');
@@ -40,18 +41,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </a>
       );
     },
-    code: ({ children, className }) => {
+    code: (props) => {
+      const { children, className } = props;
       const match = /language-(\w+)/.exec(className || '');
-      return (
-        <SyntaxHighlighter
-          PreTag="div"
-          language={match ? match[1] : undefined}
-          style={nightOwl}
-          className="mb-4 rounded-lg prose-code:!text-sm"
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      );
+      if (match) {
+        return (
+          <SyntaxHighlighter
+            PreTag="div"
+            language={match ? match[1] : undefined}
+            style={nightOwl}
+            className="mb-4 rounded-lg prose-code:!text-sm"
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        );
+      }
+      return <code className="">{children}</code>;
     },
     pre: ({ children }) => children,
     ...components,
