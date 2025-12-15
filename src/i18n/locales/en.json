@@ -212,5 +212,10 @@
     "violet": "Violet",
     "yellow": "Yellow",
     "zinc": "Zinc"
+  },
+  "UpgradeCard": {
+    "Description": "Unlock all features and get unlimited access to our support team.",
+    "Title": "Upgrade to Pro",
+    "Upgrade": "Upgrade"
   }
 }

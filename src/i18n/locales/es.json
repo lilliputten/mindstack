@@ -213,5 +213,10 @@
     "violet": "Violeta",
     "yellow": "Amarillo",
     "zinc": "Zinc"
+  },
+  "UpgradeCard": {
+    "Description": "Desbloquea todas las funciones y obtén acceso ilimitado a nuestro equipo de soporte.",
+    "Title": "Actualizar a Pro",
+    "Upgrade": "Actualizar"
   }
 }
