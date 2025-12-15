@@ -1,12 +1,10 @@
 # MindStack Documentation
 
-{/*
-
+<!--
 TODO: Add login/authorization info
+-->
 
-*/}
-
-Welcome to MindStack - a NextJS memory training application designed to help you improve your cognitive abilities through interactive exercises and games.
+Welcome to "MindStack" -- a NextJS memory training application designed to help you improve your cognitive abilities through interactive exercises and games.
 
 ## Project Overview
 
@@ -35,10 +33,10 @@ MindStack is a modern web application built with Next.js that provides memory tr
 
 The application uses a clean navigation structure:
 
-- **Home** (`/`) - Main dashboard and overview
-- **Topics** (`/topics`) - Browse available memory training categories
-- **Profile** - Manage your account settings and view progress
-- **Documentation** (`/docs`) - This help section
+- [Home](homeRoute) -- Main dashboard and overview
+- [Topics](topicsRoute) -- Browse available memory training categories
+- Profile _(in progress)_ -- Manage your account settings and view progress
+- [Documentation](docsRoute) -- This help section
 
 ## Memory Training Topics
 
@@ -62,6 +60,7 @@ The application organizes memory exercises into different scopes and topics:
 ### Theme Selection
 
 Choose from multiple visual themes to customize your experience:
+
 - Light theme for daytime use
 - Dark theme for reduced eye strain
 - High contrast options for accessibility
@@ -69,15 +68,17 @@ Choose from multiple visual themes to customize your experience:
 ### Language Settings
 
 Switch between supported languages:
-- **English** (en) - Default language
-- **Spanish** (es) - Español
-- **Russian** (ru) - Русский
+
+- [English](/en{docsRoute}) -- English, the default language
+- [Spanish](/es{docsRoute}) -- Español
+- [Russian](/ru{docsRoute}) -- Русский
 
 ## Account Management
 
 ### Profile Settings
 
 Manage your account through the profile section:
+
 - Update personal information
 - Change password
 - Modify notification preferences
@@ -86,6 +87,7 @@ Manage your account through the profile section:
 ### Progress Tracking
 
 Monitor your improvement with:
+
 - Session statistics
 - Historical performance data
 - Achievement tracking
@@ -96,6 +98,7 @@ Monitor your improvement with:
 ### Browser Compatibility
 
 MindStack works best with modern browsers:
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
@@ -111,6 +114,7 @@ MindStack works best with modern browsers:
 ### Performance Optimization
 
 The application includes several performance features:
+
 - Server-side rendering for fast initial loads
 - Progressive loading of content
 - Optimized images and assets
@@ -121,6 +125,7 @@ The application includes several performance features:
 ### Data Protection
 
 Your privacy is important to us:
+
 - Personal data is encrypted and securely stored
 - Progress data is associated with your account
 - No personal information is shared with third parties
@@ -129,29 +134,33 @@ Your privacy is important to us:
 ### Cookie Usage
 
 The application uses cookies for:
+
 - Authentication and session management
 - Preference storage (theme, language)
 - Analytics and performance monitoring
 - Security and fraud prevention
 
-For detailed information, see our [Privacy Policy](/privacy) and [Cookie Policy](/cookies).
+For detailed information, see our [Privacy Policy]({privacyRoute}) and [Cookie Policy]({cookiesRoute}).
 
 ## Troubleshooting
 
 ### Common Issues
 
 **Login Problems**
+
 - Verify your email and password
 - Check for caps lock or typing errors
 - Try resetting your password if needed
 
 **Performance Issues**
+
 - Clear your browser cache
 - Disable browser extensions temporarily
 - Check your internet connection
 - Try using a different browser
 
 **Progress Not Saving**
+
 - Ensure you're logged in to your account
 - Check your internet connection
 - Verify cookies are enabled
@@ -162,19 +171,21 @@ For detailed information, see our [Privacy Policy](/privacy) and [Cookie Policy]
 If you encounter issues or have questions:
 
 1. **Check this documentation** for common solutions
-2. **Contact Support**: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-3. **Visit our website**: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+2. **Contact Support**: [{contactEmail}](mailto:{contactEmail})
+3. **Visit our website**: [{publicAddr}]({publicAddr})
 
 ## Legal Information
 
 By using MindStack, you agree to our:
-- [Terms of Service](/terms) - Usage rules and conditions
-- [Privacy Policy](/privacy) - How we handle your data
-- [Cookie Policy](/cookies) - Information about cookies and tracking
+
+- [Terms of Service]({termsRoute}) - Usage rules and conditions
+- [Privacy Policy]({privacyRoute}) - How we handle your data
+- [Cookie Policy]({cookiesRoute}) - Information about cookies and tracking
 
 ## Updates and Changelog
 
 The application is regularly updated with:
+
 - New memory training exercises
 - Performance improvements
 - Security enhancements
@@ -184,6 +195,6 @@ Check the application for update notifications and new features.
 
 ---
 
-**Version**: {props.versionInfo}
+**Version**: {versionInfo}
 
 For the most current information and updates, visit our website or contact our support team.

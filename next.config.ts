@@ -1,5 +1,5 @@
 import type { NextConfig } from 'next';
-import nextMdx from '@next/mdx';
+// import nextMdx from '@next/mdx';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 import {
@@ -17,9 +17,11 @@ import './src/config/env';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const withMdx = nextMdx({
-  extension: /\.mdx?$/,
-});
+/* // UNUSED: mdx
+ * const withMdx = nextMdx({
+ *   extension: /\.mdx?$/,
+ * });
+ */
 
 /* // Show loaded environment variables
  * declare global {
@@ -53,8 +55,22 @@ $themes: ( ${scssThemes} );
 `;
 
 const nextConfig: NextConfig = {
-  turbopack: {},
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  turbopack: {
+    rules: {
+      '*.md': {
+        // Example using a raw loader exposed to Turbopack
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+    },
+  },
+  pageExtensions: [
+    'js',
+    'jsx',
+    // 'mdx',
+    'ts',
+    'tsx',
+  ],
   sassOptions: {
     additionalData: scssVariables,
     silenceDeprecations: ['legacy-js-api'],
@@ -63,4 +79,4 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
-export default withMdx(withNextIntl(nextConfig));
+export default /* withMdx( */ withNextIntl(nextConfig);

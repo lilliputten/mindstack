@@ -48,14 +48,13 @@ export function PageError(props: TErrorProps) {
 
   React.useEffect(() => {
     if (error) {
-      const errText = getErrorText(error);
       // eslint-disable-next-line no-console
       console.error('[PageError:error]', errText, {
         error,
       });
     }
     // TODO: Log the error to an error reporting service?
-  }, [error]);
+  }, [error, errText]);
 
   const goBack = useGoBack(rootRoute);
 
@@ -89,7 +88,7 @@ export function PageError(props: TErrorProps) {
           {/* // To show only general message for the users?
           See error log for details.
           */}
-          {errText}
+          -- {errText}
         </ErrorPlaceHolder.Description>
       )}
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4">

@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nightOwl } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
+import type { Plugin } from 'unified';
+import { visit } from 'unist-util-visit';
 
 import { cn } from '@/lib/utils';
 import * as Icons from '@/components/shared/Icons';
@@ -13,10 +15,45 @@ interface MarkdownProps {
   children: string;
   className?: string;
   omitLinks?: boolean;
+  vars?: Record<string, string>;
 }
 
-export function MarkdownText({ children, className, omitLinks }: MarkdownProps) {
-  // const { resolvedTheme } = useTheme();
+const remarkTypograph: Plugin = () => (tree) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  visit(tree, 'text', (node: any, index, parent: any) => {
+    // Skip code, inlineCode, link URLs, etc.
+    if (!parent || ['code', 'inlineCode', 'link'].includes(parent.type)) return;
+
+    let value: string = node.value;
+
+    // -- to em dash (basic example)
+    value = value.replace(/(^|[^-])--([^-]|$)/g, '$1—$2');
+
+    // "text" to «text»
+    value = value.replace(/"([^"]+)"/g, '«$1»');
+
+    node.value = value;
+  });
+};
+
+export function MarkdownText({ children, className, omitLinks, vars }: MarkdownProps) {
+  let processedChildren = children;
+
+  // Remove HTML comments
+  processedChildren = processedChildren.replace(/<!--[\s\S]*?-->/g, '');
+
+  // Replace variables
+  if (vars) {
+    processedChildren = processedChildren.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
+  }
+
+  /* // Naive typography processing
+   * processedChildren = processedChildren
+   *   .replace(/--/g, '—')
+   *   .replace(/"/g, '«')
+   *   .replace(/«([^«»]*)«/g, '«$1»');
+   */
+
   // @see https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
   // @see https://www.npmjs.com/package/react-syntax-highlighter
   const syntax = nightOwl; // resolvedTheme === 'dark' ? nightOwl : materialLight;
@@ -40,7 +77,7 @@ export function MarkdownText({ children, className, omitLinks }: MarkdownProps) 
       )}
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkTypograph]}
         components={{
           // Customize link behavior
           a: ({ href, children, ...props }) => {
@@ -63,23 +100,31 @@ export function MarkdownText({ children, className, omitLinks }: MarkdownProps) 
           },
           code: (props) => {
             const { children, className, ...rest } = props;
-            const { ref: _ref, ...syntaxProps } = rest;
+            const { ref, ...syntaxProps } = rest;
             const match = /language-(\w+)/.exec(className || '');
-            return (
-              <SyntaxHighlighter
-                className="SyntaxHighlighter"
-                {...syntaxProps}
-                PreTag="div"
-                language={match ? match[1] : undefined}
-                style={syntax}
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
+            return match ? (
+              (() => {
+                return (
+                  <SyntaxHighlighter
+                    className="SyntaxHighlighter"
+                    {...syntaxProps}
+                    PreTag="div"
+                    language={match[1]}
+                    style={syntax}
+                  >
+                    {String(children).replace(/\n$/, '')}
+                  </SyntaxHighlighter>
+                );
+              })()
+            ) : (
+              <code ref={ref} {...syntaxProps} className={className}>
+                {children}
+              </code>
             );
           },
         }}
       >
-        {children}
+        {processedChildren}
       </ReactMarkdown>
     </div>
   );

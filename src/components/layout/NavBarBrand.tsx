@@ -58,7 +58,7 @@ export function NavBarBrand(props: NavBarBrandProps) {
       <Image
         data-testid="NavBarBrandImage"
         src={logoSvg} // {!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
-        className="h-auto w-48 select-none"
+        className="h-auto w-48 select-none sm:min-w-48"
         // className="h-14 w-auto"
         priority={false}
         alt={siteTitle}

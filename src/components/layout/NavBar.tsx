@@ -143,6 +143,7 @@ export function NavBar(props: NavBarProps) {
              */
             'flex',
             'leading-10',
+            'max-sm:hidden',
             'max-sm:flex-wrap',
             'max-sm:overflow-hidden',
             'max-h-10',

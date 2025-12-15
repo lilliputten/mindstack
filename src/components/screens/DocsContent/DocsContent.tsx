@@ -1,87 +1,80 @@
 'use client';
 
 import React from 'react';
-import dynamic, { DynamicOptionsLoadingProps } from 'next/dynamic';
-import { MDXProps } from 'mdx/types';
-import ReactDOMServer from 'react-dom/server';
+import { useQuery } from '@tanstack/react-query';
 
-import { capitalizeString, getErrorText, getRandomHashString } from '@/lib/helpers';
+import { getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper, PageError } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
 import { TextPageSkeleton } from '@/components/shared/TextPageSkeleton';
-import { contactEmail, publicAddr, versionInfo } from '@/config';
-import { isDev } from '@/constants';
+import {
+  contactEmail,
+  cookiesRoute,
+  docsRoute,
+  privacyRoute,
+  publicAddr,
+  termsRoute,
+  versionInfo,
+} from '@/config';
+import { isDev, longStaleTime } from '@/constants';
 import { defaultLocale, TLocale } from '@/i18n';
 
-const saveScrollHash = getRandomHashString();
+import { getContent } from './getContent';
 
-const contentCache = new Map<string, React.ComponentType<MDXProps>>();
+const saveScrollHash = getRandomHashString();
 
 interface TProps {
   locale: TLocale;
 }
 
-function DocsContentSuspense(props: DynamicOptionsLoadingProps) {
-  const { error, retry } = props;
+const staleTime = longStaleTime;
+
+export function DocsContent(props: TProps) {
+  const { locale = defaultLocale } = props;
+
+  const contentQuery = useQuery({
+    queryKey: ['DocsContent', locale],
+    queryFn: async () => {
+      if (isDev) {
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+      const res = await getContent(locale);
+      return res.content;
+    },
+    staleTime,
+  });
+
+  const { data, isLoading, isFetched, error } = contentQuery;
+  const isReady = !isLoading && isFetched;
+
+  const vars = React.useMemo(
+    () => ({
+      docsRoute,
+      contactEmail,
+      publicAddr,
+      cookiesRoute,
+      privacyRoute,
+      termsRoute,
+      versionInfo,
+    }),
+    [],
+  );
+
   if (error) {
     return (
       <PageError
-        className={cn(isDev && '__DocsContentSuspense_error')}
+        className={cn(
+          isDev && '__DocsContent_Error', // DEBUG
+        )}
         error={error}
-        reset={retry}
       />
     );
   }
-  return <TextPageSkeleton className={cn(isDev && '__DocsContentSuspense_loading')} />;
-}
-
-export function DocsContent({ locale }: TProps) {
-  const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
-
-  const DynamicComponent = React.useMemo(() => {
-    const contentId = capitalizeString(localeId);
-    const cacheKey = `DocsContent${contentId}`;
-    if (contentCache.has(cacheKey)) {
-      return contentCache.get(cacheKey)!;
-    }
-    const component = dynamic(
-      async () => {
-        try {
-          return await import(`./DocsContent${contentId}.mdx`);
-        } catch (error) {
-          const errMsg = getErrorText(error);
-          // eslint-disable-next-line no-console
-          console.error('[DocsContent:DynamicComponent]', errMsg, {
-            error,
-            localeId,
-            contentId,
-          });
-          // debugger; // eslint-disable-line no-debugger
-          if (localeId !== defaultLocale) {
-            setLocaleId(defaultLocale);
-          }
-          throw error;
-        }
-      },
-      {
-        ssr: true,
-        loading: DocsContentSuspense,
-      },
-    );
-    contentCache.set(cacheKey, component);
-    return component;
-  }, [localeId]);
-
-  const emailHtmlLink = ReactDOMServer.renderToString(
-    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>,
-  );
-  const websiteHtmlLink = ReactDOMServer.renderToString(
-    <a href={publicAddr} target="_blank" rel="noreferrer">
-      {publicAddr} <Icons.ExternalLink className="inline size-3" />
-    </a>,
-  );
+  if (!isReady) {
+    return <TextPageSkeleton className={cn(isDev && '__DocsContent_Loading')} />;
+  }
 
   return (
     <ScrollArea
@@ -100,11 +93,7 @@ export function DocsContent({ locale }: TProps) {
       )}
     >
       <MaxWidthWrapper className="text-content flex flex-col p-6">
-        <DynamicComponent
-          emailHtmlLink={emailHtmlLink}
-          websiteHtmlLink={websiteHtmlLink}
-          versionInfo={versionInfo}
-        />
+        <MarkdownText vars={vars}>{data || ''}</MarkdownText>
       </MaxWidthWrapper>
       <ContentFooter />
     </ScrollArea>
