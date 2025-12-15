@@ -5,6 +5,17 @@
     "Message": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies."
   },
   "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "AvailableTopics": {
+    "Back": "Back",
+    "FinishTraining": "Finish Training",
+    "ManageTopic": "Manage Topic",
+    "NoActiveTrainingFound": "No active training found.",
+    "RestartTraining": "Restart Training",
+    "ResumeTraining": "Resume Training",
+    "StartNewTraining": "Start New Training",
+    "StartTraining": "Start Training",
+    "TrainingDetails": "Training Details"
+  },
   "Bot": {
     "accountCreated": "✅ Your account has been successfully created.",
     "canNotCreateAccount": "❌ Error creating account profile.",
@@ -30,6 +41,7 @@
     "start": "Start",
     "status": "Check your status"
   },
+  "Close": "Close",
   "Language Changed For": "Language has been changed for",
   "NavAuthButton": {
     "Dashboard": "Dashboard",

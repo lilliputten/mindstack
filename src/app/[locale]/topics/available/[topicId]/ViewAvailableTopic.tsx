@@ -16,6 +16,7 @@ import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { ViewAvailableTopicContent } from './ViewAvailableTopicContent';
 
@@ -29,6 +30,7 @@ interface TViewAvailableTopicProps {
 export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   const { topic } = props;
   const topicId = topic.id;
+  const t = useT();
 
   const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(routePath);
@@ -70,7 +72,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('AvailableTopics.Back'),
         variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -79,10 +81,10 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       {
         id: 'StartTraining',
         content: workout?.finished
-          ? 'Restart Training'
+          ? t('AvailableTopics.RestartTraining')
           : workout?.started
-            ? 'Resume Training'
-            : 'Start Training',
+            ? t('AvailableTopics.ResumeTraining')
+            : t('AvailableTopics.StartTraining'),
         variant: 'theme',
         icon: Icons.Activity,
         visibleFor: 'xs',
@@ -91,7 +93,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       },
       {
         id: 'ReviewTraining',
-        content: 'Training Details',
+        content: t('AvailableTopics.TrainingDetails'),
         variant: 'ghost',
         icon: Icons.LineChart,
         visibleFor: 'lg',
@@ -100,7 +102,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       },
       {
         id: 'ManageTopic',
-        content: 'Manage Topic',
+        content: t('AvailableTopics.ManageTopic'),
         variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'xl',
@@ -109,6 +111,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       },
     ],
     [
+      t,
       goBack,
       workout,
       allowedTraining,

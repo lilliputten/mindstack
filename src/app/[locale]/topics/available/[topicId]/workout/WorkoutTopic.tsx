@@ -19,6 +19,7 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionData } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { ContentSkeleton } from './ContentSkeleton';
 
@@ -26,6 +27,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   const { className } = props;
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
   const routePath = topicsRoutes[manageScope];
+  const t = useT();
 
   const workoutContext = useWorkoutContext();
   const {
@@ -70,7 +72,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('AvailableTopics.Back'),
         variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -79,10 +81,10 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       {
         id: 'StartTraining',
         content: workout?.finished
-          ? 'Restart Training'
+          ? t('AvailableTopics.RestartTraining')
           : workout?.started
-            ? 'Resume Training'
-            : 'Start Training',
+            ? t('AvailableTopics.ResumeTraining')
+            : t('AvailableTopics.StartTraining'),
         variant: 'theme',
         icon: Icons.Activity,
         visibleFor: 'sm',
@@ -91,7 +93,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       },
       {
         id: 'ManageTopic',
-        content: 'Manage Topic',
+        content: t('AvailableTopics.ManageTopic'),
         variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'xl',
@@ -101,6 +103,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       },
     ],
     [
+      t,
       goBack,
       workout?.finished,
       workout?.started,
@@ -118,7 +121,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
     scope: manageScope,
     topic: topic,
     lastItem: {
-      content: 'Training Details',
+      content: t('AvailableTopics.TrainingDetails'),
       // link: isWorkoutInProgress ? questionsContext.routePath : undefined,
     },
   });

@@ -5,6 +5,17 @@
     "Message": "Utilizamos cookies para mejorar su experiencia. Al continuar visitando este sitio, acepta nuestro uso de cookies."
   },
   "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
+  "AvailableTopics": {
+    "Back": "Atrás",
+    "FinishTraining": "Finalizar Entrenamiento",
+    "ManageTopic": "Gestionar Tema",
+    "NoActiveTrainingFound": "No se encontró entrenamiento activo.",
+    "RestartTraining": "Reiniciar Entrenamiento",
+    "ResumeTraining": "Reanudar Entrenamiento",
+    "StartNewTraining": "Iniciar Nuevo Entrenamiento",
+    "StartTraining": "Iniciar Entrenamiento",
+    "TrainingDetails": "Detalles del Entrenamiento"
+  },
   "Bot": {
     "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
     "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",
@@ -30,6 +41,7 @@
     "start": "Inicio",
     "status": "Verificar tu estado"
   },
+  "Close": "Cerca",
   "Language Changed For": "El idioma ha sido cambiado a",
   "NavAuthButton": {
     "Dashboard": "Panel",

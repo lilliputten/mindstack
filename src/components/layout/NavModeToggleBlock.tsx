@@ -38,7 +38,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
               'flex cursor-pointer items-center gap-2 text-sm',
             )}
             disabled={thisTheme === currentTheme}
-            onSelect={(ev) => setTheme(thisTheme)}
+            onSelect={() => setTheme(thisTheme)}
           >
             {ThemeIcon && <ThemeIcon className="size-4" />}
             <span>{t(thisTheme)}</span>

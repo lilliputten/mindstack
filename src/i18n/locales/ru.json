@@ -9,6 +9,17 @@
     "title": "Добро пожаловать!"
   },
   "AppIntroBlockContent": "<p>Это небольшое приложение для тренировки памяти. Взгляните на краткую <AboutLink>справку по приложению</AboutLink>.</p>",
+  "AvailableTopics": {
+    "Back": "Назад",
+    "FinishTraining": "Завершить тренировку",
+    "ManageTopic": "Управление темой",
+    "NoActiveTrainingFound": "Активная тренировка не найдена.",
+    "RestartTraining": "Перезапустить тренировку",
+    "ResumeTraining": "Продолжить тренировку",
+    "StartNewTraining": "Начать новую тренировку",
+    "StartTraining": "Начать тренировку",
+    "TrainingDetails": "Детали тренировки"
+  },
   "Bot": {
     "accountCreated": "✅ Акаунт успешно создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
@@ -35,6 +46,7 @@
     "start": "Начать",
     "status": "Проверить ваш статус"
   },
+  "Close": "Закрыть",
   "Language Changed For": "Язык изменён на",
   "NavAuthButton": {
     "Dashboard": "Панель",
@@ -221,6 +233,6 @@
   "UpgradeCard": {
     "Description": "Откройте все функции и получите неограниченный доступ к нашей команде поддержки.",
     "Title": "Перейти на Pro",
-    "Upgrade": "Обновить"
+    "Upgrade": "Перейти"
   }
 }
