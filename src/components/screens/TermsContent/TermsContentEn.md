@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Effective Date:** {props.effectiveDate}
+**Effective Date:** {effectiveDate}
 
 ## Introduction
 
@@ -13,6 +13,7 @@ By accessing or using MindStack, you agree to be bound by these Terms. If you di
 ## Description of Service
 
 MindStack is a memory training application that provides:
+
 - Interactive memory exercises and games
 - Progress tracking and statistics
 - Personalized learning experiences
@@ -21,11 +22,13 @@ MindStack is a memory training application that provides:
 ## User Accounts
 
 ### Registration
+
 - You must provide accurate and complete information when creating an account
 - You are responsible for maintaining the security of your account
 - You must notify us immediately of any unauthorized use
 
 ### Account Responsibilities
+
 - You are responsible for all activities under your account
 - You must not share your account credentials
 - You must keep your contact information up to date
@@ -33,6 +36,7 @@ MindStack is a memory training application that provides:
 ## Acceptable Use
 
 You agree not to:
+
 - Use the service for any unlawful purpose
 - Attempt to gain unauthorized access to our systems
 - Interfere with or disrupt the service
@@ -42,11 +46,13 @@ You agree not to:
 ## Intellectual Property
 
 ### Our Content
+
 - All content, features, and functionality are owned by MindStack
 - You may not copy, modify, or distribute our content without permission
 - Our trademarks and logos are protected
 
 ### User Content
+
 - You retain ownership of content you create
 - You grant us a license to use your content to provide the service
 - You are responsible for ensuring you have rights to any content you upload
@@ -58,10 +64,12 @@ Your privacy is important to us. Please review our Privacy Policy, which also go
 ## Subscription and Payments
 
 ### Free Services
+
 - Basic features are available at no cost
 - We reserve the right to modify free service limitations
 
 ### Premium Services
+
 - Premium features may require payment
 - Subscription fees are billed in advance
 - Refunds are subject to our refund policy
@@ -75,10 +83,12 @@ Your privacy is important to us. Please review our Privacy Policy, which also go
 ## Termination
 
 ### By You
+
 - You may terminate your account at any time
 - Termination does not relieve you of any payment obligations
 
 ### By Us
+
 - We may terminate accounts that violate these Terms
 - We may discontinue the service with reasonable notice
 
@@ -107,5 +117,6 @@ These Terms shall be governed by and construed in accordance with applicable law
 ## Contact Us
 
 If you have questions about these Terms of Service, please contact us at:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Website: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Website: [{publicAddr}]({publicAddr})

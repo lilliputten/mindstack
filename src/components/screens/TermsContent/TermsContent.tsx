@@ -1,89 +1,68 @@
 'use client';
 
 import React from 'react';
-import dynamic, { DynamicOptionsLoadingProps } from 'next/dynamic';
-import { MDXProps } from 'mdx/types';
-import ReactDOMServer from 'react-dom/server';
+import { useQuery } from '@tanstack/react-query';
 
-import { capitalizeString, formatDate, getErrorText, getRandomHashString } from '@/lib/helpers';
+import { formatDate, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper, PageError } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
 import { TextPageSkeleton } from '@/components/shared/TextPageSkeleton';
 import { contactEmail, effectiveTermsDate, publicAddr } from '@/config';
-import { isDev } from '@/constants';
+import { isDev, longStaleTime } from '@/constants';
 import { defaultLocale, TLocale } from '@/i18n';
+
+import { getContent } from './getContent';
 
 const saveScrollHash = getRandomHashString();
 
-const contentCache = new Map<string, React.ComponentType<MDXProps>>();
+const staleTime = longStaleTime;
 
 interface TProps {
   locale: TLocale;
 }
 
-function TermsContentSuspense(props: DynamicOptionsLoadingProps) {
-  const { error, retry } = props;
+export function TermsContent(props: TProps) {
+  const { locale = defaultLocale } = props;
+
+  const contentQuery = useQuery({
+    queryKey: ['TermsContent', locale],
+    queryFn: async () => {
+      if (isDev) {
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+      const res = await getContent(locale);
+      return res.content;
+    },
+    staleTime,
+  });
+
+  const { data, isLoading, isFetched, error } = contentQuery;
+  const isReady = !isLoading && isFetched;
+
+  const vars = React.useMemo(
+    () => ({
+      effectiveDate: formatDate(effectiveTermsDate, locale),
+      contactEmail,
+      publicAddr,
+    }),
+    [locale],
+  );
+
   if (error) {
     return (
       <PageError
-        className={cn(isDev && '__TermsContentSuspense_error')}
+        className={cn(
+          isDev && '__TermsContent_Error', // DEBUG
+        )}
         error={error}
-        reset={retry}
       />
     );
   }
-  return <TextPageSkeleton className={cn(isDev && '__TermsContentSuspense_loading')} />;
-}
-
-export function TermsContent({ locale }: TProps) {
-  const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
-
-  // Dynamically load the appropriate  language component
-  const DynamicComponent = React.useMemo(() => {
-    const contentId = capitalizeString(localeId);
-    const cacheKey = `TermsContent${contentId}`;
-    if (contentCache.has(cacheKey)) {
-      return contentCache.get(cacheKey)!;
-    }
-    const component = dynamic(
-      async () => {
-        try {
-          return await import(`./TermsContent${contentId}.mdx`);
-        } catch (error) {
-          const errMsg = getErrorText(error);
-          // eslint-disable-next-line no-console
-          console.error('[TermsContent:DynamicComponent]', errMsg, {
-            error,
-            localeId,
-            contentId,
-          });
-          debugger; // eslint-disable-line no-debugger
-          if (localeId !== defaultLocale) {
-            setLocaleId(defaultLocale);
-          }
-          throw error;
-        }
-      },
-      {
-        ssr: true,
-        loading: TermsContentSuspense,
-      },
-    );
-    contentCache.set(cacheKey, component);
-    return component;
-  }, [localeId]);
-
-  const effectiveDate = formatDate(effectiveTermsDate, localeId);
-  const emailHtmlLink = ReactDOMServer.renderToString(
-    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>,
-  );
-  const websiteHtmlLink = ReactDOMServer.renderToString(
-    <a href={publicAddr} target="_blank" rel="noreferrer">
-      {publicAddr} <Icons.ExternalLink className="inline size-3" />
-    </a>,
-  );
+  if (!isReady) {
+    return <TextPageSkeleton className={cn(isDev && '__TermsContent_Loading')} />;
+  }
 
   return (
     <ScrollArea
@@ -102,11 +81,7 @@ export function TermsContent({ locale }: TProps) {
       )}
     >
       <MaxWidthWrapper className="text-content flex flex-col p-6">
-        <DynamicComponent
-          effectiveDate={effectiveDate}
-          emailHtmlLink={emailHtmlLink}
-          websiteHtmlLink={websiteHtmlLink}
-        />
+        <MarkdownText vars={vars}>{data || ''}</MarkdownText>
       </MaxWidthWrapper>
       <ContentFooter />
     </ScrollArea>

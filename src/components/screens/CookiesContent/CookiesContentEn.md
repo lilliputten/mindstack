@@ -1,6 +1,6 @@
 # Cookie Policy
 
-**Effective Date:** {props.effectiveDate}
+**Effective Date:** {effectiveDate}
 
 ## Introduction
 
@@ -13,25 +13,33 @@ Cookies are small text files that are placed on your device when you visit a web
 ## Types of Cookies We Use
 
 ### Essential Cookies
+
 These cookies are necessary for the website to function properly:
+
 - **Authentication cookies:** Keep you logged in during your session
 - **Security cookies:** Help protect against security threats
 - **Session cookies:** Remember your preferences during your visit
 
 ### Analytics Cookies
+
 These cookies help us understand how visitors interact with our website:
+
 - **Usage analytics:** Track which features are used most
 - **Performance monitoring:** Identify and fix technical issues
 - **User behavior:** Understand how to improve the user experience
 
 ### Functional Cookies
+
 These cookies enhance your experience:
+
 - **Language preferences:** Remember your chosen language
 - **Theme settings:** Save your preferred appearance
 - **Progress tracking:** Store your training progress locally
 
 ### Marketing Cookies
+
 These cookies may be used for advertising purposes:
+
 - **Advertising cookies:** Show relevant ads based on your interests
 - **Social media cookies:** Enable sharing on social platforms
 - **Tracking cookies:** Measure advertising effectiveness
@@ -39,6 +47,7 @@ These cookies may be used for advertising purposes:
 ## How We Use Cookies
 
 We use cookies to:
+
 - Keep you signed in to your account
 - Remember your preferences and settings
 - Analyze website traffic and usage patterns
@@ -49,6 +58,7 @@ We use cookies to:
 ## Third-Party Cookies
 
 We may use third-party services that set their own cookies:
+
 - **Google Analytics:** For website analytics
 - **Authentication providers:** For secure login
 - **Content delivery networks:** For faster loading times
@@ -56,13 +66,17 @@ We may use third-party services that set their own cookies:
 ## Managing Cookies
 
 ### Browser Settings
+
 You can control cookies through your browser settings:
+
 - **Accept all cookies:** Allow all cookies (recommended for best experience)
 - **Block all cookies:** Disable all cookies (may affect functionality)
 - **Selective blocking:** Choose which types of cookies to allow
 
 ### Cookie Preferences
+
 You can manage your cookie preferences at any time by:
+
 - Visiting your account settings
 - Using our cookie preference center
 - Contacting us directly
@@ -70,6 +84,7 @@ You can manage your cookie preferences at any time by:
 ## Cookie Retention
 
 Different cookies have different retention periods:
+
 - **Session cookies:** Deleted when you close your browser
 - **Persistent cookies:** Remain until their expiration date or manual deletion
 - **Essential cookies:** Kept as long as necessary for functionality
@@ -81,6 +96,7 @@ We may update this Cookie Policy from time to time. Any changes will be posted o
 ## Your Rights
 
 Depending on your location, you may have rights regarding cookies:
+
 - **Right to be informed:** About our use of cookies
 - **Right to consent:** Choose which cookies to accept
 - **Right to withdraw consent:** Change your cookie preferences
@@ -89,5 +105,6 @@ Depending on your location, you may have rights regarding cookies:
 ## Contact Us
 
 If you have questions about our use of cookies, please contact us at:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Website: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Website: [{publicAddr}]({publicAddr})

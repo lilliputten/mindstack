@@ -1,6 +1,6 @@
 # Política de Privacidad
 
-**Fecha de vigencia:** {props.effectiveDate}
+**Fecha de vigencia:** {effectiveDate}
 
 ## Introducción
 
@@ -9,11 +9,13 @@ MindStack ("nosotros", "nuestro" o "nos") está comprometido a proteger su priva
 ## Información que Recopilamos
 
 ### Información Personal
+
 - **Información de la Cuenta:** Nombre, dirección de correo electrónico y foto de perfil cuando se registra
 - **Datos de Autenticación:** Credenciales de inicio de sesión e información de sesión
 - **Preferencias del Usuario:** Configuración de idioma, preferencias de tema y configuración de la aplicación
 
 ### Datos de Uso
+
 - **Progreso de Entrenamiento:** Sus estadísticas de ejercicios, rendimiento por temas y progreso de aprendizaje
 - **Uso de la Aplicación:** Funciones utilizadas, tiempo empleado y patrones de interacción
 - **Información del Dispositivo:** Tipo de navegador, sistema operativo e identificadores del dispositivo
@@ -21,6 +23,7 @@ MindStack ("nosotros", "nuestro" o "nos") está comprometido a proteger su priva
 ## Cómo Usamos Su Información
 
 Utilizamos su información para:
+
 - Proporcionar y mantener nuestros servicios de entrenamiento de memoria
 - Personalizar su experiencia de aprendizaje
 - Rastrear su progreso y generar estadísticas
@@ -31,6 +34,7 @@ Utilizamos su información para:
 ## Compartir Información
 
 No vendemos, intercambiamos ni alquilamos su información personal. Solo podemos compartir información en estas circunstancias:
+
 - **Con Su Consentimiento:** Cuando usted acepta explícitamente compartir información
 - **Proveedores de Servicios:** Con terceros de confianza que nos ayudan a operar nuestra aplicación
 - **Requisitos Legales:** Cuando lo exige la ley o para proteger nuestros derechos
@@ -42,6 +46,7 @@ Implementamos medidas de seguridad apropiadas para proteger su información cont
 ## Sus Derechos
 
 Usted tiene derecho a:
+
 - Acceder a su información personal
 - Corregir información inexacta
 - Eliminar su cuenta y datos asociados
@@ -63,5 +68,6 @@ Podemos actualizar esta Política de Privacidad de vez en cuando. Le notificarem
 ## Contáctenos
 
 Si tiene preguntas sobre esta Política de Privacidad, por favor contáctenos en:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Sitio web: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Sitio web: [{publicAddr}]({publicAddr})

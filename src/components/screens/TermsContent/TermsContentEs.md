@@ -1,6 +1,6 @@
 # Términos de Servicio
 
-**Fecha de Vigencia:** {props.effectiveDate}
+**Fecha de Vigencia:** {effectiveDate}
 
 ## Introducción
 
@@ -13,6 +13,7 @@ Al acceder o usar MindStack, usted acepta estar sujeto a estos Términos. Si no 
 ## Descripción del Servicio
 
 MindStack es una aplicación de entrenamiento de memoria que proporciona:
+
 - Ejercicios y juegos de memoria interactivos
 - Seguimiento de progreso y estadísticas
 - Experiencias de aprendizaje personalizadas
@@ -21,11 +22,13 @@ MindStack es una aplicación de entrenamiento de memoria que proporciona:
 ## Cuentas de Usuario
 
 ### Registro
+
 - Debe proporcionar información precisa y completa al crear una cuenta
 - Es responsable de mantener la seguridad de su cuenta
 - Debe notificarnos inmediatamente de cualquier uso no autorizado
 
 ### Responsabilidades de la Cuenta
+
 - Es responsable de todas las actividades bajo su cuenta
 - No debe compartir las credenciales de su cuenta
 - Debe mantener actualizada su información de contacto
@@ -33,6 +36,7 @@ MindStack es una aplicación de entrenamiento de memoria que proporciona:
 ## Uso Aceptable
 
 Usted acepta no:
+
 - Usar el servicio para cualquier propósito ilegal
 - Intentar obtener acceso no autorizado a nuestros sistemas
 - Interferir o interrumpir el servicio
@@ -42,11 +46,13 @@ Usted acepta no:
 ## Propiedad Intelectual
 
 ### Nuestro Contenido
+
 - Todo el contenido, características y funcionalidad son propiedad de MindStack
 - No puede copiar, modificar o distribuir nuestro contenido sin permiso
 - Nuestras marcas comerciales y logotipos están protegidos
 
 ### Contenido del Usuario
+
 - Usted conserva la propiedad del contenido que crea
 - Nos otorga una licencia para usar su contenido para proporcionar el servicio
 - Es responsable de asegurar que tiene derechos sobre cualquier contenido que suba
@@ -58,10 +64,12 @@ Su privacidad es importante para nosotros. Por favor revise nuestra Política de
 ## Suscripción y Pagos
 
 ### Servicios Gratuitos
+
 - Las características básicas están disponibles sin costo
 - Nos reservamos el derecho de modificar las limitaciones del servicio gratuito
 
 ### Servicios Premium
+
 - Las características premium pueden requerir pago
 - Las tarifas de suscripción se facturan por adelantado
 - Los reembolsos están sujetos a nuestra política de reembolsos
@@ -75,10 +83,12 @@ Su privacidad es importante para nosotros. Por favor revise nuestra Política de
 ## Terminación
 
 ### Por Usted
+
 - Puede terminar su cuenta en cualquier momento
 - La terminación no lo libera de las obligaciones de pago
 
 ### Por Nosotros
+
 - Podemos terminar cuentas que violen estos Términos
 - Podemos discontinuar el servicio con aviso razonable
 
@@ -107,5 +117,6 @@ Estos Términos se regirán e interpretarán de acuerdo con las leyes aplicables
 ## Contáctanos
 
 Si tiene preguntas sobre estos Términos de Servicio, por favor contáctenos en:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Sitio web: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Sitio web: [{publicAddr}]({publicAddr})

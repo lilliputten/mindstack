@@ -1,6 +1,6 @@
 # Política de Cookies
 
-**Fecha de Vigencia:** {props.effectiveDate}
+**Fecha de Vigencia:** {effectiveDate}
 
 ## Introducción
 
@@ -13,25 +13,33 @@ Las cookies son pequeños archivos de texto que se colocan en su dispositivo cua
 ## Tipos de Cookies que Utilizamos
 
 ### Cookies Esenciales
+
 Estas cookies son necesarias para que el sitio web funcione correctamente:
+
 - **Cookies de autenticación:** Lo mantienen conectado durante su sesión
 - **Cookies de seguridad:** Ayudan a proteger contra amenazas de seguridad
 - **Cookies de sesión:** Recuerdan sus preferencias durante su visita
 
 ### Cookies de Análisis
+
 Estas cookies nos ayudan a entender cómo los visitantes interactúan con nuestro sitio web:
+
 - **Análisis de uso:** Rastrean qué características se usan más
 - **Monitoreo de rendimiento:** Identifican y solucionan problemas técnicos
 - **Comportamiento del usuario:** Entienden cómo mejorar la experiencia del usuario
 
 ### Cookies Funcionales
+
 Estas cookies mejoran su experiencia:
+
 - **Preferencias de idioma:** Recuerdan su idioma elegido
 - **Configuración de tema:** Guardan su apariencia preferida
 - **Seguimiento de progreso:** Almacenan su progreso de entrenamiento localmente
 
 ### Cookies de Marketing
+
 Estas cookies pueden usarse para propósitos publicitarios:
+
 - **Cookies publicitarias:** Muestran anuncios relevantes basados en sus intereses
 - **Cookies de redes sociales:** Permiten compartir en plataformas sociales
 - **Cookies de seguimiento:** Miden la efectividad publicitaria
@@ -39,6 +47,7 @@ Estas cookies pueden usarse para propósitos publicitarios:
 ## Cómo Utilizamos las Cookies
 
 Utilizamos cookies para:
+
 - Mantenerlo conectado a su cuenta
 - Recordar sus preferencias y configuraciones
 - Analizar el tráfico y patrones de uso del sitio web
@@ -49,6 +58,7 @@ Utilizamos cookies para:
 ## Cookies de Terceros
 
 Podemos usar servicios de terceros que establecen sus propias cookies:
+
 - **Google Analytics:** Para análisis del sitio web
 - **Proveedores de autenticación:** Para inicio de sesión seguro
 - **Redes de entrega de contenido:** Para tiempos de carga más rápidos
@@ -56,13 +66,17 @@ Podemos usar servicios de terceros que establecen sus propias cookies:
 ## Gestión de Cookies
 
 ### Configuración del Navegador
+
 Puede controlar las cookies a través de la configuración de su navegador:
+
 - **Aceptar todas las cookies:** Permitir todas las cookies (recomendado para la mejor experiencia)
 - **Bloquear todas las cookies:** Deshabilitar todas las cookies (puede afectar la funcionalidad)
 - **Bloqueo selectivo:** Elegir qué tipos de cookies permitir
 
 ### Preferencias de Cookies
+
 Puede gestionar sus preferencias de cookies en cualquier momento:
+
 - Visitando la configuración de su cuenta
 - Usando nuestro centro de preferencias de cookies
 - Contactándonos directamente
@@ -70,6 +84,7 @@ Puede gestionar sus preferencias de cookies en cualquier momento:
 ## Retención de Cookies
 
 Diferentes cookies tienen diferentes períodos de retención:
+
 - **Cookies de sesión:** Se eliminan cuando cierra su navegador
 - **Cookies persistentes:** Permanecen hasta su fecha de expiración o eliminación manual
 - **Cookies esenciales:** Se mantienen tanto tiempo como sea necesario para la funcionalidad
@@ -81,6 +96,7 @@ Podemos actualizar esta Política de Cookies de vez en cuando. Cualquier cambio 
 ## Sus Derechos
 
 Dependiendo de su ubicación, puede tener derechos con respecto a las cookies:
+
 - **Derecho a ser informado:** Sobre nuestro uso de cookies
 - **Derecho al consentimiento:** Elegir qué cookies aceptar
 - **Derecho a retirar el consentimiento:** Cambiar sus preferencias de cookies
@@ -89,5 +105,6 @@ Dependiendo de su ubicación, puede tener derechos con respecto a las cookies:
 ## Contáctanos
 
 Si tiene preguntas sobre nuestro uso de cookies, por favor contáctenos en:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Sitio web: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Sitio web: [{publicAddr}]({publicAddr})
