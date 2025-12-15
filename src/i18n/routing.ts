@@ -8,6 +8,7 @@ import { debugLocale, suppressMissingTranslations } from '@/config';
 import { defaultLocale, localesList } from './types';
 
 export const matchLocaleFromErrorReg = /locale ['"`](\w+)/;
+export const matchKeyFromErrorReg = /resolve (['"`])(.+?)\1/;
 
 interface TGetMessageFallbackParams {
   error: IntlError;
@@ -15,56 +16,55 @@ interface TGetMessageFallbackParams {
   namespace?: string | undefined;
 }
 
+const loggedKeys: string[] = [];
+
 export const getIntlMessageFallback = ({
   namespace,
   key,
   error,
 }: TGetMessageFallbackParams): string => {
-  const match = String(error).match(matchLocaleFromErrorReg);
+  const errStr = error.originalMessage || error.message;
+  const match = errStr.match(matchLocaleFromErrorReg);
   const locale = match?.[1];
   const isDebugLocale = locale === debugLocale;
   const doDebug = process.env.NEXT_PUBLIC_DEBUG_TRANSLATIONS === 'true' || isDebugLocale;
   const suppressMessage = suppressMissingTranslations || isDebugLocale;
   // const doDebug = debugTranslations || isDev;
   if (!suppressMessage) {
-    // eslint-disable-next-line no-console
-    console.warn('[routing:getIntlMessageFallback]', error.code, {
-      doDebug,
-      error,
-      key,
-      namespace,
-    });
+    const matchKey = errStr.match(matchKeyFromErrorReg);
+    const key = matchKey?.[2];
+    if (key && !loggedKeys.includes(key)) {
+      loggedKeys.push(key);
+      // prettier-ignore
+      console.warn('[routing:getIntlMessageFallback]', error.code, key || errStr, 'in locale', locale, 'namespace', namespace); // eslint-disable-line no-console
+      // debugger; // eslint-disable-line no-debugger
+    }
   }
   return [doDebug && namespace, key].filter(Boolean).join('.');
 };
 
-export const onIntlError = (error: IntlError) => {
+export const onIntlError = (error: IntlError & { key?: string }) => {
   if (error.code === IntlErrorCode.MISSING_MESSAGE) {
-    const match = String(error).match(matchLocaleFromErrorReg);
-    const locale = match?.[1];
+    const errStr = error.originalMessage || error.message;
+    const matchLocale = errStr.match(matchLocaleFromErrorReg);
+    const locale = matchLocale?.[1];
     const isDebugLocale = locale === debugLocale;
     const suppressMessage = suppressMissingTranslations || isDebugLocale;
-    /* console.log('[routing:onIntlError]', {
-     *   suppressMissingTranslations,
-     *   debugLocale,
-     *   locale,
-     *   error,
-     * });
-     */
+    const matchKey = errStr.match(matchKeyFromErrorReg);
+    const key = matchKey?.[2];
     // Suppress missing message error for debug locale
     if (!suppressMessage) {
-      // eslint-disable-next-line no-console
-      console.warn('[routing:onIntlError] MISSING_MESSAGE', {
-        locale,
-        error,
-      });
-      debugger; // eslint-disable-line no-debugger
+      if (key && !loggedKeys.includes(key)) {
+        loggedKeys.push(key);
+        // eslint-disable-next-line no-console
+        console.warn('[routing:onIntlError]', error.code, key || errStr, 'in locale', locale);
+        // debugger; // eslint-disable-line no-debugger
+      }
     }
     return;
   }
   // eslint-disable-next-line no-console
   console.error('[routing:onIntlError]', error);
-  // debugger;
 };
 
 // @see https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing
