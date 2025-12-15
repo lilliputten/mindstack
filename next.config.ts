@@ -57,6 +57,13 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.md$/,
+      use: 'raw-loader',
+    });
+    return config;
+  },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   sassOptions: {
     additionalData: scssVariables,
