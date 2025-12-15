@@ -107,7 +107,8 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
     "SettingsTitle": "Settings",
-    "WelcomeTitle": "Welcome!"
+    "WelcomeTitle": "Welcome!",
+    "DocsTitle": "Documentation"
   },
   "Pricing": {
     "BilledAnnually": ", billed annually",

@@ -20,6 +20,8 @@ import {
 import { getT } from '@/i18n';
 import { defaultLocale, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
+import DocsContentEn from './DocsContentEn.md';
+
 export const dynamic = 'force-static';
 
 const saveScrollHash = getRandomHashString();
@@ -39,10 +41,13 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   });
 }
 
+/*
+ * const contentMap: Record<string, string> = {
+ *   en: DocsContentEn,
+ * };
+ */
+
 async function getContent(locale: TLocale) {
-  /* // DEBUG: Demo error
-   * throw new Error('Test');
-   */
   let promise: Promise<typeof import('*.md')>;
   switch (locale) {
     case 'en':
@@ -55,47 +60,31 @@ async function getContent(locale: TLocale) {
 
 export async function generateStaticParams() {
   const locale = 'en';
-  let content: string = '';
-  try {
-    content = await getContent(locale);
-  } catch (error) {
-    const message = 'Error loading page content for static generation';
-    const details = getErrorText(error);
-    // eslint-disable-next-line no-console
-    console.error('[DocsPage:generateStaticParams]', [message, details].join(': '), {
-      message,
-      details,
-      error,
-    });
-  }
+  const content = await getContent(locale);
   return [{ locale, content }];
 }
 
-export default async function DocsPage(props: TDocsPagePropsWithContent) {
+export async function DocsPage(props: TDocsPagePropsWithContent) {
   const { params, content: preloadedContent } = props;
   const { locale = defaultLocale } = await params;
 
   // Enable static rendering
   setRequestLocale(locale);
 
-  /* // DEBUG
-   * if (preloadedContent) {
-   *   console.log('[DocsPage:before]', {
-   *     locale,
-   *     preloadedContent,
-   *     props,
-   *   });
-   *   debugger;
-   * }
-   */
+  if (preloadedContent) {
+    console.log('[DocsPage:before]', {
+      locale,
+      preloadedContent,
+      props,
+    });
+    debugger;
+  }
 
   let content = preloadedContent;
-
   if (!content) {
     content = await getContent(locale);
   }
 
-  // Variables to render
   const vars = {
     docsRoute,
     contactEmail,

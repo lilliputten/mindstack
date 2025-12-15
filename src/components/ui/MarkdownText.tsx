@@ -98,6 +98,9 @@ export function MarkdownText({ children, className, omitLinks, vars }: MarkdownP
               </a>
             );
           },
+          hr: ({ children }) => (
+            <hr className="my-4 border-theme-600/10 bg-theme-600/10">{children}</hr>
+          ),
           code: (props) => {
             const { children, className, ...rest } = props;
             const { ref, ...syntaxProps } = rest;
