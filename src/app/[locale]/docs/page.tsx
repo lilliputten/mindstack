@@ -1,12 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { ErrorLike } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
-import { ContentFooter, MaxWidthWrapper, PageError } from '@/components/shared';
+import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
 import {
   contactEmail,
   cookiesRoute,
@@ -39,17 +38,20 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   });
 }
 
+async function getContentImport(locale: TLocale) {
+  switch (locale) {
+    // TODO: Add another languages
+    case 'en':
+    default:
+      return import('./DocsContentEn.md');
+  }
+}
+
 async function getContent(locale: TLocale) {
   /* // DEBUG: Demo error
    * throw new Error('Test');
    */
-  let promise: Promise<typeof import('*.md')>;
-  switch (locale) {
-    case 'en':
-    default:
-      promise = import('./DocsContentEn.md');
-  }
-  const imported = await promise;
+  const imported = await getContentImport(locale);
   return imported.default;
 }
 
