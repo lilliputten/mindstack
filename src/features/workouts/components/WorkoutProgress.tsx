@@ -7,8 +7,10 @@ import { Progress } from '@/components/ui/Progress';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { useT } from '@/i18n';
 
 export function WorkoutProgress() {
+  const t = useT();
   const workoutContext = useWorkoutContext();
   const { workout, pending, questionIds } = workoutContext;
   const totalSteps = questionIds?.length || 0;
@@ -64,7 +66,10 @@ export function WorkoutProgress() {
         )}
       >
         <span>
-          Question {currentStep || 0} of {totalSteps || 0}
+          {t('WorkoutProgress.QuestionsProgress', {
+            currentStep: currentStep || 0,
+            totalSteps: totalSteps || 0,
+          })}
         </span>
         <span>{Math.round(progress)}%</span>
       </div>

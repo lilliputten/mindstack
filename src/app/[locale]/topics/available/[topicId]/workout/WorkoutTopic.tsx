@@ -72,7 +72,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
     () => [
       {
         id: 'Back',
-        content: t('AvailableTopics.Back'),
+        content: t('Back'),
         variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',

@@ -10,8 +10,8 @@
   },
   "AppIntroBlockContent": "<p>Это небольшое приложение для тренировки памяти. Взгляните на краткую <AboutLink>справку по приложению</AboutLink>.</p>",
   "AvailableTopics": {
-    "Back": "Назад",
     "FinishTraining": "Завершить тренировку",
+    "ManageQuestion": "Управление вопросом",
     "ManageTopic": "Управление темой",
     "NoActiveTrainingFound": "Активная тренировка не найдена.",
     "RestartTraining": "Перезапустить тренировку",
@@ -20,6 +20,7 @@
     "StartTraining": "Начать тренировку",
     "TrainingDetails": "Детали тренировки"
   },
+  "Back": "Назад",
   "Bot": {
     "accountCreated": "✅ Акаунт успешно создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
@@ -47,6 +48,8 @@
     "status": "Проверить ваш статус"
   },
   "Close": "Закрыть",
+  "Continue": "Продолжить",
+  "Finish": "Завершить",
   "Language Changed For": "Язык изменён на",
   "NavAuthButton": {
     "Dashboard": "Панель",
@@ -205,6 +208,7 @@
     "MyTopics": "Мои темы",
     "Welcome": "Добро пожаловать"
   },
+  "Skip": "Пропустить",
   "Themes": {
     "amber": "Янтарь",
     "blue": "Синий",
@@ -234,6 +238,19 @@
     "Description": "Разблокируйте все функции и получите неограниченный доступ к нашей службе поддержки.",
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
+  },
+  "WorkoutProgress": {
+    "QuestionsProgress": "Вопрос {currentStep} из {totalSteps}"
+  },
+  "WorkoutQuestion": {
+    "CannotGetCurrentQuestionId": "Не удается получить ID текущего вопроса из порядка вопросов.",
+    "CannotLoadAnswersData": "Не удается загрузить данные ответов",
+    "NoActiveTrainingFound": "Активная тренировка не найдена.",
+    "NoAnswersCreated": "Ответы здесь не созданы. Просто пропустите.",
+    "NotFoundQuestion": "Не найден вопрос ({questionId}).",
+    "TheAnswerIsCorrect": "Ответ правильный",
+    "TheAnswerIsIncorrect": "Ответ неправильный",
+    "WorkoutHasBeenFinished": "Тренировка была (внезапно) завершена."
   },
   "WorkoutStats": {
     "Accuracy": "Точность",
@@ -296,5 +313,10 @@
     "WorkoutCompletedPlural": "завершенных тренировок",
     "YourLearningProgress": "Ваш прогресс обучения со временем",
     "YourProgress": "Ваш Прогресс"
+  },
+  "WorkoutTopic": {
+    "Training": "Тренировка",
+    "TrainingAlreadyCompleted": "Тренировка уже завершена.",
+    "TrainingIsStarting": "Тренировка начинается..."
   }
 }

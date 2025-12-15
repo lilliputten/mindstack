@@ -6,8 +6,8 @@
   },
   "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "AvailableTopics": {
-    "Back": "Back",
     "FinishTraining": "Finish Training",
+    "ManageQuestion": "Manage Question",
     "ManageTopic": "Manage Topic",
     "NoActiveTrainingFound": "No active training found.",
     "RestartTraining": "Restart Training",
@@ -16,6 +16,7 @@
     "StartTraining": "Start Training",
     "TrainingDetails": "Training Details"
   },
+  "Back": "Back",
   "Bot": {
     "accountCreated": "✅ Your account has been successfully created.",
     "canNotCreateAccount": "❌ Error creating account profile.",
@@ -42,6 +43,8 @@
     "status": "Check your status"
   },
   "Close": "Close",
+  "Continue": "Continue",
+  "Finish": "Finish",
   "Language Changed For": "Language has been changed for",
   "NavAuthButton": {
     "Dashboard": "Dashboard",
@@ -200,6 +203,7 @@
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
   },
+  "Skip": "Skip",
   "Themes": {
     "amber": "Amber",
     "blue": "Blue",
@@ -229,6 +233,19 @@
     "Description": "Unlock all features and get unlimited access to our support team.",
     "Title": "Upgrade to Pro",
     "Upgrade": "Upgrade"
+  },
+  "WorkoutProgress": {
+    "QuestionsProgress": "Question {currentStep} of {totalSteps}"
+  },
+  "WorkoutQuestion": {
+    "CannotGetCurrentQuestionId": "Cannot get current question id from questions order.",
+    "CannotLoadAnswersData": "Cannot load answers data",
+    "NoActiveTrainingFound": "No active training found.",
+    "NoAnswersCreated": "No answers created here. Just skip it.",
+    "NotFoundQuestion": "Not found question ({questionId}).",
+    "TheAnswerIsCorrect": "The answer is correct",
+    "TheAnswerIsIncorrect": "The answer is incorrect",
+    "WorkoutHasBeenFinished": "The workout has been (suddenly) finished."
   },
   "WorkoutStats": {
     "Accuracy": "Accuracy",
@@ -291,5 +308,10 @@
     "WorkoutCompletedPlural": "completed workouts",
     "YourLearningProgress": "Your learning progress over time",
     "YourProgress": "Your Progress"
+  },
+  "WorkoutTopic": {
+    "Training": "Training",
+    "TrainingAlreadyCompleted": "The training is already completed.",
+    "TrainingIsStarting": "The training is starting..."
   }
 }

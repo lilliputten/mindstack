@@ -6,8 +6,8 @@
   },
   "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
   "AvailableTopics": {
-    "Back": "Atrás",
     "FinishTraining": "Finalizar Entrenamiento",
+    "ManageQuestion": "Gestionar Pregunta",
     "ManageTopic": "Gestionar Tema",
     "NoActiveTrainingFound": "No se encontró entrenamiento activo.",
     "RestartTraining": "Reiniciar Entrenamiento",
@@ -16,6 +16,7 @@
     "StartTraining": "Iniciar Entrenamiento",
     "TrainingDetails": "Detalles del Entrenamiento"
   },
+  "Back": "Atrás",
   "Bot": {
     "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
     "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",
@@ -42,6 +43,8 @@
     "status": "Verificar tu estado"
   },
   "Close": "Cerca",
+  "Continue": "Continuar",
+  "Finish": "Finalizar",
   "Language Changed For": "El idioma ha sido cambiado a",
   "NavAuthButton": {
     "Dashboard": "Panel",
@@ -201,6 +204,7 @@
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
   },
+  "Skip": "Omitir",
   "Themes": {
     "amber": "Ámbar",
     "blue": "Azul",
@@ -230,6 +234,19 @@
     "Description": "Desbloquea todas las funciones y obtén acceso ilimitado a nuestro equipo de soporte.",
     "Title": "Actualizar a Pro",
     "Upgrade": "Actualizar"
+  },
+  "WorkoutProgress": {
+    "QuestionsProgress": "Pregunta {currentStep} de {totalSteps}"
+  },
+  "WorkoutQuestion": {
+    "CannotGetCurrentQuestionId": "No se puede obtener el ID de la pregunta actual del orden de preguntas.",
+    "CannotLoadAnswersData": "No se pueden cargar los datos de respuestas",
+    "NoActiveTrainingFound": "No se encontró entrenamiento activo.",
+    "NoAnswersCreated": "No se crearon respuestas aquí. Solo omitir.",
+    "NotFoundQuestion": "No se encontró la pregunta ({questionId}).",
+    "TheAnswerIsCorrect": "La respuesta es correcta",
+    "TheAnswerIsIncorrect": "La respuesta es incorrecta",
+    "WorkoutHasBeenFinished": "El entrenamiento ha sido (repentinamente) finalizado."
   },
   "WorkoutStats": {
     "Accuracy": "Precisión",
@@ -292,5 +309,10 @@
     "WorkoutCompletedPlural": "entrenamientos completados",
     "YourLearningProgress": "Tu progreso de aprendizaje a lo largo del tiempo",
     "YourProgress": "Tu Progreso"
+  },
+  "WorkoutTopic": {
+    "Training": "Entrenamiento",
+    "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
+    "TrainingIsStarting": "El entrenamiento está comenzando..."
   }
 }
