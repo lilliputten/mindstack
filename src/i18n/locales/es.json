@@ -1,10 +1,18 @@
 {
+  "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
+  "Back": "Atrás",
+  "Close": "Cerca",
+  "Continue": "Continuar",
+  "Finish": "Finalizar",
+  "Language Changed For": "El idioma ha sido cambiado a",
+  "Questions": "Preguntas",
+  "Select Language": "Seleccionar Idioma",
+  "Skip": "Omitir",
   "AcceptCookiesPopup": {
     "Accept": "Aceptar",
     "LearnMore": "Más información",
     "Message": "Utilizamos cookies para mejorar su experiencia. Al continuar visitando este sitio, acepta nuestro uso de cookies."
   },
-  "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
     "ManageQuestion": "Gestionar Pregunta",
@@ -16,7 +24,6 @@
     "StartTraining": "Iniciar Entrenamiento",
     "TrainingDetails": "Detalles del Entrenamiento"
   },
-  "Back": "Atrás",
   "Bot": {
     "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
     "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",
@@ -42,10 +49,6 @@
     "start": "Inicio",
     "status": "Verificar tu estado"
   },
-  "Close": "Cerca",
-  "Continue": "Continuar",
-  "Finish": "Finalizar",
-  "Language Changed For": "El idioma ha sido cambiado a",
   "NavAuthButton": {
     "Dashboard": "Panel",
     "sign-in": "Iniciar Sesión"
@@ -110,6 +113,12 @@
   "Pricing": {
     "BilledAnnually": ", facturado anualmente",
     "BilledMonthly": ", facturado mensualmente",
+    "ContactUs": "Contáctanos",
+    "Free": "Gratis",
+    "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
+    "MostPopular": "Más Popular",
+    "PerMonth": "/mes",
+    "Unlimited": "Ilimitado",
     "Comparison": {
       "AiGenerations": "Generaciones de IA",
       "Analytics": "Análisis Detallados",
@@ -123,71 +132,63 @@
       "Total": "total",
       "WorkoutSessions": "Sesiones de Entrenamiento"
     },
-    "ContactUs": "Contáctanos",
-    "Free": "Gratis",
-    "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
     "Hero": {
       "Monthly": "Mensual",
       "Subtitle": "Obtén 20% de descuento con el plan anual",
       "Title": "Precios",
       "Yearly": "Anual"
     },
-    "MostPopular": "Más Popular",
-    "PerMonth": "/mes",
     "Plans": {
       "Basic": {
         "Button": "Comenzar",
         "Description": "Para individuos",
+        "Name": "Básico",
         "Features": {
           "Community": "Acceso a temas de la comunidad",
           "Generations": "10 generaciones de IA en total",
           "Progress": "Seguimiento del progreso",
           "Topics": "Crear hasta 5 temas",
           "Workouts": "Sesiones de entrenamiento básicas"
-        },
-        "Name": "Básico"
+        }
       },
       "Premium": {
         "Button": "Elegir Premium",
         "Description": "Para organizaciones",
+        "Name": "Premium",
         "Features": {
           "Advanced": "Integraciones avanzadas",
           "Everything": "Todo lo de Pro",
           "Export": "Funcionalidad de exportar/importar",
           "Priority": "Soporte de máxima prioridad",
           "UnlimitedGenerations": "Generaciones de IA ilimitadas"
-        },
-        "Name": "Premium"
+        }
       },
       "Pro": {
         "Button": "Elegir Pro",
         "Description": "Para estudiantes serios",
+        "Name": "Pro",
         "Features": {
           "Ai": "Generación de preguntas con IA",
           "Analytics": "Análisis detallados",
           "Generations": "100 generaciones de IA por mes",
           "Support": "Soporte prioritario",
           "Unlimited": "Temas y preguntas ilimitados"
-        },
-        "Name": "Pro"
+        }
       },
       "Unlimited": {
         "Button": "Contáctanos",
         "Description": "Para organizaciones que requieren el más alto nivel de seguridad y control.",
+        "Name": "Ilimitado",
         "Features": {
           "Custom": "Integraciones personalizadas",
           "Enterprise": "Seguridad empresarial",
           "Everything": "Todo lo de Premium",
           "Security": "Cumplimiento avanzado",
           "Support": "Equipo de soporte dedicado"
-        },
-        "Name": "Ilimitado"
+        }
       }
-    },
-    "Unlimited": "Ilimitado"
+    }
   },
-  "Questions": "Preguntas",
-  "Select Language": "Seleccionar Idioma",
   "SignInForm": {
     "intro": "Inicia sesión para poder editar tus propios datos.",
     "sign-in": "Iniciar Sesión",
@@ -204,7 +205,6 @@
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
   },
-  "Skip": "Omitir",
   "Themes": {
     "amber": "Ámbar",
     "blue": "Azul",
@@ -297,9 +297,9 @@
     "ThisWillBeYourFirst": "¡Este será tu primer entrenamiento para este tema!",
     "Time": "Tiempo",
     "TimeElapsed": "Tiempo Transcurrido",
-    "ToViewYourStatistics": "para ver tus estadísticas.",
     "TotalTime": "Tiempo Total",
     "TotalTrainings": "Entrenamientos Totales",
+    "ToViewYourStatistics": "para ver tus estadísticas.",
     "TrainingHasntStarted": "El entrenamiento aún no ha comenzado",
     "TrainingInProgress": "Tu entrenamiento está en progreso",
     "TrainingIsCompleted": "El entrenamiento está completado",

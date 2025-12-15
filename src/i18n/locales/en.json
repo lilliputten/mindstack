@@ -1,10 +1,17 @@
 {
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "Back": "Back",
+  "Close": "Close",
+  "Continue": "Continue",
+  "Finish": "Finish",
+  "Language Changed For": "Language has been changed for",
+  "Select Language": "Select Language",
+  "Skip": "Skip",
   "AcceptCookiesPopup": {
     "Accept": "Accept",
     "LearnMore": "Learn more",
     "Message": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies."
   },
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
     "ManageQuestion": "Manage Question",
@@ -16,7 +23,6 @@
     "StartTraining": "Start Training",
     "TrainingDetails": "Training Details"
   },
-  "Back": "Back",
   "Bot": {
     "accountCreated": "✅ Your account has been successfully created.",
     "canNotCreateAccount": "❌ Error creating account profile.",
@@ -42,10 +48,6 @@
     "start": "Start",
     "status": "Check your status"
   },
-  "Close": "Close",
-  "Continue": "Continue",
-  "Finish": "Finish",
-  "Language Changed For": "Language has been changed for",
   "NavAuthButton": {
     "Dashboard": "Dashboard",
     "sign-in": "Sign In"
@@ -110,6 +112,12 @@
   "Pricing": {
     "BilledAnnually": ", billed annually",
     "BilledMonthly": ", billed monthly",
+    "ContactUs": "Contact Us",
+    "Free": "Free",
+    "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
+    "MostPopular": "Most Popular",
+    "PerMonth": "/month",
+    "Unlimited": "Unlimited",
     "Comparison": {
       "AiGenerations": "AI Generations",
       "Analytics": "Detailed Analytics",
@@ -123,70 +131,63 @@
       "Total": "total",
       "WorkoutSessions": "Training Sessions"
     },
-    "ContactUs": "Contact Us",
-    "Free": "Free",
-    "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
     "Hero": {
       "Monthly": "Monthly",
       "Subtitle": "Get 20% off with yearly",
       "Title": "Pricing",
       "Yearly": "Yearly"
     },
-    "MostPopular": "Most Popular",
-    "PerMonth": "/month",
     "Plans": {
       "Basic": {
         "Button": "Get Started",
         "Description": "For individuals",
+        "Name": "Basic",
         "Features": {
           "Community": "Community topics access",
           "Generations": "10 AI generations total",
           "Progress": "Progress tracking",
           "Topics": "Create up to 5 topics",
           "Workouts": "Basic training sessions"
-        },
-        "Name": "Basic"
+        }
       },
       "Premium": {
         "Button": "Choose Premium",
         "Description": "For organizations",
+        "Name": "Premium",
         "Features": {
           "Advanced": "Advanced integrations",
           "Everything": "Everything in Pro",
           "Export": "Export/import functionality",
           "Priority": "Highest priority support",
           "UnlimitedGenerations": "Unlimited AI generations"
-        },
-        "Name": "Premium"
+        }
       },
       "Pro": {
         "Button": "Choose Pro",
         "Description": "For serious learners",
+        "Name": "Pro",
         "Features": {
           "Ai": "AI-powered question generation",
           "Analytics": "Detailed analytics",
           "Generations": "100 AI generations per month",
           "Support": "Priority support",
           "Unlimited": "Unlimited topics and questions"
-        },
-        "Name": "Pro"
+        }
       },
       "Unlimited": {
         "Button": "Contact Us",
         "Description": "For organizations requiring the highest level of security and control.",
+        "Name": "Unlimited",
         "Features": {
           "Custom": "Custom integrations",
           "Enterprise": "Enterprise-grade security",
           "Everything": "Everything in Premium",
           "Security": "Advanced compliance",
           "Support": "Dedicated support team"
-        },
-        "Name": "Unlimited"
+        }
       }
-    },
-    "Unlimited": "Unlimited"
+    }
   },
-  "Select Language": "Select Language",
   "SignInForm": {
     "intro": "Login to be able editing your own data.",
     "sign-in": "Sign In",
@@ -203,7 +204,6 @@
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
   },
-  "Skip": "Skip",
   "Themes": {
     "amber": "Amber",
     "blue": "Blue",
@@ -296,9 +296,9 @@
     "ThisWillBeYourFirst": "This will be your first workout for this topic!",
     "Time": "Time",
     "TimeElapsed": "Time Elapsed",
-    "ToViewYourStatistics": "to view your statistics.",
     "TotalTime": "Total Time",
     "TotalTrainings": "Total Trainings",
+    "ToViewYourStatistics": "to view your statistics.",
     "TrainingHasntStarted": "Training hasn't been started yet",
     "TrainingInProgress": "Your workout is in progress",
     "TrainingIsCompleted": "The workout is completed",
