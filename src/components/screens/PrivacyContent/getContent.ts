@@ -1,7 +1,7 @@
 'use server';
 
 import { getErrorText } from '@/lib/helpers';
-import { TLocale } from '@/i18n';
+import { TLocale } from '@/i18n/types';
 
 import PrivacyContentEn from './PrivacyContentEn.md';
 import PrivacyContentEs from './PrivacyContentEs.md';

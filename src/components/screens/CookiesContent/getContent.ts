@@ -1,7 +1,7 @@
 'use server';
 
 import { getErrorText } from '@/lib/helpers';
-import { TLocale } from '@/i18n';
+import { TLocale } from '@/i18n/types';
 
 import CookiesContentEn from './CookiesContentEn.md';
 import CookiesContentEs from './CookiesContentEs.md';

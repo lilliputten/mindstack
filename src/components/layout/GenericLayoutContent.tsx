@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { NavBar } from '@/components/layout/NavBar';
 import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
-import { TLocale } from '@/i18n';
+import { TLocale } from '@/i18n/types';
 
 import { AcceptCookiesPopup } from './AcceptCookiesPopup';
 import { DashboardSidebar } from './DashboardSidebar';

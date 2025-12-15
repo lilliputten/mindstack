@@ -48,7 +48,7 @@ export function ContentFooter() {
               href="https://nextjs.org"
               target="_blank"
               rel="noreferrer"
-              className="hover:underline"
+              className="underline hover:opacity-80"
             >
               Next.js
             </PublicLink>{' '}
@@ -57,9 +57,18 @@ export function ContentFooter() {
               href="https://vercel.com"
               target="_blank"
               rel="noreferrer"
-              className="hover:underline"
+              className="underline hover:opacity-80"
             >
               Vercel
+            </PublicLink>{' '}
+            by{' '}
+            <PublicLink
+              href="https://lilliputten.com"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:opacity-80"
+            >
+              lilliputten.com
             </PublicLink>
           </p>
         </div>

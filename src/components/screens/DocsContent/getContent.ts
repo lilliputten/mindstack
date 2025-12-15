@@ -1,7 +1,7 @@
 'use server';
 
 import { getErrorText } from '@/lib/helpers';
-import { TLocale } from '@/i18n';
+import { TLocale } from '@/i18n/types';
 
 import DocsContentEn from './DocsContentEn.md';
 
