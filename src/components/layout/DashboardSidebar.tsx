@@ -16,6 +16,7 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
+import { useT } from '@/i18n';
 import { removePathLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
@@ -32,6 +33,8 @@ type TMemo = { inited?: boolean; restored?: boolean; isExpanded?: boolean };
 export function DashboardSidebar({ links }: TDashboardSidebarProps) {
   const pathname = usePathname();
   const testPath = removePathLocalePrefix(pathname);
+
+  const t = useT('NavLinks');
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -160,7 +163,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                       !isExpanded && 'hidden',
                     )}
                   >
-                    {section.titleId}
+                    {t(section.titleId)}
                   </p>
                   {/* Show sections menu */}
                   {section.items.map((item) => {
@@ -210,7 +213,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                     !isExpanded && 'hidden',
                                   )}
                                 >
-                                  {titleId}
+                                  {t(titleId)}
                                 </span>
                                 {badge && (
                                   <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
@@ -223,7 +226,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                               className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                               side="right"
                             >
-                              {titleId}
+                              {t(titleId)}
                             </TooltipContent>
                           </Tooltip>
                         </React.Fragment>

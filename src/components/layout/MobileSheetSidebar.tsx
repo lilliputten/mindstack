@@ -20,6 +20,7 @@ import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
+import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
@@ -38,12 +39,13 @@ interface TMobileSheetProps {
 function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
   const { links, setOpen } = props;
   const path = usePathname();
+  const t = useT('NavLinks');
   return (
     <>
       {/* Main menu srctions */}
       {links.map((section) => (
         <section key={section.titleId} className="flex flex-col gap-0.5">
-          <p className="mb-4 text-xs uppercase text-muted-foreground">{section.titleId}</p>
+          <p className="mb-4 text-xs uppercase text-muted-foreground">{t(section.titleId)}</p>
           {section.items.map((item) => {
             const Icon = item.icon || Icons.ArrowRight;
             if (!item.href) {
@@ -67,7 +69,7 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
                   )}
                 >
                   <Icon className="size-5 min-w-5" />
-                  {item.titleId}
+                  {t(item.titleId)}
                   {item.badge && (
                     <Badge className="ml-auto flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
                       {item.badge}

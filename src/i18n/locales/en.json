@@ -35,6 +35,24 @@
     "Dashboard": "Dashboard",
     "sign-in": "Sign In"
   },
+  "NavLinks": {
+    "AboutProject": "About Project",
+    "Administration": "Administration",
+    "AllTopics": "All Topics",
+    "Application": "Application",
+    "AvailableTopics": "Available Topics",
+    "BotControl": "Bot Control",
+    "Charts": "Charts",
+    "Documentation": "Documentation",
+    "Information": "Information",
+    "MyData": "My Data",
+    "MyTopics": "My Topics",
+    "Options": "Options",
+    "Settings": "Settings",
+    "Support": "Support",
+    "TestAiTextQuery": "Test AI Text Query",
+    "WelcomePage": "Welcome Page"
+  },
   "NavLocaleSwitcher": {
     "label": "Change language",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
@@ -54,6 +72,7 @@
   "Pages": {
     "AllTopicsDescription": "Topics by all users",
     "AllTopicsTitle": "All Topics",
+    "Answers": "Answers",
     "AvailableTopicsDescription": "Topics available to use",
     "AvailableTopicsTitle": "Available Topics",
     "EditTopicPropertiesTitle": "Edit Topic Properties",
@@ -66,13 +85,12 @@
     "MyTopicsTitle": "My Topics",
     "PricingTitle": "Pricing",
     "PrivacyTitle": "Privacy Policy",
+    "Questions": "Questions",
     "RedirectTitle": "Redirecting...",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
     "SettingsTitle": "Settings",
-    "WelcomeTitle": "Welcome!",
-    "Questions": "Questions",
-    "Answers": "Answers"
+    "WelcomeTitle": "Welcome!"
   },
   "Pricing": {
     "BilledAnnually": ", billed annually",
@@ -153,7 +171,6 @@
     },
     "Unlimited": "Unlimited"
   },
-
   "Select Language": "Select Language",
   "SignInForm": {
     "intro": "Login to be able editing your own data.",

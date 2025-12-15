@@ -35,6 +35,24 @@
     "Dashboard": "Panel",
     "sign-in": "Iniciar Sesión"
   },
+  "NavLinks": {
+    "AboutProject": "Acerca del Proyecto",
+    "Administration": "Administración",
+    "AllTopics": "Todos los Temas",
+    "Application": "Aplicación",
+    "AvailableTopics": "Temas Disponibles",
+    "BotControl": "Control del Bot",
+    "Charts": "Gráficos",
+    "Documentation": "Documentación",
+    "Information": "Información",
+    "MyData": "Mis Datos",
+    "MyTopics": "Mis Temas",
+    "Options": "Opciones",
+    "Settings": "Configuración",
+    "Support": "Soporte",
+    "TestAiTextQuery": "Probar Consulta de Texto IA",
+    "WelcomePage": "Página de Bienvenida"
+  },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma",
     "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detectar}}"
@@ -54,6 +72,7 @@
   "Pages": {
     "AllTopicsDescription": "Temas de todos los usuarios",
     "AllTopicsTitle": "Todos los Temas",
+    "Answers": "Respuestas",
     "AvailableTopicsDescription": "Temas disponibles para usar",
     "AvailableTopicsTitle": "Temas Disponibles",
     "EditTopicPropertiesTitle": "Editar Propiedades del Tema",
@@ -66,13 +85,12 @@
     "MyTopicsTitle": "Mis Temas",
     "PricingTitle": "Precios",
     "PrivacyTitle": "Política de Privacidad",
+    "Questions": "Preguntas",
     "RedirectTitle": "Redirigiendo...",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración",
-    "WelcomeTitle": "¡Bienvenido!",
-    "Questions": "Preguntas",
-    "Answers": "Respuestas"
+    "WelcomeTitle": "¡Bienvenido!"
   },
   "Pricing": {
     "BilledAnnually": ", facturado anualmente",

@@ -6,7 +6,7 @@
   "license": "ISC",
   "version": "0.0.3",
   "timestamp": "2025.11.29 03:02:34 +0300",
-  "changed": "2025.12.15, 00:00",
+  "changed": "2025.12.15, 13:07",
   "private": false,
   "main": "src/app/page.tsx",
   "lint-staged": {
@@ -185,8 +185,8 @@
     "eslint-fix": "echo --Lint and auto-fix sources with eslint-- && eslint --fix .",
     "eslint": "echo --Lint sources with eslint-- && eslint .",
     "lint-all": "echo --Run all pre-commit check-ups-- && npm-run-all eslint check-types stylelint && echo --All check-ups passed--",
-    "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier-quick lint-all && echo --All checks passed--",
     "sort-locales": "echo --Sort all locales-- && jsonsort src/i18n/locales/*.json",
+    "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier-quick lint-all && echo --All checks passed--",
     "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
     "clear-all": "echo --Clear all cache and temp files-- && rimraf node_modules/.cache .next && jest --clearCache && echo Cleared cache",
     "dev-entry": "echo --Run nextjs server in iisnode mode-- && node iisnode-nextjs-entry.js",
