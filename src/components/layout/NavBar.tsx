@@ -162,7 +162,7 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
-            'ml-4 p-4',
+            'ml-1 p-4',
             'transition-all',
             'duration-200',
             'text-theme-foreground hover:bg-theme-600/50',

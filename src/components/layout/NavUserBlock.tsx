@@ -18,53 +18,13 @@ import { isDev } from '@/constants';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 
+import { SidebarMenuItem, SidebarWrapper } from './SidebarComponents';
+
 interface TNavUserBlockProps extends TPropsWithClassName {
   onPrimary?: boolean;
   onSidebar?: boolean;
   align?: 'center' | 'end' | 'start';
   closeOuterMenu?: () => void;
-}
-
-function SidebarWrapper(props: TNavUserBlockProps & { children: React.ReactNode }) {
-  const { className, children } = props;
-  return (
-    <div
-      className={cn(
-        isDev && '__NavUserBlock_SidebarWrapper', // DEBUG
-        'flex flex-col gap-2',
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-function SidebarMenuItem(
-  props: TNavUserBlockProps & {
-    children: React.ReactNode;
-    asChild?: boolean;
-    onSelect?: (event: Event) => void;
-  },
-) {
-  const { className, children, onSelect } = props;
-  const onClick = onSelect as unknown as (event: React.MouseEvent) => void;
-  return (
-    <div
-      className={cn(
-        isDev && '__NavUserBlock_SidebarMenuItem', // DEBUG
-        'cursor-pointer',
-        'flex items-center gap-2',
-        'rounded-sm',
-        'px-2 py-1.5',
-        'text-sm',
-        'hover:bg-theme-500 hover:text-white',
-        className,
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  );
 }
 
 export function NavUserBlock(props: TNavUserBlockProps) {
@@ -82,7 +42,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const queryClient = useQueryClient();
 
   const handleSignOut = React.useCallback(
-    (event: Event) => {
+    (event: React.MouseEvent | Event) => {
       event.preventDefault();
       closeOuterMenu?.();
       // Clear react-query and local caches
@@ -134,9 +94,15 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             )}
           />
         )}
-        <div className="flex flex-col space-y-1 leading-none">
+        <div
+          className={cn(
+            isDev && '__NavUserBlock_UserName', // DEBUG
+            'flex flex-col space-y-1 leading-none',
+            onSidebar && 'text-white',
+          )}
+        >
           <p
-            className="flex items-center gap-2 font-medium"
+            className={cn('flex items-center gap-2 font-medium')}
             title={isAdmin ? 'Is Administrator' : undefined}
           >
             {user.name || 'anonymous'}
@@ -147,9 +113,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           )}
         </div>
       </div>
-
       <DropdownMenuSeparator className="w-full" />
-
       {/*isAdmin && (
       <MenuItem asChild>
         <Link
@@ -161,7 +125,6 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         </Link>
       </MenuItem>
       )*/}
-
       {!onSidebar && (
         <>
           <MenuItem asChild>
@@ -184,7 +147,6 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           <DropdownMenuSeparator className="w-full" />
         </>
       )}
-
       {/* Sign Out button */}
       <MenuItem
         className={cn(

@@ -55,8 +55,8 @@
     "Options": "Опции",
     "Settings": "Настройки",
     "Support": "Поддержка",
-    "TestAiTextQuery": "Тест ИИ запроса",
-    "WelcomePage": "Страница приветствия"
+    "TestAiTextQuery": "Тест ИИ",
+    "WelcomePage": "Приветствие"
   },
   "NavLocaleSwitcher": {
     "label": "Сменить язык",

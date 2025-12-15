@@ -7,6 +7,7 @@ import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
+import { useT } from '@/i18n';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -54,40 +55,50 @@ const sheetVariants = cva(
 
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  closeClassName?: string;
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, ...props }, ref) => (
-  <SheetPortal>
-    <SheetOverlay />
-    <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
-      {children}
-      <SheetPrimitive.Close
-        className={cn(
-          isDev && '__SheetContent_Close', // DEBUG
-          'absolute',
-          'right-2 top-6 p-4',
-          'rounded-full',
-          'opacity-70',
-          'ring-offset-background',
-          'transition-opacity',
-          'hover:opacity-100',
-          'focus:outline-none',
-          'focus:ring-2',
-          'focus:ring-ring',
-          'focus:ring-offset-2',
-          'disabled:pointer-events-none',
-          'data-[state=open]:bg-secondary',
-        )}
+>(({ side = 'right', className, closeClassName, children, ...props }, ref) => {
+  const t = useT();
+  return (
+    <SheetPortal>
+      <SheetOverlay />
+      <SheetPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ side }), className)}
+        {...props}
       >
-        <X className="size-4" />
-        <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
-    </SheetPrimitive.Content>
-  </SheetPortal>
-));
+        {children}
+        <SheetPrimitive.Close
+          className={cn(
+            isDev && '__SheetContent_Close', // DEBUG
+            'absolute',
+            'right-2 top-6 p-4',
+            'rounded-full',
+            'opacity-70',
+            'ring-offset-background',
+            'transition-opacity',
+            'hover:opacity-100',
+            'focus:outline-none',
+            'focus:ring-2',
+            'focus:ring-ring',
+            'focus:ring-offset-2',
+            'disabled:pointer-events-none',
+            'data-[state=open]:bg-secondary',
+            closeClassName,
+          )}
+        >
+          <X className="size-4" />
+          <span className="sr-only">{t('Close')}</span>
+        </SheetPrimitive.Close>
+      </SheetPrimitive.Content>
+    </SheetPortal>
+  );
+});
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
