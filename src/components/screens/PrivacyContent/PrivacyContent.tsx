@@ -17,6 +17,8 @@ import { defaultLocale, TLocale } from '@/i18n';
 
 const saveScrollHash = getRandomHashString();
 
+const contentCache = new Map<string, React.ComponentType<MDXProps>>();
+
 interface TProps {
   locale: TLocale;
 }
@@ -52,14 +54,12 @@ function PrivacyContentSuspense(props: DynamicOptionsLoadingProps) {
 export function PrivacyContent({ locale }: TProps) {
   const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
 
-  const componentCache = React.useMemo(() => new Map<string, React.ComponentType<MDXProps>>(), []);
-
   // Dynamically load the appropriate  language component
   const DynamicComponent = React.useMemo(() => {
     const contentId = capitalizeString(localeId);
     const cacheKey = `PrivacyContent${contentId}`;
-    if (componentCache.has(cacheKey)) {
-      return componentCache.get(cacheKey)!;
+    if (contentCache.has(cacheKey)) {
+      return contentCache.get(cacheKey)!;
     }
     const component = dynamic(
       async () => {
@@ -90,9 +90,9 @@ export function PrivacyContent({ locale }: TProps) {
         loading: PrivacyContentSuspense,
       },
     );
-    componentCache.set(cacheKey, component);
+    contentCache.set(cacheKey, component);
     return component;
-  }, [localeId, componentCache]);
+  }, [localeId]);
 
   const effectiveDate = formatDate(effectivePrivacyDate, localeId);
   const emailHtmlLink = ReactDOMServer.renderToString(

@@ -26,7 +26,7 @@ export function FeatureCard({
   imageSrc,
   imageAlt,
   imageAspectRatio = 'aspect-video',
-  descriptionSize = 'sm',
+  descriptionSize = 'lg',
   contentMaxWidth,
   className,
 }: FeatureCardProps) {

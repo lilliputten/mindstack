@@ -17,6 +17,8 @@ import { defaultLocale, TLocale } from '@/i18n';
 
 const saveScrollHash = getRandomHashString();
 
+const contentCache = new Map<string, React.ComponentType<MDXProps>>();
+
 interface TProps {
   locale: TLocale;
 }
@@ -38,13 +40,11 @@ function DocsContentSuspense(props: DynamicOptionsLoadingProps) {
 export function DocsContent({ locale }: TProps) {
   const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
 
-  const componentCache = React.useMemo(() => new Map<string, React.ComponentType<MDXProps>>(), []);
-
   const DynamicComponent = React.useMemo(() => {
     const contentId = capitalizeString(localeId);
     const cacheKey = `DocsContent${contentId}`;
-    if (componentCache.has(cacheKey)) {
-      return componentCache.get(cacheKey)!;
+    if (contentCache.has(cacheKey)) {
+      return contentCache.get(cacheKey)!;
     }
     const component = dynamic(
       async () => {
@@ -58,7 +58,7 @@ export function DocsContent({ locale }: TProps) {
             localeId,
             contentId,
           });
-          debugger; // eslint-disable-line no-debugger
+          // debugger; // eslint-disable-line no-debugger
           if (localeId !== defaultLocale) {
             setLocaleId(defaultLocale);
           }
@@ -70,9 +70,9 @@ export function DocsContent({ locale }: TProps) {
         loading: DocsContentSuspense,
       },
     );
-    componentCache.set(cacheKey, component);
+    contentCache.set(cacheKey, component);
     return component;
-  }, [localeId, componentCache]);
+  }, [localeId]);
 
   const emailHtmlLink = ReactDOMServer.renderToString(
     <a href={`mailto:${contactEmail}`}>{contactEmail}</a>,

@@ -17,6 +17,8 @@ import { defaultLocale, TLocale } from '@/i18n';
 
 const saveScrollHash = getRandomHashString();
 
+const contentCache = new Map<string, React.ComponentType<MDXProps>>();
+
 interface TProps {
   locale: TLocale;
 }
@@ -38,14 +40,12 @@ function CookiesContentSuspense(props: DynamicOptionsLoadingProps) {
 export function CookiesContent({ locale }: TProps) {
   const [localeId, setLocaleId] = React.useState<TLocale>(locale || defaultLocale);
 
-  const componentCache = React.useMemo(() => new Map<string, React.ComponentType<MDXProps>>(), []);
-
   // Dynamically load the appropriate  language component
   const DynamicComponent = React.useMemo(() => {
     const contentId = capitalizeString(localeId);
     const cacheKey = `CookiesContent${contentId}`;
-    if (componentCache.has(cacheKey)) {
-      return componentCache.get(cacheKey)!;
+    if (contentCache.has(cacheKey)) {
+      return contentCache.get(cacheKey)!;
     }
     const component = dynamic(
       async () => {
@@ -71,9 +71,9 @@ export function CookiesContent({ locale }: TProps) {
         loading: CookiesContentSuspense,
       },
     );
-    componentCache.set(cacheKey, component);
+    contentCache.set(cacheKey, component);
     return component;
-  }, [localeId, componentCache]);
+  }, [localeId]);
 
   const effectiveDate = formatDate(effectiveCookiesDate, localeId);
   const emailHtmlLink = ReactDOMServer.renderToString(
