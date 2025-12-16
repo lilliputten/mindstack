@@ -26,7 +26,7 @@ export function PromoCTASection() {
           'bg-header-gradient',
           'after-header-decor',
           'z-0',
-          'opacity-40',
+          'opacity-50',
         )}
       />
       <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center px-4 text-center">

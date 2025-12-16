@@ -22,7 +22,7 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
         'bg-theme/10',
       )}
     >
-      <AccordionTrigger className="px-6 py-6 text-lg font-semibold text-theme-600">
+      <AccordionTrigger className="px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base">
         {question}
       </AccordionTrigger>
       <AccordionContent className="px-6 pb-6 text-base">{answer}</AccordionContent>

@@ -7,12 +7,15 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
 import {
+  availableTopicsRoute,
   contactEmail,
   cookiesRoute,
   docsRoute,
   isDev,
   privacyRoute,
   publicAddr,
+  rootRoute,
+  settingsRoute,
   termsRoute,
   versionInfo,
 } from '@/config';
@@ -89,11 +92,14 @@ export default async function DocsPage(props: TDocsPagePropsWithContent) {
 
   // Variables to render
   const vars = {
-    docsRoute,
+    availableTopicsRoute,
     contactEmail,
-    publicAddr,
     cookiesRoute,
+    docsRoute,
     privacyRoute,
+    publicAddr,
+    rootRoute,
+    settingsRoute,
     termsRoute,
     versionInfo,
   };

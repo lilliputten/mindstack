@@ -97,6 +97,7 @@
     "Answers": "Ответы",
     "AvailableTopicsDescription": "Темы, доступные для использования",
     "AvailableTopicsTitle": "Доступные темы",
+    "DocsTitle": "Документация",
     "EditTopicPropertiesTitle": "Редактировать свойства темы",
     "InfoTitle": "Информация",
     "ManageTopicQuestionAnswersDescription": "Ответы для выбранного вопроса",
@@ -112,8 +113,7 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Настройки приложения",
     "SettingsTitle": "Настройки",
-    "WelcomeTitle": "Добро пожаловать!",
-    "DocsTitle": "Документация"
+    "WelcomeTitle": "Добро пожаловать!"
   },
   "Pricing": {
     "BilledAnnually": ", оплата ежегодно",

@@ -92,6 +92,7 @@
     "Answers": "Answers",
     "AvailableTopicsDescription": "Topics available to use",
     "AvailableTopicsTitle": "Available Topics",
+    "DocsTitle": "Documentation",
     "EditTopicPropertiesTitle": "Edit Topic Properties",
     "InfoTitle": "Info",
     "ManageTopicQuestionAnswersDescription": "Answers for the chosen question",
@@ -107,8 +108,7 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
     "SettingsTitle": "Settings",
-    "WelcomeTitle": "Welcome!",
-    "DocsTitle": "Documentation"
+    "WelcomeTitle": "Welcome!"
   },
   "Pricing": {
     "BilledAnnually": ", billed annually",

@@ -69,7 +69,7 @@
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
-    "WelcomePage": "Página de Bienvenida"
+    "WelcomePage": "¡Bienvenido!"
   },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma",
@@ -93,6 +93,7 @@
     "Answers": "Respuestas",
     "AvailableTopicsDescription": "Temas disponibles para usar",
     "AvailableTopicsTitle": "Temas Disponibles",
+    "DocsTitle": "Documentación",
     "EditTopicPropertiesTitle": "Editar Propiedades del Tema",
     "InfoTitle": "Información",
     "ManageTopicQuestionAnswersDescription": "Respuestas para la pregunta elegida",
@@ -108,8 +109,7 @@
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración",
-    "WelcomeTitle": "¡Bienvenido!",
-    "DocsTitle": "Documentación"
+    "WelcomeTitle": "¡Bienvenido!"
   },
   "Pricing": {
     "BilledAnnually": ", facturado anualmente",
