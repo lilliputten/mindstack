@@ -14,7 +14,8 @@ interface PricingHeroSectionProps {
   setBillingPeriod: (period: TBillingPeriod) => void;
 }
 
-const buttonWidth = 28;
+/** Button width (em) */
+const buttonWidthEm = 10;
 
 export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingHeroSectionProps) {
   const t = useT();
@@ -33,13 +34,13 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
       <ToggleContainer
         debugId="HeroBillingToggle"
         activeIndex={billingPeriod === 'monthly' ? 0 : 1}
-        buttonWidth={buttonWidth}
+        buttonWidthEm={buttonWidthEm}
       >
         <ToggleButton
           debugId="Monthly"
           isActive={billingPeriod === 'monthly'}
           onClick={() => setBillingPeriod('monthly')}
-          buttonWidth={buttonWidth}
+          buttonWidthEm={buttonWidthEm}
         >
           {t('Pricing.Hero.Monthly')}
         </ToggleButton>
@@ -47,7 +48,7 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
           debugId="Yearly"
           isActive={billingPeriod === 'yearly'}
           onClick={() => setBillingPeriod('yearly')}
-          buttonWidth={buttonWidth}
+          buttonWidthEm={buttonWidthEm}
         >
           {t('Pricing.Hero.Yearly')}
         </ToggleButton>

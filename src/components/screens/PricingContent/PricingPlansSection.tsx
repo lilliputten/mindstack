@@ -65,8 +65,8 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         features: [
           t('Pricing.Plans.Pro.Features.Unlimited'),
           t('Pricing.Plans.Pro.Features.Ai'),
-          t('Pricing.Plans.Pro.Features.Analytics'),
-          t('Pricing.Plans.Pro.Features.Support'),
+          t('Pricing.Plans.Pro.Features.Analytics') + ' *',
+          t('Pricing.Plans.Pro.Features.Support') + ' *',
           t('Pricing.Plans.Pro.Features.Generations'),
         ],
         buttonText: t('Pricing.Plans.Pro.Button'),
@@ -85,9 +85,9 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         features: [
           t('Pricing.Plans.Premium.Features.Everything'),
           t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
-          t('Pricing.Plans.Premium.Features.Priority'),
-          t('Pricing.Plans.Premium.Features.Advanced'),
-          t('Pricing.Plans.Premium.Features.Export'),
+          t('Pricing.Plans.Premium.Features.Priority') + ' *',
+          t('Pricing.Plans.Premium.Features.Advanced') + ' *',
+          t('Pricing.Plans.Premium.Features.Export') + ' *',
         ],
         buttonText: t('Pricing.Plans.Premium.Button'),
         buttonVariant: 'outline',
@@ -141,7 +141,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
           >
             {plan.popular && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="rounded-full bg-theme px-3 py-1 text-xs font-medium text-white">
+                <span className="truncate rounded-full bg-theme px-3 py-1 text-xs font-medium text-white">
                   {t('Pricing.MostPopular')}
                 </span>
               </div>
@@ -172,6 +172,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                         )}
                         <span className="text-sm text-muted-foreground">
                           {t('Pricing.PerMonth')}
+                          {', '}
                           {billingPeriod === 'yearly'
                             ? t('Pricing.BilledAnnually')
                             : t('Pricing.BilledMonthly')}
