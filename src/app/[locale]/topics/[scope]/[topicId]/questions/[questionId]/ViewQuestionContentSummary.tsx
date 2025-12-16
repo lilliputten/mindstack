@@ -103,7 +103,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           <Icons.Answers className="size-4 opacity-50" />
           {question._count?.answers ? (
             <span>
-              {t('ViewQuestionContentSummary.AnswersCount', { count: question._count.answers })}
+              {t('ViewQuestionContentSummary.AnswersCount')}: {question._count.answers}
             </span>
           ) : (
             <span>{t('ViewQuestionContentSummary.NoAnswersYet')}</span>
@@ -117,10 +117,8 @@ export function ViewQuestionContentSummary(props: TProps) {
           >
             <Icons.Hash className="size-4 opacity-50" />
             <span>
-              {t('ViewQuestionContentSummary.RandomAnswersRange', {
-                min: question.answersCountMin,
-                max: question.answersCountMax,
-              })}
+              {t('ViewQuestionContentSummary.RandomAnswersRange')}: {question.answersCountMin}-
+              {question.answersCountMax}
             </span>
           </Badge>
         )}
@@ -172,7 +170,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         )}
         {!!topic._count?.questions && (
           <p className="text-sm opacity-50">
-            <span className="opacity-50">{t('ViewQuestionContentSummary.TotalQuestions')}</span>{' '}
+            <span className="opacity-50">{t('ViewQuestionContentSummary.TotalQuestions')}:</span>{' '}
             {topic._count?.questions}
           </p>
         )}
@@ -195,7 +193,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           topicAuthor && (
             <>
               <Icons.User className="hidden size-4 opacity-50 sm:flex" />
-              <span className="opacity-50">{t('ViewQuestionContentSummary.TopicCreatedBy')}</span>
+              <span className="opacity-50">{t('ViewQuestionContentSummary.TopicCreatedBy')}:</span>
               <span>{topicAuthor.name || topicAuthor.email || 'Unknown'}</span>
             </>
           )
@@ -213,13 +211,13 @@ export function ViewQuestionContentSummary(props: TProps) {
       <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
         <div className="flex items-center gap-2">
           <Icons.CalendarDays className="hidden size-4 opacity-50 sm:flex" />
-          <span className="opacity-50">{t('ViewQuestionContentSummary.Created')}</span>
+          <span className="opacity-50">{t('ViewQuestionContentSummary.Created')}:</span>
           <span>{getFormattedRelativeDate(format, question.createdAt)}</span>
         </div>
         {!!compareDates(question.updatedAt, question.createdAt) && (
           <div className="flex items-center gap-2">
             <Icons.Edit className="hidden size-4 opacity-50 sm:flex" />
-            <span className="opacity-50">{t('ViewQuestionContentSummary.Modified')}</span>
+            <span className="opacity-50">{t('ViewQuestionContentSummary.Modified')}:</span>
             <span>{getFormattedRelativeDate(format, question.updatedAt)}</span>
           </div>
         )}

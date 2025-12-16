@@ -19,6 +19,7 @@ import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TViewAnswerContentSummaryProps {
@@ -34,6 +35,8 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const user = useSessionUser();
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
+  const t = useT();
+
   const topicsListPath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListPath}/${topic.id}`;
   const questionsListRoutePath = `${topicRoutePath}/questions`;
@@ -46,12 +49,12 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const topicInfoContent = (
     <div data-testid="__ViewAnswerContentSummary_Section_Topic" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-lg font-semibold">Topic</h3>
+        <h3 className="text-lg font-semibold">{t('Topic')}</h3>
         {isOwner && (
           <Button variant="ghost" size="sm">
             <Link href={`${topicsListPath}/${topic.id}`} className="flex items-center gap-2">
               <Icons.Edit className="size-3" />
-              <span>Manage Topic</span>
+              <span>{t('ViewAnswerContentSummary.ManageTopic')}</span>
             </Link>
           </Button>
         )}
@@ -64,10 +67,11 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
         <p className="text-sm opacity-50">
           {topic._count?.questions ? (
             <span>
-              <span className="opacity-50">Total questions:</span> {topic._count?.questions}
+              <span className="opacity-50">{t('ViewAnswerContentSummary.TotalQuestions')}:</span>{' '}
+              {topic._count?.questions}
             </span>
           ) : (
-            <span className="opacity-50">No questions:</span>
+            <span className="opacity-50">{t('ViewAnswerContentSummary.NoQuestions')}:</span>
           )}
         </p>
       </div>
@@ -79,7 +83,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
       data-testid="__ViewAnswerContentSummary_Section_AnswerText"
       className="flex flex-col gap-4"
     >
-      <h3 className="text-lg font-semibold">Answer Text</h3>
+      <h3 className="text-lg font-semibold">{t('ViewAnswerContentSummary.AnswerText')}</h3>
       <div className="rounded-lg bg-slate-500/10 p-4">
         <MarkdownText>{answer.text}</MarkdownText>
       </div>
@@ -91,7 +95,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
       data-testid="__ViewAnswerContentSummary_Section_AnswerExplanation"
       className="flex flex-col gap-4"
     >
-      <h3 className="text-lg font-semibold">Explanation</h3>
+      <h3 className="text-lg font-semibold">{t('ViewAnswerContentSummary.Explanation')}</h3>
       <div className="rounded-lg bg-slate-500/10 p-4">
         <MarkdownText>{answer.explanation || ''}</MarkdownText>
       </div>
@@ -103,7 +107,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
       data-testid="__ViewAnswerContentSummary_Section_Properties"
       className="flex flex-col gap-4"
     >
-      <h3 className="text-lg font-semibold">Properties</h3>
+      <h3 className="text-lg font-semibold">{t('ViewAnswerContentSummary.Properties')}</h3>
       <div className="flex flex-wrap gap-2">
         <Badge
           className={cn(
@@ -112,7 +116,9 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
           )}
         >
           <Icons.Check className="size-4 opacity-50" />
-          {answer.isCorrect ? 'Correct answer' : 'Incorrect answer'}
+          {answer.isCorrect
+            ? t('ViewAnswerContentSummary.CorrectAnswer')
+            : t('ViewAnswerContentSummary.IncorrectAnswer')}
         </Badge>
         {answer.isGenerated && (
           <Badge
@@ -123,7 +129,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
             )}
           >
             <Icons.WandSparkles className="size-3 opacity-50" />
-            AI Generated
+            {t('ViewAnswerContentSummary.AiGenerated')}
           </Badge>
         )}
       </div>
@@ -134,7 +140,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const questionInfoContent = (
     <div data-testid="__ViewAnswerContentSummary_Section_Question" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-lg font-semibold">Question</h3>
+        <h3 className="text-lg font-semibold">{t('Question')}</h3>
         {isOwner && (
           <Button variant="ghost" size="sm">
             <Link
@@ -142,7 +148,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
               className="flex items-center gap-2"
             >
               <Icons.Edit className="size-3" />
-              <span>Manage Question</span>
+              <span>{t('ViewAnswerContentSummary.ManageQuestion')}</span>
             </Link>
           </Button>
         )}
@@ -152,10 +158,11 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
         <p className="text-sm opacity-50">
           {question._count?.answers ? (
             <span>
-              <span className="opacity-50">Total answers:</span> {question._count.answers}
+              <span className="opacity-50">{t('ViewAnswerContentSummary.TotalAnswers')}:</span>{' '}
+              {question._count.answers}
             </span>
           ) : (
-            <span className="opacity-50">No answers</span>
+            <span className="opacity-50">{t('ViewAnswerContentSummary.NoAnswers')}</span>
           )}
         </p>
       </div>
@@ -164,20 +171,20 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
 
   const authorInfoContent = (isAuthorLoading || topicAuthor) && (
     <div data-testid="__ViewAnswerContentSummary_Section_Author" className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold">Author</h3>
+      <h3 className="text-lg font-semibold">{t('Author')}</h3>
       <div className="flex items-center gap-2 text-sm">
         {isAuthorLoading ? (
           <div className="h-4 w-32 animate-pulse rounded bg-gray-300" />
         ) : isOwner ? (
           <>
             <Icons.ShieldCheck className="h-4 w-4 opacity-50" />
-            <span>You're the author</span>
+            <span>{t('ViewAnswerContentSummary.YouAreTheAuthor')}</span>
           </>
         ) : (
           topicAuthor && (
             <>
               <Icons.User className="h-4 w-4 opacity-50" />
-              <span className="opacity-50">Topic created by:</span>
+              <span className="opacity-50">{t('ViewAnswerContentSummary.TopicCreatedBy')}:</span>
               <span>{topicAuthor.name || topicAuthor.email || 'Unknown'}</span>
             </>
           )
@@ -188,17 +195,17 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
 
   const timestampsContent = (
     <div data-testid="__ViewAnswerContentSummary_Section_Timeline" className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold">Timeline</h3>
+      <h3 className="text-lg font-semibold">{t('ViewAnswerContentSummary.Timeline')}</h3>
       <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
         <div className="flex items-center gap-2">
           <Icons.CalendarDays className="h-4 w-4 opacity-50" />
-          <span className="opacity-50">Created:</span>
+          <span className="opacity-50">{t('Created')}:</span>
           <span>{getFormattedRelativeDate(format, answer.createdAt)}</span>
         </div>
         {!!compareDates(answer.updatedAt, answer.createdAt) && (
           <div className="flex items-center gap-2">
             <Icons.Edit className="h-4 w-4 opacity-50" />
-            <span className="opacity-50">Modified:</span>
+            <span className="opacity-50">{t('Modified')}:</span>
             <span>{getFormattedRelativeDate(format, answer.updatedAt)}</span>
           </div>
         )}

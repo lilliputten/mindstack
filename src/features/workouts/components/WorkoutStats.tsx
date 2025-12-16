@@ -70,11 +70,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const averageTimePerQuestion =
     workout?.stepIndex && timeElapsed > 0 ? Math.round(timeElapsed / (workout.stepIndex + 1)) : 0;
 
-  // TODO?
-  const _estimatedTimeRemaining =
-    averageTimePerQuestion > 0 && questionsCount > 0
-      ? Math.round(averageTimePerQuestion * (questionsCount - (workout?.stepIndex || 0) - 1))
-      : 0;
+  /* // TODO?
+   * const _estimatedTimeRemaining =
+   *   averageTimePerQuestion > 0 && questionsCount > 0
+   *     ? Math.round(averageTimePerQuestion * (questionsCount - (workout?.stepIndex || 0) - 1))
+   *     : 0;
+   */
 
   // Use real historical data
   const historicalStats = historicalData || {
@@ -381,7 +382,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 analytics.
               </p>
               <div className="rounded-lg bg-muted/50 py-4 text-center">
-                <h4 className="mb-2 text-sm font-medium">{t('WorkoutStats.WhatYoullSeeAfter')}</h4>
+                <h4 className="mb-2 text-sm font-medium">{t('WorkoutStats.WhatYoullSeeAfter')}:</h4>
                 <ul className="space-y-1 text-xs text-muted-foreground">
                   <li>Performance trends and accuracy tracking</li>
                   <li>Study streaks and consistency metrics</li>
