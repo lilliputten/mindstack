@@ -2,6 +2,10 @@ src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/ViewQuestionCar
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/ViewQuestionContentSummary.tsx
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/ViewAnswerCard.tsx
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/ViewAnswerContentSummary.tsx
-src/features/workouts/components/WorkoutStats.tsx
-src/app/[locale]/topics/available/[topicId]/workout/go/WorkoutTopicGo.tsx
+src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/ViewAnswerPageHolder.tsx
+src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/edit/EditAnswerCard.tsx
+src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/edit/EditAnswerFormFields.tsx
+src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/edit/EditAnswerPageHolder.tsx
 src/app/[locale]/topics/available/[topicId]/workout/WorkoutTopic.tsx
+src/app/[locale]/topics/available/[topicId]/workout/go/WorkoutTopicGo.tsx
+src/features/workouts/components/WorkoutStats.tsx

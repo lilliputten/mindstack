@@ -10,6 +10,7 @@ import { TAnswerId } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableAnswerById, useAvailableQuestionById, useAvailableTopicById } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { ViewAnswerCard } from './ViewAnswerCard';
 
@@ -21,16 +22,17 @@ interface TViewAnswerPageHolderProps {
 
 export function ViewAnswerPageHolder(props: TViewAnswerPageHolderProps) {
   const { topicId, questionId, answerId } = props;
+  const t = useT();
   // const { manageScope } = useManageTopicsStore();
 
   if (!topicId) {
-    throw new Error('No topic ID specified');
+    throw new Error(t('EditAnswerCard.NoTopicFound'));
   }
   if (!questionId) {
-    throw new Error('No question ID specified');
+    throw new Error(t('EditAnswerCard.NoQuestionFound'));
   }
   if (!answerId) {
-    throw new Error('No answer ID specified');
+    throw new Error(t('EditAnswerCard.NoAnswerFound'));
   }
 
   const availableTopicQuery = useAvailableTopicById({ id: topicId });
@@ -68,13 +70,13 @@ export function ViewAnswerPageHolder(props: TViewAnswerPageHolderProps) {
   }
 
   if (!topic) {
-    throw new Error(`No topic found for ${topicId}`);
+    throw new Error(t('EditAnswerCard.NoTopicFound'));
   }
   if (!question) {
-    throw new Error(`No question found for ${questionId}`);
+    throw new Error(t('EditAnswerCard.NoQuestionFound'));
   }
   if (!answer) {
-    throw new Error(`No answer found for ${answerId}`);
+    throw new Error(t('EditAnswerCard.NoAnswerFound'));
   }
 
   return <ViewAnswerCard topic={topic} question={question} answer={answer} />;

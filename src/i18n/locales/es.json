@@ -56,6 +56,37 @@
     "start": "Inicio",
     "status": "Verificar tu estado"
   },
+  "EditAnswerCard": {
+    "AddNewAnswer": "Agregar Nueva Respuesta",
+    "AddNewQuestion": "Agregar Nueva Pregunta",
+    "CannotSaveAnswerData": "No se pueden guardar los datos de la respuesta",
+    "CannotUpdateAnswerData": "No se pueden actualizar los datos de la respuesta",
+    "DeleteAnswer": "Eliminar Respuesta",
+    "EditAnswer": "Editar Respuesta",
+    "GenerateAnswers": "Generar Respuestas",
+    "GenerateQuestions": "Generar Preguntas",
+    "NoAnswerFound": "No se encontró respuesta",
+    "NoQuestionFound": "No se encontró pregunta",
+    "NoTopicFound": "No se encontró tema",
+    "Reload": "Recargar",
+    "ReloadDataFromServer": "Recargar los datos del servidor",
+    "ResetChanges": "Restablecer cambios",
+    "Save": "Guardar",
+    "SavingAnswerData": "Guardando los datos de la respuesta...",
+    "SuccessfullySavedAnswer": "Respuesta guardada exitosamente"
+  },
+  "EditAnswerFormFields": {
+    "AnswerText": "Texto de la Respuesta",
+    "AnswerTextHint": "Un texto de respuesta.",
+    "AnswerTextPlaceholder": "Texto de la Respuesta",
+    "Explanation": "Explicación",
+    "ExplanationHint": "Explicación opcional de por qué esta respuesta es correcta o incorrecta.",
+    "ExplanationPlaceholder": "Explicación opcional para la respuesta",
+    "IsCorrect": "¿Es correcta la respuesta?",
+    "IsCorrectHint": "¿Cada pregunta debería tener una o algunas respuestas correctas?",
+    "IsGenerated": "¿La respuesta fue generada por IA?",
+    "IsGeneratedHint": "Si la respuesta ha sido generada automáticamente, entonces podría ser actualizada o eliminada más tarde."
+  },
   "NavAuthButton": {
     "Dashboard": "Panel",
     "sign-in": "Iniciar Sesión"
