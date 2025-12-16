@@ -17,7 +17,7 @@ import {
   versionInfo,
 } from '@/config';
 import { getT } from '@/i18n';
-import { defaultLocale, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
+import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
 export const dynamic = 'force-static';
 
@@ -27,15 +27,6 @@ type TDocsPageProps = TAwaitedLocaleProps;
 
 interface TDocsPagePropsWithContent extends TDocsPageProps {
   content?: string;
-}
-
-export async function generateMetadata({ params }: TAwaitedLocaleProps) {
-  const { locale } = await params;
-  const t = await getT({ locale });
-  return constructMetadata({
-    title: t('Pages.DocsTitle'),
-    locale,
-  });
 }
 
 async function getContentImport(locale: TLocale) {
@@ -48,29 +39,39 @@ async function getContentImport(locale: TLocale) {
 }
 
 async function getContent(locale: TLocale) {
-  /* // DEBUG: Demo error
-   * throw new Error('Test');
-   */
   const imported = await getContentImport(locale);
   return imported.default;
 }
 
+export async function generateMetadata({ params }: TAwaitedLocaleProps) {
+  const { locale } = await params;
+  const t = await getT({ locale });
+  return constructMetadata({
+    title: t('Pages.DocsTitle'),
+    locale,
+  });
+}
+
 export async function generateStaticParams() {
-  const locale = 'en';
-  let content: string = '';
-  try {
-    content = await getContent(locale);
-  } catch (error) {
-    const message = 'Error loading page content for static generation';
-    const details = getErrorText(error);
-    // eslint-disable-next-line no-console
-    console.error('[DocsPage:generateStaticParams]', [message, details].join(': '), {
-      message,
-      details,
-      error,
-    });
+  const locales = strictLocalesList;
+  const params = [];
+  for (const locale of locales) {
+    let content: string = '';
+    try {
+      content = await getContent(locale);
+    } catch (error) {
+      const message = 'Error loading page content for static generation';
+      const details = getErrorText(error);
+      // eslint-disable-next-line no-console
+      console.error('[DocsPage:generateStaticParams]', [message, details].join(': '), {
+        message,
+        details,
+        error,
+      });
+    }
+    params.push({ locale, content });
   }
-  return [{ locale, content }];
+  return params;
 }
 
 export default async function DocsPage(props: TDocsPagePropsWithContent) {
@@ -79,17 +80,6 @@ export default async function DocsPage(props: TDocsPagePropsWithContent) {
 
   // Enable static rendering
   setRequestLocale(locale);
-
-  /* // DEBUG
-   * if (preloadedContent) {
-   *   console.log('[DocsPage:before]', {
-   *     locale,
-   *     preloadedContent,
-   *     props,
-   *   });
-   *   debugger;
-   * }
-   */
 
   let content = preloadedContent;
 

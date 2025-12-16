@@ -20,15 +20,6 @@ interface TPrivacyPagePropsWithContent extends TPrivacyPageProps {
   content?: string;
 }
 
-export async function generateMetadata({ params }: TAwaitedLocaleProps) {
-  const { locale } = await params;
-  const t = await getT({ locale });
-  return constructMetadata({
-    title: t('Pages.PrivacyTitle'),
-    locale,
-  });
-}
-
 async function getContentImport(locale: TLocale) {
   switch (locale) {
     case 'es':
@@ -42,17 +33,22 @@ async function getContentImport(locale: TLocale) {
 }
 
 async function getContent(locale: TLocale) {
-  /* // DEBUG: Demo error
-   * throw new Error('Test');
-   */
   const imported = await getContentImport(locale);
   return imported.default;
 }
 
-export async function generateStaticParams() {
-  const locales = strictLocalesList; // ['en', 'es', 'ru'];
-  const params = [];
+export async function generateMetadata({ params }: TAwaitedLocaleProps) {
+  const { locale } = await params;
+  const t = await getT({ locale });
+  return constructMetadata({
+    title: t('Pages.PrivacyTitle'),
+    locale,
+  });
+}
 
+export async function generateStaticParams() {
+  const locales = strictLocalesList;
+  const params = [];
   for (const locale of locales) {
     let content: string = '';
     try {
@@ -61,7 +57,7 @@ export async function generateStaticParams() {
       const message = 'Error loading page content for static generation';
       const details = getErrorText(error);
       // eslint-disable-next-line no-console
-      console.error('[privacy:generateStaticParams]', [message, details].join(': '), {
+      console.error('[PrivacyPage:generateStaticParams]', [message, details].join(': '), {
         message,
         details,
         error,
@@ -69,7 +65,6 @@ export async function generateStaticParams() {
     }
     params.push({ locale, content });
   }
-
   return params;
 }
 

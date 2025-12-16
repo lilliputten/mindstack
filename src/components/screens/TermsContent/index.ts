@@ -1,1 +1,0 @@
-export { TermsContent } from './TermsContent';
