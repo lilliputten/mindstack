@@ -21,14 +21,15 @@ interface TProps extends TPropsWithClassName {
 
 export function AvailableTopicsFiltersInfo(props: TProps) {
   const { className, filtersData, maxValueLength = 30 } = props;
-  const t = useT('AvailableTopicsFilters');
+  // See texts aimed to be translated in the `src/contexts/TopicsFiltersContext/TopicsFiltersTexts.ts`
+  const tTexts = useT('AvailableTopicsFilterTexts');
   const activeFilterIds = getActiveFilterIds(filtersData);
   const renderItems = activeFilterIds
     .map((id) => {
       const { showOnlyValue, value } = getFiltersDataValueString(id, {
         filtersData,
         specific: true,
-        t,
+        t: tTexts,
       });
       return (
         <span
@@ -46,7 +47,7 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
         >
           {!showOnlyValue && (
             <>
-              <span className="opacity-50">{getFilterFieldName(id, t)}:</span>{' '}
+              <span className="opacity-50">{getFilterFieldName(id, tTexts)}:</span>{' '}
             </>
           )}
           <span className="">{truncateString(value, maxValueLength)}</span>{' '}
@@ -64,7 +65,7 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
         className,
       )}
     >
-      {hasFilters ? renderItems : 'No active filters'}
+      {hasFilters ? renderItems : tTexts('No Active Filters')}
     </span>
   );
 }

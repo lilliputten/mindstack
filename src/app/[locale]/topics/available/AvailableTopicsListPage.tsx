@@ -11,6 +11,7 @@ import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { useAvailableTopicsByScope, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { AvailableTopicsList } from './AvailableTopicsList';
 
@@ -22,6 +23,7 @@ interface TProps {
 export function AvailableTopicsListPage(props: TProps) {
   const { availableTopicsQuery, manageScope } = props;
 
+  const t = useT();
   const user = useSessionUser();
   const goToTheRoute = useGoToTheRoute();
   // const goBack = useGoBack(rootRoute);
@@ -40,8 +42,8 @@ export function AvailableTopicsListPage(props: TProps) {
     () =>
       [
         {
-          id: 'Manage Your Topics',
-          content: 'Manage Your Topics',
+          id: 'ManageYourTopicsAction',
+          content: t('AvailableTopicsListPage.ManageYourTopicsAction'),
           variant: 'ghost',
           icon: Icons.Edit,
           visibleFor: 'md',
@@ -50,7 +52,7 @@ export function AvailableTopicsListPage(props: TProps) {
         },
         {
           id: 'reload',
-          content: 'Reload',
+          content: t('Reload'),
           variant: 'ghost',
           icon: Icons.Refresh,
           pending: isRefetching,
@@ -59,13 +61,13 @@ export function AvailableTopicsListPage(props: TProps) {
           onClick: refetch,
         },
       ] satisfies TActionMenuItem[],
-    [goToTheRoute, user, refetch, isFetched, isRefetching],
+    [goToTheRoute, user, refetch, isFetched, isRefetching, t],
   );
 
   return (
     <>
       <DashboardHeader
-        heading="Available Topics"
+        heading={t('AvailableTopicsListPage.AvailableTopicsHeading')}
         className={cn(
           isDev && '__AvailableTopicsListPage_DashboardHeader', // DEBUG
           'mx-6',

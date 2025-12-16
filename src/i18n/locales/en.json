@@ -102,6 +102,44 @@
     "StartTraining": "Start Training",
     "TrainingDetails": "Training Details"
   },
+  "AvailableTopicsFilters": {
+    "Apply": "Apply",
+    "ClearChanges": "Clear changes",
+    "ClickToHideSettings": "Click to hide settings",
+    "Displaying": "Displaying",
+    "ExpandToChangeDisplaySettings": "Expand to change display settings",
+    "Hide": "Hide",
+    "NoFiltersApplied": "No filters applied",
+    "ResetToDefaults": "Reset to defaults"
+  },
+  "AvailableTopicsFilterTexts": {
+    "Active Workouts": "Active Workouts",
+    "By Name": "By Name",
+    "By Name (descending)": "By Name (descending)",
+    "Ignore": "Ignore",
+    "Language": "Language",
+    "No": "No",
+    "No Active Filters": "No active filters",
+    "Oldest": "Oldest",
+    "Only My": "Only My",
+    "Only My Topics": "Only My Topics",
+    "Order by": "Order by",
+    "Questions": "Questions",
+    "Recent": "Recent",
+    "Search for": "Search for",
+    "Statistics": "Statistics",
+    "With Active Workouts": "With Active Workouts",
+    "With Questions": "With Questions",
+    "With Statistics": "With Statistics",
+    "Without Active Workouts": "Without Active Workouts",
+    "Without Questions": "Without Questions",
+    "Without Statistics": "Without Statistics",
+    "Yes": "Yes"
+  },
+  "AvailableTopicsListPage": {
+    "AvailableTopicsHeading": "Available Topics",
+    "ManageYourTopicsAction": "Manage Your Topics"
+  },
   "Bot": {
     "accountCreated": "✅ Your account has been successfully created.",
     "canNotCreateAccount": "❌ Error creating account profile.",

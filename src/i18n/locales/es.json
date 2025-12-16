@@ -102,6 +102,44 @@
     "StartTraining": "Iniciar Entrenamiento",
     "TrainingDetails": "Detalles del Entrenamiento"
   },
+  "AvailableTopicsFilters": {
+    "Apply": "Aplicar",
+    "ClearChanges": "Limpiar cambios",
+    "ClickToHideSettings": "Haz clic para ocultar la configuración",
+    "Displaying": "Mostrando",
+    "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización",
+    "Hide": "Ocultar",
+    "NoFiltersApplied": "No hay filtros aplicados",
+    "ResetToDefaults": "Restablecer valores predeterminados"
+  },
+  "AvailableTopicsFilterTexts": {
+    "Active Workouts": "Entrenamientos Activos",
+    "By Name": "Por Nombre",
+    "By Name (descending)": "Por Nombre (descendente)",
+    "Ignore": "Ignorar",
+    "Language": "Idioma",
+    "No": "No",
+    "No Active Filters": "No hay filtros activos",
+    "Oldest": "Más Antiguo",
+    "Only My": "Solo Mío",
+    "Only My Topics": "Solo Mis Temas",
+    "Order by": "Ordenar por",
+    "Questions": "Preguntas",
+    "Recent": "Reciente",
+    "Search for": "Buscar por",
+    "Statistics": "Estadísticas",
+    "With Active Workouts": "Con Entrenamientos Activos",
+    "With Questions": "Con Preguntas",
+    "With Statistics": "Con Estadísticas",
+    "Without Active Workouts": "Sin Entrenamientos Activos",
+    "Without Questions": "Sin Preguntas",
+    "Without Statistics": "Sin Estadísticas",
+    "Yes": "Sí"
+  },
+  "AvailableTopicsListPage": {
+    "AvailableTopicsHeading": "Temas Disponibles",
+    "ManageYourTopicsAction": "Gestionar Tus Temas"
+  },
   "Bot": {
     "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
     "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",

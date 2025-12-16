@@ -14,6 +14,7 @@ src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answer
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/answers/[answerId]/edit/EditAnswerPageHolder.tsx
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/edit/EditQuestionCard.tsx
 src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/edit/EditQuestionFormFields.tsx
+src/app/[locale]/topics/available/AvailableTopicsListPage.tsx
 src/app/[locale]/topics/available/[topicId]/workout/WorkoutTopic.tsx
 src/app/[locale]/topics/available/[topicId]/workout/go/WorkoutTopicGo.tsx
 src/components/blocks/MarkdownHint.tsx
@@ -32,4 +33,7 @@ src/components/pages/ManageTopicsPage/AddTopicModal/AddTopicModal.tsx
 src/components/pages/ManageTopicsPage/DeleteTopicModal/DeleteTopicModal.tsx
 src/components/pages/SettingsPage/SettingsForm/SettingsFormFields.tsx
 src/components/shared/ContentFooter.tsx
+src/features/topics/components/AvailableTopicsFilters/AvailableTopicsFilters.tsx
+src/features/topics/components/AvailableTopicsFilters/AvailableTopicsFiltersFields.tsx
+src/features/topics/components/AvailableTopicsFilters/AvailableTopicsFiltersInfo.tsx
 src/features/workouts/components/WorkoutStats.tsx

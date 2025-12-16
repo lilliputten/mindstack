@@ -103,6 +103,44 @@
     "StartTraining": "Начать тренировку",
     "TrainingDetails": "Детали тренировки"
   },
+  "AvailableTopicsFilters": {
+    "Apply": "Применить",
+    "ClearChanges": "Очистить изменения",
+    "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
+    "Displaying": "Показывается",
+    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
+    "Hide": "Скрыть",
+    "NoFiltersApplied": "Фильтры не применены",
+    "ResetToDefaults": "Сбросить к значениям по умолчанию"
+  },
+  "AvailableTopicsFilterTexts": {
+    "Active Workouts": "Активные тренировки",
+    "By Name": "По названию",
+    "By Name (descending)": "По названию (по убыванию)",
+    "Ignore": "Игнорировать",
+    "Language": "Язык",
+    "No": "Нет",
+    "No Active Filters": "Нет активных фильтров",
+    "Oldest": "Самые старые",
+    "Only My": "Только мои",
+    "Only My Topics": "Только мои темы",
+    "Order by": "Сортировать по",
+    "Questions": "Вопросы",
+    "Recent": "Недавние",
+    "Search for": "Поиск по",
+    "Statistics": "Статистика",
+    "With Active Workouts": "С активными тренировками",
+    "With Questions": "С вопросами",
+    "With Statistics": "Со статистикой",
+    "Without Active Workouts": "Без активных тренировок",
+    "Without Questions": "Без вопросов",
+    "Without Statistics": "Без статистики",
+    "Yes": "Да"
+  },
+  "AvailableTopicsListPage": {
+    "AvailableTopicsHeading": "Доступные темы",
+    "ManageYourTopicsAction": "Управлять своими темами"
+  },
   "Bot": {
     "accountCreated": "✅ Акаунт успешно создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",

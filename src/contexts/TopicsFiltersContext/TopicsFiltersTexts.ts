@@ -1,6 +1,6 @@
 import { TFiltersDataKey, TOrderBySelectOption } from './TopicsFiltersTypes';
 
-// NOTE: These texts should be key values in the translation files
+// NOTE: These texts should be key values in the translation files. See `AvailableTopicsFilterTexts` namespace.
 
 export const fieldUnionStrings = {
   true: 'Yes',
