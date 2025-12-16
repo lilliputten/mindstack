@@ -67,7 +67,7 @@ export function ViewQuestionContentSummary(props: TProps) {
     >
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Answers</h3>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button variant="ghost" size="sm" disabled={!isLogged}>
             <Link
               href={`${routePath}/${question.topicId}/questions/${question.id}/answers`}
@@ -135,7 +135,7 @@ export function ViewQuestionContentSummary(props: TProps) {
     <div data-testid="__ViewQuestionContentSummary_Section_Topic" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Topic</h3>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {isOwner && (
             <Button variant="ghost" size="sm">
               <Link href={`${routePath}/${topic.id}`} className="flex items-center gap-2">

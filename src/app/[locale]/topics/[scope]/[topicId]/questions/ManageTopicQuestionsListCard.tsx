@@ -113,7 +113,7 @@ function QuestionsTableHeader({
         <TableHead id="text" className="truncate">
           Question Text
         </TableHead>
-        <TableHead id="answers" className="truncate">
+        <TableHead id="answers" className="truncate max-sm:hidden">
           Answers
         </TableHead>
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
@@ -234,7 +234,7 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           {truncateMarkdown(text, 80)}
         </Link>
       </TableCell>
-      <TableCell id="answers" className="max-w-[8em] truncate">
+      <TableCell id="answers" className="max-w-[8em] truncate max-sm:hidden">
         <div className="truncate">
           {answersCount ? (
             <span className="font-bold">{answersCount}</span>
