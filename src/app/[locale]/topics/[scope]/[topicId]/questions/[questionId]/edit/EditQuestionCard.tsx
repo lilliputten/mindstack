@@ -23,6 +23,7 @@ import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/Qu
 import { TAvailableQuestion, TQuestionData, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 // import { topicQuestionDeletedEventId } from '../DeleteQuestionModal';
@@ -55,6 +56,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
     availableQuestionQuery,
   } = props;
   const { manageScope } = useManageTopicsStore();
+  const t = useT();
 
   const queryClient = useQueryClient();
 
@@ -81,10 +83,10 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
   } = availableQuestionQuery;
 
   if (!topic) {
-    throw new Error('No topic found');
+    throw new Error(t('EditQuestionCard.NoTopicFound'));
   }
   if (!question) {
-    throw new Error('No question found');
+    throw new Error(t('EditQuestionCard.NoQuestionFound'));
   }
 
   const [isPending, startTransition] = React.useTransition();
@@ -99,32 +101,32 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           if (!answersCountMin || answersCountMin < 1) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              message: 'It should be a positive number.',
+              message: t('EditQuestionCard.ItShouldBeAPositiveNumber'),
               path: ['answersCountMin'],
             });
           }
           if (!answersCountMax || answersCountMax < 1) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              message: 'It should be a positive number.',
+              message: t('EditQuestionCard.ItShouldBeAPositiveNumber'),
               path: ['answersCountMax'],
             });
           }
           if (answersCountMin > answersCountMax) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              message: 'A minimal value should be less than maximal.',
+              message: t('EditQuestionCard.MinimalValueShouldBeLessThanMaximal'),
               path: ['answersCountMin'],
             });
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              message: 'A minimal value should be less than maximal.',
+              message: t('EditQuestionCard.MinimalValueShouldBeLessThanMaximal'),
               path: ['answersCountMax'],
             });
           }
         }
       }),
-    [],
+    [t],
   );
 
   const defaultValues: TFormData = React.useMemo(
@@ -167,9 +169,9 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         try {
           const promise = updateQuestion(editedQuestion);
           toast.promise(promise, {
-            loading: 'Saving the question data...',
-            success: 'Successfully saved the question',
-            error: 'Can not save the question data.',
+            loading: t('EditQuestionCard.SavingQuestionData'),
+            success: t('EditQuestionCard.SuccessfullySavedQuestion'),
+            error: t('EditQuestionCard.CannotSaveQuestionData'),
           });
           const _updatedQuestion = await promise;
           // Invalidate all possible question data...
@@ -189,7 +191,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           // TODO: Convert `updatedQuestion` to the form data & reset form to these values?
         } catch (error) {
           const details = getErrorText(error);
-          const message = 'Cannot save question data';
+          const message = t('EditQuestionCard.CannotSaveQuestionData');
           // eslint-disable-next-line no-console
           console.error('[EditQuestionCard]', [message, details].join(': '), {
             error,
@@ -199,7 +201,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         }
       });
     },
-    [availableQuestionsQuery, form, queryClient, question],
+    [availableQuestionsQuery, form, queryClient, question, t],
   );
 
   const handleReload = React.useCallback(() => {
@@ -223,7 +225,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       })
       .catch((error) => {
         const details = getErrorText(error);
-        const message = 'Cannot update question data';
+        const message = t('EditQuestionCard.CannotUpdateQuestionData');
         // eslint-disable-next-line no-console
         console.error('[EditQuestionCard:handleReload]', [message, details].join(': '), {
           error,
@@ -231,7 +233,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         debugger; // eslint-disable-line no-debugger
         toast.error(message);
       });
-  }, [availableQuestionsQuery, availableQuestionQuery, form]);
+  }, [availableQuestionQuery, form, availableQuestionsQuery, t]);
 
   const handleSubmit = form.handleSubmit(handleFormSubmit);
 
@@ -239,7 +241,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -247,8 +249,8 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Reload',
-        content: 'Reload',
-        title: 'Reload the data from the server',
+        content: t('EditQuestionCard.Reload'),
+        title: t('EditQuestionCard.ReloadDataFromServer'),
         // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
@@ -257,7 +259,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Reset',
-        content: 'Reset changes',
+        content: t('EditQuestionCard.ResetChanges'),
         // variant: 'ghost',
         icon: Icons.Close,
         visibleFor: 'lg',
@@ -266,7 +268,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
+        content: t('EditQuestionCard.AddNewQuestion'),
         // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'lg',
@@ -274,7 +276,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Delete Question',
-        content: 'Delete Question',
+        content: t('EditQuestionCard.DeleteQuestion'),
         variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'lg',
@@ -282,7 +284,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Save',
-        content: 'Save',
+        content: t('EditQuestionCard.Save'),
         variant: 'success',
         icon: Icons.Check,
         visibleFor: 'sm',
@@ -292,6 +294,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
     ],
     [
+      t,
       goBack,
       availableQuestionQuery.isRefetching,
       handleReload,
@@ -316,7 +319,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
   return (
     <>
       <DashboardHeader
-        heading="Edit Question Properties"
+        heading={t('EditQuestionCard.EditQuestionProperties')}
         className={cn(
           isDev && '__EditQuestionCard_DashboardHeader', // DEBUG
           'mx-6',

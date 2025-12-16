@@ -42,6 +42,7 @@ import {
   useGoToTheRoute,
   useSessionUser,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();
@@ -487,6 +488,7 @@ export function ManageTopicQuestionAnswersListCard(
   const [selectedAnswers, setSelectedAnswers] = React.useState<Set<TAnswerId>>(new Set());
   const [showDeleteSelectedConfirm, setShowDeleteSelectedConfirm] = React.useState(false);
   const queryClient = useQueryClient();
+  const t = useT();
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -544,7 +546,7 @@ export function ManageTopicQuestionAnswersListCard(
     },
     onError: (error) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot delete selected answers';
+      const message = t('ManageTopicQuestionAnswersListCard.CannotDeleteSelectedAnswers');
       // eslint-disable-next-line no-console
       console.error('[ManageTopicQuestionAnswersListCard:deleteSelectedMutation]', message, {
         details,
@@ -561,12 +563,12 @@ export function ManageTopicQuestionAnswersListCard(
 
     const promise = deleteSelectedMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
-      loading: 'Deleting selected answers...',
-      success: 'Successfully deleted selected answers',
-      error: 'Cannot delete selected answers',
+      loading: t('ManageTopicQuestionAnswersListCard.DeletingSelectedAnswers'),
+      success: t('ManageTopicQuestionAnswersListCard.SuccessfullyDeletedSelectedAnswers'),
+      error: t('ManageTopicQuestionAnswersListCard.CannotDeleteSelectedAnswers'),
     });
     setShowDeleteSelectedConfirm(false);
-  }, [selectedAnswers, deleteSelectedMutation]);
+  }, [selectedAnswers, deleteSelectedMutation, t]);
 
   const handleShowDeleteSelectedConfirm = React.useCallback(() => {
     setShowDeleteSelectedConfirm(true);
@@ -673,19 +675,23 @@ export function ManageTopicQuestionAnswersListCard(
         setSelectedAnswers={setSelectedAnswers}
       />
       <ConfirmModal
-        dialogTitle="Confirm delete selected answers"
+        dialogTitle={t('ManageTopicQuestionAnswersListCard.ConfirmDeleteSelectedAnswers')}
         confirmButtonVariant="destructive"
-        confirmButtonText="Delete"
-        confirmButtonBusyText="Deleting"
-        cancelButtonText="Cancel"
+        confirmButtonText={t('ManageTopicQuestionAnswersListCard.Delete')}
+        confirmButtonBusyText={t('ManageTopicQuestionAnswersListCard.Deleting')}
+        cancelButtonText={t('ManageTopicQuestionAnswersListCard.Cancel')}
         handleClose={handleHideDeleteSelectedConfirm}
         handleConfirm={handleDeleteSelected}
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteSelectedConfirm}
       >
         <div className="flex flex-col gap-2">
-          <p>Do you confirm deleting selected answers?</p>
-          <p>Selected answers count: {selectedAnswers.size}.</p>
+          <p>{t('ManageTopicQuestionAnswersListCard.ConfirmDeleteSelectedAnswersMessage')}</p>
+          <p>
+            {t('ManageTopicQuestionAnswersListCard.SelectedAnswersCount', {
+              count: selectedAnswers.size,
+            })}
+          </p>
         </div>
       </ConfirmModal>
     </>

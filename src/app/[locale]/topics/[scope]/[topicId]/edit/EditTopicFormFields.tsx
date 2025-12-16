@@ -16,6 +16,7 @@ import { MarkdownHint } from '@/components/blocks/MarkdownHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { TTopicFormData } from './types';
 
@@ -44,6 +45,7 @@ function FormSection({ children }: TPropsWithChildren) {
 
 export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
   const { className, form, selectLanguage } = props;
+  const t = useT();
   // Create unique keys for labels
   const nameKey = React.useId();
   const descriptionKey = React.useId();
@@ -70,11 +72,17 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={nameKey}>Topic Name</Label>
+              <Label htmlFor={nameKey}>{t('EditTopicFormFields.TopicName')}</Label>
               <FormControl>
-                <Input id={nameKey} type="text" className="flex-1" placeholder="Name" {...field} />
+                <Input
+                  id={nameKey}
+                  type="text"
+                  className="flex-1"
+                  placeholder={t('EditTopicFormFields.TopicNamePlaceholder')}
+                  {...field}
+                />
               </FormControl>
-              <FormHint>A topic name. It's good if it's a unique value.</FormHint>
+              <FormHint>{t('EditTopicFormFields.TopicNameHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -85,19 +93,18 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={descriptionKey}>Question Description</Label>
+              <Label htmlFor={descriptionKey}>{t('EditTopicFormFields.QuestionDescription')}</Label>
               <FormControl>
                 <Textarea
                   id={descriptionKey}
                   className="flex-1"
-                  placeholder="Topic Description"
+                  placeholder={t('EditTopicFormFields.TopicDescriptionPlaceholder')}
                   rows={5}
                   {...field}
                 />
               </FormControl>
               <FormHint>
-                A topic description. This text can be used both to generate questions and answers by
-                the system itself, and by users for navigation and search. <MarkdownHint />
+                {t('EditTopicFormFields.QuestionDescriptionHint')} <MarkdownHint />
               </FormHint>
               <FormMessage />
             </FormItem>
@@ -109,14 +116,16 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={keywordsKey}>Keywords</Label>
+              <Label htmlFor={keywordsKey}>{t('EditTopicFormFields.Keywords')}</Label>
               <FormControl>
-                <Input id={keywordsKey} type="text" placeholder="Keywords" {...field} />
+                <Input
+                  id={keywordsKey}
+                  type="text"
+                  placeholder={t('EditTopicFormFields.Keywords')}
+                  {...field}
+                />
               </FormControl>
-              <FormHint>
-                Optional list of keywords separated by commas. It can be used to generate questions
-                and answers, as well as to navigate and search for users.
-              </FormHint>
+              <FormHint>{t('EditTopicFormFields.KeywordsHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -129,13 +138,11 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={isPublicKey}>Is the topic public?</Label>
+              <Label htmlFor={isPublicKey}>{t('EditTopicFormFields.IsPublic')}</Label>
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint>
-                If the topic is public it's available for all the users, not only for you.
-              </FormHint>
+              <FormHint>{t('EditTopicFormFields.IsPublicHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -152,7 +159,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
             ]);
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={langCodeKey}>Topic Language</Label>
+                <Label htmlFor={langCodeKey}>{t('EditTopicFormFields.TopicLanguage')}</Label>
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
@@ -160,7 +167,11 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langName ? <span className="truncate">{langName}</span> : <>Select language</>}
+                    {langName ? (
+                      <span className="truncate">{langName}</span>
+                    ) : (
+                      <>{t('EditTopicFormFields.SelectLanguage')}</>
+                    )}
                   </span>
                   {langCode && <span className="opacity-50">{langCode}</span>}
                   {langCustom && (
@@ -170,7 +181,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   )}
                   {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
                 </Button>
-                <FormHint>An optional predefined or custom language for the topic.</FormHint>
+                <FormHint>{t('EditTopicFormFields.TopicLanguageHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -182,7 +193,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={answersCountRandomKey}>Use random questions count?</Label>
+              <Label htmlFor={answersCountRandomKey}>
+                {t('EditTopicFormFields.UseRandomQuestionsCount')}
+              </Label>
               <FormControl>
                 <Switch
                   id={answersCountRandomKey}
@@ -196,10 +209,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   }}
                 />
               </FormControl>
-              <FormHint>
-                Allow to generate random number of answers for questions (if it's not overidden in
-                the question settings).
-              </FormHint>
+              <FormHint>{t('EditTopicFormFields.UseRandomQuestionsCountHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -212,12 +222,14 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMinKey}>Minimal questions count</Label>
+                  <Label htmlFor={answersCountMinKey}>
+                    {t('EditTopicFormFields.MinimalQuestionsCount')}
+                  </Label>
                   <FormControl>
                     <Input
                       id={answersCountMinKey}
                       type="number"
-                      placeholder="Minimal questions count"
+                      placeholder={t('EditTopicFormFields.MinimalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}
                     />
@@ -231,12 +243,14 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMaxKey}>Maximal questions count</Label>
+                  <Label htmlFor={answersCountMaxKey}>
+                    {t('EditTopicFormFields.MaximalQuestionsCount')}
+                  </Label>
                   <FormControl>
                     <Input
                       id={answersCountMaxKey}
                       type="number"
-                      placeholder="Maximal questions count"
+                      placeholder={t('EditTopicFormFields.MaximalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}
                     />

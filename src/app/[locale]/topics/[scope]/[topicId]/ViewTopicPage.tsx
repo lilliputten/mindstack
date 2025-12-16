@@ -21,6 +21,7 @@ import {
   useGoBack,
   useGoToTheRoute,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewTopicContentSummary } from './ViewTopicContentSummary';
@@ -37,6 +38,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
   const routePath = `/topics/${manageScope}`;
   const goBack = useGoBack(routePath);
   const goToTheRoute = useGoToTheRoute();
+  const t = useT();
 
   const {
     topic,
@@ -48,7 +50,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
 
   // Error: topic hasn't been found
   if (!topic) {
-    throw new Error('No topic found');
+    throw new Error(t('ViewTopicPage.NoTopicFound'));
   }
 
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -79,7 +81,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
         }
       })
       .catch((error) => {
-        const message = 'Cannot update topic data';
+        const message = t('ViewTopicPage.CannotUpdateTopicData');
         // eslint-disable-next-line no-console
         console.error('[ViewTopicPage:handleReload]', message, {
           error,
@@ -87,13 +89,13 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
         debugger; // eslint-disable-line no-debugger
         toast.error(message);
       });
-  }, [availableTopicQuery, availableTopicsQuery]);
+  }, [availableTopicQuery, availableTopicsQuery, t]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -102,7 +104,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Start Training',
-        content: 'Start Training',
+        content: t('ViewTopicPage.StartTraining'),
         // variant: 'theme',
         icon: Icons.ArrowRight,
         visibleFor: 'md',
@@ -111,7 +113,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Reload',
-        content: 'Reload',
+        content: t('ViewTopicPage.Reload'),
         // variant: 'ghost',
         icon: Icons.Refresh,
         // visibleFor: 'lg',
@@ -119,7 +121,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Edit',
-        content: 'Edit',
+        content: t('Edit'),
         // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
@@ -127,7 +129,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Questions',
-        content: 'Questions',
+        content: t('Questions'),
         // variant: 'ghost',
         icon: Icons.Questions,
         visibleFor: 'lg',
@@ -135,7 +137,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
+        content: t('ViewTopicPage.AddNewQuestion'),
         // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'lg',
@@ -143,7 +145,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Generate Questions',
-        content: 'Generate Questions',
+        content: t('ViewTopicPage.GenerateQuestions'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'lg',
@@ -152,7 +154,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Delete Topic',
-        content: 'Delete Topic',
+        content: t('ViewTopicPage.DeleteTopic'),
         // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'lg',
@@ -160,6 +162,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
     ],
     [
+      t,
       goBack,
       allowedTraining,
       handleReload,
@@ -176,7 +179,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
   return (
     <>
       <DashboardHeader
-        heading="View Topic"
+        heading={t('ViewTopicPage.ViewTopic')}
         className={cn(
           isDev && '__ViewTopicPage_DashboardHeader', // DEBUG
           'mx-6',
