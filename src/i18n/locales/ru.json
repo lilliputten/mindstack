@@ -21,7 +21,9 @@
   "Public": "Публичный",
   "Question": "Вопрос",
   "Questions": "Вопросы",
+  "Refresh": "Обновить",
   "Reload": "Перезагрузить",
+  "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
   "Save": "Сохранить",
   "Select Language": "Выбрать язык",
@@ -184,6 +186,9 @@
     "PricingLink": "Цены",
     "PrivacyPolicyLink": "Политика конфиденциальности",
     "TermsOfServiceLink": "Условия использования"
+  },
+  "DashboardSidebar": {
+    "TogglePanel": "Переключить панель"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Отмена",
@@ -573,6 +578,24 @@
       }
     }
   },
+  "SelectLanguageCustomForm": {
+    "LanguageCode": "Код языка",
+    "LanguageName": "Название языка",
+    "Select": "Выбрать",
+    "SelectLanguageText": "Выберите язык с пользовательским (но уникальным) идентификатором и названием."
+  },
+  "SelectLanguagePredefinedForm": {
+    "Select": "Выбрать",
+    "SelectLanguage": "Выбрать язык",
+    "SelectLanguageFormTheList": "Выберите язык из списка.",
+    "SelectLanguageText": "Выберите язык из предопределённого списка."
+  },
+  "SelectTopicLanguageModal": {
+    "ChooseALanguageForATopic": "Выберите язык для темы",
+    "Custom": "Пользовательский",
+    "Predefined": "Предопределённый",
+    "SelectLanguage": "Выбрать язык"
+  },
   "SettingsFormFields": {
     "AutoOption": "Авто",
     "JumpToNewEntitiesHint": "Переключаться на формы редактирования для только что созданных объектов (например, тем, вопросов, ответов) после создания.",
@@ -592,6 +615,9 @@
     "TopicsLanguageHint": "Укажите язык, если вы хотите видеть темы только на этом конкретном языке.",
     "TopicsLanguageLabel": "Язык тем",
     "TopicsLanguagePlaceholder": "Выберите язык"
+  },
+  "SettingsPage": {
+    "UpdateSettingsHint": "Обновить настройки с сервера"
   },
   "SignInForm": {
     "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",
@@ -796,25 +822,5 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
-  },
-  "selectTopicLanguageModal": {
-    "selectALanguage": "Выбрать Язык",
-    "selectLanguage": "Выбрать Язык",
-    "chooseALanguageForATopic": "Выберите язык для темы",
-    "predefined": "Предопределённый",
-    "custom": "Пользовательский"
-  },
-  "selectLanguagePredefinedForm": {
-    "selectALanguageFromThePredefinedList": "Выберите язык из предопределённого списка.",
-    "selectLanguage": "Выбрать язык",
-    "selectALanguage": "Выберите язык…",
-    "selectALanguageFormTheList": "Выберите язык из списка.",
-    "select": "Выбрать"
-  },
-  "selectLanguageCustomForm": {
-    "selectALanguageWithACustomButUniqueIdentifierAndName": "Выберите язык с пользовательским (но уникальным) идентификатором и названием.",
-    "languageName": "Название языка",
-    "languageCode": "Код языка",
-    "select": "Выбрать"
   }
 }

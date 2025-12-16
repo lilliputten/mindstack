@@ -4,7 +4,7 @@
 TODO: Add login/authorization info
 -->
 
-Welcome to Mind Stack Trainer -- a NextJS memory training application designed to help you improve your cognitive abilities through interactive exercises and games.
+Welcome to the **{siteTitle}** -- a NextJS memory training application designed to help you improve your cognitive abilities through interactive exercises and games.
 
 ## Project Overview
 

@@ -12,7 +12,7 @@ import {
 } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
-import { authorSite, currentYear, isDev } from '@/config';
+import { authorSite, currentYear, isDev, siteTitle } from '@/config';
 import { useT } from '@/i18n';
 import { Link as LocalLink } from '@/i18n/routing';
 
@@ -42,7 +42,7 @@ export function ContentFooter() {
       <div className="z-1 relative mx-auto mb-6 grid max-w-6xl gap-4 px-6 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="text-sm leading-5">
-            © {currentYear}, Mind Stack Trainer
+            © {currentYear}, {siteTitle}
             <br />
             {t('ContentFooter.AppDescription')}
             <br />

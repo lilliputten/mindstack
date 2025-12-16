@@ -110,7 +110,7 @@ export function SettingsPage(props: TSettingsPageProps) {
     () => [
       {
         id: 'save',
-        content: 'Save',
+        content: t('Save'),
         variant: 'theme',
         icon: Icons.Save,
         visibleFor: 'xs',
@@ -119,7 +119,7 @@ export function SettingsPage(props: TSettingsPageProps) {
       },
       {
         id: 'reset',
-        content: 'Reset',
+        content: t('Reset'),
         icon: Icons.Close,
         visibleFor: 'sm',
         disabled: !isDirty,
@@ -127,8 +127,8 @@ export function SettingsPage(props: TSettingsPageProps) {
       },
       {
         id: 'refresh',
-        content: 'Refresh',
-        title: 'Update settings from server',
+        content: t('Refresh'),
+        title: t('Update settings from server'),
         pending: isReLoading,
         // size: 'icon',
         icon: Icons.Refresh,
@@ -137,7 +137,7 @@ export function SettingsPage(props: TSettingsPageProps) {
         onClick: () => (isDirty ? setReloadConfirmModalVisible(true) : doReload()),
       },
     ],
-    [doReload, form, handleFormSubmit, isDirty, isReLoading, isReady, isSubmitEnabled],
+    [t, doReload, form, handleFormSubmit, isDirty, isReLoading, isReady, isSubmitEnabled],
   );
 
   return (

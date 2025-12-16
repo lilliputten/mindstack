@@ -19,6 +19,7 @@ import {
 
 // prettier-ignore
 export const dashboardLinks: SidebarNavItem[] = [
+  // Show translations in the namespace of `NavLinks`
   {
     titleId: 'Application',
     items: [
@@ -47,8 +48,8 @@ export const dashboardLinks: SidebarNavItem[] = [
     titleId: 'Information',
     items: [
       { href: aboutRoute, icon: Icons.Info, titleId: 'AboutProject' },
-      { href: welcomeRoute, icon: Icons.MonitorPlay, titleId: 'WelcomePage' },
-      { href: docsRoute, icon: Icons.MonitorPlay, titleId: 'Documentation' },
+      { href: welcomeRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
+      { href: docsRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
     ],
   },
   {

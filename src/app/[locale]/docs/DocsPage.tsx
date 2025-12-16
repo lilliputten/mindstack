@@ -16,6 +16,7 @@ import {
   publicAddr,
   rootRoute,
   settingsRoute,
+  siteTitle,
   termsRoute,
   versionInfo,
 } from '@/config';
@@ -92,6 +93,7 @@ export async function DocsPage(props: TDocsPagePropsWithContent) {
 
   // Variables to render
   const vars = {
+    siteTitle,
     availableTopicsRoute,
     contactEmail,
     cookiesRoute,

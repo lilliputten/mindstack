@@ -106,7 +106,7 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
   return (
     <div className={cn(className, '__SelectLanguagePredefinedForm', 'py-2')}>
       <p className="Text mb-4 text-[13px] text-muted-foreground">
-        {t('SelectLanguagePredefinedForm.SelectLanguageFromThePredefinedList')}
+        {t('SelectLanguagePredefinedForm.SelectLanguageText')}
       </p>
       <form onSubmit={onSubmit}>
         <div className="flex w-full flex-col items-center gap-4">

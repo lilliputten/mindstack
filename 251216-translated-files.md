@@ -1,3 +1,4 @@
+src/app/[locale]/settings/SettingsPage.tsx
 src/app/[locale]/topics/[scope]/ManageTopicsListCard.tsx
 src/app/[locale]/topics/[scope]/[topicId]/ViewTopicContentSummary.tsx
 src/app/[locale]/topics/[scope]/[topicId]/ViewTopicPage.tsx
@@ -31,6 +32,9 @@ src/components/pages/ManageTopicQuestions/GenerateQuestionsModal/GenerateQuestio
 src/components/pages/ManageTopicsPage/AddTopicModal/AddTopicForm.tsx
 src/components/pages/ManageTopicsPage/AddTopicModal/AddTopicModal.tsx
 src/components/pages/ManageTopicsPage/DeleteTopicModal/DeleteTopicModal.tsx
+src/components/pages/SelectTopicLanguageModal/SelectLanguageCustomForm.tsx
+src/components/pages/SelectTopicLanguageModal/SelectLanguagePredefinedForm.tsx
+src/components/pages/SelectTopicLanguageModal/SelectTopicLanguageModal.tsx
 src/components/pages/SettingsPage/SettingsForm/SettingsFormFields.tsx
 src/components/shared/ContentFooter.tsx
 src/features/topics/components/AvailableTopicsFilters/AvailableTopicsFilters.tsx

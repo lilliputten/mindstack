@@ -80,7 +80,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
   return (
     <div className={cn(className, '__SelectLanguageCustomForm', 'py-2')}>
       <p className="Text mb-4 text-sm text-muted-foreground">
-        {t('SelectLanguageCustomForm.SelectLanguageWithACustomButUniqueIdentifierAndName')}
+        {t('SelectLanguageCustomForm.SelectLanguageText')}
       </p>
       <form onSubmit={onSubmit}>
         <div className="flex w-full flex-col items-center gap-4">

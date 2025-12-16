@@ -9,14 +9,15 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { InfoVisualBlock } from '@/components/blocks/InfoVisualBlock';
 import { AppIntroBlock } from '@/components/content/AppIntroBlock';
 import { isDev } from '@/constants';
+import { useT } from '@/i18n';
 
 const saveScrollHash = getRandomHashString();
 
 export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
   const { className } = props;
+  const t = useT();
   return (
     <ScrollArea
-      // disableScroll
       saveScrollKey="InfoScreen"
       saveScrollHash={saveScrollHash}
       className={cn(
@@ -41,16 +42,10 @@ export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
           'max-w-xl',
           'w-full',
           'text-content',
-          // 'text-center', // Only for small texts
         )}
       >
-        <h1 className="text-center">Information</h1>
+        <h1 className="text-center">{t('NavLinks.Information')}</h1>
         <AppIntroBlock />
-        {/*
-        {generateArray(20).map((n) => (
-          <p key={n}>Text {n + 1}</p>
-        ))}
-        */}
       </div>
     </ScrollArea>
   );

@@ -34,7 +34,10 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
   const pathname = usePathname();
   const testPath = removePathLocalePrefix(pathname);
 
-  const t = useT('NavLinks');
+  // Generic translator
+  const t = useT();
+  // Translator only for navigation links
+  const tNavLinks = useT('NavLinks');
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -133,7 +136,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                         (!isExpanded || showProjectsSelector) && 'sr-only',
                       )}
                     >
-                      Toggle Panel
+                      {t('DashboardSidebar.TogglePanel')}
                     </span>
                   </Button>
                 </TooltipTrigger>
@@ -141,7 +144,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                   side="right"
                   className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                 >
-                  Toggle Panel
+                  {t('DashboardSidebar.TogglePanel')}
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -163,7 +166,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                       !isExpanded && 'hidden',
                     )}
                   >
-                    {t(section.titleId)}
+                    {tNavLinks(section.titleId)}
                   </p>
                   {/* Show sections menu */}
                   {section.items.map((item) => {
@@ -213,7 +216,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                     !isExpanded && 'hidden',
                                   )}
                                 >
-                                  {t(titleId)}
+                                  {tNavLinks(titleId)}
                                 </span>
                                 {badge && (
                                   <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
@@ -226,7 +229,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                               className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                               side="right"
                             >
-                              {t(titleId)}
+                              {tNavLinks(titleId)}
                             </TooltipContent>
                           </Tooltip>
                         </React.Fragment>

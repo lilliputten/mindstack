@@ -24,7 +24,9 @@
   "Public": "Public",
   "Question": "Question",
   "Questions": "Questions",
+  "Refresh": "Refresh",
   "Reload": "Reload",
+  "Reset": "Reset",
   "ResetChanges": "Reset Changes",
   "Save": "Save",
   "Select Language": "Select Language",
@@ -182,6 +184,9 @@
     "PricingLink": "Pricing",
     "PrivacyPolicyLink": "Privacy Policy",
     "TermsOfServiceLink": "Terms of Service"
+  },
+  "DashboardSidebar": {
+    "TogglePanel": "Toggle Panel"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancel",
@@ -571,6 +576,24 @@
       }
     }
   },
+  "SelectLanguageCustomForm": {
+    "LanguageCode": "Language code",
+    "LanguageName": "Language name",
+    "Select": "Select",
+    "SelectLanguageText": "Select a language with a custom (but unique) identifier and name."
+  },
+  "SelectLanguagePredefinedForm": {
+    "Select": "Select",
+    "SelectLanguage": "Select language",
+    "SelectLanguageFormTheList": "Select a language form the list.",
+    "SelectLanguageText": "Select a language from the predefined list."
+  },
+  "SelectTopicLanguageModal": {
+    "Custom": "Custom",
+    "Predefined": "Predefined",
+    "SelectLanguage": "Select Language",
+    "SelectLanguageText": "Choose a language for a topic"
+  },
   "SettingsFormFields": {
     "AutoOption": "Auto",
     "JumpToNewEntitiesHint": "Switch to editing forms for newly created objects (like topics, questions, answers) after creation.",
@@ -590,6 +613,9 @@
     "TopicsLanguageHint": "Specify a language if you want to see the topics only for this specific language.",
     "TopicsLanguageLabel": "Topics language",
     "TopicsLanguagePlaceholder": "Select language"
+  },
+  "SettingsPage": {
+    "UpdateSettingsHint": "Update settings from server"
   },
   "SignInForm": {
     "intro": "Login to be able editing your own data.",
@@ -794,23 +820,5 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
-  },
-  "SelectTopicLanguageModal": {
-    "SelectLanguage": "Select Language",
-    "SelectLanguageText": "Choose a language for a topic",
-    "Predefined": "Predefined",
-    "Custom": "Custom"
-  },
-  "SelectLanguagePredefinedForm": {
-    "SelectLanguageFromThePredefinedList": "Select a language from the predefined list.",
-    "SelectLanguage": "Select language",
-    "SelectLanguageFormTheList": "Select a language form the list.",
-    "Select": "Select"
-  },
-  "SelectLanguageCustomForm": {
-    "SelectLanguageWithACustomButUniqueIdentifierAndName": "Select a language with a custom (but unique) identifier and name.",
-    "LanguageName": "Language name",
-    "LanguageCode": "Language code",
-    "Select": "Select"
   }
 }

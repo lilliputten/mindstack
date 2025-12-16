@@ -24,7 +24,9 @@
   "Public": "Público",
   "Question": "Pregunta",
   "Questions": "Preguntas",
+  "Refresh": "Refrescar",
   "Reload": "Recargar",
+  "Reset": "Reiniciar",
   "ResetChanges": "Restablecer cambios",
   "Save": "Guardar",
   "Select Language": "Seleccionar Idioma",
@@ -182,6 +184,9 @@
     "PricingLink": "Precios",
     "PrivacyPolicyLink": "Política de Privacidad",
     "TermsOfServiceLink": "Términos de Servicio"
+  },
+  "DashboardSidebar": {
+    "TogglePanel": "Panel de alternancia"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancelar",
@@ -571,6 +576,24 @@
       }
     }
   },
+  "SelectLanguageCustomForm": {
+    "LanguageCode": "Código del idioma",
+    "LanguageName": "Nombre del idioma",
+    "Select": "Seleccionar",
+    "SelectLanguageText": "Selecciona un idioma con un identificador y nombre personalizados (pero únicos)."
+  },
+  "SelectLanguagePredefinedForm": {
+    "Select": "Seleccionar",
+    "SelectLanguage": "Seleccionar idioma",
+    "SelectLanguageFormTheList": "Selecciona un idioma de la lista.",
+    "SelectLanguageText": "Selecciona un idioma de la lista predefinida."
+  },
+  "SelectTopicLanguageModal": {
+    "Custom": "Personalizado",
+    "Predefined": "Predefinido",
+    "SelectLanguage": "Seleccionar Idioma",
+    "SelectLanguageText": "Elige un idioma para un tema"
+  },
   "SettingsFormFields": {
     "AutoOption": "Auto",
     "JumpToNewEntitiesHint": "Cambiar a formularios de edición para objetos recién creados (como temas, preguntas, respuestas) después de su creación.",
@@ -590,6 +613,9 @@
     "TopicsLanguageHint": "Especifique un idioma si desea ver solo los temas en este idioma específico.",
     "TopicsLanguageLabel": "Idioma de los temas",
     "TopicsLanguagePlaceholder": "Seleccionar idioma"
+  },
+  "SettingsPage": {
+    "UpdateSettingsHint": "Actualizar configuración desde el servidor"
   },
   "SignInForm": {
     "intro": "Inicia sesión para poder editar tus propios datos.",
@@ -794,23 +820,5 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
-  },
-  "SelectTopicLanguageModal": {
-    "SelectLanguage": "Seleccionar Idioma",
-    "SelectLanguageText": "Elige un idioma para un tema",
-    "Predefined": "Predefinido",
-    "Custom": "Personalizado"
-  },
-  "SelectLanguagePredefinedForm": {
-    "SelectLanguageFromThePredefinedList": "Selecciona un idioma de la lista predefinida.",
-    "SelectLanguage": "Seleccionar idioma",
-    "SelectLanguageFormTheList": "Selecciona un idioma de la lista.",
-    "Select": "Seleccionar"
-  },
-  "SelectLanguageCustomForm": {
-    "SelectLanguageWithACustomButUniqueIdentifierAndName": "Selecciona un idioma con un identificador y nombre personalizados (pero únicos).",
-    "LanguageName": "Nombre del idioma",
-    "LanguageCode": "Código del idioma",
-    "Select": "Seleccionar"
   }
 }
