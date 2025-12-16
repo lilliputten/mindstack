@@ -52,6 +52,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
   const { className, form, ignoreOnlyMy } = props;
   // See texts aimed to be translated in the `src/contexts/TopicsFiltersContext/TopicsFiltersTexts.ts`
   const tTexts = useT('AvailableTopicsFilterTexts');
+  const t = useT();
 
   // Used keys
   const searchTextKey = React.useId();
@@ -109,7 +110,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                   )}
                 </div>
               </FormControl>
-              <FormHint>Search for text in name, description or keywords.</FormHint>
+              <FormHint>{t('AvailableTopicsFiltersFields.SearchForTextHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -149,7 +150,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                 </div>
               </FormControl>
               <FormHint className="MarkdownText">
-                Search for language code or name (eg: <code>en</code> or <code>Engl</code>).
+                {t.rich('AvailableTopicsFiltersFields.SearchForLanguageHint', {
+                  code: (chunks) => <code>{chunks}</code>,
+                })}
               </FormHint>
               <FormMessage />
             </FormItem>
@@ -171,7 +174,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormHint className="MarkdownText">Show only my own topics.</FormHint>
+                <FormHint className="MarkdownText">
+                  {t('AvailableTopicsFiltersFields.ShowOnlyMyTopicsHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             )}
@@ -204,7 +209,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>Choose how to sort the topics list.</FormHint>
+              <FormHint>{t('AvailableTopicsFiltersFields.ChooseSortOrderHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -247,9 +252,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint>
-                  Display topics with or without collected progress statistics data.
-                </FormHint>
+                <FormHint>{t('AvailableTopicsFiltersFields.DisplayTopicsWithStatsHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -291,7 +294,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint>Display topics with or without active trainings.</FormHint>
+                <FormHint>
+                  {t('AvailableTopicsFiltersFields.DisplayTopicsWithActiveWorkoutsHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -333,7 +338,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint>Display topics with or without created questions.</FormHint>
+                <FormHint>
+                  {t('AvailableTopicsFiltersFields.DisplayTopicsWithQuestionsHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );

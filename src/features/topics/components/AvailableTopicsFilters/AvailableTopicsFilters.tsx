@@ -155,61 +155,47 @@ export function AvailableTopicsFilters(props: TProps) {
                   <div
                     className={cn(
                       isDev && '__AvailableTopicsFilters_Actions', // DEBUG
-                      'flex flex-col flex-wrap gap-2 pt-2 sm:flex-row',
+                      'flex flex-wrap gap-2 pt-2 max-sm:flex-col',
                     )}
                   >
-                    <div
-                      className={cn(
-                        isDev && '__AvailableTopicsFilters_ActionsLeft', // DEBUG
-                        'flex flex-1 flex-wrap items-end gap-2',
-                      )}
+                    <Button
+                      type="submit"
+                      variant="theme"
+                      disabled={!isSubmitEnabled}
+                      className="flex items-center gap-2"
                     >
-                      <Button
-                        type="submit"
-                        variant="theme"
-                        disabled={!isSubmitEnabled}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Check className="size-4 opacity-50" />
-                        {t('AvailableTopicsFilters.Apply')}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleResetToDefaults}
-                        disabled={onDefaults}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Close className="size-4 opacity-50" />
-                        {t('AvailableTopicsFilters.ResetToDefaults')}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleClearChanges}
-                        disabled={!form.formState.isDirty}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Close className="size-4 opacity-50" />
-                        {t('AvailableTopicsFilters.ClearChanges')}
-                      </Button>
-                    </div>
-                    <div
-                      className={cn(
-                        isDev && '__AvailableTopicsFilters_ActionsRight', // DEBUG
-                        'flex flex-wrap items-end gap-2',
-                      )}
+                      <Icons.Check className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.Apply')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleResetToDefaults}
+                      disabled={onDefaults}
+                      className="flex items-center gap-2"
                     >
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={hideFilters}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.ChevronUp className="size-4 opacity-50" />
-                        {t('AvailableTopicsFilters.Hide')}
-                      </Button>
-                    </div>
+                      <Icons.Close className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.ResetToDefaults')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleClearChanges}
+                      disabled={!form.formState.isDirty}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Close className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.ClearChanges')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={hideFilters}
+                      className="flex items-center gap-2 md:ml-auto"
+                    >
+                      <Icons.ChevronUp className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.Hide')}
+                    </Button>
                   </div>
                 </form>
               </FormProvider>

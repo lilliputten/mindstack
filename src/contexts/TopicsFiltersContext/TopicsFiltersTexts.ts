@@ -25,19 +25,19 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
     true: 'OnlyMyTopics',
   },
   orderBySelect: {
-    byRecent: 'OrderByRecent',
-    byOldest: 'OrderByOldest',
-    byNameAsc: 'OrderByName',
-    byNameDesc: 'OrderByNameDescending',
+    byRecent: 'OrderBy-Recent',
+    byOldest: 'OrderBy-Oldest',
+    byNameAsc: 'OrderBy-Name',
+    byNameDesc: 'OrderBy-NameDescending',
   } satisfies Record<TOrderBySelectOption, string>,
 };
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {
-  searchText: 'SearchFor',
-  searchLang: 'Language',
-  showOnlyMyTopics: 'OnlyMy',
-  hasWorkoutStats: 'Statistics',
-  hasActiveWorkouts: 'ActiveWorkouts',
-  hasQuestions: 'Questions',
-  orderBySelect: 'OrderBy',
+  searchText: 'Label-SearchText',
+  searchLang: 'Label-SearchLang',
+  showOnlyMyTopics: 'Label-ShowOnlyMyTopics',
+  hasWorkoutStats: 'Label-HasWorkoutStats',
+  hasActiveWorkouts: 'Label-HasActiveWorkouts',
+  hasQuestions: 'Label-HasQuestions',
+  orderBySelect: 'Label-OrderBy',
 };
