@@ -16,6 +16,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewQuestion, TQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { maxTextLength, minTextLength } from '../constants';
 
@@ -35,6 +36,7 @@ export interface TFormData {
 
 export function AddQuestionForm(props: TAddQuestionFormProps) {
   const { className, handleAddQuestion, handleClose, isPending, topicId } = props;
+  const t = useT();
 
   const formSchema = React.useMemo(
     () =>
@@ -83,7 +85,9 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
   const textKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending ? 'Adding' : 'Add';
+  const buttonText = isPending
+    ? t('AddQuestionForm.AddingButtonText')
+    : t('AddQuestionForm.AddButtonText');
 
   return (
     <FormProvider {...form}>
@@ -101,20 +105,20 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={textKey}>
-                Question Text
+                {t('AddQuestionForm.QuestionText')}
               </Label>
               <FormControl>
                 <Textarea
                   id={textKey}
                   className="flex-1"
-                  placeholder="Text"
+                  placeholder={t('AddQuestionForm.QuestionTextPlaceholder')}
                   rows={5}
                   {...field}
                   onChange={(ev) => field.onChange(ev)}
                 />
               </FormControl>
               <FormHint>
-                You'll be able to edit it later, as well as other question poroperties.{' '}
+                {t('AddQuestionForm.QuestionTextHint')}
                 <MarkdownHint />
               </FormHint>
               <FormMessage />
@@ -134,7 +138,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
           </Button>
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="size-4" />
-            <span>Cancel</span>
+            <span>{t('Cancel')}</span>
           </Button>
         </div>
       </form>

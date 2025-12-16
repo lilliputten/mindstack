@@ -2,9 +2,6 @@
   "Answer": "Respuesta",
   "Answers": "Respuestas",
   "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
-  "MarkdownHint": {
-    "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>Guía de Markdown</MarkdownGuideLink> para la información de sintaxis."
-  },
   "Author": "Autor",
   "Authors": "Autores",
   "Back": "Atrás",
@@ -45,6 +42,55 @@
     "LearnMore": "Más información",
     "Message": "Utilizamos cookies para mejorar su experiencia. Al continuar visitando este sitio, acepta nuestro uso de cookies."
   },
+  "AddAnswerForm": {
+    "AddButtonText": "Agregar",
+    "AddingButtonText": "Agregando",
+    "AnswerText": "Texto de la Respuesta",
+    "AnswerTextHint": "Podrás editarlo más tarde, así como otras propiedades de la respuesta. ",
+    "AnswerTextPlaceholder": "Texto",
+    "IsCorrectHint": "Cada pregunta debe tener una o algunas respuestas correctas.",
+    "IsCorrectLabel": "¿Es correcta la respuesta?"
+  },
+  "AddAnswerModal": {
+    "DialogDescription": "Agregar Diálogo de Respuesta",
+    "DialogTitle": "Agregar Nueva Respuesta",
+    "ModalTitle": "Agregar una Respuesta",
+    "ToastError": "No se puede crear una respuesta",
+    "ToastLoading": "Creando una nueva respuesta...",
+    "ToastSuccess": "Nueva respuesta creada correctamente."
+  },
+  "AddQuestionForm": {
+    "AddButtonText": "Agregar",
+    "AddingButtonText": "Agregando",
+    "CancelButtonText": "Cancelar",
+    "QuestionText": "Texto de la Pregunta",
+    "QuestionTextHint": "Podrás editarlo más tarde, así como otras propiedades de la pregunta. ",
+    "QuestionTextPlaceholder": "Texto"
+  },
+  "AddQuestionModal": {
+    "DialogDescription": "Agregar diálogo de pregunta",
+    "DialogTitle": "Agregar Nueva Pregunta",
+    "ModalTitle": "Agregar una Pregunta",
+    "ToastError": "No se puede crear una nueva pregunta",
+    "ToastLoading": "Creando una nueva pregunta...",
+    "ToastSuccess": "Se creó exitosamente una nueva pregunta."
+  },
+  "AddTopicForm": {
+    "AddButtonText": "Agregar",
+    "AddingButtonText": "Agregando",
+    "IsPublicHint": "Los temas públicos pueden ser vistos y utilizados por otros usuarios.",
+    "IsPublicLabel": "¿Es público el tema?",
+    "NamePlaceholder": "Nombre",
+    "TopicName": "Nombre del Tema"
+  },
+  "AddTopicModal": {
+    "DialogDescription": "Agregar Diálogo de Tema",
+    "DialogTitle": "Agregar Tema",
+    "ModalTitle": "Agregar un Tema",
+    "ToastError": "No se puede crear el nuevo tema",
+    "ToastLoading": "Creando nuevo tema...",
+    "ToastSuccess": "Se creó exitosamente el nuevo tema \"{name}\""
+  },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
     "ManageQuestion": "Gestionar Pregunta",
@@ -80,6 +126,48 @@
     "language": "Cambiar idioma",
     "start": "Inicio",
     "status": "Verificar tu estado"
+  },
+  "ContentFooter": {
+    "AppDescription": "Aplicación de Entrenamiento de Memoria",
+    "BuiltWithText": "Construido con <NextJSLink>Next.js</NextJSLink> y <VercelLink>Vercel</VercelLink> por <AuthorLink>{authorSite}</AuthorLink>",
+    "CookiePolicyLink": "Política de Cookies",
+    "DocumentationLink": "Documentación",
+    "PricingLink": "Precios",
+    "PrivacyPolicyLink": "Política de Privacidad",
+    "TermsOfServiceLink": "Términos de Servicio"
+  },
+  "DeleteAnswerModal": {
+    "CancelButtonText": "Cancelar",
+    "ConfirmButtonBusyText": "Eliminando",
+    "ConfirmButtonText": "Eliminar",
+    "DialogContent": "¿Confirmas eliminar la respuesta?",
+    "DialogTitle": "Confirmar eliminar respuesta",
+    "ModalTitle": "¿Eliminar una respuesta?",
+    "ToastError": "No se puede eliminar la respuesta.",
+    "ToastLoading": "Eliminando la respuesta...",
+    "ToastSuccess": "Se eliminó exitosamente la respuesta."
+  },
+  "DeleteQuestionModal": {
+    "CancelButtonText": "Cancelar",
+    "ConfirmButtonBusyText": "Eliminando",
+    "ConfirmButtonText": "Eliminar",
+    "DialogContent": "¿Confirmas la eliminación de la pregunta?",
+    "DialogTitle": "Confirmar eliminar pregunta",
+    "ModalTitle": "Eliminar una Pregunta",
+    "ToastError": "No se puede eliminar la pregunta.",
+    "ToastLoading": "Eliminando la pregunta...",
+    "ToastSuccess": "Se eliminó exitosamente la pregunta."
+  },
+  "DeleteTopicModal": {
+    "CancelButtonText": "Cancelar",
+    "ConfirmButtonBusyText": "Eliminando",
+    "ConfirmButtonText": "Eliminar",
+    "DialogContent": "¿Confirmas eliminar el tema \"{topicName}\"?",
+    "DialogTitle": "Confirmar eliminar tema",
+    "ModalTitle": "¿Eliminar un tema?",
+    "ToastError": "No se puede eliminar el tema \"{name}\"",
+    "ToastLoading": "Eliminando tema \"{name}\"",
+    "ToastSuccess": "Se eliminó exitosamente el tema \"{name}\""
   },
   "EditAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
@@ -161,6 +249,61 @@
     "UseRandomQuestionsCount": "¿Usar cantidad aleatoria de preguntas?",
     "UseRandomQuestionsCountHint": "Permitir generar un número aleatorio de respuestas para preguntas (si no se anula en la configuración de la pregunta)."
   },
+  "GenerateAnswersForm": {
+    "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
+    "AnswersCountLabelPrefix": "Cantidad de respuestas:",
+    "DebugDataHint": "Habilitar para usar datos falsos en lugar de hacer llamadas API reales.",
+    "ExtraInstructionsHint": "Contexto o instrucciones adicionales opcionales para la IA.",
+    "ExtraInstructionsLabel": "Instrucciones Extra (Opcional)",
+    "ExtraInstructionsPlaceholder": "Instrucciones adicionales para la generación de respuestas...",
+    "GenerateButtonText": "Generar",
+    "GeneratingButtonText": "Generando",
+    "GenerationTypeHint": "Elige el tipo de respuestas a generar para cada pregunta.",
+    "GenerationTypeLabel": "Tipo de generación",
+    "GenerationTypePlaceholder": "Seleccionar tipo de generación",
+    "UseDebugDataLabel": "¿Usar datos de depuración?"
+  },
+  "GenerateAnswersModal": {
+    "DialogDescription": "Generar Diálogo de Respuestas",
+    "DialogTitle": "Generar Respuestas",
+    "ModalTitle": "Generar Respuestas",
+    "ToastErrorAnswers": "No se pueden agregar respuestas",
+    "ToastErrorData": "No se pueden recuperar los datos generados por IA",
+    "ToastLoadingAnswers": "Agregando nuevas respuestas...",
+    "ToastLoadingData": "Recuperando datos generados por IA...",
+    "ToastSuccessAnswers": "Se agregaron exitosamente nuevas respuestas",
+    "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA"
+  },
+  "GenerateQuestionsForm": {
+    "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
+    "AnswersCountLabelPrefix": "Cantidad de respuestas:",
+    "AnswersGenerationTypeHint": "Elige el tipo de respuestas a generar para cada pregunta.",
+    "AnswersGenerationTypeLabel": "Tipo de Generación de Respuestas",
+    "AnswersGenerationTypePlaceholder": "Seleccionar tipo de generación de respuestas",
+    "DebugDataHint": "Habilitar para usar datos falsos en lugar de hacer llamadas API reales.",
+    "ExtraInstructionsHint": "Contexto o instrucciones adicionales opcionales para la IA.",
+    "ExtraInstructionsLabel": "Instrucciones Extra (Opcional)",
+    "ExtraInstructionsPlaceholder": "Instrucciones adicionales para la generación de preguntas...",
+    "GenerateButtonText": "Generar",
+    "GeneratingButtonText": "Generando",
+    "GenerationTypeHint": "Elige el tipo de preguntas a generar.",
+    "GenerationTypeLabel": "Tipo de generación",
+    "GenerationTypePlaceholder": "Seleccionar tipo de generación",
+    "QuestionsCountHint": "Rango de preguntas a generar (mínimo - máximo).",
+    "QuestionsCountLabelPrefix": "Cantidad de preguntas:",
+    "UseDebugDataLabel": "¿Usar datos de depuración?"
+  },
+  "GenerateQuestionsModal": {
+    "DialogDescription": "Generar Diálogo de Preguntas",
+    "DialogTitle": "Generar Preguntas",
+    "ModalTitle": "Generar Preguntas",
+    "ToastErrorData": "No se pueden recuperar los datos generados por IA",
+    "ToastErrorQuestions": "No se pueden agregar preguntas",
+    "ToastLoadingData": "Recuperando datos generados por IA...",
+    "ToastLoadingQuestions": "Agregando nuevas preguntas...",
+    "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA",
+    "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
+  },
   "ManageTopicQuestionAnswersListCard": {
     "Cancel": "Cancelar",
     "CannotDeleteSelectedAnswers": "No se pueden eliminar las respuestas seleccionadas",
@@ -237,6 +380,9 @@
     "SuccessfullyResetPublicStatusForSelectedTopics": "Estado público de temas seleccionados restablecido exitosamente",
     "TopicName": "Nombre del Tema"
   },
+  "MarkdownHint": {
+    "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>Guía de Markdown</MarkdownGuideLink> para la información de sintaxis."
+  },
   "NavAuthButton": {
     "Dashboard": "Panel",
     "sign-in": "Iniciar Sesión"
@@ -300,8 +446,8 @@
     "WelcomeTitle": "¡Bienvenido!"
   },
   "Pricing": {
-    "BilledAnnually": ", facturado anualmente",
-    "BilledMonthly": ", facturado mensualmente",
+    "BilledAnnually": "anualmente",
+    "BilledMonthly": "lmensualmente",
     "ContactUs": "Contáctanos",
     "Free": "Gratis",
     "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
@@ -377,6 +523,26 @@
         }
       }
     }
+  },
+  "SettingsFormFields": {
+    "AutoOption": "Auto",
+    "JumpToNewEntitiesHint": "Cambiar a formularios de edición para objetos recién creados (como temas, preguntas, respuestas) después de su creación.",
+    "JumpToNewEntitiesLabel": "¿Ir a entidades recién creadas?",
+    "LocaleHint": "Seleccionar el idioma de la aplicación.",
+    "LocaleLabel": "Idioma de la aplicación",
+    "LocalePlaceholder": "Seleccionar idioma…",
+    "SelectLanguageButton": "Seleccionar idioma",
+    "ShowOnlyMyTopicsHint": "Deshabilitar mostrar todos los temas públicos, mostrar solo los personales.",
+    "ShowOnlyMyTopicsLabel": "¿Mostrar solo mis propios temas?",
+    "ThemeColorHint": "Seleccionar el color principal del tema de la aplicación.",
+    "ThemeColorLabel": "Color del tema",
+    "ThemeColorPlaceholder": "Seleccionar color del tema…",
+    "ThemeHint": "Seleccionar el tema de la aplicación.",
+    "ThemeLabel": "Tema de la aplicación",
+    "ThemePlaceholder": "Seleccionar tema…",
+    "TopicsLanguageHint": "Especifique un idioma si desea ver solo los temas en este idioma específico.",
+    "TopicsLanguageLabel": "Idioma de los temas",
+    "TopicsLanguagePlaceholder": "Seleccionar idioma"
   },
   "SignInForm": {
     "intro": "Inicia sesión para poder editar tus propios datos.",

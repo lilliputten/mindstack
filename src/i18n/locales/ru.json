@@ -1,13 +1,6 @@
 {
   "Answer": "Ответ",
   "Answers": "Ответы",
-  "AppIntroBlock": {
-    "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
-    "title": "Добро пожаловать!"
-  },
-  "MarkdownHint": {
-    "Content": "Этот текст поддерживает разметку markdown, посмотрите <MarkdownGuideLink>Руководство по Markdown</MarkdownGuideLink> для информации о синтаксисе."
-  },
   "Authors": "Авторы",
   "Back": "Назад",
   "Cancel": "Отмена",
@@ -45,6 +38,55 @@
     "Accept": "Принять",
     "LearnMore": "Подробнее",
     "Message": "Мы используем cookies для улучшения вашего опыта. Продолжая посещать этот сайт, вы соглашаетесь с нашим использованием cookies."
+  },
+  "AddAnswerForm": {
+    "AddButtonText": "Добавить",
+    "AddingButtonText": "Добавление",
+    "AnswerText": "Текст ответа",
+    "AnswerTextHint": "Вы сможете редактировать его позже, а также другие свойства ответа. ",
+    "AnswerTextPlaceholder": "Текст",
+    "IsCorrectHint": "Каждый вопрос должен иметь один или несколько правильных ответов.",
+    "IsCorrectLabel": "Правильный ли ответ?"
+  },
+  "AddAnswerModal": {
+    "DialogDescription": "Добавить диалог ответа",
+    "DialogTitle": "Добавить новый ответ",
+    "ModalTitle": "Добавить ответ",
+    "ToastError": "Невозможно создать ответ",
+    "ToastLoading": "Создание нового ответа...",
+    "ToastSuccess": "Успешно создан новый ответ."
+  },
+  "AddQuestionForm": {
+    "AddButtonText": "Добавить",
+    "AddingButtonText": "Добавление",
+    "CancelButtonText": "Отмена",
+    "QuestionText": "Текст вопроса",
+    "QuestionTextHint": "Вы сможете редактировать его позже, а также другие свойства вопроса. ",
+    "QuestionTextPlaceholder": "Текст"
+  },
+  "AddQuestionModal": {
+    "DialogDescription": "Добавить диалог вопроса",
+    "DialogTitle": "Добавить новый вопрос",
+    "ModalTitle": "Добавить вопрос",
+    "ToastError": "Невозможно создать новый вопрос",
+    "ToastLoading": "Создание нового вопроса...",
+    "ToastSuccess": "Новый вопрос успешно создан."
+  },
+  "AddTopicForm": {
+    "AddButtonText": "Добавить",
+    "AddingButtonText": "Добавление",
+    "IsPublicHint": "Публичные темы могут просматриваться и использоваться другими пользователями.",
+    "IsPublicLabel": "Публичная ли тема?",
+    "NamePlaceholder": "Название",
+    "TopicName": "Название темы"
+  },
+  "AddTopicModal": {
+    "DialogDescription": "Добавить диалог темы",
+    "DialogTitle": "Добавить тему",
+    "ModalTitle": "Добавить тему",
+    "ToastError": "Невозможно создать новую тему",
+    "ToastLoading": "Создание новой темы...",
+    "ToastSuccess": "Новая тема \"{name}\" успешно создана"
   },
   "AppIntroBlock": {
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
@@ -86,6 +128,48 @@
     "language": "Изменить язык",
     "start": "Начать",
     "status": "Проверить ваш статус"
+  },
+  "ContentFooter": {
+    "AppDescription": "Приложение для тренировки памяти",
+    "BuiltWithText": "Создано в <AuthorLink>{authorSite}</AuthorLink> с использованием <NextJSLink>Next.js</NextJSLink> и <VercelLink>Vercel</VercelLink>",
+    "CookiePolicyLink": "Политика в отношении файлов cookie",
+    "DocumentationLink": "Документация",
+    "PricingLink": "Цены",
+    "PrivacyPolicyLink": "Политика конфиденциальности",
+    "TermsOfServiceLink": "Условия использования"
+  },
+  "DeleteAnswerModal": {
+    "CancelButtonText": "Отмена",
+    "ConfirmButtonBusyText": "Удаление",
+    "ConfirmButtonText": "Удалить",
+    "DialogContent": "Подтверждаете удаление ответа?",
+    "DialogTitle": "Подтвердить удаление ответа",
+    "ModalTitle": "Удалить ответ?",
+    "ToastError": "Невозможно удалить ответ.",
+    "ToastLoading": "Удаление ответа...",
+    "ToastSuccess": "Ответ успешно удален."
+  },
+  "DeleteQuestionModal": {
+    "CancelButtonText": "Отмена",
+    "ConfirmButtonBusyText": "Удаление",
+    "ConfirmButtonText": "Удалить",
+    "DialogContent": "Подтверждаете удаление вопроса?",
+    "DialogTitle": "Подтвердить удаление вопроса",
+    "ModalTitle": "Удалить вопрос",
+    "ToastError": "Невозможно удалить вопрос.",
+    "ToastLoading": "Удаление вопроса...",
+    "ToastSuccess": "Вопрос успешно удален."
+  },
+  "DeleteTopicModal": {
+    "CancelButtonText": "Отмена",
+    "ConfirmButtonBusyText": "Удаление",
+    "ConfirmButtonText": "Удалить",
+    "DialogContent": "Подтверждаете удаление темы \"{topicName}\"?",
+    "DialogTitle": "Подтвердить удаление темы",
+    "ModalTitle": "Удалить тему?",
+    "ToastError": "Невозможно удалить тему \"{name}\"",
+    "ToastLoading": "Удаление темы \"{name}\"",
+    "ToastSuccess": "Тема \"{name}\" успешно удалена"
   },
   "EditAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",
@@ -167,6 +251,61 @@
     "UseRandomQuestionsCount": "Использовать случайное количество вопросов?",
     "UseRandomQuestionsCountHint": "Разрешить генерацию случайного количества ответов для вопросов (если это не переопределено в настройках вопроса)."
   },
+  "GenerateAnswersForm": {
+    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountLabelPrefix": "Количество ответов:",
+    "DebugDataHint": "Включить использование фиктивных данных вместо реальных вызовов API.",
+    "ExtraInstructionsHint": "Дополнительный контекст или инструкции для ИИ (необязательно).",
+    "ExtraInstructionsLabel": "Дополнительные инструкции (необязательно)",
+    "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации ответов...",
+    "GenerateButtonText": "Генерировать",
+    "GeneratingButtonText": "Генерация",
+    "GenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
+    "GenerationTypeLabel": "Тип генерации",
+    "GenerationTypePlaceholder": "Выберите тип генерации",
+    "UseDebugDataLabel": "Использовать отладочные данные?"
+  },
+  "GenerateAnswersModal": {
+    "DialogDescription": "Генерировать диалог ответов",
+    "DialogTitle": "Генерировать ответы",
+    "ModalTitle": "Генерировать ответы",
+    "ToastErrorAnswers": "Невозможно добавить ответы",
+    "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
+    "ToastLoadingAnswers": "Добавление новых ответов...",
+    "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
+    "ToastSuccessAnswers": "Новые ответы успешно добавлены",
+    "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены"
+  },
+  "GenerateQuestionsForm": {
+    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountLabelPrefix": "Количество ответов:",
+    "AnswersGenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
+    "AnswersGenerationTypeLabel": "Тип генерации ответов",
+    "AnswersGenerationTypePlaceholder": "Выберите тип генерации ответов",
+    "DebugDataHint": "Включить использование фиктивных данных вместо реальных вызовов API.",
+    "ExtraInstructionsHint": "Дополнительный контекст или инструкции для ИИ (необязательно).",
+    "ExtraInstructionsLabel": "Дополнительные инструкции (необязательно)",
+    "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации вопросов...",
+    "GenerateButtonText": "Генерировать",
+    "GeneratingButtonText": "Генерация",
+    "GenerationTypeHint": "Выберите тип вопросов для генерации.",
+    "GenerationTypeLabel": "Тип генерации",
+    "GenerationTypePlaceholder": "Выберите тип генерации",
+    "QuestionsCountHint": "Диапазон вопросов для генерации (минимум - максимум).",
+    "QuestionsCountLabelPrefix": "Количество вопросов:",
+    "UseDebugDataLabel": "Использовать отладочные данные?"
+  },
+  "GenerateQuestionsModal": {
+    "DialogDescription": "Генерировать диалог вопросов",
+    "DialogTitle": "Генерировать вопросы",
+    "ModalTitle": "Генерировать вопросы",
+    "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
+    "ToastErrorQuestions": "Невозможно добавить вопросы",
+    "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
+    "ToastLoadingQuestions": "Добавление новых вопросов...",
+    "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
+    "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
+  },
   "ManageTopicQuestionAnswersListCard": {
     "Cancel": "Отмена",
     "CannotDeleteSelectedAnswers": "Не удаётся удалить выбранные ответы",
@@ -243,6 +382,9 @@
     "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем успешно сброшен",
     "TopicName": "Название темы"
   },
+  "MarkdownHint": {
+    "Content": "Этот текст поддерживает разметку markdown, посмотрите <MarkdownGuideLink>Руководство по Markdown</MarkdownGuideLink> для информации о синтаксисе."
+  },
   "NavAuthButton": {
     "Dashboard": "Панель",
     "sign-in": "Войти"
@@ -306,8 +448,8 @@
     "WelcomeTitle": "Добро пожаловать!"
   },
   "Pricing": {
-    "BilledAnnually": ", оплата ежегодно",
-    "BilledMonthly": ", оплата ежемесячно",
+    "BilledAnnually": "ежегодно",
+    "BilledMonthly": "ежемесячно",
     "ContactUs": "Свяжитесь с нами",
     "Free": "Бесплатно",
     "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
@@ -383,6 +525,26 @@
         }
       }
     }
+  },
+  "SettingsFormFields": {
+    "AutoOption": "Авто",
+    "JumpToNewEntitiesHint": "Переключаться на формы редактирования для только что созданных объектов (например, тем, вопросов, ответов) после создания.",
+    "JumpToNewEntitiesLabel": "Переходить к новым созданным сущностям?",
+    "LocaleHint": "Выберите язык приложения.",
+    "LocaleLabel": "Язык приложения",
+    "LocalePlaceholder": "Выберите язык…",
+    "SelectLanguageButton": "Выбрать язык",
+    "ShowOnlyMyTopicsHint": "Отключить показ всех публичных тем, показывать только мои личные.",
+    "ShowOnlyMyTopicsLabel": "Показывать только мои собственные темы?",
+    "ThemeColorHint": "Выберите основной цвет темы приложения.",
+    "ThemeColorLabel": "Цвет темы",
+    "ThemeColorPlaceholder": "Выберите цвет темы…",
+    "ThemeHint": "Выберите тему приложения.",
+    "ThemeLabel": "Тема приложения",
+    "ThemePlaceholder": "Выберите тему…",
+    "TopicsLanguageHint": "Укажите язык, если вы хотите видеть темы только на этом конкретном языке.",
+    "TopicsLanguageLabel": "Язык тем",
+    "TopicsLanguagePlaceholder": "Выберите язык"
   },
   "SignInForm": {
     "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",

@@ -33,6 +33,7 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { GenerateAnswersForm, TFormData } from './GenerateAnswersForm';
@@ -54,6 +55,7 @@ export function GenerateAnswersModal() {
   const userAIRequest = useUserAIRequest();
 
   const { jumpToNewEntities } = useSettings();
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlRegExp);
@@ -113,7 +115,7 @@ export function GenerateAnswersModal() {
   } = availableAnswersQuery;
   const isAnswersPending = !isAnswersFetched || isAnswersLoading;
 
-  useModalTitle('Generate Answers', shouldBeVisible);
+  useModalTitle(t('GenerateAnswersModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // const generateAnswersMutation = useMutation<TGeneratedAnswers, Error, TFormData>({
@@ -218,9 +220,9 @@ export function GenerateAnswersModal() {
          */
         const queryPromise = generateAnswersMutation.mutateAsync(formData);
         toast.promise(queryPromise, {
-          loading: 'Retrieving AI generated data...',
-          success: 'Successfully retrieved AI generated data',
-          error: 'Can not retrieve AI generated data',
+          loading: t('GenerateAnswersModal.ToastLoadingData'),
+          success: t('GenerateAnswersModal.ToastSuccessData'),
+          error: t('GenerateAnswersModal.ToastErrorData'),
         });
         const queryData = await queryPromise;
         /* console.log('[GenerateAnswersModal:handleGenerateAnswers] Got query data', {
@@ -240,9 +242,9 @@ export function GenerateAnswersModal() {
         }));
         const addAnswersPromise = addAnswersMutation.mutateAsync(newAnswers);
         toast.promise(addAnswersPromise, {
-          loading: 'Adding new answers...',
-          success: 'Successfully added new answers',
-          error: 'Cannot added answers',
+          loading: t('GenerateAnswersModal.ToastLoadingAnswers'),
+          success: t('GenerateAnswersModal.ToastSuccessAnswers'),
+          error: t('GenerateAnswersModal.ToastErrorAnswers'),
         });
         await addAnswersPromise;
         /* console.log('[GenerateAnswersModal:handleGenerateAnswers] Answers added', {
@@ -294,6 +296,7 @@ export function GenerateAnswersModal() {
       jumpToNewEntities,
       queryClient,
       questionId,
+      t,
     ],
   );
 
@@ -325,9 +328,9 @@ export function GenerateAnswersModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Generate Answers</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('GenerateAnswersModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          Generate Answers Dialog
+          {t('GenerateAnswersModal.DialogDescription')}
         </DialogDescription>
       </div>
       <div

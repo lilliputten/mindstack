@@ -2,9 +2,6 @@
   "Answer": "Answer",
   "Answers": "Answers",
   "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
-  "MarkdownHint": {
-    "Content": "This text allows markdown markup, look at the <MarkdownGuideLink>Markdown Guide</MarkdownGuideLink> for the syntax info."
-  },
   "Author": "Author",
   "Authors": "Authors",
   "Back": "Back",
@@ -45,6 +42,55 @@
     "LearnMore": "Learn more",
     "Message": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies."
   },
+  "AddAnswerForm": {
+    "AddButtonText": "Add",
+    "AddingButtonText": "Adding",
+    "AnswerText": "Answer Text",
+    "AnswerTextHint": "You'll be able to edit it later, as well as other answer poroperties. ",
+    "AnswerTextPlaceholder": "Text",
+    "IsCorrectHint": "Each question should have one or a few correct answers.",
+    "IsCorrectLabel": "Is the answer correct?"
+  },
+  "AddAnswerModal": {
+    "DialogDescription": "Add Answer Dialog",
+    "DialogTitle": "Add New Answer",
+    "ModalTitle": "Add an Answer",
+    "ToastError": "Cannot create answer",
+    "ToastLoading": "Creating a new answer...",
+    "ToastSuccess": "Successfully created new answer."
+  },
+  "AddQuestionForm": {
+    "AddButtonText": "Add",
+    "AddingButtonText": "Adding",
+    "CancelButtonText": "Cancel",
+    "QuestionText": "Question Text",
+    "QuestionTextHint": "You'll be able to edit it later, as well as other question poroperties. ",
+    "QuestionTextPlaceholder": "Text"
+  },
+  "AddQuestionModal": {
+    "DialogDescription": "Add question dialog",
+    "DialogTitle": "Add New Question",
+    "ModalTitle": "Add a Question",
+    "ToastError": "Can not create a new question",
+    "ToastLoading": "Creating a new question...",
+    "ToastSuccess": "Successfully created a new question."
+  },
+  "AddTopicForm": {
+    "AddButtonText": "Add",
+    "AddingButtonText": "Adding",
+    "IsPublicHint": "Public topics can be viewed and used by other users.",
+    "IsPublicLabel": "Is the topic public?",
+    "NamePlaceholder": "Name",
+    "TopicName": "Topic Name"
+  },
+  "AddTopicModal": {
+    "DialogDescription": "Add Topic Dialog",
+    "DialogTitle": "Add Topic",
+    "ModalTitle": "Add a Topic",
+    "ToastError": "Can not create new topic",
+    "ToastLoading": "Creating new topic...",
+    "ToastSuccess": "Successfully created new topic \"{name}\""
+  },
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
     "ManageQuestion": "Manage Question",
@@ -80,6 +126,48 @@
     "language": "Change language",
     "start": "Start",
     "status": "Check your status"
+  },
+  "ContentFooter": {
+    "AppDescription": "Memory Training Application",
+    "BuiltWithText": "Built with <NextJSLink>Next.js</NextJSLink> and <VercelLink>Vercel</VercelLink> by <AuthorLink>{authorSite}</AuthorLink>",
+    "CookiePolicyLink": "Cookie Policy",
+    "DocumentationLink": "Documentation",
+    "PricingLink": "Pricing",
+    "PrivacyPolicyLink": "Privacy Policy",
+    "TermsOfServiceLink": "Terms of Service"
+  },
+  "DeleteAnswerModal": {
+    "CancelButtonText": "Cancel",
+    "ConfirmButtonBusyText": "Deleting",
+    "ConfirmButtonText": "Delete",
+    "DialogContent": "Do you confirm deleting the answer?",
+    "DialogTitle": "Confirm delete answer",
+    "ModalTitle": "Delete an Answer?",
+    "ToastError": "Can not delete the answer.",
+    "ToastLoading": "Deleting the answer...",
+    "ToastSuccess": "Successfully deleted the answer."
+  },
+  "DeleteQuestionModal": {
+    "CancelButtonText": "Cancel",
+    "ConfirmButtonBusyText": "Deleting",
+    "ConfirmButtonText": "Delete",
+    "DialogContent": "Do you confirm the deletion of the question?",
+    "DialogTitle": "Confirm delete question",
+    "ModalTitle": "Delete a Question",
+    "ToastError": "Can not delete the question.",
+    "ToastLoading": "Deleting the question...",
+    "ToastSuccess": "Successfully deleted the question."
+  },
+  "DeleteTopicModal": {
+    "CancelButtonText": "Cancel",
+    "ConfirmButtonBusyText": "Deleting",
+    "ConfirmButtonText": "Delete",
+    "DialogContent": "Do you confirm deleting the topic \"{topicName}\"?",
+    "DialogTitle": "Confirm delete topic",
+    "ModalTitle": "Delete a Topic?",
+    "ToastError": "Can not delete topic \"{name}\"",
+    "ToastLoading": "Deleting topic \"{name}\"",
+    "ToastSuccess": "Successfully deleted topic \"{name}\""
   },
   "EditAnswerCard": {
     "AddNewAnswer": "Add New Answer",
@@ -161,6 +249,61 @@
     "UseRandomQuestionsCount": "Use random questions count?",
     "UseRandomQuestionsCountHint": "Allow to generate random number of answers for questions (if it's not overidden in the question settings)."
   },
+  "GenerateAnswersForm": {
+    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountLabelPrefix": "Answers Count:",
+    "DebugDataHint": "Enable to use fake local data instead of making actual API calls.",
+    "ExtraInstructionsHint": "Optional additional context or instructions for the AI.",
+    "ExtraInstructionsLabel": "Extra Instructions (Optional)",
+    "ExtraInstructionsPlaceholder": "Additional instructions for answers generation...",
+    "GenerateButtonText": "Generate",
+    "GeneratingButtonText": "Generating",
+    "GenerationTypeHint": "Choose the type of answers to generate for each question.",
+    "GenerationTypeLabel": "Generation Type",
+    "GenerationTypePlaceholder": "Select generation type",
+    "UseDebugDataLabel": "Use debug data?"
+  },
+  "GenerateAnswersModal": {
+    "DialogDescription": "Generate Answers Dialog",
+    "DialogTitle": "Generate Answers",
+    "ModalTitle": "Generate Answers",
+    "ToastErrorAnswers": "Cannot add answers",
+    "ToastErrorData": "Can not retrieve AI generated data",
+    "ToastLoadingAnswers": "Adding new answers...",
+    "ToastLoadingData": "Retrieving AI generated data...",
+    "ToastSuccessAnswers": "Successfully added new answers",
+    "ToastSuccessData": "Successfully retrieved AI generated data"
+  },
+  "GenerateQuestionsForm": {
+    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountLabelPrefix": "Answers Count:",
+    "AnswersGenerationTypeHint": "Choose the type of answers to generate for each question.",
+    "AnswersGenerationTypeLabel": "Answers Generation Type",
+    "AnswersGenerationTypePlaceholder": "Select answers generation type",
+    "DebugDataHint": "Enable to use fake local data instead of making actual API calls.",
+    "ExtraInstructionsHint": "Optional additional context or instructions for the AI.",
+    "ExtraInstructionsLabel": "Extra Instructions (Optional)",
+    "ExtraInstructionsPlaceholder": "Additional instructions for questions generation...",
+    "GenerateButtonText": "Generate",
+    "GeneratingButtonText": "Generating",
+    "GenerationTypeHint": "Choose the type of questions to generate.",
+    "GenerationTypeLabel": "Generation Type",
+    "GenerationTypePlaceholder": "Select generation type",
+    "QuestionsCountHint": "Range of questions to generate (minimum - maximum).",
+    "QuestionsCountLabelPrefix": "Questions Count:",
+    "UseDebugDataLabel": "Use debug data?"
+  },
+  "GenerateQuestionsModal": {
+    "DialogDescription": "Generate Questions Dialog",
+    "DialogTitle": "Generate Questions",
+    "ModalTitle": "Generate Questions",
+    "ToastErrorData": "Can not retrieve AI generated data",
+    "ToastErrorQuestions": "Cannot add questions",
+    "ToastLoadingData": "Retrieving AI generated data...",
+    "ToastLoadingQuestions": "Adding new questions...",
+    "ToastSuccessData": "Successfully retrieved AI generated data",
+    "ToastSuccessQuestions": "Successfully added new questions"
+  },
   "ManageTopicQuestionAnswersListCard": {
     "Cancel": "Cancel",
     "CannotDeleteSelectedAnswers": "Cannot delete selected answers",
@@ -237,6 +380,9 @@
     "SuccessfullyResetPublicStatusForSelectedTopics": "Successfully reset public status for selected topics",
     "TopicName": "Topic Name"
   },
+  "MarkdownHint": {
+    "Content": "This text allows markdown markup, look at the <MarkdownGuideLink>Markdown Guide</MarkdownGuideLink> for the syntax info."
+  },
   "NavAuthButton": {
     "Dashboard": "Dashboard",
     "sign-in": "Sign In"
@@ -300,8 +446,8 @@
     "WelcomeTitle": "Welcome!"
   },
   "Pricing": {
-    "BilledAnnually": ", billed annually",
-    "BilledMonthly": ", billed monthly",
+    "BilledAnnually": "billed annually",
+    "BilledMonthly": "billed monthly",
     "ContactUs": "Contact Us",
     "Free": "Free",
     "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
@@ -377,6 +523,26 @@
         }
       }
     }
+  },
+  "SettingsFormFields": {
+    "AutoOption": "Auto",
+    "JumpToNewEntitiesHint": "Switch to editing forms for newly created objects (like topics, questions, answers) after creation.",
+    "JumpToNewEntitiesLabel": "Jump to newly created entities?",
+    "LocaleHint": "Select the application language.",
+    "LocaleLabel": "Application language",
+    "LocalePlaceholder": "Select language…",
+    "SelectLanguageButton": "Select language",
+    "ShowOnlyMyTopicsHint": "Disable showing all public topics, show only my personal ones.",
+    "ShowOnlyMyTopicsLabel": "Show only my own topics?",
+    "ThemeColorHint": "Select the application key theme color.",
+    "ThemeColorLabel": "Theme color",
+    "ThemeColorPlaceholder": "Select theme color…",
+    "ThemeHint": "Select the application theme.",
+    "ThemeLabel": "Application theme",
+    "ThemePlaceholder": "Select theme…",
+    "TopicsLanguageHint": "Specify a language if you want to see the topics only for this specific language.",
+    "TopicsLanguageLabel": "Topics language",
+    "TopicsLanguagePlaceholder": "Select language"
   },
   "SignInForm": {
     "intro": "Login to be able editing your own data.",

@@ -21,6 +21,7 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';
@@ -34,6 +35,7 @@ export function AddTopicModal() {
   const { isMobile } = useMediaQuery();
 
   const { jumpToNewEntities } = useSettings();
+  const t = useT();
 
   const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
 
@@ -50,7 +52,7 @@ export function AddTopicModal() {
     goBack();
   }, [goBack]);
 
-  useModalTitle('Add a Topic', shouldBeVisible);
+  useModalTitle(t('AddTopicModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addTopicMutation = useMutation<TAvailableTopic, Error, TNewTopic>({
@@ -72,7 +74,7 @@ export function AddTopicModal() {
     },
     onError: (error, newTopic) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot create topic';
+      const message = t('AddTopicModal.ToastError');
       // eslint-disable-next-line no-console
       console.error('[AddTopicModal:addTopicMutation]', message, {
         error,
@@ -87,13 +89,13 @@ export function AddTopicModal() {
     (newTopic: TNewTopic) => {
       const promise = addTopicMutation.mutateAsync(newTopic);
       toast.promise(promise, {
-        loading: 'Creating new topic...',
-        success: (topic) => `Successfully created new topic "${topic.name}"`,
-        error: 'Can not create new topic',
+        loading: t('AddTopicModal.ToastLoading'),
+        success: (topic) => t('AddTopicModal.ToastSuccess', { name: topic.name }),
+        error: t('AddTopicModal.ToastError'),
       });
       return promise;
     },
-    [addTopicMutation],
+    [addTopicMutation, t],
   );
 
   if (!shouldBeVisible) {
@@ -117,9 +119,9 @@ export function AddTopicModal() {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Add Topic</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('AddTopicModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          Add Topic Dialog
+          {t('AddTopicModal.DialogDescription')}
         </DialogDescription>
       </div>
       <AddTopicForm

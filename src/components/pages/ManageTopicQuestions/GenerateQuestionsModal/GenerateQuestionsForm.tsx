@@ -38,6 +38,7 @@ import {
   questionsGenerationTypeTexts,
 } from '@/features/ai/types/GenerateQuestionsTypes';
 import { TTopicId } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 const formSchema = generateTopicQuestionsParamsSchema.pick({
   debugData: true,
@@ -65,6 +66,7 @@ export interface TGenerateQuestionsFormProps {
 export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
   const { className, handleGenerateQuestions, handleClose, isPending, user, error } = props;
   const isAdmin = user?.role === 'ADMIN';
+  const t = useT();
 
   const __useDebugData = isDev || isAdmin;
 
@@ -112,7 +114,9 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
   const debugDataKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending ? 'Generating' : 'Generate';
+  const buttonText = isPending
+    ? t('GenerateQuestionsForm.GeneratingButtonText')
+    : t('GenerateQuestionsForm.GenerateButtonText');
 
   return (
     <FormProvider {...form}>
@@ -134,7 +138,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
             render={({ field }) => (
               <FormItem className="flex w-full flex-col gap-4">
                 <Label className="m-0" htmlFor={debugDataKey}>
-                  Use debug data?
+                  {t('GenerateQuestionsForm.UseDebugDataLabel')}
                 </Label>
                 <FormControl>
                   <Switch
@@ -144,9 +148,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                     className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
                   />
                 </FormControl>
-                <FormHint>
-                  Enable to use fake local data instead of making actual API calls.
-                </FormHint>
+                <FormHint>{t('GenerateQuestionsForm.DebugDataHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             )}
@@ -158,12 +160,14 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={generationTypeKey}>
-                Generation Type
+                {t('GenerateQuestionsForm.GenerationTypeLabel')}
               </Label>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id={generationTypeKey}>
-                    <SelectValue placeholder="Select generation type" />
+                    <SelectValue
+                      placeholder={t('GenerateQuestionsForm.GenerationTypePlaceholder')}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {questionsGenerationTypes.map((type) => (
@@ -174,14 +178,15 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>Choose the type of questions to generate.</FormHint>
+              <FormHint>{t('GenerateQuestionsForm.GenerationTypeHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormItem className="flex w-full flex-col gap-4">
           <Label className="m-0" htmlFor={questionsCountKey}>
-            Questions Count: {form.watch('questionsCountMin')} - {form.watch('questionsCountMax')}
+            {t('GenerateQuestionsForm.QuestionsCountLabelPrefix')} {form.watch('questionsCountMin')}{' '}
+            - {form.watch('questionsCountMax')}
           </Label>
           <FormControl>
             <Slider
@@ -196,7 +201,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
               }}
             />
           </FormControl>
-          <FormHint>Range of questions to generate (minimum - maximum).</FormHint>
+          <FormHint>{t('GenerateQuestionsForm.QuestionsCountHint')}</FormHint>
           <FormMessage />
         </FormItem>
         <FormField
@@ -205,12 +210,14 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={answersGenerationTypeKey}>
-                Answers Generation Type
+                {t('GenerateQuestionsForm.AnswersGenerationTypeLabel')}
               </Label>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id={answersGenerationTypeKey}>
-                    <SelectValue placeholder="Select answers generation type" />
+                    <SelectValue
+                      placeholder={t('GenerateQuestionsForm.AnswersGenerationTypePlaceholder')}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {answersGenerationTypes.map((type) => (
@@ -221,14 +228,15 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>Choose the type of answers to generate for each question.</FormHint>
+              <FormHint>{t('GenerateQuestionsForm.AnswersGenerationTypeHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormItem className="flex w-full flex-col gap-4">
           <Label className="m-0" htmlFor={answersCountKey}>
-            Answers Count: {form.watch('answersCountMin')} - {form.watch('answersCountMax')}
+            {t('GenerateQuestionsForm.AnswersCountLabelPrefix')} {form.watch('answersCountMin')} -{' '}
+            {form.watch('answersCountMax')}
           </Label>
           <FormControl>
             <Slider
@@ -243,7 +251,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
               }}
             />
           </FormControl>
-          <FormHint>Range of answers to generate for each question (minimum - maximum).</FormHint>
+          <FormHint>{t('GenerateQuestionsForm.AnswersCountHint')}</FormHint>
           <FormMessage />
         </FormItem>
         <FormField
@@ -252,18 +260,18 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={extraTextKey}>
-                Extra Instructions (Optional)
+                {t('GenerateQuestionsForm.ExtraInstructionsLabel')}
               </Label>
               <FormControl>
                 <Textarea
                   id={extraTextKey}
                   className="flex-1"
-                  placeholder="Additional instructions for questions generation..."
+                  placeholder={t('GenerateQuestionsForm.ExtraInstructionsPlaceholder')}
                   rows={3}
                   {...field}
                 />
               </FormControl>
-              <FormHint>Optional additional context or instructions for the AI.</FormHint>
+              <FormHint>{t('GenerateQuestionsForm.ExtraInstructionsHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -279,7 +287,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           </Button>
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
-            <span>Cancel</span>
+            <span>{t('Cancel')}</span>
           </Button>
         </div>
       </form>

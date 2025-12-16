@@ -12,6 +12,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteQuestion } from '@/features/questions/actions/deleteQuestion';
 import { TAvailableQuestion, TQuestionId } from '@/features/questions/types';
 import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { topicQuestionDeletedEventId } from './constants';
@@ -29,6 +30,7 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
   const { manageScope } = useManageTopicsStore();
   const { questionId } = props;
   const [isVisible, setVisible] = React.useState(true);
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlMatchRegExp);
@@ -50,7 +52,7 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
 
   const queryClient = useQueryClient();
 
-  useModalTitle('Delete a Question', shouldBeVisible);
+  useModalTitle(t('DeleteQuestionModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   if (!topicId) {
@@ -98,12 +100,12 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
   const confirmDeleteQuestion = React.useCallback(() => {
     const promise = deleteQuestionMutation.mutateAsync(questionId);
     toast.promise(promise, {
-      loading: 'Deleting the question...',
-      success: 'Successfully deleted the question.',
-      error: `Can not delete the question.`,
+      loading: t('DeleteQuestionModal.ToastLoading'),
+      success: t('DeleteQuestionModal.ToastSuccess'),
+      error: t('DeleteQuestionModal.ToastError'),
     });
     return promise;
-  }, [deleteQuestionMutation, questionId]);
+  }, [deleteQuestionMutation, questionId, t]);
 
   if (!shouldBeVisible || !topicId || !questionId) {
     return null;
@@ -112,17 +114,17 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
 
   return (
     <ConfirmModal
-      dialogTitle="Confirm delete question"
+      dialogTitle={t('DeleteQuestionModal.DialogTitle')}
       confirmButtonVariant="destructive"
-      confirmButtonText="Delete"
-      confirmButtonBusyText="Deleting"
-      cancelButtonText="Cancel"
+      confirmButtonText={t('DeleteQuestionModal.ConfirmButtonText')}
+      confirmButtonBusyText={t('DeleteQuestionModal.ConfirmButtonBusyText')}
+      cancelButtonText={t('DeleteQuestionModal.CancelButtonText')}
       handleClose={hideModal}
       handleConfirm={confirmDeleteQuestion}
       isPending={deleteQuestionMutation.isPending}
       isVisible={isVisible}
     >
-      Do you confirm the deletion of the question?
+      {t('DeleteQuestionModal.DialogContent')}
     </ConfirmModal>
   );
 }
