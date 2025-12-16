@@ -794,5 +794,23 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "SelectTopicLanguageModal": {
+    "SelectLanguage": "Seleccionar Idioma",
+    "SelectLanguageText": "Elige un idioma para un tema",
+    "Predefined": "Predefinido",
+    "Custom": "Personalizado"
+  },
+  "SelectLanguagePredefinedForm": {
+    "SelectLanguageFromThePredefinedList": "Selecciona un idioma de la lista predefinida.",
+    "SelectLanguage": "Seleccionar idioma",
+    "SelectLanguageFormTheList": "Selecciona un idioma de la lista.",
+    "Select": "Seleccionar"
+  },
+  "SelectLanguageCustomForm": {
+    "SelectLanguageWithACustomButUniqueIdentifierAndName": "Selecciona un idioma con un identificador y nombre personalizados (pero únicos).",
+    "LanguageName": "Nombre del idioma",
+    "LanguageCode": "Código del idioma",
+    "Select": "Seleccionar"
   }
 }

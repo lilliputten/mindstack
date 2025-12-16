@@ -15,6 +15,7 @@ import {
   TTopicLanguageData,
 } from '@/features/topics/types';
 import { useMediaQuery } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { SelectLanguageCustomForm } from './SelectLanguageCustomForm';
 import { SelectLanguagePredefinedForm } from './SelectLanguagePredefinedForm';
@@ -28,15 +29,16 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
   const router = useRouter();
   const hideModal = React.useCallback(() => router.back(), [router]);
   const { isMobile } = useMediaQuery();
+  const t = useT();
 
   // Change a browser title
   React.useEffect(() => {
     const originalTitle = document.title;
-    document.title = 'Select a Language';
+    document.title = t('SelectTopicLanguageModal.SelectLanguage');
     return () => {
       document.title = originalTitle;
     };
-  }, []);
+  }, [t]);
 
   const selectLanguage = React.useCallback(
     (selectedLanguage: TTopicLanguageData) => {
@@ -70,9 +72,11 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Select Language</DialogTitle>
+        <DialogTitle className="DialogTitle">
+          {t('SelectTopicLanguageModal.SelectLanguage')}
+        </DialogTitle>
         <DialogDescription className="sr-only text-sm opacity-70">
-          Choose a language for a topic
+          {t('SelectTopicLanguageModal.SelectLanguageText')}
         </DialogDescription>
       </div>
       <div className="flex flex-col px-8 py-4 text-foreground">
@@ -85,10 +89,10 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
         >
           <TabsList className={cn('__SelectTopicLanguageModal_TabsList')}>
             <TabsTrigger className="TabsTrigger" value="Predefined">
-              Predefined
+              {t('SelectTopicLanguageModal.Predefined')}
             </TabsTrigger>
             <TabsTrigger className="TabsTrigger" value="Custom">
-              Custom
+              {t('SelectTopicLanguageModal.Custom')}
             </TabsTrigger>
           </TabsList>
           <TabsContent className="TabsContent" value="Predefined">

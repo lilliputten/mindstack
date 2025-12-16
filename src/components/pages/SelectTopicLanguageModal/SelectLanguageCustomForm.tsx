@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import * as Icons from '@/components/shared/Icons';
 import { TTopicLanguageData } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { maxIdLength, maxNameLength, minIdLength, minNameLength } from './constants';
 
@@ -25,6 +26,7 @@ interface TProps {
 
 export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
   const { className, selectLanguage, langCode, langName } = props;
+  const t = useT();
   const formSchema = React.useMemo(
     () =>
       z.object({
@@ -78,7 +80,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
   return (
     <div className={cn(className, '__SelectLanguageCustomForm', 'py-2')}>
       <p className="Text mb-4 text-sm text-muted-foreground">
-        Select a language with a custom (but unique) identifier and name.
+        {t('SelectLanguageCustomForm.SelectLanguageWithACustomButUniqueIdentifierAndName')}
       </p>
       <form onSubmit={onSubmit}>
         <div className="flex w-full flex-col items-center gap-4">
@@ -87,7 +89,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
               id="name"
               className="flex-1"
               size={maxNameLength}
-              placeholder="Language name"
+              placeholder={t('SelectLanguageCustomForm.LanguageName')}
               // @see https://react-hook-form.com/docs/useform/register
               {...register('name', { required: true })}
             />
@@ -98,7 +100,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
               id="id"
               className="flex-1"
               size={maxIdLength}
-              placeholder="Language code"
+              placeholder={t('SelectLanguageCustomForm.LanguageCode')}
               // @see https://react-hook-form.com/docs/useform/register
               {...register('id', { required: true })}
             />
@@ -112,7 +114,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
               className="flex shrink-0 gap-2"
             >
               <Icons.Check className="size-4" />
-              <span>Select</span>
+              <span>{t('SelectLanguageCustomForm.Select')}</span>
             </Button>
           </div>
         </div>

@@ -796,5 +796,25 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
+  },
+  "selectTopicLanguageModal": {
+    "selectALanguage": "Выбрать Язык",
+    "selectLanguage": "Выбрать Язык",
+    "chooseALanguageForATopic": "Выберите язык для темы",
+    "predefined": "Предопределённый",
+    "custom": "Пользовательский"
+  },
+  "selectLanguagePredefinedForm": {
+    "selectALanguageFromThePredefinedList": "Выберите язык из предопределённого списка.",
+    "selectLanguage": "Выбрать язык",
+    "selectALanguage": "Выберите язык…",
+    "selectALanguageFormTheList": "Выберите язык из списка.",
+    "select": "Выбрать"
+  },
+  "selectLanguageCustomForm": {
+    "selectALanguageWithACustomButUniqueIdentifierAndName": "Выберите язык с пользовательским (но уникальным) идентификатором и названием.",
+    "languageName": "Название языка",
+    "languageCode": "Код языка",
+    "select": "Выбрать"
   }
 }

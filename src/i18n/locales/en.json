@@ -794,5 +794,23 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
+  },
+  "SelectTopicLanguageModal": {
+    "SelectLanguage": "Select Language",
+    "SelectLanguageText": "Choose a language for a topic",
+    "Predefined": "Predefined",
+    "Custom": "Custom"
+  },
+  "SelectLanguagePredefinedForm": {
+    "SelectLanguageFromThePredefinedList": "Select a language from the predefined list.",
+    "SelectLanguage": "Select language",
+    "SelectLanguageFormTheList": "Select a language form the list.",
+    "Select": "Select"
+  },
+  "SelectLanguageCustomForm": {
+    "SelectLanguageWithACustomButUniqueIdentifierAndName": "Select a language with a custom (but unique) identifier and name.",
+    "LanguageName": "Language name",
+    "LanguageCode": "Language code",
+    "Select": "Select"
   }
 }
