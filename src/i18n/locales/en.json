@@ -2,6 +2,9 @@
   "Answer": "Answer",
   "Answers": "Answers",
   "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "MarkdownHint": {
+    "Content": "This text allows markdown markup, look at the <MarkdownGuideLink>Markdown Guide</MarkdownGuideLink> for the syntax info."
+  },
   "Author": "Author",
   "Authors": "Authors",
   "Back": "Back",

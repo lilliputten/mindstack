@@ -3,21 +3,26 @@
 import React from 'react';
 
 import * as Icons from '@/components/shared/Icons';
+import { useT } from '@/i18n';
 
 export function MarkdownHint() {
+  const t = useT();
+
   return (
     <>
-      This text allows markdown markup, look at the{' '}
-      <a
-        href="https://www.markdownguide.org/basic-syntax/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 underline hover:no-underline"
-      >
-        Markdown Guide
-        <Icons.ExternalLink className="size-3" />
-      </a>{' '}
-      for the syntax info.
+      {t.rich('MarkdownHint.Content', {
+        MarkdownGuideLink: (chunks) => (
+          <a
+            href="https://www.markdownguide.org/basic-syntax/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 underline hover:no-underline"
+          >
+            {chunks}
+            <Icons.ExternalLink className="size-3" />
+          </a>
+        ),
+      })}
     </>
   );
 }

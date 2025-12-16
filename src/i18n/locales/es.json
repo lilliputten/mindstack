@@ -2,6 +2,9 @@
   "Answer": "Respuesta",
   "Answers": "Respuestas",
   "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
+  "MarkdownHint": {
+    "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>Guía de Markdown</MarkdownGuideLink> para la información de sintaxis."
+  },
   "Author": "Autor",
   "Authors": "Autores",
   "Back": "Atrás",

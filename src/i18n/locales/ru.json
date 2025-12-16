@@ -1,7 +1,13 @@
 {
   "Answer": "Ответ",
   "Answers": "Ответы",
-  "Author": "Автор",
+  "AppIntroBlock": {
+    "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
+    "title": "Добро пожаловать!"
+  },
+  "MarkdownHint": {
+    "Content": "Этот текст поддерживает разметку markdown, посмотрите <MarkdownGuideLink>Руководство по Markdown</MarkdownGuideLink> для информации о синтаксисе."
+  },
   "Authors": "Авторы",
   "Back": "Назад",
   "Cancel": "Отмена",

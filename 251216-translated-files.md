@@ -17,3 +17,4 @@ src/app/[locale]/topics/[scope]/[topicId]/questions/[questionId]/edit/EditQuesti
 src/app/[locale]/topics/available/[topicId]/workout/WorkoutTopic.tsx
 src/app/[locale]/topics/available/[topicId]/workout/go/WorkoutTopicGo.tsx
 src/features/workouts/components/WorkoutStats.tsx
+src/components/blocks/MarkdownHint.tsx
