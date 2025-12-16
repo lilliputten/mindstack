@@ -816,7 +816,9 @@
     "WorkoutCompleted": "завершенная тренировка",
     "WorkoutCompletedPlural": "завершенных тренировок",
     "YourLearningProgress": "Ваш прогресс обучения со временем",
-    "YourProgress": "Ваш Прогресс"
+    "YourProgress": "Ваш Прогресс",
+    "ProgressInfo": "{stepNo} из {stepsCount}, начато {startedAt}",
+    "MaintainingConsistentPerformanceText": "Вы поддерживаете стабильную производительность на всех тренировках"
   },
   "WorkoutTopic": {
     "Training": "Тренировка",

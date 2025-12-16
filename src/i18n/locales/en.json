@@ -789,6 +789,7 @@
     "PleaseSignIn": "You have to",
     "PleaseTryAgainLater": "Please try again later.",
     "Progress": "Progress",
+    "ProgressInfo": "{stepNo} of {stepsCount}, started on {startedAt}",
     "Questions": "Questions",
     "ReadyForNextWorkout": "Ready for your next workout",
     "RecentPerformance": "Recent Performance",
@@ -814,7 +815,8 @@
     "WorkoutCompleted": "completed workout",
     "WorkoutCompletedPlural": "completed workouts",
     "YourLearningProgress": "Your learning progress over time",
-    "YourProgress": "Your Progress"
+    "YourProgress": "Your Progress",
+    "MaintainingConsistentPerformanceText": "You're maintaining consistent performance across workouts"
   },
   "WorkoutTopic": {
     "Training": "Training",

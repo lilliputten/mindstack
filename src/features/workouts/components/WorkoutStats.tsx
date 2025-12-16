@@ -581,7 +581,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <div>
                     <p className="text-sm font-medium">{t('WorkoutStats.ConsistentPerformance')}</p>
                     <p className="text-xs text-muted-foreground">
-                      You're maintaining consistent performance across workouts
+                      {t('WorkoutStats.MaintainingConsistentPerformanceText')}
                     </p>
                   </div>
                 </div>

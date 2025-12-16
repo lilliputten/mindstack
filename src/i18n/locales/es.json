@@ -814,7 +814,9 @@
     "WorkoutCompleted": "entrenamiento completado",
     "WorkoutCompletedPlural": "entrenamientos completados",
     "YourLearningProgress": "Tu progreso de aprendizaje a lo largo del tiempo",
-    "YourProgress": "Tu Progreso"
+    "YourProgress": "Tu Progreso",
+    "ProgressInfo": "{stepNo} de {stepsCount}, iniciado el {startedAt}",
+    "MaintainingConsistentPerformanceText": "Mantienes un rendimiento constante en todos los entrenamientos."
   },
   "WorkoutTopic": {
     "Training": "Entrenamiento",

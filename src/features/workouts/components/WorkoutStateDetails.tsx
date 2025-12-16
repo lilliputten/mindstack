@@ -34,9 +34,13 @@ export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
   if (workout.stepIndex) {
     return (
       <>
-        {t('WorkoutStats.TrainingInProgress')} ({workout.stepIndex + 1} of{' '}
-        {workout.questionsCount || 0} questions, started{' '}
-        {getFormattedRelativeDate(format, workout.startedAt)})
+        {t('WorkoutStats.TrainingInProgress')}
+        {': '}
+        {t('WorkoutStats.ProgressInfo', {
+          stepNo: workout.stepIndex + 1,
+          stepsCount: workout.questionsCount || 0,
+          startedAt: getFormattedRelativeDate(format, workout.startedAt),
+        })}
       </>
     );
   }

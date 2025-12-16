@@ -7,7 +7,6 @@ import {
   adminBotControlRoute,
   allTopicsRoute,
   availableTopicsRoute,
-  chartsRoute,
   docsRoute,
   myTopicsRoute,
   rootRoute,
@@ -33,7 +32,6 @@ export const dashboardLinks: SidebarNavItem[] = [
       { href: myTopicsRoute, icon: Icons.Topics, titleId: 'MyTopics' },
       { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'AllTopics', authorizedOnly: 'ADMIN' },
       // Add other data links?
-      { href: chartsRoute, icon: Icons.LineChart, titleId: 'Charts', disabled: true, authorizedOnly: true },
     ],
   },
   {

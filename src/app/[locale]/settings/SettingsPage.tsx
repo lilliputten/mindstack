@@ -128,7 +128,7 @@ export function SettingsPage(props: TSettingsPageProps) {
       {
         id: 'refresh',
         content: t('Refresh'),
-        title: t('Update settings from server'),
+        title: t('SettingsPage.UpdateSettingsHint'),
         pending: isReLoading,
         // size: 'icon',
         icon: Icons.Refresh,
