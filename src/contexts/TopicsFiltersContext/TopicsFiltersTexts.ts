@@ -10,34 +10,34 @@ export const fieldUnionStrings = {
 
 export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<string, string>>> = {
   hasWorkoutStats: {
-    true: 'With Statistics',
-    false: 'Without Statistics',
+    true: 'WithStatistics',
+    false: 'WithoutStatistics',
   },
   hasActiveWorkouts: {
-    true: 'With Active Workouts',
-    false: 'Without Active Workouts',
+    true: 'WithActiveWorkouts',
+    false: 'WithoutActiveWorkouts',
   },
   hasQuestions: {
-    true: 'With Questions',
-    false: 'Without Questions',
+    true: 'WithQuestions',
+    false: 'WithoutQuestions',
   },
   showOnlyMyTopics: {
-    true: 'Only My Topics',
+    true: 'OnlyMyTopics',
   },
   orderBySelect: {
-    byRecent: 'Recent',
-    byOldest: 'Oldest',
-    byNameAsc: 'By Name',
-    byNameDesc: 'By Name (descending)',
+    byRecent: 'OrderByRecent',
+    byOldest: 'OrderByOldest',
+    byNameAsc: 'OrderByName',
+    byNameDesc: 'OrderByNameDescending',
   } satisfies Record<TOrderBySelectOption, string>,
 };
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {
-  searchText: 'Search for',
+  searchText: 'SearchFor',
   searchLang: 'Language',
-  showOnlyMyTopics: 'Only My',
+  showOnlyMyTopics: 'OnlyMy',
   hasWorkoutStats: 'Statistics',
-  hasActiveWorkouts: 'Active Workouts',
+  hasActiveWorkouts: 'ActiveWorkouts',
   hasQuestions: 'Questions',
-  orderBySelect: 'Order by',
+  orderBySelect: 'OrderBy',
 };

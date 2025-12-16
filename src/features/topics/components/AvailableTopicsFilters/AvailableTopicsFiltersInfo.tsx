@@ -65,7 +65,7 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
         className,
       )}
     >
-      {hasFilters ? renderItems : tTexts('No Active Filters')}
+      {hasFilters ? renderItems : tTexts('NoActiveFilters')}
     </span>
   );
 }

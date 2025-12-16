@@ -196,7 +196,7 @@ export function AvailableTopicsFilters(props: TProps) {
                     </div>
                     <div
                       className={cn(
-                        isDev && '__AvailableTopicsFilters_ActionsLeft', // DEBUG
+                        isDev && '__AvailableTopicsFilters_ActionsRight', // DEBUG
                         'flex flex-wrap items-end gap-2',
                       )}
                     >
