@@ -240,6 +240,26 @@
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
   },
+  "ViewQuestionContentSummary": {
+    "AiGenerated": "Сгенерировано ИИ",
+    "Answers": "Ответы",
+    "AnswersCount": "Ответов: {count}",
+    "Author": "Автор",
+    "Created": "Создано:",
+    "GenerateAnswers": "Генерировать ответы",
+    "GenerateQuestions": "Генерировать вопросы",
+    "ManageAnswers": "Управление ответами",
+    "ManageTopic": "Управление темой",
+    "Modified": "Изменено:",
+    "NoAnswersYet": "Пока нет ответов",
+    "QuestionText": "Текст вопроса",
+    "RandomAnswersRange": "Случайные ответы: {min}-{max}",
+    "Timeline": "Хронология",
+    "Topic": "Тема",
+    "TopicCreatedBy": "Тема создана:",
+    "TotalQuestions": "Всего вопросов:",
+    "YouAreTheAuthor": "Вы автор"
+  },
   "WorkoutProgress": {
     "QuestionsProgress": "Вопрос {currentStep} из {totalSteps}"
   },

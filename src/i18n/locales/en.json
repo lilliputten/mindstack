@@ -235,6 +235,26 @@
     "Title": "Upgrade to Pro",
     "Upgrade": "Upgrade"
   },
+  "ViewQuestionContentSummary": {
+    "AiGenerated": "AI Generated",
+    "Answers": "Answers",
+    "AnswersCount": "Answers: {count}",
+    "Author": "Author",
+    "Created": "Created:",
+    "GenerateAnswers": "Generate Answers",
+    "GenerateQuestions": "Generate Questions",
+    "ManageAnswers": "Manage Answers",
+    "ManageTopic": "Manage Topic",
+    "Modified": "Modified:",
+    "NoAnswersYet": "No answers yet",
+    "QuestionText": "Question Text",
+    "RandomAnswersRange": "Random Answers: {min}-{max}",
+    "Timeline": "Timeline",
+    "Topic": "Topic",
+    "TopicCreatedBy": "Topic created by:",
+    "TotalQuestions": "Total questions:",
+    "YouAreTheAuthor": "You're the author"
+  },
   "WorkoutProgress": {
     "QuestionsProgress": "Question {currentStep} of {totalSteps}"
   },

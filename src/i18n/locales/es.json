@@ -236,6 +236,26 @@
     "Title": "Actualizar a Pro",
     "Upgrade": "Actualizar"
   },
+  "ViewQuestionContentSummary": {
+    "AiGenerated": "Generado por IA",
+    "Answers": "Respuestas",
+    "AnswersCount": "Respuestas: {count}",
+    "Author": "Autor",
+    "Created": "Creado:",
+    "GenerateAnswers": "Generar Respuestas",
+    "GenerateQuestions": "Generar Preguntas",
+    "ManageAnswers": "Gestionar Respuestas",
+    "ManageTopic": "Gestionar Tema",
+    "Modified": "Modificado:",
+    "NoAnswersYet": "Aún no hay respuestas",
+    "QuestionText": "Texto de la Pregunta",
+    "RandomAnswersRange": "Respuestas Aleatorias: {min}-{max}",
+    "Timeline": "Cronología",
+    "Topic": "Tema",
+    "TopicCreatedBy": "Tema creado por:",
+    "TotalQuestions": "Preguntas totales:",
+    "YouAreTheAuthor": "Eres el autor"
+  },
   "WorkoutProgress": {
     "QuestionsProgress": "Pregunta {currentStep} de {totalSteps}"
   },
