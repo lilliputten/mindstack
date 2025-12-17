@@ -13,6 +13,7 @@ import { removeFalsyValues, removeNullUndefinedValues } from '@/lib/helpers/obje
 import { getSettings } from '@/features/settings/actions';
 import { defaultSettings, settingsSchema, TSettings } from '@/features/settings/types';
 import { useSwitchRouterLocale } from '@/hooks';
+import { useT } from '@/i18n';
 // import { TDefinedUserId } from '@/features/users/types/TUser';
 import { defaultLocale, TLocale } from '@/i18n/types';
 
@@ -59,6 +60,8 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
   const [inited, setInited] = React.useState(false);
   const [userInited, setUserInited] = React.useState(false);
   // const [themeColor, setThemeColor] = React.useState<TThemeColorId>((memo.settings.themeColor || defaultThemeColor) as TThemeColorId);
+
+  const t = useT();
 
   const ready = userId ? userInited : inited;
 
@@ -169,14 +172,14 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
       toast.promise(
         savePromise.then((r) => (r.ok && r.data ? r.data : settings)),
         {
-          loading: 'Saving settings...',
-          success: 'Successfully saved settings.',
-          error: 'Can not save settings.',
+          loading: t('SettingsContext.tsx.SavingSettings'),
+          success: t('SettingsContext.SuccessfullySavedSettings'),
+          error: t('SettingsContext.CanNotSaveSettings'),
         },
       );
       return savePromise;
     },
-    [setAndMemoizeSettings, userId],
+    [setAndMemoizeSettings, t, userId],
   );
 
   /** Set and save locale */

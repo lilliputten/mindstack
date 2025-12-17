@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { UserAvatar } from '@/components/shared/UserAvatar';
+import { useT } from '@/i18n';
 
 function DeleteAccountModal({
   showDeleteAccountModal,
@@ -21,6 +22,8 @@ function DeleteAccountModal({
   const user = session?.user;
   const [deleting, setDeleting] = useState(false);
   const invalidateKeys = useInvalidateReactQueryKeys();
+
+  const t = useT();
 
   async function deleteAccount() {
     setDeleting(true);
@@ -89,8 +92,8 @@ function DeleteAccountModal({
         onSubmit={async (e) => {
           e.preventDefault();
           toast.promise(deleteAccount(), {
-            loading: 'Deleting account...',
-            success: 'Account deleted successfully!',
+            loading: t('DeleteAccountModal.DeletingAccount'),
+            success: t('DeleteAccountModal.AccountDeletedSuccessfully'),
             error: (err) => err,
           });
         }}

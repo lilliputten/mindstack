@@ -20,12 +20,9 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   const namespace = topicsNamespaces[scope];
   if (namespace) {
     const t = await getT({ locale });
-    const title = t(`${namespace}Title`);
-    const description = t(`${namespace}Description`);
     return constructMetadata({
       locale,
-      title,
-      description,
+      title: t(`Pages.${namespace}Title`),
     });
   }
 }

@@ -35,13 +35,7 @@ export const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mindstac
 
 export const dataContentType = 'application/json; charset=utf-8';
 
+// Default values for meta properties (see also translations under the `Page.Root*` keys)
 export const siteTitle = 'Mind Stack Trainer';
-export const siteDescription = 'NextJS memory training application';
-export const siteKeywords = [
-  // ...
-  'next.js',
-  'ai',
-  'chat',
-];
-export const mailSupport = 'lilliputten@gmail.com';
-// See also constants in `contacts` section
+export const siteDescription = 'Memory Training Application';
+export const siteKeywords = '';

@@ -1,7 +1,6 @@
 {
   "Answer": "Answer",
   "Answers": "Answers",
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "Author": "Author",
   "Authors": "Authors",
   "Back": "Back",
@@ -16,7 +15,6 @@
   "GoBack": "Go Back",
   "Keywords": "Keywords",
   "Language": "Language",
-  "Language Changed For": "Language has been changed for",
   "Modified": "Modified",
   "Name": "Name",
   "No": "No",
@@ -29,7 +27,6 @@
   "Reset": "Reset",
   "ResetChanges": "Reset Changes",
   "Save": "Save",
-  "Select Language": "Select Language",
   "Skip": "Skip",
   "Start": "Start",
   "Timeline": "Timeline",
@@ -93,6 +90,9 @@
     "ToastLoading": "Creating new topic...",
     "ToastSuccess": "Successfully created new topic \"{name}\""
   },
+  "AppIntro": {
+    "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
+  },
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
     "ManageQuestion": "Manage Question",
@@ -152,6 +152,8 @@
     "ManageYourTopicsAction": "Manage Your Topics"
   },
   "Bot": {
+    "LanguageChangedFor": "Language has been changed for",
+    "SelectLanguage": "Select Language",
     "accountCreated": "✅ Your account has been successfully created.",
     "canNotCreateAccount": "❌ Error creating account profile.",
     "checkingStatus": "Checking your application status...",
@@ -187,6 +189,10 @@
   },
   "DashboardSidebar": {
     "TogglePanel": "Toggle Panel"
+  },
+  "DeleteAccountModal": {
+    "AccountDeletedSuccessfully": "Account deleted successfully!",
+    "DeletingAccount": "Deleting account..."
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancel",
@@ -300,6 +306,11 @@
     "TopicNamePlaceholder": "Name",
     "UseRandomQuestionsCount": "Use random questions count?",
     "UseRandomQuestionsCountHint": "Allow to generate random number of answers for questions (if it's not overidden in the question settings)."
+  },
+  "EditTopicPage": {
+    "CannotSaveTopicData": "Cannot save topic data.",
+    "SavingTopicData": "Saving topic data...",
+    "SuccessfullySavedTheTopic": "Successfully saved the topic"
   },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
@@ -479,23 +490,37 @@
     "Answers": "Answers",
     "AvailableTopicsDescription": "Topics available to use",
     "AvailableTopicsTitle": "Available Topics",
+    "CookiesPageTitle": "Cookie Policy",
     "DocsTitle": "Documentation",
+    "EditAnswerPropertiesTitle": "Edit Answer Properties",
+    "EditQuestionPropertiesTitle": "Edit Question Properties",
     "EditTopicPropertiesTitle": "Edit Topic Properties",
     "InfoTitle": "Info",
+    "ManageAnswerTitle": "Manage Answer",
+    "ManageQuestionTitle": "Manage Question",
     "ManageTopicQuestionAnswersDescription": "Answers for the chosen question",
     "ManageTopicQuestionAnswersTitle": "Manage Answers",
     "ManageTopicQuestionsDescription": "Questions for the chosen topic",
     "ManageTopicQuestionsTitle": "Manage Questions",
+    "ManageTopicTitle": "Manage Topic",
     "MyTopicsDescription": "Topics created by me",
     "MyTopicsTitle": "My Topics",
-    "PricingTitle": "Pricing",
-    "PrivacyTitle": "Privacy Policy",
+    "PricingPageTitle": "Pricing",
+    "PrivacyPageTitle": "Privacy Policy",
     "Questions": "Questions",
     "RedirectTitle": "Redirecting...",
+    "RootDescription": "Memory Training Application",
+    "RootKeywords": "memory, training, application",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
     "SettingsTitle": "Settings",
-    "WelcomeTitle": "Welcome!"
+    "StartBotTitle": "Start Bot",
+    "TermsPageTitle": "Terms of Service",
+    "TestQueryTitle": "Test AI Text Query",
+    "TrainingTopicReviewTitle": "Training Topic Review",
+    "ViewAvailableTopicTitle": "View Available Topic",
+    "WelcomeTitle": "Welcome!",
+    "WorkoutTopicGoTitle": "Training the Topic"
   },
   "Pricing": {
     "ContactUs": "Contact Us",
@@ -593,6 +618,13 @@
     "Predefined": "Predefined",
     "SelectLanguage": "Select Language",
     "SelectLanguageText": "Choose a language for a topic"
+  },
+  "SettingsContext": {
+    "CanNotSaveSettings": "Can not save settings.",
+    "SuccessfullySavedSettings": "Successfully saved settings.",
+    "tsx": {
+      "SavingSettings": "Saving settings..."
+    }
   },
   "SettingsFormFields": {
     "AutoOption": "Auto",

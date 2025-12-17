@@ -16,7 +16,7 @@ bot.command('language', async (ctx: TCommandContext) => {
     const text = localeNames[locale];
     keyboard.text(text, `select-language-${locale}`); // (ctx) => ctx.reply('You pressed A!'));
   });
-  await ctx.reply(t('Select Language'), {
+  await ctx.reply(t('Bot.SelectLanguage'), {
     reply_markup: keyboard,
   });
 });
@@ -27,7 +27,7 @@ localesList.forEach(async (locale) => {
     const session = ctx.session;
     const t = await getT({ locale });
     const localeText = localeNames[locale];
-    const text = t('Language Changed For') + ' ' + localeText;
+    const text = t('Bot.LanguageChangedFor') + ' ' + localeText;
     session.language_code = locale;
     await ctx.answerCallbackQuery({
       text,

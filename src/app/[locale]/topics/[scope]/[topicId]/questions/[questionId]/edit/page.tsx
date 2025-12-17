@@ -4,6 +4,7 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { EditQuestionCardHolder } from './EditQuestionCardHolder';
@@ -16,7 +17,8 @@ type TAwaitedProps = TAwaitedLocaleProps<{
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
-  const title = 'Edit Question Properties';
+  const t = await getT({ locale });
+  const title = t('Pages.EditQuestionPropertiesTitle');
   return constructMetadata({
     locale,
     title,

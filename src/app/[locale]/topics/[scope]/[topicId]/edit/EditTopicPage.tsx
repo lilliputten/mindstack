@@ -34,6 +34,7 @@ import {
   useGoBack,
   useGoToTheRoute,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditTopicForm } from './EditTopicForm';
@@ -56,6 +57,8 @@ export function EditTopicPage(props: TEditTopicPageProps) {
   const goBack = useGoBack(routePath);
   const goToTheRoute = useGoToTheRoute();
   const [isPending, startTransition] = React.useTransition();
+
+  const t = useT();
 
   const queryClient = useQueryClient();
 
@@ -215,9 +218,9 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       startTransition(async () => {
         const savePromise = updateTopic(editedTopic);
         toast.promise(savePromise, {
-          loading: 'Saving topic data...',
-          success: 'Successfully saved the topic',
-          error: 'Cannot save topic data.',
+          loading: t('EditTopicPage.SavingTopicData'),
+          success: t('EditTopicPage.SuccessfullySavedTheTopic'),
+          error: t('EditTopicPage.CannotSaveTopicData'),
         });
         try {
           const topic = await savePromise;
@@ -254,7 +257,15 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         }
       });
     },
-    [availableTopicQuery, availableTopicsQuery, form, queryClient, topic],
+    [
+      availableTopicQuery.queryClient,
+      availableTopicQuery.queryKey,
+      availableTopicsQuery,
+      form,
+      queryClient,
+      t,
+      topic,
+    ],
   );
 
   const handleSubmit = form.handleSubmit(handleFormSubmit);

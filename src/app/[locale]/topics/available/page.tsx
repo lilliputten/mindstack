@@ -2,6 +2,7 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { AvailableTopicsListWrapper } from './AvailableTopicsListWrapper';
@@ -10,10 +11,10 @@ type TAwaitedProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
-  const title = 'Availbale Topics';
+  const t = await getT({ locale });
   return constructMetadata({
     locale,
-    title,
+    title: t('Pages.AvailableTopicsTitle'),
   });
 }
 

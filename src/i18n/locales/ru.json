@@ -26,7 +26,6 @@
   "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
   "Save": "Сохранить",
-  "Select Language": "Выбрать язык",
   "Skip": "Пропустить",
   "Start": "Начать",
   "Timeline": "Хронология",
@@ -89,6 +88,9 @@
     "ToastError": "Невозможно создать новую тему",
     "ToastLoading": "Создание новой темы...",
     "ToastSuccess": "Новая тема \"{name}\" успешно создана"
+  },
+  "AppIntro": {
+    "BlockContent": "<p>Это небольшое приложение для тренировки памяти. \nОзнакомьтесь с кратким <AboutLink>справочником по приложению</AboutLink>.</p>"
   },
   "AppIntroBlock": {
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
@@ -153,6 +155,7 @@
     "ManageYourTopicsAction": "Управлять своими темами"
   },
   "Bot": {
+    "SelectLanguage": "Выбрать язык",
     "accountCreated": "✅ Акаунт успешно создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
     "checkingStatus": "Проверка статуса в приложении...",
@@ -189,6 +192,10 @@
   },
   "DashboardSidebar": {
     "TogglePanel": "Переключить панель"
+  },
+  "DeleteAccountModal": {
+    "AccountDeletedSuccessfully": "Аккаунт успешно удален!",
+    "DeletingAccount": "Удаление аккаунта..."
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Отмена",
@@ -302,6 +309,11 @@
     "TopicNamePlaceholder": "Название",
     "UseRandomQuestionsCount": "Использовать случайное количество вопросов?",
     "UseRandomQuestionsCountHint": "Разрешить генерацию случайного количества ответов для вопросов (если это не переопределено в настройках вопроса)."
+  },
+  "EditTopicPage": {
+    "CannotSaveTopicData": "Невозможно сохранить данные темы.",
+    "SavingTopicData": "Сохранение данных темы...",
+    "SuccessfullySavedTheTopic": "Тема успешно сохранена"
   },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
@@ -481,23 +493,37 @@
     "Answers": "Ответы",
     "AvailableTopicsDescription": "Темы, доступные для использования",
     "AvailableTopicsTitle": "Доступные темы",
+    "CookiesPageTitle": "Политика использования файлов cookie",
     "DocsTitle": "Документация",
+    "EditAnswerPropertiesTitle": "Изменить свойства ответа",
+    "EditQuestionPropertiesTitle": "Редактировать свойства вопроса",
     "EditTopicPropertiesTitle": "Редактировать свойства темы",
     "InfoTitle": "Информация",
+    "ManageAnswerTitle": "Управление ответом",
+    "ManageQuestionTitle": "Управление вопросом",
     "ManageTopicQuestionAnswersDescription": "Ответы для выбранного вопроса",
     "ManageTopicQuestionAnswersTitle": "Управление ответами",
     "ManageTopicQuestionsDescription": "Вопросы для выбранной темы",
     "ManageTopicQuestionsTitle": "Управление вопросами",
+    "ManageTopicTitle": "Управление темой",
     "MyTopicsDescription": "Темы, созданные мной",
     "MyTopicsTitle": "Мои темы",
-    "PricingTitle": "Тарифы",
-    "PrivacyTitle": "Политика конфиденциальности",
+    "PricingPageTitle": "Тарифы",
+    "PrivacyPageTitle": "Политика конфиденциальности",
     "Questions": "Вопросы",
     "RedirectTitle": "Перенаправление...",
+    "RootDescription": "Приложение для тренировки памяти",
+    "RootKeywords": "память, тренировка, применение",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Настройки приложения",
     "SettingsTitle": "Настройки",
-    "WelcomeTitle": "Добро пожаловать!"
+    "StartBotTitle": "Запустить бота",
+    "TermsPageTitle": "Условия использования",
+    "TestQueryTitle": "Тестовый текстовый запрос AI",
+    "TrainingTopicReviewTitle": "Обзор темы обучения",
+    "ViewAvailableTopicTitle": "Посмотреть доступную тему",
+    "WelcomeTitle": "Добро пожаловать!",
+    "WorkoutTopicGoTitle": "Обучение теме"
   },
   "Pricing": {
     "ContactUs": "Свяжитесь с нами",
@@ -595,6 +621,13 @@
     "Custom": "Пользовательский",
     "Predefined": "Предопределённый",
     "SelectLanguage": "Выбрать язык"
+  },
+  "SettingsContext": {
+    "CanNotSaveSettings": "Не могу сохранить настройки.",
+    "SuccessfullySavedSettings": "Настройки успешно сохранены.",
+    "tsx": {
+      "SavingSettings": "Сохранение настроек..."
+    }
   },
   "SettingsFormFields": {
     "AutoOption": "Авто",

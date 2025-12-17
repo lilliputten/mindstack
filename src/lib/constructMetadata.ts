@@ -2,11 +2,12 @@ import { Metadata } from 'next';
 
 import { defaultLanguage, siteDescription, siteKeywords, siteTitle } from '@/config/env';
 import { PUBLIC_URL } from '@/config/envServer';
+import { getT } from '@/i18n';
 
 interface TConstructMetadataParams {
   /*extends Partial<Pick<SiteConfig, 'title' | 'description' | 'keywords'>>*/ title?: string;
   description?: string;
-  keywords?: string[];
+  keywords?: string;
   image?: string;
   icons?: string;
   noIndex?: boolean;
@@ -14,22 +15,23 @@ interface TConstructMetadataParams {
   url?: string;
 }
 
-/** Create html, oath, twitter and other meta data tags */
-export function constructMetadata(params: TConstructMetadataParams = {}): Metadata {
+/** Server function to create html, oath, twitter and other meta data tags */
+export async function constructMetadata(params: TConstructMetadataParams = {}): Promise<Metadata> {
   const {
-    title = siteTitle,
-    description = siteDescription,
-    keywords = siteKeywords,
+    title,
+    description,
+    keywords,
     image = '/static/opengraph-image.jpg',
     icons = '/favicon.ico',
     noIndex = true,
     locale = defaultLanguage, // routing.defaultLocale as TLocale,
     url = PUBLIC_URL,
   } = params;
+  const t = await getT({ locale });
   return {
-    title,
-    description,
-    keywords,
+    title: title || t('Pages.RootTitle') || siteTitle,
+    description: description || t('Pages.RootDescription') || siteDescription,
+    keywords: [siteKeywords, t('Pages.RootKeywords'), keywords].filter(Boolean).join(', '),
     authors: [
       {
         name: 'lilliputten',

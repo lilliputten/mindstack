@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { WorkoutTopic } from './WorkoutTopic';
@@ -11,7 +12,8 @@ type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId; topicId:
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
-  const title = 'Training Topic Review';
+  const t = await getT({ locale });
+  const title = t('Pages.TrainingTopicReviewTitle');
   return constructMetadata({
     locale,
     title,

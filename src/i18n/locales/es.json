@@ -1,7 +1,6 @@
 {
   "Answer": "Respuesta",
   "Answers": "Respuestas",
-  "AppIntroBlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>",
   "Author": "Autor",
   "Authors": "Autores",
   "Back": "Atrás",
@@ -16,7 +15,6 @@
   "GoBack": "Volver",
   "Keywords": "Palabras clave",
   "Language": "Idioma",
-  "Language Changed For": "El idioma ha sido cambiado a",
   "Modified": "Modificado",
   "Name": "Nombre",
   "No": "No",
@@ -29,7 +27,6 @@
   "Reset": "Reiniciar",
   "ResetChanges": "Restablecer cambios",
   "Save": "Guardar",
-  "Select Language": "Seleccionar Idioma",
   "Skip": "Omitir",
   "Start": "Iniciar",
   "Timeline": "Cronología",
@@ -93,6 +90,9 @@
     "ToastLoading": "Creando nuevo tema...",
     "ToastSuccess": "Se creó exitosamente el nuevo tema \"{name}\""
   },
+  "AppIntro": {
+    "BlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>"
+  },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
     "ManageQuestion": "Gestionar Pregunta",
@@ -152,6 +152,8 @@
     "ManageYourTopicsAction": "Gestionar Tus Temas"
   },
   "Bot": {
+    "LanguageChangedFor": "El idioma ha sido cambiado a",
+    "SelectLanguage": "Seleccionar Idioma",
     "accountCreated": "✅ Su cuenta ha sido creada exitosamente.",
     "canNotCreateAccount": "❌ Error al crear el perfil de la cuenta.",
     "checkingStatus": "Verificando el estado de su aplicación...",
@@ -187,6 +189,10 @@
   },
   "DashboardSidebar": {
     "TogglePanel": "Panel de alternancia"
+  },
+  "DeleteAccountModal": {
+    "AccountDeletedSuccessfully": "¡Cuenta eliminada exitosamente!",
+    "DeletingAccount": "Eliminando cuenta..."
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancelar",
@@ -300,6 +306,11 @@
     "TopicNamePlaceholder": "Nombre",
     "UseRandomQuestionsCount": "¿Usar cantidad aleatoria de preguntas?",
     "UseRandomQuestionsCountHint": "Permitir generar un número aleatorio de respuestas para preguntas (si no se anula en la configuración de la pregunta)."
+  },
+  "EditTopicPage": {
+    "CannotSaveTopicData": "No se pueden guardar los datos del tema.",
+    "SavingTopicData": "Guardando datos del tema...",
+    "SuccessfullySavedTheTopic": "Guardado exitosamente el tema."
   },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
@@ -479,23 +490,37 @@
     "Answers": "Respuestas",
     "AvailableTopicsDescription": "Temas disponibles para usar",
     "AvailableTopicsTitle": "Temas Disponibles",
+    "CookiesPageTitle": "Política de cookies",
     "DocsTitle": "Documentación",
+    "EditAnswerPropertiesTitle": "Editar propiedades de respuesta",
+    "EditQuestionPropertiesTitle": "Editar propiedades de pregunta",
     "EditTopicPropertiesTitle": "Editar Propiedades del Tema",
     "InfoTitle": "Información",
+    "ManageAnswerTitle": "Administrar respuesta",
+    "ManageQuestionTitle": "Gestionar pregunta",
     "ManageTopicQuestionAnswersDescription": "Respuestas para la pregunta elegida",
     "ManageTopicQuestionAnswersTitle": "Gestionar Respuestas",
     "ManageTopicQuestionsDescription": "Preguntas para el tema elegido",
     "ManageTopicQuestionsTitle": "Gestionar Preguntas",
+    "ManageTopicTitle": "Administrar tema",
     "MyTopicsDescription": "Temas creados por mí",
     "MyTopicsTitle": "Mis Temas",
-    "PricingTitle": "Precios",
-    "PrivacyTitle": "Política de Privacidad",
+    "PricingPageTitle": "Precios",
+    "PrivacyPageTitle": "Política de Privacidad",
     "Questions": "Preguntas",
     "RedirectTitle": "Redirigiendo...",
+    "RootDescription": "Aplicación de entrenamiento de la memoria",
+    "RootKeywords": "memoria, entrenamiento, aplicación",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración",
-    "WelcomeTitle": "¡Bienvenido!"
+    "StartBotTitle": "Iniciar robot",
+    "TermsPageTitle": "Términos de servicio",
+    "TestQueryTitle": "Pruebe la consulta de texto de IA",
+    "TrainingTopicReviewTitle": "Revisión del tema de capacitación",
+    "ViewAvailableTopicTitle": "Ver tema disponible",
+    "WelcomeTitle": "¡Bienvenido!",
+    "WorkoutTopicGoTitle": "Entrenando el tema"
   },
   "Pricing": {
     "ContactUs": "Contáctanos",
@@ -593,6 +618,13 @@
     "Predefined": "Predefinido",
     "SelectLanguage": "Seleccionar Idioma",
     "SelectLanguageText": "Elige un idioma para un tema"
+  },
+  "SettingsContext": {
+    "CanNotSaveSettings": "No se puede guardar la configuración.",
+    "SuccessfullySavedSettings": "Configuración guardada correctamente.",
+    "tsx": {
+      "SavingSettings": "Guardando configuración..."
+    }
   },
   "SettingsFormFields": {
     "AutoOption": "Auto",

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
   const t = await getT({ locale });
   return constructMetadata({
-    title: t('Pages.TermsTitle'),
+    title: t('Pages.TermsPageTitle'),
     locale,
   });
 }

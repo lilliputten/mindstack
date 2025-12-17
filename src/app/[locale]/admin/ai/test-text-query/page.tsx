@@ -6,12 +6,15 @@ import { isAdminUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
+import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { TextQueryForm } from './TextQueryForm';
 
-export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
+export async function generateMetadata({ params }: TAwaitedLocaleProps) {
+  const { locale } = await params;
+  const t = await getT({ locale });
   return constructMetadata({
-    title: 'Test AI Text Query',
+    title: t('Pages.TestQueryTitle'),
   });
 }
 

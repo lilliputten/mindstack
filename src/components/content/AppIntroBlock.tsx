@@ -32,7 +32,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         className,
       )}
     >
-      {t.rich('AppIntroBlockContent', {
+      {t.rich('AppIntro.BlockContent', {
         p: (chunks) => <p>{chunks}</p>,
         AboutLink: (chunks) => <Link href={aboutRoute}>{chunks}</Link>,
       })}
