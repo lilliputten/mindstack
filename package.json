@@ -188,7 +188,7 @@
     "eslint-fix": "echo --Lint and auto-fix sources with eslint-- && eslint --fix .",
     "eslint": "echo --Lint sources with eslint-- && eslint .",
     "lint-all": "echo --Run all pre-commit check-ups-- && npm-run-all eslint check-types stylelint && echo --All check-ups passed--",
-    "sort-locales": "echo --Sort all locales-- && tsx src/packages/sort-json/cli.ts --in-place -i \"src/i18n/locales/*.json\"",
+    "sort-locales": "echo --Sort all locales-- && tsx src/packages/sort-json/cli.ts --in-place -c -i \"src/i18n/locales/*.json\"",
     "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier-quick lint-all && echo --All checks passed--",
     "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
     "clear-all": "echo --Clear all cache and temp files-- && rimraf node_modules/.cache .next && jest --clearCache && echo Cleared cache",

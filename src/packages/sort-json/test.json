@@ -1,6 +1,13 @@
 {
   "a": 2,
   "b": 1,
+  "Comparison": {
+    "Analytics": "Подробная аналитика",
+    "perMonth": "в месяц",
+    "Topics": "Темы",
+    "total": "всего",
+    "WorkoutSessions": "Тренировки"
+  },
   "o": {
     "c": 2,
     "d": 1

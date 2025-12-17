@@ -9,6 +9,10 @@ import { glob } from 'glob';
 
 import { PrimitivePosition, sortJson, SortOptions } from './sort-json';
 
+/* // NOTE: Use for cli test:
+ * pnpm tsx src/packages/sort-json/cli.ts -c -i src/packages/sort-json/test.json
+ */
+
 program
   .name('json-sort')
   .description('Sort JSON objects with configurable options')

@@ -22,6 +22,24 @@ const isObject = (value: any): boolean => {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 };
 
+export function stringCompare(a: string, b: string, caseSensitive: boolean): number {
+  /* NOTE: This doesn't work
+   * return a.localeCompare(b, undefined, {
+   *   sensitivity: caseSensitive ? 'case' : 'base',
+   * });
+   */
+
+  if (!caseSensitive) {
+    a = a.toLowerCase();
+    b = b.toLowerCase();
+  }
+  // Case-sensitive comparison: A=65, B=66, a=97, b=98 -> A, B, a, b
+  let res = 0;
+  if (a < b) res = -1;
+  if (a > b) res = 1;
+  return res;
+}
+
 export function sortJson(data: any, options: SortOptions = {}): any {
   const {
     order = 'asc',
@@ -60,9 +78,7 @@ export function sortJson(data: any, options: SortOptions = {}): any {
       if (numericSort && !isNaN(Number(keyA)) && !isNaN(Number(keyB))) {
         keyComparison = Number(keyA) - Number(keyB);
       } else {
-        const a = caseSensitive ? keyA : keyA.toLowerCase();
-        const b = caseSensitive ? keyB : keyB.toLowerCase();
-        keyComparison = a.localeCompare(b);
+        keyComparison = stringCompare(keyA, keyB, caseSensitive);
       }
 
       if (keyComparison !== 0) {
@@ -78,9 +94,7 @@ export function sortJson(data: any, options: SortOptions = {}): any {
         } else {
           const a = String(valueA);
           const b = String(valueB);
-          const aCompare = caseSensitive ? a : a.toLowerCase();
-          const bCompare = caseSensitive ? b : b.toLowerCase();
-          valueComparison = aCompare.localeCompare(bCompare);
+          valueComparison = stringCompare(a, b, caseSensitive);
         }
 
         return order === 'asc' ? valueComparison : -valueComparison;
