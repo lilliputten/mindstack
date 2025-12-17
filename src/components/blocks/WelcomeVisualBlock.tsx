@@ -4,9 +4,6 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { SmallWelcomeText } from '@/components/screens/SmallWelcomeText';
 import svgArt from '@/assets/arts/bink-bus-single.svg';
-// import svgArt from '@/assets/arts/girl-with-a-book.svg';
-import logoSvg from '@/assets/logo/logo-on-dark.svg';
-import { siteTitle } from '@/config';
 import { isDev } from '@/constants';
 
 export function WelcomeVisualBlock(props: TPropsWithClassName) {
@@ -36,6 +33,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
             'select-none',
           )}
         />
+        {/* // Show a logo in the top right corner
         <div
           className={cn(
             isDev && '__WelcomeVisualBlock_Logo', // DEBUG
@@ -48,6 +46,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
         >
           <Image src={logoSvg} className="h-12 w-auto" alt={siteTitle} priority={false} />
         </div>
+        */}
         <SmallWelcomeText className="p-6 pb-8 pt-0" />
       </div>
     </div>

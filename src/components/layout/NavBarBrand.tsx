@@ -3,14 +3,12 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { useTheme } from 'next-themes';
 
 import { siteTitle } from '@/config/env';
 import { rootRoute, welcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import logoOnWhiteSvg from '@/assets/logo/logo-with-sign-in-circle.svg';
 import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
 import { isDev } from '@/constants';
 import { Link } from '@/i18n/routing';
@@ -37,7 +35,7 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
     'space-x-1.5',
     'gap-2',
     'transition-all',
-    'mr-10',
+    'mr-4',
     'select-none',
     'hover:opacity-80',
   );
@@ -52,15 +50,15 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
 }
 
 export function NavBarBrand(props: NavBarBrandProps) {
-  const { onSidebar } = props;
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
+  // const { onSidebar } = props;
+  // const { resolvedTheme } = useTheme();
+  // const isDark = resolvedTheme === 'dark';
   return (
     <BrandWrapper {...props} className="h-12">
       <Image
         data-testid="NavBarBrandImage"
-        src={!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
-        className="h-auto w-48 select-none"
+        src={logoSvg} // {!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
+        className="h-auto w-48 select-none sm:min-w-48"
         // className="h-14 w-auto"
         priority={false}
         alt={siteTitle}

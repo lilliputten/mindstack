@@ -56,7 +56,7 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
     const errorName = isError && err.name;
     return [
       // Prepare combined error text
-      !opts.omitErrorName && errorName,
+      !opts.omitErrorName && errorName !== 'Error' && errorName,
       errorText,
     ]
       .filter(Boolean)

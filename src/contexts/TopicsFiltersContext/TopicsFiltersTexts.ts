@@ -1,6 +1,6 @@
 import { TFiltersDataKey, TOrderBySelectOption } from './TopicsFiltersTypes';
 
-// NOTE: These texts should be key values in the translation files
+// NOTE: These texts should be key values in the translation files. See `AvailableTopicsFilterTexts` namespace.
 
 export const fieldUnionStrings = {
   true: 'Yes',
@@ -10,34 +10,34 @@ export const fieldUnionStrings = {
 
 export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<string, string>>> = {
   hasWorkoutStats: {
-    true: 'With Statistics',
-    false: 'Without Statistics',
+    true: 'WithStatistics',
+    false: 'WithoutStatistics',
   },
   hasActiveWorkouts: {
-    true: 'With Active Workouts',
-    false: 'Without Active Workouts',
+    true: 'WithActiveWorkouts',
+    false: 'WithoutActiveWorkouts',
   },
   hasQuestions: {
-    true: 'With Questions',
-    false: 'Without Questions',
+    true: 'WithQuestions',
+    false: 'WithoutQuestions',
   },
   showOnlyMyTopics: {
-    true: 'Only My Topics',
+    true: 'OnlyMyTopics',
   },
   orderBySelect: {
-    byRecent: 'Recent',
-    byOldest: 'Oldest',
-    byNameAsc: 'By Name',
-    byNameDesc: 'By Name (descending)',
+    byRecent: 'OrderBy-Recent',
+    byOldest: 'OrderBy-Oldest',
+    byNameAsc: 'OrderBy-Name',
+    byNameDesc: 'OrderBy-NameDescending',
   } satisfies Record<TOrderBySelectOption, string>,
 };
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {
-  searchText: 'Search for',
-  searchLang: 'Language',
-  showOnlyMyTopics: 'Only My',
-  hasWorkoutStats: 'Statistics',
-  hasActiveWorkouts: 'Active Workouts',
-  hasQuestions: 'Questions',
-  orderBySelect: 'Order by',
+  searchText: 'Label-SearchText',
+  searchLang: 'Label-SearchLang',
+  showOnlyMyTopics: 'Label-ShowOnlyMyTopics',
+  hasWorkoutStats: 'Label-HasWorkoutStats',
+  hasActiveWorkouts: 'Label-HasActiveWorkouts',
+  hasQuestions: 'Label-HasQuestions',
+  orderBySelect: 'Label-OrderBy',
 };

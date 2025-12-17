@@ -16,6 +16,7 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
+import { useT } from '@/i18n';
 import { removePathLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
@@ -32,6 +33,11 @@ type TMemo = { inited?: boolean; restored?: boolean; isExpanded?: boolean };
 export function DashboardSidebar({ links }: TDashboardSidebarProps) {
   const pathname = usePathname();
   const testPath = removePathLocalePrefix(pathname);
+
+  // Generic translator
+  const t = useT();
+  // Translator only for navigation links
+  const tNavLinks = useT('NavLinks');
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -130,7 +136,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                         (!isExpanded || showProjectsSelector) && 'sr-only',
                       )}
                     >
-                      Toggle Panel
+                      {t('DashboardSidebar.TogglePanel')}
                     </span>
                   </Button>
                 </TooltipTrigger>
@@ -138,7 +144,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                   side="right"
                   className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                 >
-                  Toggle Panel
+                  {t('DashboardSidebar.TogglePanel')}
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -160,7 +166,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                       !isExpanded && 'hidden',
                     )}
                   >
-                    {section.titleId}
+                    {tNavLinks(section.titleId)}
                   </p>
                   {/* Show sections menu */}
                   {section.items.map((item) => {
@@ -210,7 +216,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                                     !isExpanded && 'hidden',
                                   )}
                                 >
-                                  {titleId}
+                                  {tNavLinks(titleId)}
                                 </span>
                                 {badge && (
                                   <Badge className="flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
@@ -223,7 +229,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                               className={cn(noUserExpanded && 'lg:hidden', isExpanded && 'hidden')}
                               side="right"
                             >
-                              {titleId}
+                              {tNavLinks(titleId)}
                             </TooltipContent>
                           </Tooltip>
                         </React.Fragment>

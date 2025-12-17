@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { isDev } from '@/constants';
 import { useMediaQuery } from '@/hooks';
+import { useT } from '@/i18n';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export function Modal({
   hiddenTitle,
   description,
 }: ModalProps) {
+  const t = useT();
   const closeModal = ({ dragged }: { dragged?: boolean } = {}) => {
     if (preventDefaultClose && !dragged) {
       return;
@@ -84,7 +86,7 @@ export function Modal({
             {children}
             <DialogPrimitive.Close
               data-id="close"
-              title="Close"
+              title={t('Close')}
               className={cn(
                 'absolute',
                 'right-4',
@@ -104,7 +106,7 @@ export function Modal({
               )}
             >
               <X className="size-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t('Close')}</span>
             </DialogPrimitive.Close>
           </Drawer.Content>
           <Drawer.Overlay />

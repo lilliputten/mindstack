@@ -9,7 +9,6 @@ generator zod {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -56,6 +55,7 @@ enum UserGrade {
   PRO
   PREMIUM
 }
+
 // TODO: UNLIMITED
 
 model User {

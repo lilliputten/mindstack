@@ -21,6 +21,7 @@ import {
   useGoBack,
   useGoToTheRoute,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewTopicContentSummary } from './ViewTopicContentSummary';
@@ -37,6 +38,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
   const routePath = `/topics/${manageScope}`;
   const goBack = useGoBack(routePath);
   const goToTheRoute = useGoToTheRoute();
+  const t = useT();
 
   const {
     topic,
@@ -48,7 +50,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
 
   // Error: topic hasn't been found
   if (!topic) {
-    throw new Error('No topic found');
+    throw new Error(t('ViewTopicPage.NoTopicFound'));
   }
 
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -79,7 +81,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
         }
       })
       .catch((error) => {
-        const message = 'Cannot update topic data';
+        const message = t('ViewTopicPage.CannotUpdateTopicData');
         // eslint-disable-next-line no-console
         console.error('[ViewTopicPage:handleReload]', message, {
           error,
@@ -87,14 +89,14 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
         debugger; // eslint-disable-line no-debugger
         toast.error(message);
       });
-  }, [availableTopicQuery, availableTopicsQuery]);
+  }, [availableTopicQuery, availableTopicsQuery, t]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
         id: 'Back',
-        content: 'Back',
-        variant: 'ghost',
+        content: t('Back'),
+        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -102,8 +104,8 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Start Training',
-        content: 'Start Training',
-        variant: 'theme',
+        content: t('ViewTopicPage.StartTraining'),
+        // variant: 'theme',
         icon: Icons.ArrowRight,
         visibleFor: 'md',
         onClick: () => goToTheRoute(`${availableTopicsRoute}/${topicId}/workout`),
@@ -111,40 +113,40 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Reload',
-        content: 'Reload',
-        variant: 'ghost',
+        content: t('ViewTopicPage.Reload'),
+        // variant: 'ghost',
         icon: Icons.Refresh,
         // visibleFor: 'lg',
         onClick: handleReload,
       },
       {
         id: 'Edit',
-        content: 'Edit',
-        variant: 'ghost',
+        content: t('Edit'),
+        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${topicRoutePath}/edit`),
       },
       {
         id: 'Questions',
-        content: 'Questions',
-        variant: 'ghost',
+        content: t('Questions'),
+        // variant: 'ghost',
         icon: Icons.Questions,
         visibleFor: 'lg',
         onClick: () => goToTheRoute(`${topicRoutePath}/questions`),
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
-        variant: 'success',
+        content: t('ViewTopicPage.AddNewQuestion'),
+        // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
       },
       {
         id: 'Generate Questions',
-        content: 'Generate Questions',
-        variant: 'secondary',
+        content: t('ViewTopicPage.GenerateQuestions'),
+        // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
@@ -152,14 +154,15 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Delete Topic',
-        content: 'Delete Topic',
-        variant: 'destructive',
+        content: t('ViewTopicPage.DeleteTopic'),
+        // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${routePath}/delete?topicId=${topicId}&from=ViewTopicPage`),
       },
     ],
     [
+      t,
       goBack,
       allowedTraining,
       handleReload,
@@ -176,7 +179,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
   return (
     <>
       <DashboardHeader
-        heading="View Topic"
+        heading={t('ViewTopicPage.ViewTopic')}
         className={cn(
           isDev && '__ViewTopicPage_DashboardHeader', // DEBUG
           'mx-6',

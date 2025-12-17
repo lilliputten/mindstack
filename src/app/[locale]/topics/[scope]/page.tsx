@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 
 import { welcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
@@ -9,6 +8,7 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
 import { topicsNamespaces, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TTopicId } from '@/features/topics/types';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { ManageTopicsPageModalsWrapper } from './ManageTopicsPageModalsWrapper';
@@ -19,9 +19,9 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale, scope } = await params;
   const namespace = topicsNamespaces[scope];
   if (namespace) {
-    const t = await getTranslations({ locale, namespace });
-    const title = t('title');
-    const description = t('description');
+    const t = await getT({ locale });
+    const title = t(`${namespace}Title`);
+    const description = t(`${namespace}Description`);
     return constructMetadata({
       locale,
       title,
@@ -47,11 +47,6 @@ export default async function ManageTopicsPageHolder(props: TManageTopicsPageHol
     from,
     // params,
   } = props;
-
-  // const resolvedParams = await params;
-  // const { locale, scope } = resolvedParams;
-  // const namespace = topicsNamespaces[scope];
-  // const t = await getTranslations({ locale, namespace });
 
   // Check if logged user
   const isLogged = await isLoggedUser();

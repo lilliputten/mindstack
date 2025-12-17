@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
+import { generateArray } from '@/lib/helpers';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { cn } from '@/lib/utils';
@@ -20,6 +21,7 @@ import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TProps {
@@ -37,6 +39,8 @@ export function ViewQuestionContentSummary(props: TProps) {
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
+  const t = useT();
+
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
 
@@ -46,11 +50,11 @@ export function ViewQuestionContentSummary(props: TProps) {
       className="flex flex-col gap-4"
     >
       <div className="flex items-center gap-2">
-        <h3 className="text-lg font-semibold">Question Text</h3>
+        <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.QuestionText')}</h3>
         {question.isGenerated && (
           <div className="flex items-center gap-1 rounded-md bg-secondary-500 px-2 py-1 text-xs text-secondary-foreground">
             <Icons.WandSparkles className="size-3 opacity-50" />
-            AI Generated
+            {t('ViewQuestionContentSummary.AiGenerated')}
           </div>
         )}
       </div>
@@ -66,16 +70,16 @@ export function ViewQuestionContentSummary(props: TProps) {
       className="flex flex-col gap-4"
     >
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-lg font-semibold">Answers</h3>
-        <div className="flex gap-2">
+        <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Answers')}</h3>
+        <div className="flex flex-wrap gap-2">
           <Button variant="ghost" size="sm" disabled={!isLogged}>
             <Link
               href={`${routePath}/${question.topicId}/questions/${question.id}/answers`}
               className="flex items-center gap-2"
-              title="Manage answers"
+              title={t('ViewQuestionContentSummary.ManageAnswers')}
             >
               <Icons.Edit className="size-4 opacity-50" />
-              <span>Manage Answers</span>
+              <span>{t('ViewQuestionContentSummary.ManageAnswers')}</span>
             </Link>
           </Button>
           <Button
@@ -86,10 +90,10 @@ export function ViewQuestionContentSummary(props: TProps) {
             <Link
               href={`${routePath}/${question.topicId}/questions/${question.id}/answers/generate`}
               className="flex items-center gap-2"
-              title="Generate Answers"
+              title={t('ViewQuestionContentSummary.GenerateAnswers')}
             >
               <Icons.WandSparkles className="size-4 opacity-50" />
-              <span>Generate Answers</span>
+              <span>{t('ViewQuestionContentSummary.GenerateAnswers')}</span>
             </Link>
           </Button>
         </div>
@@ -98,9 +102,11 @@ export function ViewQuestionContentSummary(props: TProps) {
         <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
           <Icons.Answers className="size-4 opacity-50" />
           {question._count?.answers ? (
-            <span>Answers: {question._count.answers}</span>
+            <span>
+              {t('ViewQuestionContentSummary.AnswersCount')}: {question._count.answers}
+            </span>
           ) : (
-            <span>No answers yet</span>
+            <span>{t('ViewQuestionContentSummary.NoAnswersYet')}</span>
           )}
         </Badge>
 
@@ -111,7 +117,8 @@ export function ViewQuestionContentSummary(props: TProps) {
           >
             <Icons.Hash className="size-4 opacity-50" />
             <span>
-              Random Answers: {question.answersCountMin}-{question.answersCountMax}
+              {t('ViewQuestionContentSummary.RandomAnswersRange')}: {question.answersCountMin}-
+              {question.answersCountMax}
             </span>
           </Badge>
         )}
@@ -127,20 +134,20 @@ export function ViewQuestionContentSummary(props: TProps) {
       )}
     >
       <Skeleton className="h-8 w-full rounded-lg" />
-      {[...Array(1)].map((_, i) => (
+      {generateArray(1).map((_, i) => (
         <Skeleton key={i} className="h-20 w-full rounded-lg" />
       ))}
     </div>
   ) : topic ? (
     <div data-testid="__ViewQuestionContentSummary_Section_Topic" className="flex flex-col gap-4">
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-lg font-semibold">Topic</h3>
-        <div className="flex gap-2">
+        <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Topic')}</h3>
+        <div className="flex flex-wrap gap-2">
           {isOwner && (
             <Button variant="ghost" size="sm">
               <Link href={`${routePath}/${topic.id}`} className="flex items-center gap-2">
                 <Icons.Edit className="size-4 opacity-50" />
-                <span>Manage Topic</span>
+                <span>{t('ViewQuestionContentSummary.ManageTopic')}</span>
               </Link>
             </Button>
           )}
@@ -148,10 +155,10 @@ export function ViewQuestionContentSummary(props: TProps) {
             <Link
               href={`${routePath}/${topic.id}/questions/generate`}
               className="flex items-center gap-2"
-              title="Generate Questions"
+              title={t('ViewQuestionContentSummary.GenerateQuestions')}
             >
               <Icons.WandSparkles className="size-4 opacity-50" />
-              <span>Generate Questions</span>
+              <span>{t('ViewQuestionContentSummary.GenerateQuestions')}</span>
             </Link>
           </Button>
         </div>
@@ -163,7 +170,8 @@ export function ViewQuestionContentSummary(props: TProps) {
         )}
         {!!topic._count?.questions && (
           <p className="text-sm opacity-50">
-            <span className="opacity-50">Total questions:</span> {topic._count?.questions}
+            <span className="opacity-50">{t('ViewQuestionContentSummary.TotalQuestions')}:</span>{' '}
+            {topic._count?.questions}
           </p>
         )}
       </div>
@@ -172,20 +180,20 @@ export function ViewQuestionContentSummary(props: TProps) {
 
   const authorInfoContent = (isAuthorLoading || topicAuthor) && (
     <div data-testid="__ViewQuestionContentSummary_Section_Author" className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold">Author</h3>
+      <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Author')}</h3>
       <div className="flex items-center gap-2 text-sm">
         {isAuthorLoading ? (
           <Skeleton className="h-4 w-32 rounded" />
         ) : isOwner ? (
           <>
             <Icons.ShieldCheck className="hidden size-4 opacity-50 sm:flex" />
-            <span>You're the author</span>
+            <span>{t('ViewQuestionContentSummary.YouAreTheAuthor')}</span>
           </>
         ) : (
           topicAuthor && (
             <>
               <Icons.User className="hidden size-4 opacity-50 sm:flex" />
-              <span className="opacity-50">Topic created by:</span>
+              <span className="opacity-50">{t('ViewQuestionContentSummary.TopicCreatedBy')}:</span>
               <span>{topicAuthor.name || topicAuthor.email || 'Unknown'}</span>
             </>
           )
@@ -199,17 +207,17 @@ export function ViewQuestionContentSummary(props: TProps) {
       data-testid="__ViewQuestionContentSummary_Section_Timeline"
       className="flex flex-col gap-4"
     >
-      <h3 className="text-lg font-semibold">Timeline</h3>
+      <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Timeline')}</h3>
       <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
         <div className="flex items-center gap-2">
           <Icons.CalendarDays className="hidden size-4 opacity-50 sm:flex" />
-          <span className="opacity-50">Created:</span>
+          <span className="opacity-50">{t('ViewQuestionContentSummary.Created')}:</span>
           <span>{getFormattedRelativeDate(format, question.createdAt)}</span>
         </div>
         {!!compareDates(question.updatedAt, question.createdAt) && (
           <div className="flex items-center gap-2">
             <Icons.Edit className="hidden size-4 opacity-50 sm:flex" />
-            <span className="opacity-50">Modified:</span>
+            <span className="opacity-50">{t('ViewQuestionContentSummary.Modified')}:</span>
             <span>{getFormattedRelativeDate(format, question.updatedAt)}</span>
           </div>
         )}

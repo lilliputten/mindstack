@@ -16,6 +16,7 @@ import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { maxNameLength, minNameLength } from '../constants';
 
@@ -35,6 +36,7 @@ export interface TFormData {
 
 export function AddTopicForm(props: TAddTopicFormProps) {
   const { className, handleAddTopic, handleClose, isPending } = props;
+  const t = useT();
 
   const formSchema = React.useMemo(
     () =>
@@ -114,7 +116,9 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   const isPublicKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending ? 'Adding' : 'Add';
+  const buttonText = isPending
+    ? t('AddTopicForm.AddingButtonText')
+    : t('AddTopicForm.AddButtonText');
 
   return (
     <FormProvider {...form}>
@@ -132,14 +136,14 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={nameKey}>
-                Topic Name
+                {t('AddTopicForm.TopicName')}
               </Label>
               <FormControl>
                 <Input
                   id={nameKey}
                   type="text"
                   className="flex-1"
-                  placeholder="Name"
+                  placeholder={t('AddTopicForm.NamePlaceholder')}
                   {...field}
                   onChange={(ev) => field.onChange(ev)}
                 />
@@ -154,12 +158,12 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={isPublicKey}>
-                Is the topic public?
+                {t('AddTopicForm.IsPublicLabel')}
               </Label>
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint>Public topics can be viewed and used by other users.</FormHint>
+              <FormHint>{t('AddTopicForm.IsPublicHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}

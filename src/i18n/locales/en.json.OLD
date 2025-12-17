@@ -1,9 +1,12 @@
 {
+  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
+  "Language Changed For": "Language has been changed for",
+  "Select Language": "Select Language",
+  "WelcomePageTitle": "Welcome!",
   "AllTopicsPage": {
     "description": "Topics by all users",
     "title": "All Topics"
   },
-  "AppIntroBlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>",
   "AvailableTopicsPage": {
     "description": "Topics avaialble to use",
     "title": "Available Topics"
@@ -39,7 +42,6 @@
   "InfoPage": {
     "title": "Info"
   },
-  "Language Changed For": "Language has been changed for",
   "ManageTopicQuestionAnswers": {
     "description": "Answers for the choosen question",
     "title": "Manage Answers"
@@ -76,7 +78,6 @@
     "about": "Main page",
     "title": "MindStack"
   },
-  "Select Language": "Select Language",
   "Settings": {},
   "SettingsPage": {
     "description": "Application settings",
@@ -128,6 +129,5 @@
   },
   "WelcomePage": {
     "title": "Welcome!"
-  },
-  "WelcomePageTitle": "Welcome!"
+  }
 }

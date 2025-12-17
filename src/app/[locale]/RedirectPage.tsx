@@ -1,16 +1,16 @@
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 
 import { myTopicsRoute, welcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'RedirectPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: t('title'),
+    title: t('Pages.RedirectTitle'),
     locale,
   });
 }

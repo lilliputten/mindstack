@@ -19,13 +19,12 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
       value={value}
       className={cn(
         isDev && debugId && `__FAQAccordionItem_${debugId || value}`, // DEBUG
-        // 'border-b border-border/20',
-        'bg-theme/20',
-        // 'border-0',
-        // 'mb-[1px]',
+        'bg-theme/10',
       )}
     >
-      <AccordionTrigger className="px-6 py-6 text-base font-semibold">{question}</AccordionTrigger>
+      <AccordionTrigger className="px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base">
+        {question}
+      </AccordionTrigger>
       <AccordionContent className="px-6 pb-6 text-base">{answer}</AccordionContent>
     </AccordionItem>
   );

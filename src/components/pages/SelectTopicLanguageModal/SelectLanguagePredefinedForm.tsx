@@ -20,6 +20,7 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { predefinedLanguages } from '@/constants/languages';
 import { TTopicLanguageData } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { minIdLength } from './constants';
 
@@ -36,6 +37,7 @@ interface TProps {
 
 export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
   const { className, selectLanguage, langCode } = props;
+  const t = useT();
   const languagesList = React.useMemo(() => [...predefinedLanguages], []);
   const formSchema = React.useMemo(
     () =>
@@ -104,13 +106,13 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
   return (
     <div className={cn(className, '__SelectLanguagePredefinedForm', 'py-2')}>
       <p className="Text mb-4 text-[13px] text-muted-foreground">
-        Select a language from the predefined list.
+        {t('SelectLanguagePredefinedForm.SelectLanguageText')}
       </p>
       <form onSubmit={onSubmit}>
         <div className="flex w-full flex-col items-center gap-4">
           <div className="flex w-full flex-col gap-4">
             <Label className="-sr-only" htmlFor="id">
-              Select language
+              {t('SelectLanguagePredefinedForm.SelectLanguage')}
             </Label>
             <Select
               {...registerSelectField}
@@ -123,7 +125,7 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
                 className="SelectLanguagePredefinedForm__SelectTrigger flex-1"
                 aria-label="Language"
               >
-                <SelectValue placeholder="Select a language…" />
+                <SelectValue placeholder={t('SelectLanguagePredefinedForm.SelectLanguage')} />
               </SelectTrigger>
               <SelectContent className="SelectLanguagePredefinedForm__SelectContent">
                 {languagesList.map(({ id, name }) => (
@@ -134,7 +136,9 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
               </SelectContent>
             </Select>
             {/* errors?.id && <p className="pb-0.5 text-[13px] text-red-600">{errors.id.message}</p> */}
-            <p className="text-[13px] text-muted-foreground">Select a language form the list.</p>
+            <p className="text-[13px] text-muted-foreground">
+              {t('SelectLanguagePredefinedForm.SelectLanguageFormTheList')}
+            </p>
           </div>
           <div className="flex w-full gap-4">
             <Button
@@ -144,7 +148,7 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
               className="flex shrink-0 gap-2"
             >
               <Icons.Check className="size-4" />
-              <span>Select</span>
+              <span>{t('SelectLanguagePredefinedForm.Select')}</span>
             </Button>
           </div>
         </div>

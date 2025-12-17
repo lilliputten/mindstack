@@ -64,6 +64,8 @@ function FormSection({ children }: TPropsWithChildren) {
 export function SettingsFormFields(props: TSettingsFormFieldsProps) {
   const { className, form, selectLanguage } = props;
 
+  const t = useT();
+
   // Translations (Issue #39)
   const tNavModeToggle = useT('NavModeToggle');
   const tThemes = useT('Themes');
@@ -87,8 +89,8 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
   };
 
   const extendedLocaleNames = React.useMemo<Record<string, string>>(
-    () => ({ ...localeNames, auto: 'Auto' }),
-    [],
+    () => ({ ...localeNames, auto: t('SettingsFormFields.AutoOption') }),
+    [t],
   );
 
   return (
@@ -106,7 +108,9 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={showOnlyMyTopicsKey}>Show only my own topics?</Label>
+              <Label htmlFor={showOnlyMyTopicsKey}>
+                {t('SettingsFormFields.ShowOnlyMyTopicsLabel')}
+              </Label>
               <FormControl>
                 <Switch
                   id={showOnlyMyTopicsKey}
@@ -114,7 +118,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormHint>Disable showing all public topics, show only my personal ones.</FormHint>
+              <FormHint>{t('SettingsFormFields.ShowOnlyMyTopicsHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -125,7 +129,9 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={jumpToNewEntitiesKey}>Jump to newly created entities?</Label>
+              <Label htmlFor={jumpToNewEntitiesKey}>
+                {t('SettingsFormFields.JumpToNewEntitiesLabel')}
+              </Label>
               <FormControl>
                 <Switch
                   id={jumpToNewEntitiesKey}
@@ -133,10 +139,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormHint>
-                Switch to editing forms for newly created objects (like topics, questions, answers)
-                after creation.
-              </FormHint>
+              <FormHint>{t('SettingsFormFields.JumpToNewEntitiesHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -192,7 +195,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
             const value = (form.watch('theme') || defaultSystemTheme) as TSystemThemeId;
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={themeKey}>Application theme</Label>
+                <Label htmlFor={themeKey}>{t('SettingsFormFields.ThemeLabel')}</Label>
                 <Select
                   // open // DEBUG
                   value={value}
@@ -211,7 +214,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     )}
                     aria-label="Theme"
                   >
-                    <SelectValue placeholder="Select theme…" />
+                    <SelectValue placeholder={t('SettingsFormFields.ThemePlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {systemThemeIds.map((id) => {
@@ -232,7 +235,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     })}
                   </SelectContent>
                 </Select>
-                <FormHint>Select the application theme.</FormHint>
+                <FormHint>{t('SettingsFormFields.ThemeHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -247,7 +250,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
             // themeColorData
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={themeColorKey}>Theme color</Label>
+                <Label htmlFor={themeColorKey}>{t('SettingsFormFields.ThemeColorLabel')}</Label>
                 <Select
                   // open // DEBUG
                   value={value}
@@ -266,7 +269,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     )}
                     aria-label="Theme"
                   >
-                    <SelectValue placeholder="Select theme color…" />
+                    <SelectValue placeholder={t('SettingsFormFields.ThemeColorPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {themeColorIds.map((id) => {
@@ -287,7 +290,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     })}
                   </SelectContent>
                 </Select>
-                <FormHint>Select the application key theme color.</FormHint>
+                <FormHint>{t('SettingsFormFields.ThemeColorHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -301,7 +304,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
             const value = form.watch('locale') || 'auto';
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={localeKey}>Application language</Label>
+                <Label htmlFor={localeKey}>{t('SettingsFormFields.LocaleLabel')}</Label>
                 <Select
                   value={value}
                   onValueChange={(value) => {
@@ -318,7 +321,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     )}
                     aria-label="Application language"
                   >
-                    <SelectValue placeholder="Select language…" />
+                    <SelectValue placeholder={t('SettingsFormFields.LocalePlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {extendedLocalesList.map((locale) => (
@@ -328,7 +331,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <FormHint>Select the application language.</FormHint>
+                <FormHint>{t('SettingsFormFields.LocaleHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -346,7 +349,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
             ]);
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={langCodeKey}>Topics language</Label>
+                <Label htmlFor={langCodeKey}>{t('SettingsFormFields.TopicsLanguageLabel')}</Label>
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
@@ -357,7 +360,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                     {langName ? (
                       <span className="truncate font-normal">{langName}</span>
                     ) : (
-                      <>Select language</>
+                      <>{t('SettingsFormFields.SelectLanguageButton')}</>
                     )}
                   </span>
                   {langCode && <span className="truncate font-normal opacity-50">{langCode}</span>}
@@ -368,9 +371,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   )}
                   {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
                 </Button>
-                <FormHint>
-                  Specify a language if you want to see the topics only for this specific language.
-                </FormHint>
+                <FormHint>{t('SettingsFormFields.TopicsLanguageHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             );

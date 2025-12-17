@@ -20,6 +20,7 @@ import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
+import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
@@ -38,12 +39,13 @@ interface TMobileSheetProps {
 function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
   const { links, setOpen } = props;
   const path = usePathname();
+  const t = useT('NavLinks');
   return (
     <>
       {/* Main menu srctions */}
       {links.map((section) => (
         <section key={section.titleId} className="flex flex-col gap-0.5">
-          <p className="mb-4 text-xs uppercase text-muted-foreground">{section.titleId}</p>
+          <p className="mb-4 text-xs uppercase text-white">{t(section.titleId)}</p>
           {section.items.map((item) => {
             const Icon = item.icon || Icons.ArrowRight;
             if (!item.href) {
@@ -61,13 +63,14 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
                   }}
                   href={item.disabled ? '#' : item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md p-2 text-sm font-medium hover:bg-theme hover:text-theme-foreground',
-                    isCurrentPath ? 'bg-theme-500/10' : 'text-muted-foreground',
+                    'flex items-center gap-3 rounded-md p-2 text-sm font-medium',
+                    'text-white hover:bg-white hover:text-theme-700',
+                    isCurrentPath && 'bg-white/20',
                     item.disabled && 'pointer-events-none cursor-default opacity-30',
                   )}
                 >
                   <Icon className="size-5 min-w-5" />
-                  {item.titleId}
+                  {t(item.titleId)}
                   {item.badge && (
                     <Badge className="ml-auto flex size-5 min-w-5 shrink-0 items-center justify-center rounded-full">
                       {item.badge}
@@ -106,12 +109,19 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
           className={cn(
             isDev && '__DashboardSidebar_MobileSheetWrapper', // DEBUG
             'flex flex-col p-0',
+            'bg-theme-600',
+          )}
+          closeClassName={cn(
+            isDev && '__DashboardSidebar_MobileSheetWrapper_Close', // DEBUG
+            'text-white',
+            // 'hover:bg-white',
           )}
         >
           <ScrollArea
             className={cn(
               isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea', // DEBUG
-              'h-full overflow-y-auto bg-theme/10',
+              'h-full overflow-y-auto',
+              // 'bg-theme/10',
             )}
           >
             {/* MobileSheetSidebar */}
@@ -161,7 +171,7 @@ export function MobileSheetSidebar(props: TGenericSidebarProps & TMobileSheetPro
               'mt-auto',
             )}
           >
-            <UpgradeCard />
+            <UpgradeCard dontFlatten onSidebar />
           </div>
         )}
       </nav>

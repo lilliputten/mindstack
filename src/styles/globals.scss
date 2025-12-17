@@ -36,8 +36,6 @@
 
     // Core colors
 
-    // --darkBlueColor: #{$darkBlueColor};
-
     --primaryColor: #{$primaryColor};
     --primaryColorRGB: #{rgbComponents($primaryColor)};
     --primaryForegroundColor: #{$primaryForegroundColor};
@@ -380,6 +378,7 @@
         color: rgb(var(--color-theme-600-RGB));
       }
     }
+    ol,
     ul {
       li {
         &::marker {

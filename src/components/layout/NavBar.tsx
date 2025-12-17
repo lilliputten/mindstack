@@ -74,6 +74,7 @@ export function NavBar(props: NavBarProps) {
             className={cn(
               isDev && '__NavBar_MiddleLinks', // DEBUG
               'hidden sm:block',
+              'overflow-hidden',
             )}
           >
             <div
@@ -143,8 +144,7 @@ export function NavBar(props: NavBarProps) {
              */
             'flex',
             'leading-10',
-            'max-sm:flex-wrap',
-            'max-sm:overflow-hidden',
+            'max-sm:hidden',
             'max-h-10',
             'max-lg:flex-1',
             'max-lg:justify-end',
@@ -162,13 +162,14 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_MobilePanelToggler', // DEBUG
             'rounded-full',
-            'ml-4 p-4',
+            'ml-1 p-4',
             'transition-all',
             'duration-200',
             'text-theme-foreground hover:bg-theme-600/50',
             'focus:outline-none',
             'active:bg-theme-700',
             'lg:hidden',
+            'shrink-0',
             open && 'opacity-50 hover:bg-theme-600',
           )}
         >

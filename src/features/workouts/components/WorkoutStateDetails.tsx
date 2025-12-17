@@ -5,17 +5,21 @@ import { useFormatter } from 'next-intl';
 
 import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { TWorkoutData } from '@/features/workouts/types';
+import { useT } from '@/i18n';
 
 export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
   const format = useFormatter();
+  const t = useT();
+
   if (!workout) {
-    return <>No workout created</>;
+    return <>{t('WorkoutStats.NoWorkoutCreated')}</>;
   }
   if (!workout.started || !workout.startedAt) {
     if (workout.finished && workout.finishedAt) {
       return (
         <>
-          The workout is completed {getFormattedRelativeDate(format, workout.finishedAt)} in{' '}
+          {t('WorkoutStats.TrainingIsCompleted')}{' '}
+          {getFormattedRelativeDate(format, workout.finishedAt)} in{' '}
           {formatSecondsDuration(workout.currentTime || 0)} with a ratio of{' '}
           {workout.currentRatio || 0}%{' '}
           <span className="opacity-50">
@@ -25,20 +29,25 @@ export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
         </>
       );
     }
-    return <>Training hasn't been started yet</>;
+    return <>{t('WorkoutStats.TrainingHasntStarted')}</>;
   }
   if (workout.stepIndex) {
     return (
       <>
-        Your workout is in progress ({workout.stepIndex + 1} of {workout.questionsCount || 0}{' '}
-        questions, started {getFormattedRelativeDate(format, workout.startedAt)})
+        {t('WorkoutStats.TrainingInProgress')}
+        {': '}
+        {t('WorkoutStats.ProgressInfo', {
+          stepNo: workout.stepIndex + 1,
+          stepsCount: workout.questionsCount || 0,
+          startedAt: getFormattedRelativeDate(format, workout.startedAt),
+        })}
       </>
     );
   }
   return (
     <>
-      The workout has been created {getFormattedRelativeDate(format, workout.startedAt)} and now is
-      ready to start
+      {t('WorkoutStats.TrainingReadyToStart')} {getFormattedRelativeDate(format, workout.startedAt)}{' '}
+      and now is ready to start
     </>
   );
 }

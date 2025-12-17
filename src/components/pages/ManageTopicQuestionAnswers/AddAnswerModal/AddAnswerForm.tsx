@@ -17,6 +17,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TAnswer, TNewAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
+import { useT } from '@/i18n';
 
 import { maxTextLength, minTextLength } from '../constants';
 
@@ -37,6 +38,7 @@ export interface TFormData {
 
 export function AddAnswerForm(props: TAddAnswerFormProps) {
   const { className, handleAddAnswer, handleClose, isPending, questionId } = props;
+  const t = useT();
 
   const formSchema = React.useMemo(
     () =>
@@ -88,7 +90,9 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
   const isCorrectKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending ? 'Adding' : 'Add';
+  const buttonText = isPending
+    ? t('AddAnswerForm.AddingButtonText')
+    : t('AddAnswerForm.AddButtonText');
 
   return (
     <FormProvider {...form}>
@@ -106,20 +110,20 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={textKey}>
-                Answer Text
+                {t('AddAnswerForm.AnswerText')}
               </Label>
               <FormControl>
                 <Textarea
                   id={textKey}
                   className="flex-1"
-                  placeholder="Text"
+                  placeholder={t('AddAnswerForm.AnswerTextPlaceholder')}
                   rows={5}
                   {...field}
                   onChange={(ev) => field.onChange(ev)}
                 />
               </FormControl>
               <FormHint>
-                You'll be able to edit it later, as well as other answer poroperties.{' '}
+                {t('AddAnswerForm.AnswerTextHint')}
                 <MarkdownHint />
               </FormHint>
               <FormMessage />
@@ -132,7 +136,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={isCorrectKey}>
-                Is the answer correct?
+                {t('AddAnswerForm.IsCorrectLabel')}
               </Label>
               <FormControl>
                 <Switch
@@ -142,7 +146,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
                   className="data-[state=checked]:bg-green-500"
                 />
               </FormControl>
-              <FormHint>Each question should have one or a few correct answers.</FormHint>
+              <FormHint>{t('AddAnswerForm.IsCorrectHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -160,7 +164,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
           </Button>
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
-            <span>Cancel</span>
+            <span>{t('Cancel')}</span>
           </Button>
         </div>
       </form>

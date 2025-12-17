@@ -11,6 +11,7 @@ import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useAvailableAnswers, useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { WorkoutQuestionBlockSkeleton } from './WorkoutQuestionBlockSkeleton';
 
@@ -20,6 +21,7 @@ interface TMemo {
 }
 
 export function WorkoutQuestionBlock() {
+  const t = useT();
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const {
     topicId,
@@ -44,9 +46,6 @@ export function WorkoutQuestionBlock() {
   const goToTheRoute = useGoToTheRoute();
 
   const handleFinishWorkout = React.useCallback(() => {
-    // console.log('[WorkoutQuestionBlock:handleFinishWorkout]', {
-    //   workoutRoutePath,
-    // });
     finishWorkout();
     setTimeout(() => {
       goToTheRoute(workoutRoutePath);
@@ -94,10 +93,10 @@ export function WorkoutQuestionBlock() {
   // Handle answers loading error
   React.useEffect(() => {
     if (answersError) {
-      const message = 'Cannot load answers data';
+      const message = t('WorkoutQuestion.CannotLoadAnswersData');
       toast.error(message);
     }
-  }, [answersError]);
+  }, [answersError, t]);
 
   const goToTheNextQuestion = React.useCallback(() => {
     if (memo.nextPageTimerHandler) {
@@ -164,19 +163,25 @@ export function WorkoutQuestionBlock() {
   }
 
   if (!workout) {
-    return <PageError error="No active training found." padded={false} border={false} />;
+    return (
+      <PageError error={t('WorkoutQuestion.NoActiveTrainingFound')} padded={false} border={false} />
+    );
   }
 
   if (isExceed) {
     return (
-      <PageError error="The workout has been (suddenly) finished." padded={false} border={false} />
+      <PageError
+        error={t('WorkoutQuestion.WorkoutHasBeenFinished')}
+        padded={false}
+        border={false}
+      />
     );
   }
 
   if (!questionId) {
     return (
       <PageError
-        error="Cannot get current question id from questions order."
+        error={t('WorkoutQuestion.CannotGetCurrentQuestionId')}
         padded={false}
         border={false}
       />
@@ -185,7 +190,11 @@ export function WorkoutQuestionBlock() {
 
   if (!question) {
     return (
-      <PageError error={`Not found question (${questionId}).`} padded={false} border={false} />
+      <PageError
+        error={t('WorkoutQuestion.NotFoundQuestion', { questionId })}
+        padded={false}
+        border={false}
+      />
     );
   }
 

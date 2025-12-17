@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { ExtendedUser } from '@/@types/next-auth';
 import { useLocale } from 'next-intl';
 
-import { NavItemBase } from '@/lib/types/site/NavItem';
+import { NavItemBase, SidebarNavItem } from '@/lib/types/site/NavItem';
 import { dashboardLinks } from '@/config/dashboard';
 import { routesWithoutSidebar } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { NavBar } from '@/components/layout/NavBar';
 import { NavFooter } from '@/components/layout/NavFooter';
 import { isDev } from '@/constants';
-import { TLocale } from '@/i18n';
+import { TLocale } from '@/i18n/types';
 
 import { AcceptCookiesPopup } from './AcceptCookiesPopup';
 import { DashboardSidebar } from './DashboardSidebar';
@@ -41,7 +41,7 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const { children, user } = props;
   const isUser = !!user;
 
-  // Is mobile sidebar open?
+  // State: Is mobile sidebar open?
   const [open, setOpen] = React.useState(false);
 
   const pathname = usePathname();
@@ -52,12 +52,14 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
   const isRoot = !pathname || rootRoutesList.includes(pathname);
   const hideSidebar = HIDE_SIDEBAR_FOR_ROOT_LANDING && isRoot;
 
-  const checkNavItem = checkIfLinkIsAllowedForUser.bind(undefined, user);
-
-  const filteredLinks = dashboardLinks.filter(checkNavItem).map((section) => ({
-    ...section,
-    items: section.items.filter(checkNavItem),
-  }));
+  // Filtered top- and second-level items
+  const filteredLinks = React.useMemo<SidebarNavItem[]>(() => {
+    const checkNavItem = checkIfLinkIsAllowedForUser.bind(undefined, user);
+    return dashboardLinks.filter(checkNavItem).map((section) => ({
+      ...section,
+      items: section.items.filter(checkNavItem),
+    }));
+  }, [user]);
 
   return (
     <div

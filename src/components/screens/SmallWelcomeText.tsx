@@ -19,7 +19,7 @@ export function SmallWelcomeText(props: TPropsWithClassName) {
         'text-content',
       )}
     >
-      <h2 className="text-center text-2xl">{t('WelcomePageTitle')}</h2>
+      <h2 className="text-center text-2xl">{t('Pages.WelcomeTitle')}</h2>
       <AppIntroBlock />
     </div>
   );

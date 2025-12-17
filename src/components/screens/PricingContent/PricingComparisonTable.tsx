@@ -41,8 +41,8 @@ export function PricingComparisonTable() {
       },
       {
         name: t('Pricing.Comparison.AiGenerations'),
-        basic: '10 ' + t('Pricing.Comparison.Total'),
-        pro: '100 ' + t('Pricing.Comparison.PerMonth'),
+        basic: '10 ' + t('Pricing.Comparison.total'),
+        pro: '100 ' + t('Pricing.Comparison.perMonth'),
         premium: t('Pricing.Unlimited'),
         // unlimited: t('Pricing.Unlimited'),
       },

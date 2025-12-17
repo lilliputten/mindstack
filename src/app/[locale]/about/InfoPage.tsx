@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
@@ -6,15 +6,16 @@ import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { InfoScreen } from '@/components/screens/InfoScreen';
 import { isDev } from '@/constants';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TInfoPageProps = TAwaitedLocaleProps;
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'InfoPage' });
+  const t = await getT({ locale });
   return constructMetadata({
-    title: t('title'),
+    title: t('Pages.InfoTitle'),
     locale,
   });
 }
@@ -37,8 +38,6 @@ export async function InfoPage({ params }: TInfoPageProps) {
         isDev && '__InfoPage_Inner', // DEBUG
         'w-full h-full',
       )}
-      // scrollable
-      // limitWidth
     >
       <InfoScreen
         className={cn(

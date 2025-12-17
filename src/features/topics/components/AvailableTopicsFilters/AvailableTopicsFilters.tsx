@@ -12,6 +12,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
+import { useT } from '@/i18n';
 
 import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
 import { AvailableTopicsFiltersInfo } from './AvailableTopicsFiltersInfo';
@@ -21,6 +22,7 @@ type TProps = TPropsWithClassName;
 export function AvailableTopicsFilters(props: TProps) {
   const { className } = props;
 
+  const t = useT();
   const {
     isExpanded,
     onDefaults,
@@ -50,10 +52,10 @@ export function AvailableTopicsFilters(props: TProps) {
 
   const filterCaption = React.useMemo(() => {
     if (!hasFilters) {
-      return 'No filters applied';
+      return t('AvailableTopicsFilters.NoFiltersApplied');
     }
     return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
-  }, [hasFilters, filtersInfo]);
+  }, [hasFilters, filtersInfo, t]);
 
   const HeaderIcon = !isReady ? Icons.Spinner : Icons.Settings2;
 
@@ -95,11 +97,13 @@ export function AvailableTopicsFilters(props: TProps) {
               </TooltipTrigger>
               <TooltipContent side="bottom" className="flex items-center gap-2 truncate">
                 {hasFilters ? (
-                  <>Displaying: {filtersInfo}</>
+                  <>
+                    {t('AvailableTopicsFilters.Displaying')}: {filtersInfo}
+                  </>
                 ) : isExpanded ? (
-                  'Click to hide settings'
+                  t('AvailableTopicsFilters.ClickToHideSettings')
                 ) : (
-                  'Expand to change display settings'
+                  t('AvailableTopicsFilters.ExpandToChangeDisplaySettings')
                 )}
               </TooltipContent>
             </Tooltip>
@@ -151,61 +155,47 @@ export function AvailableTopicsFilters(props: TProps) {
                   <div
                     className={cn(
                       isDev && '__AvailableTopicsFilters_Actions', // DEBUG
-                      'flex flex-col flex-wrap gap-2 pt-2 sm:flex-row',
+                      'flex flex-wrap gap-2 pt-2 max-sm:flex-col',
                     )}
                   >
-                    <div
-                      className={cn(
-                        isDev && '__AvailableTopicsFilters_ActionsLeft', // DEBUG
-                        'flex flex-1 flex-wrap items-end gap-2',
-                      )}
+                    <Button
+                      type="submit"
+                      variant="theme"
+                      disabled={!isSubmitEnabled}
+                      className="flex items-center gap-2"
                     >
-                      <Button
-                        type="submit"
-                        variant="theme"
-                        disabled={!isSubmitEnabled}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Check className="size-4 opacity-50" />
-                        Apply
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleResetToDefaults}
-                        disabled={onDefaults}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Close className="size-4 opacity-50" />
-                        Reset to defaults
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleClearChanges}
-                        disabled={!form.formState.isDirty}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.Close className="size-4 opacity-50" />
-                        Clear changes
-                      </Button>
-                    </div>
-                    <div
-                      className={cn(
-                        isDev && '__AvailableTopicsFilters_ActionsLeft', // DEBUG
-                        'flex flex-wrap items-end gap-2',
-                      )}
+                      <Icons.Check className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.Apply')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleResetToDefaults}
+                      disabled={onDefaults}
+                      className="flex items-center gap-2"
                     >
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={hideFilters}
-                        className="flex items-center gap-2"
-                      >
-                        <Icons.ChevronUp className="size-4 opacity-50" />
-                        Hide
-                      </Button>
-                    </div>
+                      <Icons.Close className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.ResetToDefaults')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleClearChanges}
+                      disabled={!form.formState.isDirty}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Close className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.ClearChanges')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={hideFilters}
+                      className="flex items-center gap-2 md:ml-auto"
+                    >
+                      <Icons.ChevronUp className="size-4 opacity-50" />
+                      {t('AvailableTopicsFilters.Hide')}
+                    </Button>
                   </div>
                 </form>
               </FormProvider>

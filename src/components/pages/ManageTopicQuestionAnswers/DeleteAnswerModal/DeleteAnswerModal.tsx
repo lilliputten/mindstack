@@ -11,6 +11,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteAnswer } from '@/features/answers/actions';
 import { TAnswerId, TAvailableAnswer } from '@/features/answers/types';
 import { useAvailableAnswers, useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { topicAnswerDeletedEventId } from './constants';
@@ -34,6 +35,7 @@ export function DeleteAnswerModal(props: TDeleteAnswerModalProps) {
   }
 
   const [isVisible, setVisible] = React.useState(true);
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlMatchRegExp);
@@ -67,17 +69,17 @@ export function DeleteAnswerModal(props: TDeleteAnswerModalProps) {
 
   const queryClient = useQueryClient();
 
-  useModalTitle('Delete a Question', shouldBeVisible);
+  useModalTitle(t('DeleteAnswerModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // Change a browser title
   React.useEffect(() => {
     const originalTitle = document.title;
-    document.title = 'Delete an Answer?';
+    document.title = t('DeleteAnswerModal.ModalTitle');
     return () => {
       document.title = originalTitle;
     };
-  }, []);
+  }, [t]);
 
   const deleteAnswerMutation = useMutation<TAvailableAnswer, Error, TAnswerId>({
     mutationFn: deleteAnswer,
@@ -117,12 +119,12 @@ export function DeleteAnswerModal(props: TDeleteAnswerModalProps) {
   const confirmDeleteAnswer = React.useCallback(() => {
     const promise = deleteAnswerMutation.mutateAsync(answerId);
     toast.promise(promise, {
-      loading: 'Deleting the answer...',
-      success: 'Successfully deleted the answer.',
-      error: `Can not delete the answer.`,
+      loading: t('DeleteAnswerModal.ToastLoading'),
+      success: t('DeleteAnswerModal.ToastSuccess'),
+      error: t('DeleteAnswerModal.ToastError'),
     });
     return promise;
-  }, [deleteAnswerMutation, answerId]);
+  }, [deleteAnswerMutation, answerId, t]);
 
   if (!shouldBeVisible) {
     return null;
@@ -130,17 +132,17 @@ export function DeleteAnswerModal(props: TDeleteAnswerModalProps) {
 
   return (
     <ConfirmModal
-      dialogTitle="Confirm delete answer"
+      dialogTitle={t('DeleteAnswerModal.DialogTitle')}
       confirmButtonVariant="destructive"
-      confirmButtonText="Delete"
-      confirmButtonBusyText="Deleting"
-      cancelButtonText="Cancel"
+      confirmButtonText={t('DeleteAnswerModal.ConfirmButtonText')}
+      confirmButtonBusyText={t('DeleteAnswerModal.ConfirmButtonBusyText')}
+      cancelButtonText={t('DeleteAnswerModal.CancelButtonText')}
       handleClose={hideModal}
       handleConfirm={confirmDeleteAnswer}
       isPending={deleteAnswerMutation.isPending}
       isVisible={isVisible}
     >
-      Do you confirm deleting the answer?
+      {t('DeleteAnswerModal.DialogContent')}
     </ConfirmModal>
   );
 }

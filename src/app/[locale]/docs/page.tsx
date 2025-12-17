@@ -1,4 +1,5 @@
 import { DocsPage } from './DocsPage';
 
-export { generateMetadata } from './DocsPage';
+export * from './DocsPage';
+
 export default DocsPage;

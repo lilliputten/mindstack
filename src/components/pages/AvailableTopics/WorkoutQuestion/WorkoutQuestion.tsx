@@ -9,6 +9,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TAvailableAnswer } from '@/features/answers/types';
+import { useT } from '@/i18n';
 
 interface WorkoutQuestionProps {
   questionText: string;
@@ -33,6 +34,7 @@ export function WorkoutQuestion({
   onContinue,
   goPrevQuestion,
 }: WorkoutQuestionProps) {
+  const t = useT();
   const { workout, questionIds } = useWorkoutContext();
   const totalSteps = questionIds?.length || 0;
   const stepIndex = workout?.stepIndex || 0;
@@ -50,7 +52,7 @@ export function WorkoutQuestion({
       // Show answers skeleton...
       generateArray(count).map((i) => <Skeleton key={i} className="h-14 w-full" />)
     ) : !answers.length ? (
-      <p className="opacity-50">No answers created here. Just skip it.</p>
+      <p className="opacity-50">{t('WorkoutQuestion.NoAnswersCreated')}</p>
     ) : (
       answers.map((answer) => {
         const isSelected = selectedAnswer?.id === answer.id;
@@ -93,8 +95,8 @@ export function WorkoutQuestion({
                     )}
                   >
                     {selectedAnswer?.isCorrect
-                      ? 'The answer is correct'
-                      : 'The answer is incorrect'}
+                      ? t('WorkoutQuestion.TheAnswerIsCorrect')
+                      : t('WorkoutQuestion.TheAnswerIsIncorrect')}
                   </p>
                   {selectedAnswer?.explanation && (
                     <MarkdownText>{selectedAnswer?.explanation}</MarkdownText>
@@ -115,7 +117,7 @@ export function WorkoutQuestion({
         );
       })
     );
-  }, [answers, answersCount, isAnswersLoading, onAnswerSelect, selectedAnswer]);
+  }, [answers, answersCount, isAnswersLoading, onAnswerSelect, selectedAnswer, t]);
 
   const questionContent = React.useMemo(
     () => (
@@ -149,7 +151,7 @@ export function WorkoutQuestion({
             onClick={goPrevQuestion}
           >
             <Icons.ArrowLeft className="size-5 opacity-50" />
-            Back
+            {t('Back')}
           </Button>
         )}
         {!isFinished &&
@@ -161,7 +163,7 @@ export function WorkoutQuestion({
               onClick={onContinue}
             >
               <Icons.ArrowRight className="size-5 opacity-50" />
-              <span>Continue</span>
+              <span>{t('Continue')}</span>
             </Button>
           ) : (
             <>
@@ -174,7 +176,7 @@ export function WorkoutQuestion({
                   onClick={onSkip}
                 >
                   <Icons.ArrowRight className="size-5 opacity-50" />
-                  <span>Skip</span>
+                  <span>{t('Skip')}</span>
                 </Button>
               )}
             </>
@@ -191,11 +193,11 @@ export function WorkoutQuestion({
           onClick={onFinish}
         >
           <Icons.Flag className="size-5 opacity-50" />
-          <span>Finish</span>
+          <span>{t('Finish')}</span>
         </Button>
       </div>
     ),
-    [currentStep, goPrevQuestion, isFinished, onContinue, onFinish, onSkip, selectedAnswer],
+    [currentStep, goPrevQuestion, isFinished, onContinue, onFinish, onSkip, selectedAnswer, t],
   );
 
   return (

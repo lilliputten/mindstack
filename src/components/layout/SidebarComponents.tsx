@@ -28,6 +28,7 @@ export function SidebarWrapper(props: TSidebarBlockProps & { children: React.Rea
 
 export function SidebarMenuItem(
   props: TSidebarBlockProps & {
+    // onSelect?: (event: Event) => void;
     onSelect?: (ev: React.MouseEvent) => void;
     children: React.ReactNode;
     asChild?: boolean;
@@ -40,6 +41,8 @@ export function SidebarMenuItem(
       className={cn(
         isDev && '__SidebarMenuItem', // DEBUG
         disabled && 'pointer-events-none opacity-50',
+        'rounded-sm px-2 py-1.5',
+        'text-white hover:bg-white hover:text-theme-700',
         className,
       )}
       onClick={onSelect}

@@ -20,7 +20,11 @@ import {
   parseGeneratedTopicQuestions,
 } from '@/features/ai/helpers';
 import { useUserAIRequest } from '@/features/ai/hooks';
-import { TAITextQueryData, TGenerateTopicQuestionsParams } from '@/features/ai/types';
+import {
+  TAIQuerDebugDataId,
+  TAITextQueryData,
+  TGenerateTopicQuestionsParams,
+} from '@/features/ai/types';
 import { addMultipleQuestions } from '@/features/questions/actions';
 import { TAvailableQuestion, TNewQuestion } from '@/features/questions/types';
 import {
@@ -31,6 +35,7 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { GenerateQuestionsForm, TFormData } from './GenerateQuestionsForm';
@@ -41,8 +46,8 @@ const urlTopicsToken = '/topics/';
 const idToken = '([^/]*)';
 const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostfix + '$');
 
-/** A debug data file, relative to `src/features/questions/actions/` */
-const debugDataFile = 'sample-data/GenerateQuestions/questions-query-data-02.json';
+/** A debug data file id */
+const debugDataId: TAIQuerDebugDataId = 'questions-query-data-01';
 
 export function GenerateQuestionsModal() {
   const { manageScope } = useManageTopicsStore();
@@ -52,6 +57,7 @@ export function GenerateQuestionsModal() {
   const userAIRequest = useUserAIRequest();
 
   const { jumpToNewEntities } = useSettings();
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlRegExp);
@@ -90,7 +96,7 @@ export function GenerateQuestionsModal() {
 
   const questions = topic?.questions;
 
-  useModalTitle('Generate Questions', shouldBeVisible);
+  useModalTitle(t('GenerateQuestionsModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const generateQuestionsMutation = useMutation({
@@ -125,7 +131,7 @@ export function GenerateQuestionsModal() {
        */
       const queryData: TAITextQueryData = await userAIRequest(messages, {
         topicId,
-        debugData: debugData ? debugDataFile : undefined,
+        debugData: debugData ? debugDataId : undefined,
       });
       /* // DEBUG
        * const content = __queryData?.content;
@@ -188,9 +194,9 @@ export function GenerateQuestionsModal() {
          */
         const queryPromise = generateQuestionsMutation.mutateAsync(formData);
         toast.promise(queryPromise, {
-          loading: 'Retrieving AI generated data...',
-          success: 'Successfully retrieved AI generated data',
-          error: 'Can not retrieve AI generated data',
+          loading: t('GenerateQuestionsModal.ToastLoadingData'),
+          success: t('GenerateQuestionsModal.ToastSuccessData'),
+          error: t('GenerateQuestionsModal.ToastErrorData'),
         });
         const queryData: TAITextQueryData = await queryPromise;
         /* console.log('[GenerateQuestionsModal:handleGenerateQuestions] Got query data', {
@@ -218,9 +224,9 @@ export function GenerateQuestionsModal() {
          */
         const addQuestionsPromise = addQuestionsMutation.mutateAsync(newQuestions);
         toast.promise(addQuestionsPromise, {
-          loading: 'Adding new questions...',
-          success: 'Successfully added new questions',
-          error: 'Cannot add questions',
+          loading: t('GenerateQuestionsModal.ToastLoadingQuestions'),
+          success: t('GenerateQuestionsModal.ToastSuccessQuestions'),
+          error: t('GenerateQuestionsModal.ToastErrorQuestions'),
         });
         await addQuestionsPromise;
         /* console.log('[GenerateQuestionsModal:handleGenerateQuestions] Questions added', {
@@ -265,6 +271,7 @@ export function GenerateQuestionsModal() {
       jumpToNewEntities,
       queryClient,
       questionsListRoutePath,
+      t,
       topicId,
     ],
   );
@@ -294,9 +301,9 @@ export function GenerateQuestionsModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Generate Questions</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('GenerateQuestionsModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          Generate Questions Dialog
+          {t('GenerateQuestionsModal.DialogDescription')}
         </DialogDescription>
       </div>
       <div

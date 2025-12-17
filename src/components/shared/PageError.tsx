@@ -48,14 +48,13 @@ export function PageError(props: TErrorProps) {
 
   React.useEffect(() => {
     if (error) {
-      const errText = getErrorText(error);
       // eslint-disable-next-line no-console
       console.error('[PageError:error]', errText, {
         error,
       });
     }
     // TODO: Log the error to an error reporting service?
-  }, [error]);
+  }, [error, errText]);
 
   const goBack = useGoBack(rootRoute);
 

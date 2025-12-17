@@ -90,12 +90,12 @@ export function AIGenerationsStatusInfo(props: TProps) {
     >
       {/* Available Generations */}
       {isUnlimited ? (
-        <span className={cn('flex items-center gap-1 text-green-500')}>
+        <span className={cn('flex items-center gap-1 text-green-600')}>
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
           <span>Unlimited AI generations available</span>
         </span>
       ) : allowed ? (
-        <span className={cn('flex items-center gap-1 text-green-500')}>
+        <span className={cn('flex items-center gap-1 text-green-600')}>
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
           <span>Available AI generations: {availableGenerations}</span>
         </span>

@@ -10,7 +10,7 @@ interface ToggleContainerProps {
   children: React.ReactNode;
   activeIndex: number;
   className?: string;
-  buttonWidth: number;
+  buttonWidthEm: number;
 }
 
 export function ToggleContainer({
@@ -18,7 +18,7 @@ export function ToggleContainer({
   children,
   activeIndex,
   className,
-  buttonWidth = 28,
+  buttonWidthEm = 8,
 }: ToggleContainerProps) {
   return (
     <div
@@ -30,10 +30,16 @@ export function ToggleContainer({
     >
       {children}
       <div
+        data-active-index={activeIndex}
+        style={
+          {
+            '--translate-x': `${buttonWidthEm * activeIndex}em`,
+          } as React.CSSProperties
+        }
         className={cn(
           'absolute top-1 h-9 rounded-md bg-theme transition-transform duration-200',
           'w-[calc(50%-4px)]',
-          `translate-x-${buttonWidth * activeIndex}`,
+          'translate-x-[var(--translate-x)]',
         )}
       />
     </div>

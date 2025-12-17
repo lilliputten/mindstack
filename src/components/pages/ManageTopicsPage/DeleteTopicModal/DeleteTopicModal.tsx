@@ -9,6 +9,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteTopic } from '@/features/topics/actions/deleteTopic';
 import { TAvailableTopic, TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack, useModalTitle } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TDeleteTopicModalProps {
@@ -20,6 +21,7 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
   const { topicId } = props;
+  const t = useT();
 
   const availableTopics = useAvailableTopicsByScope({ manageScope });
 
@@ -38,7 +40,7 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
     [topicId, availableTopics.allTopics],
   );
 
-  useModalTitle('Delete a Topic?');
+  useModalTitle(t('DeleteTopicModal.ModalTitle'));
 
   const deleteTopicMutation = useMutation<TAvailableTopic, Error, TTopic>({
     mutationFn: deleteTopic,
@@ -70,12 +72,12 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
     const promise = deleteTopicMutation.mutateAsync(deletingTopic);
     const name = deletingTopic.name;
     toast.promise(promise, {
-      loading: `Deleting topic "${name}"`,
-      success: `Successfully deleted topic "${name}"`,
-      error: `Can not delete topic "${name}"`,
+      loading: t('DeleteTopicModal.ToastLoading', { name }),
+      success: t('DeleteTopicModal.ToastSuccess', { name }),
+      error: t('DeleteTopicModal.ToastError', { name }),
     });
     return promise;
-  }, [deleteTopicMutation, deletingTopic]);
+  }, [deleteTopicMutation, deletingTopic, t]);
 
   const topicName = deletingTopic?.name;
 
@@ -85,17 +87,17 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
 
   return (
     <ConfirmModal
-      dialogTitle="Confirm delete topic"
+      dialogTitle={t('DeleteTopicModal.DialogTitle')}
       confirmButtonVariant="destructive"
-      confirmButtonText="Delete"
-      confirmButtonBusyText="Deleting"
-      cancelButtonText="Cancel"
+      confirmButtonText={t('DeleteTopicModal.ConfirmButtonText')}
+      confirmButtonBusyText={t('DeleteTopicModal.ConfirmButtonBusyText')}
+      cancelButtonText={t('DeleteTopicModal.CancelButtonText')}
       handleConfirm={confirmDeleteTopic}
       handleClose={hideModal}
       isPending={deleteTopicMutation.isPending}
       isVisible
     >
-      Do you confirm deleting the topic "{topicName}"?
+      {t('DeleteTopicModal.DialogContent', { topicName })}
     </ConfirmModal>
   );
 }

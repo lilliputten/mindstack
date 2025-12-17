@@ -46,9 +46,9 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
         <Button
           className={cn(
             'flex gap-2 truncate px-2',
-            onSidebar && 'hover:bg-theme-500 hover:text-white',
+            onSidebar && 'text-white hover:bg-white hover:text-theme-700',
           )}
-          variant={onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
+          variant="ghostOnTheme" // {onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
           size="sm"
           onClick={() => setSignInModalVisible(true)}
         >

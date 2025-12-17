@@ -72,6 +72,7 @@ function TopicsTableHeader({
   allTopics: TTopic[];
   toggleAll: () => void;
 }) {
+  const t = useT();
   const hasSelected = !!selectedTopics.size;
   const isAllSelected = allTopics.length > 0 && selectedTopics.size === allTopics.length;
   const isIndeterminate = hasSelected && !isAllSelected;
@@ -95,11 +96,11 @@ function TopicsTableHeader({
             'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
           )}
           onClick={toggleAll}
-          title="Select/deselect all"
+          title={t('ManageTopicsListCard.SelectDeselectAll')}
         >
           <Checkbox
             checked={hasSelected}
-            aria-label="Select/deselect all"
+            aria-label={t('ManageTopicsListCard.SelectDeselectAll')}
             className={cn(
               'block',
               // Dark theme
@@ -115,7 +116,7 @@ function TopicsTableHeader({
           />
         </TableHead>
         <TableHead id="no" className="truncate text-right max-lg:hidden">
-          No
+          {t('ManageTopicsListCard.No')}
         </TableHead>
         {isDev && (
           <TableHead id="topicId" className="truncate max-xl:hidden">
@@ -123,24 +124,24 @@ function TopicsTableHeader({
           </TableHead>
         )}
         <TableHead id="name" className="truncate">
-          Topic Name
+          {t('ManageTopicsListCard.TopicName')}
         </TableHead>
         <TableHead id="questions" className="truncate max-lg:hidden">
-          Questions
+          {t('ManageTopicsListCard.Questions')}
         </TableHead>
         {isAdminMode && (
           <TableHead id="topicUser" className="truncate max-lg:hidden">
-            Author
+            {t('ManageTopicsListCard.Author')}
           </TableHead>
         )}
         <TableHead id="language" className="truncate max-xl:hidden">
-          Language
+          {t('ManageTopicsListCard.Language')}
         </TableHead>
         <TableHead id="keywords" className="truncate max-xl:hidden">
-          Keywords
+          {t('ManageTopicsListCard.Keywords')}
         </TableHead>
         <TableHead id="isPublic" className="truncate max-lg:hidden">
-          Public
+          {t('ManageTopicsListCard.Public')}
         </TableHead>
         <TableHead id="Actions"></TableHead>
       </TableRow>
@@ -175,6 +176,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
     availableTopicsQuery,
   } = props;
   const { id, name, langCode, langName, keywords, userId, _count, isPublic } = topic;
+  const t = useT();
 
   const [isPending, startTransition] = React.useTransition();
   const queryClient = useQueryClient();
@@ -199,7 +201,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           await updateAndInvalidateTopic(updatedTopic);
         } catch (error) {
           const details = error instanceof APIError ? error.details : null;
-          const message = 'Cannot update topic public status';
+          const message = t('ManageTopicsListCard.CannotUpdateTopicPublicStatus');
           // eslint-disable-next-line no-console
           console.error('[TopicsTableRow:handleTogglePublic]', message, {
             details,
@@ -211,7 +213,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
         }
       });
     },
-    [topic, updateAndInvalidateTopic],
+    [t, topic, updateAndInvalidateTopic],
   );
   const questionsCount = _count?.questions;
   const topicUser = isAdminMode ? cachedUsers[userId] : undefined;
@@ -235,9 +237,13 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
         )}
         onClick={() => toggleSelected(id)}
-        title="Select topic"
+        title={t('ManageTopicsListCard.SelectTopic')}
       >
-        <Checkbox checked={isSelected} className="block" aria-label="Select topic" />
+        <Checkbox
+          checked={isSelected}
+          className="block"
+          aria-label={t('ManageTopicsListCard.SelectTopic')}
+        />
       </TableCell>
       <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
@@ -300,8 +306,8 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
             size="icon"
             className="size-9 shrink-0"
             onClick={() => handleEditQuestions(topic.id)}
-            aria-label="Edit Questions"
-            title="Edit Questions"
+            aria-label={t('ManageTopicsListCard.EditQuestions')}
+            title={t('ManageTopicsListCard.EditQuestions')}
           >
             <Icons.Questions className="size-5" />
           </Button>
@@ -310,8 +316,8 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
             size="icon"
             className="size-9 shrink-0"
             onClick={() => handleEditTopic(topic.id)}
-            aria-label="Edit"
-            title="Edit"
+            aria-label={t('ManageTopicsListCard.Edit')}
+            title={t('ManageTopicsListCard.Edit')}
           >
             <Icons.Edit className="size-4" />
           </Button>
@@ -320,8 +326,8 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
             size="icon"
             className="size-9 shrink-0 text-destructive"
             onClick={() => handleDeleteTopic(topic.id, 'ManageTopicsListCard')}
-            aria-label="Delete"
-            title="Delete"
+            aria-label={t('ManageTopicsListCard.Delete')}
+            title={t('ManageTopicsListCard.Delete')}
           >
             <Icons.Trash className="size-4" />
           </Button>
@@ -344,6 +350,7 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
     setSelectedTopics,
   } = props;
   const { manageScope } = useManageTopicsStore();
+  const t = useT();
   const isAdminMode = manageScope === TopicsManageScopeIds.ALL_TOPICS; // || user?.role === 'ADMIN';
 
   const { isExpanded: isFiltersExpanded, expandFilters } = useTopicsFiltersContext();
@@ -406,7 +413,7 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
           isDev && '__ManageTopicsListCard_TopicsTableContent_Error', // DEBUG
           className,
         )}
-        error={error || 'Error loading available topics data'}
+        error={error || t('ManageTopicsListCard.ErrorLoadingTopicsData')}
         reset={refetch}
         // extraActions={extraActions}
       />
@@ -433,23 +440,23 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
             isDev && '__ManageTopicsListCard_TopicsTableContent_PageEmpty', // DEBUG
           )}
           icon={Icons.Topics}
-          title="No topics found"
-          description="Change filters to allow displaying topics (if there are any), or create your own ones."
+          title={t('ManageTopicsListCard.NoTopicsFound')}
+          description={t('ManageTopicsListCard.NoTopicsFoundDescription')}
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                Go Back
+                {t('ManageTopicsListCard.GoBack')}
               </Button>
               {!isFiltersExpanded && (
                 <Button variant="outline" onClick={expandFilters} className="flex gap-2">
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  Change Filters
+                  {t('ManageTopicsListCard.ChangeFilters')}
                 </Button>
               )}
               <Button onClick={handleAddTopic} className="flex gap-2">
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                Add Topic
+                {t('ManageTopicsListCard.AddTopic')}
               </Button>
             </>
           }
@@ -514,7 +521,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const { handleAddTopic, availableTopicsQuery } = props;
   const { manageScope } = useManageTopicsStore();
   const namespace = topicsNamespaces[manageScope];
-  const t = useT(namespace);
+  const t = useT();
   const [selectedTopics, setSelectedTopics] = React.useState<Set<TTopicId>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
@@ -549,7 +556,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
     },
     onError: (error) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot delete selected topics';
+      const message = t('ManageTopicsListCard.CannotDeleteSelectedTopics');
       // eslint-disable-next-line no-console
       console.error('[ManageTopicsListCard:deleteSelectedMutation]', message, {
         details,
@@ -567,12 +574,12 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
 
     const promise = deleteSelectedMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
-      loading: 'Deleting selected topics...',
-      success: 'Successfully deleted selected topics',
-      error: 'Cannot delete selected topics',
+      loading: t('ManageTopicsListCard.DeletingSelectedTopics'),
+      success: t('ManageTopicsListCard.SuccessfullyDeletedSelectedTopics'),
+      error: t('ManageTopicsListCard.CannotDeleteSelectedTopics'),
     });
     setShowDeleteConfirm(false);
-  }, [selectedTopics, deleteSelectedMutation]);
+  }, [selectedTopics, deleteSelectedMutation, t]);
 
   const handleShowDeleteConfirm = React.useCallback(() => {
     setShowDeleteConfirm(true);
@@ -597,7 +604,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       setSelectedTopics(new Set());
     },
     onError: (error) => {
-      const message = 'Cannot make selected topics public';
+      const message = t('ManageTopicsListCard.CannotMakeSelectedTopicsPublic');
       // eslint-disable-next-line no-console
       console.error('[ManageTopicsListCard:makeSelectedPublicMutation]', message, {
         error,
@@ -622,7 +629,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       setSelectedTopics(new Set());
     },
     onError: (error) => {
-      const message = 'Cannot reset public status for selected topics';
+      const message = t('ManageTopicsListCard.CannotResetPublicStatusForSelectedTopics');
       // eslint-disable-next-line no-console
       console.error('[ManageTopicsListCard:resetSelectedPublicMutation]', message, {
         error,
@@ -637,35 +644,35 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
     if (selectedIds.length === 0) return;
     const promise = makeSelectedPublicMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
-      loading: 'Making selected topics public...',
-      success: 'Successfully made selected topics public',
-      error: 'Cannot make selected topics public',
+      loading: t('ManageTopicsListCard.MakingSelectedTopicsPublic'),
+      success: t('ManageTopicsListCard.SuccessfullyMadeSelectedTopicsPublic'),
+      error: t('ManageTopicsListCard.CannotMakeSelectedTopicsPublic'),
     });
-  }, [selectedTopics, makeSelectedPublicMutation]);
+  }, [selectedTopics, makeSelectedPublicMutation, t]);
 
   const handleResetSelectedPublic = React.useCallback(() => {
     const selectedIds = Array.from(selectedTopics);
     if (selectedIds.length === 0) return;
     const promise = resetSelectedPublicMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
-      loading: 'Resetting public status for selected topics...',
-      success: 'Successfully reset public status for selected topics',
-      error: 'Cannot reset public status for selected topics',
+      loading: t('ManageTopicsListCard.ResettingPublicStatusForSelectedTopics'),
+      success: t('ManageTopicsListCard.SuccessfullyResetPublicStatusForSelectedTopics'),
+      error: t('ManageTopicsListCard.CannotResetPublicStatusForSelectedTopics'),
     });
-  }, [selectedTopics, resetSelectedPublicMutation]);
+  }, [selectedTopics, resetSelectedPublicMutation, t]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
       },
       {
         id: 'Reload',
-        content: 'Reload',
+        content: t('ManageTopicsListCard.Reload'),
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isRefetching,
@@ -673,7 +680,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Mark Public',
-        content: 'Mark Selected as Public',
+        content: t('ManageTopicsListCard.MarkSelectedAsPublic'),
         icon: Icons.Eye,
         hidden: !selectedTopics.size,
         pending: makeSelectedPublicMutation.isPending,
@@ -681,7 +688,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Mark Private',
-        content: 'Mark Selected as Private',
+        content: t('ManageTopicsListCard.MarkSelectedAsPrivate'),
         icon: Icons.EyeOff,
         hidden: !selectedTopics.size,
         pending: resetSelectedPublicMutation.isPending,
@@ -689,7 +696,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Delete Selected',
-        content: 'Delete Selected',
+        content: t('ManageTopicsListCard.DeleteSelected'),
         icon: Icons.Trash,
         hidden: !selectedTopics.size,
         pending: deleteSelectedMutation.isPending,
@@ -697,13 +704,14 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Add',
-        content: 'Add New Topic',
+        content: t('ManageTopicsListCard.AddNewTopic'),
         icon: Icons.Add,
         visibleFor: 'md',
         onClick: handleAddTopic,
       },
     ],
     [
+      t,
       goBack,
       handleAddTopic,
       handleReload,
@@ -721,7 +729,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   return (
     <>
       <DashboardHeader
-        heading={t('title')}
+        heading={t(`Pages.${namespace}Title`)}
         className={cn(
           isDev && '__ManageTopicsListCard_DashboardHeader', // DEBUG
           'mx-6',
@@ -753,18 +761,19 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         <ContentSkeletonTable className="px-6" />
       )}
       <ConfirmModal
-        dialogTitle="Confirm delete topics"
+        dialogTitle={t('ManageTopicsListCard.ConfirmDeleteTopics')}
         confirmButtonVariant="destructive"
-        confirmButtonText="Delete"
-        confirmButtonBusyText="Deleting"
-        cancelButtonText="Cancel"
+        confirmButtonText={t('ManageTopicsListCard.Delete')}
+        confirmButtonBusyText={t('ManageTopicsListCard.Deleting')}
+        cancelButtonText={t('Cancel')}
         handleClose={handleHideDeleteConfirm}
         handleConfirm={handleDeleteSelected}
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteConfirm}
       >
-        Do you confirm deleting {selectedTopics.size} selected topic
-        {selectedTopics.size > 1 ? 's' : ''}?
+        {t('ManageTopicsListCard.ConfirmDeleteTopicsMessage', {
+          count: selectedTopics.size,
+        })}
       </ConfirmModal>
     </>
   );

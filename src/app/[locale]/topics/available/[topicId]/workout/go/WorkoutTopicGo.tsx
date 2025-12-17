@@ -26,6 +26,7 @@ import {
   useGoToTheRoute,
   useSessionUser,
 } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { ContentSkeleton } from './ContentSkeleton';
 import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
@@ -69,6 +70,8 @@ interface TMemo {
 export function WorkoutTopicGo() {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
+
+  const t = useT();
 
   const [inited, setInited] = React.useState(false);
   const [isStarting, setIsStarting] = React.useState(false);
@@ -154,7 +157,7 @@ export function WorkoutTopicGo() {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -162,7 +165,7 @@ export function WorkoutTopicGo() {
       },
       {
         id: 'ManageTopic',
-        content: 'Manage Topic',
+        content: t('AvailableTopics.ManageTopic'),
         variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'xl',
@@ -171,7 +174,7 @@ export function WorkoutTopicGo() {
       },
       {
         id: 'ManageQuestion',
-        content: 'Manage Question',
+        content: t('AvailableTopics.ManageQuestion'),
         variant: 'ghost',
         icon: Icons.Questions,
         visibleFor: 'xl',
@@ -181,13 +184,14 @@ export function WorkoutTopicGo() {
       },
     ],
     [
-      allowedEdit,
+      t,
       goBack,
-      goToTheRoute,
-      topicId,
+      allowedEdit,
       isWorkoutInProgress,
-      currentQuestionId,
+      goToTheRoute,
       manageTopicsRoute,
+      topicId,
+      currentQuestionId,
     ],
   );
 
@@ -195,7 +199,7 @@ export function WorkoutTopicGo() {
     scope: manageScope,
     topic: topic,
     lastItem: {
-      content: 'Training',
+      content: t('WorkoutTopic.Training'),
       // link: isWorkoutInProgress ? questionsContext.routePath : undefined,
     },
   });
@@ -206,12 +210,12 @@ export function WorkoutTopicGo() {
     ) : isStarting ? (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
         <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
-        <p>The training is starting...</p>
+        <p>{t('WorkoutTopic.TrainingIsStarting')}</p>
       </div>
     ) : isWorkoutFinished ? (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
         <Icons.Activity className="mx-auto size-8 text-theme" />
-        <p className="text-lg">The training is already completed.</p>
+        <p className="text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
         <WorkoutControl className="items-center" />
       </div>
     ) : (

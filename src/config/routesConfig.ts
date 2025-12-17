@@ -5,7 +5,6 @@ export const adminRoute = '/admin';
 export const allTopicsRoute = '/topics/all';
 export const authErrorRoute = '/auth/error';
 export const availableTopicsRoute = '/topics/available'; // Example
-export const chartsRoute = '/charts';
 export const dashboardRoute = '/dashboard';
 export const myTopicsRoute = '/topics/my';
 export const settingsRoute = '/settings';
@@ -30,7 +29,6 @@ export const pathnames = {
   [adminRoute]: adminRoute,
   [allTopicsRoute]: allTopicsRoute,
   [availableTopicsRoute]: availableTopicsRoute,
-  [chartsRoute]: chartsRoute,
   [cookiesRoute]: cookiesRoute,
   [dashboardRoute]: dashboardRoute,
   [docsRoute]: docsRoute,

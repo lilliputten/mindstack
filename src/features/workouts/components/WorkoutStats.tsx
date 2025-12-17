@@ -24,6 +24,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useSessionData } from '@/hooks';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 
 interface TWorkoutStatsProps {
@@ -35,6 +36,7 @@ interface TWorkoutStatsProps {
 export function WorkoutStats(props: TWorkoutStatsProps) {
   const { className, full, hideTimes } = props;
   const format = useFormatter();
+  const t = useT();
 
   const { user, loading: isUserLoading } = useSessionData();
 
@@ -68,11 +70,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const averageTimePerQuestion =
     workout?.stepIndex && timeElapsed > 0 ? Math.round(timeElapsed / (workout.stepIndex + 1)) : 0;
 
-  // TODO?
-  const _estimatedTimeRemaining =
-    averageTimePerQuestion > 0 && questionsCount > 0
-      ? Math.round(averageTimePerQuestion * (questionsCount - (workout?.stepIndex || 0) - 1))
-      : 0;
+  /* // TODO?
+   * const _estimatedTimeRemaining =
+   *   averageTimePerQuestion > 0 && questionsCount > 0
+   *     ? Math.round(averageTimePerQuestion * (questionsCount - (workout?.stepIndex || 0) - 1))
+   *     : 0;
+   */
 
   // Use real historical data
   const historicalStats = historicalData || {
@@ -137,13 +140,16 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             <div className="text-center">
               <Icons.Warning className="mx-auto mb-2 size-8 text-orange-500 opacity-50" />
               <p className="text-content text-sm text-muted-foreground">
-                {historicalErrorText === 'Authentication required' ? (
+                {historicalErrorText === t('WorkoutStats.AuthenticationRequired') ? (
                   <>
-                    You have to <Link href={welcomeRoute}>sign in</Link> to view your statistics.
+                    {t('WorkoutStats.PleaseSignIn')}{' '}
+                    <Link href={welcomeRoute}>{t('WorkoutStats.signIn')}</Link>{' '}
+                    {t('WorkoutStats.toViewYourStatistics')}
                   </>
                 ) : (
                   <>
-                    Failed to load historical data ({historicalErrorText}). Please try again later.
+                    {t('WorkoutStats.FailedToLoadHistoricalData')} ({historicalErrorText}).{' '}
+                    {t('WorkoutStats.PleaseTryAgainLater')}
                   </>
                 )}
               </p>
@@ -163,21 +169,20 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Icons.Activity className="size-4 text-theme" />
-                Your Progress
+                {t('WorkoutStats.YourProgress')}
               </CardTitle>
               <CardDescription>
-                Summary of your {totalWorkouts} completed workout
-                {totalWorkouts !== 1 ? 's' : ''}
+                {t('WorkoutStats.SummaryOfCompletedCountTemplate', { count: totalWorkouts })}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Best Accuracy</p>
+                  <p className="text-sm text-muted-foreground">{t('WorkoutStats.BestAccuracy')}</p>
                   <p className="text-2xl font-bold">{historicalStats.bestAccuracy}%</p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Average Time</p>
+                  <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgTime')}</p>
                   <p className="text-2xl font-bold">
                     {formatSecondsDuration(historicalStats.averageTime)}
                   </p>
@@ -187,8 +192,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <Icons.CircleCheck className="size-4 text-green-500" />
                 <span className="text-sm text-muted-foreground">
                   {historicalStats.streak > 0
-                    ? `On a ${historicalStats.streak}-day streak`
-                    : 'Ready for your next workout'}
+                    ? `${t('WorkoutStats.OnAStreak')} ${historicalStats.streak}-${t('WorkoutStats.DayStreak').toLowerCase()}`
+                    : t('WorkoutStats.ReadyForNextWorkout')}
                 </span>
               </div>
             </CardContent>
@@ -209,7 +214,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2">
             <Icons.Activity className="size-4 text-theme" />
-            Recent Training
+            {t('WorkoutStats.RecentTraining')}
           </CardTitle>
           {/*
           <CardDescription>
@@ -226,7 +231,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             <>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Progress</span>
+                  <span>{t('WorkoutStats.Progress')}</span>
                   <span>
                     {workout.stepIndex || 0} / {questionsCount}
                   </span>
@@ -240,25 +245,33 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Current Accuracy</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('WorkoutStats.CurrentAccuracy')}
+                  </p>
                   <p className="text-2xl font-bold">{Math.round(currentAccuracy)}%</p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Time Elapsed</p>
+                  <p className="text-sm text-muted-foreground">{t('WorkoutStats.TimeElapsed')}</p>
                   <p className="flex items-baseline gap-2">
                     <span className="text-2xl font-bold">{formatSecondsDuration(timeElapsed)}</span>
-                    {isWorkoutInProgress && <span className="opacity-50">(active)</span>}
+                    {isWorkoutInProgress && (
+                      <span className="opacity-50">{t('WorkoutStats.Active')}</span>
+                    )}
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Correct Answers</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('WorkoutStats.CorrectAnswers')}
+                  </p>
                   <p className="text-lg font-semibold">{workout.correctAnswers || 0}</p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Avg Time/Question</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('WorkoutStats.AvgTimePerQuestion')}
+                  </p>
                   <p className="text-lg font-semibold">
                     {formatSecondsDuration(averageTimePerQuestion)}
                   </p>
@@ -276,11 +289,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             >
               <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2">
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Final Accuracy</p>
+                  <p className="text-sm text-muted-foreground">{t('WorkoutStats.FinalAccuracy')}</p>
                   <p className="text-2xl font-bold">{workout.currentRatio || 0}%</p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-sm text-muted-foreground">Total Time</p>
+                  <p className="text-sm text-muted-foreground">{t('WorkoutStats.TotalTime')}</p>
                   <p className="text-2xl font-bold">
                     {formatSecondsDuration(workout.currentTime || 0)}
                   </p>
@@ -290,7 +303,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-center gap-2">
                   <Icons.CircleCheck className="size-4 text-green-500" />
                   <span className="text-sm text-muted-foreground">
-                    Completed {getFormattedRelativeDate(format, workout.finishedAt || new Date())}
+                    {t('WorkoutStats.Completed')}{' '}
+                    {getFormattedRelativeDate(format, workout.finishedAt || new Date())}
                   </span>
                 </div>
               )}
@@ -314,14 +328,14 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
                 <p className="mb-2 text-lg text-foreground">
                   {user
-                    ? 'No training history has been collected yet'
-                    : "Guest users can't see their training history"}
+                    ? t('WorkoutStats.NoTrainingHistory')
+                    : t('WorkoutStats.GuestUsersCannotSeeHistory')}
                 </p>
                 {!totalWorkouts ? (
                   <p className="text-sm text-muted-foreground">
                     {user
-                      ? 'This will be your first workout for this topic!'
-                      : 'Sign in to start collecting and monitoring your history tracks.'}
+                      ? t('WorkoutStats.ThisWillBeYourFirst')
+                      : t('WorkoutStats.SignInToStartCollecting')}
                   </p>
                 ) : totalWorkouts === 1 ? (
                   <p className="text-sm text-muted-foreground">
@@ -350,27 +364,26 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Icons.LineChart className="size-4 text-theme" />
-              Historical Performance
+              {t('WorkoutStats.HistoricalPerformance')}
             </CardTitle>
-            <CardDescription>Your learning progress over time</CardDescription>
+            <CardDescription>{t('WorkoutStats.YourLearningProgressOverTime')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="__py-8 text-center">
               <Icons.Activity className="mx-auto mb-4 size-8 text-theme" />
-              <h3 className="mb-2 text-lg font-semibold">No Training History Yet</h3>
+              <h3 className="mb-2 text-lg font-semibold">
+                {t('WorkoutStats.NoTrainingHistoryYet')}
+              </h3>
               <p className="mb-4 text-sm text-muted-foreground">
-                Complete your first workout to start tracking your progress and see detailed
-                analytics.
+                {t('WorkoutStats.CompleteFirstWorkoutToStartTracking')}
               </p>
               <div className="rounded-lg bg-muted/50 py-4 text-center">
-                <h4 className="mb-2 text-sm font-medium">
-                  What you'll see after your first workout:
-                </h4>
+                <h4 className="mb-2 text-sm font-medium">{t('WorkoutStats.WhatYoullSeeAfter')}:</h4>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>Performance trends and accuracy tracking</li>
-                  <li>Study streaks and consistency metrics</li>
-                  <li>Personalized learning insights</li>
-                  <li>Achievement badges and progress milestones</li>
+                  <li>{t('WorkoutStats.PerformanceTrendsAndAccuracyTracking')}</li>
+                  <li>{t('WorkoutStats.StudyStreaksAndConsistencyMetrics')}</li>
+                  <li>{t('WorkoutStats.PersonalizedLearningInsights')}</li>
+                  <li>{t('WorkoutStats.AchievementBadgesAndProgressMilestones')}</li>
                 </ul>
               </div>
             </div>
@@ -388,9 +401,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Icons.LineChart className="size-4 text-theme" />
-            Historical Performance
+            {t('WorkoutStats.HistoricalPerformance')}
           </CardTitle>
-          <CardDescription>Your learning progress over time</CardDescription>
+          <CardDescription>{t('WorkoutStats.YourLearningProgress')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Key Metrics */}
@@ -402,21 +415,21 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           >
             <div className="space-y-1 text-center">
               <p className="text-2xl font-bold">{totalWorkouts}</p>
-              <p className="text-sm text-muted-foreground">Total Trainings</p>
+              <p className="text-sm text-muted-foreground">{t('WorkoutStats.TotalTrainings')}</p>
             </div>
             <div className="space-y-1 text-center">
               <p className="text-2xl font-bold">{historicalStats.averageAccuracy}%</p>
-              <p className="text-sm text-muted-foreground">Avg Accuracy</p>
+              <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgAccuracy')}</p>
             </div>
             <div className="space-y-1 text-center">
               <p className="text-2xl font-bold">
                 {formatSecondsDuration(historicalStats.averageTime)}
               </p>
-              <p className="text-sm text-muted-foreground">Avg Time</p>
+              <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgTime')}</p>
             </div>
             <div className="space-y-1 text-center">
               <p className="text-2xl font-bold">{historicalStats.streak}</p>
-              <p className="text-sm text-muted-foreground">Day Streak</p>
+              <p className="text-sm text-muted-foreground">{t('WorkoutStats.DayStreak')}</p>
             </div>
           </div>
 
@@ -427,19 +440,19 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               'space-y-2',
             )}
           >
-            <h4 className="font-semibold">Achievements</h4>
+            <h4 className="font-semibold">{t('WorkoutStats.Achievements')}</h4>
             <div className="flex flex-wrap gap-2">
               <Badge variant="success" className="flex items-center gap-1">
                 <Icons.CircleCheck className="size-3" />
-                Speed Master
+                {t('WorkoutStats.SpeedMaster')}
               </Badge>
               <Badge variant="success" className="flex items-center gap-1">
                 <Icons.CircleCheck className="size-3" />
-                Accuracy Expert
+                {t('WorkoutStats.AccuracyExpert')}
               </Badge>
               <Badge variant="default" className="flex items-center gap-1">
                 <Icons.Activity className="size-3" />
-                Consistency Champion
+                {t('WorkoutStats.ConsistencyChampion')}
               </Badge>
             </div>
           </div>
@@ -452,21 +465,22 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 'space-y-2',
               )}
             >
-              <h4 className="font-semibold">Recent Performance</h4>
+              <h4 className="font-semibold">{t('WorkoutStats.RecentPerformance')}</h4>
               {hasMoreWorkouts && (
                 <p className="text-sm opacity-50">
-                  Displaying {recentWorkouts.length} last results out of total {totalWorkouts}
+                  {t('WorkoutStats.Displaying')} {recentWorkouts.length}{' '}
+                  {t('WorkoutStats.lastResults')} {totalWorkouts}
                 </p>
               )}
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead id="Date">Date</TableHead>
+                    <TableHead id="Date">{t('WorkoutStats.Date')}</TableHead>
                     <TableHead id="Accuracy" className="truncate text-center">
-                      Accuracy
+                      {t('WorkoutStats.Accuracy')}
                     </TableHead>
                     <TableHead id="Time" className="truncate text-right max-md:hidden">
-                      Time
+                      {t('WorkoutStats.Time')}
                     </TableHead>
                     {/* <TableHead>Questions</TableHead> */}
                   </TableRow>
@@ -500,7 +514,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={4} className="text-center text-muted-foreground">
-                        No workout history available
+                        {t('WorkoutStats.NoWorkoutHistoryAvailable')}
                       </TableCell>
                     </TableRow>
                   )}
@@ -516,7 +530,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               'space-y-4',
             )}
           >
-            <h4 className="font-semibold">Learning Insights</h4>
+            <h4 className="font-semibold">{t('WorkoutStats.LearningInsights')}</h4>
             {/* // TODO: Determine the amount of the insight items and limit grid count to the maximum */}
             <div
               className={cn(
@@ -528,9 +542,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.LineChart className="mt-0.5 size-4 shrink-0 text-blue-500" />
                   <div>
-                    <p className="text-sm font-medium">Improving Speed</p>
+                    <p className="text-sm font-medium">{t('WorkoutStats.ImprovingSpeed')}</p>
                     <p className="text-xs text-muted-foreground">
-                      Your completion time is getting faster! Keep up the great work.
+                      {t('WorkoutStats.CompletionTimeIsGettingFaster')}
                     </p>
                   </div>
                 </div>
@@ -539,9 +553,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.CircleCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
                   <div>
-                    <p className="text-sm font-medium">Accuracy Trend</p>
+                    <p className="text-sm font-medium">{t('WorkoutStats.AccuracyTrend')}</p>
                     <p className="text-xs text-muted-foreground">
-                      Your accuracy is improving! You're getting better at this topic.
+                      {t('WorkoutStats.AccuracyIsImproving')}
                     </p>
                   </div>
                 </div>
@@ -550,9 +564,10 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.Activity className="mt-0.5 size-4 shrink-0 text-orange-500" />
                   <div>
-                    <p className="text-sm font-medium">Study Streak</p>
+                    <p className="text-sm font-medium">{t('WorkoutStats.StudyStreak')}</p>
                     <p className="text-xs text-muted-foreground">
-                      Keep it up! You're on a {historicalStats.streak}-day streak
+                      {t('WorkoutStats.KeepItUp')}{' '}
+                      {t('WorkoutStats.OnAStreakTemplate', { streak: historicalStats.streak })}
                     </p>
                   </div>
                 </div>
@@ -561,9 +576,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.CircleCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
                   <div>
-                    <p className="text-sm font-medium">Consistent Performance</p>
+                    <p className="text-sm font-medium">{t('WorkoutStats.ConsistentPerformance')}</p>
                     <p className="text-xs text-muted-foreground">
-                      You're maintaining consistent performance across workouts
+                      {t('WorkoutStats.MaintainingConsistentPerformanceText')}
                     </p>
                   </div>
                 </div>
@@ -572,7 +587,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-3">
                   <Icons.Activity className="mt-0.5 size-4 shrink-0 text-blue-500" />
                   <div>
-                    <p className="text-sm font-medium">Start Your Journey</p>
+                    <p className="text-sm font-medium">{t('WorkoutStats.StartYourJourney')}</p>
                     <p className="text-xs text-muted-foreground">
                       Complete your first workout to start tracking your progress!
                     </p>
@@ -596,9 +611,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           <CardContent className="pt-6">
             <div className="py-4 text-center">
               <Icons.Activity className="mx-auto mb-2 size-8 text-muted-foreground opacity-50" />
-              <p className="text-sm text-muted-foreground">
-                Start your first workout to see statistics
-              </p>
+              <p className="text-sm text-muted-foreground">{t('WorkoutStats.StartFirstWorkout')}</p>
             </div>
           </CardContent>
         </Card>
@@ -611,13 +624,13 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-2xl font-bold">{questionsCount}</p>
-              <p className="text-xs text-muted-foreground">Questions</p>
+              <p className="text-xs text-muted-foreground">{t('WorkoutStats.Questions')}</p>
             </div>
             <div>
               <p className="text-2xl font-bold">
                 {isWorkoutInProgress ? Math.round(currentAccuracy) : workout?.currentRatio || 0}%
               </p>
-              <p className="text-xs text-muted-foreground">Accuracy</p>
+              <p className="text-xs text-muted-foreground">{t('WorkoutStats.Accuracy')}</p>
             </div>
             <div>
               <p className="text-2xl font-bold">
@@ -625,7 +638,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   ? formatSecondsDuration(timeElapsed)
                   : formatSecondsDuration(workout?.currentTime || 0)}
               </p>
-              <p className="text-xs text-muted-foreground">Time</p>
+              <p className="text-xs text-muted-foreground">{t('WorkoutStats.Time')}</p>
             </div>
           </div>
         </CardContent>

@@ -34,6 +34,7 @@ import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/Qu
 import { TQuestion, TQuestionData, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();
@@ -60,6 +61,7 @@ function QuestionsTableHeader({
   allQuestions: TQuestion[];
   toggleAll: () => void;
 }) {
+  const t = useT();
   const hasSelected = !!selectedQuestions.size;
   const isAllSelected = allQuestions.length > 0 && selectedQuestions.size === allQuestions.length;
   const isIndeterminate = hasSelected && !isAllSelected;
@@ -83,11 +85,11 @@ function QuestionsTableHeader({
             'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
           )}
           onClick={toggleAll}
-          title="Select/deselect all"
+          title={t('ManageTopicQuestionsListCard.SelectDeselectAll')}
         >
           <Checkbox
             checked={hasSelected}
-            aria-label="Select/deselect all"
+            aria-label={t('ManageTopicQuestionsListCard.SelectDeselectAll')}
             className={cn(
               'block',
               // Dark theme
@@ -103,7 +105,7 @@ function QuestionsTableHeader({
           />
         </TableHead>
         <TableHead id="no" className="truncate text-right max-sm:hidden">
-          No
+          {t('ManageTopicsListCard.No')}
         </TableHead>
         {isDev && (
           <TableHead id="questionId" className="truncate max-sm:hidden">
@@ -111,13 +113,13 @@ function QuestionsTableHeader({
           </TableHead>
         )}
         <TableHead id="text" className="truncate">
-          Question Text
+          {t('ManageTopicQuestionsListCard.QuestionText')}
         </TableHead>
-        <TableHead id="answers" className="truncate">
-          Answers
+        <TableHead id="answers" className="truncate max-sm:hidden">
+          {t('ManageTopicQuestionsListCard.Answers')}
         </TableHead>
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
-          Generated
+          {t('ManageTopicQuestionsListCard.Generated')}
         </TableHead>
         <TableHead id="Actions"></TableHead>
       </TableRow>
@@ -154,6 +156,7 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
   const { id, text, _count, isGenerated } = question;
   const questionRoutePath = `${questionsListRoutePath}/${id}`;
   const answersCount = _count?.answers;
+  const t = useT();
 
   const [isPending, startTransition] = React.useTransition();
   const queryClient = useQueryClient();
@@ -182,7 +185,7 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           await updateAndInvalidateQuestion(updatedQuestion);
         } catch (error) {
           const details = error instanceof APIError ? error.details : null;
-          const message = 'Cannot update question generated status';
+          const message = t('ManageTopicQuestionsListCard.CannotUpdateQuestionGeneratedStatus');
           // eslint-disable-next-line no-console
           console.error('[QuestionsTableRow:handleToggleGenerated]', message, {
             details,
@@ -194,7 +197,7 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
         }
       });
     },
-    [question, updateAndInvalidateQuestion],
+    [question, t, updateAndInvalidateQuestion],
   );
   return (
     <TableRow
@@ -214,9 +217,13 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
         )}
         onClick={() => toggleSelected(id)}
-        title="Select question"
+        title={t('ManageTopicQuestionsListCard.SelectQuestion')}
       >
-        <Checkbox checked={isSelected} className="block" aria-label="Select question" />
+        <Checkbox
+          checked={isSelected}
+          className="block"
+          aria-label={t('ManageTopicQuestionsListCard.SelectQuestion')}
+        />
       </TableCell>
       <TableCell id="no" className="max-w-4 truncate text-right opacity-50 max-sm:hidden">
         <div className="truncate">{idx + 1}</div>
@@ -234,7 +241,7 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           {truncateMarkdown(text, 80)}
         </Link>
       </TableCell>
-      <TableCell id="answers" className="max-w-[8em] truncate">
+      <TableCell id="answers" className="max-w-[8em] truncate max-sm:hidden">
         <div className="truncate">
           {answersCount ? (
             <span className="font-bold">{answersCount}</span>
@@ -257,8 +264,8 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
             size="icon"
             className="size-9 shrink-0"
             onClick={() => handleEditAnswers(question.id)}
-            aria-label="Edit Answers"
-            title="Edit Answers"
+            aria-label={t('ManageTopicQuestionsListCard.EditAnswers')}
+            title={t('ManageTopicQuestionsListCard.EditAnswers')}
           >
             <Icons.Answers className="size-5" />
           </Button>
@@ -267,8 +274,8 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
             size="icon"
             className="size-9 shrink-0"
             onClick={() => handleEditQuestion(question.id)}
-            aria-label="Edit"
-            title="Edit"
+            aria-label={t('ManageTopicQuestionsListCard.Edit')}
+            title={t('ManageTopicQuestionsListCard.Edit')}
           >
             <Icons.Edit className="size-4" />
           </Button>
@@ -277,8 +284,8 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
             size="icon"
             className="size-9 shrink-0 text-destructive"
             onClick={() => handleDeleteQuestion(question.id)}
-            aria-label="Delete"
-            title="Delete"
+            aria-label={t('ManageTopicQuestionsListCard.Delete')}
+            title={t('ManageTopicQuestionsListCard.Delete')}
           >
             <Icons.Trash className="size-4" />
           </Button>
@@ -315,6 +322,7 @@ export function QuestionsTableContent(
 
   const user = useSessionUser();
   const isAdmin = user?.role === 'ADMIN';
+  const t = useT();
 
   const {
     allQuestions,
@@ -375,15 +383,15 @@ export function QuestionsTableContent(
       <PageEmpty
         className="size-full flex-1"
         icon={Icons.Questions}
-        title="No questions have been created yet"
-        description="You dont have any questions yet. Add any question to your profile."
+        title={t('ManageTopicQuestionsListCard.NoQuestionsCreatedYet')}
+        description={t('ManageTopicQuestionsListCard.NoQuestionsDescription')}
         framed={false}
         showAIInfo
         buttons={
           <>
             <Button onClick={handleAddQuestion} className="flex gap-2">
               <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
-              Add New Question
+              {t('ManageTopicQuestionsListCard.AddNewQuestion')}
             </Button>
             <Button
               variant="secondary"
@@ -392,7 +400,7 @@ export function QuestionsTableContent(
               disabled={!aiGenerationsAllowed || aiGenerationsLoading}
             >
               <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
-              Generate Questions
+              {t('ManageTopicQuestionsListCard.GenerateQuestions')}
             </Button>
           </>
         }
@@ -458,6 +466,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
   const [selectedQuestions, setSelectedQuestions] = React.useState<Set<TQuestionId>>(new Set());
   const [showDeleteSelectedConfirm, setShowDeleteSelectedConfirm] = React.useState(false);
   const queryClient = useQueryClient();
+  const t = useT();
 
   const topicsListRoutePath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
@@ -490,7 +499,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
     },
     onError: (error) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot delete selected questions';
+      const message = t('ManageTopicQuestionsListCard.CannotDeleteSelectedQuestions');
       // eslint-disable-next-line no-console
       console.error('[ManageTopicQuestionsListCard:deleteSelectedMutation]', message, {
         details,
@@ -507,12 +516,12 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
 
     const promise = deleteSelectedMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
-      loading: 'Deleting selected questions...',
-      success: 'Successfully deleted selected questions',
-      error: 'Cannot delete selected questions',
+      loading: t('ManageTopicQuestionsListCard.DeletingSelectedQuestions'),
+      success: t('ManageTopicQuestionsListCard.SuccessfullyDeletedSelectedQuestions'),
+      error: t('ManageTopicQuestionsListCard.CannotDeleteSelectedQuestions'),
     });
     setShowDeleteSelectedConfirm(false);
-  }, [selectedQuestions, deleteSelectedMutation]);
+  }, [selectedQuestions, deleteSelectedMutation, t]);
 
   const handleShowDeleteSelectedConfirm = React.useCallback(() => {
     setShowDeleteSelectedConfirm(true);
@@ -528,7 +537,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -536,7 +545,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Reload',
-        content: 'Reload',
+        content: t('Reload'),
         // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
@@ -545,7 +554,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Delete Selected',
-        content: 'Delete Selected',
+        content: t('ManageTopicQuestionsListCard.DeleteSelected'),
         // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'lg',
@@ -555,7 +564,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
+        content: t('ManageTopicQuestionsListCard.AddNewQuestion'),
         // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
@@ -563,7 +572,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Generate Questions',
-        content: 'Generate Questions',
+        content: t('ManageTopicQuestionsListCard.GenerateQuestions'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         // visibleFor: 'lg',
@@ -572,6 +581,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
     ],
     [
+      t,
       goBack,
       isRefetching,
       handleReload,
@@ -594,7 +604,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
   return (
     <>
       <DashboardHeader
-        heading="Manage Questions"
+        heading={t('ManageTopicQuestionsListCard.ManageQuestions')}
         className={cn(
           isDev && '__ManageTopicQuestionsListCard_DashboardHeader', // DEBUG
           'mx-6',
@@ -618,18 +628,19 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         goToTheRoute={goToTheRoute}
       />
       <ConfirmModal
-        dialogTitle="Confirm delete questions"
+        dialogTitle={t('ManageTopicQuestionsListCard.ConfirmDeleteQuestions')}
         confirmButtonVariant="destructive"
-        confirmButtonText="Delete"
-        confirmButtonBusyText="Deleting"
-        cancelButtonText="Cancel"
+        confirmButtonText={t('Delete')}
+        confirmButtonBusyText={t('ManageTopicQuestionsListCard.Deleting')}
+        cancelButtonText={t('Cancel')}
         handleClose={handleHideDeleteSelectedConfirm}
         handleConfirm={handleDeleteSelected}
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteSelectedConfirm}
       >
-        Do you confirm deleting {selectedQuestions.size} selected question
-        {selectedQuestions.size > 1 ? 's' : ''}?
+        {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
+          count: selectedQuestions.size,
+        })}
       </ConfirmModal>
     </>
   );

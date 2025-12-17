@@ -12,6 +12,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link } from '@/i18n/routing';
 
@@ -24,6 +25,7 @@ interface TWorkoutControlProps {
 
 export function WorkoutControl(props: TWorkoutControlProps) {
   const { className, omitNoWorkoutMessage } = props;
+  const t = useT();
 
   const workoutContext = useWorkoutContext();
   const {
@@ -82,11 +84,13 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     return (
       <div className={cn(isDev && '__WorkoutControl_NoWorkout', 'flex flex-col gap-4', className)}>
         {!omitNoWorkoutMessage && (
-          <p className="text-sm text-muted-foreground">No active training found.</p>
+          <p className="text-sm text-muted-foreground">
+            {t('AvailableTopics.NoActiveTrainingFound')}
+          </p>
         )}
         <Button onClick={handleGoWorkout} disabled={isWorkoutPending} className="flex w-fit gap-2">
           <Icons.Activity className="size-4 opacity-50" />
-          <span>Start New Training</span>
+          <span>{t('AvailableTopics.StartNewTraining')}</span>
         </Button>
       </div>
     );
@@ -102,10 +106,10 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           <Icons.Activity className="size-4 opacity-50" />
           <span>
             {workout.finished
-              ? 'Restart Training'
+              ? t('AvailableTopics.RestartTraining')
               : workout.started
-                ? 'Resume Training'
-                : 'Start Training'}
+                ? t('AvailableTopics.ResumeTraining')
+                : t('AvailableTopics.StartTraining')}
           </span>
         </Button>
         {!isOnWorkoutRoute &&
@@ -113,7 +117,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
             <Button variant="theme">
               <Link href={workoutRoute as TRoutePath} className="flex items-center gap-2">
                 <Icons.LineChart className="size-4 opacity-50" />
-                <span>Training Details</span>
+                <span>{t('AvailableTopics.TrainingDetails')}</span>
               </Link>
             </Button>
           ) : isHistoricalPending ? (
@@ -122,7 +126,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
         {workout.started && !workout.finished && (
           <Button onClick={finishWorkout} variant="theme" className="flex gap-2">
             <Icons.Flag className="size-4 opacity-50" />
-            <span>Finish Training</span>
+            <span>{t('AvailableTopics.FinishTraining')}</span>
           </Button>
         )}
       </div>

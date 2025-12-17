@@ -13,6 +13,7 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
 
@@ -25,6 +26,7 @@ interface TAvailableTopicsListItemProps {
 export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
   const { topic, style } = props;
+  const t = useT();
   const {
     id: topicId,
     // userId,
@@ -122,7 +124,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
               size="icon"
               onClick={() => goToTheRoute(`${manageTopicsRoute}/${topicId}`)}
               className="flex gap-2"
-              title="Manage Topic"
+              title={t('AvailableTopics.ManageTopic')}
             >
               <Icons.Edit className="size-4" />
             </Button>
@@ -135,10 +137,10 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
               */}
               <span>
                 {workout?.finished
-                  ? 'Restart Training'
+                  ? t('AvailableTopics.RestartTraining')
                   : workout?.started
-                    ? 'Resume Training'
-                    : 'Start Training'}
+                    ? t('AvailableTopics.ResumeTraining')
+                    : t('AvailableTopics.StartTraining')}
               </span>
             </Button>
           )}

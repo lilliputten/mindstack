@@ -5,36 +5,39 @@ import { isDev } from '@/constants';
 
 interface TProps {
   className?: string;
+  rows?: number;
 }
 
-export function TextContentSkeleton({ className }: TProps) {
+export function TextContentSkeleton({ className, rows = 40 }: TProps) {
   return (
     <div
       className={cn(
-        isDev && '__ContentSkeleton', // DEBUG
+        isDev && '__TextContentSkeleton', // DEBUG
         'flex w-full flex-col gap-4',
         className,
       )}
     >
-      <Skeleton className="mb-4 h-12 w-2/5" />
-      {generateArray(10).map((i) => (
+      <Skeleton className="mb-4 mt-2 h-12 w-3/5" />
+      <Skeleton className="mb-4 h-8 w-1/3" />
+      {generateArray(rows).map((i) => (
         <Skeleton key={i} className="h-4 w-full" />
       ))}
     </div>
   );
 }
 
-export function TextPageSkeleton({ className }: TProps) {
+export function TextPageSkeleton(props: TProps) {
+  const { className, rows } = props;
   return (
     <div
       className={cn(
-        isDev && '__PageSkeleton', // DEBUG
+        isDev && '__TextPageSkeleton', // DEBUG
         'size-full',
-        'flex flex-1 flex-col items-center justify-center gap-2',
+        'flex flex-1 flex-col items-center gap-2',
         className,
       )}
     >
-      <TextContentSkeleton className="max-w-6xl p-6" />
+      <TextContentSkeleton rows={rows} className="max-w-6xl p-6" />
     </div>
   );
 }

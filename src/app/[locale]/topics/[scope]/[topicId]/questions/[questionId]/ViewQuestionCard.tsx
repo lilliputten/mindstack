@@ -14,6 +14,7 @@ import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/Qu
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewQuestionContentSummary } from './ViewQuestionContentSummary';
@@ -28,6 +29,8 @@ interface TViewQuestionCardProps {
 export function ViewQuestionCard(props: TViewQuestionCardProps) {
   const { topicId, questionId, availableTopicQuery, availableQuestionQuery } = props;
   const { manageScope } = useManageTopicsStore();
+
+  const t = useT();
 
   // const { queryKey: availableTopicQueryKey } = availableQuestionQuery;
 
@@ -55,7 +58,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -64,7 +67,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       },
       {
         id: 'Edit',
-        content: 'Edit',
+        content: t('Edit'),
         // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
@@ -72,7 +75,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       },
       {
         id: 'Answers',
-        content: 'Answers',
+        content: t('Answers'),
         // variant: 'theme',
         icon: Icons.Answers,
         visibleFor: 'lg',
@@ -80,7 +83,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
+        content: t('ViewQuestionCard.AddNewQuestion'),
         // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'xl',
@@ -88,7 +91,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       },
       {
         id: 'Delete Question',
-        content: 'Delete Question',
+        content: t('ViewQuestionCard.DeleteQuestion'),
         // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'xl',
@@ -98,7 +101,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
           ),
       },
     ],
-    [goBack, goToTheRoute, questionsListRoutePath, question.id],
+    [t, goBack, goToTheRoute, questionsListRoutePath, question.id],
   );
 
   const breadcrumbs = useQuestionsBreadcrumbsItems({
@@ -111,7 +114,7 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
   return (
     <>
       <DashboardHeader
-        heading="View Question"
+        heading={t('ViewQuestionCard.ViewQuestion')}
         className={cn(
           isDev && '__ViewQuestionCard_DashboardHeader', // DEBUG
           'mx-6',

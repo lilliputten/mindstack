@@ -1,1 +1,0 @@
-export { CookiesContent } from './CookiesContent';

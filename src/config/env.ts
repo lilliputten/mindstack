@@ -35,7 +35,7 @@ export const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mindstac
 
 export const dataContentType = 'application/json; charset=utf-8';
 
-export const siteTitle = 'mindstack';
+export const siteTitle = 'Mind Stack Trainer';
 export const siteDescription = 'NextJS memory training application';
 export const siteKeywords = [
   // ...
@@ -44,3 +44,4 @@ export const siteKeywords = [
   'chat',
 ];
 export const mailSupport = 'lilliputten@gmail.com';
+// See also constants in `contacts` section

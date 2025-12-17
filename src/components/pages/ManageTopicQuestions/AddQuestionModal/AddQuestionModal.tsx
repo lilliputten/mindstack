@@ -22,6 +22,7 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddQuestionForm } from './AddQuestionForm';
@@ -35,6 +36,7 @@ export function AddQuestionModal() {
   const [isVisible, setVisible] = React.useState(false);
 
   const { jumpToNewEntities } = useSettings();
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlTopicIdRegExp);
@@ -58,7 +60,7 @@ export function AddQuestionModal() {
   const availableQuestionsQuery = useAvailableQuestions({ topicId });
   const queryClient = useQueryClient();
 
-  useModalTitle('Add a Question', shouldBeVisible);
+  useModalTitle(t('AddQuestionModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addQuestionMutation = useMutation<TQuestion, Error, TNewQuestion>({
@@ -86,7 +88,7 @@ export function AddQuestionModal() {
     },
     onError: (error, newQuestion) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot create question';
+      const message = t('AddQuestionModal.ToastError');
       // eslint-disable-next-line no-console
       console.error('[AddQuestionModal:addQuestionMutation]', message, {
         error,
@@ -102,13 +104,13 @@ export function AddQuestionModal() {
     (newQuestion: TNewQuestion) => {
       const promise = addQuestionMutation.mutateAsync(newQuestion);
       toast.promise(promise, {
-        loading: 'Creating a new question...',
-        success: 'Successfully created a new question.',
-        error: 'Can not create a new question',
+        loading: t('AddQuestionModal.ToastLoading'),
+        success: t('AddQuestionModal.ToastSuccess'),
+        error: t('AddQuestionModal.ToastError'),
       });
       return promise;
     },
-    [addQuestionMutation],
+    [addQuestionMutation, t],
   );
 
   if (!shouldBeVisible || !topicId) {
@@ -132,9 +134,9 @@ export function AddQuestionModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Add New Question</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('AddQuestionModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          Add question dialog
+          {t('AddQuestionModal.DialogDescription')}
         </DialogDescription>
       </div>
       <AddQuestionForm

@@ -32,6 +32,7 @@ import {
   useGoBack,
   useGoToTheRoute,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditAnswerForm } from './EditAnswerForm';
@@ -60,6 +61,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
   } = props;
   const { manageScope } = useManageTopicsStore();
 
+  const t = useT();
   const queryClient = useQueryClient();
 
   const [hasDeleted, setHasDeleted] = React.useState(false);
@@ -69,13 +71,13 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
   const { answer } = availableAnswerQuery;
 
   if (!topic) {
-    throw new Error(`No topic found`);
+    throw new Error(t('EditAnswerCard.NoTopicFound'));
   }
   if (!question) {
-    throw new Error(`No question foundId}`);
+    throw new Error(t('EditAnswerCard.NoQuestionFound'));
   }
   if (!answer) {
-    throw new Error(`No answer found}`);
+    throw new Error(t('EditAnswerCard.NoAnswerFound'));
   }
 
   // Calculate paths...
@@ -149,9 +151,9 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
         try {
           const promise = updateAnswer(editedAnswer);
           toast.promise(promise, {
-            loading: 'Saving the answer data...',
-            success: 'Successfully saved the answer',
-            error: 'Can not save the answer data.',
+            loading: t('EditAnswerCard.SavingAnswerData'),
+            success: t('EditAnswerCard.SuccessfullySavedAnswer'),
+            error: t('EditAnswerCard.CannotSaveAnswerData'),
           });
           const _updatedAnswer = await promise;
           // Invalidate all possible answer data...
@@ -168,7 +170,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
           form.reset(form.getValues());
         } catch (error) {
           const details = getErrorText(error);
-          const message = 'Cannot save answer data';
+          const message = t('EditAnswerCard.CannotSaveAnswerData');
           // eslint-disable-next-line no-console
           console.error('[EditAnswerForm]', [message, details].join(': '), {
             error,
@@ -178,7 +180,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
         }
       });
     },
-    [answer, queryClient, availableAnswersQuery, form],
+    [answer, t, queryClient, availableAnswersQuery, form],
   );
 
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
@@ -204,7 +206,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       })
       .catch((error) => {
         const details = getErrorText(error);
-        const message = 'Cannot update answer data';
+        const message = t('EditAnswerCard.CannotUpdateAnswerData');
         // eslint-disable-next-line no-console
         console.error('[EditAnswerCard:handleReload]', [message, details].join(': '), {
           error,
@@ -212,13 +214,13 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
         debugger; // eslint-disable-line no-debugger
         toast.error(message);
       });
-  }, [availableAnswersQuery, availableAnswerQuery, form]);
+  }, [availableAnswerQuery, form, availableAnswersQuery, t]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -226,7 +228,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Save',
-        content: 'Save',
+        content: t('EditAnswerCard.Save'),
         variant: 'success',
         icon: Icons.Check,
         visibleFor: 'md',
@@ -236,8 +238,8 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Reload',
-        content: 'Reload',
-        title: 'Reload the data from the server',
+        content: t('EditAnswerCard.Reload'),
+        title: t('EditAnswerCard.ReloadDataFromServer'),
         // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'xl',
@@ -246,7 +248,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Add New Question',
-        content: 'Add New Question',
+        content: t('EditAnswerCard.AddNewQuestion'),
         // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
@@ -254,7 +256,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Generate Questions',
-        content: 'Generate Questions',
+        content: t('EditAnswerCard.GenerateQuestions'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         // visibleFor: 'xl',
@@ -263,7 +265,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Add New Answer',
-        content: 'Add New Answer',
+        content: t('EditAnswerCard.AddNewAnswer'),
         // variant: 'success',
         icon: Icons.Add,
         // visibleFor: 'xl',
@@ -271,7 +273,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Generate Answers',
-        content: 'Generate Answers',
+        content: t('EditAnswerCard.GenerateAnswers'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         // visibleFor: 'xl',
@@ -280,7 +282,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Reset',
-        content: 'Reset changes',
+        content: t('EditAnswerCard.ResetChanges'),
         // variant: 'ghost',
         icon: Icons.Close,
         // visibleFor: 'xl',
@@ -289,7 +291,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Delete Answer',
-        content: 'Delete Answer',
+        content: t('EditAnswerCard.DeleteAnswer'),
         variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'xl',
@@ -297,6 +299,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
     ],
     [
+      t,
       goBack,
       isSubmitEnabled,
       isPending,
@@ -324,7 +327,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
   return (
     <>
       <DashboardHeader
-        heading="Edit Answer"
+        heading={t('EditAnswerCard.EditAnswer')}
         className={cn(
           isDev && '__EditAnswerCard_DashboardHeader', // DEBUG
           'mx-6',

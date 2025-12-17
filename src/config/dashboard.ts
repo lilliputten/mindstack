@@ -7,7 +7,7 @@ import {
   adminBotControlRoute,
   allTopicsRoute,
   availableTopicsRoute,
-  chartsRoute,
+  docsRoute,
   myTopicsRoute,
   rootRoute,
   settingsRoute,
@@ -18,45 +18,42 @@ import {
 
 // prettier-ignore
 export const dashboardLinks: SidebarNavItem[] = [
+  // Show translations in the namespace of `NavLinks`
   {
     titleId: 'Application',
     items: [
-      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'Available Topics' },
+      { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'AvailableTopics' },
     ],
   },
   {
-    titleId: 'My Data',
+    titleId: 'MyData',
     authorizedOnly: true,
     items: [
-      { href: myTopicsRoute, icon: Icons.Topics, titleId: 'My Topics' },
-      { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'All Topics', authorizedOnly: 'ADMIN' },
+      { href: myTopicsRoute, icon: Icons.Topics, titleId: 'MyTopics' },
+      { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'AllTopics', authorizedOnly: 'ADMIN' },
       // Add other data links?
-      { href: chartsRoute, icon: Icons.LineChart, titleId: 'Charts', disabled: true, authorizedOnly: true },
     ],
   },
   {
     titleId: 'Administration',
     authorizedOnly: 'ADMIN',
     items: [
-      { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'Bot Control' },
-      { href: adminAiTestTextQueryRoute, icon: Icons.Bug, titleId: 'Test AI Text Query' },
-      // { href: adminRoute, icon: Icons.Laptop, titleId: 'Admin Panel', authorizedOnly: 'ADMIN', disabled: true },
-      // { href: dashboardRoute, icon: Icons.Dashboard, titleId: 'Dashboard', disabled: true },
+      { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'BotControl' },
+      { href: adminAiTestTextQueryRoute, icon: Icons.Bug, titleId: 'TestAiTextQuery' },
     ],
   },
   {
     titleId: 'Information',
     items: [
-      { href: aboutRoute, icon: Icons.Info, titleId: 'About Project' },
-      { href: welcomeRoute, icon: Icons.MonitorPlay, titleId: 'Welcome Page' },
+      { href: aboutRoute, icon: Icons.Info, titleId: 'AboutProject' },
+      { href: welcomeRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
+      { href: docsRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
     ],
   },
   {
     titleId: 'Options',
     items: [
       { href: settingsRoute, icon: Icons.Settings, titleId: 'Settings' },
-      // { href: rootRoute, icon: Icons.Home, titleId: 'Homepage' },
-      // { href: rootRoute, icon: Icons.BookOpen, titleId: 'Documentation', disabled: true },
       { href: rootRoute, icon: Icons.Messages, titleId: 'Support', disabled: true },
     ],
   },

@@ -1,5 +1,3 @@
-import { getTranslations } from 'next-intl/server';
-
 import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
@@ -7,6 +5,7 @@ import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TQuestionId } from '@/features/questions/types';
+import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { ManageTopicQuestionsPageModalsWrapper } from './ManageTopicQuestionsPageModalsWrapper';
@@ -23,9 +22,9 @@ interface ManageTopicQuestionsPageProps extends TAwaitedProps {
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'ManageTopicQuestions' });
-  const title = t('title');
-  const description = t('description');
+  const t = await getT({ locale });
+  const title = t('Pages.ManageTopicQuestionsTitle');
+  const description = t('Pages.ManageTopicQuestionsDescription');
   return constructMetadata({
     locale,
     title,
@@ -49,8 +48,6 @@ export default async function ManageTopicQuestionsPage(props: ManageTopicQuestio
   if (!topicId) {
     return <PageError error={'No topic specified.'} />;
   }
-
-  // const t = await getTranslations({ locale, namespace: 'ManageTopicQuestions' });
 
   return (
     <PageWrapper

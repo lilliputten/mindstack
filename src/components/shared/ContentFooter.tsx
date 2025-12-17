@@ -12,10 +12,13 @@ import {
 } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
-import { currentYear, isDev } from '@/config';
+import { authorSite, currentYear, isDev, siteTitle } from '@/config';
+import { useT } from '@/i18n';
 import { Link as LocalLink } from '@/i18n/routing';
 
 export function ContentFooter() {
+  const t = useT();
+
   return (
     <footer
       className={cn(
@@ -39,34 +42,49 @@ export function ContentFooter() {
       <div className="z-1 relative mx-auto mb-6 grid max-w-6xl gap-4 px-6 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="text-sm leading-5">
-            © {currentYear} MindStack
+            © {currentYear}, {siteTitle}
             <br />
-            NextJS Memory Training Application
+            {t('ContentFooter.AppDescription')}
             <br />
-            Built with{' '}
-            <PublicLink
-              href="https://nextjs.org"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:underline"
-            >
-              Next.js
-            </PublicLink>{' '}
-            and{' '}
-            <PublicLink
-              href="https://vercel.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:underline"
-            >
-              Vercel
-            </PublicLink>
+            {t.rich('ContentFooter.BuiltWithText', {
+              authorSite,
+              NextJSLink: (chunks) => (
+                <PublicLink
+                  href="https://nextjs.org"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:opacity-80"
+                >
+                  {chunks}
+                </PublicLink>
+              ),
+              VercelLink: (chunks) => (
+                <PublicLink
+                  href="https://vercel.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:opacity-80"
+                >
+                  {chunks}
+                </PublicLink>
+              ),
+              AuthorLink: (chunks) => (
+                <PublicLink
+                  href="https://lilliputten.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:opacity-80"
+                >
+                  {chunks}
+                </PublicLink>
+              ),
+            })}
           </p>
         </div>
         <div>
           <div className="flex flex-col items-start gap-4 pt-3 text-sm">
             <LocalLink href={docsRoute} className="hover:underline">
-              Documentation
+              {t('ContentFooter.DocumentationLink')}
             </LocalLink>
             {/*
             <PublicLink
@@ -113,16 +131,16 @@ export function ContentFooter() {
       </div>
       <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col max-sm:items-start">
         <LocalLink href={privacyRoute} className="hover:underline">
-          Privacy Policy
+          {t('ContentFooter.PrivacyPolicyLink')}
         </LocalLink>
         <LocalLink href={termsRoute} className="hover:underline">
-          Terms of Service
+          {t('ContentFooter.TermsOfServiceLink')}
         </LocalLink>
         <LocalLink href={cookiesRoute} className="hover:underline">
-          Cookie Policy
+          {t('ContentFooter.CookiePolicyLink')}
         </LocalLink>
         <LocalLink href={pricingRoute} className="hover:underline">
-          Pricing
+          {t('ContentFooter.PricingLink')}
         </LocalLink>
       </div>
     </footer>

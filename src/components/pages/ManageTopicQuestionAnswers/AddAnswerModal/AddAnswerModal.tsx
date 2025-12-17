@@ -22,6 +22,7 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddAnswerForm } from './AddAnswerForm';
@@ -37,6 +38,7 @@ export function AddAnswerModal() {
   const [isVisible, setVisible] = React.useState(true);
 
   const { jumpToNewEntities } = useSettings();
+  const t = useT();
 
   const pathname = usePathname();
   const match = pathname.match(urlRegExp);
@@ -66,7 +68,7 @@ export function AddAnswerModal() {
   const availableAnswersQuery = useAvailableAnswers({ questionId });
   const queryClient = useQueryClient();
 
-  useModalTitle('Add an Answer', shouldBeVisible);
+  useModalTitle(t('AddAnswerModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addAnswerMutation = useMutation<TAvailableAnswer, Error, TNewAnswer>({
@@ -93,7 +95,7 @@ export function AddAnswerModal() {
     },
     onError: (error, newAnswer) => {
       const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot create answer';
+      const message = t('AddAnswerModal.ToastError'); // Using a generic error message
       // eslint-disable-next-line no-console
       console.error('[AddAnswerModal:addAnswerMutation]', message, {
         error,
@@ -109,13 +111,13 @@ export function AddAnswerModal() {
     (newAnswer: TNewAnswer) => {
       const promise = addAnswerMutation.mutateAsync(newAnswer);
       toast.promise(promise, {
-        loading: 'Creating a new answer...',
-        success: 'Successfully created a new answer.',
-        error: 'Cannot create answer',
+        loading: t('AddAnswerModal.ToastLoading'),
+        success: t('AddAnswerModal.ToastSuccess'),
+        error: t('AddAnswerModal.ToastError'),
       });
       return promise;
     },
-    [addAnswerMutation],
+    [addAnswerMutation, t],
   );
 
   if (!shouldBeVisible || !topicId || !questionId) {
@@ -140,9 +142,9 @@ export function AddAnswerModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">Add New Answer</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('AddAnswerModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          Add Answer Dialog
+          {t('AddAnswerModal.DialogDescription')}
         </DialogDescription>
       </div>
       <AddAnswerForm

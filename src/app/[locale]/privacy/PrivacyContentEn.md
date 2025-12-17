@@ -1,8 +1,6 @@
-import { marked } from 'marked';
-
 # Privacy Policy
 
-**Effective Date:** {props.effectiveDate}
+**Effective Date:** {effectiveDate}
 
 ## Introduction
 
@@ -11,11 +9,13 @@ MindStack ("we," "our," or "us") is committed to protecting your privacy. This P
 ## Information We Collect
 
 ### Personal Information
+
 - **Account Information:** Name, email address, and profile picture when you sign up
 - **Authentication Data:** Login credentials and session information
 - **User Preferences:** Language settings, theme preferences, and application settings
 
 ### Usage Data
+
 - **Training Progress:** Your workout statistics, topic performance, and learning progress
 - **Application Usage:** Features used, time spent, and interaction patterns
 - **Device Information:** Browser type, operating system, and device identifiers
@@ -23,6 +23,7 @@ MindStack ("we," "our," or "us") is committed to protecting your privacy. This P
 ## How We Use Your Information
 
 We use your information to:
+
 - Provide and maintain our memory training services
 - Personalize your learning experience
 - Track your progress and generate statistics
@@ -33,6 +34,7 @@ We use your information to:
 ## Information Sharing
 
 We do not sell, trade, or rent your personal information. We may share information only in these circumstances:
+
 - **With Your Consent:** When you explicitly agree to share information
 - **Service Providers:** With trusted third parties who assist in operating our application
 - **Legal Requirements:** When required by law or to protect our rights
@@ -44,6 +46,7 @@ We implement appropriate security measures to protect your information against u
 ## Your Rights
 
 You have the right to:
+
 - Access your personal information
 - Correct inaccurate information
 - Delete your account and associated data
@@ -65,5 +68,6 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 ## Contact Us
 
 If you have questions about this Privacy Policy, please contact us at:
-- Email: <span dangerouslySetInnerHTML={{ __html: props.emailHtmlLink }} />
-- Website: <span dangerouslySetInnerHTML={{ __html: props.websiteHtmlLink }} />
+
+- Email: [{contactEmail}](mailto:{contactEmail})
+- Website: [{publicAddr}]({publicAddr})

@@ -14,6 +14,7 @@ import { TAvailableAnswer } from '@/features/answers/types';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoBack, useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewAnswerContent } from './ViewAnswerContent';
@@ -27,6 +28,8 @@ interface TViewAnswerCardProps {
 export function ViewAnswerCard(props: TViewAnswerCardProps) {
   const { topic, question, answer } = props;
   const { manageScope } = useManageTopicsStore();
+
+  const t = useT();
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -44,7 +47,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -53,7 +56,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Edit',
-        content: 'Edit',
+        content: t('Edit'),
         // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
@@ -61,7 +64,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Add New Answer',
-        content: 'Add New Answer',
+        content: t('ViewAnswerCard.AddNewAnswer'),
         // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
@@ -69,7 +72,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Generate Answers',
-        content: 'Generate Answers',
+        content: t('ViewAnswerCard.GenerateAnswers'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'xl',
@@ -78,7 +81,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Delete Answer',
-        content: 'Delete Answer',
+        content: t('ViewAnswerCard.DeleteAnswer'),
         // variant: 'destructive',
         icon: Icons.Trash,
         visibleFor: 'xl',
@@ -87,6 +90,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
     ],
     [
+      t,
       goBack,
       aiGenerationsAllowed,
       aiGenerationsLoading,
@@ -107,7 +111,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
   return (
     <>
       <DashboardHeader
-        heading="View Answer"
+        heading={t('ViewAnswerCard.ViewAnswer')}
         className={cn(
           isDev && '__ViewAnswerCard_DashboardHeader', // DEBUG
           'mx-6',
