@@ -56,18 +56,6 @@ export function getFormattedRelativeDate(
   // Workaround for cases when date has been passed as an ISO string
   date = ensureDate(date);
   now = ensureDate(now);
-
-  /*
-   * // DEBUG
-   * console.log('[dates:getFormattedRelativeDate]', {
-   *   format,
-   *   date,
-   *   now,
-   * });
-   * if (typeof date.getTime !== 'function') {
-   *   debugger;
-   * }
-   */
   const diff = now.getTime() - date.getTime();
   if (diff < relativeDateLimit) {
     // Return relative date

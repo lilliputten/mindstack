@@ -174,8 +174,8 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                           {t('Pricing.PerMonth')}
                           {', '}
                           {billingPeriod === 'yearly'
-                            ? t('Pricing.BilledAnnually')
-                            : t('Pricing.BilledMonthly')}
+                            ? t('Pricing.billedAnnually')
+                            : t('Pricing.billedMonthly')}
                         </span>
                       </>
                     )}

@@ -143,8 +143,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 {historicalErrorText === t('WorkoutStats.AuthenticationRequired') ? (
                   <>
                     {t('WorkoutStats.PleaseSignIn')}{' '}
-                    <Link href={welcomeRoute}>{t('WorkoutStats.SignIn')}</Link>{' '}
-                    {t('WorkoutStats.ToViewYourStatistics')}
+                    <Link href={welcomeRoute}>{t('WorkoutStats.signIn')}</Link>{' '}
+                    {t('WorkoutStats.toViewYourStatistics')}
                   </>
                 ) : (
                   <>
@@ -172,10 +172,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 {t('WorkoutStats.YourProgress')}
               </CardTitle>
               <CardDescription>
-                {t('WorkoutStats.SummaryOfCompleted')} {totalWorkouts}{' '}
-                {totalWorkouts !== 1
-                  ? t('WorkoutStats.WorkoutCompletedPlural')
-                  : t('WorkoutStats.WorkoutCompleted')}
+                {t('WorkoutStats.SummaryOfCompletedCountTemplate', { count: totalWorkouts })}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -367,9 +364,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Icons.LineChart className="size-4 text-theme" />
-              Historical Performance
+              {t('WorkoutStats.HistoricalPerformance')}
             </CardTitle>
-            <CardDescription>Your learning progress over time</CardDescription>
+            <CardDescription>{t('WorkoutStats.YourLearningProgressOverTime')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="__py-8 text-center">
@@ -378,16 +375,15 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 {t('WorkoutStats.NoTrainingHistoryYet')}
               </h3>
               <p className="mb-4 text-sm text-muted-foreground">
-                Complete your first workout to start tracking your progress and see detailed
-                analytics.
+                {t('WorkoutStats.CompleteFirstWorkoutToStartTracking')}
               </p>
               <div className="rounded-lg bg-muted/50 py-4 text-center">
                 <h4 className="mb-2 text-sm font-medium">{t('WorkoutStats.WhatYoullSeeAfter')}:</h4>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>Performance trends and accuracy tracking</li>
-                  <li>Study streaks and consistency metrics</li>
-                  <li>Personalized learning insights</li>
-                  <li>Achievement badges and progress milestones</li>
+                  <li>{t('WorkoutStats.PerformanceTrendsAndAccuracyTracking')}</li>
+                  <li>{t('WorkoutStats.StudyStreaksAndConsistencyMetrics')}</li>
+                  <li>{t('WorkoutStats.PersonalizedLearningInsights')}</li>
+                  <li>{t('WorkoutStats.AchievementBadgesAndProgressMilestones')}</li>
                 </ul>
               </div>
             </div>
@@ -473,7 +469,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               {hasMoreWorkouts && (
                 <p className="text-sm opacity-50">
                   {t('WorkoutStats.Displaying')} {recentWorkouts.length}{' '}
-                  {t('WorkoutStats.LastResults')} {totalWorkouts}
+                  {t('WorkoutStats.lastResults')} {totalWorkouts}
                 </p>
               )}
               <Table>
@@ -548,7 +544,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <div>
                     <p className="text-sm font-medium">{t('WorkoutStats.ImprovingSpeed')}</p>
                     <p className="text-xs text-muted-foreground">
-                      Your completion time is getting faster! Keep up the great work.
+                      {t('WorkoutStats.CompletionTimeIsGettingFaster')}
                     </p>
                   </div>
                 </div>
@@ -559,7 +555,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <div>
                     <p className="text-sm font-medium">{t('WorkoutStats.AccuracyTrend')}</p>
                     <p className="text-xs text-muted-foreground">
-                      Your accuracy is improving! You're getting better at this topic.
+                      {t('WorkoutStats.AccuracyIsImproving')}
                     </p>
                   </div>
                 </div>
@@ -570,7 +566,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <div>
                     <p className="text-sm font-medium">{t('WorkoutStats.StudyStreak')}</p>
                     <p className="text-xs text-muted-foreground">
-                      {t('WorkoutStats.KeepItUp')} You're on a {historicalStats.streak}-day streak
+                      {t('WorkoutStats.KeepItUp')}{' '}
+                      {t('WorkoutStats.OnAStreakTemplate', { streak: historicalStats.streak })}
                     </p>
                   </div>
                 </div>
