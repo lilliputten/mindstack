@@ -67,6 +67,7 @@ const envSchema = z.object({
   EMAIL_PORT: z.coerce.number(),
   // EMAIL_USE_SSL: z.coerce.boolean().optional(), // Will be converted below via ensureBoolean
   EMAIL_HOST_USER: z.string().min(1),
+  EMAIL_TEST_USER: z.string().min(1),
   EMAIL_HOST_PASSWORD: z.string().min(1),
 });
 
@@ -121,6 +122,7 @@ export const {
   EMAIL_PORT,
   // EMAIL_USE_SSL,
   EMAIL_HOST_USER,
+  EMAIL_TEST_USER,
   EMAIL_HOST_PASSWORD,
 } = envServer;
 
