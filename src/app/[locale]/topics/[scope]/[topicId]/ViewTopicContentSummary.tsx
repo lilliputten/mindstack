@@ -93,7 +93,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           <Badge
             variant={topic.isPublic ? 'success' : 'outline'}
             className="flex gap-2 px-2 py-1"
-            title="Availability"
+            title={t('Availability')}
           >
             {topic.isPublic ? (
               <Icons.Eye className="size-4 opacity-50" />
@@ -105,7 +105,11 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               : t('ViewTopicContentSummary.Private')}
           </Badge>
           {topic.langName && (
-            <Badge variant="outline" className="flex items-center gap-1 px-2 py-1" title="Language">
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1 px-2 py-1"
+              title={t('Language')}
+            >
               <Icons.Languages className="size-4 opacity-50" />
               {topic.langName} {topic.langCode && `(${topic.langCode})`}
             </Badge>

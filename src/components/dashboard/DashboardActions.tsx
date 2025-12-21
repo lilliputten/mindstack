@@ -14,6 +14,7 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
+import { useT } from '@/i18n';
 
 import { Skeleton } from '../ui/Skeleton';
 
@@ -28,6 +29,8 @@ interface DashboardActionsProps {
 }
 
 export function DashboardActions(props: DashboardActionsProps) {
+  const t = useT();
+
   const { className, actions } = props;
   const [isDropdownOpen, setDropdownOpen] = React.useState(false);
   const { mediaWidths } = useMediaMinDevices();
@@ -99,34 +102,38 @@ export function DashboardActions(props: DashboardActionsProps) {
     >
       {visibleActions}
       <DropdownMenu open={isDropdownOpen} onOpenChange={setDropdownOpen}>
-        <DropdownMenuTrigger
-          asChild
-          aria-label="Show Menu"
-          className={cn(
-            isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
-          )}
-        >
-          <Button
-            size="icon"
-            variant="ghost"
-            title="Show menu"
-            className={cn(
-              isDev && '__AllowedUsersPage_DropdownMenuToggle', // DEBUG
-              'active:bg-theme active:text-theme-foreground',
-              'ring-offset-background',
-              'focus:ring-2',
-              'focus:ring-ring',
-              'focus:ring-offset-2',
-              'data-[state=open]:bg-theme/20',
-              'data-[state=open]:ring-2',
-              'data-[state=open]:ring-offset-2',
-              'data-[state=open]:ring-theme/50',
-            )}
-          >
-            <Icons.MenuVertical className="size-5 transition-all" />
-            <span className="sr-only">Show menu</span>
-          </Button>
-        </DropdownMenuTrigger>
+        {(() => {
+          return (
+            <DropdownMenuTrigger
+              asChild
+              aria-label="Show Menu"
+              className={cn(
+                isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
+              )}
+            >
+              <Button
+                size="icon"
+                variant="ghost"
+                title={t('ShowMenu')}
+                className={cn(
+                  isDev && '__AllowedUsersPage_DropdownMenuToggle', // DEBUG
+                  'active:bg-theme active:text-theme-foreground',
+                  'ring-offset-background',
+                  'focus:ring-2',
+                  'focus:ring-ring',
+                  'focus:ring-offset-2',
+                  'data-[state=open]:bg-theme/20',
+                  'data-[state=open]:ring-2',
+                  'data-[state=open]:ring-offset-2',
+                  'data-[state=open]:ring-theme/50',
+                )}
+              >
+                <Icons.MenuVertical className="size-5 transition-all" />
+                <span className="sr-only">Show menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+          );
+        })()}
         <DropdownMenuContent
           align="end"
           className={cn(

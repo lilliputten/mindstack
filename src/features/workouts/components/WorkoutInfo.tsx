@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TWorkoutData } from '@/features/workouts/types';
+import { useT } from '@/i18n';
 
 interface TWorkoutInfoProps {
   workout: TWorkoutData | null;
@@ -19,6 +20,7 @@ interface TWorkoutInfoProps {
 export function WorkoutInfo(props: TWorkoutInfoProps) {
   const { workout, className, omitNoWorkoutMessage, hideTimes } = props;
   const format = useFormatter();
+  const t = useT();
 
   if (!workout) {
     if (omitNoWorkoutMessage) {
@@ -39,7 +41,7 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
         */}
         <Icons.Activity className="mx-auto mb-2 size-8 text-theme" />
         <p className="mb-2 text-lg text-foreground">
-          Training progress data has not yet been collected
+          {t('WorkoutInfo.TrainingProgressDataNotYetCollected')}
         </p>
         {/*historicalStats.totalWorkouts === 0 && (
           <p className="text-sm text-muted-foreground">
@@ -70,19 +72,19 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
       )}
     >
       {/* Training Status */}
-      <span className="flex items-center gap-1" title="Training status">
+      <span className="flex items-center gap-1" title={t('WorkoutInfo.TrainingStatus')}>
         <Icons.Activity className="mr-1 size-4 opacity-50" />
-        {isInProgress && <span className="text-blue-600">In Progress</span>}
+        {isInProgress && <span className="text-blue-600">{t('WorkoutInfo.InProgress')}</span>}
         {finished ? (
-          <span className="text-green-600">Completed</span>
+          <span className="text-green-600">{t('WorkoutInfo.Completed')}</span>
         ) : !started ? (
-          <span className="text-gray-500">Not Started</span>
+          <span className="text-gray-500">{t('WorkoutInfo.NotStarted')}</span>
         ) : null}
       </span>
 
       {/* Progress for active training */}
       {isInProgress && questionsCount && stepIndex !== null && stepIndex !== undefined && (
-        <span className="flex items-center gap-1" title="Current progress">
+        <span className="flex items-center gap-1" title={t('WorkoutInfo.CurrentProgress')}>
           <Icons.ChartNoAxesGantt className="mr-1 size-4 opacity-50" />
           {stepIndex + 1}/{questionsCount} ({completionPercentage}%)
         </span>
@@ -90,7 +92,7 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
 
       {/* Current session stats */}
       {isInProgress && currentRatio !== null && (
-        <span className="flex items-center gap-1" title="Current session ratio">
+        <span className="flex items-center gap-1" title={t('WorkoutInfo.CurrentSessionRatio')}>
           <Icons.LineChart className="mr-1 size-4 opacity-50" />
           {currentRatio}%
         </span>
@@ -98,17 +100,21 @@ export function WorkoutInfo(props: TWorkoutInfoProps) {
 
       {/* Started date */}
       {!hideTimes && isInProgress && startedAt && (
-        <span className="flex items-center gap-1" title="Started at">
+        <span className="flex items-center gap-1" title={t('WorkoutInfo.StartedAt')}>
           <Icons.Clock className="mr-1 size-4 opacity-50" />
-          Started {getFormattedRelativeDate(format, startedAt)}
+          {t('WorkoutInfo.StartedText', {
+            formattedDate: getFormattedRelativeDate(format, startedAt),
+          })}
         </span>
       )}
 
       {/* Finished date */}
       {!hideTimes && !isInProgress && finishedAt && (
-        <span className="flex items-center gap-1" title="Finished at">
+        <span className="flex items-center gap-1" title={t('WorkoutInfo.FinishedAt')}>
           <Icons.Clock className="mr-1 size-4 opacity-50" />
-          Finished {getFormattedRelativeDate(format, finishedAt)}
+          {t('WorkoutInfo.FinishedText', {
+            formattedDate: getFormattedRelativeDate(format, finishedAt),
+          })}
         </span>
       )}
     </div>

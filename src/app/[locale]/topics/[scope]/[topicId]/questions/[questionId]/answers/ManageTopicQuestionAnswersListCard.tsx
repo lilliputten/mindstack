@@ -68,6 +68,7 @@ function AnswersTableHeader({
   allAnswers: TAnswer[];
   toggleAll: () => void;
 }) {
+  const t = useT();
   const hasSelected = !!selectedAnswers.size;
   const isAllSelected = allAnswers.length > 0 && selectedAnswers.size === allAnswers.length;
   const isIndeterminate = hasSelected && !isAllSelected; // selectedAnswers.size > 0 && selectedAnswers.size < allAnswers.length;
@@ -92,7 +93,7 @@ function AnswersTableHeader({
             'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
           )}
           onClick={toggleAll}
-          title="Select/deselect all"
+          title={t('SelectDeselectAll')}
         >
           <Checkbox
             checked={hasSelected}
@@ -120,13 +121,13 @@ function AnswersTableHeader({
           </TableHead>
         )}
         <TableHead id="text" className="truncate">
-          Answer Text
+          {t('ViewAnswerContentSummary.AnswerText')}
         </TableHead>
         <TableHead id="isCorrect" className="truncate max-lg:hidden">
-          Correct
+          {t('ViewAnswerContentSummary.CorrectAnswer')}
         </TableHead>
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
-          Generated
+          {t('ViewAnswerContentSummary.AiGenerated')}
         </TableHead>
         <TableHead id="Actions"></TableHead>
       </TableRow>
@@ -154,6 +155,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
     isSelected,
     toggleSelected,
   } = props;
+  const t = useT();
   const answerId = answer.id;
   const answerRoutePath = `${answersListRoutePath}/${answerId}`;
   const { id, text, isCorrect, isGenerated } = answer;
@@ -244,7 +246,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
           'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
         )}
         onClick={() => toggleSelected(id)}
-        title="Select answer"
+        title={t('SelectAnswer')}
       >
         <Checkbox checked={isSelected} className="block" aria-label="Select answer" />
       </TableCell>
@@ -287,7 +289,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
             className="size-9 shrink-0"
             // onClick={() => handleEditAnswer(answer.id)}
             aria-label="Edit"
-            title="Edit"
+            title={t('Edit')}
           >
             <Link className="flex" href={`${answerRoutePath}/edit`}>
               <Icons.Edit className="size-4" />
@@ -299,7 +301,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
             className="size-9 shrink-0 text-destructive"
             // onClick={() => handleDeleteAnswer(answer.id)}
             aria-label="Delete"
-            title="Delete"
+            title={t('Delete')}
           >
             <Link
               className="flex"
@@ -324,6 +326,8 @@ interface TAnswersTableContentProps extends TManageTopicQuestionAnswersListCardP
 type TMemo = { allAnswers: TAvailableAnswer[] };
 
 export function AnswersTableContent(props: TAnswersTableContentProps & { className?: string }) {
+  const t = useT();
+
   const {
     className,
     availableAnswersQuery,
@@ -400,21 +404,21 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
       <PageEmpty
         className="size-full flex-1"
         icon={Icons.Answers}
-        title="No answers have been created yet"
-        description="You dont have any answers yet. Add any answer to your profile."
+        title={t('NoAnswersHaveBeenCreatedYet')}
+        description={t('ManageTopicQuestionAnswersListCard.NoAnswersDescription')}
         framed={false}
         buttons={
           <>
             <Button>
               <Link href={`${answersListRoutePath}/add`} className="flex gap-2">
                 <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
-                Add New Answer
+                {t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
               </Link>
             </Button>
             <Button disabled={!aiGenerationsAllowed || aiGenerationsLoading} variant="secondary">
               <Link href={`${answersListRoutePath}/generate`} className="flex gap-2">
                 <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
-                Generate Answers
+                {t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
               </Link>
             </Button>
           </>
@@ -584,7 +588,7 @@ export function ManageTopicQuestionAnswersListCard(
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
@@ -592,7 +596,7 @@ export function ManageTopicQuestionAnswersListCard(
       },
       {
         id: 'Reload',
-        content: 'Reload',
+        content: t('Reload'),
         // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
@@ -601,7 +605,7 @@ export function ManageTopicQuestionAnswersListCard(
       },
       {
         id: 'Delete Selected',
-        content: 'Delete Selected',
+        content: t('ManageTopicQuestionAnswersListCard.DeleteSelected'),
         // variant: 'destructive',
         icon: Icons.Trash,
         // visibleFor: 'xl',
@@ -611,7 +615,7 @@ export function ManageTopicQuestionAnswersListCard(
       },
       {
         id: 'Add New Answer',
-        content: 'Add New Answer',
+        content: t('ManageTopicQuestionAnswersListCard.AddNewAnswer'),
         // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
@@ -619,7 +623,7 @@ export function ManageTopicQuestionAnswersListCard(
       },
       {
         id: 'Generate Answers',
-        content: 'Generate Answers',
+        content: t('ManageTopicQuestionAnswersListCard.GenerateAnswers'),
         // variant: 'secondary',
         icon: Icons.WandSparkles,
         // visibleFor: 'lg',
@@ -638,6 +642,7 @@ export function ManageTopicQuestionAnswersListCard(
       refetchAnswers,
       goToTheRoute,
       answersListRoutePath,
+      t,
     ],
   );
 

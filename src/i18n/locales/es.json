@@ -1,41 +1,75 @@
 {
+  "AIPoweredLearning": "Aprendizaje impulsado por IA",
+  "ActiveRecallPractice": "Práctica de recuperación activa",
+  "AllowedToGenerate": "Permitido generar",
   "Answer": "Respuesta",
   "Answers": "Respuestas",
   "Author": "Autor",
   "Authors": "Autores",
+  "Availability": "Disponibilidad",
   "Back": "Atrás",
   "Cancel": "Cancelar",
+  "ChangeFilters": "Cambiar Filtros",
+  "ClearText": "Borrar texto",
   "Close": "Cerrar",
   "Continue": "Continuar",
   "Created": "Creado",
+  "CreationDate": "Fecha de creación",
+  "CurrentProgress": "Progreso actual",
+  "CurrentSessionRatio": "Relación de sesión actual",
   "Delete": "Eliminar",
   "Description": "Descripción",
   "Edit": "Editar",
   "Finish": "Finalizar",
+  "FinishedAt": "Terminado en",
+  "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
   "Keywords": "Palabras clave",
   "Language": "Idioma",
   "Modified": "Modificado",
   "Name": "Nombre",
   "No": "No",
+  "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
+  "NoTopicsAvailable": "No hay temas disponibles",
+  "PageNotFound": "Página no encontrada",
   "Private": "Privado",
   "Public": "Público",
   "Question": "Pregunta",
   "Questions": "Preguntas",
+  "QuestionsCount": "Cantidad de preguntas",
+  "ReasonCode": "Código de razón",
   "Refresh": "Refrescar",
   "Reload": "Recargar",
   "Reset": "Reiniciar",
   "ResetChanges": "Restablecer cambios",
   "Save": "Guardar",
+  "SelectAnswer": "Seleccionar respuesta",
+  "SelectDeselectAll": "Seleccionar/deseleccionar todo",
+  "ShowMenu": "Mostrar menú",
   "Skip": "Omitir",
+  "SpacedRepetition": "Repetición espaciada",
   "Start": "Iniciar",
+  "StartedAt": "Iniciado en",
   "Timeline": "Cronología",
   "Topic": "Tema",
+  "TopicLanguage": "Idioma del tema",
   "TopicName": "Nombre del Tema",
   "Topics": "Temas",
   "Total": "Total",
   "Training": "Entrenamiento",
+  "TrainingStatus": "Estado del entrenamiento",
+  "UpdatedDate": "Fecha actualizada",
+  "UsedGenerations": "Generaciones usadas",
+  "UserGrade": "Nivel de usuario",
+  "UserRole": "Rol de usuario",
   "Yes": "Sí",
+  "AIGenerationsStatusInfo": {
+    "AvailableAIGenerations": "Generaciones de IA disponibles: {availableGenerations}",
+    "CheckYourUsagePlan": "verifique su plan de uso",
+    "NoAIGenerationsAvailable": "¡No hay generaciones de IA disponibles!",
+    "UnlimitedAIGenerationsAvailable": "Generaciones de IA ilimitadas disponibles",
+    "UsedGenerationsText": "Generaciones usadas: {usedGenerations}"
+  },
   "AcceptCookiesPopup": {
     "Accept": "Aceptar",
     "LearnMore": "Más información",
@@ -45,7 +79,7 @@
     "AddButtonText": "Agregar",
     "AddingButtonText": "Agregando",
     "AnswerText": "Texto de la Respuesta",
-    "AnswerTextHint": "Podrás editarlo más tarde, así como otras propiedades de la respuesta. ",
+    "AnswerTextHint": "Podrás editarlo más tarde, así como otras propiedades de la respuesta.",
     "AnswerTextPlaceholder": "Texto",
     "IsCorrectHint": "Cada pregunta debe tener una o algunas respuestas correctas.",
     "IsCorrectLabel": "¿Es correcta la respuesta?"
@@ -63,7 +97,7 @@
     "AddingButtonText": "Agregando",
     "CancelButtonText": "Cancelar",
     "QuestionText": "Texto de la Pregunta",
-    "QuestionTextHint": "Podrás editarlo más tarde, así como otras propiedades de la pregunta. ",
+    "QuestionTextHint": "Podrás editarlo más tarde, así como otras propiedades de la pregunta.",
     "QuestionTextPlaceholder": "Texto"
   },
   "AddQuestionModal": {
@@ -140,12 +174,21 @@
   },
   "AvailableTopicsFiltersFields": {
     "ChooseSortOrderHint": "Elige cómo ordenar la lista de temas.",
+    "ClearText": "Borrar texto",
     "DisplayTopicsWithActiveWorkoutsHint": "Mostrar temas con o sin entrenamientos activos.",
     "DisplayTopicsWithQuestionsHint": "Mostrar temas con o sin preguntas creadas.",
     "DisplayTopicsWithStatsHint": "Mostrar temas con o sin datos de estadísticas de progreso recopiladas.",
     "SearchForLanguageHint": "Busca código de idioma o nombre (por ejemplo: <code>en</code> o <code>Engl</code>).",
+    "SearchForLanguagePlaceholder": "Buscar idioma...",
     "SearchForTextHint": "Busca texto en el nombre, descripción o palabras clave.",
+    "SearchForTextPlaceholder": "Buscar texto...",
+    "SelectOptionPlaceholder": "Seleccionar opción…",
+    "SelectOrderPlaceholder": "Seleccionar orden…",
     "ShowOnlyMyTopicsHint": "Mostrar solo mis propios temas."
+  },
+  "AvailableTopicsList": {
+    "ChangeFiltersText": "Cambia los filtros para permitir mostrar temas públicos (si los hay), o crea los tuyos propios.",
+    "ManageOrCreateYourOwnTopics": "Gestionar o crear tus propios temas"
   },
   "AvailableTopicsListPage": {
     "AvailableTopicsHeading": "Temas Disponibles",
@@ -180,6 +223,13 @@
   },
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Error al cargar los datos de los usuarios."
+  },
+  "CardsWithIconsSection": {
+    "AIPoweredLearningDescription": "Aprovecha la IA avanzada para mejorar tu experiencia de aprendizaje. Obtén recomendaciones personalizadas y generación inteligente de contenido.",
+    "ActiveRecallPracticeDescription": "Fortalece tu memoria a través de la recuperación activa. Practica la recuperación de información de la memoria en lugar de solo releer, lo que se ha demostrado que es más efectivo para la retención a largo plazo.",
+    "Description": "MindStack combina potentes funciones con una interfaz intuitiva para hacer que el entrenamiento de la memoria sea efectivo y agradable. Construye tu base de conocimientos y practica en cualquier lugar y en cualquier momento.",
+    "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
+    "Title": "Por qué elegir MindStack"
   },
   "ContentFooter": {
     "AppDescription": "Aplicación de Entrenamiento de Memoria",
@@ -279,6 +329,9 @@
     "SavingQuestionData": "Guardando los datos de la pregunta...",
     "SuccessfullySavedQuestion": "Pregunta guardada exitosamente"
   },
+  "EditQuestionCardHolder": {
+    "TheQuestionHasBeenRemoved": "La pregunta ha sido eliminada"
+  },
   "EditQuestionFormFields": {
     "IsGenerated": "¿La pregunta fue generada por IA?",
     "IsGeneratedHint": "Si la pregunta ha sido generada automáticamente, entonces podría ser actualizada o eliminada más tarde.",
@@ -314,6 +367,22 @@
     "CannotSaveTopicData": "No se pueden guardar los datos del tema.",
     "SavingTopicData": "Guardando datos del tema...",
     "SuccessfullySavedTheTopic": "Guardado exitosamente el tema."
+  },
+  "FeaturesSection": {
+    "CreateCustomTopics": "Crear temas personalizados",
+    "CreateCustomTopicsDescription": "Organice sus materiales de aprendizaje en temas personalizados. Cada tema puede contener múltiples preguntas y respuestas, lo que le permite estructurar su base de conocimientos exactamente como lo necesita. La compatibilidad con múltiples idiomas le ayuda a aprender en su idioma preferido.",
+    "Description": "MindStack proporciona todo lo que necesita para crear, organizar y practicar sus materiales de aprendizaje. Construya su base de conocimientos con temas, preguntas y respuestas, y luego entrene su memoria con sesiones interactivas.",
+    "InteractiveWorkouts": "Entrenamientos interactivos",
+    "InteractiveWorkoutsDescription": "Practique su conocimiento con sesiones de entrenamiento interactivas. Responda preguntas, haga un seguimiento de su progreso y mejore su retención de memoria a través de técnicas de repetición espaciada y recuperación activa.",
+    "MultiLanguageSupport": "Soporte multilingüe",
+    "MultiLanguageSupportDescription": "Aprenda y practique en múltiples idiomas. Cambie entre idiomas sin problemas para mejorar su experiencia de aprendizaje multilingüe.",
+    "ProgressTracking": "Seguimiento de progreso",
+    "ProgressTrackingDescription": "Monitoree su progreso de aprendizaje con estadísticas detalladas. Siga su desempeño en diferentes temas, vea su mejora con el tiempo e identifique áreas que necesitan más práctica.",
+    "QuestionAndAnswerSystem": "Sistema de preguntas y respuestas",
+    "QuestionAndAnswerSystemDescription": "Cree conjuntos completos de preguntas y respuestas para cada tema. Cree múltiples opciones de respuesta y marque las respuestas correctas para probar su comprensión de manera efectiva.",
+    "ShareAndCollaborate": "Compartir y colaborar",
+    "ShareAndCollaborateDescription": "Comparta sus temas con otros o explore temas creados por la comunidad. Aprendan juntos y construyan conocimiento de forma colaborativa.",
+    "Title": "Potentes características para el entrenamiento de la memoria"
   },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
@@ -373,13 +442,17 @@
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
   "ManageTopicQuestionAnswersListCard": {
+    "AddNewAnswer": "Agregar Nueva Respuesta",
     "Cancel": "Cancelar",
     "CannotDeleteSelectedAnswers": "No se pueden eliminar las respuestas seleccionadas",
     "ConfirmDeleteSelectedAnswers": "Confirmar eliminación de respuestas seleccionadas",
     "ConfirmDeleteSelectedAnswersMessage": "¿Confirmas eliminar las respuestas seleccionadas?",
     "Delete": "Eliminar",
+    "DeleteSelected": "Eliminar Seleccionadas",
     "Deleting": "Eliminando",
     "DeletingSelectedAnswers": "Eliminando respuestas seleccionadas...",
+    "GenerateAnswers": "Generar Respuestas",
+    "NoAnswersDescription": "No tienes ninguna respuesta aún. Agrega alguna respuesta a tu perfil.",
     "SelectedAnswersCount": "Cantidad de respuestas seleccionadas: {count}.",
     "SuccessfullyDeletedSelectedAnswers": "Respuestas seleccionadas eliminadas exitosamente"
   },
@@ -491,6 +564,13 @@
     "Dashboard": "Panel",
     "Settings": "Configuración",
     "Sign Out": "Cerrar Sesión"
+  },
+  "NotFoundPages": {
+    "WrongAnswerComponentRequested": "Componente de respuesta incorrecto solicitado",
+    "WrongQuestionComponentRequested": "Componente de pregunta incorrecto solicitado",
+    "WrongSettingsPageComponentRequested": "Componente de página de configuración incorrecto solicitado",
+    "WrongTopicComponentRequested": "Componente de tema incorrecto solicitado",
+    "WrongTopicsPageRequested": "Página de temas incorrecta solicitada"
   },
   "Pages": {
     "AllTopicsDescription": "Temas de todos los usuarios",
@@ -702,6 +782,10 @@
     "yellow": "Amarillo",
     "zinc": "Zinc"
   },
+  "TopicHeader": {
+    "TheTrainingIsActive": "La formación está activa.",
+    "YourTopic": "Tu tema"
+  },
   "UpgradeCard": {
     "Description": "Desbloquea todas las funciones y obtén acceso ilimitado a nuestro equipo de soporte.",
     "Title": "Actualizar a Pro",
@@ -788,6 +872,22 @@
     "Reload": "Recargar",
     "StartTraining": "Iniciar Entrenamiento",
     "ViewTopic": "Ver Tema"
+  },
+  "Workout": {
+    "FailedToSaveWorkout": "No se pudo guardar el entrenamiento"
+  },
+  "WorkoutInfo": {
+    "Completed": "Completado",
+    "CurrentProgress": "Progreso actual",
+    "CurrentSessionRatio": "Relación de sesión actual",
+    "FinishedAt": "Terminado en",
+    "FinishedText": "Terminado {formattedDate}",
+    "InProgress": "En Progreso",
+    "NotStarted": "No Iniciado",
+    "StartedAt": "Iniciado en",
+    "StartedText": "Iniciado {formattedDate}",
+    "TrainingProgressDataNotYetCollected": "Los datos de progreso de entrenamiento aún no han sido recopilados",
+    "TrainingStatus": "Estado del entrenamiento"
   },
   "WorkoutProgress": {
     "QuestionsProgress": "Pregunta {currentStep} de {totalSteps}"
@@ -877,8 +977,5 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
-  },
-  "useWorkoutQuery": {
-    "FailedToSaveWorkout": "No se pudo guardar el entrenamiento"
   }
 }

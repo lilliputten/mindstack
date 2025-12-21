@@ -13,6 +13,7 @@ import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 
 import { AvailableTopicsListItem } from './AvailableTopicsListItem';
@@ -26,6 +27,8 @@ interface TProps extends TPropsWithClassName {
 }
 
 export function AvailableTopicsList(props: TProps) {
+  const t = useT();
+
   const { className, availableTopicsQuery } = props;
 
   const goBack = useGoBack(rootRoute);
@@ -75,19 +78,19 @@ export function AvailableTopicsList(props: TProps) {
       >
         <PageEmpty
           className="mx-6"
-          title="No topics available"
-          description="Change filters to allow displaying public topics (if there are any), or create your own ones."
+          title={t('NoTopicsAvailable')}
+          description={t('AvailableTopicsList.ChangeFiltersText')}
           // TODO: Add a button to open the filters pane (via context?)
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                Go Back
+                {t('GoBack')}
               </Button>
               {!isFiltersExpanded && (
                 <Button variant="outline" onClick={expandFilters} className="flex gap-2">
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  Change Filters
+                  {t('ChangeFilters')}
                 </Button>
               )}
               <Link
@@ -95,7 +98,7 @@ export function AvailableTopicsList(props: TProps) {
                 className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
               >
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                <span>Manage or create your own topics</span>
+                <span>{t('AvailableTopicsList.ManageOrCreateYourOwnTopics')}</span>
               </Link>
             </>
           }

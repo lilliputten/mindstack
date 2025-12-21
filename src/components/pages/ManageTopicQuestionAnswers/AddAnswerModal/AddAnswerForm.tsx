@@ -123,8 +123,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
                 />
               </FormControl>
               <FormHint>
-                {t('AddAnswerForm.AnswerTextHint')}
-                <MarkdownHint />
+                {t('AddAnswerForm.AnswerTextHint')} <MarkdownHint />
               </FormHint>
               <FormMessage />
             </FormItem>

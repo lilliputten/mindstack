@@ -6,6 +6,7 @@ import { useFormatter } from 'next-intl';
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import * as Icons from '@/components/shared/Icons';
 import { TAvailableTopic } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 interface TTopicPropertiesOptions {
   showDates?: boolean;
@@ -15,6 +16,7 @@ interface TTopicPropertiesProps {
 }
 
 export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesOptions) {
+  const t = useT();
   const {
     topic,
     // Options...
@@ -60,32 +62,32 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     /* !!compareDates(updatedAt, createdAt) && */ createdDateStr !== updatedDateStr;
   return (
     <>
-      <span id="questions" className="flex items-center gap-1" title="Questions count">
+      <span id="questions" className="flex items-center gap-1" title={t('QuestionsCount')}>
         <Icons.Questions className="mr-1 size-4 opacity-50" />{' '}
         {questionsCount ? questionsCount : 'No questions'}
       </span>
       {!!(langName || langCode) && (
-        <span id="language" className="flex items-center gap-1" title="Topic language">
+        <span id="language" className="flex items-center gap-1" title={t('TopicLanguage')}>
           <Icons.Languages className="mr-1 size-4 opacity-50" /> {langContent}
         </span>
       )}
       {!!keywordsContent?.length && (
-        <span id="keyword" className="flex flex-wrap items-center gap-1" title="Keywords">
+        <span id="keyword" className="flex flex-wrap items-center gap-1" title={t('Keywords')}>
           <Icons.Tags className="mr-1 size-4 opacity-50" /> {keywordsContent}
         </span>
       )}
       {!!(user && userName) && (
-        <span id="user-author" className="flex items-center gap-1" title="Author">
+        <span id="user-author" className="flex items-center gap-1" title={t('Author')}>
           <Icons.CircleUserRound className="mr-1 size-4 opacity-50" /> {userName}
         </span>
       )}
       {showDates && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title="Creation date">
+        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('CreationDate')}>
           <Icons.CalendarDays className="mr-1 size-4 opacity-50" /> {createdDateStr}
         </span>
       )}
       {showDates && updatedAt && areDifferentDates && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title="Updated date">
+        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('UpdatedDate')}>
           <Icons.Pencil className="mr-1 size-4 opacity-50" /> {updatedDateStr}
         </span>
       )}

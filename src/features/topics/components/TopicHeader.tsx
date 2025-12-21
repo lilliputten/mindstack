@@ -12,6 +12,7 @@ import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/cont
 import { TAvailableTopic, TIncludedUserTopicWorkout } from '@/features/topics/types';
 import { TWorkoutData } from '@/features/workouts/types';
 import { useSessionUser } from '@/hooks';
+import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
 
@@ -50,6 +51,7 @@ function ShowDetails(
   const isOwner = userId && userId === user?.id;
   const format = useFormatter();
   const PublicIcon = isPublic ? Icons.Eye : Icons.EyeOff;
+  const t = useT();
 
   // NOTE: Fetch the workout state from the passed workout data (if any) or try to get it from the local storage, otherwise
   const isActiveWorkout = React.useMemo(() => {
@@ -78,28 +80,28 @@ function ShowDetails(
   return (
     <>
       {isActiveWorkout && (
-        <span id="isOwner" title="The training is active">
+        <span id="isOwner" title={t('TopicHeader.TheTrainingIsActive')}>
           <Icons.Play className="size-4 text-theme-600" />
         </span>
       )}
       {isOwner && (
-        <span id="isOwner" title="Your Topic">
+        <span id="isOwner" title={t('TopicHeader.YourTopic')}>
           <Icons.ShieldCheck className="size-4 text-green-600" />
         </span>
       )}
       {isPublic && (
-        <span id="isPublic" title={isPublic ? 'Public' : 'Private'}>
+        <span id="isPublic" title={isPublic ? t('Public') : t('Private')}>
           <PublicIcon className="size-4" />
         </span>
       )}
       {showDates && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title="Creation date">
+        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('CreationDate')}>
           <Icons.CalendarDays className="mr-1 size-4 opacity-50" />{' '}
           {getFormattedRelativeDate(format, createdAt)}
         </span>
       )}
       {showDates && updatedAt && !!compareDates(updatedAt, createdAt) && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title="Updated date">
+        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('UpdatedDate')}>
           <Icons.Pencil className="mr-1 size-4 opacity-50" />{' '}
           {getFormattedRelativeDate(format, updatedAt)}
         </span>

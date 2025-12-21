@@ -86,7 +86,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                 <div className="relative flex gap-2">
                   <Input
                     id={searchTextKey}
-                    placeholder="Search for text..."
+                    placeholder={t('AvailableTopicsFiltersFields.SearchForTextPlaceholder')}
                     {...field}
                     value={field.value || ''}
                     className={cn('pr-11')}
@@ -103,7 +103,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                         'rounded-sm',
                         'opacity-30 transition hover:opacity-50',
                       )}
-                      title="Clear text"
+                      title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
                       <Close className="size-4" />
                     </Button>
@@ -125,7 +125,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                 <div className="relative flex gap-2">
                   <Input
                     id={searchLangKey}
-                    placeholder="Search for language..."
+                    placeholder={t('AvailableTopicsFiltersFields.SearchForLanguagePlaceholder')}
                     {...field}
                     value={field.value || ''}
                     className={cn('pr-11')}
@@ -142,7 +142,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                         'rounded-sm',
                         'opacity-30 transition hover:opacity-50',
                       )}
-                      title="Clear text"
+                      title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
                       <Close className="size-4" />
                     </Button>
@@ -198,7 +198,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
               <FormControl>
                 <Select value={field.value || ''} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select order…" />
+                    <SelectValue
+                      placeholder={t('AvailableTopicsFiltersFields.SelectOrderPlaceholder')}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {orderBySelectOptions.map((value) => (
@@ -237,7 +239,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select option…" />
+                      <SelectValue
+                        placeholder={t('AvailableTopicsFiltersFields.SelectOptionPlaceholder')}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="null">
@@ -279,7 +283,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select option…" />
+                      <SelectValue
+                        placeholder={t('AvailableTopicsFiltersFields.SelectOptionPlaceholder')}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="null">
@@ -323,7 +329,9 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select option…" />
+                      <SelectValue
+                        placeholder={t('AvailableTopicsFiltersFields.SelectOptionPlaceholder')}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="null">

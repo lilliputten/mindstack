@@ -5,10 +5,12 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { useT } from '@/i18n';
 
 // TODO: Force 404 status code for the response
 
 export default function NotFound() {
+  const t = useT();
   return (
     <PageWrapper
       className={cn(
@@ -25,7 +27,7 @@ export default function NotFound() {
           'w-full',
         )}
         icon={Icons.Topics}
-        title="Wrong topics page requested"
+        title={t('NotFoundPages.WrongTopicsPageRequested')}
       />
     </PageWrapper>
   );

@@ -183,7 +183,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
           // eslint-disable-next-line no-console
           console.error('Failed to update workout on server:', error);
           debugger; // eslint-disable-line no-debugger
-          toast.error(t('useWorkoutQuery.FailedToSaveWorkout'));
+          toast.error(t('Workout.FailedToSaveWorkout'));
         }
       }
     },

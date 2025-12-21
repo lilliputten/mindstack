@@ -5,10 +5,12 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Heart, Sparkles, Star } from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { useT } from '@/i18n';
 
 import { CardWithIcon } from './shared';
 
 export function CardsWithIconsSection() {
+  const t = useT();
   return (
     <section
       className={cn(
@@ -18,31 +20,30 @@ export function CardsWithIconsSection() {
     >
       <div className="mb-3 flex max-w-2xl flex-col">
         <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          Why Choose MindStack
+          {t('CardsWithIconsSection.Title')}
         </h2>
         <p className="text-base leading-6 text-muted-foreground lg:text-lg">
-          MindStack combines powerful features with an intuitive interface to make memory training
-          effective and enjoyable. Build your knowledge base and practice anywhere, anytime.
+          {t('CardsWithIconsSection.Description')}
         </p>
       </div>
       <div className="my-3 grid gap-6 py-6 lg:grid-cols-3">
         <CardWithIcon
           debugId="AIPoweredLearning"
           icon={Sparkles}
-          title="AI-Powered Learning"
-          description="Leverage advanced AI to enhance your learning experience. Get personalized recommendations and intelligent content generation."
+          title={t('AIPoweredLearning')}
+          description={t('CardsWithIconsSection.AIPoweredLearningDescription')}
         />
         <CardWithIcon
           debugId="SpacedRepetition"
           icon={Heart}
-          title="Spaced Repetition"
-          description="Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance."
+          title={t('SpacedRepetition')}
+          description={t('CardsWithIconsSection.SpacedRepetitionDescription')}
         />
         <CardWithIcon
           debugId="ActiveRecallPractice"
           icon={Star}
-          title="Active Recall Practice"
-          description="Strengthen your memory through active recall. Practice retrieving information from memory rather than just re-reading, proven to be more effective for long-term retention."
+          title={t('ActiveRecallPractice')}
+          description={t('CardsWithIconsSection.ActiveRecallPracticeDescription')}
         />
       </div>
     </section>

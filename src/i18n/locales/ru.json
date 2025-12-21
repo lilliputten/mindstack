@@ -1,40 +1,74 @@
 {
+  "AIPoweredLearning": "Обучение с поддержкой ИИ",
+  "ActiveRecallPractice": "Практика активного вспоминания",
+  "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
+  "Author": "Автор",
   "Authors": "Авторы",
+  "Availability": "Доступность",
   "Back": "Назад",
-  "Cancel": "Отмена",
+  "ChangeFilters": "Изменить фильтры",
+  "ClearText": "Очистить текст",
   "Close": "Закрыть",
   "Continue": "Продолжить",
   "Created": "Создано",
+  "CreationDate": "Дата создания",
+  "CurrentProgress": "Текущий прогресс",
+  "CurrentSessionRatio": "Текущее соотношение сессии",
   "Delete": "Удалить",
   "Description": "Описание",
   "Edit": "Редактировать",
   "Finish": "Завершить",
+  "FinishedAt": "Завершено в",
+  "GenerationMode": "Режим генерации",
   "GoBack": "Назад",
   "Keywords": "Ключевые слова",
   "Language": "Язык",
   "Modified": "Изменено",
   "Name": "Название",
   "No": "Нет",
+  "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
+  "NoTopicsAvailable": "Нет доступных тем",
+  "PageNotFound": "Страница не найдена",
   "Private": "Приватный",
   "Public": "Публичный",
   "Question": "Вопрос",
   "Questions": "Вопросы",
+  "QuestionsCount": "Количество вопросов",
+  "ReasonCode": "Код причины",
   "Refresh": "Обновить",
   "Reload": "Перезагрузить",
   "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
   "Save": "Сохранить",
+  "SelectAnswer": "Выбрать ответ",
+  "SelectDeselectAll": "Выбрать/отменить всё",
+  "ShowMenu": "Показать меню",
   "Skip": "Пропустить",
+  "SpacedRepetition": "Разнесённое повторение",
   "Start": "Начать",
+  "StartedAt": "Начато в",
   "Timeline": "Хронология",
   "Topic": "Тема",
+  "TopicLanguage": "Язык темы",
   "TopicName": "Название темы",
   "Topics": "Темы",
   "Total": "Всего",
   "Training": "Тренировка",
+  "TrainingStatus": "Статус тренировки",
+  "UpdatedDate": "Дата обновления",
+  "UsedGenerations": "Использованные генерации",
+  "UserGrade": "Уровень пользователя",
+  "UserRole": "Роль пользователя",
   "Yes": "Да",
+  "AIGenerationsStatusInfo": {
+    "AvailableAIGenerations": "Доступные генерации ИИ: {availableGenerations}",
+    "CheckYourUsagePlan": "проверьте свой тарифный план",
+    "NoAIGenerationsAvailable": "Нет доступных генераций ИИ!",
+    "UnlimitedAIGenerationsAvailable": "Доступны неограниченные генерации ИИ",
+    "UsedGenerationsText": "Использовано генераций: {usedGenerations}"
+  },
   "AcceptCookiesPopup": {
     "Accept": "Принять",
     "LearnMore": "Подробнее",
@@ -44,7 +78,7 @@
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
     "AnswerText": "Текст ответа",
-    "AnswerTextHint": "Вы сможете редактировать его позже, а также другие свойства ответа. ",
+    "AnswerTextHint": "Вы сможете редактировать его позже, а также другие свойства ответа.",
     "AnswerTextPlaceholder": "Текст",
     "IsCorrectHint": "Каждый вопрос должен иметь один или несколько правильных ответов.",
     "IsCorrectLabel": "Правильный ли ответ?"
@@ -62,7 +96,7 @@
     "AddingButtonText": "Добавление",
     "CancelButtonText": "Отмена",
     "QuestionText": "Текст вопроса",
-    "QuestionTextHint": "Вы сможете редактировать его позже, а также другие свойства вопроса. ",
+    "QuestionTextHint": "Вы сможете редактировать его позже, а также другие свойства вопроса.",
     "QuestionTextPlaceholder": "Текст"
   },
   "AddQuestionModal": {
@@ -143,12 +177,21 @@
   },
   "AvailableTopicsFiltersFields": {
     "ChooseSortOrderHint": "Выберите способ сортировки списка тем.",
+    "ClearText": "Очистить текст",
     "DisplayTopicsWithActiveWorkoutsHint": "Отображать темы с или без активных тренировок.",
     "DisplayTopicsWithQuestionsHint": "Отображать темы с или без созданных вопросов.",
     "DisplayTopicsWithStatsHint": "Отображать темы с или без собранных данных статистики прогресса.",
     "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
+    "SearchForLanguagePlaceholder": "Поиск языка...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
+    "SearchForTextPlaceholder": "Поиск текста...",
+    "SelectOptionPlaceholder": "Выбрать опцию…",
+    "SelectOrderPlaceholder": "Выбрать порядок…",
     "ShowOnlyMyTopicsHint": "Показывать только мои собственные темы."
+  },
+  "AvailableTopicsList": {
+    "ChangeFiltersText": "Измените фильтры, чтобы разрешить отображение публичных тем (если они есть), или создайте свои собственные.",
+    "ManageOrCreateYourOwnTopics": "Управлять или создавать свои собственные темы"
   },
   "AvailableTopicsListPage": {
     "AvailableTopicsHeading": "Доступные темы",
@@ -183,6 +226,13 @@
   },
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Ошибка загрузки данных пользователей."
+  },
+  "CardsWithIconsSection": {
+    "AIPoweredLearningDescription": "Используйте передовой ИИ для улучшения процесса обучения. Получайте персонализированные рекомендации и интеллектуальную генерацию контента.",
+    "ActiveRecallPracticeDescription": "Укрепляйте память с помощью активного воспроизведения. Практикуйте извлечение информации из памяти, а не просто повторное чтение, что доказано более эффективно для долгосрочного запоминания.",
+    "Description": "MindStack сочетает в себе мощные функции и интуитивно понятный интерфейс, чтобы сделать тренировку памяти эффективной и приятной. Создавайте свою базу знаний и занимайтесь в любом месте и в любое время.",
+    "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
+    "Title": "Почему стоит выбрать MindStack"
   },
   "ContentFooter": {
     "AppDescription": "Приложение для тренировки памяти",
@@ -282,6 +332,9 @@
     "SavingQuestionData": "Сохранение данных вопроса...",
     "SuccessfullySavedQuestion": "Вопрос успешно сохранён"
   },
+  "EditQuestionCardHolder": {
+    "TheQuestionHasBeenRemoved": "Вопрос был удален"
+  },
   "EditQuestionFormFields": {
     "IsGenerated": "Вопрос сгенерирован ИИ?",
     "IsGeneratedHint": "Если вопрос был сгенерирован автоматически, то он может быть обновлён или удалён позже.",
@@ -317,6 +370,22 @@
     "CannotSaveTopicData": "Невозможно сохранить данные темы.",
     "SavingTopicData": "Сохранение данных темы...",
     "SuccessfullySavedTheTopic": "Тема успешно сохранена"
+  },
+  "FeaturesSection": {
+    "CreateCustomTopics": "Создать пользовательские темы",
+    "CreateCustomTopicsDescription": "Организуйте свои учебные материалы в пользовательские темы. Каждая тема может содержать несколько вопросов и ответов, что позволяет структурировать базу знаний именно так, как вам нужно. Поддержка нескольких языков помогает учиться на предпочитаемом языке.",
+    "Description": "MindStack предоставляет все необходимое для создания, организации и практики учебных материалов. Создавайте свою базу знаний с темами, вопросами и ответами, а затем тренируйте память с помощью интерактивных тренировок.",
+    "InteractiveWorkouts": "Интерактивные тренировки",
+    "InteractiveWorkoutsDescription": "Практикуйте свои знания с помощью интерактивных тренировочных сессий. Отвечайте на вопросы, отслеживайте свой прогресс и улучшайте запоминание с помощью методов интервального повторения и активного воспроизведения.",
+    "MultiLanguageSupport": "Поддержка нескольких языков",
+    "MultiLanguageSupportDescription": "Учитесь и практикуйте на нескольких языках. Переключайтесь между языками без проблем, чтобы улучшить свой опыт многоязычного обучения.",
+    "ProgressTracking": "Отслеживание прогресса",
+    "ProgressTrackingDescription": "Отслеживайте свой учебный прогресс с помощью подробной статистики. Следите за своим выполнением в разных темах, наблюдайте за своим улучшением с течением времени и определяйте области, требующие дополнительной практики.",
+    "QuestionAndAnswerSystem": "Система вопросов и ответов",
+    "QuestionAndAnswerSystemDescription": "Создавайте исчерпывающие наборы вопросов и ответов для каждой темы. Создавайте несколько вариантов ответов и отмечайте правильные ответы для эффективной проверки вашего понимания.",
+    "ShareAndCollaborate": "Поделиться и сотрудничать",
+    "ShareAndCollaborateDescription": "Делитесь своими темами с другими или изучайте темы, созданные сообществом. Учитесь вместе и создавайте знания совместно.",
+    "Title": "Мощные функции для тренировки памяти"
   },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
@@ -376,13 +445,17 @@
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
   },
   "ManageTopicQuestionAnswersListCard": {
+    "AddNewAnswer": "Добавить новый ответ",
     "Cancel": "Отмена",
     "CannotDeleteSelectedAnswers": "Не удаётся удалить выбранные ответы",
     "ConfirmDeleteSelectedAnswers": "Подтвердить удаление выбранных ответов",
     "ConfirmDeleteSelectedAnswersMessage": "Подтверждаете удаление выбранных ответов?",
     "Delete": "Удалить",
+    "DeleteSelected": "Удалить выбранные",
     "Deleting": "Удаление",
     "DeletingSelectedAnswers": "Удаление выбранных ответов...",
+    "GenerateAnswers": "Генерировать ответы",
+    "NoAnswersDescription": "У вас еще нет ответов. Добавьте любой ответ в свой профиль.",
     "SelectedAnswersCount": "Количество выбранных ответов: {count}.",
     "SuccessfullyDeletedSelectedAnswers": "Выбранные ответы успешно удалены"
   },
@@ -494,6 +567,13 @@
     "Dashboard": "Панель управления",
     "Settings": "Настройки",
     "Sign Out": "Выйти"
+  },
+  "NotFoundPages": {
+    "WrongAnswerComponentRequested": "Запрошен неправильный компонент ответа",
+    "WrongQuestionComponentRequested": "Запрошен неправильный компонент вопроса",
+    "WrongSettingsPageComponentRequested": "Запрошен неправильный компонент страницы настроек",
+    "WrongTopicComponentRequested": "Запрошен неправильный компонент темы",
+    "WrongTopicsPageRequested": "Запрошена неправильная страница тем"
   },
   "Pages": {
     "AllTopicsDescription": "Темы всех пользователей",
@@ -705,6 +785,10 @@
     "yellow": "Желтый",
     "zinc": "Цинк"
   },
+  "TopicHeader": {
+    "TheTrainingIsActive": "Тренировка активна",
+    "YourTopic": "Ваша тема"
+  },
   "UpgradeCard": {
     "Description": "Разблокируйте все функции и получите неограниченный доступ к нашей службе поддержки.",
     "Title": "Перейти на Pro",
@@ -792,6 +876,22 @@
     "StartTraining": "Начать тренировку",
     "ViewTopic": "Просмотр темы"
   },
+  "Workout": {
+    "FailedToSaveWorkout": "Не удалось сохранить тренировку."
+  },
+  "WorkoutInfo": {
+    "Completed": "Завершено",
+    "CurrentProgress": "Текущий прогресс",
+    "CurrentSessionRatio": "Текущее соотношение сессии",
+    "FinishedAt": "Завершено в",
+    "FinishedText": "Завершено {formattedDate}",
+    "InProgress": "В процессе",
+    "NotStarted": "Не начато",
+    "StartedAt": "Начато в",
+    "StartedText": "Начато {formattedDate}",
+    "TrainingProgressDataNotYetCollected": "Данные о прогрессе тренировки еще не собраны",
+    "TrainingStatus": "Статус тренировки"
+  },
   "WorkoutProgress": {
     "QuestionsProgress": "Вопрос {currentStep} из {totalSteps}"
   },
@@ -877,8 +977,5 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
-  },
-  "useWorkoutQuery": {
-    "FailedToSaveWorkout": "Не удалось сохранить тренировку."
   }
 }

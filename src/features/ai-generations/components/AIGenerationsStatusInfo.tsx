@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 
 import { useAIGenerationsStatus } from '../query-hooks/useAIGenerationsStatus';
@@ -19,6 +20,7 @@ interface TProps extends TPropsWithClassName {
 }
 
 export function AIGenerationsStatusInfo(props: TProps) {
+  const t = useT();
   const { className, noFrame } = props;
   const showFrame = !noFrame;
 
@@ -92,20 +94,25 @@ export function AIGenerationsStatusInfo(props: TProps) {
       {isUnlimited ? (
         <span className={cn('flex items-center gap-1 text-green-600')}>
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
-          <span>Unlimited AI generations available</span>
+          <span>{t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')}</span>
         </span>
       ) : allowed ? (
         <span className={cn('flex items-center gap-1 text-green-600')}>
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
-          <span>Available AI generations: {availableGenerations}</span>
+          <span>
+            {t('AIGenerationsStatusInfo.AvailableAIGenerations', { availableGenerations })}
+          </span>
         </span>
       ) : (
         <span className={cn('flex items-center gap-1')}>
           <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
           <span>
-            <span className="font-semibold text-red-500">No AI generations available!</span> Please{' '}
+            <span className="font-semibold text-red-500">
+              {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
+            </span>{' '}
+            Please{' '}
             <Link href={welcomeRoute} className="text-theme-500 hover:underline">
-              check your usage plan
+              {t('AIGenerationsStatusInfo.CheckYourUsagePlan')}
             </Link>
             .
           </span>
@@ -114,9 +121,9 @@ export function AIGenerationsStatusInfo(props: TProps) {
 
       {/* Used Generations */}
       {!!usedGenerations && (
-        <span className="flex items-center gap-1" title="Used generations">
+        <span className="flex items-center gap-1" title={t('UsedGenerations')}>
           <Icons.LineChart className="mr-1 size-4 opacity-50" />
-          Used generations: {usedGenerations}
+          {t('AIGenerationsStatusInfo.UsedGenerationsText', { usedGenerations })}
         </span>
       )}
 

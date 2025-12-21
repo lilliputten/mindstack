@@ -17,19 +17,10 @@ import {
   useAvailableTopicById,
   useGoBack,
 } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditQuestionCard } from './EditQuestionCard';
-
-// import {
-//   ManageTopicQuestionsListCard,
-//   TManageTopicQuestionsListCardProps,
-// } from './ManageTopicQuestionsListCard';
-
-// type TEditQuestionCardHolderProps = Omit<
-//   TManageTopicQuestionsListCardProps,
-//   'availableTopicQuery' | 'availableQuestionsQuery'
-// >;
 
 interface TEditQuestionCardHolderProps {
   topicId: TTopicId;
@@ -37,6 +28,8 @@ interface TEditQuestionCardHolderProps {
 }
 
 export function EditQuestionCardHolder(props: TEditQuestionCardHolderProps) {
+  const t = useT();
+
   const { topicId, questionId } = props;
   const [hasDeleted, setHasDeleted] = React.useState(false);
 
@@ -130,7 +123,9 @@ export function EditQuestionCardHolder(props: TEditQuestionCardHolderProps) {
 
   if (hasDeleted) {
     // TODO: Show 'Question has been removed' info?
-    return <PageError icon={Icons.Trash} title="The question has been removed" />;
+    return (
+      <PageError icon={Icons.Trash} title={t('EditQuestionCardHolder.TheQuestionHasBeenRemoved')} />
+    );
   }
 
   // No data loaded yet - show skeleton
