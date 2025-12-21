@@ -13,6 +13,7 @@ import { createWorkoutStats } from '@/features/workouts/actions/createWorkoutSta
 import { getWorkout } from '@/features/workouts/actions/getWorkout';
 import { updateWorkout } from '@/features/workouts/actions/updateWorkout';
 import { TWorkoutData } from '@/features/workouts/types';
+import { useT } from '@/i18n';
 
 import { useAvailableTopicById } from './useAvailableTopicById';
 import { useQuestionIdsForTopicId } from './useQuestionIdsForTopicId';
@@ -45,6 +46,8 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
   const { enabled = true, preparing, topicId, userId } = props;
   const queryClient = useQueryClient();
   const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  const t = useT();
 
   const questionIdsQuery = useQuestionIdsForTopicId({ topicId });
   const {
@@ -180,11 +183,11 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
           // eslint-disable-next-line no-console
           console.error('Failed to update workout on server:', error);
           debugger; // eslint-disable-line no-debugger
-          toast.error('Failed to save workout');
+          toast.error(t('useWorkoutQuery.FailedToSaveWorkout'));
         }
       }
     },
-    [memo, saveToLocalStorage, isOffline, topicId, queryClient, queryKey],
+    [memo, saveToLocalStorage, isOffline, topicId, queryClient, queryKey, t],
   );
 
   const createNewWorkoutData = React.useCallback(() => {

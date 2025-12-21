@@ -34,7 +34,7 @@ console.log('Got configuration', {
   EMAIL_PORT,
   EMAIL_HOST_USER,
   EMAIL_TEST_USER,
-  // EMAIL_HOST_PASSWORD,
+  EMAIL_HOST_PASSWORD,
   EMAIL_USE_SSL,
   secure,
 });
@@ -67,7 +67,7 @@ async function main() {
     const res = await transporter.sendMail({
       from: `"${EMAIL_FROM_NAME}" <${EMAIL_FROM || EMAIL_HOST_USER}>`,
       to: EMAIL_TEST_USER,
-      subject: 'MindStack TS Email test',
+      subject: 'MindStack TS Email test (2)',
       text: 'The test email message.',
     });
 

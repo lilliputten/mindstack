@@ -102,35 +102,38 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
   }, [ready, settings.themeColor]);
 
   // Set local settings
-  const updateLocalSettings = React.useCallback((settings: TSettings) => {
-    try {
-      // Set cookie
-      const { themeColor } = settings;
-      // Set cookie to allow providing a colorTheme value in the layout on SSR if no user has been authorized (and no settings), to avoid content flash
-      if (themeColor) {
-        setCookie('themeColor', themeColor);
-      } else {
-        deleteCookie('themeColor');
+  const updateLocalSettings = React.useCallback(
+    (settings: TSettings) => {
+      try {
+        // Set cookie
+        const { themeColor } = settings;
+        // Set cookie to allow providing a colorTheme value in the layout on SSR if no user has been authorized (and no settings), to avoid content flash
+        if (themeColor) {
+          setCookie('themeColor', themeColor);
+        } else {
+          deleteCookie('themeColor');
+        }
+        const settingsData = removeFalsyValues(settings); // { ...settings, userId });
+        // Don't store user id locally (but be sure that settings are cleared on logout
+        if (settingsData.userId) {
+          delete settingsData.userId;
+        }
+        if (Object.keys(settingsData).length) {
+          window.localStorage.setItem('settings', JSON.stringify(settingsData));
+        } else {
+          window.localStorage.removeItem('settings');
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('[SettingsContext:updateLocalSettings] Can not save local settings', {
+          error,
+        });
+        debugger; // eslint-disable-line no-debugger
+        toast.error(t('SettingsContext.CanNotSaveLocalSettings'));
       }
-      const settingsData = removeFalsyValues(settings); // { ...settings, userId });
-      // Don't store user id locally (but be sure that settings are cleared on logout
-      if (settingsData.userId) {
-        delete settingsData.userId;
-      }
-      if (Object.keys(settingsData).length) {
-        window.localStorage.setItem('settings', JSON.stringify(settingsData));
-      } else {
-        window.localStorage.removeItem('settings');
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('[SettingsContext:updateLocalSettings] Can not save local settings', {
-        error,
-      });
-      debugger; // eslint-disable-line no-debugger
-      toast.error('Can not save local settings');
-    }
-  }, []);
+    },
+    [t],
+  );
 
   const setAndMemoizeSettings = React.useCallback(
     (settings: TSettings) => {
@@ -218,9 +221,9 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
     }
     const promise = getSettings();
     toast.promise(promise, {
-      loading: 'Loading settings...',
-      success: 'Successfully loaded settings.',
-      error: 'Can not load settings data.',
+      loading: t('SettingsContext.LoadingSettings'),
+      success: t('SettingsContext.SuccessfullyLoadedSettings'),
+      error: t('SettingsContext.CanNotLoadSettings'),
     });
     memo.loadingPromise = promise;
     promise
@@ -239,14 +242,14 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
           error,
         });
         debugger; // eslint-disable-line no-debugger
-        toast.error('Can not load settings from server');
+        toast.error(t('SettingsContext.CanNotLoadSettings'));
       })
       .finally(() => {
         setUserInited(true);
         delete memo.loadingPromise;
       });
     return promise;
-  }, [memo, setAndMemoizeSettings, userId]);
+  }, [memo, setAndMemoizeSettings, t, userId]);
 
   // Load settings on initialization
   React.useEffect(() => {

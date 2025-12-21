@@ -210,7 +210,7 @@ export function GenerateAnswersModal() {
     async (formData: TFormData) => {
       try {
         if (!questionId) {
-          toast.error('No question ID defined');
+          toast.error(t('GenerateAnswersModal.NoQuestionIdDefined'));
           return;
         }
         /* console.log('[GenerateAnswersModal:handleGenerateAnswers] Start', {

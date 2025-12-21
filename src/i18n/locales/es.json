@@ -178,6 +178,9 @@
     "start": "Inicio",
     "status": "Verificar tu estado"
   },
+  "CachedUsersForTopics": {
+    "ErrorLoadingUsersData": "Error al cargar los datos de los usuarios."
+  },
   "ContentFooter": {
     "AppDescription": "Aplicación de Entrenamiento de Memoria",
     "BuiltWithText": "Construido con <NextJSLink>Next.js</NextJSLink> y <VercelLink>Vercel</VercelLink> por <AuthorLink>{authorSite}</AuthorLink>",
@@ -330,6 +333,7 @@
     "DialogDescription": "Generar Diálogo de Respuestas",
     "DialogTitle": "Generar Respuestas",
     "ModalTitle": "Generar Respuestas",
+    "NoQuestionIdDefined": "No se ha definido ningún ID de pregunta",
     "ToastErrorAnswers": "No se pueden agregar respuestas",
     "ToastErrorData": "No se pueden recuperar los datos generados por IA",
     "ToastLoadingAnswers": "Agregando nuevas respuestas...",
@@ -360,6 +364,7 @@
     "DialogDescription": "Generar Diálogo de Preguntas",
     "DialogTitle": "Generar Preguntas",
     "ModalTitle": "Generar Preguntas",
+    "NoTopicIdDefined": "No se ha definido ningún ID de tema",
     "ToastErrorData": "No se pueden recuperar los datos generados por IA",
     "ToastErrorQuestions": "No se pueden agregar preguntas",
     "ToastLoadingData": "Recuperando datos generados por IA...",
@@ -442,6 +447,9 @@
     "SuccessfullyMadeSelectedTopicsPublic": "Temas seleccionados hechos públicos exitosamente",
     "SuccessfullyResetPublicStatusForSelectedTopics": "Estado público de temas seleccionados restablecido exitosamente",
     "TopicName": "Nombre del Tema"
+  },
+  "ManageTopicsPageModalsWrapper": {
+    "RequestedTopicNotExists": "El tema solicitado no existe."
   },
   "MarkdownHint": {
     "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>Guía de Markdown</MarkdownGuideLink> para la información de sintaxis."
@@ -620,7 +628,11 @@
     "SelectLanguageText": "Elige un idioma para un tema"
   },
   "SettingsContext": {
+    "CanNotLoadSettings": "No se puede cargar la configuración",
+    "CanNotSaveLocalSettings": "No se puede guardar la configuración local",
     "CanNotSaveSettings": "No se puede guardar la configuración.",
+    "LoadingSettings": "Cargando configuración...",
+    "SuccessfullyLoadedSettings": "Configuración cargada correctamente.",
     "SuccessfullySavedSettings": "Configuración guardada correctamente.",
     "tsx": {
       "SavingSettings": "Guardando configuración..."
@@ -717,6 +729,10 @@
     "TotalAnswers": "Respuestas totales",
     "TotalQuestions": "Preguntas totales",
     "YouAreTheAuthor": "Eres el autor"
+  },
+  "ViewAvailableTopicContent": {
+    "NoActiveTrainingText": "No tienes entrenamiento activo ni registros históricos para mostrar. \nEmpieza a entrenar ahora.",
+    "TrainingNotStarted": "El entrenamiento no ha comenzado."
   },
   "ViewQuestionCard": {
     "AddNewQuestion": "Agregar Nueva Pregunta",
@@ -861,5 +877,8 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "useWorkoutQuery": {
+    "FailedToSaveWorkout": "No se pudo guardar el entrenamiento"
   }
 }

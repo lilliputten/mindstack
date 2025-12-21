@@ -181,6 +181,9 @@
     "start": "Начать",
     "status": "Проверить ваш статус"
   },
+  "CachedUsersForTopics": {
+    "ErrorLoadingUsersData": "Ошибка загрузки данных пользователей."
+  },
   "ContentFooter": {
     "AppDescription": "Приложение для тренировки памяти",
     "BuiltWithText": "Создано в <AuthorLink>{authorSite}</AuthorLink> с использованием <NextJSLink>Next.js</NextJSLink> и <VercelLink>Vercel</VercelLink>",
@@ -333,6 +336,7 @@
     "DialogDescription": "Генерировать диалог ответов",
     "DialogTitle": "Генерировать ответы",
     "ModalTitle": "Генерировать ответы",
+    "NoQuestionIdDefined": "Идентификатор вопроса не задан",
     "ToastErrorAnswers": "Невозможно добавить ответы",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastLoadingAnswers": "Добавление новых ответов...",
@@ -363,6 +367,7 @@
     "DialogDescription": "Генерировать диалог вопросов",
     "DialogTitle": "Генерировать вопросы",
     "ModalTitle": "Генерировать вопросы",
+    "NoTopicIdDefined": "Идентификатор темы не определен",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastErrorQuestions": "Невозможно добавить вопросы",
     "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
@@ -445,6 +450,9 @@
     "SuccessfullyMadeSelectedTopicsPublic": "Выбранные темы успешно сделаны публичными",
     "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем успешно сброшен",
     "TopicName": "Название темы"
+  },
+  "ManageTopicsPageModalsWrapper": {
+    "RequestedTopicNotExists": "Запрошенная тема не существует."
   },
   "MarkdownHint": {
     "Content": "Этот текст поддерживает разметку markdown, посмотрите <MarkdownGuideLink>Руководство по Markdown</MarkdownGuideLink> для информации о синтаксисе."
@@ -623,7 +631,11 @@
     "SelectLanguage": "Выбрать язык"
   },
   "SettingsContext": {
+    "CanNotLoadSettings": "Невозможно загрузить настройки",
+    "CanNotSaveLocalSettings": "Невозможно сохранить локальные настройки",
     "CanNotSaveSettings": "Не могу сохранить настройки.",
+    "LoadingSettings": "Загрузка настроек...",
+    "SuccessfullyLoadedSettings": "Настройки успешно загружены.",
     "SuccessfullySavedSettings": "Настройки успешно сохранены.",
     "tsx": {
       "SavingSettings": "Сохранение настроек..."
@@ -720,6 +732,10 @@
     "TotalAnswers": "Всего ответов",
     "TotalQuestions": "Всего вопросов",
     "YouAreTheAuthor": "Вы автор"
+  },
+  "ViewAvailableTopicContent": {
+    "NoActiveTrainingText": "У вас нет ни активного обучения, ни записей истории для отображения. \nНачните обучение прямо сейчас.",
+    "TrainingNotStarted": "Обучение не началось"
   },
   "ViewQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",
@@ -861,5 +877,8 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
+  },
+  "useWorkoutQuery": {
+    "FailedToSaveWorkout": "Не удалось сохранить тренировку."
   }
 }

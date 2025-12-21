@@ -178,6 +178,9 @@
     "start": "Start",
     "status": "Check your status"
   },
+  "CachedUsersForTopics": {
+    "ErrorLoadingUsersData": "Error loading users data."
+  },
   "ContentFooter": {
     "AppDescription": "Memory Training Application",
     "BuiltWithText": "Built with <NextJSLink>Next.js</NextJSLink> and <VercelLink>Vercel</VercelLink> by <AuthorLink>{authorSite}</AuthorLink>",
@@ -330,6 +333,7 @@
     "DialogDescription": "Generate Answers Dialog",
     "DialogTitle": "Generate Answers",
     "ModalTitle": "Generate Answers",
+    "NoQuestionIdDefined": "No question ID defined",
     "ToastErrorAnswers": "Cannot add answers",
     "ToastErrorData": "Can not retrieve AI generated data",
     "ToastLoadingAnswers": "Adding new answers...",
@@ -360,6 +364,7 @@
     "DialogDescription": "Generate Questions Dialog",
     "DialogTitle": "Generate Questions",
     "ModalTitle": "Generate Questions",
+    "NoTopicIdDefined": "No topic ID defined",
     "ToastErrorData": "Can not retrieve AI generated data",
     "ToastErrorQuestions": "Cannot add questions",
     "ToastLoadingData": "Retrieving AI generated data...",
@@ -442,6 +447,9 @@
     "SuccessfullyMadeSelectedTopicsPublic": "Successfully made selected topics public",
     "SuccessfullyResetPublicStatusForSelectedTopics": "Successfully reset public status for selected topics",
     "TopicName": "Topic Name"
+  },
+  "ManageTopicsPageModalsWrapper": {
+    "RequestedTopicNotExists": "The requested topic does not exist."
   },
   "MarkdownHint": {
     "Content": "This text allows markdown markup, look at the <MarkdownGuideLink>Markdown Guide</MarkdownGuideLink> for the syntax info."
@@ -620,7 +628,11 @@
     "SelectLanguageText": "Choose a language for a topic"
   },
   "SettingsContext": {
+    "CanNotLoadSettings": "Can not load settings",
+    "CanNotSaveLocalSettings": "Can not save local settings",
     "CanNotSaveSettings": "Can not save settings.",
+    "LoadingSettings": "Loading settings...",
+    "SuccessfullyLoadedSettings": "Successfully loaded settings.",
     "SuccessfullySavedSettings": "Successfully saved settings.",
     "tsx": {
       "SavingSettings": "Saving settings..."
@@ -717,6 +729,10 @@
     "TotalAnswers": "Total answers",
     "TotalQuestions": "Total questions",
     "YouAreTheAuthor": "You're the author"
+  },
+  "ViewAvailableTopicContent": {
+    "NoActiveTrainingText": "You have no active training nor history records to display. Start training now.",
+    "TrainingNotStarted": "The training has not been started"
   },
   "ViewQuestionCard": {
     "AddNewQuestion": "Add New Question",
@@ -861,5 +877,8 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
+  },
+  "useWorkoutQuery": {
+    "FailedToSaveWorkout": "Failed to save workout"
   }
 }

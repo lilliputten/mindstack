@@ -12,6 +12,7 @@ import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TAvailableTopic } from '@/features/topics/types';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
+import { useT } from '@/i18n';
 
 interface TViewAvailableTopicContentProps {
   topic: TAvailableTopic;
@@ -21,6 +22,8 @@ interface TViewAvailableTopicContentProps {
 export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
   const { topic, className } = props;
+
+  const t = useT();
 
   const workoutContext = useWorkoutContext();
   const {
@@ -77,8 +80,8 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
         <PageEmpty
           className="size-full flex-1"
           icon={Icons.Activity}
-          title="The training has not been started"
-          description="You have no active training nor history records to display. Start training now."
+          title={t('ViewAvailableTopicContent.TrainingNotStarted')}
+          description={t('ViewAvailableTopicContent.NoActiveTrainingText')}
           framed={false}
           buttons={<WorkoutControl omitNoWorkoutMessage />}
         />

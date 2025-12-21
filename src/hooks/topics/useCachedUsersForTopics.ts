@@ -5,6 +5,7 @@ import { getErrorText } from '@/lib/helpers';
 import { TTopic } from '@/features/topics/types';
 import { getUsersByIdsList } from '@/features/users/actions';
 import { TUser, TUserId } from '@/features/users/types/TUser';
+import { useT } from '@/i18n';
 
 export type TCachedUsers = Record<TUserId, TUser>;
 
@@ -19,6 +20,8 @@ interface TUseCachedUsersProps {
 }
 
 export function useCachedUsersForTopics(props: TUseCachedUsersProps) {
+  const t = useT();
+
   const { topics, bypass } = props;
   const [cachedUsers, setCachedUsers] = React.useState<TCachedUsers>({});
   const memo = React.useMemo<TMemo>(() => ({ cachedUsers: {}, loadingIds: [] }), []);
@@ -57,11 +60,11 @@ export function useCachedUsersForTopics(props: TUseCachedUsersProps) {
           error,
         });
         debugger; // eslint-disable-line no-debugger
-        toast.error('Error loading users data.');
+        toast.error(t('CachedUsersForTopics.ErrorLoadingUsersData'));
       })
       .finally(() => {
         memo.loadingIds = memo.loadingIds.filter((id) => !memo.loadingIds.includes(id));
       });
-  }, [bypass, topics, memo]);
+  }, [bypass, topics, memo, t]);
   return cachedUsers;
 }

@@ -184,7 +184,7 @@ export function GenerateQuestionsModal() {
     async (formData: TFormData) => {
       try {
         if (!topicId) {
-          toast.error('No topic ID defined');
+          toast.error(t('GenerateQuestionsModal.NoTopicIdDefined'));
           return;
         }
         /* console.log('[GenerateQuestionsModal:handleGenerateQuestions] Start', {

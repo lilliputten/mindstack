@@ -12,6 +12,7 @@ import {
 } from '@/contexts/TopicsFiltersContext';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ContentSkeleton } from './ContentSkeleton';
@@ -37,6 +38,8 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   const { manageScope } = useManageTopicsStore();
   const isOnlyMy = manageScope === TopicsManageScopeIds.MY_TOPICS;
   const routePath = `/topics/${manageScope}`;
+
+  const t = useT();
 
   const [filtersParams, setFiltersParams] = React.useState<
     TAvailableTopicsFiltersParams | undefined
@@ -79,12 +82,12 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
           const url = `${routePath}/delete?topicId=${topicId}&from=${from}`;
           goToTheRoute(url);
         } else {
-          toast.error('The requested topic does not exist.');
+          toast.error(t('ManageTopicsPageModalsWrapper.RequestedTopicNotExists'));
           goToTheRoute(routePath, true);
         }
       }
     },
-    [memo, goToTheRoute],
+    [memo, goToTheRoute, t],
   );
   React.useEffect(() => {
     if (deleteTopicId && isFetched) {
@@ -109,12 +112,12 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
           const url = `${routePath}/${topicId}/edit`;
           goToTheRoute(url);
         } else {
-          toast.error('The requested topic does not exist.');
+          toast.error(t('ManageTopicsPageModalsWrapper.RequestedTopicNotExists'));
           goToTheRoute(routePath, true);
         }
       }
     },
-    [memo, goToTheRoute],
+    [memo, goToTheRoute, t],
   );
   React.useEffect(() => {
     if (editTopicId && isFetched) {
@@ -132,12 +135,12 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
           const url = `${routePath}/${topicId}/questions`;
           goToTheRoute(url);
         } else {
-          toast.error('The requested topic does not exist.');
+          toast.error(t('ManageTopicsPageModalsWrapper.RequestedTopicNotExists'));
           goToTheRoute(routePath, true);
         }
       }
     },
-    [memo, goToTheRoute],
+    [memo, goToTheRoute, t],
   );
 
   React.useEffect(() => {
