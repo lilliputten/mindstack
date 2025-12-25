@@ -17,8 +17,8 @@ const envSchema = z.object({
   // App
   VERCEL_ENV: z.string().optional(),
   NODE_ENV: z.string().optional(),
+  NEXT_PUBLIC_URL: z.string(),
   NEXT_PUBLIC_APP_URL: z.string().optional(),
-  NEXT_PUBLIC_URL: z.string().optional(),
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
@@ -143,7 +143,7 @@ export const isDev = envServer.NODE_ENV === 'development';
 export const PUBLIC_URL = isVercel
   ? 'https://' +
     (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
-  : NEXT_PUBLIC_APP_URL || NEXT_PUBLIC_URL || 'http://localhost:3000';
+  : NEXT_PUBLIC_APP_URL || NEXT_PUBLIC_URL;
 
 export const WEBHOOK_HOST = envServer.WEBHOOK_HOST || PUBLIC_URL;
 

@@ -1,12 +1,13 @@
 import { setRequestLocale } from 'next-intl/server';
 
+import { NEXT_PUBLIC_URL } from '@/config/envServer';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { formatDate, getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
-import { contactEmail, effectiveCookiesDate, isDev, publicAddr } from '@/config';
+import { contactEmail, effectiveCookiesDate, isDev } from '@/config';
 import { getT } from '@/i18n';
 import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
@@ -85,7 +86,7 @@ export async function CookiesPage(props: TCookiesPagePropsWithContent) {
   const vars = {
     effectiveDate: formatDate(effectiveCookiesDate, locale),
     contactEmail,
-    publicAddr,
+    publicAddr: NEXT_PUBLIC_URL,
   };
 
   return (

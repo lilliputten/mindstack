@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 
+import { NEXT_PUBLIC_URL } from '@/config/envServer';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -13,7 +14,6 @@ import {
   docsRoute,
   isDev,
   privacyRoute,
-  publicAddr,
   rootRoute,
   settingsRoute,
   siteTitle,
@@ -99,7 +99,7 @@ export async function DocsPage(props: TDocsPagePropsWithContent) {
     cookiesRoute,
     docsRoute,
     privacyRoute,
-    publicAddr,
+    publicAddr: NEXT_PUBLIC_URL,
     rootRoute,
     settingsRoute,
     termsRoute,
