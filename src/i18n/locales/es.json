@@ -565,7 +565,7 @@
     "Admin": "Administración",
     "Dashboard": "Panel",
     "Settings": "Configuración",
-    "Sign Out": "Cerrar Sesión"
+    "SignOut": "Cerrar Sesión"
   },
   "NotFoundPages": {
     "WrongAnswerComponentRequested": "Componente de respuesta incorrecto solicitado",

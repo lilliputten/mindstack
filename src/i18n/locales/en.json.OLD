@@ -72,7 +72,7 @@
     "Admin": "Administration",
     "Dashboard": "Dashboard",
     "Settings": "Settings",
-    "Sign Out": "Sign Out"
+    "SignOut": "Sign Out"
   },
   "RootPage": {
     "about": "Main page",

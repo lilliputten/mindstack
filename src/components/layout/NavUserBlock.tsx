@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
 import { settingsRoute } from '@/config/routesConfig';
+import { deleteAllCookies } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
@@ -37,7 +38,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   } = props;
   const { data: session } = useSession();
   const user = session?.user;
-  const t = useT('NavUserAccount');
+  const t = useT();
 
   const queryClient = useQueryClient();
 
@@ -49,6 +50,9 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       queryClient.clear();
       if (typeof localStorage !== 'undefined') {
         localStorage.clear();
+      }
+      if (typeof document !== 'undefined') {
+        deleteAllCookies();
       }
       signOut({
         callbackUrl: `${window.location.origin}/`,
@@ -121,7 +125,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           className="flex items-center space-x-2.5 disabled"
         >
           <Lock className="size-4" />
-          <p className="text-sm">{t('Admin')}</p>
+          <p className="text-sm">{t('NavUserAccount.Admin')}</p>
         </Link>
       </MenuItem>
       )*/}
@@ -133,14 +137,14 @@ export function NavUserBlock(props: TNavUserBlockProps) {
               className="disabled flex items-center space-x-2.5"
             >
               <Icons.LayoutDashboard className="size-4" />
-              <p className="text-sm">{t('Dashboard')}</p>
+              <p className="text-sm">{t('NavUserAccount.Dashboard')}</p>
             </Link>
           </MenuItem>
 
           <MenuItem asChild>
             <Link href={settingsRoute} className="flex items-center space-x-2.5">
               <Icons.Settings className="size-4" />
-              <p className="text-sm">{t('Settings')}</p>
+              <p className="text-sm">{t('NavUserAccount.Settings')}</p>
             </Link>
           </MenuItem>
 
@@ -157,7 +161,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       >
         <div className="flex items-center space-x-2.5">
           <Icons.LogOut className="size-4" />
-          <p className="text-sm">{t('Sign Out')}</p>
+          <p className="text-sm">{t('NavUserAccount.SignOut')}</p>
         </div>
       </MenuItem>
     </Wrapper>

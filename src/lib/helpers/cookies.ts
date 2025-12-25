@@ -1,3 +1,7 @@
+import { epochStartDateStr } from '@/constants';
+
+const emptyCookieStr = `=; expires=${epochStartDateStr}; path=/;`;
+
 /** @param {string} cookieId */
 export function getCookie(cookieId: string) {
   const cookiesStr = document.cookie;
@@ -32,5 +36,13 @@ export function setCookie(id: string, val: string, maxAgeSecs?: number) {
 }
 
 export function deleteCookie(id: string) {
-  document.cookie = id + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie = id + emptyCookieStr;
+}
+
+export function deleteAllCookies() {
+  document.cookie.split(';').forEach((cookie) => {
+    const eqPos = cookie.indexOf('=');
+    const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+    document.cookie = name + emptyCookieStr;
+  });
 }

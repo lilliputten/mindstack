@@ -566,7 +566,7 @@
     "Admin": "Administration",
     "Dashboard": "Dashboard",
     "Settings": "Settings",
-    "Sign Out": "Sign Out"
+    "SignOut": "Sign Out"
   },
   "NotFoundPages": {
     "WrongAnswerComponentRequested": "Wrong answer component requested",

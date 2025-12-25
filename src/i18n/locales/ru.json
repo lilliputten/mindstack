@@ -568,7 +568,7 @@
     "Admin": "Администрирование",
     "Dashboard": "Панель управления",
     "Settings": "Настройки",
-    "Sign Out": "Выйти"
+    "SignOut": "Выйти"
   },
   "NotFoundPages": {
     "WrongAnswerComponentRequested": "Запрошен неправильный компонент ответа",
