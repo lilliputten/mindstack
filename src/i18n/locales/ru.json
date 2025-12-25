@@ -748,12 +748,12 @@
     "UpdateSettingsHint": "Обновить настройки с сервера"
   },
   "SignInForm": {
-    "intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",
-    "sign-in": "Войти",
-    "sign-in-with-github": "Войти с GitHub",
-    "sign-in-with-google": "Войти с Google",
-    "sign-in-with-telegram": "Войти с Telegram",
-    "sign-in-with-yandex": "Войти с Yandex"
+    "Intro": "Войдите, чтобы иметь возможность редактировать свои собственные данные.",
+    "SignIn": "Войти",
+    "SignInWithGithub": "Войти с GitHub",
+    "SignInWithGoogle": "Войти с Google",
+    "SignInWithTelegram": "Войти с Telegram",
+    "SignInWithYandex": "Войти с Yandex"
   },
   "SiteMenu": {
     "AllTopics": "Все темы",

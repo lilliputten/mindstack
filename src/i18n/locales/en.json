@@ -746,12 +746,12 @@
     "UpdateSettingsHint": "Update settings from server"
   },
   "SignInForm": {
-    "intro": "Login to be able editing your own data.",
-    "sign-in": "Sign In",
-    "sign-in-with-github": "Sign In with GitHub",
-    "sign-in-with-google": "Sign In with Google",
-    "sign-in-with-telegram": "Sign In with Telegram",
-    "sign-in-with-yandex": "Sign In with Yandex"
+    "Intro": "Login to be able editing your own data.",
+    "SignIn": "Sign In",
+    "SignInWithGithub": "Sign In with GitHub",
+    "SignInWithGoogle": "Sign In with Google",
+    "SignInWithTelegram": "Sign In with Telegram",
+    "SignInWithYandex": "Sign In with Yandex"
   },
   "SiteMenu": {
     "AllTopics": "All Topics",

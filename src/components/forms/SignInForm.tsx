@@ -93,7 +93,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
     // dark,
     inBody,
   } = props;
-  const t = useT('SignInForm');
+  const t = useT();
   const Title = inBody ? 'h3' : DialogTitle;
   const Descr = inBody ? 'p' : DialogDescription;
   const showLogo = false && !inBody;
@@ -111,7 +111,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
           inBody && 'text-theme',
         )}
       >
-        {t('sign-in')}
+        {t('SignInForm.SignIn')}
       </Title>
       <Descr
         className={cn(
@@ -119,7 +119,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
           'text-center text-sm',
         )}
       >
-        {t('intro')}
+        {t('SignInForm.Intro')}
       </Descr>
     </>
   );
@@ -135,7 +135,7 @@ interface TSignInFormProps {
 export function SignInForm(props: TSignInFormProps) {
   const { onSignInStart, onSignInDone, inBody } = props;
   const [currentProvider, setCurrentProvider] = React.useState<TSignInProvider>();
-  const t = useT('SignInForm');
+  const t = useT();
 
   const handleSignInStart = React.useCallback(
     (provider: TSignInProvider) => {
@@ -155,7 +155,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="github"
         ProviderIcon={Icons.Github}
-        text={t('sign-in-with-github')}
+        text={t('SignInForm.SignInWithGithub')}
       />
       <OAuthSignInButton
         currentProvider={currentProvider}
@@ -163,7 +163,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="yandex"
         ProviderIcon={Icons.Yandex}
-        text={t('sign-in-with-yandex')}
+        text={t('SignInForm.SignInWithYandex')}
       />
       <OAuthSignInButton
         currentProvider={currentProvider}
@@ -171,7 +171,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="google"
         ProviderIcon={Icons.Google}
-        text={t('sign-in-with-google')}
+        text={t('SignInForm.SignInWithGoogle')}
       />
       {/* Telegram login section */}
       <TelegramSignIn inBody={inBody} isLogging={!!currentProvider} />

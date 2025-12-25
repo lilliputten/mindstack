@@ -745,12 +745,12 @@
     "UpdateSettingsHint": "Actualizar configuración desde el servidor"
   },
   "SignInForm": {
-    "intro": "Inicia sesión para poder editar tus propios datos.",
-    "sign-in": "Iniciar Sesión",
-    "sign-in-with-github": "Iniciar Sesión con GitHub",
-    "sign-in-with-google": "Iniciar Sesión con Google",
-    "sign-in-with-telegram": "Iniciar Sesión con Telegram",
-    "sign-in-with-yandex": "Iniciar Sesión con Yandex"
+    "Intro": "Inicia sesión para poder editar tus propios datos.",
+    "SignIn": "Iniciar Sesión",
+    "SignInWithGithub": "Iniciar Sesión con GitHub",
+    "SignInWithGoogle": "Iniciar Sesión con Google",
+    "SignInWithTelegram": "Iniciar Sesión con Telegram",
+    "SignInWithYandex": "Iniciar Sesión con Yandex"
   },
   "SiteMenu": {
     "AllTopics": "Todos los Temas",
