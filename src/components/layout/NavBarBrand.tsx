@@ -35,7 +35,7 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
     'space-x-1.5',
     'gap-2',
     'transition-all',
-    'mr-4',
+    // 'mr-4',
     'select-none',
     'hover:opacity-80',
   );

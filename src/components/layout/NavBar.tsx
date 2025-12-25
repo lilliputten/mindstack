@@ -73,19 +73,20 @@ export function NavBar(props: NavBarProps) {
           <nav
             className={cn(
               isDev && '__NavBar_MiddleLinks', // DEBUG
-              'hidden sm:block',
               'overflow-hidden',
+              'flex-1',
             )}
           >
             <div
               className={cn(
                 isDev && '__NavBar_MiddleLinks_Wrapper', // DEBUG
-                'flex flex-wrap justify-center gap-2',
+                'flex flex-wrap items-center justify-center gap-2',
                 'overflow-hidden',
                 'leading-10',
-                'max-h-10',
+                'mr-2 max-h-10',
               )}
             >
+              <span className="empty h-10" />
               {links
                 .filter((item) => !item.userRequiredOnly || isUser)
                 .map((item) => {
@@ -138,16 +139,11 @@ export function NavBar(props: NavBarProps) {
           className={cn(
             isDev && '__NavBar_Right', // DEBUG
             'flex items-center gap-2',
-            /* // Fixed section, visible on md and wider screens
-             * 'hidden',
-             * 'sm:flex',
-             */
             'flex',
             'leading-10',
-            'max-sm:hidden',
+            'max-md:hidden',
             'max-h-10',
-            'max-lg:flex-1',
-            'max-lg:justify-end',
+            'justify-end',
           )}
         >
           {/* Right header for extra stuff */}
