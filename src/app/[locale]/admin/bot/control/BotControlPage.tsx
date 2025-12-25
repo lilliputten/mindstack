@@ -3,7 +3,7 @@
 import React from 'react';
 import { toast } from 'sonner';
 
-import { getServerInfo, sendSetCommandsRequest, sendWebhookStartRequest } from '@/lib/admin/';
+import { sendSetCommandsRequest, sendWebhookStartRequest } from '@/lib/admin/';
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
@@ -12,6 +12,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 
 const __useDebugData = isDev && true;
 
