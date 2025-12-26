@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { myTopicsRoute, welcomeRoute } from '@/config/routesConfig';
+import { myTopicsRoute, publicWelcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { getT } from '@/i18n';
@@ -19,7 +19,7 @@ export async function RedirectPage() {
   const user = await getCurrentUser();
 
   if (!user) {
-    redirect(welcomeRoute);
+    redirect(publicWelcomeRoute);
   } else {
     redirect(myTopicsRoute);
   }

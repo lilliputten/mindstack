@@ -33,11 +33,11 @@ MindStack is a modern web application built with Next.js that provides memory tr
 
 The application uses a clean navigation structure:
 
-- [Home]({rootRoute}) -- Main dashboard and overview
+- [Home]({publicRootRoute}) -- Main dashboard and overview
 - [Available Topics]({availableTopicsRoute}) -- Browse available memory training categories
 - [Settings]({settingsRoute}) -- Application settings
 - Profile _(in progress)_ -- Manage your account settings and view progress
-- [Documentation]({docsRoute}) -- This help section
+- [Documentation]({publicDocsRoute}) -- This help section
 
 ## Memory Training Topics
 
@@ -70,9 +70,9 @@ Choose from multiple visual themes to customize your experience:
 
 Switch between supported languages:
 
-- [English](/en{docsRoute}) -- English, the default language
-- [Spanish](/es{docsRoute}) -- Español
-- [Russian](/ru{docsRoute}) -- Русский
+- [English](/en{publicDocsRoute}) -- English, the default language
+- [Spanish](/es{publicDocsRoute}) -- Español
+- [Russian](/ru{publicDocsRoute}) -- Русский
 
 ## Account Management
 

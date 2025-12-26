@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { isLoggedUser } from '@/lib/session';
 import { PageError } from '@/components/shared/PageError';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
@@ -37,7 +37,7 @@ export default async function ManageTopicQuestionsLayout(props: TManageTopicQues
 
   const isLogged = await isLoggedUser();
   if (!isLogged) {
-    redirect(welcomeRoute);
+    redirect(publicWelcomeRoute);
   }
 
   // Enable static rendering

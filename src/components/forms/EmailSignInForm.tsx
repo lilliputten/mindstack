@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { rootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 import { getErrorText } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -68,7 +68,7 @@ export function EmailSignInForm({ className, isLogging }: TProps) {
         const result = await signIn('nodemailer', {
           email,
           redirect: false,
-          callbackUrl: rootRoute,
+          callbackUrl: publicRootRoute,
         });
         if (!result || result?.error) {
           throw result?.error;

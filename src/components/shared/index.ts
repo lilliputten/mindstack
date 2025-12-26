@@ -8,3 +8,4 @@ export * from './MaxWidthWrapper';
 export * from './PageError';
 export * from './ScrollableLayout';
 export * from './UserAvatar';
+export * from './GenericSkeleton';

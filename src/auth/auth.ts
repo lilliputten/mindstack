@@ -4,7 +4,7 @@ import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
 import { SET_FIRST_USER_ADMIN, USE_ALLOWED_USERS } from '@/config/envServer';
-import { authErrorRoute, welcomeRoute } from '@/config/routesConfig';
+import { authErrorRoute, publicWelcomeRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { checkIsAllowedUser } from '@/features/allowed-users/helpers/checkIsAllowedUser';
@@ -54,7 +54,7 @@ export const nextAuthApp = NextAuth({
   },
   pages: {
     // @see https://next-auth.js.org/configuration/pages
-    signIn: welcomeRoute, // <-- /api/auth/signin
+    signIn: publicWelcomeRoute, // <-- /api/auth/signin
     error: authErrorRoute, // <-- /api/auth/error
     // signOut: '/auth/signout',
   },

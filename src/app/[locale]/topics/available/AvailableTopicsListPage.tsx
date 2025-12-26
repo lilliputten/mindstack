@@ -26,7 +26,7 @@ export function AvailableTopicsListPage(props: TProps) {
   const t = useT();
   const user = useSessionUser();
   const goToTheRoute = useGoToTheRoute();
-  // const goBack = useGoBack(rootRoute);
+  // const goBack = useGoBack(publicRootRoute);
 
   const {
     isFetched,

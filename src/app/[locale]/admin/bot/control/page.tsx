@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isAdminUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,7 @@ export default async function BotControlPageWrapper() {
   const isAdmin = await isAdminUser();
 
   if (!isAdmin) {
-    return redirect(welcomeRoute);
+    return redirect(publicWelcomeRoute);
   }
 
   return (

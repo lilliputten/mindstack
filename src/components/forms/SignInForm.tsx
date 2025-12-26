@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
+import { myTopicsRoute, publicRootRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -100,7 +100,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
   return (
     <>
       {showLogo && (
-        <Link href={rootRoute} className="transition hover:opacity-80">
+        <Link href={publicRootRoute} className="transition hover:opacity-80">
           <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
         </Link>
       )}

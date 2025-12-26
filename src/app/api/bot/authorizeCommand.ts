@@ -67,7 +67,7 @@ export async function authorizeCommand(ctx: TCommandContext) {
     });
 
     /* // TODO: Specify callback url
-     * const encodedRootRoute = encodeURIComponent(rootRoute);
+     * const encodedRootRoute = encodeURIComponent(publicRootRoute);
      * const callbackUrl = encodedRootRoute;
      */
 

@@ -1,10 +1,10 @@
 'use client';
 
 import {
-  aboutRoute,
   availableTopicsRoute,
   myTopicsRoute,
-  welcomeRoute,
+  publicAboutRoute,
+  publicWelcomeRoute,
 } from '@/config/routesConfig';
 import { generateArray } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
@@ -34,7 +34,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
     >
       {t.rich('AppIntro.BlockContent', {
         p: (chunks) => <p>{chunks}</p>,
-        AboutLink: (chunks) => <Link href={aboutRoute}>{chunks}</Link>,
+        AboutLink: (chunks) => <Link href={publicAboutRoute}>{chunks}</Link>,
       })}
       {isUserLoading ? (
         <>
@@ -59,8 +59,8 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         <Link href={availableTopicsRoute}>available trainings</Link> created by other people.
       </p>
       <p>
-        If you have a <Link href={welcomeRoute}>PRO subscription plan</Link>, then you can use AI
-        genration of topics' questions and answers.
+        If you have a <Link href={publicWelcomeRoute}>PRO subscription plan</Link>, then you can use
+        AI genration of topics' questions and answers.
       </p>
       {isAdmin && (
         <p>

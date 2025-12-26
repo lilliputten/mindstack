@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { isAdminUser, isLoggedUser } from '@/lib/session';
 import {
   TopicsManageScopeIds,
@@ -43,7 +43,7 @@ export default async function ManageTopicsLayout(props: TManageTopicsLayoutProps
   // Check if logged user
   const isLogged = await isLoggedUser();
   if (!isLogged) {
-    redirect(welcomeRoute);
+    redirect(publicWelcomeRoute);
   }
 
   const isAdmin = await isAdminUser();

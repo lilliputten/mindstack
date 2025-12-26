@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { rootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -28,7 +28,7 @@ export function TelegramSignInForm({
         className,
       )}
     >
-      <input type="hidden" name="callbackUrl" value={rootRoute} />
+      <input type="hidden" name="callbackUrl" value={publicRootRoute} />
       <div className="flex flex-col gap-2">
         <label htmlFor="token" className="block text-center text-sm font-medium">
           Then follow the link or enter the token here:

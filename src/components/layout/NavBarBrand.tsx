@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import { siteTitle } from '@/config/env';
-import { rootRoute, welcomeRoute } from '@/config/routesConfig';
+import { publicRootRoute, publicWelcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -23,10 +23,10 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
   const { children, className: parentClassName } = props;
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  // const rootRoute = isUser ? aboutRoute : welcomeRoute;
-  const rootRoutesList = getAllRouteSynonyms(rootRoute, locale);
-  const isRoot = !pathname || rootRoutesList.includes(pathname);
-  const urlRoute = isRoot ? welcomeRoute : rootRoute;
+  // const publicRootRoute = isUser ? publicAboutRoute : publicWelcomeRoute;
+  const publicRootRoutesList = getAllRouteSynonyms(publicRootRoute, locale);
+  const isRoot = !pathname || publicRootRoutesList.includes(pathname);
+  const urlRoute = isRoot ? publicWelcomeRoute : publicRootRoute;
   const className = cn(
     isDev && '__BrandWrapper', // DEBUG
     parentClassName,

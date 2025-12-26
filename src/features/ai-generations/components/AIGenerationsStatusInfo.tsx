@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -111,7 +111,7 @@ export function AIGenerationsStatusInfo(props: TProps) {
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
             </span>{' '}
             Please{' '}
-            <Link href={welcomeRoute} className="text-theme-500 hover:underline">
+            <Link href={publicWelcomeRoute} className="text-theme-500 hover:underline">
               {t('AIGenerationsStatusInfo.CheckYourUsagePlan')}
             </Link>
             .

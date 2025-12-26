@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
@@ -48,7 +48,7 @@ export default async function ManageTopicsPageHolder(props: TManageTopicsPageHol
   // Check if logged user
   const isLogged = await isLoggedUser();
   if (!isLogged) {
-    redirect(welcomeRoute);
+    redirect(publicWelcomeRoute);
   }
   return (
     <PageWrapper

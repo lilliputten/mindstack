@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { availableTopicsRoute, welcomeRoute } from '@/config/routesConfig';
+import { availableTopicsRoute, publicWelcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { getT } from '@/i18n';
@@ -19,6 +19,6 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
 export default async function DefaultRootPage() {
   const prefix = '/' + defaultLocale;
   const user = await getCurrentUser();
-  const route = user ? availableTopicsRoute : welcomeRoute;
+  const route = user ? availableTopicsRoute : publicWelcomeRoute;
   redirect(prefix + route);
 }

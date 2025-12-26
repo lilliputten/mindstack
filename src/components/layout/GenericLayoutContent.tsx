@@ -46,10 +46,10 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
 
   const pathname = usePathname();
   const locale = useLocale() as TLocale;
-  const rootRoutesList = routesWithoutSidebar.flatMap((route) =>
+  const publicRootRoutesList = routesWithoutSidebar.flatMap((route) =>
     getAllRouteSynonyms(route, locale),
   );
-  const isRoot = !pathname || rootRoutesList.includes(pathname);
+  const isRoot = !pathname || publicRootRoutesList.includes(pathname);
   const hideSidebar = HIDE_SIDEBAR_FOR_ROOT_LANDING && isRoot;
 
   // Filtered top- and second-level items

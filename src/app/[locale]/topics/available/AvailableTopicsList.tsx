@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { myTopicsRoute, rootRoute } from '@/config/routesConfig';
+import { myTopicsRoute, publicRootRoute } from '@/config/routesConfig';
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -31,7 +31,7 @@ export function AvailableTopicsList(props: TProps) {
 
   const { className, availableTopicsQuery } = props;
 
-  const goBack = useGoBack(rootRoute);
+  const goBack = useGoBack(publicRootRoute);
 
   const {
     isInited: isFiltersInited,

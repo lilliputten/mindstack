@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { rootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 import { ErrorLike } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
@@ -56,17 +56,17 @@ export function PageError(props: TErrorProps) {
     // TODO: Log the error to an error reporting service?
   }, [error, errText]);
 
-  const goBack = useGoBack(rootRoute);
+  const goBack = useGoBack(publicRootRoute);
 
   const goHome = React.useCallback(() => {
     const { href } = window.location;
     // Do a hard reload
-    // window.location.href = rootRoute;
-    router.push(rootRoute);
+    // window.location.href = publicRootRoute;
+    router.push(publicRootRoute);
     setTimeout(() => {
       // If still on the same page after trying to go back, fallback
       if (document.visibilityState === 'visible' && href === window.location.href) {
-        window.location.href = rootRoute;
+        window.location.href = publicRootRoute;
       }
     }, 200);
   }, [router]);
@@ -101,7 +101,7 @@ export function PageError(props: TErrorProps) {
           Go home
         </Button>
         {/*
-        <Link href={rootRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
+        <Link href={publicRootRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
           <span>Go home</span>
         </Link>

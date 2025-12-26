@@ -1,4 +1,3 @@
-export const aboutRoute = '/about';
 export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
 export const adminBotControlRoute = '/admin/bot/control';
 export const adminRoute = '/admin';
@@ -9,38 +8,41 @@ export const dashboardRoute = '/dashboard';
 export const myTopicsRoute = '/topics/my';
 export const settingsRoute = '/settings';
 
+// Root route
+export const publicRootRoute = '/';
+
+// Alias routes
+export const publicStartRoute = availableTopicsRoute; // '/start';
+
+// Public content routes (without sidebar)
+export const publicAboutRoute = '/about';
+export const publicDocsRoute = '/docs';
+export const publicPricingRoute = '/pricing';
+export const publicWelcomeRoute = '/welcome';
+
 // Legal page routes
 export const legalCookiesRoute = '/legal/cookies';
 export const legalOfferRoute = '/legal/offer';
 export const legalPrivacyRoute = '/legal/privacy';
 export const legalTermsRoute = '/legal/terms';
 
-// Public content routes (without sidebar)
-export const docsRoute = '/docs';
-export const pricingRoute = '/pricing';
-export const startRoute = '/start';
-export const welcomeRoute = '/welcome';
-
-// Root route
-export const rootRoute = '/';
-
 /** NOTE: That's used only to mock real intl context */
 export const pathnames = {
-  [aboutRoute]: aboutRoute,
+  [publicAboutRoute]: publicAboutRoute,
   [adminAiTestTextQueryRoute]: adminAiTestTextQueryRoute,
   [adminBotControlRoute]: adminBotControlRoute,
   [adminRoute]: adminRoute,
   [allTopicsRoute]: allTopicsRoute,
   [availableTopicsRoute]: availableTopicsRoute,
   [dashboardRoute]: dashboardRoute,
-  [docsRoute]: docsRoute,
+  [publicDocsRoute]: publicDocsRoute,
   [myTopicsRoute]: myTopicsRoute,
   [settingsRoute]: settingsRoute,
-  [welcomeRoute]: welcomeRoute,
+  [publicWelcomeRoute]: publicWelcomeRoute,
 
   // Public routes (without sidebar)
-  [rootRoute]: rootRoute,
-  [pricingRoute]: pricingRoute,
+  [publicRootRoute]: publicRootRoute,
+  [publicPricingRoute]: publicPricingRoute,
 
   // Legal pages
   [legalCookiesRoute]: legalCookiesRoute,
@@ -52,16 +54,16 @@ export const pathnames = {
 /** All routes to display without dashboard sidebar. */
 export const routesWithoutSidebar = [
   // Root route
-  rootRoute,
+  publicRootRoute,
 
   // Public content routes (without sidebar)
   legalCookiesRoute,
-  docsRoute,
-  pricingRoute,
+  publicDocsRoute,
+  publicPricingRoute,
   legalPrivacyRoute,
-  startRoute,
+  publicStartRoute,
   legalTermsRoute,
-  welcomeRoute,
+  publicWelcomeRoute,
 ];
 
 export type TRoutePathKey = keyof typeof pathnames;

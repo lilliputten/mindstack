@@ -3,7 +3,7 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { publicWelcomeRoute } from '@/config/routesConfig';
 import { getErrorText } from '@/lib/helpers';
 import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
@@ -143,7 +143,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 {historicalErrorText === t('WorkoutStats.AuthenticationRequired') ? (
                   <>
                     {t('WorkoutStats.PleaseSignIn')}{' '}
-                    <Link href={welcomeRoute}>{t('WorkoutStats.signIn')}</Link>{' '}
+                    <Link href={publicWelcomeRoute}>{t('WorkoutStats.signIn')}</Link>{' '}
                     {t('WorkoutStats.toViewYourStatistics')}
                   </>
                 ) : (

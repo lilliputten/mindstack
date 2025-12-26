@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
-import { rootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
@@ -534,7 +534,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
 
   const isDataLoading = isRefetching || isLoading || isFiltersPending;
 
-  const goBack = useGoBack(rootRoute);
+  const goBack = useGoBack(publicRootRoute);
 
   const handleReload = React.useCallback(() => {
     refetch({ cancelRefetch: true });

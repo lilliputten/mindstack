@@ -4,11 +4,11 @@ import React from 'react';
 import PublicLink from 'next/link';
 
 import {
-  docsRoute,
   legalCookiesRoute,
   legalPrivacyRoute,
   legalTermsRoute,
-  pricingRoute,
+  publicDocsRoute,
+  publicPricingRoute,
 } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
@@ -83,7 +83,7 @@ export function ContentFooter() {
         </div>
         <div>
           <div className="flex flex-col items-start gap-4 pt-3 text-sm">
-            <LocalLink href={docsRoute} className="hover:underline">
+            <LocalLink href={publicDocsRoute} className="hover:underline">
               {t('ContentFooter.DocumentationLink')}
             </LocalLink>
             {/*
@@ -139,7 +139,7 @@ export function ContentFooter() {
         <LocalLink href={legalCookiesRoute} className="hover:underline">
           {t('ContentFooter.CookiePolicyLink')}
         </LocalLink>
-        <LocalLink href={pricingRoute} className="hover:underline">
+        <LocalLink href={publicPricingRoute} className="hover:underline">
           {t('ContentFooter.PricingLink')}
         </LocalLink>
       </div>

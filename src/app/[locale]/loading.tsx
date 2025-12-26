@@ -1,3 +1,3 @@
-import { TextPageSkeleton } from '@/components/shared/TextPageSkeleton';
+import { GenericSkeleton } from '@/components/shared';
 
-export default TextPageSkeleton;
+export default GenericSkeleton;

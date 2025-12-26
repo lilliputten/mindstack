@@ -1,7 +1,7 @@
 import { MainNavItem } from '@/lib/types/site/NavItem';
 import * as Icons from '@/components/shared/Icons';
 
-import { availableTopicsRoute, myTopicsRoute, welcomeRoute } from './routesConfig';
+import { availableTopicsRoute, myTopicsRoute, publicWelcomeRoute } from './routesConfig';
 
 export type SiteMenu = {
   mainNav: MainNavItem[];
@@ -25,7 +25,7 @@ export const siteMenu: SiteMenu = {
     {
       titleId: 'Welcome',
       icon: Icons.MonitorPlay,
-      href: welcomeRoute,
+      href: publicWelcomeRoute,
     },
   ],
 };

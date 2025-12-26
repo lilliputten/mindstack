@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { rootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 
 export function useGoToTheRoute() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export function useGoToTheRoute() {
      * @param {string} [routePath] - Route string, is the root route by default.
      * @param {boolean} [replace] - To replace the route instead of push it.
      */
-    (routePath: string = rootRoute, replace?: boolean) => {
+    (routePath: string = publicRootRoute, replace?: boolean) => {
       if (replace) {
         router.replace(routePath);
       } else {
