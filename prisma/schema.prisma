@@ -112,7 +112,6 @@ model AllowedUser {
   id Int @id @default(autoincrement())
 
   // Telegram or email.
-  // type  String @default("EMAIL")
   type  AllowedUserType @default(EMAIL)
   value String          @default("")
 
@@ -247,7 +246,6 @@ model WorkoutStats {
   topicId String @map("topic_id")
 
   // Round statistics
-  // roundNumber    Int @map("round_number")
   totalQuestions Int @map("total_questions")
   correctAnswers Int @map("correct_answers")
   ratio          Int
@@ -267,4 +265,23 @@ model WorkoutStats {
   @@index([topicId])
   @@index([userId, topicId])
   @@map("workout_stats")
+}
+
+enum CurrencyType {
+  USD
+  RUB
+  TGSTAR
+}
+
+model Currency {
+  id    Int          @id @default(autoincrement())
+  type  CurrencyType @unique @default(USD)
+
+  ratio Float
+
+  updatingNow  Boolean @default(false) @map("updating_now")
+
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("currencies")
 }
