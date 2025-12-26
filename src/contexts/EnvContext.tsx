@@ -2,26 +2,25 @@
 
 import React from 'react';
 
-interface EnvContextType {
+import { TEnvServer } from '@/config/envServerSchema';
+
+export interface EnvContextType {
   BOT_USERNAME: string;
+  BASIC_USER_GENERATIONS: TEnvServer['BASIC_USER_GENERATIONS'];
+  PRO_USER_MONTHLY_GENERATIONS: TEnvServer['PRO_USER_MONTHLY_GENERATIONS'];
 }
 
 const EnvContext = React.createContext<EnvContextType | undefined>(undefined);
 
-export function EnvProvider({
-  children,
-  BOT_USERNAME,
-}: {
-  children: React.ReactNode;
-  BOT_USERNAME: string;
-}) {
-  return <EnvContext.Provider value={{ BOT_USERNAME }}>{children}</EnvContext.Provider>;
+export function EnvContextProvider(props: { children: React.ReactNode } & EnvContextType) {
+  const { children, ...restProps } = props;
+  return <EnvContext.Provider value={restProps}>{children}</EnvContext.Provider>;
 }
 
-export function useEnv() {
+export function useEnvConext() {
   const context = React.useContext(EnvContext);
   if (!context) {
-    throw new Error('useEnv must be used within an EnvProvider');
+    throw new Error('useEnvContext must be used within an EnvContextProvider');
   }
   return context;
 }

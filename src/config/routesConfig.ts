@@ -61,7 +61,7 @@ export const routesWithoutSidebar = [
   publicDocsRoute,
   publicPricingRoute,
   legalPrivacyRoute,
-  publicStartRoute,
+  // publicStartRoute, // Don't include here, while it's only an aliad foe 'availableTopicsRoute`
   legalTermsRoute,
   publicWelcomeRoute,
 ];

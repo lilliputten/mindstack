@@ -66,8 +66,9 @@ export async function generateStaticParams() {
     } catch (error) {
       const message = 'Error loading page content for static generation';
       const details = getErrorText(error);
+      const errStr = [message, details].join(': ');
       // eslint-disable-next-line no-console
-      console.error('[DocsPage:generateStaticParams]', [message, details].join(': '), {
+      console.error('[DocsPage:generateStaticParams]', errStr, {
         message,
         details,
         error,

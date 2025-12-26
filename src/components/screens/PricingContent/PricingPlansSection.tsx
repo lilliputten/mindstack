@@ -2,11 +2,13 @@
 
 import React from 'react';
 
+// import { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } from '@/config/envServer';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { useEnvConext } from '@/contexts/EnvContext';
 import { useT } from '@/i18n';
 
 interface PricingPlan {
@@ -35,6 +37,7 @@ interface PricingPlansSectionProps {
 
 export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps) {
   const t = useT();
+  const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
 
   const mainPlans: PricingPlan[] = React.useMemo(
     () => [
@@ -54,13 +57,16 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         buttonVariant: 'outline',
         generations: {
           type: 'total',
-          count: 10, // From BASIC_USER_GENERATIONS env var
+          count: BASIC_USER_GENERATIONS, // From BASIC_USER_GENERATIONS env var
         },
       },
       {
         grade: 'PRO',
         name: t('Pricing.Plans.Pro.Name'),
         description: t('Pricing.Plans.Pro.Description'),
+        // Use constant and calculated prices
+        // PRO_MONTHLY_USD_PRICE=2
+        // PRO_YEARLY_USD_PRICE=15
         price: { monthly: 12, yearly: 10, starsMonthly: 600, starsYearly: 500 },
         features: [
           t('Pricing.Plans.Pro.Features.Unlimited'),
@@ -74,13 +80,16 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         popular: true,
         generations: {
           type: 'monthly',
-          count: 100, // From PRO_USER_MONTHLY_GENERATIONS env var
+          count: PRO_USER_MONTHLY_GENERATIONS, // From PRO_USER_MONTHLY_GENERATIONS env var
         },
       },
       {
         grade: 'PREMIUM',
         name: t('Pricing.Plans.Premium.Name'),
         description: t('Pricing.Plans.Premium.Description'),
+        // Use constant and calculated prices
+        // PREMIUM_MONTHLY_USD_PRICE=4
+        // PREMIUM_YEARLY_USD_PRICE=30
         price: { monthly: 25, yearly: 20, starsMonthly: 1250, starsYearly: 1000 },
         features: [
           t('Pricing.Plans.Premium.Features.Everything'),
@@ -96,7 +105,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         },
       },
     ],
-    [t],
+    [BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS, t],
   );
 
   const unlimitedPlan: PricingPlan = React.useMemo(

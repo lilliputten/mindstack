@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+// import { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } from '@/config/envServer';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/Table';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { useEnvConext } from '@/contexts/EnvContext';
 import { useT } from '@/i18n';
 
 interface ComparisonFeature {
@@ -29,9 +31,11 @@ const useDarkHeader = true;
 
 export function PricingComparisonTable() {
   const t = useT();
+  const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
 
   const features: ComparisonFeature[] = React.useMemo(
     () => [
+      /* // Is there a topics limit?
       {
         name: t('Pricing.Comparison.Topics'),
         basic: '5',
@@ -39,10 +43,11 @@ export function PricingComparisonTable() {
         premium: t('Pricing.Unlimited'),
         // unlimited: t('Pricing.Unlimited'),
       },
+      */
       {
         name: t('Pricing.Comparison.AiGenerations'),
-        basic: '10 ' + t('Pricing.Comparison.total'),
-        pro: '100 ' + t('Pricing.Comparison.perMonth'),
+        basic: BASIC_USER_GENERATIONS + ' ' + t('Pricing.Comparison.total'),
+        pro: PRO_USER_MONTHLY_GENERATIONS + ' ' + t('Pricing.Comparison.perMonth'),
         premium: t('Pricing.Unlimited'),
         // unlimited: t('Pricing.Unlimited'),
       },
@@ -101,7 +106,7 @@ export function PricingComparisonTable() {
         // unlimited: true,
       },
     ],
-    [t],
+    [BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS, t],
   );
 
   const renderCell = (value: string | boolean) => {

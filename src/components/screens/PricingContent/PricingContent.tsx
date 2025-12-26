@@ -13,7 +13,6 @@ type BillingPeriod = TBillingPeriod;
 
 export function PricingContent() {
   const [billingPeriod, setBillingPeriod] = React.useState<BillingPeriod>('yearly');
-
   return (
     <>
       <main className="flex w-full max-w-6xl flex-col px-6 pb-6">

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { isDev, publicAboutRoute, publicStartRoute } from '@/config';
+import { availableTopicsRoute, isDev, publicAboutRoute } from '@/config';
 
 export function HeroSection() {
   return (
@@ -35,15 +35,15 @@ export function HeroSection() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button variant="theme" size="lg" rounded="lg">
-            <Link href={publicStartRoute} className="flex items-center gap-2">
+            <Link href={availableTopicsRoute} className="flex items-center gap-2">
               <Icons.ArrowRight className="size-4 opacity-50" />
-              Get Started
+              <span>Get Started</span>
             </Link>
           </Button>
           <Button variant="outline" size="lg" rounded="lg">
             <Link href={publicAboutRoute} className="flex items-center gap-2">
               <Icons.Info className="size-4 opacity-50" />
-              Learn More
+              <span>Learn More</span>
             </Link>
           </Button>
         </div>

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ExternalLink, Telegram } from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useEnv } from '@/contexts/EnvContext';
+import { useEnvConext } from '@/contexts/EnvContext';
 
 import { TelegramSignInForm } from './TelegramSignInForm';
 
@@ -56,7 +56,7 @@ interface TProps extends TPropsWithClassName {
 }
 
 export function TelegramSignIn({ className, inBody, isLogging }: TProps) {
-  const { BOT_USERNAME } = useEnv();
+  const { BOT_USERNAME } = useEnvConext();
   const telegramUrl = `https://t.me/${BOT_USERNAME}?start=/authorize`;
   return (
     <div
