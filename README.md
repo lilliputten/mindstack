@@ -15,6 +15,7 @@ NextJS Memory Training App
 
 ## Resources
 
+- Application: https://mindstack.lilliputten.com/
 - Vercel deployment: https://mind-stack-trainer.vercel.app/
 - Repository: https://github.com/lilliputten/mindstack/
 - Project reference: https://lilliputten.com/projects/2025/mindstack/

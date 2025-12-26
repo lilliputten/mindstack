@@ -4,11 +4,11 @@ import React from 'react';
 import PublicLink from 'next/link';
 
 import {
-  cookiesRoute,
   docsRoute,
+  legalCookiesRoute,
+  legalPrivacyRoute,
+  legalTermsRoute,
   pricingRoute,
-  privacyRoute,
-  termsRoute,
 } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
@@ -130,13 +130,13 @@ export function ContentFooter() {
         </div>
       </div>
       <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col max-sm:items-start">
-        <LocalLink href={privacyRoute} className="hover:underline">
+        <LocalLink href={legalPrivacyRoute} className="hover:underline">
           {t('ContentFooter.PrivacyPolicyLink')}
         </LocalLink>
-        <LocalLink href={termsRoute} className="hover:underline">
+        <LocalLink href={legalTermsRoute} className="hover:underline">
           {t('ContentFooter.TermsOfServiceLink')}
         </LocalLink>
-        <LocalLink href={cookiesRoute} className="hover:underline">
+        <LocalLink href={legalCookiesRoute} className="hover:underline">
           {t('ContentFooter.CookiePolicyLink')}
         </LocalLink>
         <LocalLink href={pricingRoute} className="hover:underline">

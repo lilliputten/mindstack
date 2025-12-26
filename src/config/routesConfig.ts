@@ -9,17 +9,20 @@ export const dashboardRoute = '/dashboard';
 export const myTopicsRoute = '/topics/my';
 export const settingsRoute = '/settings';
 
-// Root route
-export const rootRoute = '/';
+// Legal page routes
+export const legalCookiesRoute = '/legal/cookies';
+export const legalOfferRoute = '/legal/offer';
+export const legalPrivacyRoute = '/legal/privacy';
+export const legalTermsRoute = '/legal/terms';
 
 // Public content routes (without sidebar)
-export const cookiesRoute = '/cookies';
 export const docsRoute = '/docs';
 export const pricingRoute = '/pricing';
-export const privacyRoute = '/privacy';
 export const startRoute = '/start';
-export const termsRoute = '/terms';
 export const welcomeRoute = '/welcome';
+
+// Root route
+export const rootRoute = '/';
 
 /** NOTE: That's used only to mock real intl context */
 export const pathnames = {
@@ -29,7 +32,6 @@ export const pathnames = {
   [adminRoute]: adminRoute,
   [allTopicsRoute]: allTopicsRoute,
   [availableTopicsRoute]: availableTopicsRoute,
-  [cookiesRoute]: cookiesRoute,
   [dashboardRoute]: dashboardRoute,
   [docsRoute]: docsRoute,
   [myTopicsRoute]: myTopicsRoute,
@@ -39,8 +41,12 @@ export const pathnames = {
   // Public routes (without sidebar)
   [rootRoute]: rootRoute,
   [pricingRoute]: pricingRoute,
-  [privacyRoute]: privacyRoute,
-  [termsRoute]: termsRoute,
+
+  // Legal pages
+  [legalCookiesRoute]: legalCookiesRoute,
+  [legalOfferRoute]: legalOfferRoute,
+  [legalPrivacyRoute]: legalPrivacyRoute,
+  [legalTermsRoute]: legalTermsRoute,
 };
 
 /** All routes to display without dashboard sidebar. */
@@ -49,12 +55,12 @@ export const routesWithoutSidebar = [
   rootRoute,
 
   // Public content routes (without sidebar)
-  cookiesRoute,
+  legalCookiesRoute,
   docsRoute,
   pricingRoute,
-  privacyRoute,
+  legalPrivacyRoute,
   startRoute,
-  termsRoute,
+  legalTermsRoute,
   welcomeRoute,
 ];
 

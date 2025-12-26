@@ -10,14 +10,14 @@ import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
 import {
   availableTopicsRoute,
   contactEmail,
-  cookiesRoute,
   docsRoute,
   isDev,
-  privacyRoute,
+  legalCookiesRoute,
+  legalPrivacyRoute,
+  legalTermsRoute,
   rootRoute,
   settingsRoute,
   siteTitle,
-  termsRoute,
   versionInfo,
 } from '@/config';
 import { getT } from '@/i18n';
@@ -93,16 +93,16 @@ export async function DocsPage(props: TDocsPagePropsWithContent) {
 
   // Variables to render
   const vars = {
-    siteTitle,
     availableTopicsRoute,
     contactEmail,
-    cookiesRoute,
     docsRoute,
-    privacyRoute,
+    legalCookiesRoute,
+    legalPrivacyRoute,
+    legalTermsRoute,
     publicAddr: NEXT_PUBLIC_URL,
     rootRoute,
     settingsRoute,
-    termsRoute,
+    siteTitle,
     versionInfo,
   };
 

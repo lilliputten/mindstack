@@ -141,7 +141,7 @@ The application uses cookies for:
 - Analytics and performance monitoring
 - Security and fraud prevention
 
-For detailed information, see our [Privacy Policy]({privacyRoute}) and [Cookie Policy]({cookiesRoute}).
+For detailed information, see our [Privacy Policy]({legalPrivacyRoute}) and [Cookie Policy]({legalCookiesRoute}).
 
 ## Troubleshooting
 
@@ -179,9 +179,9 @@ If you encounter issues or have questions:
 
 By using MindStack, you agree to our:
 
-- [Terms of Service]({termsRoute}) - Usage rules and conditions
-- [Privacy Policy]({privacyRoute}) - How we handle your data
-- [Cookie Policy]({cookiesRoute}) - Information about cookies and tracking
+- [Terms of Service]({legalTermsRoute}) - Usage rules and conditions
+- [Privacy Policy]({legalPrivacyRoute}) - How we handle your data
+- [Cookie Policy]({legalCookiesRoute}) - Information about cookies and tracking
 
 ## Updates and Changelog
 

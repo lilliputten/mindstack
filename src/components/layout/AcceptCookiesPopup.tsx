@@ -4,6 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { legalCookiesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useT } from '@/i18n';
 
@@ -41,7 +42,7 @@ export function AcceptCookiesPopup() {
       <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
           {t('AcceptCookiesPopup.Message')}
-          <a href="/cookies" className="ml-1 hover:underline">
+          <a href={legalCookiesRoute} className="ml-1 hover:underline">
             {t('AcceptCookiesPopup.LearnMore')}
           </a>
         </p>
