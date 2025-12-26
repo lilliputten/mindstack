@@ -48,6 +48,7 @@ export default [
       ...readGitignoreFiles({ cwd: __dirname }),
       '.next/**',
       'src/generated/prisma/**',
+      '*~',
     ],
   },
 
@@ -159,6 +160,7 @@ export default [
     ignores: [
       // Ignored files...
       'src/**',
+      '*~',
     ],
     languageOptions: {
       globals: {

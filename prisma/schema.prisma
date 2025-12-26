@@ -277,6 +277,7 @@ model Currency {
   id    Int          @id @default(autoincrement())
   type  CurrencyType @unique @default(USD)
 
+  // Used to calculate the currency value by dividing the USD currency: `{usdPrice} / ratio`, see the `calcCurrencyFromUsd` helper function
   ratio Float
 
   updatingNow  Boolean @default(false) @map("updating_now")
