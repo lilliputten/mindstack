@@ -9,6 +9,7 @@ generator zod {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -280,7 +281,8 @@ model Currency {
   // Used to calculate the currency value by dividing the USD currency: `{usdPrice} / ratio`, see the `calcCurrencyFromUsd` helper function
   ratio Float
 
-  updatingNow  Boolean @default(false) @map("updating_now")
+  // This field is set if there the updating process has been active (since the specified time)
+  updatingSince  DateTime? @map("updating_since")
 
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
