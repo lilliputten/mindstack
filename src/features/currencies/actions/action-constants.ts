@@ -1,0 +1,28 @@
+import { hourMs, minuteMs } from '@/constants';
+
+import { TCurrencyType } from './shared-types';
+
+/*
+ * The base unit is USD. All other consider as derived and calculated from the base using ratios.
+ */
+
+/** Default ratios, as on 2025.12
+ *
+ * rubRatio: 0.0128
+ * tgStarRatio: 0.015
+ *
+ * ->
+ *
+ *  1 USD = 78 RUB
+ *  1 USD = 67 TGSTAR
+ */
+export const initialRatios: Record<TCurrencyType, number> = {
+  USD: 1,
+  RUB: 0.0128,
+  TGSTAR: 0.015,
+};
+
+/** Update ratios once per 4 hours */
+export const updateTimeout = hourMs * 4;
+export const updatingTimeout = minuteMs * 5;
+export const revalidateTimeout = hourMs;

@@ -5,18 +5,13 @@ import { SessionProvider } from 'next-auth/react';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
 
-import { EnvContextProvider, EnvContextType } from '@/contexts/EnvContext';
+import { EnvContextRoot } from '@/contexts/EnvContext';
 
 import '@/styles/globals.scss';
 import '@/styles/root.scss';
 
 import { AbstractIntlMessages } from 'next-intl';
 
-import {
-  BASIC_USER_GENERATIONS,
-  BOT_USERNAME,
-  PRO_USER_MONTHLY_GENERATIONS,
-} from '@/config/envServer';
 import { defaultThemeColor } from '@/config/themeColors';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
@@ -91,12 +86,6 @@ async function RootLayout(props: TRootLayoutProps) {
   const themeColor =
     settings?.themeColor || cookieStore.get('themeColor')?.value || defaultThemeColor;
 
-  const envContextProps = {
-    BOT_USERNAME,
-    BASIC_USER_GENERATIONS,
-    PRO_USER_MONTHLY_GENERATIONS,
-  } satisfies EnvContextType;
-
   return (
     <html lang={locale} data-theme-color={themeColor} suppressHydrationWarning>
       <head>
@@ -137,7 +126,7 @@ async function RootLayout(props: TRootLayoutProps) {
       >
         <ReactQueryClientProvider>
           <SessionProvider>
-            <EnvContextProvider {...envContextProps}>
+            <EnvContextRoot>
               <CustomNextIntlClientProvider
                 locale={locale}
                 messages={messages}
@@ -189,7 +178,7 @@ async function RootLayout(props: TRootLayoutProps) {
                   </ModalProvider>
                 </ThemeProvider>
               </CustomNextIntlClientProvider>
-            </EnvContextProvider>
+            </EnvContextRoot>
           </SessionProvider>
         </ReactQueryClientProvider>
       </body>

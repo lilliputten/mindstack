@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
@@ -12,7 +13,12 @@ interface TParams {
   where: Prisma.UserWhereUniqueInput;
   include?: Prisma.UserInclude;
 }
-export async function getUser(params: TParams) {
+
+// XXX: OLD FORM: export async function getUser(params: TParams) { ... }
+
+// TODO: To use `unstable_cache`?
+
+export const getUser = cache(async (params: TParams) => {
   const { where, include = null } = params;
   try {
     const user = await prisma.user.findUnique({ where, include });
@@ -41,4 +47,4 @@ export async function getUser(params: TParams) {
     // throw nextError;
     return undefined;
   }
-}
+});
