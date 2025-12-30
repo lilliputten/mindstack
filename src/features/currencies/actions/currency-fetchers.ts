@@ -105,6 +105,7 @@ export async function fetchTgStarRatio(): Promise<number> {
       res,
       data,
       value,
+      apiUrl,
     });
     debugger; // eslint-disable-line no-debugger
     throw error;

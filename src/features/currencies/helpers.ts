@@ -1,5 +1,3 @@
-import { TLocale } from '@/i18n';
-
 import { allCurrencies, defaultCurrencyType, TCurrencyRatios, TCurrencyType } from './actions';
 
 export type TCalcCurrencyOptions = {
