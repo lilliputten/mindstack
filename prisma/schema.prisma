@@ -270,6 +270,7 @@ model WorkoutStats {
 
 enum CurrencyType {
   USD
+  EUR
   RUB
   TGSTAR
 }

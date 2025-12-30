@@ -1,3 +1,5 @@
+'use server';
+
 import { initialRatios } from './action-constants';
 import { getCachedCurrencyRatio } from './getCachedCurrencyRatio';
 import { defaultCurrencyType, derivedCurrencies, TCurrencyRatios } from './shared-types';
@@ -18,12 +20,11 @@ export async function getAllCurrencyRatios() {
       [defaultCurrencyType]: 1,
     },
   );
-  /* console.log('[getAllCurrencyRatios] ratios', {
-   *   promisesList,
-   *   settledList,
-   *   ratios,
-   * });
-   */
+  console.log('[getAllCurrencyRatios] ratios', {
+    promisesList,
+    settledList,
+    ratios,
+  });
   // Return the full data (for all the currencies)
   return ratios as TCurrencyRatios;
 }

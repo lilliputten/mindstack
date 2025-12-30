@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
 
-import { EnvContextRoot } from '@/contexts/EnvContext';
+import { EnvContextRoot } from '@/contexts/EnvContext/EnvContextRoot';
 
 import '@/styles/globals.scss';
 import '@/styles/root.scss';

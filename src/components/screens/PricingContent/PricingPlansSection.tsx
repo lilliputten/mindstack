@@ -9,6 +9,8 @@ import { Card } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
+import { yearlyFromMonthlyRatio } from '@/features/currencies';
+import { useCalcAllPrices } from '@/features/currencies/query-hooks/useCurrencyRatios';
 import { useT } from '@/i18n';
 
 interface PricingPlan {
@@ -35,10 +37,14 @@ interface PricingPlansSectionProps {
   billingPeriod: 'monthly' | 'yearly';
 }
 
-export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps) {
+function useAllPlansData() {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
-
+  const PRO_MONTHLY_USD_PRICE = 2;
+  const PRO_YEARLY_USD_PRICE = Math.round(PRO_MONTHLY_USD_PRICE * yearlyFromMonthlyRatio);
+  const proMonthlyPrices = useCalcAllPrices(PRO_MONTHLY_USD_PRICE);
+  const PREMIUM_MONTHLY_USD_PRICE = 4;
+  const PREMIUM_YEARLY_USD_PRICE = Math.round(PREMIUM_MONTHLY_USD_PRICE * yearlyFromMonthlyRatio);
   const mainPlans: PricingPlan[] = React.useMemo(
     () => [
       {
@@ -67,7 +73,12 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         // Use constant and calculated prices
         // PRO_MONTHLY_USD_PRICE=2
         // PRO_YEARLY_USD_PRICE=15
-        price: { monthly: 12, yearly: 10, starsMonthly: 600, starsYearly: 500 },
+        price: {
+          monthly: PRO_MONTHLY_USD_PRICE,
+          yearly: PRO_YEARLY_USD_PRICE,
+          starsMonthly: 600,
+          starsYearly: 500,
+        },
         features: [
           t('Pricing.Plans.Pro.Features.Unlimited'),
           t('Pricing.Plans.Pro.Features.Ai'),
@@ -90,7 +101,12 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         // Use constant and calculated prices
         // PREMIUM_MONTHLY_USD_PRICE=4
         // PREMIUM_YEARLY_USD_PRICE=30
-        price: { monthly: 25, yearly: 20, starsMonthly: 1250, starsYearly: 1000 },
+        price: {
+          monthly: PREMIUM_MONTHLY_USD_PRICE,
+          yearly: PREMIUM_YEARLY_USD_PRICE,
+          starsMonthly: 1250,
+          starsYearly: 1000,
+        },
         features: [
           t('Pricing.Plans.Premium.Features.Everything'),
           t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
@@ -104,31 +120,41 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
           type: 'unlimited',
         },
       },
-    ],
-    [BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS, t],
-  );
-
-  const unlimitedPlan: PricingPlan = React.useMemo(
-    () => ({
-      grade: 'UNLIMITED',
-      name: t('Pricing.Plans.Unlimited.Name'),
-      description: t('Pricing.Plans.Unlimited.Description'),
-      price: { monthly: 'Contact', yearly: 'Contact' },
-      features: [
-        t('Pricing.Plans.Unlimited.Features.Everything'),
-        t('Pricing.Plans.Unlimited.Features.Enterprise'),
-        t('Pricing.Plans.Unlimited.Features.Security'),
-        t('Pricing.Plans.Unlimited.Features.Support'),
-        t('Pricing.Plans.Unlimited.Features.Custom'),
-      ],
-      buttonText: t('Pricing.Plans.Unlimited.Button'),
-      buttonVariant: 'outline',
-      generations: {
-        type: 'unlimited',
+      {
+        grade: 'UNLIMITED',
+        name: t('Pricing.Plans.Unlimited.Name'),
+        description: t('Pricing.Plans.Unlimited.Description'),
+        price: { monthly: 'Contact', yearly: 'Contact' },
+        features: [
+          t('Pricing.Plans.Unlimited.Features.Everything'),
+          t('Pricing.Plans.Unlimited.Features.Enterprise'),
+          t('Pricing.Plans.Unlimited.Features.Security'),
+          t('Pricing.Plans.Unlimited.Features.Support'),
+          t('Pricing.Plans.Unlimited.Features.Custom'),
+        ],
+        buttonText: t('Pricing.Plans.Unlimited.Button'),
+        buttonVariant: 'outline',
+        generations: {
+          type: 'unlimited',
+        },
       },
-    }),
-    [t],
+    ],
+    [
+      BASIC_USER_GENERATIONS,
+      PREMIUM_YEARLY_USD_PRICE,
+      PRO_USER_MONTHLY_GENERATIONS,
+      PRO_YEARLY_USD_PRICE,
+      t,
+    ],
   );
+  return mainPlans;
+}
+
+export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps) {
+  const t = useT();
+
+  const mainPlans: PricingPlan[] = useAllPlansData();
+  const unlimitedPlan = mainPlans.pop(); // useUnlimitedPlanData();
 
   return (
     <section
@@ -207,15 +233,17 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
           </Card>
         ))}
       </div>
-      <Card className="mt-8 flex flex-col items-start gap-6 bg-theme/10 p-6">
-        <div className="flex flex-col gap-2">
-          <h3 className="text-xl font-bold text-theme">{unlimitedPlan.name}</h3>
-          <p className="text-muted-foreground">{unlimitedPlan.description}</p>
-        </div>
-        <Button variant={unlimitedPlan.buttonVariant} size="lg">
-          {unlimitedPlan.buttonText}
-        </Button>
-      </Card>
+      {!!unlimitedPlan && (
+        <Card className="mt-8 flex flex-col items-start gap-6 bg-theme/10 p-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-xl font-bold text-theme">{unlimitedPlan.name}</h3>
+            <p className="text-muted-foreground">{unlimitedPlan.description}</p>
+          </div>
+          <Button variant={unlimitedPlan.buttonVariant} size="lg">
+            {unlimitedPlan.buttonText}
+          </Button>
+        </Card>
+      )}
     </section>
   );
 }

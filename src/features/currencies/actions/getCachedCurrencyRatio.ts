@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 
 import { prisma } from '@/lib/db';
 import { getErrorText } from '@/lib/helpers';
+import { epochStartDate } from '@/constants';
 
 import {
   initialRatios,
@@ -18,12 +19,15 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
   if (currencyType === defaultCurrencyType) {
     return 1;
   }
+
+  const defaultRatio = initialRatios[currencyType];
+
   try {
     const now = new Date();
     const nowTime = now.getTime();
 
     // Get the currency record from the database
-    const currencyRecord = await prisma.currency.findUnique({
+    let currencyRecord = await prisma.currency.findUnique({
       where: { type: currencyType },
     });
 
@@ -39,22 +43,29 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
     }
 
     // Set updatingSince to current datetime to indicate an update is in progress
-    await prisma.currency.update({
+    currencyRecord = await prisma.currency.upsert({
       where: { type: currencyType },
-      data: { updatingSince: now },
+      update: { updatingSince: now },
+      create: {
+        type: currencyType,
+        ratio: defaultRatio,
+        updatingSince: now,
+        updatedAt: epochStartDate,
+      },
     });
 
     // Try to retrieve (and then store for future use and return) the value from the API
     try {
       const ratio = await fetchDerivedCurrencyRatio(currencyType);
-      console.log('[getCachedCurrencyRatio] fetched', {
-        ratio,
-        currencyType,
-      });
-      debugger;
-      await prisma.currency.update({
+      await prisma.currency.upsert({
         where: { type: currencyType },
-        data: {
+        update: {
+          ratio,
+          updatedAt: now,
+          updatingSince: null,
+        },
+        create: {
+          type: currencyType,
           ratio,
           updatedAt: now,
           updatingSince: null,
@@ -73,15 +84,21 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
       });
       debugger; // eslint-disable-line no-debugger
       // Reset updatingSince
-      await prisma.currency.update({
+      await prisma.currency.upsert({
         where: { type: currencyType },
-        data: { updatingSince: null },
+        update: { updatingSince: null },
+        create: {
+          type: currencyType,
+          ratio: initialRatios[currencyType],
+          updatedAt: new Date(),
+          updatingSince: null,
+        },
       });
       // NOTE: Don't re-throw errors as it's a non-critical code
     }
 
     // Otherwise return old or inital ratio;
-    return currencyRecord?.ratio || initialRatios[currencyType];
+    return currencyRecord?.ratio || defaultRatio;
   } catch (error) {
     const message = `Failed geting the currency "${currencyType}"`;
     const errMsg = getErrorText(error);
@@ -99,9 +116,9 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
 export const getCachedCurrencyRatio = async (currency: TCurrencyType) => {
   const cachedFn = unstable_cache(
     async () => getCurrencyRatio(currency),
-    [`currency-${currency}`], // Unique key per currency type
+    [`currency-${currency}`, 'currencies'], // Unique key per currency type
     {
-      tags: [`currency-${currency}`], // Unique tag per currency for revalidation
+      tags: [`currency-${currency}`, 'currencies'], // Unique tag per currency for revalidation
       revalidate: revalidateTimeout, // Optional: auto-revalidate after 1 hour
     },
   );

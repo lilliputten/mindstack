@@ -2,11 +2,13 @@
 
 import { getErrorText } from '@/lib/helpers';
 
-import { fetchRubRatio, fetchTgStarRatio } from './currency-fetchers';
+import { fetchExchangerateApiRatio, fetchTgStarRatio } from './currency-fetchers';
 import { TCurrencyType } from './shared-types';
 
-const derivedCurrencyFetchers: Partial<Record<TCurrencyType, () => Promise<number>>> = {
-  RUB: fetchRubRatio,
+const derivedCurrencyFetchers: Record<TCurrencyType, () => Promise<number>> = {
+  USD: async () => 1,
+  RUB: fetchExchangerateApiRatio.bind(null, 'RUB'),
+  EUR: fetchExchangerateApiRatio.bind(null, 'EUR'),
   TGSTAR: fetchTgStarRatio,
 };
 

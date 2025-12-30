@@ -8,8 +8,9 @@ import { TCurrencyType } from './shared-types';
 
 /** Default ratios, as on 2025.12
  *
- * rubRatio: 0.0128
- * tgStarRatio: 0.015
+ * RUB: 0.0128
+ * EUR: 1.18
+ * TGSTAR: 0.015
  *
  * ->
  *
@@ -18,6 +19,7 @@ import { TCurrencyType } from './shared-types';
  */
 export const initialRatios: Record<TCurrencyType, number> = {
   USD: 1,
+  EUR: 1.18,
   RUB: 0.0128,
   TGSTAR: 0.015,
 };
