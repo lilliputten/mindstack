@@ -25,7 +25,7 @@ export async function fetchDerivedCurrencyRatio(currencyType: TCurrencyType): Pr
     const details = getErrorText(error);
     const errStr = [message, details].join(': ');
     // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchDerivedCurrencyRatio]', errStr, {
+    console.error('[action-helpers:fetchDerivedCurrencyRatio]', errStr, {
       message,
       details,
       error,

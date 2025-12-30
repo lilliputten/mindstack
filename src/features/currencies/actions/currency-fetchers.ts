@@ -1,4 +1,5 @@
 import { getErrorText } from '@/lib/helpers';
+import { secondMs } from '@/constants';
 
 const tgStarRatioUrl = 'https://bes-dev.github.io/telegram_stars_rates/api.json';
 /* // Sample result
@@ -32,6 +33,8 @@ const rubRatioUrl = 'https://api.exchangerate-api.com/v4/latest/RUB';
  * }
  */
 
+const timeoutDuration = secondMs * 30;
+
 export async function fetchRubRatio(): Promise<number> {
   let res: Response | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,12 +42,14 @@ export async function fetchRubRatio(): Promise<number> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any | unknown;
   try {
-    res = await fetch(rubRatioUrl);
+    res = await fetch(rubRatioUrl, {
+      signal: AbortSignal.timeout(timeoutDuration), // Automatically aborts after duration
+    });
     if (!res.ok) throw new Error('RUB API unavailable');
     data = await res.json();
-    value = data.usdt_per_star;
+    value = data?.rates?.USD;
     if (!value || isNaN(value)) {
-      throw new Error('RUB ratio is not a number: ${value}');
+      throw new Error(`RUB ratio is not a number: ${value}`);
     }
     return Number(value);
   } catch (error) {
@@ -52,7 +57,7 @@ export async function fetchRubRatio(): Promise<number> {
     const details = getErrorText(error);
     const errStr = [message, details].join(': ');
     // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchRubRatio]', errStr, {
+    console.error('[currency-fetchers:fetchRubRatio]', errStr, {
       message,
       details,
       error,
@@ -60,6 +65,7 @@ export async function fetchRubRatio(): Promise<number> {
       data,
       value,
     });
+    debugger; // eslint-disable-line no-debugger
     throw error;
   }
 }
@@ -71,12 +77,14 @@ export async function fetchTgStarRatio(): Promise<number> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any | unknown;
   try {
-    res = await fetch(tgStarRatioUrl);
+    res = await fetch(tgStarRatioUrl, {
+      signal: AbortSignal.timeout(timeoutDuration), // Automatically aborts after duration
+    });
     if (!res.ok) throw new Error('TGSTAR API unavailable');
     data = await res.json();
     value = data.usdt_per_star;
     if (!value || isNaN(value)) {
-      throw new Error('TGSTAR ratio is not a number: ${value}');
+      throw new Error(`TGSTAR ratio is not a number: ${value}`);
     }
     return Number(value);
   } catch (error) {
@@ -84,7 +92,7 @@ export async function fetchTgStarRatio(): Promise<number> {
     const details = getErrorText(error);
     const errStr = [message, details].join(': ');
     // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchTgStarRatio]', errStr, {
+    console.error('[currency-fetchers:fetchTgStarRatio]', errStr, {
       message,
       details,
       error,
@@ -92,6 +100,7 @@ export async function fetchTgStarRatio(): Promise<number> {
       data,
       value,
     });
+    debugger; // eslint-disable-line no-debugger
     throw error;
   }
 }

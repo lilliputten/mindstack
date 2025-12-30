@@ -47,7 +47,7 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
     // Try to retrieve (and then store for future use and return) the value from the API
     try {
       const ratio = await fetchDerivedCurrencyRatio(currencyType);
-      console.log('[getCachedCurrencyRatio] fetchDerivedCurrencyRatio', {
+      console.log('[getCachedCurrencyRatio] fetched', {
         ratio,
         currencyType,
       });

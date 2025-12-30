@@ -18,12 +18,12 @@ export async function getAllCurrencyRatios() {
       [defaultCurrencyType]: 1,
     },
   );
-  console.log('[getAllCurrencyRatios] results', {
-    promisesList,
-    settledList,
-    ratios,
-  });
-  debugger;
+  /* console.log('[getAllCurrencyRatios] ratios', {
+   *   promisesList,
+   *   settledList,
+   *   ratios,
+   * });
+   */
   // Return the full data (for all the currencies)
   return ratios as TCurrencyRatios;
 }
