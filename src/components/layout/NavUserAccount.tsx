@@ -10,6 +10,7 @@ import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { isDev } from '@/constants';
 
+import { DeleteAccountModalProvider } from '../modals/DeleteAccountModalProvider';
 import { NavUserBlock } from './NavUserBlock';
 
 interface TNavUserAccountProps extends TPropsWithClassName {
@@ -32,49 +33,51 @@ export function NavUserAccount(props: TNavUserAccountProps) {
   const isAdmin = user.role === 'ADMIN';
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger
-        className={cn(
-          isDev && '__NavUserAccount_DropdownMenuTrigger', // DEBUG
-          className,
-          'rounded-full',
-          'transition-all',
-          'text-theme-foreground/80',
-          'opacity-100',
-          'hover:opacity-80',
-          'truncate',
-        )}
-      >
-        <UserAvatar
-          user={user}
+    <DeleteAccountModalProvider>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger
           className={cn(
-            isDev && '__NavUserAccount_UserAvatar', // DEBUG
-            // 'size-8 rounded-full bg-theme-700/25',
-            // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
-            // onSidebar && 'flex',
+            isDev && '__NavUserAccount_DropdownMenuTrigger', // DEBUG
             className,
+            'rounded-full',
+            'transition-all',
+            'text-theme-foreground/80',
+            'opacity-100',
+            'hover:opacity-80',
+            'truncate',
           )}
-        />
-        {onSidebar && (
-          <span className="flex items-center gap-2">
-            <span
-              className="flex gap-2 font-medium"
-              title={isAdmin ? 'Is Administrator' : undefined}
-            >
-              {user.name || 'anonymous'}
-              {isAdmin && <Icons.ShieldAlert className="size-4 opacity-50" />}
+        >
+          <UserAvatar
+            user={user}
+            className={cn(
+              isDev && '__NavUserAccount_UserAvatar', // DEBUG
+              // 'size-8 rounded-full bg-theme-700/25',
+              // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
+              // onSidebar && 'flex',
+              className,
+            )}
+          />
+          {onSidebar && (
+            <span className="flex items-center gap-2">
+              <span
+                className="flex gap-2 font-medium"
+                title={isAdmin ? 'Is Administrator' : undefined}
+              >
+                {user.name || 'anonymous'}
+                {isAdmin && <Icons.ShieldAlert className="size-4 opacity-50" />}
+              </span>
+              {user.email && <span className="truncate text-muted-foreground">{user.email}</span>}
             </span>
-            {user.email && <span className="truncate text-muted-foreground">{user.email}</span>}
-          </span>
-        )}
-      </DropdownMenuTrigger>
+          )}
+        </DropdownMenuTrigger>
 
-      <NavUserBlock
-        align="end"
-        onPrimary={onPrimary}
-        onSidebar={onSidebar}
-        closeOuterMenu={closeOuterMenu}
-      />
-    </DropdownMenu>
+        <NavUserBlock
+          align="end"
+          onPrimary={onPrimary}
+          onSidebar={onSidebar}
+          closeOuterMenu={closeOuterMenu}
+        />
+      </DropdownMenu>
+    </DeleteAccountModalProvider>
   );
 }

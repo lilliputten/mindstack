@@ -4,7 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { myTopicsRoute, publicRootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
+import { clearLocalStorage } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -45,16 +46,17 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
   const isClicked = !!currentProvider;
   const isThisClicked = currentProvider == provider;
   const onSignIn = React.useCallback(() => {
-    const options: SignInOptions = { redirectTo: myTopicsRoute };
+    const options: SignInOptions = {
+      // redirect: false, // Only `true` allowed
+      // redirectTo: myTopicsRoute,
+    };
     if (onSignInStart) {
       onSignInStart(provider);
     }
     // @see https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
     signIn(provider, options).then(() => {
       // Run a client code ona successfull signin
-      if (typeof localStorage !== 'undefined') {
-        localStorage.clear();
-      }
+      clearLocalStorage({ except: ['cookies-accepted'] });
       if (onSignInDone) {
         onSignInDone(provider);
       }
