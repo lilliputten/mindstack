@@ -1,3 +1,3 @@
-import { TextPageSkeleton } from '@/components/shared/TextPageSkeleton';
+import { PricingSkeleton } from '@/components/screens/PricingContent';
 
-export default TextPageSkeleton;
+export default PricingSkeleton;
