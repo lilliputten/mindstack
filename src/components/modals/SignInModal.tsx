@@ -16,8 +16,6 @@ function SignInModal(props: TSignInModalProps) {
 
   const handleSignInDone = React.useCallback(
     (_provider: TSignInProvider) => {
-      console.log('[SignInModal:handleSignInDone');
-      debugger;
       setTimeout(() => {
         setVisible(false);
       }, 400);

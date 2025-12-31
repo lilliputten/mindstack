@@ -2,7 +2,6 @@ export * from './arrays';
 export * from './cookies';
 export * from './dates';
 export * from './errors';
-export * from './index';
 export * from './json';
 export * from './localStorage';
 export * from './markdown';

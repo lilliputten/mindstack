@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { myTopicsRoute, publicRootRoute } from '@/config/routesConfig';
+import { publicRootRoute } from '@/config/routesConfig';
 import { clearLocalStorage } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
