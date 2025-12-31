@@ -1,8 +1,8 @@
 'use server';
 
+import { defaultCurrencyType, derivedCurrencies, TCurrencyRatios } from '../types/shared-types';
 import { initialRatios } from './action-constants';
 import { getCachedCurrencyRatio } from './getCachedCurrencyRatio';
-import { defaultCurrencyType, derivedCurrencies, TCurrencyRatios } from './shared-types';
 
 export async function getAllCurrencyRatios() {
   const promisesList = derivedCurrencies.map((currency) => getCachedCurrencyRatio(currency));
@@ -20,11 +20,6 @@ export async function getAllCurrencyRatios() {
       [defaultCurrencyType]: 1,
     },
   );
-  console.log('[getAllCurrencyRatios] ratios', {
-    promisesList,
-    settledList,
-    ratios,
-  });
   // Return the full data (for all the currencies)
   return ratios as TCurrencyRatios;
 }

@@ -637,7 +637,7 @@
     },
     "Hero": {
       "Monthly": "Mensual",
-      "Subtitle": "Obtén 20% de descuento con el plan anual",
+      "Subtitle": "Obtenga un {yearlyDiscountPercents}% de descuento anual",
       "Title": "Precios",
       "Yearly": "Anual"
     },
@@ -656,7 +656,7 @@
       },
       "Premium": {
         "Button": "Elegir Premium",
-        "Description": "Para organizaciones",
+        "Description": "Para uso avanzado",
         "Name": "Premium",
         "Features": {
           "Advanced": "Integraciones avanzadas",
@@ -680,7 +680,7 @@
       },
       "Unlimited": {
         "Button": "Contáctanos",
-        "Description": "Para organizaciones que requieren el más alto nivel de seguridad y control.",
+        "Description": "Para personas o grupos que requieran el más alto nivel de seguridad y control.",
         "Name": "Ilimitado",
         "Features": {
           "Custom": "Integraciones personalizadas",

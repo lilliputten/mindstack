@@ -3,12 +3,16 @@ import { secondMs } from '@/constants';
 
 const timeoutDuration = secondMs * 30;
 
-type TExchangerateApiCurrency = 'RUB' | 'EUR';
+type TExchangerateApiCurrencyId = 'RUB' | 'EUR';
 
+/** Fetch generalized currnecy via api.
+ * NOTE: It's possible to fetch all the currencies in a reversed api:
+ * Retrieving the USD endpoint and fetch the required currencies from the `rates` object, and use the `1/ratio` formula.
+ */
 export async function fetchExchangerateApiRatio(
-  apiCurrency: TExchangerateApiCurrency,
+  apiCurrencyId: TExchangerateApiCurrencyId,
 ): Promise<number> {
-  const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrency}`;
+  const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrencyId}`;
   let res: Response | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any | undefined;
@@ -34,7 +38,7 @@ export async function fetchExchangerateApiRatio(
      *   }
      * }
      */
-    if (!res.ok) throw new Error('RUB API unavailable');
+    if (!res.ok) throw new Error('The exchangerate-api endpoint is unavailable');
     data = await res.json();
     value = data?.rates?.USD;
     if (!value || isNaN(value)) {
@@ -46,7 +50,7 @@ export async function fetchExchangerateApiRatio(
     const details = getErrorText(error);
     const errStr = [message, details].join(': ');
     // eslint-disable-next-line no-console
-    console.error('[currency-fetchers:fetchRubRatio]', errStr, {
+    console.error('[currency-fetchers:fetchExchangerateApiRatio]', errStr, {
       message,
       details,
       error,
@@ -54,13 +58,11 @@ export async function fetchExchangerateApiRatio(
       data,
       value,
       apiUrl,
+      apiCurrencyId,
     });
     debugger; // eslint-disable-line no-debugger
     throw error;
   }
-}
-export async function fetchRubRatio(): Promise<number> {
-  return await fetchExchangerateApiRatio('RUB');
 }
 
 export async function fetchTgStarRatio(): Promise<number> {
@@ -86,7 +88,7 @@ export async function fetchTgStarRatio(): Promise<number> {
      *   "last_updated": "2025-12-26T12:10:30.730813+00:00"
      * }%
      */
-    if (!res.ok) throw new Error('TGSTAR API unavailable');
+    if (!res.ok) throw new Error('The TGSTAR API endpoint is unavailable');
     data = await res.json();
     value = data.usdt_per_star;
     if (!value || isNaN(value)) {

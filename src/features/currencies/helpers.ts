@@ -1,17 +1,31 @@
-import { allCurrencies, defaultCurrencyType, TCurrencyRatios, TCurrencyType } from './actions';
+import { customCurrencyRatios } from '@/constants/prices';
+
+import {
+  allCurrencies,
+  defaultCurrencyType,
+  TCurrencyPrices,
+  TCurrencyRatios,
+  TCurrencyStrings,
+  TCurrencyType,
+} from './types';
 
 export type TCalcCurrencyOptions = {
   roundHunderds?: boolean;
-  roundDecimals?: boolean;
+  roundTens?: boolean;
   round?: boolean;
+  roundDecimals?: boolean;
+  // Don't show zero, always show a minimal value
   noZero?: boolean;
 };
 
-export function calcCurrencyFromUsd(
-  basePrice: number,
-  ratio?: number,
-  opts: TCalcCurrencyOptions = {},
-) {
+const defaultCalcCurrencyOptions: Record<TCurrencyType, TCalcCurrencyOptions> = {
+  USD: { roundDecimals: true },
+  EUR: { roundDecimals: true },
+  RUB: { roundHunderds: true },
+  TGSTAR: { roundHunderds: true },
+};
+
+function calcCurrencyFromBase(basePrice: number, ratio?: number, opts: TCalcCurrencyOptions = {}) {
   if (!basePrice || !ratio) {
     return 0;
   }
@@ -21,26 +35,24 @@ export function calcCurrencyFromUsd(
     if (!value && opts.noZero) {
       value = 100;
     }
+  } else if (opts.roundTens) {
+    value = Math.round(value * 10) / 10;
+    if (!value && opts.noZero) {
+      value = 10;
+    }
   } else if (opts.round) {
     value = Math.round(value);
     if (!value && opts.noZero) {
       value = 1;
     }
   } else if (opts.roundDecimals) {
-    value = Math.round(value * 100) / 100;
+    value = Math.round(value * 10) / 10;
     if (!value && opts.noZero) {
-      value = 0.01;
+      value = 10;
     }
   }
   return value;
 }
-
-const defaultCalcCurrencyOptions: Record<TCurrencyType, TCalcCurrencyOptions> = {
-  USD: { round: true },
-  EUR: { round: true },
-  RUB: { roundHunderds: true },
-  TGSTAR: { roundHunderds: true },
-};
 
 export function calcPriceForCurrency(
   basePrice: number,
@@ -48,15 +60,35 @@ export function calcPriceForCurrency(
   currency: TCurrencyType = defaultCurrencyType,
 ) {
   const opts = defaultCalcCurrencyOptions[currency];
-  return calcCurrencyFromUsd(basePrice, ratio, opts);
+  if (ratio && customCurrencyRatios[currency]) {
+    ratio /= customCurrencyRatios[currency];
+  }
+  const price = calcCurrencyFromBase(basePrice, ratio, opts);
+  return price;
 }
 
-export function calcAllPrices(basePrice: number, ratios?: TCurrencyRatios) {
-  const prices = allCurrencies.reduce<Partial<TCurrencyRatios>>((prices, currency) => {
+export function calcAllPrices(basePrice: number, ratios?: TCurrencyRatios): TCurrencyPrices {
+  const prices = allCurrencies.reduce<TCurrencyPrices>((prices, currency) => {
     const ratio = ratios?.[currency];
     const price = calcPriceForCurrency(basePrice, ratio, currency);
     prices[currency] = price;
     return prices;
-  }, {});
-  return prices as TCurrencyRatios;
+  }, {} as TCurrencyPrices);
+  return prices;
+}
+
+export function stringifyPrice(price: number = 0, _currency: TCurrencyType = defaultCurrencyType) {
+  const intVal = Math.round(price);
+  const isInt = intVal === price;
+  const decimals = !isInt && intVal < 10 ? 2 : 0;
+  const result = decimals ? price.toFixed(decimals) : String(intVal);
+  return result;
+}
+
+export function stringifyPrices(prices: TCurrencyPrices): TCurrencyStrings {
+  const strings = allCurrencies.reduce<TCurrencyStrings>((strings, currency) => {
+    strings[currency] = stringifyPrice(prices[currency], currency);
+    return strings;
+  }, {} as TCurrencyStrings);
+  return strings;
 }

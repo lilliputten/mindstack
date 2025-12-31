@@ -1,10 +1,11 @@
 import React from 'react';
 import { QueryKey, useQuery } from '@tanstack/react-query';
 
-import { extraLongStaleTime } from '@/constants';
+import { extraLongStaleTime, yearlyFromMonthlyRatio } from '@/constants';
 
-import { getAllCurrencyRatios, TCurrencyRatios } from '../actions';
-import { calcAllPrices } from '../helpers';
+import { getAllCurrencyRatios } from '../actions';
+import { calcAllPrices, stringifyPrices } from '../helpers';
+import { allCurrencies, TCurrencyPrices, TCurrencyRatios } from '../types/shared-types';
 
 const staleTime = extraLongStaleTime;
 
@@ -44,9 +45,30 @@ export function useCurrencyRatios() {
   );
 }
 
-export function useCalcAllPrices(basePrice: number) {
+export function useAllPrices(basePrice: number) {
   const ratiosQuery = useCurrencyRatios();
   const { ratios } = ratiosQuery;
-  const prices = React.useMemo(() => calcAllPrices(basePrice, ratios), [basePrice, ratios]);
-  return prices;
+  const monthlyPrices = React.useMemo(() => calcAllPrices(basePrice, ratios), [basePrice, ratios]);
+  const yearlyPrices = React.useMemo(() => {
+    return allCurrencies.reduce<TCurrencyPrices>((yearlyPrices, currency) => {
+      const price = monthlyPrices[currency] || 0;
+      yearlyPrices[currency] = price * yearlyFromMonthlyRatio;
+      return yearlyPrices;
+    }, {} as TCurrencyPrices);
+  }, [monthlyPrices]);
+  const stringifiedMonthlyPrices = React.useMemo(
+    () => stringifyPrices(monthlyPrices),
+    [monthlyPrices],
+  );
+  const stringifiedYearlyPrices = React.useMemo(
+    () => stringifyPrices(yearlyPrices),
+    [yearlyPrices],
+  );
+  return {
+    monthlyPrices,
+    yearlyPrices,
+    stringifiedMonthlyPrices,
+    stringifiedYearlyPrices,
+    ...ratiosQuery,
+  };
 }

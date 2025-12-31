@@ -1,6 +1,6 @@
 import { hourMs, minuteMs } from '@/constants';
 
-import { TCurrencyType } from './shared-types';
+import { TCurrencyType } from '../types/shared-types';
 
 /*
  * The base unit is USD. All other consider as derived and calculated from the base using ratios.

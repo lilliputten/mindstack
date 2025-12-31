@@ -4,6 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
+import { yearlyDiscountPercents } from '@/constants';
 import { useT } from '@/i18n';
 
 import { ToggleButton, ToggleContainer } from './shared';
@@ -30,7 +31,11 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
       <h1 className="text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
         {t('Pricing.Hero.Title')}
       </h1>
-      <p className="mb-4 text-lg">{t('Pricing.Hero.Subtitle')}</p>
+      <p className="mb-4 text-lg">
+        {t('Pricing.Hero.Subtitle', {
+          yearlyDiscountPercents,
+        })}
+      </p>
       <ToggleContainer
         debugId="HeroBillingToggle"
         activeIndex={billingPeriod === 'monthly' ? 0 : 1}

@@ -2,6 +2,8 @@ import { CurrencyTypeSchema, CurrencyTypeType } from '@/generated/prisma';
 
 export type TCurrencyType = CurrencyTypeType;
 export type TCurrencyRatios = Record<TCurrencyType, number>;
+export type TCurrencyPrices = Record<TCurrencyType, number>;
+export type TCurrencyStrings = Record<TCurrencyType, string>;
 
 export const allCurrencies: TCurrencyType[] = CurrencyTypeSchema._def.values;
 export const [_defaultCurrency, ...derivedCurrencies] = allCurrencies;

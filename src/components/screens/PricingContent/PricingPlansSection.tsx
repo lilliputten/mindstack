@@ -1,25 +1,36 @@
 'use client';
 
 import React from 'react';
+import { useLocale } from 'next-intl';
 
-// import { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } from '@/config/envServer';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import {
+  PREMIUM_MONTHLY_USD_PRICE,
+  // PREMIUM_YEARLY_USD_PRICE,
+  PRO_MONTHLY_USD_PRICE,
+  // PRO_YEARLY_USD_PRICE,
+} from '@/constants';
 import { useEnvConext } from '@/contexts/EnvContext';
-import { yearlyFromMonthlyRatio } from '@/features/currencies';
-import { useCalcAllPrices } from '@/features/currencies/query-hooks/useCurrencyRatios';
-import { useT } from '@/i18n';
+import { localeCurrencies, TCurrencyStrings } from '@/features/currencies';
+import {
+  useAllPrices,
+  useCurrencyRatios,
+} from '@/features/currencies/query-hooks/useCurrencyRatios';
+import { TLocale, useT } from '@/i18n';
 
 interface PricingPlan {
   grade: 'BASIC' | 'PRO' | 'PREMIUM' | 'UNLIMITED';
   name: string;
   description: string;
   price: {
-    monthly: number | 'Free' | 'Contact';
-    yearly: number | 'Free' | 'Contact';
+    monthly: TCurrencyStrings | 'Free' | 'Contact';
+    yearly: TCurrencyStrings | 'Free' | 'Contact';
     starsMonthly?: number;
     starsYearly?: number;
   };
@@ -37,16 +48,35 @@ interface PricingPlansSectionProps {
   billingPeriod: 'monthly' | 'yearly';
 }
 
-function useAllPlansData() {
+function usePlansData() {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
-  const PRO_MONTHLY_USD_PRICE = 2;
-  const PRO_YEARLY_USD_PRICE = Math.round(PRO_MONTHLY_USD_PRICE * yearlyFromMonthlyRatio);
-  const proMonthlyPrices = useCalcAllPrices(PRO_MONTHLY_USD_PRICE);
-  const PREMIUM_MONTHLY_USD_PRICE = 4;
-  const PREMIUM_YEARLY_USD_PRICE = Math.round(PREMIUM_MONTHLY_USD_PRICE * yearlyFromMonthlyRatio);
-  const mainPlans: PricingPlan[] = React.useMemo(
+  const { stringifiedMonthlyPrices: proMonthlyPrices, stringifiedYearlyPrices: proYearlyPrices } =
+    useAllPrices(PRO_MONTHLY_USD_PRICE);
+  const {
+    stringifiedMonthlyPrices: premiumMonthlyPrices,
+    stringifiedYearlyPrices: premiumYearlyPrices,
+  } = useAllPrices(PREMIUM_MONTHLY_USD_PRICE);
+  const plansData: PricingPlan[] = React.useMemo(
     () => [
+      {
+        grade: 'UNLIMITED',
+        name: t('Pricing.Plans.Unlimited.Name'),
+        description: t('Pricing.Plans.Unlimited.Description'),
+        price: { monthly: 'Contact', yearly: 'Contact' },
+        features: [
+          t('Pricing.Plans.Unlimited.Features.Everything'),
+          t('Pricing.Plans.Unlimited.Features.Enterprise'),
+          t('Pricing.Plans.Unlimited.Features.Security'),
+          t('Pricing.Plans.Unlimited.Features.Support'),
+          t('Pricing.Plans.Unlimited.Features.Custom'),
+        ],
+        buttonText: t('Pricing.Plans.Unlimited.Button'),
+        buttonVariant: 'outline',
+        generations: {
+          type: 'unlimited',
+        },
+      },
       {
         grade: 'BASIC',
         name: t('Pricing.Plans.Basic.Name'),
@@ -70,14 +100,9 @@ function useAllPlansData() {
         grade: 'PRO',
         name: t('Pricing.Plans.Pro.Name'),
         description: t('Pricing.Plans.Pro.Description'),
-        // Use constant and calculated prices
-        // PRO_MONTHLY_USD_PRICE=2
-        // PRO_YEARLY_USD_PRICE=15
         price: {
-          monthly: PRO_MONTHLY_USD_PRICE,
-          yearly: PRO_YEARLY_USD_PRICE,
-          starsMonthly: 600,
-          starsYearly: 500,
+          monthly: proMonthlyPrices, // PRO_MONTHLY_USD_PRICE,
+          yearly: proYearlyPrices, // PRO_YEARLY_USD_PRICE,
         },
         features: [
           t('Pricing.Plans.Pro.Features.Unlimited'),
@@ -98,14 +123,9 @@ function useAllPlansData() {
         grade: 'PREMIUM',
         name: t('Pricing.Plans.Premium.Name'),
         description: t('Pricing.Plans.Premium.Description'),
-        // Use constant and calculated prices
-        // PREMIUM_MONTHLY_USD_PRICE=4
-        // PREMIUM_YEARLY_USD_PRICE=30
         price: {
-          monthly: PREMIUM_MONTHLY_USD_PRICE,
-          yearly: PREMIUM_YEARLY_USD_PRICE,
-          starsMonthly: 1250,
-          starsYearly: 1000,
+          monthly: premiumMonthlyPrices, // PREMIUM_MONTHLY_USD_PRICE,
+          yearly: premiumYearlyPrices, // PREMIUM_YEARLY_USD_PRICE,
         },
         features: [
           t('Pricing.Plans.Premium.Features.Everything'),
@@ -120,41 +140,32 @@ function useAllPlansData() {
           type: 'unlimited',
         },
       },
-      {
-        grade: 'UNLIMITED',
-        name: t('Pricing.Plans.Unlimited.Name'),
-        description: t('Pricing.Plans.Unlimited.Description'),
-        price: { monthly: 'Contact', yearly: 'Contact' },
-        features: [
-          t('Pricing.Plans.Unlimited.Features.Everything'),
-          t('Pricing.Plans.Unlimited.Features.Enterprise'),
-          t('Pricing.Plans.Unlimited.Features.Security'),
-          t('Pricing.Plans.Unlimited.Features.Support'),
-          t('Pricing.Plans.Unlimited.Features.Custom'),
-        ],
-        buttonText: t('Pricing.Plans.Unlimited.Button'),
-        buttonVariant: 'outline',
-        generations: {
-          type: 'unlimited',
-        },
-      },
     ],
     [
-      BASIC_USER_GENERATIONS,
-      PREMIUM_YEARLY_USD_PRICE,
-      PRO_USER_MONTHLY_GENERATIONS,
-      PRO_YEARLY_USD_PRICE,
       t,
+      BASIC_USER_GENERATIONS,
+      proMonthlyPrices,
+      proYearlyPrices,
+      PRO_USER_MONTHLY_GENERATIONS,
+      premiumMonthlyPrices,
+      premiumYearlyPrices,
     ],
   );
-  return mainPlans;
+  return plansData;
 }
 
 export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps) {
   const t = useT();
+  const locale = useLocale() as TLocale;
+  const localeCurrency = localeCurrencies[locale];
+  const CurrencySign = CurrencySigns[localeCurrency];
+  const TgStarSign = CurrencySigns.TGSTAR;
 
-  const mainPlans: PricingPlan[] = useAllPlansData();
-  const unlimitedPlan = mainPlans.pop(); // useUnlimitedPlanData();
+  const ratiosQuery = useCurrencyRatios();
+  const { loading: isRatiosLoading } = ratiosQuery;
+
+  const plansData: PricingPlan[] = usePlansData();
+  const [unlimitedPlan, ...mainPlans] = plansData;
 
   return (
     <section
@@ -164,74 +175,85 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
       )}
     >
       <div className="grid gap-8 md:grid-cols-3">
-        {mainPlans.map((plan) => (
-          <Card
-            key={plan.grade}
-            className={cn(
-              'relative flex flex-col justify-between p-6',
-              'overflow-visible',
-              'bg-theme/10',
-              plan.popular && 'ring-2 ring-theme',
-            )}
-          >
-            {plan.popular && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="truncate rounded-full bg-theme px-3 py-1 text-xs font-medium text-white">
-                  {t('Pricing.MostPopular')}
-                </span>
-              </div>
-            )}
-            <div>
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-theme">{plan.name}</h3>
-                <p className="text-sm text-muted-foreground">{plan.description}</p>
-                <div className="mt-4">
-                  <div className="flex flex-wrap items-baseline gap-1">
-                    {plan.price[billingPeriod] === 'Free' ? (
-                      <span className="text-3xl font-bold">{t('Pricing.Free')}</span>
-                    ) : plan.price[billingPeriod] === 'Contact' ? (
-                      <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
-                    ) : (
-                      <>
-                        <span className="text-3xl font-bold">${plan.price[billingPeriod]}</span>
-                        {(plan.price.starsMonthly || plan.price.starsYearly) && (
-                          <div className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
-                            <span>
-                              or{' '}
-                              {billingPeriod === 'yearly'
-                                ? plan.price.starsYearly
-                                : plan.price.starsMonthly}
-                            </span>
-                            <Icons.TgStar className="inline size-5 text-amber-300" />
-                          </div>
-                        )}
-                        <span className="text-sm text-muted-foreground">
-                          {t('Pricing.PerMonth')}
-                          {', '}
-                          {billingPeriod === 'yearly'
-                            ? t('Pricing.billedAnnually')
-                            : t('Pricing.billedMonthly')}
-                        </span>
-                      </>
-                    )}
+        {mainPlans.map((plan) => {
+          const planData = plan.price[billingPeriod];
+          const tgPrice = typeof planData === 'object' ? planData.TGSTAR : undefined;
+          return (
+            <Card
+              key={plan.grade}
+              className={cn(
+                'relative flex flex-col justify-between p-6',
+                'overflow-visible',
+                'bg-theme/10',
+                plan.popular && 'ring-2 ring-theme',
+              )}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="truncate rounded-full bg-theme px-3 py-1 text-xs font-medium text-white">
+                    {t('Pricing.MostPopular')}
+                  </span>
+                </div>
+              )}
+              <div>
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-theme">{plan.name}</h3>
+                  <p className="text-sm text-muted-foreground">{plan.description}</p>
+                  <div className="mt-4">
+                    <div className="flex flex-wrap items-baseline gap-1">
+                      {planData === 'Free' ? (
+                        <span className="text-3xl font-bold">{t('Pricing.Free')}</span>
+                      ) : planData === 'Contact' ? (
+                        <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
+                      ) : (
+                        <>
+                          <span className="flex flex-wrap items-center text-3xl font-bold">
+                            <CurrencySign className="text-3xl" />
+                            {isRatiosLoading ? (
+                              <Skeleton className="inline h-7 w-10 rounded" />
+                            ) : (
+                              planData[localeCurrency]
+                            )}
+                          </span>
+                          {tgPrice && (
+                            <div className="flex flex-wrap items-center gap-1 text-sm">
+                              <span>or</span>
+                              {isRatiosLoading ? (
+                                <Skeleton className="inline h-5 w-7 rounded" />
+                              ) : (
+                                <span>{tgPrice}</span>
+                              )}
+                              <TgStarSign className="size-4 text-base" />
+                            </div>
+                          )}
+                          <span className="text-sm">
+                            {t('Pricing.PerMonth')}
+                            {', '}
+                            {billingPeriod === 'yearly'
+                              ? t('Pricing.billedAnnually')
+                              : t('Pricing.billedMonthly')}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
+                <hr className="my-4 bg-theme-800/5" />
+                <ul className="space-y-3">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-3 text-sm">
+                      <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <hr className="my-4 bg-theme-800/5" />
-              <ul className="space-y-3">
-                {plan.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3 text-sm">
-                    <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Button variant={plan.buttonVariant} className="mt-8 w-full" size="lg">
-              {plan.buttonText}
-            </Button>
-          </Card>
-        ))}
+              <Button variant={plan.buttonVariant} className="mt-8 w-full" size="lg">
+                {plan.buttonText}
+              </Button>
+            </Card>
+          );
+        })}
       </div>
       {!!unlimitedPlan && (
         <Card className="mt-8 flex flex-col items-start gap-6 bg-theme/10 p-6">

@@ -638,7 +638,7 @@
     },
     "Hero": {
       "Monthly": "Monthly",
-      "Subtitle": "Get 20% off with yearly",
+      "Subtitle": "Get {yearlyDiscountPercents}% off with yearly",
       "Title": "Pricing",
       "Yearly": "Yearly"
     },
@@ -657,7 +657,7 @@
       },
       "Premium": {
         "Button": "Choose Premium",
-        "Description": "For organizations",
+        "Description": "For advamnced usage",
         "Name": "Premium",
         "Features": {
           "Advanced": "Advanced integrations",
@@ -681,7 +681,7 @@
       },
       "Unlimited": {
         "Button": "Contact Us",
-        "Description": "For organizations requiring the highest level of security and control.",
+        "Description": "For persons or groups requiring the highest level of security and control.",
         "Name": "Unlimited",
         "Features": {
           "Custom": "Custom integrations",

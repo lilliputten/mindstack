@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db';
 import { getErrorText } from '@/lib/helpers';
 import { epochStartDate } from '@/constants';
 
+import { defaultCurrencyType, TCurrencyType } from '../types/shared-types';
 import {
   initialRatios,
   revalidateTimeout,
@@ -13,7 +14,6 @@ import {
   updatingTimeout,
 } from './action-constants';
 import { fetchDerivedCurrencyRatio } from './action-helpers';
-import { defaultCurrencyType, TCurrencyType } from './shared-types';
 
 export async function getCurrencyRatio(currencyType: TCurrencyType) {
   if (currencyType === defaultCurrencyType) {

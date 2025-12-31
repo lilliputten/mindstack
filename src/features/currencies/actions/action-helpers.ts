@@ -2,8 +2,8 @@
 
 import { getErrorText } from '@/lib/helpers';
 
+import { TCurrencyType } from '../types/shared-types';
 import { fetchExchangerateApiRatio, fetchTgStarRatio } from './currency-fetchers';
-import { TCurrencyType } from './shared-types';
 
 const derivedCurrencyFetchers: Record<TCurrencyType, () => Promise<number>> = {
   USD: async () => 1,
