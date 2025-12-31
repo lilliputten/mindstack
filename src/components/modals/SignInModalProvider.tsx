@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { useSignInModal } from '@/components/modals/SignInModal';
+import { useSignInModal } from './SignInModal';
 
-export const ModalContext = React.createContext<{
+const SignInModalContext = React.createContext<{
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   isVisible: boolean;
 }>({
@@ -12,11 +12,11 @@ export const ModalContext = React.createContext<{
   isVisible: false,
 });
 
-export default function ModalProvider({ children }: { children: React.ReactNode }) {
+export function SignInModalProvider({ children }: { children: React.ReactNode }) {
   const { isVisible, SignInModal, setVisible } = useSignInModal();
 
   return (
-    <ModalContext.Provider
+    <SignInModalContext.Provider
       value={{
         isVisible,
         setVisible,
@@ -24,6 +24,10 @@ export default function ModalProvider({ children }: { children: React.ReactNode 
     >
       <SignInModal />
       {children}
-    </ModalContext.Provider>
+    </SignInModalContext.Provider>
   );
+}
+
+export function useSignInModalContext() {
+  return React.useContext(SignInModalContext);
 }

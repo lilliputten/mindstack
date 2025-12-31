@@ -16,6 +16,8 @@ function SignInModal(props: TSignInModalProps) {
 
   const handleSignInDone = React.useCallback(
     (_provider: TSignInProvider) => {
+      console.log('[SignInModal:handleSignInDone');
+      debugger;
       setTimeout(() => {
         setVisible(false);
       }, 400);
@@ -78,7 +80,7 @@ function SignInModal(props: TSignInModalProps) {
 export function useSignInModal() {
   const [isVisible, setVisible] = React.useState(false);
 
-  const SignInModalCallback = React.useCallback(() => {
+  const SignInModalComponent = React.useCallback(() => {
     return <SignInModal isVisible={isVisible} setVisible={setVisible} />;
   }, [isVisible, setVisible]);
 
@@ -86,8 +88,8 @@ export function useSignInModal() {
     () => ({
       isVisible,
       setVisible,
-      SignInModal: SignInModalCallback,
+      SignInModal: SignInModalComponent,
     }),
-    [isVisible, setVisible, SignInModalCallback],
+    [isVisible, setVisible, SignInModalComponent],
   );
 }

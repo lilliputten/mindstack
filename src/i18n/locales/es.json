@@ -247,7 +247,14 @@
   },
   "DeleteAccountModal": {
     "AccountDeletedSuccessfully": "¡Cuenta eliminada exitosamente!",
-    "DeletingAccount": "Eliminando cuenta..."
+    "CannotDeleteAccount": "Error al eliminar la cuenta",
+    "ConfirmDeleteAccount": "Confirmar eliminar cuenta",
+    "DeleteAccount": "Eliminar cuenta",
+    "DeletingAccount": "Eliminando cuenta...",
+    "TypeToVerifyText": "Para verificar, escriba \"<ConfirmPattern></ConfirmPattern>\" a continuación",
+    "Warning": "Advertencia",
+    "WarningText": "¡Esto eliminará permanentemente su cuenta y su suscripción activa!",
+    "confirmPattern": "confirmar eliminar cuenta"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancelar",
@@ -531,7 +538,7 @@
   },
   "NavAuthButton": {
     "Dashboard": "Panel",
-    "sign-in": "Iniciar Sesión"
+    "SignIn": "Iniciar Sesión"
   },
   "NavLinks": {
     "AboutProject": "Acerca del Proyecto",
@@ -564,6 +571,7 @@
   "NavUserAccount": {
     "Admin": "Administración",
     "Dashboard": "Panel",
+    "DeleteAccount": "Eliminar cuenta",
     "Settings": "Configuración",
     "SignOut": "Cerrar Sesión"
   },

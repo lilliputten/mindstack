@@ -248,7 +248,14 @@
   },
   "DeleteAccountModal": {
     "AccountDeletedSuccessfully": "Account deleted successfully!",
-    "DeletingAccount": "Deleting account..."
+    "CannotDeleteAccount": "Account deleting error",
+    "ConfirmDeleteAccount": "Confirm delete account",
+    "DeleteAccount": "Delete Account",
+    "DeletingAccount": "Deleting account...",
+    "TypeToVerifyText": "To verify, type \"<ConfirmPattern></ConfirmPattern>\" below",
+    "Warning": "Warning",
+    "WarningText": "This will permanently delete your account and your active subscription!",
+    "confirmPattern": "confirm delete account"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancel",
@@ -532,7 +539,7 @@
   },
   "NavAuthButton": {
     "Dashboard": "Dashboard",
-    "sign-in": "Sign In"
+    "SignIn": "Sign In"
   },
   "NavLinks": {
     "AboutProject": "About Project",
@@ -565,6 +572,7 @@
   "NavUserAccount": {
     "Admin": "Administration",
     "Dashboard": "Dashboard",
+    "DeleteAccount": "Delete Account",
     "Settings": "Settings",
     "SignOut": "Sign Out"
   },

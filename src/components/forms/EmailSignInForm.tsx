@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { publicRootRoute } from '@/config/routesConfig';
-import { getErrorText } from '@/lib/helpers';
+import { clearLocalStorage, getErrorText } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -74,9 +74,7 @@ export function EmailSignInForm({ className, isLogging }: TProps) {
           throw result?.error;
         }
         // Run a client code ona successfull signin
-        if (typeof localStorage !== 'undefined') {
-          localStorage.clear();
-        }
+        clearLocalStorage({ except: ['cookies-accepted'] });
         const msg = 'A login message has been sent. Check your email for a sign-in link.';
         setMessage(msg);
         toast.success(msg);
