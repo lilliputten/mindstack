@@ -2,23 +2,26 @@
 
 import React from 'react';
 
-import { useSignInModal } from './SignInModal';
+import { TShowSignInModalParams, useSignInModal } from './SignInModal';
 
 const SignInModalContext = React.createContext<{
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  showSignInModal: (params?: TShowSignInModalParams) => void;
   isVisible: boolean;
 }>({
   setVisible: () => {},
+  showSignInModal: () => {},
   isVisible: false,
 });
 
 export function SignInModalProvider({ children }: { children: React.ReactNode }) {
-  const { isVisible, SignInModal, setVisible } = useSignInModal();
+  const { isVisible, SignInModal, showSignInModal, setVisible } = useSignInModal();
 
   return (
     <SignInModalContext.Provider
       value={{
         isVisible,
+        showSignInModal,
         setVisible,
       }}
     >

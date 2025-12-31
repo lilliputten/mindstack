@@ -88,7 +88,7 @@ export function calcAllPrices(basePrice: number, ratios?: TCurrencyRatios): TCur
   return prices;
 }
 
-export function stringifyPrice(price: number = 0, _currency: TCurrencyType = defaultCurrencyType) {
+export function stringifyPrice(price: number = 0) {
   const intVal = Math.round(price);
   const isInt = intVal === price;
   const decimals = !isInt && intVal < 10 ? 2 : 0;
@@ -98,7 +98,7 @@ export function stringifyPrice(price: number = 0, _currency: TCurrencyType = def
 
 export function stringifyPrices(prices: TCurrencyPrices): TCurrencyStrings {
   const strings = allCurrencies.reduce<TCurrencyStrings>((strings, currency) => {
-    strings[currency] = stringifyPrice(prices[currency], currency);
+    strings[currency] = stringifyPrice(prices[currency]);
     return strings;
   }, {} as TCurrencyStrings);
   return strings;

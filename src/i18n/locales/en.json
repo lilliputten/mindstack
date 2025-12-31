@@ -64,6 +64,7 @@
   "UserGrade": "User grade",
   "UserRole": "User role",
   "Yes": "Yes",
+  "or": "or",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Available AI generations: {availableGenerations}",
     "CheckYourUsagePlan": "check your usage plan",
@@ -554,6 +555,7 @@
     "MyData": "My Data",
     "MyTopics": "My Topics",
     "Options": "Options",
+    "Pricing": "Pricing",
     "Settings": "Settings",
     "Support": "Support",
     "TestAiTextQuery": "Test AI Text Query",
@@ -628,8 +630,8 @@
     "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
     "MostPopular": "Most Popular",
     "Unlimited": "Unlimited",
-    "billedAnnually": "annually",
-    "billedMonthly": "monthly",
+    "billedAnnually": "yearly",
+    "billedMonthly": "month",
     "Comparison": {
       "AiGenerations": "AI Generations",
       "Analytics": "Detailed Analytics",
@@ -699,6 +701,10 @@
         }
       }
     }
+  },
+  "PricingPlansSection": {
+    "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",
+    "SignInModalIntroForBasic": "To activate a basic subscription, simply sign-in to the system."
   },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Language code",

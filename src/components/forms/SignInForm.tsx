@@ -89,12 +89,14 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
 interface TSignInFormHeaderProps {
   dark?: boolean;
   inBody?: boolean;
+  introText?: string;
 }
 
 export function SignInFormHeader(props: TSignInFormHeaderProps) {
   const {
     // dark,
     inBody,
+    introText,
   } = props;
   const t = useT();
   const Title = inBody ? 'h3' : DialogTitle;
@@ -122,7 +124,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
           'text-center text-sm',
         )}
       >
-        {t('SignInForm.Intro')}
+        {introText || t('SignInForm.Intro')}
       </Descr>
     </>
   );

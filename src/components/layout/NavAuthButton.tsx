@@ -27,7 +27,7 @@ interface TNavAuthButtonProps extends TPropsWithClassName {
 export function NavUserAuthButton(props: TNavAuthButtonProps) {
   const { onPrimary, onSidebar, isUser, className } = props;
   const { data: session, status } = useSession();
-  const { setVisible: setSignInModalVisible } = useSignInModalContext();
+  const { showSignInModal } = useSignInModalContext();
   const t = useT();
   const hasValidUser = !!isUser && !!session && status === 'authenticated';
   return (
@@ -56,7 +56,7 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
             )}
             variant="ghostOnTheme" // {onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
             size="sm"
-            onClick={() => setSignInModalVisible(true)}
+            onClick={() => showSignInModal()}
           >
             <span className="truncate">{t('NavAuthButton.SignIn')}</span>
             <Icons.ArrowRight className="size-4" />

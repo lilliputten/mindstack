@@ -64,6 +64,7 @@
   "UserGrade": "Уровень пользователя",
   "UserRole": "Роль пользователя",
   "Yes": "Да",
+  "or": "или",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Доступные генерации ИИ: {availableGenerations}",
     "CheckYourUsagePlan": "проверьте свой тарифный план",
@@ -556,6 +557,7 @@
     "MyData": "Мои данные",
     "MyTopics": "Мои темы",
     "Options": "Опции",
+    "Pricing": "Цены",
     "Settings": "Настройки",
     "Support": "Поддержка",
     "TestAiTextQuery": "Тест ИИ",
@@ -630,8 +632,8 @@
     "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
     "MostPopular": "Самый популярный",
     "Unlimited": "Неограниченно",
-    "billedAnnually": "ежегодно",
-    "billedMonthly": "ежемесячно",
+    "billedAnnually": "год",
+    "billedMonthly": "месяц",
     "Comparison": {
       "AiGenerations": "ИИ генерации",
       "Analytics": "Подробная аналитика",
@@ -701,6 +703,10 @@
         }
       }
     }
+  },
+  "PricingPlansSection": {
+    "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
+    "SignInModalIntroForBasic": "Для подключения базовой подписки просто авторизуйтесь в системе."
   },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Код языка",

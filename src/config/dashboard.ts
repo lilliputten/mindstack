@@ -9,6 +9,7 @@ import {
   myTopicsRoute,
   publicAboutRoute,
   publicDocsRoute,
+  publicPricingRoute,
   publicRootRoute,
   publicWelcomeRoute,
   settingsRoute,
@@ -48,6 +49,7 @@ export const dashboardLinks: SidebarNavItem[] = [
       { href: publicAboutRoute, icon: Icons.Info, titleId: 'AboutProject' },
       { href: publicWelcomeRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
       { href: publicDocsRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
+      { href: publicPricingRoute, icon: Icons.BookMarked, titleId: 'Pricing' },
     ],
   },
   {

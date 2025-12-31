@@ -10,16 +10,21 @@ interface TSignInModalProps {
   isVisible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
   redirectUrl?: string;
+  introText?: string;
 }
 
 function SignInModal(props: TSignInModalProps) {
-  const { isVisible, setVisible, redirectUrl } = props;
+  const { isVisible, setVisible, redirectUrl, introText } = props;
 
   React.useEffect(() => {
-    console.log('[SignInModal] redirectUrl', redirectUrl);
+    console.log('[SignInModal] redirectUrl', {
+      redirectUrl,
+      introText,
+    });
   }, [
     ///
     redirectUrl,
+    introText,
   ]);
 
   const handleSignInDone = React.useCallback(
@@ -58,7 +63,7 @@ function SignInModal(props: TSignInModalProps) {
             'border-theme-600 bg-theme',
           )}
         >
-          <SignInFormHeader />
+          <SignInFormHeader introText={introText} />
         </div>
         <ScrollArea
           className={cn(
@@ -82,19 +87,35 @@ function SignInModal(props: TSignInModalProps) {
     </Modal>
   );
 }
+export interface TShowSignInModalParams {
+  redirectUrl?: string;
+  introText?: string;
+}
 
 export function useSignInModal() {
   const [isVisible, setVisible] = React.useState(false);
   const [redirectUrl, setRedirectUrl] = React.useState<string | undefined>();
+  const [introText, setIntroText] = React.useState<string | undefined>();
 
-  const showSignInModal = React.useCallback((redirectUrl?: string) => {
-    setRedirectUrl(redirectUrl);
-    setVisible(true);
-  }, []);
+  const showSignInModal = React.useCallback(
+    ({ redirectUrl, introText }: TShowSignInModalParams = {}) => {
+      setRedirectUrl(redirectUrl);
+      setIntroText(introText);
+      setVisible(true);
+    },
+    [],
+  );
 
   const SignInModalComponent = React.useCallback(() => {
-    return <SignInModal isVisible={isVisible} setVisible={setVisible} redirectUrl={redirectUrl} />;
-  }, [isVisible, setVisible, redirectUrl]);
+    return (
+      <SignInModal
+        isVisible={isVisible}
+        setVisible={setVisible}
+        redirectUrl={redirectUrl}
+        introText={introText}
+      />
+    );
+  }, [isVisible, setVisible, redirectUrl, introText]);
 
   return React.useMemo(
     () => ({

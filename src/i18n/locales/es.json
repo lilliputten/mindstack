@@ -65,6 +65,7 @@
   "UserGrade": "Nivel de usuario",
   "UserRole": "Rol de usuario",
   "Yes": "Sí",
+  "or": "o",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Generaciones de IA disponibles: {availableGenerations}",
     "CheckYourUsagePlan": "verifique su plan de uso",
@@ -553,6 +554,7 @@
     "MyData": "Mis Datos",
     "MyTopics": "Mis Temas",
     "Options": "Opciones",
+    "Pricing": "Precios",
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
@@ -627,8 +629,8 @@
     "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
     "MostPopular": "Más Popular",
     "Unlimited": "Ilimitado",
-    "billedAnnually": "anualmente",
-    "billedMonthly": "mensualmente",
+    "billedAnnually": "anual",
+    "billedMonthly": "mes",
     "Comparison": {
       "AiGenerations": "Generaciones de IA",
       "Analytics": "Análisis Detallados",
@@ -698,6 +700,10 @@
         }
       }
     }
+  },
+  "PricingPlansSection": {
+    "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",
+    "SignInModalIntroForBasic": "Para activar una suscripción básica, simplemente inicie sesión en el sistema."
   },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Código del idioma",

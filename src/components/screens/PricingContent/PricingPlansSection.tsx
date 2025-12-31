@@ -1,44 +1,61 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button, TButtonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
+import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { isDev, pricingChooseRoute, publicContactsRoute, userStartRoute } from '@/config';
 import {
   PREMIUM_MONTHLY_USD_PRICE,
   // PREMIUM_YEARLY_USD_PRICE,
   PRO_MONTHLY_USD_PRICE,
+  subscriptionsRequireUser,
+  TSubscriptionType,
   // PRO_YEARLY_USD_PRICE,
 } from '@/constants';
 import { useEnvConext } from '@/contexts/EnvContext';
-import { localeCurrencies, TCurrencyStrings } from '@/features/currencies';
+import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import {
   useAllPrices,
   useCurrencyRatios,
 } from '@/features/currencies/query-hooks/useCurrencyRatios';
+import {
+  UserGradeType,
+  // UserGradeSchema,
+} from '@/generated/prisma';
+import { useGoToTheRoute } from '@/hooks';
 import { TLocale, useT } from '@/i18n';
 
 import { TBillingPeriod } from './shared/types';
 
+/** 'BASIC' | 'PRO' | 'PREMIUM' | 'UNLIMITED' */
+type TExtendedGrade = Omit<UserGradeType, 'GUEST'> | 'UNLIMITED';
+
 interface PricingPlan {
-  grade: 'BASIC' | 'PRO' | 'PREMIUM' | 'UNLIMITED';
+  grade: TExtendedGrade;
   name: string;
   description: string;
   price: {
-    monthly: TCurrencyStrings | 'Free' | 'Contact';
-    yearly: TCurrencyStrings | 'Free' | 'Contact';
-    starsMonthly?: number;
-    starsYearly?: number;
+    monthly: TCurrencyPrices | 'Free' | 'Contact';
+    yearly: TCurrencyPrices | 'Free' | 'Contact';
   };
+  subscription:
+    | TSubscriptionType
+    | {
+        monthly: TSubscriptionType;
+        yearly: TSubscriptionType;
+      };
   features: (React.ReactNode | string)[];
   buttonText: string;
-  buttonVariant: 'default' | 'outline';
+  buttonVariant: TButtonVariants; // 'default' | 'outline';
   popular?: boolean;
   generations?: {
     type: 'total' | 'monthly' | 'unlimited';
@@ -56,12 +73,8 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
   const allPricesOptions = { isReady, prettify: true };
-  const { stringifiedMonthlyPrices: proMonthlyPrices, stringifiedYearlyPrices: proYearlyPrices } =
-    useAllPrices(isReady ? PRO_MONTHLY_USD_PRICE : 0, allPricesOptions);
-  const {
-    stringifiedMonthlyPrices: premiumMonthlyPrices,
-    stringifiedYearlyPrices: premiumYearlyPrices,
-  } = useAllPrices(isReady ? PREMIUM_MONTHLY_USD_PRICE : 0, allPricesOptions);
+  const proPrices = useAllPrices(isReady ? PRO_MONTHLY_USD_PRICE : 0, allPricesOptions);
+  const premiumPrices = useAllPrices(isReady ? PREMIUM_MONTHLY_USD_PRICE : 0, allPricesOptions);
   const tFuture = React.useCallback(
     (text: string) => (
       <>
@@ -70,102 +83,112 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
     ),
     [t],
   );
-  const plansData: PricingPlan[] = React.useMemo(
-    () => [
-      {
-        grade: 'UNLIMITED',
-        name: t('Pricing.Plans.Unlimited.Name'),
-        description: t('Pricing.Plans.Unlimited.Description'),
-        price: { monthly: 'Contact', yearly: 'Contact' },
-        features: [
-          t('Pricing.Plans.Unlimited.Features.Everything'),
-          t('Pricing.Plans.Unlimited.Features.Enterprise'),
-          t('Pricing.Plans.Unlimited.Features.Security'),
-          t('Pricing.Plans.Unlimited.Features.Support'),
-          t('Pricing.Plans.Unlimited.Features.Custom'),
-        ],
-        buttonText: t('Pricing.Plans.Unlimited.Button'),
-        buttonVariant: 'outline',
-        generations: {
-          type: 'unlimited',
-        },
+  const plansData: PricingPlan[] = React.useMemo(() => {
+    const UNLIMITED: PricingPlan = {
+      grade: 'UNLIMITED',
+      name: t('Pricing.Plans.Unlimited.Name'),
+      description: t('Pricing.Plans.Unlimited.Description'),
+      price: { monthly: 'Contact', yearly: 'Contact' },
+      subscription: 'UNLIMITED',
+      features: [
+        t('Pricing.Plans.Unlimited.Features.Everything'),
+        t('Pricing.Plans.Unlimited.Features.Enterprise'),
+        t('Pricing.Plans.Unlimited.Features.Security'),
+        t('Pricing.Plans.Unlimited.Features.Support'),
+        t('Pricing.Plans.Unlimited.Features.Custom'),
+      ],
+      buttonText: t('Pricing.Plans.Unlimited.Button'),
+      buttonVariant: 'outline',
+      generations: {
+        type: 'unlimited',
       },
-      {
-        grade: 'BASIC',
-        name: t('Pricing.Plans.Basic.Name'),
-        description: t('Pricing.Plans.Basic.Description'),
-        price: { monthly: 'Free', yearly: 'Free' },
-        features: [
-          t('Pricing.Plans.Basic.Features.Topics'),
-          t('Pricing.Plans.Basic.Features.Workouts'),
-          t('Pricing.Plans.Basic.Features.Progress'),
-          t('Pricing.Plans.Basic.Features.Community'),
-          t('Pricing.Plans.Basic.Features.Generations'),
-        ],
-        buttonText: t('Pricing.Plans.Basic.Button'),
-        buttonVariant: 'outline',
-        generations: {
-          type: 'total',
-          count: BASIC_USER_GENERATIONS, // From BASIC_USER_GENERATIONS env var
-        },
+    };
+    const BASIC: PricingPlan = {
+      grade: 'BASIC',
+      name: t('Pricing.Plans.Basic.Name'),
+      description: t('Pricing.Plans.Basic.Description'),
+      price: { monthly: 'Free', yearly: 'Free' },
+      subscription: 'BASIC',
+      features: [
+        t('Pricing.Plans.Basic.Features.Topics'),
+        t('Pricing.Plans.Basic.Features.Workouts'),
+        t('Pricing.Plans.Basic.Features.Progress'),
+        t('Pricing.Plans.Basic.Features.Community'),
+        t('Pricing.Plans.Basic.Features.Generations'),
+      ],
+      buttonText: t('Pricing.Plans.Basic.Button'),
+      buttonVariant: 'outline',
+      generations: {
+        type: 'total',
+        count: BASIC_USER_GENERATIONS, // From BASIC_USER_GENERATIONS env var
       },
-      {
-        grade: 'PRO',
-        name: t('Pricing.Plans.Pro.Name'),
-        description: t('Pricing.Plans.Pro.Description'),
-        price: {
-          monthly: proMonthlyPrices, // PRO_MONTHLY_USD_PRICE,
-          yearly: proYearlyPrices, // PRO_YEARLY_USD_PRICE,
-        },
-        features: [
-          t('Pricing.Plans.Pro.Features.Unlimited'),
-          t('Pricing.Plans.Pro.Features.Ai'),
-          tFuture('Pricing.Plans.Pro.Features.Analytics'),
-          tFuture('Pricing.Plans.Pro.Features.Support'),
-          t('Pricing.Plans.Pro.Features.Generations'),
-        ],
-        buttonText: t('Pricing.Plans.Pro.Button'),
-        buttonVariant: 'default',
-        popular: true,
-        generations: {
-          type: 'monthly',
-          count: PRO_USER_MONTHLY_GENERATIONS, // From PRO_USER_MONTHLY_GENERATIONS env var
-        },
+    };
+    const PRO: PricingPlan = {
+      grade: 'PRO',
+      name: t('Pricing.Plans.Pro.Name'),
+      description: t('Pricing.Plans.Pro.Description'),
+      price: {
+        monthly: proPrices.monthlyPrices, // PRO_MONTHLY_USD_PRICE,
+        yearly: proPrices.yearlyPrices, // PRO_YEARLY_USD_PRICE,
       },
-      {
-        grade: 'PREMIUM',
-        name: t('Pricing.Plans.Premium.Name'),
-        description: t('Pricing.Plans.Premium.Description'),
-        price: {
-          monthly: premiumMonthlyPrices, // PREMIUM_MONTHLY_USD_PRICE,
-          yearly: premiumYearlyPrices, // PREMIUM_YEARLY_USD_PRICE,
-        },
-        features: [
-          t('Pricing.Plans.Premium.Features.Everything'),
-          t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
-          tFuture('Pricing.Plans.Premium.Features.Priority'),
-          tFuture('Pricing.Plans.Premium.Features.Advanced'),
-          tFuture('Pricing.Plans.Premium.Features.Export'),
-        ],
-        buttonText: t('Pricing.Plans.Premium.Button'),
-        buttonVariant: 'outline',
-        generations: {
-          type: 'unlimited',
-        },
+      subscription: {
+        monthly: 'PRO-MONTH',
+        yearly: 'PRO-YEAR',
       },
-    ],
-    [
-      t,
-      tFuture,
-      BASIC_USER_GENERATIONS,
-      proMonthlyPrices,
-      proYearlyPrices,
-      PRO_USER_MONTHLY_GENERATIONS,
-      premiumMonthlyPrices,
-      premiumYearlyPrices,
-    ],
-  );
+      features: [
+        t('Pricing.Plans.Pro.Features.Unlimited'),
+        t('Pricing.Plans.Pro.Features.Ai'),
+        tFuture('Pricing.Plans.Pro.Features.Analytics'),
+        tFuture('Pricing.Plans.Pro.Features.Support'),
+        t('Pricing.Plans.Pro.Features.Generations'),
+      ],
+      buttonText: t('Pricing.Plans.Pro.Button'),
+      buttonVariant: 'theme',
+      popular: true,
+      generations: {
+        type: 'monthly',
+        count: PRO_USER_MONTHLY_GENERATIONS, // From PRO_USER_MONTHLY_GENERATIONS env var
+      },
+    };
+    const PREMIUM: PricingPlan = {
+      grade: 'PREMIUM',
+      name: t('Pricing.Plans.Premium.Name'),
+      description: t('Pricing.Plans.Premium.Description'),
+      price: {
+        monthly: premiumPrices.monthlyPrices, // PREMIUM_MONTHLY_USD_PRICE,
+        yearly: premiumPrices.yearlyPrices, // PREMIUM_YEARLY_USD_PRICE,
+      },
+      subscription: {
+        monthly: 'PREMIUM-MONTH',
+        yearly: 'PREMIUM-YEAR',
+      },
+      features: [
+        t('Pricing.Plans.Premium.Features.Everything'),
+        t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
+        tFuture('Pricing.Plans.Premium.Features.Priority'),
+        tFuture('Pricing.Plans.Premium.Features.Advanced'),
+        tFuture('Pricing.Plans.Premium.Features.Export'),
+      ],
+      buttonText: t('Pricing.Plans.Premium.Button'),
+      buttonVariant: 'outline',
+      generations: {
+        type: 'unlimited',
+      },
+    };
+    return [
+      // All plans, starting with UNLIMITED (will be processed separately)
+      UNLIMITED,
+      BASIC,
+      PRO,
+      PREMIUM,
+    ];
+  }, [t, tFuture, BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS, proPrices, premiumPrices]);
   return plansData;
+}
+
+interface TStartSubscriptionParams {
+  subscriptionType: TSubscriptionType;
+  priceValue?: number;
 }
 
 export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps) {
@@ -175,15 +198,50 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
   const CurrencySign = CurrencySigns[localeCurrency];
   const TgStarSign = CurrencySigns.TGSTAR;
 
+  const goToTheRoute = useGoToTheRoute();
+
+  const { showSignInModal } = useSignInModalContext();
+
+  const { data: session, status: sessionStatus } = useSession();
+  const user = session?.user;
+
   const { loading: isRatiosLoading } = useCurrencyRatios({
     isReady: !!billingPeriod,
-    // prettify: true,
   });
 
-  const isReady = !!billingPeriod && !isRatiosLoading;
+  const isReady = sessionStatus !== 'loading' && !!billingPeriod && !isRatiosLoading;
 
   const plansData: PricingPlan[] = usePlansData({ isReady });
   const [unlimitedPlan, ...mainPlans] = plansData;
+
+  const startSubscription = React.useCallback(
+    ({ subscriptionType, priceValue }: TStartSubscriptionParams) => {
+      const requiresUser = subscriptionsRequireUser.includes(subscriptionType);
+      const isBasicSubscription = subscriptionType === 'BASIC';
+      const choosePlanUrl = isBasicSubscription
+        ? userStartRoute
+        : `${pricingChooseRoute}?type=${subscriptionType}`;
+      console.log('[PricingPlansSection:startSubscription]', {
+        priceValue,
+        subscriptionType,
+        isBasicSubscription,
+        user,
+        subscriptionsRequireUser,
+        requiresUser,
+        choosePlanUrl,
+      });
+      debugger;
+      if (requiresUser && !user) {
+        const introText = isBasicSubscription
+          ? t('PricingPlansSection.SignInModalIntroForBasic')
+          : t('PricingPlansSection.SignInModalIntro');
+        showSignInModal({ redirectUrl: choosePlanUrl, introText });
+      } else {
+        goToTheRoute(choosePlanUrl);
+      }
+    },
+    [user, t, showSignInModal, goToTheRoute],
+  );
 
   return (
     <section
@@ -194,11 +252,21 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
     >
       <div className="grid gap-8 md:grid-cols-3">
         {mainPlans.map((plan) => {
-          const planData = billingPeriod ? plan.price[billingPeriod] : undefined;
-          const tgPrice = planData && typeof planData === 'object' ? planData.TGSTAR : undefined;
+          const { subscription, price: priceData } = plan;
+          const planData = billingPeriod ? priceData[billingPeriod] : undefined;
+          const priceValue = typeof planData === 'object' ? planData[localeCurrency] : undefined;
+          const tgPriceValue =
+            planData && typeof planData === 'object' ? planData.TGSTAR : undefined;
+          const subscriptionType: TSubscriptionType | undefined =
+            typeof subscription !== 'object'
+              ? subscription
+              : billingPeriod
+                ? subscription[billingPeriod]
+                : undefined;
+
           return (
             <Card
-              key={plan.grade}
+              key={String(plan.grade)}
               className={cn(
                 'relative flex flex-col justify-between p-6',
                 'overflow-visible',
@@ -208,7 +276,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="truncate rounded-full bg-theme px-3 py-1 text-xs font-medium text-white">
+                  <span className="truncate rounded-full bg-theme px-6 py-2 text-xs font-medium text-white">
                     {t('Pricing.MostPopular')}
                   </span>
                 </div>
@@ -229,12 +297,12 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                         <>
                           <span className="flex flex-wrap items-center text-3xl font-bold">
                             <CurrencySign className="text-3xl" />
-                            <span>{planData[localeCurrency]}</span>
+                            <span>{stringifyPrice(planData[localeCurrency])}</span>
                           </span>
-                          {tgPrice && (
+                          {tgPriceValue && (
                             <div className="flex flex-wrap items-center gap-1 text-sm">
-                              <span>or</span>
-                              <span>{tgPrice}</span>
+                              <span>{t('or')}</span>
+                              <span>{stringifyPrice(tgPriceValue)}</span>
                               <TgStarSign className="size-4 text-base" />
                             </div>
                           )}
@@ -259,9 +327,16 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                   ))}
                 </ul>
               </div>
-              <Button variant={plan.buttonVariant} className="mt-8 w-full" size="lg">
-                {plan.buttonText}
-              </Button>
+              {subscriptionType && (
+                <Button
+                  variant={plan.buttonVariant}
+                  className="mt-8 w-full"
+                  size="lg"
+                  onClick={() => startSubscription({ subscriptionType, priceValue })}
+                >
+                  {plan.buttonText}
+                </Button>
+              )}
             </Card>
           );
         })}
@@ -273,7 +348,9 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
             <p className="text-muted-foreground">{unlimitedPlan.description}</p>
           </div>
           <Button variant={unlimitedPlan.buttonVariant} size="lg">
-            {unlimitedPlan.buttonText}
+            <Link href={publicContactsRoute} className="flex items-center gap-2">
+              {unlimitedPlan.buttonText}
+            </Link>
           </Button>
         </Card>
       )}

@@ -8,14 +8,21 @@ export const dashboardRoute = '/dashboard';
 export const myTopicsRoute = '/topics/my';
 export const settingsRoute = '/settings';
 
+// Subsription plan choosing
+export const pricingChooseRoute = '/pricing/choose';
+
 // Root route
 export const publicRootRoute = '/';
 
 // Alias routes
-export const publicStartRoute = availableTopicsRoute; // '/start';
+/** Default route for guests */
+export const publicStartRoute = availableTopicsRoute;
+/** Default route for authorized users */
+export const userStartRoute = myTopicsRoute;
 
 // Public content routes (without sidebar)
 export const publicAboutRoute = '/about';
+export const publicContactsRoute = '/contacts';
 export const publicDocsRoute = '/docs';
 export const publicPricingRoute = '/pricing';
 export const publicWelcomeRoute = '/welcome';
@@ -29,6 +36,7 @@ export const legalTermsRoute = '/legal/terms';
 /** NOTE: That's used only to mock real intl context */
 export const pathnames = {
   [publicAboutRoute]: publicAboutRoute,
+  [publicContactsRoute]: publicContactsRoute,
   [adminAiTestTextQueryRoute]: adminAiTestTextQueryRoute,
   [adminBotControlRoute]: adminBotControlRoute,
   [adminRoute]: adminRoute,
@@ -39,6 +47,9 @@ export const pathnames = {
   [myTopicsRoute]: myTopicsRoute,
   [settingsRoute]: settingsRoute,
   [publicWelcomeRoute]: publicWelcomeRoute,
+
+  // Subsription plan choosing
+  [pricingChooseRoute]: pricingChooseRoute,
 
   // Public routes (without sidebar)
   [publicRootRoute]: publicRootRoute,
