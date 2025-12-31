@@ -239,8 +239,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                             </div>
                           )}
                           <span className="text-sm">
-                            {t('Pricing.PerMonth')}
-                            {', '}
+                            /
                             {billingPeriod === 'yearly'
                               ? t('Pricing.billedAnnually')
                               : t('Pricing.billedMonthly')}

@@ -619,10 +619,9 @@
     "Free": "Free",
     "FutureFeatureNote": "Coming soon! Subscribe to our newsletter to stay updated on new features.",
     "MostPopular": "Most Popular",
-    "PerMonth": "/month",
     "Unlimited": "Unlimited",
-    "billedAnnually": "billed annually",
-    "billedMonthly": "billed monthly",
+    "billedAnnually": "annually",
+    "billedMonthly": "monthly",
     "Comparison": {
       "AiGenerations": "AI Generations",
       "Analytics": "Detailed Analytics",
