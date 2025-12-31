@@ -3,3 +3,4 @@ export * from './defaults';
 export * from './eventTypes';
 export * from './isDev';
 export * from './prices';
+export * from './subscriptions';

@@ -68,7 +68,8 @@ export function EmailSignInForm({ className, isLogging }: TProps) {
         const result = await signIn('nodemailer', {
           email,
           redirect: false,
-          callbackUrl: publicRootRoute,
+          // callbackUrl: publicRootRoute,
+          // TODO: Pass external redirectUrl
         });
         if (!result || result?.error) {
           throw result?.error;

@@ -9,10 +9,18 @@ import { isDev } from '@/constants';
 interface TSignInModalProps {
   isVisible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  redirectUrl?: string;
 }
 
 function SignInModal(props: TSignInModalProps) {
-  const { isVisible, setVisible } = props;
+  const { isVisible, setVisible, redirectUrl } = props;
+
+  React.useEffect(() => {
+    console.log('[SignInModal] redirectUrl', redirectUrl);
+  }, [
+    ///
+    redirectUrl,
+  ]);
 
   const handleSignInDone = React.useCallback(
     (_provider: TSignInProvider) => {
@@ -77,17 +85,24 @@ function SignInModal(props: TSignInModalProps) {
 
 export function useSignInModal() {
   const [isVisible, setVisible] = React.useState(false);
+  const [redirectUrl, setRedirectUrl] = React.useState<string | undefined>();
+
+  const showSignInModal = React.useCallback((redirectUrl?: string) => {
+    setRedirectUrl(redirectUrl);
+    setVisible(true);
+  }, []);
 
   const SignInModalComponent = React.useCallback(() => {
-    return <SignInModal isVisible={isVisible} setVisible={setVisible} />;
-  }, [isVisible, setVisible]);
+    return <SignInModal isVisible={isVisible} setVisible={setVisible} redirectUrl={redirectUrl} />;
+  }, [isVisible, setVisible, redirectUrl]);
 
   return React.useMemo(
     () => ({
       isVisible,
+      showSignInModal,
       setVisible,
       SignInModal: SignInModalComponent,
     }),
-    [isVisible, setVisible, SignInModalComponent],
+    [isVisible, showSignInModal, setVisible, SignInModalComponent],
   );
 }

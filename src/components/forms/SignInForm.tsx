@@ -49,6 +49,7 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
     const options: SignInOptions = {
       // redirect: false, // Only `true` allowed
       // redirectTo: myTopicsRoute,
+      // TODO: Pass external redirectUrl
     };
     if (onSignInStart) {
       onSignInStart(provider);
@@ -132,10 +133,17 @@ interface TSignInFormProps {
   onSignInDone?: (provider: TSignInProvider) => void;
   /** Rendered inside a body or in the app header */
   inBody?: boolean;
+  // redirectUrl?: string;
 }
 
 export function SignInForm(props: TSignInFormProps) {
-  const { onSignInStart, onSignInDone, inBody } = props;
+  const {
+    onSignInStart,
+    onSignInDone,
+    inBody,
+    // // TODO: Pass it down to all the subcomponents, to provide in `signIn(` calls
+    // redirectUrl,
+  } = props;
   const [currentProvider, setCurrentProvider] = React.useState<TSignInProvider>();
   const t = useT();
 
