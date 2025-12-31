@@ -250,7 +250,14 @@
   },
   "DeleteAccountModal": {
     "AccountDeletedSuccessfully": "Аккаунт успешно удален!",
-    "DeletingAccount": "Удаление аккаунта..."
+    "CannotDeleteAccount": "Ошибка удаления аккаунта",
+    "ConfirmDeleteAccount": "Подтвердить удаление аккаунта",
+    "DeleteAccount": "Удалить аккаунт",
+    "DeletingAccount": "Удаление аккаунта...",
+    "TypeToVerifyText": "Для проверки введите \"<ConfirmPattern></ConfirmPattern>\" ниже.",
+    "Warning": "Предупреждение",
+    "WarningText": "Это приведет к безвозвратному удалению вашей учетной записи и активной подписки!",
+    "confirmPattern": "подтвердить удаление аккаунта"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Отмена",
@@ -534,7 +541,7 @@
   },
   "NavAuthButton": {
     "Dashboard": "Панель",
-    "sign-in": "Войти"
+    "SignIn": "Войти"
   },
   "NavLinks": {
     "AboutProject": "О проекте",
@@ -567,6 +574,7 @@
   "NavUserAccount": {
     "Admin": "Администрирование",
     "Dashboard": "Панель управления",
+    "DeleteAccount": "Удалить аккаунт",
     "Settings": "Настройки",
     "SignOut": "Выйти"
   },
