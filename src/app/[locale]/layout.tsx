@@ -18,7 +18,7 @@ import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/Toaster';
 import { GenericLayout } from '@/components/layout/GenericLayout';
-import ModalProvider from '@/components/modals/providers';
+import { SignInModalProvider } from '@/components/modals';
 import { CustomNextIntlClientProvider } from '@/components/providers/CustomNextIntlClientProvider';
 import { ReactQueryClientProvider } from '@/components/providers/ReactQueryClientProvider';
 import { TailwindIndicator } from '@/components/service/TailwindIndicator';
@@ -139,7 +139,7 @@ async function RootLayout(props: TRootLayoutProps) {
                   disableTransitionOnChange
                   storageKey="app-theme"
                 >
-                  <ModalProvider>
+                  <SignInModalProvider>
                     {/* NOTE: The toaster should be located before the main content */}
                     <Toaster
                       // @see https://sonner.emilkowal.ski/toaster#api-reference
@@ -175,7 +175,7 @@ async function RootLayout(props: TRootLayoutProps) {
                       </GenericLayout>
                     </SettingsContextProvider>
                     <TailwindIndicator />
-                  </ModalProvider>
+                  </SignInModalProvider>
                 </ThemeProvider>
               </CustomNextIntlClientProvider>
             </EnvContextRoot>
