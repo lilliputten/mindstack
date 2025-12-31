@@ -24,6 +24,8 @@ import {
 } from '@/features/currencies/query-hooks/useCurrencyRatios';
 import { TLocale, useT } from '@/i18n';
 
+import { TBillingPeriod } from './shared/types';
+
 interface PricingPlan {
   grade: 'BASIC' | 'PRO' | 'PREMIUM' | 'UNLIMITED';
   name: string;
@@ -34,7 +36,7 @@ interface PricingPlan {
     starsMonthly?: number;
     starsYearly?: number;
   };
-  features: string[];
+  features: (React.ReactNode | string)[];
   buttonText: string;
   buttonVariant: 'default' | 'outline';
   popular?: boolean;
@@ -45,18 +47,29 @@ interface PricingPlan {
 }
 
 interface PricingPlansSectionProps {
-  billingPeriod: 'monthly' | 'yearly';
+  billingPeriod: TBillingPeriod | undefined;
 }
 
-function usePlansData() {
+const futureStar = <span className="ml-1 inline text-theme">*</span>;
+
+function usePlansData({ isReady }: { isReady?: boolean }) {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
+  const allPricesOptions = { isReady, prettify: true };
   const { stringifiedMonthlyPrices: proMonthlyPrices, stringifiedYearlyPrices: proYearlyPrices } =
-    useAllPrices(PRO_MONTHLY_USD_PRICE);
+    useAllPrices(isReady ? PRO_MONTHLY_USD_PRICE : 0, allPricesOptions);
   const {
     stringifiedMonthlyPrices: premiumMonthlyPrices,
     stringifiedYearlyPrices: premiumYearlyPrices,
-  } = useAllPrices(PREMIUM_MONTHLY_USD_PRICE);
+  } = useAllPrices(isReady ? PREMIUM_MONTHLY_USD_PRICE : 0, allPricesOptions);
+  const tFuture = React.useCallback(
+    (text: string) => (
+      <>
+        {t(text)} {futureStar}
+      </>
+    ),
+    [t],
+  );
   const plansData: PricingPlan[] = React.useMemo(
     () => [
       {
@@ -107,8 +120,8 @@ function usePlansData() {
         features: [
           t('Pricing.Plans.Pro.Features.Unlimited'),
           t('Pricing.Plans.Pro.Features.Ai'),
-          t('Pricing.Plans.Pro.Features.Analytics') + ' *',
-          t('Pricing.Plans.Pro.Features.Support') + ' *',
+          tFuture('Pricing.Plans.Pro.Features.Analytics'),
+          tFuture('Pricing.Plans.Pro.Features.Support'),
           t('Pricing.Plans.Pro.Features.Generations'),
         ],
         buttonText: t('Pricing.Plans.Pro.Button'),
@@ -130,9 +143,9 @@ function usePlansData() {
         features: [
           t('Pricing.Plans.Premium.Features.Everything'),
           t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
-          t('Pricing.Plans.Premium.Features.Priority') + ' *',
-          t('Pricing.Plans.Premium.Features.Advanced') + ' *',
-          t('Pricing.Plans.Premium.Features.Export') + ' *',
+          tFuture('Pricing.Plans.Premium.Features.Priority'),
+          tFuture('Pricing.Plans.Premium.Features.Advanced'),
+          tFuture('Pricing.Plans.Premium.Features.Export'),
         ],
         buttonText: t('Pricing.Plans.Premium.Button'),
         buttonVariant: 'outline',
@@ -143,6 +156,7 @@ function usePlansData() {
     ],
     [
       t,
+      tFuture,
       BASIC_USER_GENERATIONS,
       proMonthlyPrices,
       proYearlyPrices,
@@ -161,10 +175,14 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
   const CurrencySign = CurrencySigns[localeCurrency];
   const TgStarSign = CurrencySigns.TGSTAR;
 
-  const ratiosQuery = useCurrencyRatios();
-  const { loading: isRatiosLoading } = ratiosQuery;
+  const { loading: isRatiosLoading } = useCurrencyRatios({
+    isReady: !!billingPeriod,
+    // prettify: true,
+  });
 
-  const plansData: PricingPlan[] = usePlansData();
+  const isReady = !!billingPeriod && !isRatiosLoading;
+
+  const plansData: PricingPlan[] = usePlansData({ isReady });
   const [unlimitedPlan, ...mainPlans] = plansData;
 
   return (
@@ -176,8 +194,8 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
     >
       <div className="grid gap-8 md:grid-cols-3">
         {mainPlans.map((plan) => {
-          const planData = plan.price[billingPeriod];
-          const tgPrice = typeof planData === 'object' ? planData.TGSTAR : undefined;
+          const planData = billingPeriod ? plan.price[billingPeriod] : undefined;
+          const tgPrice = planData && typeof planData === 'object' ? planData.TGSTAR : undefined;
           return (
             <Card
               key={plan.grade}
@@ -201,7 +219,9 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                   <p className="text-sm text-muted-foreground">{plan.description}</p>
                   <div className="mt-4">
                     <div className="flex flex-wrap items-baseline gap-1">
-                      {planData === 'Free' ? (
+                      {isRatiosLoading || !planData ? (
+                        <Skeleton className="inline h-9 w-40 max-w-full rounded" />
+                      ) : planData === 'Free' ? (
                         <span className="text-3xl font-bold">{t('Pricing.Free')}</span>
                       ) : planData === 'Contact' ? (
                         <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
@@ -209,20 +229,12 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                         <>
                           <span className="flex flex-wrap items-center text-3xl font-bold">
                             <CurrencySign className="text-3xl" />
-                            {isRatiosLoading ? (
-                              <Skeleton className="inline h-7 w-10 rounded" />
-                            ) : (
-                              planData[localeCurrency]
-                            )}
+                            <span>{planData[localeCurrency]}</span>
                           </span>
                           {tgPrice && (
                             <div className="flex flex-wrap items-center gap-1 text-sm">
                               <span>or</span>
-                              {isRatiosLoading ? (
-                                <Skeleton className="inline h-5 w-7 rounded" />
-                              ) : (
-                                <span>{tgPrice}</span>
-                              )}
+                              <span>{tgPrice}</span>
                               <TgStarSign className="size-4 text-base" />
                             </div>
                           )}

@@ -4,12 +4,12 @@ import { QueryKey, useQuery } from '@tanstack/react-query';
 import { extraLongStaleTime, yearlyFromMonthlyRatio } from '@/constants';
 
 import { getAllCurrencyRatios } from '../actions';
-import { calcAllPrices, stringifyPrices } from '../helpers';
+import { calcAllPrices, prettifyPrice, prettifyPrices, stringifyPrices } from '../helpers';
 import { allCurrencies, TCurrencyPrices, TCurrencyRatios } from '../types/shared-types';
 
 const staleTime = extraLongStaleTime;
 
-export function useCurrencyRatios() {
+export function useCurrencyRatios({ isReady }: { isReady?: boolean } = {}) {
   const queryKey: QueryKey = React.useMemo(() => ['currency_ratios'], []);
 
   const queryFn = React.useCallback(async () => {
@@ -28,7 +28,7 @@ export function useCurrencyRatios() {
     queryKey,
     staleTime,
     queryFn,
-    // enabled: !!userId,
+    enabled: isReady !== false,
   });
 
   const ratios = query.data;
@@ -45,17 +45,36 @@ export function useCurrencyRatios() {
   );
 }
 
-export function useAllPrices(basePrice: number) {
-  const ratiosQuery = useCurrencyRatios();
+interface TAllPricesOptions {
+  prettify?: boolean;
+  isReady?: boolean;
+}
+
+export function useAllPrices(basePrice: number, opts: TAllPricesOptions = {}) {
+  const { prettify, isReady } = opts;
+  const ratiosQuery = useCurrencyRatios({ isReady });
   const { ratios } = ratiosQuery;
-  const monthlyPrices = React.useMemo(() => calcAllPrices(basePrice, ratios), [basePrice, ratios]);
+  const basePrices = React.useMemo(() => {
+    return calcAllPrices(basePrice, ratios);
+  }, [basePrice, ratios]);
+  const monthlyPrices = React.useMemo(() => {
+    return prettify ? prettifyPrices(basePrices) : basePrices;
+  }, [basePrices, prettify]);
   const yearlyPrices = React.useMemo(() => {
     return allCurrencies.reduce<TCurrencyPrices>((yearlyPrices, currency) => {
-      const price = monthlyPrices[currency] || 0;
-      yearlyPrices[currency] = price * yearlyFromMonthlyRatio;
+      const price = basePrices[currency] || 0;
+      let yearlyPrice = price * yearlyFromMonthlyRatio;
+      if (prettify) {
+        yearlyPrice = prettifyPrice(yearlyPrice, currency);
+      }
+      /* // DEBUG
+       * // prettier-ignore
+       * console.log('[useCurrencyRatios:useAllPrices:yearlyPrice]', currency, prettify, ':', price, '->', yearlyPrice);
+       */
+      yearlyPrices[currency] = yearlyPrice;
       return yearlyPrices;
     }, {} as TCurrencyPrices);
-  }, [monthlyPrices]);
+  }, [basePrices, prettify]);
   const stringifiedMonthlyPrices = React.useMemo(
     () => stringifyPrices(monthlyPrices),
     [monthlyPrices],

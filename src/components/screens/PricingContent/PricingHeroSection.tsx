@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
 import { yearlyDiscountPercents } from '@/constants';
 import { useT } from '@/i18n';
@@ -11,7 +12,7 @@ import { ToggleButton, ToggleContainer } from './shared';
 import { TBillingPeriod } from './shared/types';
 
 interface PricingHeroSectionProps {
-  billingPeriod: TBillingPeriod;
+  billingPeriod?: TBillingPeriod;
   setBillingPeriod: (period: TBillingPeriod) => void;
 }
 
@@ -25,7 +26,7 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
     <section
       className={cn(
         isDev && '__PricingHeroSection', // DEBUG
-        'py-6 text-center',
+        'flex flex-col items-center py-6 text-center',
       )}
     >
       <h1 className="text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
@@ -36,28 +37,32 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
           yearlyDiscountPercents,
         })}
       </p>
-      <ToggleContainer
-        debugId="HeroBillingToggle"
-        activeIndex={billingPeriod === 'monthly' ? 0 : 1}
-        buttonWidthEm={buttonWidthEm}
-      >
-        <ToggleButton
-          debugId="Monthly"
-          isActive={billingPeriod === 'monthly'}
-          onClick={() => setBillingPeriod('monthly')}
+      {!billingPeriod ? (
+        <Skeleton className="h-11 rounded" style={{ width: `${buttonWidthEm * 2}em` }} />
+      ) : (
+        <ToggleContainer
+          debugId="HeroBillingToggle"
+          activeIndex={billingPeriod === 'monthly' ? 0 : 1}
           buttonWidthEm={buttonWidthEm}
         >
-          {t('Pricing.Hero.Monthly')}
-        </ToggleButton>
-        <ToggleButton
-          debugId="Yearly"
-          isActive={billingPeriod === 'yearly'}
-          onClick={() => setBillingPeriod('yearly')}
-          buttonWidthEm={buttonWidthEm}
-        >
-          {t('Pricing.Hero.Yearly')}
-        </ToggleButton>
-      </ToggleContainer>
+          <ToggleButton
+            debugId="Monthly"
+            isActive={billingPeriod === 'monthly'}
+            onClick={() => setBillingPeriod('monthly')}
+            buttonWidthEm={buttonWidthEm}
+          >
+            {t('Pricing.Hero.Monthly')}
+          </ToggleButton>
+          <ToggleButton
+            debugId="Yearly"
+            isActive={billingPeriod === 'yearly'}
+            onClick={() => setBillingPeriod('yearly')}
+            buttonWidthEm={buttonWidthEm}
+          >
+            {t('Pricing.Hero.Yearly')}
+          </ToggleButton>
+        </ToggleContainer>
+      )}
     </section>
   );
 }

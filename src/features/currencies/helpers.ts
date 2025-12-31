@@ -10,47 +10,59 @@ import {
 } from './types';
 
 export type TCalcCurrencyOptions = {
-  roundHunderds?: boolean;
-  roundTens?: boolean;
-  round?: boolean;
-  roundDecimals?: boolean;
+  // round?: 'decimals' | 'pretty';
   // Don't show zero, always show a minimal value
   noZero?: boolean;
 };
 
-const defaultCalcCurrencyOptions: Record<TCurrencyType, TCalcCurrencyOptions> = {
-  USD: { roundDecimals: true },
-  EUR: { roundDecimals: true },
-  RUB: { roundHunderds: true },
-  TGSTAR: { roundHunderds: true },
+const defaultCalcCurrencyOptions: Partial<Record<TCurrencyType, TCalcCurrencyOptions>> = {
+  // USD: { round: 'pretty' },
+  // EUR: { round: 'pretty' },
+  // RUB: { round: 'pretty' },
+  // TGSTAR: { round: 'pretty' },
 };
 
-function calcCurrencyFromBase(basePrice: number, ratio?: number, opts: TCalcCurrencyOptions = {}) {
+function calcCurrencyFromBase(
+  basePrice: number,
+  ratio?: number,
+  _currency: TCurrencyType = defaultCurrencyType,
+) {
   if (!basePrice || !ratio) {
     return 0;
   }
-  let value = basePrice / ratio;
-  if (opts.roundHunderds) {
-    value = Math.round(value / 100) * 100;
-    if (!value && opts.noZero) {
-      value = 100;
+  return basePrice / ratio;
+}
+
+export function prettifyPrice(price: number = 0, currency: TCurrencyType = defaultCurrencyType) {
+  let value = price;
+  // Get required options...
+  const opts = defaultCalcCurrencyOptions[currency] || {};
+  const { noZero } = opts;
+  // Analyze the number...
+  const intVal = Math.round(price);
+  // const isInt = intVal === price;
+  const intValStr = String(intVal);
+  const intSize = intValStr.length;
+  // Prettify...
+  if (intSize > 1) {
+    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.round(intSize / 2)) : 0;
+    const zerableBase = zerableDecimalPositions ? Math.pow(10, zerableDecimalPositions) : 5;
+    value = Math.round(value / zerableBase) * zerableBase;
+    if (!value && noZero) {
+      value = zerableBase;
     }
-  } else if (opts.roundTens) {
+  } else {
+    // Keep 2 fixed digits after floating point
     value = Math.round(value * 10) / 10;
-    if (!value && opts.noZero) {
-      value = 10;
-    }
-  } else if (opts.round) {
-    value = Math.round(value);
-    if (!value && opts.noZero) {
-      value = 1;
-    }
-  } else if (opts.roundDecimals) {
-    value = Math.round(value * 10) / 10;
-    if (!value && opts.noZero) {
+    if (!value && noZero) {
       value = 10;
     }
   }
+  /* // DEBUG
+   * if (price) {
+   *   console.log('[helpers:prettifyPrice]', currency, 'done :', price, '->', value);
+   * }
+   */
   return value;
 }
 
@@ -59,11 +71,10 @@ export function calcPriceForCurrency(
   ratio?: number,
   currency: TCurrencyType = defaultCurrencyType,
 ) {
-  const opts = defaultCalcCurrencyOptions[currency];
   if (ratio && customCurrencyRatios[currency]) {
     ratio /= customCurrencyRatios[currency];
   }
-  const price = calcCurrencyFromBase(basePrice, ratio, opts);
+  const price = calcCurrencyFromBase(basePrice, ratio, currency);
   return price;
 }
 
@@ -91,4 +102,12 @@ export function stringifyPrices(prices: TCurrencyPrices): TCurrencyStrings {
     return strings;
   }, {} as TCurrencyStrings);
   return strings;
+}
+
+export function prettifyPrices(prices: TCurrencyPrices): TCurrencyPrices {
+  const prettifiedPrices = allCurrencies.reduce<TCurrencyPrices>((prettifiedPrices, currency) => {
+    prettifiedPrices[currency] = prettifyPrice(prices[currency], currency);
+    return prettifiedPrices;
+  }, {} as TCurrencyPrices);
+  return prettifiedPrices;
 }
