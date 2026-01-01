@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
-import { isDev, pricingChooseRoute, publicContactsRoute, userStartRoute } from '@/config';
+import { isDev, pricingChooseRoute, publicContactsRoute, userStartAliasRoute } from '@/config';
 import {
   PREMIUM_MONTHLY_USD_PRICE,
   // PREMIUM_YEARLY_USD_PRICE,
@@ -219,7 +219,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
       const requiresUser = subscriptionsRequireUser.includes(subscriptionType);
       const isBasicSubscription = subscriptionType === 'BASIC';
       const choosePlanUrl = isBasicSubscription
-        ? userStartRoute
+        ? userStartAliasRoute
         : `${pricingChooseRoute}/${subscriptionType}`;
       console.log('[PricingPlansSection:startSubscription]', {
         priceValue,
