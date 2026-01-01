@@ -4,7 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { publicRootRoute } from '@/config/routesConfig';
 import { clearLocalStorage } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -12,7 +11,7 @@ import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
-import { siteTitle } from '@/config';
+import { rootAliasRoute, siteTitle } from '@/config';
 import { isDev } from '@/constants';
 import { Link, useT } from '@/i18n';
 
@@ -106,7 +105,7 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
   return (
     <>
       {showLogo && (
-        <Link href={publicRootRoute} className="transition hover:opacity-80">
+        <Link href={rootAliasRoute} className="transition hover:opacity-80">
           <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
         </Link>
       )}

@@ -4,7 +4,6 @@ import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
-import { settingsRoute } from '@/config/routesConfig';
 import { clearLocalStorage, deleteAllCookies } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -16,6 +15,7 @@ import {
 import { useDeleteAccountModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
+import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';

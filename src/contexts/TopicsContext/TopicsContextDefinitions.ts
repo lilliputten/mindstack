@@ -1,9 +1,4 @@
-import {
-  allTopicsRoute,
-  availableTopicsRoute,
-  myTopicsRoute,
-  TRoutePath,
-} from '@/config/routesConfig';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 
 export const TopicsManageScopeIds = {
   AVAILABLE_TOPICS: 'available',

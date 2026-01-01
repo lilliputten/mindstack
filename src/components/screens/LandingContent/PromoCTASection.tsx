@@ -5,7 +5,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { availableTopicsRoute, isDev, publicAboutRoute } from '@/config';
+import { aboutAliasRoute, isDev, startAliasRoute } from '@/config';
 import { Link } from '@/i18n/routing';
 
 export function PromoCTASection() {
@@ -41,13 +41,13 @@ export function PromoCTASection() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button variant="theme" size="lg" rounded="lg">
-            <Link href={availableTopicsRoute} className="flex items-center gap-2">
+            <Link href={startAliasRoute} className="flex items-center gap-2">
               <Icons.ArrowRight className="size-4 opacity-50" />
               <span>Get Started Free</span>
             </Link>
           </Button>
           <Button variant="outline" size="lg" rounded="lg">
-            <Link href={publicAboutRoute} className="flex items-center gap-2">
+            <Link href={aboutAliasRoute} className="flex items-center gap-2">
               <Icons.Info className="size-4 opacity-50" />
               <span>Learn More</span>
             </Link>

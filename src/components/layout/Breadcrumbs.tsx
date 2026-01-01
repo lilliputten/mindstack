@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 
 import { TPropsWithClassName, TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
+import { Link } from '@/i18n/routing';
 
 function BreadcrumbsDelim() {
   return <span className="opacity-50">&raquo;</span>;
@@ -66,7 +67,7 @@ function RenderBreadcrumbsItem({
   }
   return (
     <Link
-      href={link}
+      href={link as TRoutePath}
       className={cn(
         isDev && '__RenderBreadcrumbsItem_Link', // DEBUG
         'hover:underline',

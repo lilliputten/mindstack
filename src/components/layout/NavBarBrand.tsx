@@ -5,11 +5,11 @@ import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import { siteTitle } from '@/config/env';
-import { publicRootRoute, publicWelcomeRoute } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
+import { rootAliasRoute, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { Link } from '@/i18n/routing';
 import { TLocale } from '@/i18n/types';
@@ -23,10 +23,10 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
   const { children, className: parentClassName } = props;
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  // const publicRootRoute = isUser ? publicAboutRoute : publicWelcomeRoute;
-  const publicRootRoutesList = getAllRouteSynonyms(publicRootRoute, locale);
+  // const rootAliasRoute = isUser ? aboutAliasRoute : welcomeAliasRoute;
+  const publicRootRoutesList = getAllRouteSynonyms(rootAliasRoute, locale);
   const isRoot = !pathname || publicRootRoutesList.includes(pathname);
-  const urlRoute = isRoot ? publicWelcomeRoute : publicRootRoute;
+  const urlRoute = isRoot ? welcomeAliasRoute : rootAliasRoute;
   const className = cn(
     isDev && '__BrandWrapper', // DEBUG
     parentClassName,

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
@@ -18,6 +17,7 @@ import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
 import { useT } from '@/i18n';
 import { removePathLocalePrefix } from '@/i18n/helpers';
+import { Link } from '@/i18n/routing';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 
@@ -190,7 +190,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
                             <TooltipTrigger asChild>
                               <Link
                                 key={`link-${titleId}`}
-                                href={disabled ? '#' : href}
+                                href={href}
                                 className={cn(
                                   isDev && '__DashboardSidebar_Section_Item', // DEBUG
                                   'flex',

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 import { publicAppUrl } from '@/config/env';
-import { aliasedRoutes, publicRoutes } from '@/config/routesConfig';
+import { aliasedRoutes, publicRoutes } from '@/config';
 import { getPathname } from '@/i18n/routing';
 import { strictLocalesList, TLocale } from '@/i18n/types';
 

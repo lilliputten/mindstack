@@ -2,12 +2,11 @@
 
 import React from 'react';
 
-import { publicRootRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { isDev, rootAliasRoute } from '@/config';
 import { useT } from '@/i18n';
 
 type TProps = {
@@ -52,7 +51,7 @@ export function TelegramSignInForm(props: TProps) {
         className,
       )}
     >
-      <input type="hidden" name="callbackUrl" value={publicRootRoute} />
+      <input type="hidden" name="callbackUrl" value={rootAliasRoute} />
       <div className="flex flex-col gap-2">
         <label htmlFor="token" className="block text-center text-sm font-medium">
           {t('TelegramSignInForm.EnterTokenLabel')}

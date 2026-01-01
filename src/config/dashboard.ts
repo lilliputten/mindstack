@@ -2,17 +2,17 @@ import { SidebarNavItem } from '@/lib/types/site/NavItem';
 import * as Icons from '@/components/shared/Icons';
 
 import {
+  aboutAliasRoute,
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   allTopicsRoute,
   availableTopicsRoute,
+  docsAliasRoute,
   myTopicsRoute,
-  publicAboutRoute,
-  publicDocsRoute,
-  publicPricingRoute,
-  publicRootRoute,
-  publicWelcomeRoute,
+  pricingAliasRoute,
+  rootAliasRoute,
   settingsRoute,
+  welcomeAliasRoute,
 } from './routesConfig';
 
 // TODO: Allow to show generative data (like a topics count) in the sideboard titles (as badges?)
@@ -46,17 +46,17 @@ export const dashboardLinks: SidebarNavItem[] = [
   {
     titleId: 'Information',
     items: [
-      { href: publicAboutRoute, icon: Icons.Info, titleId: 'AboutProject' },
-      { href: publicWelcomeRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
-      { href: publicDocsRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
-      { href: publicPricingRoute, icon: Icons.BookMarked, titleId: 'Pricing' },
+      { href: aboutAliasRoute, icon: Icons.Info, titleId: 'AboutProject' },
+      { href: welcomeAliasRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
+      { href: docsAliasRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
+      { href: pricingAliasRoute, icon: Icons.BookMarked, titleId: 'Pricing' },
     ],
   },
   {
     titleId: 'Options',
     items: [
       { href: settingsRoute, icon: Icons.Settings, titleId: 'Settings' },
-      { href: publicRootRoute, icon: Icons.Messages, titleId: 'Support', disabled: true },
+      { href: rootAliasRoute, icon: Icons.Messages, titleId: 'Support', disabled: true },
     ],
   },
 ];

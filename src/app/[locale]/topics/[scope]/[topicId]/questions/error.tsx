@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 // Error boundaries must be Client Components
@@ -25,7 +26,7 @@ export default function Error({
   const topicsRoutePath = `/topics/${manageScope}`;
   const extraActions = (
     <Link
-      href={topicsRoutePath}
+      href={topicsRoutePath as TRoutePath}
       className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
     >
       <Icons.ArrowLeft className="size-4" />

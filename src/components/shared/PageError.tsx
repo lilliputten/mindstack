@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { publicRootRoute } from '@/config/routesConfig';
 import { ErrorLike } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { ErrorPlaceHolder } from '@/components/shared/ErrorPlaceHolder';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
+import { rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useGoBack } from '@/hooks';
 
@@ -56,17 +56,17 @@ export function PageError(props: TErrorProps) {
     // TODO: Log the error to an error reporting service?
   }, [error, errText]);
 
-  const goBack = useGoBack(publicRootRoute);
+  const goBack = useGoBack(rootAliasRoute);
 
   const goHome = React.useCallback(() => {
     const { href } = window.location;
     // Do a hard reload
-    // window.location.href = publicRootRoute;
-    router.push(publicRootRoute);
+    // window.location.href = rootAliasRoute;
+    router.push(rootAliasRoute);
     setTimeout(() => {
       // If still on the same page after trying to go back, fallback
       if (document.visibilityState === 'visible' && href === window.location.href) {
-        window.location.href = publicRootRoute;
+        window.location.href = rootAliasRoute;
       }
     }, 200);
   }, [router]);
@@ -101,7 +101,7 @@ export function PageError(props: TErrorProps) {
           Go home
         </Button>
         {/*
-        <Link href={publicRootRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
+        <Link href={rootAliasRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
           <span>Go home</span>
         </Link>

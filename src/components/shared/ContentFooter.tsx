@@ -3,17 +3,20 @@
 import React from 'react';
 import PublicLink from 'next/link';
 
-import {
-  legalCookiesRoute,
-  legalPrivacyRoute,
-  legalTermsRoute,
-  publicContactsRoute,
-  publicDocsRoute,
-  publicPricingRoute,
-} from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github } from '@/components/shared/Icons';
-import { authorSite, currentYear, isDev, siteTitle } from '@/config';
+import {
+  authorSite,
+  contactsAliasRoute,
+  cookiesAliasRoute,
+  currentYear,
+  docsAliasRoute,
+  isDev,
+  pricingAliasRoute,
+  privacyAliasRoute,
+  siteTitle,
+  termsAliasRoute,
+} from '@/config';
 import { useT } from '@/i18n';
 import { Link as LocalLink } from '@/i18n/routing';
 
@@ -84,7 +87,7 @@ export function ContentFooter() {
         </div>
         <div>
           <div className="flex flex-col items-start gap-4 pt-3 text-sm">
-            <LocalLink href={publicDocsRoute} className="hover:underline">
+            <LocalLink href={docsAliasRoute} className="hover:underline">
               {t('ContentFooter.DocumentationLink')}
             </LocalLink>
             {/*
@@ -131,19 +134,19 @@ export function ContentFooter() {
         </div>
       </div>
       <div className="z-1 relative mx-auto flex max-w-6xl flex-wrap gap-6 gap-y-2 px-6 text-sm max-sm:flex-col max-sm:items-start">
-        <LocalLink href={legalPrivacyRoute} className="hover:underline">
+        <LocalLink href={privacyAliasRoute} className="hover:underline">
           {t('ContentFooter.PrivacyPolicyLink')}
         </LocalLink>
-        <LocalLink href={legalTermsRoute} className="hover:underline">
+        <LocalLink href={termsAliasRoute} className="hover:underline">
           {t('ContentFooter.TermsOfServiceLink')}
         </LocalLink>
-        <LocalLink href={legalCookiesRoute} className="hover:underline">
+        <LocalLink href={cookiesAliasRoute} className="hover:underline">
           {t('ContentFooter.CookiePolicyLink')}
         </LocalLink>
-        <LocalLink href={publicPricingRoute} className="hover:underline">
+        <LocalLink href={pricingAliasRoute} className="hover:underline">
           {t('ContentFooter.PricingLink')}
         </LocalLink>
-        <LocalLink href={publicContactsRoute} className="hover:underline">
+        <LocalLink href={contactsAliasRoute} className="hover:underline">
           {t('ContentFooter.ContactsLink')}
         </LocalLink>
       </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { myTopicsRoute, publicRootRoute } from '@/config/routesConfig';
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -9,6 +8,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
+import { myTopicsRoute, rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
@@ -31,7 +31,7 @@ export function AvailableTopicsList(props: TProps) {
 
   const { className, availableTopicsQuery } = props;
 
-  const goBack = useGoBack(publicRootRoute);
+  const goBack = useGoBack(rootAliasRoute);
 
   const {
     isInited: isFiltersInited,

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 
@@ -12,7 +11,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
-import { isDev, pricingChooseRoute, publicContactsRoute, userStartAliasRoute } from '@/config';
+import { contactsAliasRoute, isDev, pricingChooseRoute, userStartAliasRoute } from '@/config';
 import {
   PREMIUM_MONTHLY_USD_PRICE,
   // PREMIUM_YEARLY_USD_PRICE,
@@ -33,6 +32,7 @@ import {
 } from '@/generated/prisma';
 import { useGoToTheRoute } from '@/hooks';
 import { TLocale, useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 
 import { TBillingPeriod } from './shared/types';
 
@@ -348,7 +348,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
             <p className="text-muted-foreground">{unlimitedPlan.description}</p>
           </div>
           <Button variant={unlimitedPlan.buttonVariant} size="lg">
-            <Link href={publicContactsRoute} className="flex items-center gap-2">
+            <Link href={contactsAliasRoute} className="flex items-center gap-2">
               {unlimitedPlan.buttonText}
             </Link>
           </Button>

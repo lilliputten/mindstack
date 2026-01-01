@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { TAvailableAnswer } from '@/features/answers/types';
@@ -20,6 +20,7 @@ import { TAvailableTopic } from '@/features/topics/types';
 import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TViewAnswerContentSummaryProps {
@@ -52,7 +53,10 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
         <h3 className="text-lg font-semibold">{t('Topic')}</h3>
         {isOwner && (
           <Button variant="ghost" size="sm">
-            <Link href={`${topicsListPath}/${topic.id}`} className="flex items-center gap-2">
+            <Link
+              href={`${topicsListPath}/${topic.id}` as TRoutePath}
+              className="flex items-center gap-2"
+            >
               <Icons.Edit className="size-3" />
               <span>{t('ViewAnswerContentSummary.ManageTopic')}</span>
             </Link>
@@ -144,7 +148,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
         {isOwner && (
           <Button variant="ghost" size="sm">
             <Link
-              href={`${questionsListRoutePath}/${question.id}`}
+              href={`${questionsListRoutePath}/${question.id}` as TRoutePath}
               className="flex items-center gap-2"
             >
               <Icons.Edit className="size-3" />

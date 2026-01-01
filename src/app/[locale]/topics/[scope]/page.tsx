@@ -1,11 +1,10 @@
 import { redirect } from 'next/navigation';
 
-import { publicWelcomeRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { isDev } from '@/config';
+import { isDev, welcomeAliasRoute } from '@/config';
 import { topicsNamespaces, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TTopicId } from '@/features/topics/types';
 import { getT } from '@/i18n';
@@ -48,7 +47,7 @@ export default async function ManageTopicsPageHolder(props: TManageTopicsPageHol
   // Check if logged user
   const isLogged = await isLoggedUser();
   if (!isLogged) {
-    redirect(publicWelcomeRoute);
+    redirect(welcomeAliasRoute);
   }
   return (
     <PageWrapper

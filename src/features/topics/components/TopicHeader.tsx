@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
@@ -7,6 +6,7 @@ import { safeJsonParse } from '@/lib/helpers/json';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TAvailableTopic, TIncludedUserTopicWorkout } from '@/features/topics/types';
@@ -14,7 +14,9 @@ import { TWorkoutData } from '@/features/workouts/types';
 import { useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
+import { Link, usePathname } from '@/i18n/routing';
+
+// TODO: Use 'next/navigation'
 
 import { TopicProperties } from './TopicProperties';
 
@@ -146,7 +148,10 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
     if (!isCurrentTopicRoutePath) {
       // Do not use a link if it's already on the its page
       nameContent = (
-        <Link className="flex-1 text-xl font-medium hover:underline" href={topicRoutePath}>
+        <Link
+          className="flex-1 text-xl font-medium hover:underline"
+          href={topicRoutePath as TRoutePath}
+        >
           {nameContent}
         </Link>
       );

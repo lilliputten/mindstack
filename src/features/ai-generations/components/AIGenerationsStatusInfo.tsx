@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { publicWelcomeRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
+import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
@@ -111,7 +111,7 @@ export function AIGenerationsStatusInfo(props: TProps) {
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
             </span>{' '}
             Please{' '}
-            <Link href={publicWelcomeRoute} className="text-theme-500 hover:underline">
+            <Link href={welcomeAliasRoute} className="text-theme-500 hover:underline">
               {t('AIGenerationsStatusInfo.CheckYourUsagePlan')}
             </Link>
             .

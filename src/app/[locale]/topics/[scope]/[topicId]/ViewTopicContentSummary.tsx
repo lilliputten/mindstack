@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
@@ -11,10 +10,12 @@ import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAvailableTopicById, useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TProps {
@@ -75,7 +76,10 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             </span>
           )}
           <Button variant="theme">
-            <Link href={`${routePath}/${topic.id}/questions`} className="flex items-center gap-2">
+            <Link
+              href={`${routePath}/${topic.id}/questions` as TRoutePath}
+              className="flex items-center gap-2"
+            >
               <Icons.Edit className="size-4 opacity-50" />
               <span>{t('ViewTopicContentSummary.ManageQuestions')}</span>
             </Link>

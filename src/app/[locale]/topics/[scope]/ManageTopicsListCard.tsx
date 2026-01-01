@@ -1,10 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
-import { publicRootRoute } from '@/config/routesConfig';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
@@ -29,6 +27,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
+import { rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
@@ -37,6 +36,7 @@ import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTo
 import { TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ContentSkeletonTable } from './ContentSkeleton';
@@ -259,7 +259,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       <TableCell id="name" className="max-w-24 truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
-          href={`${routePath}/${id}`}
+          href={`${routePath}/${id}` as TRoutePath}
         >
           {truncateString(name, 40)}
         </Link>
@@ -534,7 +534,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
 
   const isDataLoading = isRefetching || isLoading || isFiltersPending;
 
-  const goBack = useGoBack(publicRootRoute);
+  const goBack = useGoBack(rootAliasRoute);
 
   const handleReload = React.useCallback(() => {
     refetch({ cancelRefetch: true });

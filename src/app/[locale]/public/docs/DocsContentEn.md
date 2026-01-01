@@ -33,11 +33,11 @@ MindStack is a modern web application built with Next.js that provides memory tr
 
 The application uses a clean navigation structure:
 
-- [Home]({publicRootRoute}) -- Main dashboard and overview
+- [Home]({rootAliasRoute}) -- Main dashboard and overview
 - [Available Topics]({availableTopicsRoute}) -- Browse available memory training categories
 - [Settings]({settingsRoute}) -- Application settings
 - Profile _(in progress)_ -- Manage your account settings and view progress
-- [Documentation]({publicDocsRoute}) -- This help section
+- [Documentation]({docsAliasRoute}) -- This help section
 
 ## Memory Training Topics
 
@@ -70,9 +70,9 @@ Choose from multiple visual themes to customize your experience:
 
 Switch between supported languages:
 
-- [English](/en{publicDocsRoute}) -- English, the default language
-- [Spanish](/es{publicDocsRoute}) -- Español
-- [Russian](/ru{publicDocsRoute}) -- Русский
+- [English](/en{docsAliasRoute}) -- English, the default language
+- [Spanish](/es{docsAliasRoute}) -- Español
+- [Russian](/ru{docsAliasRoute}) -- Русский
 
 ## Account Management
 
@@ -141,7 +141,7 @@ The application uses cookies for:
 - Analytics and performance monitoring
 - Security and fraud prevention
 
-For detailed information, see our [Privacy Policy]({legalPrivacyRoute}) and [Cookie Policy]({legalCookiesRoute}).
+For detailed information, see our [Privacy Policy]({privacyAliasRoute}) and [Cookie Policy]({cookiesAliasRoute}).
 
 ## Troubleshooting
 
@@ -179,9 +179,9 @@ If you encounter issues or have questions:
 
 By using MindStack, you agree to our:
 
-- [Terms of Service]({legalTermsRoute}) - Usage rules and conditions
-- [Privacy Policy]({legalPrivacyRoute}) - How we handle your data
-- [Cookie Policy]({legalCookiesRoute}) - Information about cookies and tracking
+- [Terms of Service]({termsAliasRoute}) - Usage rules and conditions
+- [Privacy Policy]({privacyAliasRoute}) - How we handle your data
+- [Cookie Policy]({cookiesAliasRoute}) - Information about cookies and tracking
 
 ## Updates and Changelog
 

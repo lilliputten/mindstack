@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -27,6 +26,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { deleteAnswers, updateAnswer } from '@/features/answers/actions';
@@ -43,6 +43,7 @@ import {
   useSessionUser,
 } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();
@@ -262,7 +263,10 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
         </TableCell>
       )}
       <TableCell id="text" className="max-w-[20em] truncate" title={truncateMarkdown(text, 120)}>
-        <Link className="text-ellipsis whitespace-normal hover:underline" href={answerRoutePath}>
+        <Link
+          className="text-ellipsis whitespace-normal hover:underline"
+          href={answerRoutePath as TRoutePath}
+        >
           {truncateMarkdown(text, 80)}
         </Link>
       </TableCell>
@@ -291,7 +295,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
             aria-label="Edit"
             title={t('Edit')}
           >
-            <Link className="flex" href={`${answerRoutePath}/edit`}>
+            <Link className="flex" href={`${answerRoutePath}/edit` as TRoutePath}>
               <Icons.Edit className="size-4" />
             </Link>
           </Button>
@@ -305,7 +309,9 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
           >
             <Link
               className="flex"
-              href={`${answersListRoutePath}/delete?answerId=${answer.id}&from=ManageTopicQuestionAnswersListCard`}
+              href={
+                `${answersListRoutePath}/delete?answerId=${answer.id}&from=ManageTopicQuestionAnswersListCard` as TRoutePath
+              }
             >
               <Icons.Trash className="size-4" />
             </Link>
@@ -410,13 +416,13 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
         buttons={
           <>
             <Button>
-              <Link href={`${answersListRoutePath}/add`} className="flex gap-2">
+              <Link href={`${answersListRoutePath}/add` as TRoutePath} className="flex gap-2">
                 <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
                 {t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
               </Link>
             </Button>
             <Button disabled={!aiGenerationsAllowed || aiGenerationsLoading} variant="secondary">
-              <Link href={`${answersListRoutePath}/generate`} className="flex gap-2">
+              <Link href={`${answersListRoutePath}/generate` as TRoutePath} className="flex gap-2">
                 <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
                 {t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
               </Link>

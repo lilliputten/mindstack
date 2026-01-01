@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -27,6 +26,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { deleteQuestions, updateQuestion } from '@/features/questions/actions';
@@ -35,6 +35,7 @@ import { TQuestion, TQuestionData, TQuestionId } from '@/features/questions/type
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();
@@ -237,7 +238,10 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
         </TableCell>
       )}
       <TableCell id="text" className="max-w-24 truncate" title={truncateMarkdown(text, 120)}>
-        <Link className="text-ellipsis whitespace-normal hover:underline" href={questionRoutePath}>
+        <Link
+          className="text-ellipsis whitespace-normal hover:underline"
+          href={questionRoutePath as TRoutePath}
+        >
           {truncateMarkdown(text, 80)}
         </Link>
       </TableCell>

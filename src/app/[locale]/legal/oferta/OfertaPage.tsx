@@ -14,7 +14,7 @@ import {
   internationalPhone,
   internationalTIN,
   isDev,
-  legalPrivacyRoute,
+  privacyAliasRoute,
   russianPhone,
   russianTIN,
 } from '@/config';
@@ -111,7 +111,7 @@ export async function OfertaPage(props: TOfertaPagePropsWithContent) {
     effectiveDate: formatDate(effectiveTermsDate, locale),
     contactEmail,
     publicAddr: NEXT_PUBLIC_URL,
-    privacyPolicyUrl: legalPrivacyRoute,
+    privacyPolicyUrl: privacyAliasRoute,
     currency: currencyName,
     currencyCode: localeCurrency,
   };
