@@ -380,6 +380,16 @@
     "SavingTopicData": "Saving topic data...",
     "SuccessfullySavedTheTopic": "Successfully saved the topic"
   },
+  "EmailSignInForm": {
+    "ContactAdminMessage": "Reach administrator via the \"Contacts\" page.",
+    "EmailLabel": "Or use e-mail:",
+    "EmailPlaceholder": "Enter your email",
+    "ErrorMessage": "An error occurred, please try again",
+    "ErrorMessageWithDetails": "An error occurred, please try again: {error}",
+    "NotAllowedMessage": "You're currently not allowed to use the application (reject code: {rejectReason}).",
+    "SuccessMessage": "A login message has been sent. Check your email for a sign-in link.",
+    "ValidationError": "Please enter a valid email address"
+  },
   "FeaturesSection": {
     "CreateCustomTopics": "Create Custom Topics",
     "CreateCustomTopicsDescription": "Organize your learning materials into custom topics. Each topic can contain multiple questions and answers, allowing you to structure your knowledge base exactly how you need it. Support for multiple languages helps you learn in your preferred language.",
@@ -775,6 +785,17 @@
     "Info": "Information",
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
+  },
+  "TelegramSignIn": {
+    "ButtonText": "Sign in with Telegram bot",
+    "OrUseTelegram": "Or use Telegram",
+    "QRCodeAlt": "Telegram Bot QR Code",
+    "QRDescription": "Click the button above, use the QR code, or go to the <BotUsername></BotUsername> <BotLink>telegram bot</BotLink>, and select the <code>/authorize</code> command to obtain an authorization token."
+  },
+  "TelegramSignInForm": {
+    "EnterTokenLabel": "Then follow the link or enter the token here:",
+    "InvalidTokenMessage": "Token can contain only letters and numbers.",
+    "TokenPlaceholder": "Enter generated token"
   },
   "Themes": {
     "amber": "Amber",

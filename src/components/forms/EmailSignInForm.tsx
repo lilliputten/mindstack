@@ -12,22 +12,11 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Spinner } from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { contactEmail, isDev } from '@/config';
 import { checkIsAllowedEmail } from '@/features/allowed-users/helpers/checkIsAllowedEmail';
-
-export const emailSignInSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-});
-
-export type TEmailSignInData = z.infer<typeof emailSignInSchema>;
-
-export type TEmailSignInFormType = ReturnType<typeof useForm<TEmailSignInData>>;
+import { useT } from '@/i18n';
 
 const __debugUseTestEmail = false;
-
-export const defaultValues: TEmailSignInData = {
-  email: __debugUseTestEmail && isDev ? 'lilliputten@yandex.ru' : '',
-};
 
 interface TProps extends TPropsWithClassName {
   inBody?: boolean;
@@ -37,9 +26,24 @@ interface TProps extends TPropsWithClassName {
 
 export function EmailSignInForm(props: TProps) {
   const { className, isLogging, redirectUrl } = props;
+  const t = useT();
   const [isSubmitting, startSubmitting] = React.useTransition();
   const [message, setMessage] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
+
+  const emailSignInSchema = React.useMemo(
+    () =>
+      z.object({
+        email: z.string().email(t('EmailSignInForm.ValidationError')),
+      }),
+    [t],
+  );
+
+  type TEmailSignInData = z.infer<typeof emailSignInSchema>;
+
+  const defaultValues: TEmailSignInData = {
+    email: __debugUseTestEmail && isDev ? contactEmail : '',
+  };
 
   const form = useForm<TEmailSignInData>({
     mode: 'onChange',
@@ -62,9 +66,7 @@ export function EmailSignInForm(props: TProps) {
       try {
         const rejectReason = await checkIsAllowedEmail(email);
         if (rejectReason) {
-          throw new Error(
-            `You're currently not allowed to use the application (reject code: ${rejectReason}).`,
-          );
+          throw new Error(t('EmailSignInForm.NotAllowedMessage', { rejectReason }));
         }
         const options: SignInOptions<false> = {
           email,
@@ -77,13 +79,14 @@ export function EmailSignInForm(props: TProps) {
         }
         // Run a client code ona successfull signin
         clearLocalStorage({ except: ['cookies-accepted'] });
-        const msg = 'A login message has been sent. Check your email for a sign-in link.';
+        const msg = t('EmailSignInForm.SuccessMessage');
         setMessage(msg);
         toast.success(msg);
       } catch (error) {
-        const errMsg = ['An error occurred, please try again', getErrorText(error)]
-          .filter(Boolean)
-          .join(': ');
+        const errorText = getErrorText(error);
+        const errMsg = errorText
+          ? t('EmailSignInForm.ErrorMessageWithDetails', { error: errorText })
+          : t('EmailSignInForm.ErrorMessage');
         // eslint-disable-next-line no-console
         console.error('[EmailSignInForm:onSubmit]', errMsg, {
           email,
@@ -108,14 +111,14 @@ export function EmailSignInForm(props: TProps) {
     >
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="block text-center text-sm font-medium">
-          Or use e-mail:
+          {t('EmailSignInForm.EmailLabel')}
         </label>
         <div className="flex">
           <input
             {...register('email')}
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder={t('EmailSignInForm.EmailPlaceholder')}
             className={cn(
               isDev && '__EmailSignInForm_Input', // DEBUG
               'w-full rounded border px-5 py-2 transition focus:outline-none focus:ring-2',
@@ -150,7 +153,7 @@ export function EmailSignInForm(props: TProps) {
       {error && (
         <div className={cn('text-center text-sm text-red-500')}>
           <p>{error}</p>
-          <p>Reach administrator via the "Contacts" page.</p>
+          <p>{t('EmailSignInForm.ContactAdminMessage')}</p>
         </div>
       )}
     </form>

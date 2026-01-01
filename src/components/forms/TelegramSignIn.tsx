@@ -10,10 +10,12 @@ import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
+import { useT } from '@/i18n';
 
 import { TelegramSignInForm } from './TelegramSignInForm';
 
 function TelegramSignInButton({ telegramUrl }: { telegramUrl: string }) {
+  const t = useT();
   return (
     <>
       <Button
@@ -31,7 +33,7 @@ function TelegramSignInButton({ telegramUrl }: { telegramUrl: string }) {
           className="flex items-center gap-2"
         >
           <Icons.Telegram className="mr-2 size-4" />
-          <span>Sign in with Telegram bot</span>
+          <span>{t('TelegramSignIn.ButtonText')}</span>
         </Link>
       </Button>
     </>
@@ -57,14 +59,11 @@ interface TProps extends TPropsWithClassName {
 }
 
 export function TelegramSignIn(props: TProps) {
-  const {
-    className,
-    inBody,
-    isLogging,
-    // redirectUrl,
-  } = props;
+  const { className, inBody, isLogging, redirectUrl } = props;
+  const t = useT();
   // TODO: Is that possible to pass the `redirectUrl` link to the telegram bot?
   const { BOT_USERNAME } = useEnvConext();
+  // TODO: Try to pass `redirectUrl` parameter with tegeram bot url's `start` parameter
   const telegramUrl = `https://t.me/${BOT_USERNAME}?start=/authorize`;
   return (
     <div
@@ -75,18 +74,22 @@ export function TelegramSignIn(props: TProps) {
         className,
       )}
     >
-      <p className="mt-2 text-center text-sm font-medium">Or use Telegram</p>
+      <p className="mt-2 text-center text-sm font-medium">{t('TelegramSignIn.OrUseTelegram')}</p>
       <TelegramSignInButton telegramUrl={telegramUrl} />
       <TelegramQRCode telegramUrl={telegramUrl} />
       <p className="text-content text-center text-sm">
-        Click the button above, use the QR code, or go to the <code>@{BOT_USERNAME}</code>{' '}
-        <Link target="_blank" rel="noopener noreferrer" href={telegramUrl}>
-          telegram bot
-          <Icons.ExternalLink className="ml-0.5 inline size-3.5 align-baseline opacity-50" />
-        </Link>
-        , and select the <code>/authorize</code> command to obtain an authorization token.
+        {t.rich('TelegramSignIn.QRDescription', {
+          BotUsername: () => <code>@{BOT_USERNAME}</code>,
+          BotLink: (chunks) => (
+            <Link target="_blank" rel="noopener noreferrer" href={telegramUrl}>
+              {chunks}
+              <Icons.ExternalLink className="ml-0.5 inline size-3.5 align-baseline opacity-50" />
+            </Link>
+          ),
+          code: (chunks) => <code>{chunks}</code>,
+        })}
       </p>
-      <TelegramSignInForm inBody={inBody} />
+      <TelegramSignInForm inBody={inBody} redirectUrl={redirectUrl} />
     </div>
   );
 }

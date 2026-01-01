@@ -379,6 +379,16 @@
     "SavingTopicData": "Guardando datos del tema...",
     "SuccessfullySavedTheTopic": "Guardado exitosamente el tema."
   },
+  "EmailSignInForm": {
+    "ContactAdminMessage": "Comuníquese con el administrador a través de la página \"Contactos\".",
+    "EmailLabel": "O use correo electrónico:",
+    "EmailPlaceholder": "Ingrese su correo electrónico",
+    "ErrorMessage": "Ocurrió un error, por favor inténtelo de nuevo",
+    "ErrorMessageWithDetails": "Ocurrió un error, por favor inténtelo de nuevo: {error}",
+    "NotAllowedMessage": "Actualmente no tiene permiso para usar la aplicación (código de rechazo: {rejectReason}).",
+    "SuccessMessage": "Se ha enviado un mensaje de inicio de sesión. Revise su correo electrónico para obtener un enlace de inicio de sesión.",
+    "ValidationError": "Por favor ingrese una dirección de correo electrónico válida"
+  },
   "FeaturesSection": {
     "CreateCustomTopics": "Crear temas personalizados",
     "CreateCustomTopicsDescription": "Organice sus materiales de aprendizaje en temas personalizados. Cada tema puede contener múltiples preguntas y respuestas, lo que le permite estructurar su base de conocimientos exactamente como lo necesita. La compatibilidad con múltiples idiomas le ayuda a aprender en su idioma preferido.",
@@ -774,6 +784,17 @@
     "Info": "Información",
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
+  },
+  "TelegramSignIn": {
+    "ButtonText": "Iniciar sesión con el bot de Telegram",
+    "OrUseTelegram": "O use Telegram",
+    "QRCodeAlt": "Código QR del Bot de Telegram",
+    "QRDescription": "Haga clic en el botón de arriba, use el código QR o vaya al <BotUsername></BotUsername> <BotLink>bot de Telegram</BotLink>, y seleccione el comando <code>/authorize</code> para obtener un token de autorización."
+  },
+  "TelegramSignInForm": {
+    "EnterTokenLabel": "Luego siga el enlace o ingrese el token aquí:",
+    "InvalidTokenMessage": "El token solo puede contener letras y números.",
+    "TokenPlaceholder": "Ingrese el token generado"
   },
   "Themes": {
     "amber": "Ámbar",

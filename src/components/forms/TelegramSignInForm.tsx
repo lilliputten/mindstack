@@ -8,21 +8,43 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { useT } from '@/i18n';
 
 type TProps = {
   inBody?: boolean;
+  redirectUrl?: string;
 } & TPropsWithClassName;
 
 export function TelegramSignInForm(props: TProps) {
-  const { className } = props;
+  const { className, redirectUrl } = props;
+  const t = useT();
   const [token, setToken] = React.useState('');
   const trimmedToken = token.trim();
   const isValidToken = !trimmedToken || /^[a-zA-Z0-9]+$/.test(trimmedToken);
   const hasInvalidFormat = !isValidToken;
   const isSubmitEnabled = trimmedToken && isValidToken;
+  const actionUrlStr =
+    '/api/auth/callback/telegram' +
+    (redirectUrl ? `?callbackUrl=${encodeURIComponent(redirectUrl)}` : '');
+  /* // NOTE: It requires testing
+   * console.log('[TelegramSignInForm] Test redirectUrl', {
+   *   actionUrlStr,
+   *   redirectUrl,
+   * });
+   * debugger;
+   */
+  /* // TODO: Use `URL` constructor?
+   * const actionUrl = new URL('/api/auth/callback/telegram');
+   * const params = actionUrl.searchParams;
+   * if (redirectUrl) {
+   *   params.set('callbackUrl', redirectUrl);
+   * }
+   * const actionUrlStr = actionUrl.toString();
+   */
+  // TODO: Try to pass `redirectUrl` parameter with tegeram bot url's `start` parameter (in the `TelegramSignIn`, see `telegramUrl` construction
   return (
     <form
-      action="/api/auth/callback/telegram"
+      action={actionUrlStr}
       method="GET"
       className={cn(
         isDev && '__TelegramSignInForm', // DEBUG
@@ -33,7 +55,7 @@ export function TelegramSignInForm(props: TProps) {
       <input type="hidden" name="callbackUrl" value={publicRootRoute} />
       <div className="flex flex-col gap-2">
         <label htmlFor="token" className="block text-center text-sm font-medium">
-          Then follow the link or enter the token here:
+          {t('TelegramSignInForm.EnterTokenLabel')}
         </label>
         <div className="flex">
           <input
@@ -42,7 +64,7 @@ export function TelegramSignInForm(props: TProps) {
             type="text"
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            placeholder="Enter generated token"
+            placeholder={t('TelegramSignInForm.TokenPlaceholder')}
             required
             className={cn(
               isDev && '__TelegramSignInForm_Input', // DEBUG
@@ -72,7 +94,9 @@ export function TelegramSignInForm(props: TProps) {
           </Button>
         </div>
         {hasInvalidFormat && (
-          <span className="text-sm text-red-500">Token can contain only letters and numbers.</span>
+          <span className="text-sm text-red-500">
+            {t('TelegramSignInForm.InvalidTokenMessage')}
+          </span>
         )}
       </div>
     </form>
