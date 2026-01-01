@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, SignInOptions } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -32,9 +32,11 @@ export const defaultValues: TEmailSignInData = {
 interface TProps extends TPropsWithClassName {
   inBody?: boolean;
   isLogging?: boolean;
+  redirectUrl?: string;
 }
 
-export function EmailSignInForm({ className, isLogging }: TProps) {
+export function EmailSignInForm(props: TProps) {
+  const { className, isLogging, redirectUrl } = props;
   const [isSubmitting, startSubmitting] = React.useTransition();
   const [message, setMessage] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
@@ -64,12 +66,12 @@ export function EmailSignInForm({ className, isLogging }: TProps) {
             `You're currently not allowed to use the application (reject code: ${rejectReason}).`,
           );
         }
-        const result = await signIn('nodemailer', {
+        const options: SignInOptions<false> = {
           email,
           redirect: false,
-          // callbackUrl: publicRootRoute,
-          // TODO: Pass external redirectUrl
-        });
+          callbackUrl: redirectUrl,
+        };
+        const result = await signIn('nodemailer', options);
         if (!result || result?.error) {
           throw result?.error;
         }

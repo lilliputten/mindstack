@@ -6,13 +6,15 @@ import { publicRootRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight } from '@/components/shared/Icons';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
-export function TelegramSignInForm({
-  className,
-  // inBody,
-}: { inBody?: boolean } & TPropsWithClassName) {
+type TProps = {
+  inBody?: boolean;
+} & TPropsWithClassName;
+
+export function TelegramSignInForm(props: TProps) {
+  const { className } = props;
   const [token, setToken] = React.useState('');
   const trimmedToken = token.trim();
   const isValidToken = !trimmedToken || /^[a-zA-Z0-9]+$/.test(trimmedToken);
@@ -66,7 +68,7 @@ export function TelegramSignInForm({
               'h-9',
             )}
           >
-            <ArrowRight className="size-4" />
+            <Icons.ArrowRight className="size-4" />
           </Button>
         </div>
         {hasInvalidFormat && (

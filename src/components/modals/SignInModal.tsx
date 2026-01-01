@@ -16,17 +16,6 @@ interface TSignInModalProps {
 function SignInModal(props: TSignInModalProps) {
   const { isVisible, setVisible, redirectUrl, introText } = props;
 
-  React.useEffect(() => {
-    console.log('[SignInModal] redirectUrl', {
-      redirectUrl,
-      introText,
-    });
-  }, [
-    ///
-    redirectUrl,
-    introText,
-  ]);
-
   const handleSignInDone = React.useCallback(
     (_provider: TSignInProvider) => {
       setTimeout(() => {
@@ -81,7 +70,7 @@ function SignInModal(props: TSignInModalProps) {
             '[&_.text-content_a]:text-theme-300',
           )}
         >
-          <SignInForm onSignInDone={handleSignInDone} />
+          <SignInForm onSignInDone={handleSignInDone} redirectUrl={redirectUrl} />
         </ScrollArea>
       </div>
     </Modal>

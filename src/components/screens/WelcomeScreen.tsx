@@ -87,6 +87,7 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
             className={cn(
               isDev && '__WelcomeScreen_SignIn_Content', // DEBUG
             )}
+            // TODO: It's possible to pass a `redirectUrl` parameter
           />
         </ScrollArea>
       )}

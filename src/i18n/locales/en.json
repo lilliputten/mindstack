@@ -668,7 +668,7 @@
       },
       "Premium": {
         "Button": "Choose Premium",
-        "Description": "For advamnced usage",
+        "Description": "For advanced usage",
         "Name": "Premium",
         "Features": {
           "Advanced": "Advanced integrations",

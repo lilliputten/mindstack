@@ -31,6 +31,7 @@ interface OAuthSignInButtonProps {
   text: string;
   /** Rendered inside a body or in the app header */
   inBody?: boolean;
+  redirectUrl?: string;
 }
 
 function OAuthSignInButton(props: OAuthSignInButtonProps) {
@@ -42,14 +43,14 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
     provider,
     ProviderIcon,
     text,
+    redirectUrl,
   } = props;
   const isClicked = !!currentProvider;
   const isThisClicked = currentProvider == provider;
   const onSignIn = React.useCallback(() => {
-    const options: SignInOptions = {
-      // redirect: false, // Only `true` allowed
-      // redirectTo: myTopicsRoute,
-      // TODO: Pass external redirectUrl
+    const options: SignInOptions<true> = {
+      // redirect: false,
+      redirectTo: redirectUrl,
     };
     if (onSignInStart) {
       onSignInStart(provider);
@@ -62,7 +63,7 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
         onSignInDone(provider);
       }
     });
-  }, [onSignInStart, onSignInDone, provider]);
+  }, [onSignInStart, onSignInDone, provider, redirectUrl]);
 
   const icon = isThisClicked ? (
     <Icons.Spinner className="mr-2 size-4 animate-spin" />
@@ -135,7 +136,7 @@ interface TSignInFormProps {
   onSignInDone?: (provider: TSignInProvider) => void;
   /** Rendered inside a body or in the app header */
   inBody?: boolean;
-  // redirectUrl?: string;
+  redirectUrl?: string;
 }
 
 export function SignInForm(props: TSignInFormProps) {
@@ -144,7 +145,7 @@ export function SignInForm(props: TSignInFormProps) {
     onSignInDone,
     inBody,
     // // TODO: Pass it down to all the subcomponents, to provide in `signIn(` calls
-    // redirectUrl,
+    redirectUrl,
   } = props;
   const [currentProvider, setCurrentProvider] = React.useState<TSignInProvider>();
   const t = useT();
@@ -168,6 +169,7 @@ export function SignInForm(props: TSignInFormProps) {
         provider="github"
         ProviderIcon={Icons.Github}
         text={t('SignInForm.SignInWithGithub')}
+        redirectUrl={redirectUrl}
       />
       <OAuthSignInButton
         currentProvider={currentProvider}
@@ -176,6 +178,7 @@ export function SignInForm(props: TSignInFormProps) {
         provider="yandex"
         ProviderIcon={Icons.Yandex}
         text={t('SignInForm.SignInWithYandex')}
+        redirectUrl={redirectUrl}
       />
       <OAuthSignInButton
         currentProvider={currentProvider}
@@ -184,11 +187,12 @@ export function SignInForm(props: TSignInFormProps) {
         provider="google"
         ProviderIcon={Icons.Google}
         text={t('SignInForm.SignInWithGoogle')}
+        redirectUrl={redirectUrl}
       />
       {/* Telegram login section */}
-      <TelegramSignIn inBody={inBody} isLogging={!!currentProvider} />
+      <TelegramSignIn inBody={inBody} isLogging={!!currentProvider} redirectUrl={redirectUrl} />
       {/* Email login section */}
-      <EmailSignInForm inBody={inBody} isLogging={!!currentProvider} />
+      <EmailSignInForm inBody={inBody} isLogging={!!currentProvider} redirectUrl={redirectUrl} />
     </>
   );
 }
