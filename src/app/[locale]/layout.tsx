@@ -26,8 +26,7 @@ import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
-import { defaultLocale, TAwaitedLocaleProps, TLocale } from '@/i18n';
-import { routing } from '@/i18n/routing';
+import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
@@ -42,7 +41,7 @@ type TRootLayoutProps = TAwaitedLocaleProps & {
 };
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale: locale as TLocale }));
+  return localesList.map((locale) => ({ locale: locale as TLocale }));
 }
 
 async function RootLayout(props: TRootLayoutProps) {
@@ -52,7 +51,7 @@ async function RootLayout(props: TRootLayoutProps) {
   let { locale = defaultLocale } = params;
 
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale)) {
+  if (!localesList.includes(locale)) {
     // NOTE: Sometimes we got `.well-known` value here. TODO?
     const error = new Error(`Invalid locale: ${locale}, using default: ${defaultLocale}`);
     // eslint-disable-next-line no-console

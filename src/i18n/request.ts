@@ -2,15 +2,15 @@ import { getRequestConfig } from 'next-intl/server';
 
 import { debugLocale } from '@/config';
 
-import { getIntlMessageFallback, onIntlError, routing } from './routing';
-import { defaultLocale } from './types';
+import { getIntlMessageFallback, onIntlError } from './routing';
+import { defaultLocale, localesList, TLocale } from './types';
 
 export default getRequestConfig(async ({ requestLocale }) => {
   // This typically corresponds to the `[locale]` segment
-  let locale = await requestLocale;
+  let locale = (await requestLocale) as TLocale;
 
   // Ensure that a valid locale is used
-  if (!locale || !routing.locales.includes(locale)) {
+  if (!locale || !localesList.includes(locale)) {
     locale = defaultLocale;
   }
 
