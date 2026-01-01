@@ -234,7 +234,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
       if (requiresUser && !user) {
         const introText = isBasicSubscription
           ? t('PricingPlansSection.SignInModalIntroForBasic')
-          : t('PricingPlansSection.SignInModalIntro');
+          : t('PricingPlansSection.SignInModalIntroAuth');
         showSignInModal({ redirectUrl: choosePlanUrl, introText });
       } else {
         goToTheRoute(choosePlanUrl);

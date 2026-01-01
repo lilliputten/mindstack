@@ -136,7 +136,7 @@
 - **Service Provider:** Individual applying the special tax regime "Tax on Professional Income" (self-employed)
 - **Full Name:** {ownerName}
 - **TIN:** {internationalTIN}
-- **Contact Phone:** {contactPhone}
+- **Contact Phone:** {internationalPhone}
 - **Email for Legally Significant Messages and Claims:** {contactEmail}
 - **Service (Platform) Website:** {publicAddr}
 

@@ -240,6 +240,7 @@
   "ContentFooter": {
     "AppDescription": "Приложение для тренировки памяти",
     "BuiltWithText": "Создано в <AuthorLink>{authorSite}</AuthorLink> с использованием <NextJSLink>Next.js</NextJSLink> и <VercelLink>Vercel</VercelLink>",
+    "ContactsLink": "Контакты",
     "CookiePolicyLink": "Политика в отношении файлов cookie",
     "DocumentationLink": "Документация",
     "PricingLink": "Цены",
@@ -593,6 +594,7 @@
     "Answers": "Ответы",
     "AvailableTopicsDescription": "Темы, доступные для использования",
     "AvailableTopicsTitle": "Доступные темы",
+    "ContactsPageTitle": "Контакты проекта",
     "CookiesPageTitle": "Политика использования файлов cookie",
     "DocsTitle": "Документация",
     "EditAnswerPropertiesTitle": "Изменить свойства ответа",

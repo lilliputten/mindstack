@@ -7,6 +7,7 @@ import {
   legalCookiesRoute,
   legalPrivacyRoute,
   legalTermsRoute,
+  publicContactsRoute,
   publicDocsRoute,
   publicPricingRoute,
 } from '@/config/routesConfig';
@@ -141,6 +142,9 @@ export function ContentFooter() {
         </LocalLink>
         <LocalLink href={publicPricingRoute} className="hover:underline">
           {t('ContentFooter.PricingLink')}
+        </LocalLink>
+        <LocalLink href={publicContactsRoute} className="hover:underline">
+          {t('ContentFooter.ContactsLink')}
         </LocalLink>
       </div>
     </footer>

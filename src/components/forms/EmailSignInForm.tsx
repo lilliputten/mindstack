@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { publicRootRoute } from '@/config/routesConfig';
 import { clearLocalStorage, getErrorText } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';

@@ -136,7 +136,7 @@
 - **Proveedor de Servicios:** Individuo que aplica el régimen fiscal especial "Impuesto sobre los Ingresos Profesionales" (autónomo)
 - **Nombre Completo:** {ownerName}
 - **TIN:** {internationalTIN}
-- **Teléfono de Contacto:** {contactPhone}
+- **Teléfono de Contacto:** {internationalPhone}
 - **Correo Electrónico para Mensajes Legalmente Significativos y Reclamaciones:** {contactEmail}
 - **Sitio Web del Servicio (Plataforma):** {publicAddr}
 

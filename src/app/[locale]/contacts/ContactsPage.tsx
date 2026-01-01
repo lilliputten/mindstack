@@ -1,24 +1,19 @@
 import { setRequestLocale } from 'next-intl/server';
 
-import { NEXT_PUBLIC_URL } from '@/config/envServer';
+import {
+  authorGithub,
+  authorLinkedin,
+  authorName,
+  authorSiteUrl,
+  projectGithub,
+} from '@/config/contacts';
 import { constructMetadata } from '@/lib/constructMetadata';
-import { formatDate, getErrorText, getRandomHashString } from '@/lib/helpers';
+import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
-import { currencyNames } from '@/components/currencies';
 import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
-import {
-  contactEmail,
-  effectiveTermsDate,
-  internationalPhone,
-  internationalTIN,
-  isDev,
-  legalPrivacyRoute,
-  russianPhone,
-  russianTIN,
-} from '@/config';
-import { localeCurrencies } from '@/features/currencies';
+import { contactEmail, isDev } from '@/config';
 import { getT } from '@/i18n';
 import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
@@ -26,21 +21,21 @@ import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '
 
 const saveScrollHash = getRandomHashString();
 
-type TOfertaPageProps = TAwaitedLocaleProps;
+type TContactsPageProps = TAwaitedLocaleProps;
 
-interface TOfertaPagePropsWithContent extends TOfertaPageProps {
+interface TContactsPagePropsWithContent extends TContactsPageProps {
   content?: string;
 }
 
 async function getContentImport(locale: TLocale) {
   switch (locale) {
     case 'es':
-      return import('./OfertaContentEs.md');
+      return import('./ContactsContentEs.md');
     case 'ru':
-      return import('./OfertaContentRu.md');
+      return import('./ContactsContentRu.md');
     case 'en':
     default:
-      return import('./OfertaContentEn.md');
+      return import('./ContactsContentEn.md');
   }
 }
 
@@ -53,7 +48,7 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
   const t = await getT({ locale });
   return constructMetadata({
-    title: t('Pages.OfertaPageTitle'),
+    title: t('Pages.ContactsPageTitle') || 'Project Contacts',
     locale,
   });
 }
@@ -69,7 +64,7 @@ export async function generateStaticParams() {
       const message = 'Error loading page content for static generation';
       const details = getErrorText(error);
       // eslint-disable-next-line no-console
-      console.error('[OfertaPage:generateStaticParams]', [message, details].join(': '), {
+      console.error('[ContactsPage:generateStaticParams]', [message, details].join(': '), {
         message,
         details,
         error,
@@ -80,7 +75,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function OfertaPage(props: TOfertaPagePropsWithContent) {
+export async function ContactsPage(props: TContactsPagePropsWithContent) {
   const { params, content: preloadedContent } = props;
   const { locale = defaultLocale } = await params;
 
@@ -95,38 +90,28 @@ export async function OfertaPage(props: TOfertaPagePropsWithContent) {
     content = await getContent(locale);
   }
 
-  const localeCurrency = localeCurrencies[locale];
-  // const CurrencySign = CurrencySigns[localeCurrency];
-  const currencyName = currencyNames[localeCurrency];
-
   // Variables to render
   const vars = {
-    ownerName: t('LegalOwnerName'),
-
-    russianTIN, // Russian TIN (INN) number
-    internationalTIN, // Uzbek TIN (PINFL) number
-    russianPhone, // Russian phone
-    internationalPhone, // Uzbek phone
-
-    effectiveDate: formatDate(effectiveTermsDate, locale),
+    serviceName: t('Pages.RootTitle'),
     contactEmail,
-    publicAddr: NEXT_PUBLIC_URL,
-    privacyPolicyUrl: legalPrivacyRoute,
-    currency: currencyName,
-    currencyCode: localeCurrency,
+    authorName,
+    authorSiteUrl,
+    authorLinkedin,
+    authorGithub,
+    projectGithub,
   };
 
   return (
     <ScrollArea
-      saveScrollKey="OfertaContent"
+      saveScrollKey="ContactsContent"
       saveScrollHash={saveScrollHash}
       className={cn(
-        isDev && '__OfertaContent_Scroll',
+        isDev && '__ContactsContent_Scroll',
         'flex flex-1 flex-col overflow-hidden',
         'bg-theme-500/5',
       )}
       viewportClassName={cn(
-        isDev && '__OfertaContent_ScrollViewport',
+        isDev && '__ContactsContent_ScrollViewport',
         'flex flex-1 flex-col',
         'bg-decorative-gradient',
         '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
