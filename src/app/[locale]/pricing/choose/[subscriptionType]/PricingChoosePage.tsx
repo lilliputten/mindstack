@@ -3,6 +3,7 @@
 import React from 'react';
 import { useLocale } from 'next-intl';
 
+import { getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
@@ -38,6 +39,8 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const { loading: isRatiosLoading } = useCurrencyRatios({ isReady: true });
   const isReady = !isRatiosLoading;
 
+  const idempotenceKey = React.useMemo(() => getRandomHashString(), []);
+
   const isYearly = period === 'YEAR';
 
   /** Base price based on a grade */
@@ -67,20 +70,43 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const { yearlyPrices, monthlyPrices } = allPrices;
 
   const prices = isYearly ? yearlyPrices : monthlyPrices;
-  const localPrice = prices[localeCurrency];
+  const localePrice = prices[localeCurrency];
   const tgPrice = prices.TGSTAR;
 
   const telegramUrl = `https://t.me/${BOT_USERNAME}`;
 
-  const handleRussianCard = () => {
-    console.log('Russian card payment for:', subscriptionType);
+  const handleRussianCard = React.useCallback(() => {
+    const rubPrice = prices.RUB;
+    console.log('Russian card payment for:', {
+      rubPrice,
+      localePrice,
+      localeCurrency,
+      prices,
+      grade,
+      period,
+      basePlanPrice,
+      planName,
+      subscriptionType,
+      idempotenceKey,
+    });
     debugger;
-  };
+  }, [
+    // DEMO
+    localePrice,
+    localeCurrency,
+    prices,
+    grade,
+    period,
+    basePlanPrice,
+    planName,
+    subscriptionType,
+    idempotenceKey,
+  ]);
 
-  const handleInternationalCard = () => {
+  const handleInternationalCard = React.useCallback(() => {
     console.log('International card payment for:', subscriptionType);
     debugger;
-  };
+  }, []);
 
   const isPricesReady = true && !isRatiosLoading && basePlanPrice > 0;
 
@@ -113,7 +139,7 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
               <span className="flex h-9 flex-wrap items-baseline gap-1">
                 <span className="flex flex-wrap items-center text-3xl font-bold">
                   <CurrencySign className="text-3xl" />
-                  <span>{stringifyPrice(localPrice)}</span>
+                  <span>{stringifyPrice(localePrice)}</span>
                 </span>
                 {tgPrice && (
                   <div className="flex flex-wrap items-center gap-1 text-sm">
