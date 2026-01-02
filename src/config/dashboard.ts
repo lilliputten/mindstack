@@ -49,7 +49,7 @@ export const dashboardLinks: SidebarNavItem[] = [
       { href: aboutAliasRoute, icon: Icons.Info, titleId: 'AboutProject' },
       { href: welcomeAliasRoute, icon: Icons.Lightbulb, titleId: 'WelcomePage' },
       { href: docsAliasRoute, icon: Icons.BookMarked, titleId: 'Documentation' },
-      { href: pricingAliasRoute, icon: Icons.BookMarked, titleId: 'Pricing' },
+      { href: pricingAliasRoute, icon: Icons.CircleDollarSign, titleId: 'Pricing' },
     ],
   },
   {

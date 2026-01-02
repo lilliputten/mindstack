@@ -851,6 +851,15 @@
     "Title": "Upgrade to Pro",
     "Upgrade": "Upgrade"
   },
+  "UseAvailableAnswers": {
+    "CannotLoadAnswersData": "Cannot load answers data"
+  },
+  "UseAvailableQuestions": {
+    "CannotLoadQuestionsData": "Cannot load questions data"
+  },
+  "UseAvailableTopics": {
+    "CannotLoadTopicsData": "Cannot load topics data"
+  },
   "ViewAnswerCard": {
     "AddNewAnswer": "Add New Answer",
     "DeleteAnswer": "Delete Answer",

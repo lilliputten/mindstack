@@ -850,6 +850,15 @@
     "Title": "Actualizar a Pro",
     "Upgrade": "Actualizar"
   },
+  "UseAvailableAnswers": {
+    "CannotLoadAnswersData": "No se pueden cargar los datos de las respuestas"
+  },
+  "UseAvailableQuestions": {
+    "CannotLoadQuestionsData": "No se pueden cargar los datos de las preguntas"
+  },
+  "UseAvailableTopics": {
+    "CannotLoadTopicsData": "No se pueden cargar los datos de los temas"
+  },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
     "DeleteAnswer": "Eliminar Respuesta",

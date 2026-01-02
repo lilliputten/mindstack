@@ -31,6 +31,7 @@ import {
 } from '@/contexts/TopicsContext';
 import { getAvailableTopics } from '@/features/topics/actions';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { useSessionUser } from '../useSessionUser';
 
@@ -59,6 +60,8 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  const t = useT();
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
@@ -128,7 +131,7 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
          */
       } catch (error) {
         const details = getErrorText(error); // error instanceof APIError ? error.details : null;
-        const message = 'Cannot load topics data';
+        const message = t('UseAvailableTopics.CannotLoadTopicsData');
         // eslint-disable-next-line no-console
         console.error('[useAvailableTopics:queryFn]', message, {
           details,

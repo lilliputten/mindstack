@@ -853,6 +853,15 @@
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
   },
+  "UseAvailableAnswers": {
+    "CannotLoadAnswersData": "Не удается загрузить данные ответов"
+  },
+  "UseAvailableQuestions": {
+    "CannotLoadQuestionsData": "Не удается загрузить данные вопросов"
+  },
+  "UseAvailableTopics": {
+    "CannotLoadTopicsData": "Не удается загрузить данные тем"
+  },
   "ViewAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",
     "DeleteAnswer": "Удалить ответ",
