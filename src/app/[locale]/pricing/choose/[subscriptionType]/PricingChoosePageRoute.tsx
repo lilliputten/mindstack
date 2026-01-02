@@ -8,20 +8,17 @@ import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { PageError } from '@/components/shared';
 import { isDev } from '@/config';
+import { TPaidableSubscriptionType } from '@/constants/subscriptions';
 import {
-  paidableSubscriptionTypes,
-  paidableSubscriptionTypesSchema,
-  periodTypesSchema,
-  TPaidableSubscriptionType,
-} from '@/constants/subscriptions';
-import { UserGradeSchema } from '@/generated/prisma';
+  ensurePaidableSubscriptionType,
+  parsePaidableSubscriptionType,
+} from '@/features/subscriptions';
 import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChoosePage } from './PricingChoosePage';
 
-type TAwaitedProps = TAwaitedLocaleProps<{ subscriptionType: string }>;
+type TAwaitedProps = TAwaitedLocaleProps<{ subscriptionType: TPaidableSubscriptionType }>;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
@@ -36,7 +33,7 @@ const saveScrollHash = getRandomHashString();
 
 export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaitedProps) {
   const params = await awaitedParams;
-  // const subscriptionType = subscriptionType.toUpperCase();
+  const { subscriptionType: rawSubscriptionType } = params;
 
   // Check if logged user
   const isLogged = await isLoggedUser();
@@ -45,44 +42,11 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
     redirect(pricingAliasRoute);
   }
 
-  // Validate subscription type
-  const subscriptionTypeResult = paidableSubscriptionTypesSchema.safeParse(
-    params.subscriptionType?.toUpperCase(),
-  );
-
-  const subscriptionType: TPaidableSubscriptionType | undefined = subscriptionTypeResult.data;
-  if (!subscriptionTypeResult.success || !subscriptionType) {
-    return <PageError error={`Received invalid subscription type: "${params.subscriptionType}"`} />;
-  }
-
-  if (!paidableSubscriptionTypes.includes(subscriptionType)) {
-    return (
-      <PageError error={`The subscription type "${subscriptionType}" is not subject to payment`} />
-    );
-  }
+  const subscriptionType: TPaidableSubscriptionType =
+    ensurePaidableSubscriptionType(rawSubscriptionType);
 
   // Parse grade and period with Zod schemas
-  const [gradeRaw, periodRaw] = subscriptionType.split('-');
-
-  const gradeParseResult = UserGradeSchema.safeParse(gradeRaw);
-  if (!gradeParseResult.success) {
-    return (
-      <PageError
-        error={`Invalid grade type: ${gradeRaw}. Error: ${gradeParseResult.error.message}`}
-      />
-    );
-  }
-  const grade = gradeParseResult.data;
-
-  const periodParseResult = periodTypesSchema.safeParse(periodRaw);
-  if (!periodParseResult.success) {
-    return (
-      <PageError
-        error={`Invalid period type: ${periodRaw}. Error: ${periodParseResult.error.message}`}
-      />
-    );
-  }
-  const period = periodParseResult.data;
+  const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
 
   return (
     <PageWrapper

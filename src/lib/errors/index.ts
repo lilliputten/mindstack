@@ -1,5 +1,5 @@
 export * from './AIGenerationError';
-export * from './APIError';
+export * from './CustomAPIError';
 export * from './DatabaseError';
 export * from './ErrorLike';
 export * from './NetworkError';

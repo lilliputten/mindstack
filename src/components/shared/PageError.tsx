@@ -82,15 +82,8 @@ export function PageError(props: TErrorProps) {
       )}
     >
       <ErrorPlaceHolder.Icon icon={icon} />
-      <ErrorPlaceHolder.Title>{title || errText}</ErrorPlaceHolder.Title>
-      {title && errText && (
-        <ErrorPlaceHolder.Description>
-          {/* // To show only general message for the users?
-          See error log for details.
-          */}
-          {errText}
-        </ErrorPlaceHolder.Description>
-      )}
+      {title && <ErrorPlaceHolder.Title>{title}</ErrorPlaceHolder.Title>}
+      {errText && <ErrorPlaceHolder.Description>{errText}</ErrorPlaceHolder.Description>}
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4">
         <Button onClick={goBack} className="flex gap-2">
           <Icons.ArrowLeft className="size-4" />
