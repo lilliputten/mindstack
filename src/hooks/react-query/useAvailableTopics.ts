@@ -11,8 +11,8 @@ import {
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
 import { TAllUsedKeys, TAvailableTopicsResultsQueryData } from '@/lib/types/react-query';
+import { getErrorText } from '@/lib/helpers';
 import {
   addNewItemToQueryCache,
   deleteItemFromQueryCache,
@@ -127,7 +127,7 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
          * return result.data as TGetAvailableTopicsResults;
          */
       } catch (error) {
-        const details = error instanceof APIError ? error.details : null;
+        const details = getErrorText(error); // error instanceof APIError ? error.details : null;
         const message = 'Cannot load topics data';
         // eslint-disable-next-line no-console
         console.error('[useAvailableTopics:queryFn]', message, {

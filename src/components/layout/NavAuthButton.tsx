@@ -26,10 +26,10 @@ interface TNavAuthButtonProps extends TPropsWithClassName {
 
 export function NavUserAuthButton(props: TNavAuthButtonProps) {
   const { onPrimary, onSidebar, isUser, className } = props;
-  const { data: session, status } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const { showSignInModal } = useSignInModalContext();
   const t = useT();
-  const hasValidUser = !!isUser && !!session && status === 'authenticated';
+  const hasValidUser = !!isUser && !!session && sessionStatus === 'authenticated';
   return (
     <DeleteAccountModalProvider>
       <div
@@ -44,7 +44,7 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
           <NavUserBlock onPrimary={onPrimary} onSidebar={onSidebar} />
         ) : hasValidUser && !onSidebar ? (
           <NavUserAccount onPrimary={onPrimary} onSidebar={onSidebar} />
-        ) : status === 'loading' ? (
+        ) : sessionStatus === 'loading' ? (
           <Skeleton className="h-9 w-28 rounded-full lg:flex" />
         ) : (
           <Button

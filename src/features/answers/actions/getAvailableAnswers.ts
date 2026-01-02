@@ -42,7 +42,7 @@ export async function getAvailableAnswers(
   try {
     // Check if conditions are correct...
     if (!user && showOnlyMyAnswers) {
-      throw new Error('Only authorized users can get their own data');
+      throw new Error('Only authorized users can get their own data from the system');
     }
     if (adminMode && !isAdmin) {
       throw new Error('Admin mode is allowed only for administrators');
