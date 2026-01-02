@@ -21,7 +21,7 @@ import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChoosePage } from './PricingChoosePage';
 
-type TAwaitedProps = TAwaitedLocaleProps<{ subscriptionType: TPaidableSubscriptionType }>;
+type TAwaitedProps = TAwaitedLocaleProps<{ subscriptionType: string }>;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
@@ -34,8 +34,9 @@ export async function generateMetadata({ params }: TAwaitedProps) {
 
 const saveScrollHash = getRandomHashString();
 
-export async function PricingChoosePageRoute({ params }: TAwaitedProps) {
-  const { subscriptionType } = await params;
+export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaitedProps) {
+  const params = await awaitedParams;
+  // const subscriptionType = subscriptionType.toUpperCase();
 
   // Check if logged user
   const isLogged = await isLoggedUser();
@@ -45,10 +46,13 @@ export async function PricingChoosePageRoute({ params }: TAwaitedProps) {
   }
 
   // Validate subscription type
-  const subscriptionTypeResult = paidableSubscriptionTypesSchema.safeParse(subscriptionType);
+  const subscriptionTypeResult = paidableSubscriptionTypesSchema.safeParse(
+    params.subscriptionType?.toUpperCase(),
+  );
 
-  if (!subscriptionTypeResult.success) {
-    return <PageError error={'Cannot parse subscription type'} />;
+  const subscriptionType: TPaidableSubscriptionType | undefined = subscriptionTypeResult.data;
+  if (!subscriptionTypeResult.success || !subscriptionType) {
+    return <PageError error={`Received invalid subscription type: "${params.subscriptionType}"`} />;
   }
 
   if (!paidableSubscriptionTypes.includes(subscriptionType)) {

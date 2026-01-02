@@ -723,6 +723,7 @@
     "InternationalCard": "Tarjeta Internacional",
     "InternationalCardDescription": "Pague con métodos de pago internacionales. Compatible con las principales tarjetas de crédito y débito en todo el mundo.",
     "OpenTelegramBot": "Abrir @{botUsername}",
+    "OtherSubscriptionOptions": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink>.",
     "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
     "PayWithRussianCard": "Pagar con Tarjeta Rusa",
     "RussianBankCard": "Tarjeta Bancaria Rusa",

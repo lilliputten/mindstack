@@ -1,3 +1,4 @@
+import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
@@ -35,31 +36,8 @@ export function PricingContentSkeleton({ className }: TProps) {
         )}
       >
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Pro Plan Skeleton (popular) */}
-          <div className="relative flex flex-col justify-between rounded-xl border bg-theme/10 p-6">
-            <div className="mb-6">
-              <Skeleton className="h-6 w-32 rounded text-xl font-bold text-theme" />
-              <Skeleton className="mt-2 h-4 w-48 rounded text-sm" />
-              <div className="mt-4">
-                <div className="flex flex-wrap items-baseline gap-1">
-                  <Skeleton className="h-9 w-40 rounded text-3xl font-bold" />
-                </div>
-              </div>
-            </div>
-            <hr className="my-4 bg-theme-800/5" />
-            <ul className="space-y-3">
-              {[...Array(5)].map((_, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm">
-                  <Skeleton className="mt-0.5 size-4 shrink-0 rounded-full text-theme" />
-                  <Skeleton className="h-4 flex-1 rounded" />
-                </li>
-              ))}
-            </ul>
-            <Skeleton className="mt-8 h-12 w-full rounded" />
-          </div>
-
-          {/* Basic and Premium Plan Skeletons */}
-          {[...Array(2)].map((_, i) => (
+          {/* First 3 Plans' Skeletons */}
+          {generateArray(3).map((i) => (
             <div
               key={i}
               className="flex flex-col justify-between rounded-xl border bg-theme/10 p-6"
@@ -75,7 +53,7 @@ export function PricingContentSkeleton({ className }: TProps) {
               </div>
               <hr className="my-4 bg-theme-800/5" />
               <ul className="space-y-3">
-                {[...Array(5)].map((j) => (
+                {generateArray(5).map((j) => (
                   <li key={j} className="flex items-start gap-3 text-sm">
                     <Skeleton className="mt-0.5 size-4 shrink-0 rounded-full text-theme" />
                     <Skeleton className="h-4 flex-1 rounded" />
@@ -105,36 +83,28 @@ export function PricingContentSkeleton({ className }: TProps) {
         )}
       >
         <div className="overflow-x-auto">
-          <table className="w-full rounded-md">
-            <thead className="sticky top-0 z-10 bg-theme-500 text-white">
+          <table className="w-full overflow-hidden rounded-md">
+            <thead className="sticky top-0 z-10 rounded bg-theme/10 text-white">
               <tr>
                 <th className="p-3 text-left"></th>
-                <th className="p-3 text-center">
-                  <Skeleton className="mx-auto h-6 w-24 rounded text-center" />
-                </th>
-                <th className="p-3 text-center">
-                  <Skeleton className="mx-auto h-6 w-24 rounded text-center" />
-                </th>
-                <th className="p-3 text-center">
-                  <Skeleton className="mx-auto h-6 w-24 rounded text-center" />
-                </th>
+                {generateArray(3).map((i) => (
+                  <th key={i} className="p-3 text-center">
+                    <Skeleton className="mx-auto h-6 w-24 rounded text-center" />
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {[...Array(8)].map((_, i) => (
+              {generateArray(8).map((i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-muted/50' : ''}>
                   <td className="p-3 font-medium">
                     <Skeleton className="h-4 w-48 rounded" />
                   </td>
-                  <td className="p-3 text-center">
-                    <Skeleton className="mx-auto h-4 w-8 rounded" />
-                  </td>
-                  <td className="p-3 text-center">
-                    <Skeleton className="mx-auto h-4 w-8 rounded" />
-                  </td>
-                  <td className="p-3 text-center">
-                    <Skeleton className="mx-auto h-4 w-8 rounded" />
-                  </td>
+                  {generateArray(3).map((i) => (
+                    <td key={i} className="p-3 text-center">
+                      <Skeleton className="mx-auto h-4 w-8 rounded" />
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -154,12 +124,13 @@ export function PricingSkeleton({ className }: TProps) {
     <div
       className={cn(
         isDev && '__PricingPageSkeleton', // DEBUG
-        'size-full',
-        'flex flex-1 flex-col items-center gap-2',
+        'flex size-full flex-1 flex-col items-center justify-center',
         className,
       )}
     >
-      <PricingContentSkeleton />
+      <div className="flex w-full flex-col items-center overflow-hidden">
+        <PricingContentSkeleton />
+      </div>
     </div>
   );
 }

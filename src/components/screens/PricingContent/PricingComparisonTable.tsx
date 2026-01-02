@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-// import { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } from '@/config/envServer';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import {
@@ -114,7 +113,7 @@ export function PricingComparisonTable() {
       return value ? (
         <Icons.Check className="inline size-4 text-theme" />
       ) : (
-        <span className="text-muted-foreground opacity-20">—</span>
+        <Icons.Dot className="inline size-4 text-theme opacity-40" />
       );
     }
     return <span className="text-sm">{value}</span>;

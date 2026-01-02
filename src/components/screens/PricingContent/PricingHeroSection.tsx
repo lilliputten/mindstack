@@ -29,14 +29,18 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
         'flex flex-col items-center py-6 text-center',
       )}
     >
-      <h1 className="text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+      <h1
+        className={cn(
+          isDev && '__PricingHeroSection_Title', // DEBUG
+          'text-4xl md:text-5xl lg:text-6xl',
+          'text-balance leading-tight tracking-tight',
+          'text-gradient-brand font-semibold',
+          'mb-6 mt-6 p-4',
+        )}
+      >
         {t('Pricing.Hero.Title')}
       </h1>
-      <p className="mb-4 text-lg">
-        {t('Pricing.Hero.Subtitle', {
-          yearlyDiscountPercents,
-        })}
-      </p>
+      <p className="mb-4 text-lg">{t('Pricing.Hero.Subtitle', { yearlyDiscountPercents })}</p>
       <div className="flex flex-col gap-4">
         {!billingPeriod ? (
           <Skeleton className="h-11 rounded" style={{ width: `${buttonWidthEm * 2}em` }} />

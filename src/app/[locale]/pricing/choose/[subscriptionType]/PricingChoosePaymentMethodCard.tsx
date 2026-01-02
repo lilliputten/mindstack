@@ -54,7 +54,7 @@ export function PricingChoosePaymentMethodCard({
             className="flex w-full items-center justify-center gap-1"
           >
             {buttonText}
-            <Icons.ExternalLink className="size-4" />
+            <Icons.ExternalLink className="size-3.5 opacity-50" />
           </NextLink>
         </Button>
       ) : buttonText && onClick ? (

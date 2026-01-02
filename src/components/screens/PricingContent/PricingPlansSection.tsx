@@ -223,7 +223,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
       const isBasicSubscription = subscriptionType === 'BASIC';
       const choosePlanUrl = isBasicSubscription
         ? userStartAliasRoute
-        : `${pricingChooseRoute}/${subscriptionType}`;
+        : `${pricingChooseRoute}/${subscriptionType.toLowerCase()}`;
       console.log('[PricingPlansSection:startSubscription]', {
         priceValue,
         subscriptionType,

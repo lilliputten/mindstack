@@ -724,6 +724,7 @@
     "InternationalCard": "International Card",
     "InternationalCardDescription": "Pay with international payment methods. Supports major credit and debit cards worldwide.",
     "OpenTelegramBot": "Open @{botUsername}",
+    "OtherSubscriptionOptions": "If you want to choose other subscription options, please go to <PricingLink>the pricing page</PricingLink>.",
     "PayWithInternationalCard": "Pay with International Card",
     "PayWithRussianCard": "Pay with Russian Card",
     "RussianBankCard": "Russian Bank Card",

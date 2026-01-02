@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { isDev, pricingAliasRoute } from '@/config';
 import { PREMIUM_MONTHLY_USD_PRICE, PRO_MONTHLY_USD_PRICE } from '@/constants/prices';
 import { TPaidableSubscriptionType, TPeriodType } from '@/constants/subscriptions';
 import { useEnvConext } from '@/contexts/EnvContext';
@@ -17,7 +17,7 @@ import {
   useCurrencyRatios,
 } from '@/features/currencies/query-hooks/useCurrencyRatios';
 import { UserGradeType } from '@/generated/prisma';
-import { TLocale, useT } from '@/i18n';
+import { Link, TLocale, useT } from '@/i18n';
 
 import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard';
 
@@ -92,8 +92,18 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
       )}
     >
       <div className="mb-8 flex flex-col items-center text-center">
-        <h1 className="text-3xl font-bold">{t('PricingChoosePage.ChoosePaymentMethod')}</h1>
-        <p className="mt-2 text-muted-foreground">
+        <h1
+          className={cn(
+            isDev && '__PricingChoosePage_Title', // DEBUG
+            'text-3xl md:text-5xl lg:text-6xl',
+            'text-balance leading-tight tracking-tight',
+            'text-gradient-brand font-semibold',
+            'mb-6 mt-12 p-4',
+          )}
+        >
+          {t('PricingChoosePage.ChoosePaymentMethod')}
+        </h1>
+        <p className="text-muted-foreground">
           {t('PricingChoosePage.CompleteSubscription', { planName })}
         </p>
         <div className="mt-4 text-lg">
@@ -114,7 +124,7 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
                 )}
               </span>
             ) : (
-              <Skeleton className="h-8 w-28 max-w-full rounded" />
+              <Skeleton className="h-7 w-28 max-w-full rounded" />
             )}
             <span className="h-9 text-sm">
               /{period === 'YEAR' ? t('Pricing.billedAnnually') : t('Pricing.billedMonthly')}
@@ -152,7 +162,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
         {/* Telegram Stars */}
         <PricingChoosePaymentMethodCard
           className="md:col-span-2 2xl:md:col-span-1"
-          // className="col-span-2"
           title={t('PricingChoosePage.TelegramStars')}
           icon={Icons.Telegram}
           description={
@@ -161,18 +170,24 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
               <p className="text-sm opacity-50">
                 {t('PricingChoosePage.TelegramStarsCompletePayment')}
               </p>
-              {/*
-              <p>
-                The bot will guide you through the payment process and activate your subscription
-                automatically.
-              </p>
-              */}
             </>
           }
           buttonText={t('PricingChoosePage.OpenTelegramBot', { botUsername: BOT_USERNAME })}
           link={telegramUrl}
           isLink={true}
         />
+      </div>
+
+      <div className="mt-12 flex flex-col items-center text-center">
+        <p className="text-content text-muted-foreground">
+          {t.rich('PricingChoosePage.OtherSubscriptionOptions', {
+            PricingLink: (chunks) => (
+              <Link href={pricingAliasRoute} className="underline">
+                {chunks}
+              </Link>
+            ),
+          })}
+        </p>
       </div>
     </main>
   );

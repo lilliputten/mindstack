@@ -19,7 +19,7 @@ export function MarkdownHint() {
             className="inline-flex items-center gap-1 underline hover:no-underline"
           >
             {chunks}
-            <Icons.ExternalLink className="size-3" />
+            <Icons.ExternalLink className="size-3.5" />
           </a>
         ),
       })}
