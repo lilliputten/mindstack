@@ -646,6 +646,8 @@
     "Unlimited": "Неограниченно",
     "billedAnnually": "год",
     "billedMonthly": "месяц",
+    "payOnce": "один раз",
+    "payRegular": "регулярно",
     "Comparison": {
       "AiGenerations": "ИИ генерации",
       "Analytics": "Подробная аналитика",
@@ -661,6 +663,8 @@
     },
     "Hero": {
       "Monthly": "Ежемесячно",
+      "Once": "Один раз",
+      "Regular": "Регулярно",
       "Subtitle": "Получите скидку {yearlyDiscountPercents}% с годовой оплатой",
       "Title": "Тарифы",
       "Yearly": "Ежегодно"
@@ -715,6 +719,21 @@
         }
       }
     }
+  },
+  "PricingChoosePage": {
+    "ChoosePaymentMethod": "Выберите способ оплаты",
+    "CompleteSubscription": "для завершения подписки {planName}",
+    "InternationalCard": "Международная карта",
+    "InternationalCardDescription": "Оплатите международными платежными системами. Поддерживает основные кредитные и дебетовые карты по всему миру.",
+    "OpenTelegramBot": "Открыть @{botUsername}",
+    "PayWithInternationalCard": "Оплатить международной картой",
+    "PayWithRussianCard": "Оплатить российской картой",
+    "RussianBankCard": "Российская банковская карта",
+    "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
+    "TelegramStars": "Звезды Telegram",
+    "TelegramStarsCompletePayment": "Перейдите в нашего бота в Telegram, чтобы завершить оплату с помощью Звезд Telegram.",
+    "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
+    "YoureToPay": "Вы платите"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",

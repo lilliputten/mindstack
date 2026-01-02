@@ -37,32 +37,34 @@ export function PricingHeroSection({ billingPeriod, setBillingPeriod }: PricingH
           yearlyDiscountPercents,
         })}
       </p>
-      {!billingPeriod ? (
-        <Skeleton className="h-11 rounded" style={{ width: `${buttonWidthEm * 2}em` }} />
-      ) : (
-        <ToggleContainer
-          debugId="HeroBillingToggle"
-          activeIndex={billingPeriod === 'monthly' ? 0 : 1}
-          buttonWidthEm={buttonWidthEm}
-        >
-          <ToggleButton
-            debugId="Monthly"
-            isActive={billingPeriod === 'monthly'}
-            onClick={() => setBillingPeriod('monthly')}
+      <div className="flex flex-col gap-4">
+        {!billingPeriod ? (
+          <Skeleton className="h-11 rounded" style={{ width: `${buttonWidthEm * 2}em` }} />
+        ) : (
+          <ToggleContainer
+            debugId="HeroBillingToggle"
+            activeIndex={billingPeriod === 'monthly' ? 0 : 1}
             buttonWidthEm={buttonWidthEm}
           >
-            {t('Pricing.Hero.Monthly')}
-          </ToggleButton>
-          <ToggleButton
-            debugId="Yearly"
-            isActive={billingPeriod === 'yearly'}
-            onClick={() => setBillingPeriod('yearly')}
-            buttonWidthEm={buttonWidthEm}
-          >
-            {t('Pricing.Hero.Yearly')}
-          </ToggleButton>
-        </ToggleContainer>
-      )}
+            <ToggleButton
+              debugId="Monthly"
+              isActive={billingPeriod === 'monthly'}
+              onClick={() => setBillingPeriod('monthly')}
+              buttonWidthEm={buttonWidthEm}
+            >
+              {t('Pricing.Hero.Monthly')}
+            </ToggleButton>
+            <ToggleButton
+              debugId="Yearly"
+              isActive={billingPeriod === 'yearly'}
+              onClick={() => setBillingPeriod('yearly')}
+              buttonWidthEm={buttonWidthEm}
+            >
+              {t('Pricing.Hero.Yearly')}
+            </ToggleButton>
+          </ToggleContainer>
+        )}
+      </div>
     </section>
   );
 }

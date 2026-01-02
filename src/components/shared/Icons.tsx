@@ -41,6 +41,7 @@ export const {
   Flag,
   FlaskConical,
   FolderKanban,
+  Globe,
   Hand,
   Hash,
   Heart,

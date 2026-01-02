@@ -643,6 +643,8 @@
     "Unlimited": "Ilimitado",
     "billedAnnually": "anual",
     "billedMonthly": "mes",
+    "payOnce": "una vez",
+    "payRegular": "regular",
     "Comparison": {
       "AiGenerations": "Generaciones de IA",
       "Analytics": "Análisis Detallados",
@@ -658,6 +660,8 @@
     },
     "Hero": {
       "Monthly": "Mensual",
+      "Once": "Una vez",
+      "Regular": "Regular",
       "Subtitle": "Obtenga un {yearlyDiscountPercents}% de descuento anual",
       "Title": "Precios",
       "Yearly": "Anual"
@@ -712,6 +716,21 @@
         }
       }
     }
+  },
+  "PricingChoosePage": {
+    "ChoosePaymentMethod": "Elegir Método de Pago",
+    "CompleteSubscription": "para completar su suscripción {planName}",
+    "InternationalCard": "Tarjeta Internacional",
+    "InternationalCardDescription": "Pague con métodos de pago internacionales. Compatible con las principales tarjetas de crédito y débito en todo el mundo.",
+    "OpenTelegramBot": "Abrir @{botUsername}",
+    "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
+    "PayWithRussianCard": "Pagar con Tarjeta Rusa",
+    "RussianBankCard": "Tarjeta Bancaria Rusa",
+    "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
+    "TelegramStars": "Estrellas de Telegram",
+    "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
+    "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
+    "YoureToPay": "Usted debe pagar"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",

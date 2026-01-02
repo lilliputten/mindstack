@@ -65,6 +65,9 @@ interface PricingPlan {
 
 interface PricingPlansSectionProps {
   billingPeriod: TBillingPeriod | undefined;
+  /* // UNUSED: paymentMode: TPaymentMode
+   * paymentMode?: TPaymentMode;
+   */
 }
 
 const futureStar = <span className="ml-1 inline text-theme">*</span>;
@@ -307,10 +310,15 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                             </div>
                           )}
                           <span className="text-sm">
-                            /
+                            /{' '}
                             {billingPeriod === 'yearly'
                               ? t('Pricing.billedAnnually')
                               : t('Pricing.billedMonthly')}
+                            {/* // UNUSED: paymentMode: TPaymentMode
+                             * , {paymentMode === 'once'
+                             *   ? t('Pricing.payOnce')
+                             *   : t('Pricing.payRegular')}
+                             */}
                           </span>
                         </>
                       )}

@@ -10,9 +10,16 @@ import { PricingPlansSection } from './PricingPlansSection';
 import { TBillingPeriod } from './shared/types';
 
 const BILLING_PERIOD_KEY = 'pricing-billing-period';
+/* // UNUSED: paymentMode: TPaymentMode
+ * const PAYMENT_MODE_KEY = 'pricing-payment-mode';
+ */
 
 export function PricingContent() {
   const [billingPeriod, setBillingPeriod] = React.useState<TBillingPeriod | undefined>();
+  /* // UNUSED: paymentMode: TPaymentMode
+   * const [paymentMode, setPaymentMode] = React.useState<TPaymentMode | undefined>();
+   */
+
   React.useEffect(() => {
     // Initialize from localStorage or default to 'yearly'
     if (typeof window !== 'undefined') {
@@ -20,6 +27,12 @@ export function PricingContent() {
       const savedPeriod =
         savedPeriodRaw === 'monthly' || savedPeriodRaw === 'yearly' ? savedPeriodRaw : 'yearly';
       setBillingPeriod(savedPeriod);
+
+      /* // UNUSED: paymentMode: TPaymentMode
+       * const savedModeRaw = localStorage.getItem(PAYMENT_MODE_KEY);
+       * const savedMode = savedModeRaw === 'once' || savedModeRaw === 'regular' ? savedModeRaw : 'regular';
+       * setPaymentMode(savedMode);
+       */
     }
   }, []);
 
@@ -29,6 +42,15 @@ export function PricingContent() {
       localStorage.setItem(BILLING_PERIOD_KEY, billingPeriod);
     }
   }, [billingPeriod]);
+
+  /* // UNUSED: paymentMode: TPaymentMode
+   * // Update localStorage when paymentMode changes
+   * React.useEffect(() => {
+   *   if (typeof window !== 'undefined' && paymentMode) {
+   *     localStorage.setItem(PAYMENT_MODE_KEY, paymentMode);
+   *   }
+   * }, [paymentMode]);
+   */
 
   return (
     <>
