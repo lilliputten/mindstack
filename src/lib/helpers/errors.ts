@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 
 import { GenericIDError } from '@/lib/errors/GenericIDError';
 
-import { AIGenerationError, ServerAuthError } from '../errors';
+import { AIGenerationError, InternalError, ServerAuthError } from '../errors';
 
 interface TGetErrorTextOpts {
   omitErrorName?: boolean;
@@ -41,6 +41,8 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
     errorText = getGenericIDErrorText(err, AIGenerationError);
   } else if (isErrorInstance(err, ServerAuthError)) {
     errorText = getGenericIDErrorText(err, ServerAuthError);
+  } else if (isErrorInstance(err, InternalError)) {
+    errorText = `${err.message} (${err.statusCode})`;
   } else if (err instanceof ZodError) {
     const issues = err.issues.map((issue) => {
       const path = issue.path.length > 0 ? `${issue.path.join('.')}: ` : '';

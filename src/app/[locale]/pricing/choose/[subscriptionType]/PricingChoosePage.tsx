@@ -61,7 +61,6 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
         console.log('[PricingChoosePage:handleRussianCard] start', {
           subscriptionType,
         });
-        debugger;
         const promise = startYoukassaPayment();
         toast.promise(promise, {
           loading: 'The payment is processing',
