@@ -1,5 +1,6 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
 
 import {
   UserGradeType,
@@ -12,14 +13,13 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { prisma } from '@/lib/db';
 import { ErrorLike } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
-import { getCurrentUser, isLoggedUser } from '@/lib/session';
+import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { findUserPayment } from '@/features/payments';
+import { cleanStaleUserPayments, findUserPayment } from '@/features/payments';
 import {
   ensurePaidableSubscriptionType,
   parsePaidableSubscriptionType,
@@ -27,8 +27,7 @@ import {
 } from '@/features/subscriptions';
 import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 
-// // TODO: Create page content (or use redirect)
-// import { PricingChooseSuccessContent } from './PricingChooseSuccessContent';
+import { PricingChooseSuccessContent } from './PricingChooseSuccessContent';
 
 type TAwaitedProps = TAwaitedLocaleProps<{
   subscriptionType: TPaidableSubscriptionType;
@@ -59,7 +58,6 @@ interface TUpdateUserGradeParams {
 }
 async function finishPaymentAndUpdateUserGrade(params: TUpdateUserGradeParams) {
   const { grade, userId, provider, paymentId, uniqueKey } = params;
-  // throw new Error('Test error');
   return await prisma.$transaction(async (tx) => {
     // Update user payment status
     await tx.userPayment.update({
@@ -83,7 +81,7 @@ async function finishPaymentAndUpdateUserGrade(params: TUpdateUserGradeParams) {
 
 export async function PricingChooseSuccessRoute({
   params: awaitedParams,
-  searchParams: awaitedSearchParams,
+  // searchParams: awaitedSearchParams,
 }: TAwaitedProps & TAwaitedSearchParams) {
   // Success: set user state and update the grade in a transaction
   const user = await getCurrentUser();
@@ -94,8 +92,10 @@ export async function PricingChooseSuccessRoute({
   }
 
   const params = await awaitedParams;
-  const { subscriptionType: rawSubscriptionType, successKey } = params;
-  const searchParams = await awaitedSearchParams;
+  const { locale, subscriptionType: rawSubscriptionType, successKey } = params;
+  // const searchParams = await awaitedSearchParams;
+
+  setRequestLocale(locale);
 
   const [rawProvider, uniqueKey] = successKey.split('-');
 
@@ -129,32 +129,6 @@ export async function PricingChooseSuccessRoute({
 
   const { paymentId, status } = userPayment;
 
-  // Check payment parameters...
-  /* // SUCCEED: Do nothing, payment already processed
-   * if (status === 'SUCCEED') {
-   *   const message = 'This payment has been already processed';
-   *   // eslint-disable-next-line no-console
-   *   console.warn('[PricingChooseSuccessRoute]', message, {
-   *     userPayment,
-   *     user,
-   *   });
-   *   // debugger; // eslint-disable-line no-debugger
-   *   return (
-   *     <PageError
-   *       title={message}
-   *       icon="ShieldQuestion"
-   *       iconClassName="bg-info-stripes"
-   *       explanation={
-   *         <>
-   *           Contact <Link href={contactsAliasRoute}>technical support</Link> if you have any
-   *           problems.
-   *         </>
-   *       }
-   *       explanationClassName="text-content"
-   *     />
-   *   );
-   * }
-   */
   if (status === 'FAILED') {
     const message = 'It looks like the payment failed';
     // eslint-disable-next-line no-console
@@ -200,19 +174,7 @@ export async function PricingChooseSuccessRoute({
   }
 
   // Parse grade and period with Zod schemas
-  const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
-
-  // Parse all query parameters
-  console.log('[PricingChooseSuccessRoute] all ok', {
-    userPayment,
-    successKey,
-    grade,
-    period,
-    subscriptionType,
-    params,
-    searchParams,
-  });
-  debugger;
+  const { grade } = parsePaidableSubscriptionType(subscriptionType);
 
   // Update data if that hasn't been done yet
   if (status !== 'SUCCEED' || user.grade !== grade) {
@@ -234,26 +196,17 @@ export async function PricingChooseSuccessRoute({
         <PageError
           title={message}
           error={error as ErrorLike}
-          // reset={async () => {
-          //   debugger;
-          //   await finishPaymentAndUpdateUserGrade({ grade, userId, provider, paymentId, uniqueKey });
-          // }}
+          explanation={
+            <>
+              Please contact <Link href={contactsAliasRoute}>technical support</Link>.
+            </>
+          }
         />
       );
     }
+    // Clean up payments
+    await cleanStaleUserPayments();
   }
-
-  // Parse all query parameters
-  console.log('[PricingChooseSuccessRoute] done', {
-    userPayment,
-    successKey,
-    grade,
-    period,
-    subscriptionType,
-    params,
-    searchParams,
-  });
-  debugger;
 
   return (
     <PageWrapper
@@ -280,21 +233,7 @@ export async function PricingChooseSuccessRoute({
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
-        <p>Debug info:</p>
-        <pre>
-          {JSON.stringify(
-            {
-              subscriptionType,
-              successKey,
-              searchParams: searchParams,
-            },
-            null,
-            2,
-          )}
-        </pre>
-        {/*
-        <PricingChooseSuccessContent subscriptionType={subscriptionType} successKey={successKey} />
-        */}
+        <PricingChooseSuccessContent subscriptionType={subscriptionType} />
       </ScrollArea>
     </PageWrapper>
   );

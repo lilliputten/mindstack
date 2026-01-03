@@ -44,9 +44,6 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
   const subscriptionType: TPaidableSubscriptionType =
     ensurePaidableSubscriptionType(rawSubscriptionType);
 
-  // // Parse grade and period with Zod schemas
-  // const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
-
   return (
     <PageWrapper
       className={cn(

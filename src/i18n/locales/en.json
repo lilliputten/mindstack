@@ -619,6 +619,8 @@
     "MyTopicsDescription": "Topics created by me",
     "MyTopicsTitle": "My Topics",
     "OfertaPageTitle": "The Offer",
+    "PricingChoose": "Choose Subscription Plan",
+    "PricingChooseSuccess": "Subscription Plan Confirmation",
     "PricingPageTitle": "Pricing",
     "PrivacyPageTitle": "Privacy Policy",
     "Questions": "Questions",
@@ -733,6 +735,15 @@
     "TelegramStarsCompletePayment": "Go to our Telegram bot to complete the payment using Telegram Stars.",
     "TelegramStarsOptionAvailable": "This option is available if you signed in via a Telegram account.",
     "YoureToPay": "You're to pay"
+  },
+  "PricingChooseSuccess": {
+    "Activated": "Activated",
+    "Congratulations": "Congratulations!",
+    "Description": "Your subscription has been successfully upgraded to the {subscriptionType} plan.",
+    "NewFeatures": "New Features Available",
+    "StartWorking": "Start working with topics",
+    "ViewPlans": "View other subsription plans",
+    "WelcomeTo": "Welcome to {plan}!"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",

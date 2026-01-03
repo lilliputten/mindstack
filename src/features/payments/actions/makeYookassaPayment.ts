@@ -9,33 +9,38 @@ import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
-import { TSubscriptionType } from '@/features/subscriptions';
+import { ensurePaidableSubscriptionType, TSubscriptionType } from '@/features/subscriptions';
+import { getAllSubscriptionPrices } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
 
 import { getYookassCheckoutObject } from './getYookassCheckoutObject';
 
 export interface TMakeYookassaPaymentParams {
-  amount: number;
-  currency?: TCurrencyType; // RUB is default
   subscriptionType: TSubscriptionType;
   uniqueKey: string; // Idempotency key
   paymentType?: IPaymentMethodType; // 'bank_card' etc
 }
 
-/** Start yookassa payment
- */
+/** Start yookassa payment */
 export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
-  const {
-    // ...
-    amount,
-    currency,
-    uniqueKey,
-    paymentType,
-    subscriptionType,
-  } = params;
+  const { uniqueKey, paymentType, subscriptionType: rawSubscriptionType } = params;
 
   const user = await getCurrentUser();
   if (!user) {
     throw new CustomAPIError('Cannot proceed payments for unauthorized users');
+  }
+
+  // Parse and check paidable subscriptio type
+  const subscriptionType = ensurePaidableSubscriptionType(rawSubscriptionType);
+
+  const currency: TCurrencyType = 'RUB';
+
+  const prices = await getAllSubscriptionPrices(subscriptionType);
+  const price = prices?.[currency];
+
+  if (!price) {
+    throw new Error(
+      `Failed to calculate a proper price for the payment for the subscription type "${subscriptionType}"`,
+    );
   }
 
   try {
@@ -48,15 +53,14 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     ].join('-');
 
     // Route: `/pricing/choose/[subscriptionType]/success/[successKey]`
-    const successUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType}/success/${successKey}`;
-    // const returnUrl = new URL(WEBHOOK_HOST);
+    const successUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType.toLowerCase()}/success/${successKey}`;
 
     const payment_method_data = paymentType ? { type: paymentType } : undefined;
     const createPayload: ICreatePayment = {
       amount: {
         // TODO: Convert to cents (kopeks)?
-        value: stringifyPrice(amount),
-        currency: currency || 'RUB',
+        value: stringifyPrice(price),
+        currency,
       },
       payment_method_data,
       confirmation: {
@@ -64,16 +68,6 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
         return_url: successUrl,
       },
     };
-
-    console.log('[makeYookassaPayment] start', {
-      createPayload,
-      successKey,
-      successUrl,
-      user,
-      params,
-      subscriptionType,
-      // checkout,
-    });
 
     const payment = await checkout.createPayment(createPayload, uniqueKey);
 
@@ -113,6 +107,8 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     const { confirmation_url: paymentUrl } = confirmation;
 
     const resultData = {
+      price,
+      currency,
       paymentId,
       paymentUrl,
       status,
@@ -121,12 +117,6 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       paid,
       test,
     };
-
-    console.log('[makeYookassaPayment] done', {
-      resultData,
-      payment,
-    });
-    // debugger;
 
     return resultData;
   } catch (error) {
@@ -139,7 +129,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       params,
     });
     debugger; // eslint-disable-line no-debugger
-    // Re-throw errors from checkAllowedAIGenerations or other errors
+    // Re-throw error
     throw error;
   }
 }

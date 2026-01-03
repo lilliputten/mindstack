@@ -621,6 +621,8 @@
     "MyTopicsDescription": "Темы, созданные мной",
     "MyTopicsTitle": "Мои темы",
     "OfertaPageTitle": "Оферта",
+    "PricingChoose": "Выберите план подписки",
+    "PricingChooseSuccess": "Подтверждение плана подписки",
     "PricingPageTitle": "Тарифы",
     "PrivacyPageTitle": "Политика конфиденциальности",
     "Questions": "Вопросы",
@@ -735,6 +737,15 @@
     "TelegramStarsCompletePayment": "Перейдите в нашего бота в Telegram, чтобы завершить оплату с помощью Звезд Telegram.",
     "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
     "YoureToPay": "Вы платите"
+  },
+  "PricingChooseSuccess": {
+    "Activated": "Активировано",
+    "Congratulations": "Поздравляем!",
+    "Description": "Ваша подписка была успешно обновлена до плана {subscriptionType}.",
+    "NewFeatures": "Новые доступные функции",
+    "StartWorking": "Начните работать с темами",
+    "ViewPlans": "Посмотреть другие планы подписки",
+    "WelcomeTo": "Добро пожаловать в {plan}!"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
@@ -952,7 +963,7 @@
     "CurrentProgress": "Текущий прогресс",
     "CurrentSessionRatio": "Текущее соотношение сессии",
     "FinishedAt": "Завершено в",
-    "FinishedText": "Завершено {formattedDate}",
+    "FinishedText": "За��ершено {formattedDate}",
     "InProgress": "В процессе",
     "NotStarted": "Не начато",
     "StartedAt": "Начато в",

@@ -618,6 +618,8 @@
     "MyTopicsDescription": "Temas creados por mí",
     "MyTopicsTitle": "Mis Temas",
     "OfertaPageTitle": "La oferta",
+    "PricingChoose": "Elija el plan de suscripción",
+    "PricingChooseSuccess": "Confirmación del plan de suscripción",
     "PricingPageTitle": "Precios",
     "PrivacyPageTitle": "Política de Privacidad",
     "Questions": "Preguntas",
@@ -732,6 +734,15 @@
     "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
     "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
     "YoureToPay": "Usted debe pagar"
+  },
+  "PricingChooseSuccess": {
+    "Activated": "Activado",
+    "Congratulations": "¡Felicidades!",
+    "Description": "Tu suscripción se ha actualizado correctamente al plan {subscriptionType}.",
+    "NewFeatures": "Nuevas Funciones Disponibles",
+    "StartWorking": "Empezar a trabajar con temas",
+    "ViewPlans": "Ver otros planes de suscripción",
+    "WelcomeTo": "¡Bienvenido a {plan}!"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",

@@ -58,22 +58,27 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
   const handleRussianCard = React.useCallback(() => {
     startWorking(async () => {
       try {
-        console.log('[PricingChoosePage:handleRussianCard] start', {
-          subscriptionType,
-        });
         const promise = startYoukassaPayment();
         toast.promise(promise, {
-          loading: 'The payment is processing',
-          success: 'Payment has been successfully processed',
-          // error: 'Payment processing failure',
+          loading: 'The payment is starting',
+          success: 'Payment has been successfully started',
+          // error: 'Payment starting error',
         });
         const result = await promise;
-        console.log('[PricingChoosePage:handleRussianCard] done', {
-          result,
-        });
-        debugger;
+        const { paymentUrl } = result;
+        /* console.log('[PricingChoosePage:handleRussianCard] done', {
+         *   result,
+         *   paymentUrl,
+         * });
+         */
+        if (!paymentUrl) {
+          throw new Error('No payment url provided');
+        }
+        if (typeof window === 'object') {
+          window.location.href = paymentUrl;
+        }
       } catch (error) {
-        const message = 'Payment processing failure';
+        const message = 'Payment starting error';
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
@@ -85,9 +90,10 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
         toast.error(comboMsg);
       }
     });
-  }, [startYoukassaPayment, subscriptionType]);
+  }, [startYoukassaPayment]);
 
   const handleInternationalCard = React.useCallback(() => {
+    // TODO
     console.log('[PricingChoosePage:handleInternationalCard]', subscriptionType);
     debugger;
   }, [subscriptionType]);
