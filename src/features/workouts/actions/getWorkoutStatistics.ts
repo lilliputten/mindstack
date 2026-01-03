@@ -1,8 +1,9 @@
 'use server';
 
+import { WorkoutStats } from '@/generated/prisma';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { WorkoutStats } from '@/generated/prisma';
 
 export async function getWorkoutStatistics(topicId: string) {
   const user = await getCurrentUser();

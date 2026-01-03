@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
+import { AllowedUserOrderByWithRelationInputSchema } from '@/generated/prisma';
+
 import { TGetResults } from '@/lib/types/api';
 import { TAllowedUser } from '@/features/allowed-users/types';
-import { AllowedUserOrderByWithRelationInputSchema } from '@/generated/prisma';
 
 export const zAllowedUserOrderBy = z
   .union([

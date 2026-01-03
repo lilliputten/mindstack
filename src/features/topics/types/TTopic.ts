@@ -1,6 +1,5 @@
 import z from 'zod';
 
-import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import {
   Question,
   Topic,
@@ -11,6 +10,8 @@ import {
   // WorkoutStats,
   WorkoutStatsSchema,
 } from '@/generated/prisma';
+
+import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 
 export type TTopic = ExtendNullWithUndefined<Topic> & {
   _count?: { questions: number };

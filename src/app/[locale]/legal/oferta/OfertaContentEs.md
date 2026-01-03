@@ -44,15 +44,15 @@
 - Asegurar la confidencialidad y seguridad de los datos personales del Usuario de acuerdo con la Política de Privacidad.
 - Considerar las consultas del Usuario a través de canales oficiales de soporte indicados en la Plataforma.
 
-3.1.2. El Proveedor de Servicios tiene derecho a:
+  3.1.2. El Proveedor de Servicios tiene derecho a:
 
 - Cambiar unilateralmente el costo de los Servicios, la funcionalidad de la Plataforma y los términos de esta Oferta, notificando al Usuario mediante la publicación de la nueva versión en el sitio {publicAddr} al menos **7 (siete)** días calendario antes de que entren en vigor los cambios. El uso continuado de los Servicios después de que entren en vigor los cambios significa el consentimiento del Usuario.
 - Suspender o restringir el acceso del Usuario a la Plataforma en caso de violación de los términos de esta Oferta, incluyendo el impago, así como para mantenimiento programado.
 - Rechazar el registro o terminar el Contrato unilateralmente si el Usuario proporciona datos no confiables, comete acciones que puedan calificarse como fraudulentas, que infrinjan derechos de terceros, la legislación de la Federación Rusa o derechos de propiedad intelectual.
 
-3.2. Derechos y obligaciones del Usuario:
+  3.2. Derechos y obligaciones del Usuario:
 
-3.2.1. El Usuario se compromete a:
+  3.2.1. El Usuario se compromete a:
 
 - Usar la Plataforma y el Contenido únicamente con fines lícitos, sin infringir derechos de terceros o la legislación de la Federación Rusa.
 - Proporcionar datos precisos y actualizados durante el registro y mantenerlos actuales.
@@ -60,7 +60,7 @@
 - Cumplir con los términos de uso de cualquier servicio de terceros accesible a través de la Plataforma.
 - Notificar inmediatamente al Proveedor de Servicios sobre cualquier uso no autorizado de su Cuenta.
 
-3.2.2. El Usuario tiene derecho a:
+  3.2.2. El Usuario tiene derecho a:
 
 - Exigir que el Proveedor de Servicios proporcione Servicios de acuerdo con los términos del Plan de Tarifas pagado.
 - Rechazar los Servicios y terminar el Contrato según lo establecido en la Sección 5 de esta Oferta.
@@ -103,7 +103,7 @@
 - Por el Contenido de los Usuarios y servicios de terceros integrados (Cláusula 4.2).
 - Por acceso no autorizado de terceros a la Cuenta del Usuario debido a la violación por parte del Usuario de las reglas de seguridad.
 
-7.3. La responsabilidad agregada del Proveedor de Servicios por cualquier reclamación o disputa relacionada con el Contrato o Servicios se limita a la cantidad efectivamente pagada por el Usuario al Proveedor de Servicios por los Servicios en relación con los cuales surgió dicha responsabilidad, por el último período de facturación.
+  7.3. La responsabilidad agregada del Proveedor de Servicios por cualquier reclamación o disputa relacionada con el Contrato o Servicios se limita a la cantidad efectivamente pagada por el Usuario al Proveedor de Servicios por los Servicios en relación con los cuales surgió dicha responsabilidad, por el último período de facturación.
 
 ## 8. Fuerza Mayor
 

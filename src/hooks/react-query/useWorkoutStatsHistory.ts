@@ -2,13 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { WorkoutStats } from '@/generated/prisma';
+
 import { ServerAuthError } from '@/lib/errors';
 import { getErrorText, isErrorInstance } from '@/lib/helpers';
 import { isDev } from '@/config';
 import { dayMs, minuteMs } from '@/constants';
 import { TTopicId } from '@/features/topics/types';
 import { getWorkoutStatsHistory } from '@/features/workout-stats/actions/getWorkoutStatsHistory';
-import { WorkoutStats } from '@/generated/prisma';
 
 import { useSessionUser } from '../useSessionUser';
 

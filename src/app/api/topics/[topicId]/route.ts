@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
 
+import { TopicSchema } from '@/generated/prisma';
+
 import { TApiResponse } from '@/lib/types/api';
 import { makeNullableFieldsOptional } from '@/lib/helpers/zod';
 import { TopicIncludeParamsSchema } from '@/lib/zod-schemas';
 import { updateTopic } from '@/features/topics/actions';
 import { getAvailableTopicById } from '@/features/topics/actions/getAvailableTopicById';
 import { TTopic } from '@/features/topics/types';
-import { TopicSchema } from '@/generated/prisma';
 
 const updateTopicSchema = makeNullableFieldsOptional(TopicSchema).omit({
   createdAt: true,

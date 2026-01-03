@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
 
+import { QuestionSchema } from '@/generated/prisma';
+
 import { TApiResponse } from '@/lib/types/api';
 import { makeNullableFieldsOptional } from '@/lib/helpers/zod';
 import { QuestionIncludeParamsSchema } from '@/lib/zod-schemas';
 import { updateQuestion } from '@/features/questions/actions';
 import { getAvailableQuestionById } from '@/features/questions/actions/getAvailableQuestionById';
 import { TQuestionData } from '@/features/questions/types';
-import { QuestionSchema } from '@/generated/prisma';
 
 const updateQuestionSchema = makeNullableFieldsOptional(QuestionSchema).omit({
   createdAt: true,

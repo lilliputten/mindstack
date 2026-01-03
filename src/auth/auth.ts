@@ -3,6 +3,8 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
+import { UserRoleType } from '@/generated/prisma';
+
 import { SET_FIRST_USER_ADMIN, USE_ALLOWED_USERS } from '@/config/envServer';
 import { authErrorRoute, welcomeAliasRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
@@ -11,7 +13,6 @@ import { checkIsAllowedUser } from '@/features/allowed-users/helpers/checkIsAllo
 import { TUserRejectReason } from '@/features/allowed-users/types/TUserRejectReason';
 import { getUserById } from '@/features/users/actions/';
 import { setFirstUserAsAdmin } from '@/features/users/helpers/setFirstUserAsAdmin';
-import { UserRoleType } from '@/generated/prisma';
 
 import authConfig from './auth.config.server';
 import { sessionMaxAge, sessionUpdateAge } from './constants';
