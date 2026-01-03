@@ -11,7 +11,6 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
 import {
   ensurePaidableSubscriptionType,
-  parsePaidableSubscriptionType,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
 import { getT, TAwaitedLocaleProps } from '@/i18n';
@@ -45,8 +44,8 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
   const subscriptionType: TPaidableSubscriptionType =
     ensurePaidableSubscriptionType(rawSubscriptionType);
 
-  // Parse grade and period with Zod schemas
-  const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
+  // // Parse grade and period with Zod schemas
+  // const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
 
   return (
     <PageWrapper
@@ -73,7 +72,11 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
-        <PricingChoosePage subscriptionType={subscriptionType} grade={grade} period={period} />
+        <PricingChoosePage
+          subscriptionType={subscriptionType}
+          // grade={grade}
+          // period={period}
+        />
       </ScrollArea>
     </PageWrapper>
   );

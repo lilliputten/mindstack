@@ -88,7 +88,7 @@ export function calcAllCurrenciesFromBasePrice(
 export function stringifyPrice(price: number = 0) {
   const intVal = Math.round(price);
   const isInt = intVal === price;
-  const decimals = !isInt && intVal < 10 ? 2 : 0;
+  const decimals = isInt ? 0 : 2;
   const result = decimals ? price.toFixed(decimals) : String(intVal);
   return result;
 }

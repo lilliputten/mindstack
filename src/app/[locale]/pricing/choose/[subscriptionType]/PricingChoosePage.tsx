@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { useLocale } from 'next-intl';
+import { toast } from 'sonner';
 
-import { UserGradeType } from '@/generated/prisma';
-
-import { getRandomHashString } from '@/lib/helpers';
+import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
@@ -13,9 +12,10 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev, pricingAliasRoute } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice } from '@/features/currencies';
+import { useYookassaPayment } from '@/features/payments/hooks';
 import {
+  parsePaidableSubscriptionType,
   TPaidableSubscriptionType,
-  TPeriodType,
   useAllSubscriptionPrices,
 } from '@/features/subscriptions';
 import { Link, TLocale, useT } from '@/i18n';
@@ -24,11 +24,11 @@ import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard
 
 interface PricingChoosePageProps {
   subscriptionType: TPaidableSubscriptionType;
-  grade: UserGradeType;
-  period: TPeriodType;
 }
 
-export function PricingChoosePage({ subscriptionType, grade, period }: PricingChoosePageProps) {
+export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) {
+  const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
+
   const t = useT();
   const locale = useLocale() as TLocale;
   const localeCurrency = localeCurrencies[locale];
@@ -36,7 +36,7 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const TgStarSign = CurrencySigns.TGSTAR;
   const { BOT_USERNAME } = useEnvConext();
 
-  const idempotenceKey = React.useMemo(() => getRandomHashString(), []);
+  const [isWorking, startWorking] = React.useTransition();
 
   const allSubscriptionPricesQuery = useAllSubscriptionPrices({ subscriptionType });
   const { prices, isLoading, isFetched } = allSubscriptionPricesQuery;
@@ -47,40 +47,61 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
 
   const telegramUrl = `https://t.me/${BOT_USERNAME}`;
 
+  const yookassaPayment = useYookassaPayment({ subscriptionType });
+  const {
+    isReady: isYoukassaPaymentReady,
+    // activePaymentId: activeYoukassaPaymentId,
+    // isWorking: isYoukassaPaymentWorking,
+    startYoukassaPayment,
+  } = yookassaPayment;
+
   const handleRussianCard = React.useCallback(() => {
-    const rubPrice = prices?.RUB;
-    console.log('Russian card payment for:', {
-      rubPrice,
-      localePrice,
-      localeCurrency,
-      prices,
-      grade,
-      period,
-      subscriptionType,
-      idempotenceKey,
+    startWorking(async () => {
+      try {
+        console.log('[PricingChoosePage:handleRussianCard] start', {
+          subscriptionType,
+        });
+        debugger;
+        const promise = startYoukassaPayment();
+        toast.promise(promise, {
+          loading: 'The payment is processing',
+          success: 'Payment has been successfully processed',
+          // error: 'Payment processing failure',
+        });
+        const result = await promise;
+        console.log('[PricingChoosePage:handleRussianCard] done', {
+          result,
+        });
+        debugger;
+      } catch (error) {
+        const message = 'Payment processing failure';
+        const details = getErrorText(error);
+        const comboMsg = [message, details].filter(Boolean).join(': ');
+        // eslint-disable-next-line no-console
+        console.error('[PricingChoosePage:handleRussianCard]', comboMsg, {
+          error,
+        });
+        debugger; // eslint-disable-line no-debugger
+        // TODO: Use error in the toast.promise, without details
+        toast.error(comboMsg);
+      }
     });
-    debugger;
-  }, [
-    // DEMO
-    localePrice,
-    localeCurrency,
-    prices,
-    grade,
-    period,
-    subscriptionType,
-    idempotenceKey,
-  ]);
+  }, [startYoukassaPayment, subscriptionType]);
 
   const handleInternationalCard = React.useCallback(() => {
-    console.log('International card payment for:', subscriptionType);
+    console.log('[PricingChoosePage:handleInternationalCard]', subscriptionType);
     debugger;
   }, [subscriptionType]);
+
+  const isReady = isYoukassaPaymentReady && !isWorking;
 
   return (
     <main
       className={cn(
         isDev && '__PricingChoosePage', // DEBUG
         'flex w-full max-w-6xl flex-col px-6 pb-6',
+        'transition',
+        !isReady && 'pointer-events-none opacity-50',
       )}
     >
       <div className="mb-8 flex flex-col items-center text-center">

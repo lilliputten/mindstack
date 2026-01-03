@@ -722,7 +722,7 @@
   },
   "PricingChoosePage": {
     "ChoosePaymentMethod": "Выберите способ оплаты",
-    "CompleteSubscription": "для завершения подписки {planName}",
+    "CompleteSubscription": "для подключения подписки {planName}",
     "InternationalCard": "Международная карта",
     "InternationalCardDescription": "Оплатите международными платежными системами. Поддерживает основные кредитные и дебетовые карты по всему миру.",
     "OpenTelegramBot": "Открыть @{botUsername}",

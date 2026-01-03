@@ -1,25 +1,24 @@
 'use server';
 
-import { ICreatePayment, IPaymentMethodType, YooCheckout } from '@a2seven/yoo-checkout';
+import { ICreatePayment, IPaymentMethodType } from '@a2seven/yoo-checkout';
 
-import { PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
+import { WEBHOOK_HOST } from '@/config/envServer';
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
+import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
 import { TSubscriptionType } from '@/features/subscriptions';
 
-import { youkassaSecretKey, youkassaShopId } from '../constants/yookassa-payment-constants';
+import { getYookassCheckoutObject } from './getYookassCheckoutObject';
 
-interface TMakeYookassaPaymentParams {
+export interface TMakeYookassaPaymentParams {
   amount: number;
   currency?: TCurrencyType; // RUB is default
-
+  subscriptionType: TSubscriptionType;
   idempotenceKey: string; // Idempotency key
   paymentType?: IPaymentMethodType; // 'bank_card' etc
-
-  subscriptionType: TSubscriptionType;
 }
 
 export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
@@ -38,21 +37,22 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   }
 
   try {
-    const checkout = new YooCheckout({ shopId: youkassaShopId, secretKey: youkassaSecretKey });
+    const checkout = getYookassCheckoutObject();
 
     const successKey = [
       // Create success url
       user.id,
       idempotenceKey,
     ].join(';');
+
     // Route: `/pricing/choose/[subscriptionType]/success/[successKey]`
-    const returnUrl = `${WEBHOOK_HOST}/${pricingChooseRoute}/${subscriptionType}/success/${successKey}`;
+    const returnUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType}/success/${successKey}`;
     // const returnUrl = new URL(WEBHOOK_HOST);
 
     const payment_method_data = paymentType ? { type: paymentType } : undefined;
     const createPayload: ICreatePayment = {
       amount: {
-        value: amount.toFixed(2),
+        value: stringifyPrice(amount),
         currency: currency || 'RUB',
       },
       payment_method_data,
@@ -67,24 +67,63 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       successKey,
       returnUrl,
       user,
-      checkout,
       params,
-      youkassaShopId,
-      youkassaSecretKey,
       subscriptionType,
-      WEBHOOK_HOST,
-      PUBLIC_URL,
+      // checkout,
     });
-    debugger;
 
     const payment = await checkout.createPayment(createPayload, idempotenceKey);
 
+    /* // Sample payment result:
+     * {
+     *   "id": "30ea8d53-000f-5001-9000-1c965a6160df",
+     *   "status": "pending",
+     *   "amount": {
+     *     "value": "700.00",
+     *     "currency": "RUB"
+     *   },
+     *   "recipient": {
+     *     "account_id": "1237378",
+     *     "gateway_id": "2607344"
+     *   },
+     *   "created_at": "2026-01-03T02:06:11.952Z",
+     *   "confirmation": {
+     *     "type": "redirect",
+     *     "confirmation_url": "https://yoomoney.ru/checkout/payments/v2/contract?orderId=30ea8d53-000f-5001-9000-1c965a6160df"
+     *   },
+     *   "test": true,
+     *   "paid": false,
+     *   "refundable": false,
+     *   "metadata": {}
+     * }
+     */
+
+    const {
+      // Make a data subset from the payment object
+      id: paymentId,
+      status,
+      created_at,
+      confirmation,
+      paid,
+      test,
+    } = payment;
+
+    const resultData = {
+      paymentId,
+      status,
+      created_at,
+      confirmation,
+      paid,
+      test,
+    };
+
     console.log('[makeYookassaPayment] done', {
+      resultData,
       payment,
     });
-    debugger;
+    // debugger;
 
-    return payment;
+    return resultData;
   } catch (error) {
     const message = 'Error making yookassa payment';
     const details = getErrorText(error);

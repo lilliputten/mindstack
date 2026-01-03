@@ -23,7 +23,7 @@ export function useT(namespace?: string) {
       namespace,
       locale,
     });
-    debugger; // eslint-disable-line no-debugger
+    // debugger; // eslint-disable-line no-debugger
     return getDebugT(namespace);
   }
 }
