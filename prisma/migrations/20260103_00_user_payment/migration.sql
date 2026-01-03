@@ -12,6 +12,8 @@ CREATE TABLE "user_payments" (
     "unique_key" TEXT NOT NULL,
     "status" "UserPaymentStatus" NOT NULL,
     "subscription_type" TEXT NOT NULL,
+    "currency" "CurrencyType" NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

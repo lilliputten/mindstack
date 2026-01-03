@@ -115,12 +115,15 @@ model UserPayment {
 
   provider UserPaymentProvider @default(YOOKASSA)
 
+  subscriptionType String @map("subscription_type")
+
+  price    Float
+  currency CurrencyType
+
   paymentId String @map("payment_id")
   uniqueKey String @map("unique_key")
 
   status UserPaymentStatus
-
-  subscriptionType String @map("subscription_type")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
