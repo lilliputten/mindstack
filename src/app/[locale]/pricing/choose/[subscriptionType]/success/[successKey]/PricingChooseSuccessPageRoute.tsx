@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
-import { TPaidableSubscriptionType } from '@/constants/subscriptions';
 import {
   ensurePaidableSubscriptionType,
   parsePaidableSubscriptionType,
+  TPaidableSubscriptionType,
 } from '@/features/subscriptions';
 import { getT, TAwaitedLocaleProps } from '@/i18n';
 
@@ -33,11 +33,19 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
+interface TAwaitedSearchParams {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
 const saveScrollHash = getRandomHashString();
 
-export async function PricingChooseSuccessPageRoute({ params: awaitedParams }: TAwaitedProps) {
+export async function PricingChooseSuccessPageRoute({
+  params: awaitedParams,
+  searchParams: awaitedSearchParams,
+}: TAwaitedProps & TAwaitedSearchParams) {
   const params = await awaitedParams;
   const { subscriptionType: rawSubscriptionType, successKey } = params;
+  const searchParams = await awaitedSearchParams;
 
   // Check if logged user
   const isLogged = await isLoggedUser();
@@ -52,14 +60,16 @@ export async function PricingChooseSuccessPageRoute({ params: awaitedParams }: T
   // Parse grade and period with Zod schemas
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
 
+  // Parse all query parameters
   console.log('[PricingChooseSuccessPageRoute] DEBUG', {
     successKey,
     grade,
     period,
     subscriptionType,
     params,
+    searchParams,
   });
-  debugger;
+  // debugger;
 
   return (
     <PageWrapper
@@ -88,11 +98,18 @@ export async function PricingChooseSuccessPageRoute({ params: awaitedParams }: T
       >
         <p>Debug info:</p>
         <pre>
-          subscriptionType: {subscriptionType}
-          successKey: {successKey}
+          {JSON.stringify(
+            {
+              subscriptionType,
+              successKey,
+              searchParams: searchParams,
+            },
+            null,
+            2,
+          )}
         </pre>
         {/*
-        <PricingChooseSuccessContent subscriptionType={subscriptionType} successKey={successKey />
+        <PricingChooseSuccessContent subscriptionType={subscriptionType} successKey={successKey} />
         */}
       </ScrollArea>
     </PageWrapper>

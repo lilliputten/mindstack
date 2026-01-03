@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
-import { TPaidableSubscriptionType } from '@/constants/subscriptions';
 import {
   ensurePaidableSubscriptionType,
   parsePaidableSubscriptionType,
+  TPaidableSubscriptionType,
 } from '@/features/subscriptions';
 import { getT, TAwaitedLocaleProps } from '@/i18n';
 

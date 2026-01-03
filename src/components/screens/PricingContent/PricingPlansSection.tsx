@@ -4,6 +4,11 @@ import React from 'react';
 import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 
+import {
+  UserGradeType,
+  // UserGradeSchema,
+} from '@/generated/prisma';
+
 import { cn } from '@/lib/utils';
 import { Button, TButtonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -12,24 +17,19 @@ import { CurrencySigns } from '@/components/currencies';
 import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingChooseRoute, userStartAliasRoute } from '@/config';
+import { useEnvConext } from '@/contexts/EnvContext';
 import {
-  PREMIUM_MONTHLY_USD_PRICE,
-  // PREMIUM_YEARLY_USD_PRICE,
-  PRO_MONTHLY_USD_PRICE,
+  localeCurrencies,
+  prettifyPrice,
+  stringifyPrice,
+  TCurrencyPrices,
+} from '@/features/currencies';
+import { useCurrencyRatios } from '@/features/currencies/query-hooks';
+import {
   subscriptionsRequireUser,
   TSubscriptionType,
-  // PRO_YEARLY_USD_PRICE,
-} from '@/constants';
-import { useEnvConext } from '@/contexts/EnvContext';
-import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
-import {
-  useAllPrices,
-  useCurrencyRatios,
-} from '@/features/currencies/query-hooks/useCurrencyRatios';
-import {
-  UserGradeType,
-  // UserGradeSchema,
-} from '@/generated/prisma';
+  useAllSubscriptionPrices,
+} from '@/features/subscriptions';
 import { useGoToTheRoute } from '@/hooks';
 import { TLocale, useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
@@ -38,21 +38,14 @@ import { TBillingPeriod } from './shared/types';
 
 /** 'BASIC' | 'PRO' | 'PREMIUM' | 'UNLIMITED' */
 type TExtendedGrade = Omit<UserGradeType, 'GUEST'> | 'UNLIMITED';
+type TExtendedPrice = TCurrencyPrices | 'Free' | 'Contact' | undefined;
 
 interface PricingPlan {
   grade: TExtendedGrade;
   name: string;
   description: string;
-  price: {
-    monthly: TCurrencyPrices | 'Free' | 'Contact';
-    yearly: TCurrencyPrices | 'Free' | 'Contact';
-  };
-  subscription:
-    | TSubscriptionType
-    | {
-        monthly: TSubscriptionType;
-        yearly: TSubscriptionType;
-      };
+  prices: TExtendedPrice;
+  subscription: TSubscriptionType;
   features: (React.ReactNode | string)[];
   buttonText: string;
   buttonVariant: TButtonVariants; // 'default' | 'outline';
@@ -65,33 +58,39 @@ interface PricingPlan {
 
 interface PricingPlansSectionProps {
   billingPeriod: TBillingPeriod | undefined;
-  /* // UNUSED: paymentMode: TPaymentMode
-   * paymentMode?: TPaymentMode;
-   */
 }
 
 const futureStar = <span className="ml-1 inline text-theme">*</span>;
 
-function usePlansData({ isReady }: { isReady?: boolean }) {
+function usePlansData({
+  isReady,
+  billingPeriod,
+}: {
+  isReady?: boolean;
+  billingPeriod: TBillingPeriod | undefined;
+}) {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
-  const allPricesOptions = { isReady, prettify: true };
-  const proPrices = useAllPrices(isReady ? PRO_MONTHLY_USD_PRICE : 0, allPricesOptions);
-  const premiumPrices = useAllPrices(isReady ? PREMIUM_MONTHLY_USD_PRICE : 0, allPricesOptions);
-  const tFuture = React.useCallback(
-    (text: string) => (
-      <>
-        {t(text)} {futureStar}
-      </>
-    ),
-    [t],
-  );
+  const proSubscriptionType: 'PRO-MONTH' | 'PRO-YEAR' =
+    `PRO-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
+  const proPricesQuery = useAllSubscriptionPrices({
+    isReady,
+    subscriptionType: proSubscriptionType,
+  });
+  const premiumSubscriptionType: 'PREMIUM-MONTH' | 'PREMIUM-YEAR' =
+    `PREMIUM-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
+  const premiumPricesQuery = useAllSubscriptionPrices({
+    isReady,
+    subscriptionType: premiumSubscriptionType,
+  });
+  // prettier-ignore
+  const tFuture = React.useCallback((text: string) => <>{t(text)} {futureStar}</>, [t]);
   const plansData: PricingPlan[] = React.useMemo(() => {
     const UNLIMITED: PricingPlan = {
       grade: 'UNLIMITED',
       name: t('Pricing.Plans.Unlimited.Name'),
       description: t('Pricing.Plans.Unlimited.Description'),
-      price: { monthly: 'Contact', yearly: 'Contact' },
+      prices: 'Contact',
       subscription: 'UNLIMITED',
       features: [
         t('Pricing.Plans.Unlimited.Features.Everything'),
@@ -110,7 +109,7 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
       grade: 'BASIC',
       name: t('Pricing.Plans.Basic.Name'),
       description: t('Pricing.Plans.Basic.Description'),
-      price: { monthly: 'Free', yearly: 'Free' },
+      prices: 'Free',
       subscription: 'BASIC',
       features: [
         t('Pricing.Plans.Basic.Features.Topics'),
@@ -130,14 +129,8 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
       grade: 'PRO',
       name: t('Pricing.Plans.Pro.Name'),
       description: t('Pricing.Plans.Pro.Description'),
-      price: {
-        monthly: proPrices.monthlyPrices, // PRO_MONTHLY_USD_PRICE,
-        yearly: proPrices.yearlyPrices, // PRO_YEARLY_USD_PRICE,
-      },
-      subscription: {
-        monthly: 'PRO-MONTH',
-        yearly: 'PRO-YEAR',
-      },
+      prices: proPricesQuery.prices,
+      subscription: proSubscriptionType,
       features: [
         t('Pricing.Plans.Pro.Features.Unlimited'),
         t('Pricing.Plans.Pro.Features.Ai'),
@@ -157,14 +150,8 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
       grade: 'PREMIUM',
       name: t('Pricing.Plans.Premium.Name'),
       description: t('Pricing.Plans.Premium.Description'),
-      price: {
-        monthly: premiumPrices.monthlyPrices, // PREMIUM_MONTHLY_USD_PRICE,
-        yearly: premiumPrices.yearlyPrices, // PREMIUM_YEARLY_USD_PRICE,
-      },
-      subscription: {
-        monthly: 'PREMIUM-MONTH',
-        yearly: 'PREMIUM-YEAR',
-      },
+      prices: premiumPricesQuery.prices,
+      subscription: premiumSubscriptionType,
       features: [
         t('Pricing.Plans.Premium.Features.Everything'),
         t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
@@ -185,7 +172,16 @@ function usePlansData({ isReady }: { isReady?: boolean }) {
       PRO,
       PREMIUM,
     ];
-  }, [t, tFuture, BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS, proPrices, premiumPrices]);
+  }, [
+    BASIC_USER_GENERATIONS,
+    PRO_USER_MONTHLY_GENERATIONS,
+    premiumPricesQuery.prices,
+    premiumSubscriptionType,
+    proPricesQuery.prices,
+    proSubscriptionType,
+    t,
+    tFuture,
+  ]);
   return plansData;
 }
 
@@ -208,13 +204,9 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
   const { data: session, status: sessionStatus } = useSession();
   const user = session?.user;
 
-  const { loading: isRatiosLoading } = useCurrencyRatios({
-    isReady: !!billingPeriod,
-  });
+  const isReady = sessionStatus !== 'loading' && !!billingPeriod;
 
-  const isReady = sessionStatus !== 'loading' && !!billingPeriod && !isRatiosLoading;
-
-  const plansData: PricingPlan[] = usePlansData({ isReady });
+  const plansData: PricingPlan[] = usePlansData({ isReady, billingPeriod });
   const [unlimitedPlan, ...mainPlans] = plansData;
 
   const startSubscription = React.useCallback(
@@ -255,11 +247,10 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
     >
       <div className="grid gap-8 md:grid-cols-3">
         {mainPlans.map((plan) => {
-          const { subscription, price: priceData } = plan;
-          const planData = billingPeriod ? priceData[billingPeriod] : undefined;
-          const priceValue = typeof planData === 'object' ? planData[localeCurrency] : undefined;
-          const tgPriceValue =
-            planData && typeof planData === 'object' ? planData.TGSTAR : undefined;
+          const { subscription, prices } = plan;
+          const isPrices = prices && typeof prices === 'object';
+          const priceValue = isPrices ? prettifyPrice(prices[localeCurrency]) : undefined;
+          const tgPriceValue = isPrices ? prettifyPrice(prices.TGSTAR) : undefined;
           const subscriptionType: TSubscriptionType | undefined =
             typeof subscription !== 'object'
               ? subscription
@@ -290,17 +281,17 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                   <p className="text-sm text-muted-foreground">{plan.description}</p>
                   <div className="mt-4">
                     <div className="flex flex-wrap items-baseline gap-1">
-                      {isRatiosLoading || !planData ? (
+                      {!prices ? (
                         <Skeleton className="inline h-9 w-40 max-w-full rounded" />
-                      ) : planData === 'Free' ? (
+                      ) : prices === 'Free' ? (
                         <span className="text-3xl font-bold">{t('Pricing.Free')}</span>
-                      ) : planData === 'Contact' ? (
+                      ) : prices === 'Contact' ? (
                         <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
                       ) : (
                         <>
                           <span className="flex flex-wrap items-center text-3xl font-bold">
                             <CurrencySign className="text-3xl" />
-                            <span>{stringifyPrice(planData[localeCurrency])}</span>
+                            <span>{stringifyPrice(priceValue)}</span>
                           </span>
                           {tgPriceValue && (
                             <div className="flex flex-wrap items-center gap-1 text-sm">
@@ -314,11 +305,6 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                             {billingPeriod === 'yearly'
                               ? t('Pricing.billedAnnually')
                               : t('Pricing.billedMonthly')}
-                            {/* // UNUSED: paymentMode: TPaymentMode
-                             * , {paymentMode === 'once'
-                             *   ? t('Pricing.payOnce')
-                             *   : t('Pricing.payRegular')}
-                             */}
                           </span>
                         </>
                       )}

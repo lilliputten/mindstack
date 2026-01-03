@@ -16,12 +16,6 @@ export function quoteHtmlAttr(str: string, preserveCR?: boolean) {
   );
 }
 
-export function ucFirst(str: string) {
-  const c = str.substring(0, 1);
-  const rest = str.substring(1);
-  return c.toUpperCase() + rest;
-}
-
 export function nFormatter(num: number, digits?: number) {
   if (!num) {
     return '0';

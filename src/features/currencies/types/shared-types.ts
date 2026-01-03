@@ -14,3 +14,8 @@ export const defaultCurrencyType: TCurrencyType = allCurrencies[0];
 /** [>* Derived currency types (all except the first/default currency) <]
  * export type TDerivedCurrencyType = Exclude<TCurrencyType, typeof defaultCurrencyType>;
  */
+
+export interface TProcessCurrencyPricesOptions {
+  prettify?: boolean;
+  isReady?: boolean;
+}

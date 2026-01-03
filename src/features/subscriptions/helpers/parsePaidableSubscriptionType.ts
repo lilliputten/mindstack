@@ -1,5 +1,6 @@
-import { periodTypesSchema, TPaidableSubscriptionType } from '@/constants/subscriptions';
 import { UserGradeSchema } from '@/generated/prisma';
+
+import { periodTypesSchema, TPaidableSubscriptionType } from '@/features/subscriptions';
 
 /** Parse correct grade and period values from combined raw subscription type, usually in form '{grade}-{period}` */
 export function parsePaidableSubscriptionType(subscriptionType: TPaidableSubscriptionType) {

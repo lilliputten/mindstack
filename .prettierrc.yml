@@ -16,6 +16,8 @@ importOrder:
   - '<BUILTIN_MODULES>'
   - '<THIRD_PARTY_MODULES>'
   - ''
+  - '^@/generated(.*)$'
+  - ''
   - '^@/env(.*)$'
   - '^@/lib/types/(.*)$'
   - '^@/config/(.*)$'

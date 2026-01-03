@@ -9,18 +9,19 @@ import {
   TCurrencyType,
 } from './types';
 
-export type TCalcCurrencyOptions = {
-  // round?: 'decimals' | 'pretty';
-  // Don't show zero, always show a minimal value
-  noZero?: boolean;
-};
-
-const defaultCalcCurrencyOptions: Partial<Record<TCurrencyType, TCalcCurrencyOptions>> = {
-  // USD: { round: 'pretty' },
-  // EUR: { round: 'pretty' },
-  // RUB: { round: 'pretty' },
-  // TGSTAR: { round: 'pretty' },
-};
+/* UNSED: Options
+ * export type TCalcCurrencyOptions = {
+ *   // round?: 'decimals' | 'pretty';
+ *   // Don't show zero, always show a minimal value
+ *   noZero?: boolean;
+ * };
+ * const defaultCalcCurrencyOptions: Partial<Record<TCurrencyType, TCalcCurrencyOptions>> = {
+ *   // USD: { round: 'pretty' },
+ *   // EUR: { round: 'pretty' },
+ *   // RUB: { round: 'pretty' },
+ *   // TGSTAR: { round: 'pretty' },
+ * };
+ */
 
 function calcCurrencyFromBase(
   basePrice: number,
@@ -33,34 +34,27 @@ function calcCurrencyFromBase(
   return basePrice / ratio;
 }
 
-export function prettifyPrice(price: number = 0, currency: TCurrencyType = defaultCurrencyType) {
+export function prettifyPrice(price?: number) {
+  if (price == undefined) {
+    return undefined;
+  }
   let value = price;
-  // Get required options...
-  const opts = defaultCalcCurrencyOptions[currency] || {};
-  const { noZero } = opts;
   // Analyze the number...
-  const intVal = Math.round(price);
-  // const isInt = intVal === price;
+  const intVal = Math.round(value);
   const intValStr = String(intVal);
   const intSize = intValStr.length;
   // Prettify...
   if (intSize > 1) {
-    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.round(intSize / 2)) : 0;
+    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.floor(intSize / 2)) : 0;
     const zerableBase = zerableDecimalPositions ? Math.pow(10, zerableDecimalPositions) : 5;
     value = Math.round(value / zerableBase) * zerableBase;
-    if (!value && noZero) {
-      value = zerableBase;
-    }
   } else {
     // Keep 2 fixed digits after floating point
     value = Math.round(value * 10) / 10;
-    if (!value && noZero) {
-      value = 10;
-    }
   }
   /* // DEBUG
    * if (price) {
-   *   console.log('[helpers:prettifyPrice]', currency, 'done :', price, '->', value);
+   *   console.log('[helpers:prettifyPrice] done :', price, '->', value);
    * }
    */
   return value;
@@ -106,7 +100,7 @@ export function stringifyPrices(prices: TCurrencyPrices): TCurrencyStrings {
 
 export function prettifyPrices(prices: TCurrencyPrices): TCurrencyPrices {
   const prettifiedPrices = allCurrencies.reduce<TCurrencyPrices>((prettifiedPrices, currency) => {
-    prettifiedPrices[currency] = prettifyPrice(prices[currency], currency);
+    prettifiedPrices[currency] = prettifyPrice(prices[currency]) || 0;
     return prettifiedPrices;
   }, {} as TCurrencyPrices);
   return prettifiedPrices;

@@ -3,21 +3,21 @@
 import React from 'react';
 import { useLocale } from 'next-intl';
 
-import { getRandomHashString } from '@/lib/helpers';
+import { UserGradeType } from '@/generated/prisma';
+
+import { capitalizeString, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, pricingAliasRoute } from '@/config';
-import { PREMIUM_MONTHLY_USD_PRICE, PRO_MONTHLY_USD_PRICE } from '@/constants/prices';
-import { TPaidableSubscriptionType, TPeriodType } from '@/constants/subscriptions';
 import { useEnvConext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice } from '@/features/currencies';
 import {
-  useAllPrices,
-  useCurrencyRatios,
-} from '@/features/currencies/query-hooks/useCurrencyRatios';
-import { UserGradeType } from '@/generated/prisma';
+  TPaidableSubscriptionType,
+  TPeriodType,
+  useAllSubscriptionPrices,
+} from '@/features/subscriptions';
 import { Link, TLocale, useT } from '@/i18n';
 
 import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard';
@@ -36,47 +36,43 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const TgStarSign = CurrencySigns.TGSTAR;
   const { BOT_USERNAME } = useEnvConext();
 
-  const { loading: isRatiosLoading } = useCurrencyRatios({ isReady: true });
-  const isReady = !isRatiosLoading;
+  // const { loading: isRatiosLoading } = useCurrencyRatios({ isReady: true });
+  // const isReady = !isRatiosLoading;
 
   const idempotenceKey = React.useMemo(() => getRandomHashString(), []);
 
-  const isYearly = period === 'YEAR';
-
-  /** Base price based on a grade */
-  const basePlanPrice = React.useMemo(() => {
-    switch (grade) {
-      case 'PRO':
-        return PRO_MONTHLY_USD_PRICE;
-      case 'PREMIUM':
-        return PREMIUM_MONTHLY_USD_PRICE;
-      default:
-        return 0;
-    }
-  }, [grade]);
+  /*
+   * [>* Base price based on a grade <]
+   * const basePlanPrice = React.useMemo(() => {
+   *   switch (grade) {
+   *     case 'PRO':
+   *       return PRO_MONTHLY_USD_PRICE;
+   *     case 'PREMIUM':
+   *       return PREMIUM_MONTHLY_USD_PRICE;
+   *     default:
+   *       return 0;
+   *   }
+   * }, [grade]);
+   */
   /** Grade name */
-  const planName = React.useMemo(() => {
-    switch (grade) {
-      case 'PRO':
-        return 'Pro';
-      case 'PREMIUM':
-        return 'Premium';
-      default:
-        return subscriptionType;
-    }
-  }, [grade, subscriptionType]);
+  const planName = capitalizeString(grade);
 
-  const allPrices = useAllPrices(basePlanPrice, { isReady, prettify: true });
-  const { yearlyPrices, monthlyPrices } = allPrices;
+  // const allPrices = useAllPrices(basePlanPrice, { isReady, prettify: true });
+  // const { yearlyPrices, monthlyPrices } = allPrices;
 
-  const prices = isYearly ? yearlyPrices : monthlyPrices;
-  const localePrice = prices[localeCurrency];
-  const tgPrice = prices.TGSTAR;
+  // const prices = isYearly ? yearlyPrices : monthlyPrices;
+
+  const allSubscriptionPricesQuery = useAllSubscriptionPrices({ subscriptionType });
+  const { prices, isLoading, isFetched } = allSubscriptionPricesQuery;
+  const isPricesQueryReady = !!prices && !isLoading && isFetched;
+
+  const localePrice = prices?.[localeCurrency];
+  const tgPrice = prices?.TGSTAR;
 
   const telegramUrl = `https://t.me/${BOT_USERNAME}`;
 
   const handleRussianCard = React.useCallback(() => {
-    const rubPrice = prices.RUB;
+    const rubPrice = prices?.RUB;
     console.log('Russian card payment for:', {
       rubPrice,
       localePrice,
@@ -84,7 +80,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
       prices,
       grade,
       period,
-      basePlanPrice,
       planName,
       subscriptionType,
       idempotenceKey,
@@ -97,7 +92,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
     prices,
     grade,
     period,
-    basePlanPrice,
     planName,
     subscriptionType,
     idempotenceKey,
@@ -106,9 +100,9 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const handleInternationalCard = React.useCallback(() => {
     console.log('International card payment for:', subscriptionType);
     debugger;
-  }, []);
+  }, [subscriptionType]);
 
-  const isPricesReady = true && !isRatiosLoading && basePlanPrice > 0;
+  const isPricesReady = true && !isPricesQueryReady;
 
   return (
     <main

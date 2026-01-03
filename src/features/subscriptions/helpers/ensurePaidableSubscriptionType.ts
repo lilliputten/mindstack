@@ -2,7 +2,7 @@ import {
   paidableSubscriptionTypes,
   paidableSubscriptionTypesSchema,
   TPaidableSubscriptionType,
-} from '@/constants/subscriptions';
+} from '@/features/subscriptions';
 
 /** Make sure the subscription type is expected and correct */
 export function ensurePaidableSubscriptionType(rawValue: string) {

@@ -1,5 +1,7 @@
 import z from 'zod';
 
+import { UserGradeSchema, UserGradeType } from '@/generated/prisma';
+
 /** Subsription types. See `UserGradeType` */
 const subscriptionTypes = [
   // 'GUEST', // UserGradeType: GUEST
@@ -29,6 +31,14 @@ export const subscriptionsRequireUser: TSubscriptionType[] = [
   'BASIC', // UserGradeType: BASIC
   ...paidableSubscriptionTypes,
 ];
+
+export const paidablePlansValues: UserGradeType[] = [
+  // Define the subset of UserGradeType values that are considered paidable plans
+  'PRO',
+  'PREMIUM',
+] as const;
+// export const paidablePlansSchema = z.enum(paidablePlansValues);
+export type TPaidablePlan = (typeof paidablePlansValues)[number];
 
 /** Period types for subscription plans */
 const periodTypes = [
