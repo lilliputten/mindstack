@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { UserGradeSchema, UserGradeType } from '@/generated/prisma';
+import { UserGradeType } from '@/generated/prisma';
 
 /** Subsription types. See `UserGradeType` */
 const subscriptionTypes = [

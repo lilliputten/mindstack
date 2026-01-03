@@ -24,7 +24,6 @@ import {
   stringifyPrice,
   TCurrencyPrices,
 } from '@/features/currencies';
-import { useCurrencyRatios } from '@/features/currencies/query-hooks';
 import {
   subscriptionsRequireUser,
   TSubscriptionType,

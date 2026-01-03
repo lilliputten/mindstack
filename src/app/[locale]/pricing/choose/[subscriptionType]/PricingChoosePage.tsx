@@ -36,31 +36,10 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
   const TgStarSign = CurrencySigns.TGSTAR;
   const { BOT_USERNAME } = useEnvConext();
 
-  // const { loading: isRatiosLoading } = useCurrencyRatios({ isReady: true });
-  // const isReady = !isRatiosLoading;
-
   const idempotenceKey = React.useMemo(() => getRandomHashString(), []);
 
-  /*
-   * [>* Base price based on a grade <]
-   * const basePlanPrice = React.useMemo(() => {
-   *   switch (grade) {
-   *     case 'PRO':
-   *       return PRO_MONTHLY_USD_PRICE;
-   *     case 'PREMIUM':
-   *       return PREMIUM_MONTHLY_USD_PRICE;
-   *     default:
-   *       return 0;
-   *   }
-   * }, [grade]);
-   */
   /** Grade name */
   const planName = capitalizeString(grade);
-
-  // const allPrices = useAllPrices(basePlanPrice, { isReady, prettify: true });
-  // const { yearlyPrices, monthlyPrices } = allPrices;
-
-  // const prices = isYearly ? yearlyPrices : monthlyPrices;
 
   const allSubscriptionPricesQuery = useAllSubscriptionPrices({ subscriptionType });
   const { prices, isLoading, isFetched } = allSubscriptionPricesQuery;

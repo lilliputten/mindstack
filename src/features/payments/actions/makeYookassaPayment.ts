@@ -7,8 +7,8 @@ import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
-import { TSubscriptionType } from '@/constants';
 import { TCurrencyType } from '@/features/currencies/types';
+import { TSubscriptionType } from '@/features/subscriptions';
 
 import { youkassaSecretKey, youkassaShopId } from '../constants/yookassa-payment-constants';
 
