@@ -1,4 +1,4 @@
-import { PricingChooseSuccessPageRoute } from './PricingChooseSuccessPageRoute';
+import { PricingChooseSuccessRoute } from './PricingChooseSuccessRoute';
 
-export { generateMetadata } from './PricingChooseSuccessPageRoute';
-export default PricingChooseSuccessPageRoute;
+export { generateMetadata } from './PricingChooseSuccessRoute';
+export default PricingChooseSuccessRoute;

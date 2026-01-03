@@ -17,12 +17,15 @@ import { useGoBack } from '@/hooks';
 
 interface TErrorProps {
   title?: TReactNode;
+  explanation?: TReactNode;
+  explanationClassName?: string;
   extraActions?: TReactNode;
   ExtraActions?: React.FunctionComponent;
   error?: ErrorLike; // Error & { message?: string };
   reset?: () => void;
   className?: string;
-  icon?: TGenericIcon;
+  icon?: TGenericIcon | string;
+  iconClassName?: string;
   padded?: boolean;
   border?: boolean;
 }
@@ -30,13 +33,18 @@ interface TErrorProps {
 // NOTE: Only plain string should be passed from the server components
 // otherwise you'll get an 'Only plain objects... can be passed...' error.
 
+const defaultIcon = Icons.Warning;
+
 export function PageError(props: TErrorProps) {
   const {
     error,
     reset,
     className,
     title,
-    icon = Icons.Warning,
+    explanation,
+    explanationClassName,
+    icon = defaultIcon,
+    iconClassName,
     extraActions,
     ExtraActions,
     padded = true,
@@ -44,7 +52,12 @@ export function PageError(props: TErrorProps) {
   } = props;
   const router = useRouter();
 
-  const errText = getErrorText(error);
+  let titleText = title;
+  let errText = getErrorText(error);
+  if (!titleText && errText && errText.length < 80) {
+    titleText = errText;
+    errText = '';
+  }
 
   React.useEffect(() => {
     if (error) {
@@ -71,6 +84,11 @@ export function PageError(props: TErrorProps) {
     }, 200);
   }, [router]);
 
+  // Helper function to safely access icon by string name
+  const getIconByName = (name: string): TGenericIcon | undefined => {
+    return (Icons as { [key: string]: TGenericIcon })[name];
+  };
+
   return (
     <ErrorPlaceHolder
       className={cn(
@@ -81,15 +99,28 @@ export function PageError(props: TErrorProps) {
         className,
       )}
     >
-      <ErrorPlaceHolder.Icon icon={icon} />
-      {title && <ErrorPlaceHolder.Title>{title}</ErrorPlaceHolder.Title>}
+      <ErrorPlaceHolder.Icon
+        className={iconClassName}
+        icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
+      />
+      {titleText && <ErrorPlaceHolder.Title>{titleText}</ErrorPlaceHolder.Title>}
       {errText && <ErrorPlaceHolder.Description>{errText}</ErrorPlaceHolder.Description>}
+      {explanation && (
+        <div
+          className={cn(
+            'mb-5 mt-1.5 text-center text-sm font-normal leading-6 text-muted-foreground',
+            explanationClassName,
+          )}
+        >
+          {explanation}
+        </div>
+      )}
       <div className="mt-2 flex w-full flex-wrap justify-center gap-4">
-        <Button onClick={goBack} className="flex gap-2">
+        <Button variant="theme" onClick={goBack} className="flex gap-2">
           <Icons.ArrowLeft className="size-4" />
           <span>Go back</span>
         </Button>
-        <Button onClick={goHome} className="flex gap-2">
+        <Button variant="theme" onClick={goHome} className="flex gap-2">
           <Icons.Home className="size-4" />
           Go home
         </Button>

@@ -256,13 +256,23 @@
     content: counter(step);
   }
 
-  .error-gradient-background {
+  .bg-error-stripes {
     background: repeating-linear-gradient(
       -30deg,
       rgba(var(--destructiveColorRGB) / 100%) 0px,
       rgba(var(--destructiveColorRGB) / 100%) 6px,
       rgba(var(--destructiveColorRGB) / 90%) 6px,
       rgba(var(--destructiveColorRGB) / 90%) 12px
+    );
+  }
+
+  .bg-info-stripes {
+    background: repeating-linear-gradient(
+      -30deg,
+      rgba(var(--color-theme-500-RGB) / 80%) 0px,
+      rgba(var(--color-theme-500-RGB) / 80%) 6px,
+      rgba(var(--color-theme-500-RGB) / 70%) 6px,
+      rgba(var(--color-theme-500-RGB) / 70%) 12px
     );
   }
 

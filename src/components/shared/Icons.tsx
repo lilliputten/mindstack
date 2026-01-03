@@ -60,6 +60,7 @@ export const {
   LogOut,
   Menu,
   MessageCircleQuestion,
+  ShieldQuestion,
   Minus,
   MonitorPlay,
   Moon,

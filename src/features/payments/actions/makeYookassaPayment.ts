@@ -17,16 +17,18 @@ export interface TMakeYookassaPaymentParams {
   amount: number;
   currency?: TCurrencyType; // RUB is default
   subscriptionType: TSubscriptionType;
-  idempotenceKey: string; // Idempotency key
+  uniqueKey: string; // Idempotency key
   paymentType?: IPaymentMethodType; // 'bank_card' etc
 }
 
+/** Start yookassa payment
+ */
 export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   const {
     // ...
     amount,
     currency,
-    idempotenceKey,
+    uniqueKey,
     paymentType,
     subscriptionType,
   } = params;
@@ -40,39 +42,40 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     const checkout = getYookassCheckoutObject();
 
     const successKey = [
-      // Create success url
-      user.id,
-      idempotenceKey,
-    ].join(';');
+      // Compose success url from provider (YOOKASSA, in lowercase) and uniqueKey
+      'yookassa',
+      uniqueKey,
+    ].join('-');
 
     // Route: `/pricing/choose/[subscriptionType]/success/[successKey]`
-    const returnUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType}/success/${successKey}`;
+    const successUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType}/success/${successKey}`;
     // const returnUrl = new URL(WEBHOOK_HOST);
 
     const payment_method_data = paymentType ? { type: paymentType } : undefined;
     const createPayload: ICreatePayment = {
       amount: {
+        // TODO: Convert to cents (kopeks)?
         value: stringifyPrice(amount),
         currency: currency || 'RUB',
       },
       payment_method_data,
       confirmation: {
         type: 'redirect',
-        return_url: returnUrl,
+        return_url: successUrl,
       },
     };
 
     console.log('[makeYookassaPayment] start', {
       createPayload,
       successKey,
-      returnUrl,
+      successUrl,
       user,
       params,
       subscriptionType,
       // checkout,
     });
 
-    const payment = await checkout.createPayment(createPayload, idempotenceKey);
+    const payment = await checkout.createPayment(createPayload, uniqueKey);
 
     /* // Sample payment result:
      * {
@@ -102,16 +105,18 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       // Make a data subset from the payment object
       id: paymentId,
       status,
-      created_at,
+      created_at: createdAt,
       confirmation,
       paid,
       test,
     } = payment;
+    const { confirmation_url: paymentUrl } = confirmation;
 
     const resultData = {
       paymentId,
+      paymentUrl,
       status,
-      created_at,
+      createdAt,
       confirmation,
       paid,
       test,

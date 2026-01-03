@@ -40,6 +40,8 @@ describe('cleanStaleUserPayments', () => {
           uniqueKey: `old-unique-${dateTag}`,
           status: 'FAILED',
           subscriptionType: 'PRO-MONTH',
+          currency: 'USD',
+          price: 9.99,
           createdAt: oldDate,
         },
       });
@@ -73,6 +75,8 @@ describe('cleanStaleUserPayments', () => {
           uniqueKey: `recent-unique-${dateTag}`,
           status: 'FAILED',
           subscriptionType: 'PRO-MONTH',
+          currency: 'USD',
+          price: 9.99,
         },
       });
 

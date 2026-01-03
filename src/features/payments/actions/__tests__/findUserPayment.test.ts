@@ -38,6 +38,8 @@ describe('findUserPayment', () => {
           uniqueKey: `unique-${dateTag}`,
           status: 'PENDING',
           subscriptionType: 'PRO-MONTH',
+          currency: 'USD',
+          price: 9.99,
         },
       });
 

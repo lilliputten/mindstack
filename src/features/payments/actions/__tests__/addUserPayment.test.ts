@@ -37,6 +37,8 @@ describe('addUserPayment', () => {
         paymentId: `payment-${dateTag}`,
         uniqueKey: `unique-${dateTag}`,
         subscriptionType: 'PRO-MONTH' as const,
+        currency: 'USD' as const,
+        price: 9.99,
       };
 
       const result = await addUserPayment(paymentData);
@@ -62,6 +64,8 @@ describe('addUserPayment', () => {
         paymentId: 'test',
         uniqueKey: 'test',
         subscriptionType: 'PRO-MONTH',
+        currency: 'USD',
+        price: 9.99,
       }),
     ).rejects.toThrow('Authentication required');
   });

@@ -10,6 +10,7 @@ import {
 
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
+import { TCurrencyType } from '@/features/currencies';
 import { TSubscriptionType } from '@/features/subscriptions/types';
 
 const addUserPaymentSchema = UserPaymentSchema.omit({
@@ -26,6 +27,8 @@ type AddUserPaymentData = {
   uniqueKey: string;
   status?: UserPaymentStatusType;
   subscriptionType: TSubscriptionType;
+  currency: TCurrencyType;
+  price: number;
 };
 
 export async function addUserPayment(data: AddUserPaymentData) {

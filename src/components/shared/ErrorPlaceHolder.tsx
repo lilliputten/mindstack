@@ -36,19 +36,25 @@ export function ErrorPlaceHolder({
 interface ErrorPlaceHolderIconProps {
   /*extends IconProps*/ /*extends Partial<React.SVGProps<SVGSVGElement>>*/ icon: TGenericIcon;
   className?: string;
+  iconClassName?: string;
   ref?: ((instance: SVGSVGElement | null) => void) | React.RefObject<SVGSVGElement> | null;
 }
 
 ErrorPlaceHolder.Icon = function ErrorPlaceHolderIcon({
   icon: Icon,
   className,
+  iconClassName,
   ...props
 }: ErrorPlaceHolderIconProps) {
-  // const Icon = Icons[Icon];
   if (Icon) {
     return (
-      <div className="error-gradient-background flex size-20 items-center justify-center rounded-full text-white">
-        <Icon className={cn('size-10', className)} {...props} />
+      <div
+        className={cn(
+          'bg-error-stripes flex size-20 items-center justify-center rounded-full text-white',
+          className,
+        )}
+      >
+        <Icon className={cn('size-10', iconClassName)} {...props} />
       </div>
     );
   }

@@ -1,6 +1,6 @@
 'use server';
 
-import { ICreatePayment, IPaymentMethodType, Payment } from '@a2seven/yoo-checkout';
+import { Payment } from '@a2seven/yoo-checkout';
 
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
@@ -10,7 +10,7 @@ import { getYookassCheckoutObject } from './getYookassCheckoutObject';
 
 export interface TCheckYookassaPaymentParams {
   paymentId: string;
-  idempotenceKey: string; // Idempotency key
+  uniqueKey: string; // Idempotency key
 }
 
 export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) {
@@ -54,16 +54,18 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
       // Make a data subset from the payment object
       // id: paymentId,
       status,
-      created_at,
+      created_at: createdAt,
       confirmation,
       paid,
       test,
     } = payment;
+    const { confirmation_url: paymentUrl } = confirmation;
 
     const resultData = {
       paymentId,
+      paymentUrl,
       status,
-      created_at,
+      createdAt,
       confirmation,
       paid,
       test,
