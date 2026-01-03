@@ -119,7 +119,7 @@ export const getCachedCurrencyRatio = async (currency: TCurrencyType) => {
     [`currency-${currency}`, 'currencies'], // Unique key per currency type
     {
       tags: [`currency-${currency}`, 'currencies'], // Unique tag per currency for revalidation
-      revalidate: revalidateTimeout, // Optional: auto-revalidate after 1 hour
+      revalidate: Math.round(revalidateTimeout / 1000), // Optional: auto-revalidate after 1 hour, in seconds
     },
   );
   return cachedFn();
