@@ -18,12 +18,7 @@ import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingChooseRoute, userStartAliasRoute } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
-import {
-  localeCurrencies,
-  prettifyPrice,
-  stringifyPrice,
-  TCurrencyPrices,
-} from '@/features/currencies';
+import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import {
   subscriptionsRequireUser,
   TSubscriptionType,
@@ -202,7 +197,6 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
 
   const { data: session, status: sessionStatus } = useSession();
   const user = session?.user;
-
   const isReady = sessionStatus !== 'loading' && !!billingPeriod;
 
   const plansData: PricingPlan[] = usePlansData({ isReady, billingPeriod });
@@ -248,8 +242,8 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         {mainPlans.map((plan) => {
           const { subscription, prices } = plan;
           const isPrices = prices && typeof prices === 'object';
-          const priceValue = isPrices ? prettifyPrice(prices[localeCurrency]) : undefined;
-          const tgPriceValue = isPrices ? prettifyPrice(prices.TGSTAR) : undefined;
+          const priceValue = isPrices ? prices[localeCurrency] : undefined;
+          const tgPriceValue = isPrices ? prices.TGSTAR : undefined;
           const subscriptionType: TSubscriptionType | undefined =
             typeof subscription !== 'object'
               ? subscription

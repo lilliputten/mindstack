@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 
 import { UserGradeType } from '@/generated/prisma';
 
-import { capitalizeString, getRandomHashString } from '@/lib/helpers';
+import { getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
@@ -38,9 +38,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
 
   const idempotenceKey = React.useMemo(() => getRandomHashString(), []);
 
-  /** Grade name */
-  const planName = capitalizeString(grade);
-
   const allSubscriptionPricesQuery = useAllSubscriptionPrices({ subscriptionType });
   const { prices, isLoading, isFetched } = allSubscriptionPricesQuery;
   const isPricesQueryReady = !!prices && !isLoading && isFetched;
@@ -59,7 +56,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
       prices,
       grade,
       period,
-      planName,
       subscriptionType,
       idempotenceKey,
     });
@@ -71,7 +67,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
     prices,
     grade,
     period,
-    planName,
     subscriptionType,
     idempotenceKey,
   ]);
@@ -80,8 +75,6 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
     console.log('International card payment for:', subscriptionType);
     debugger;
   }, [subscriptionType]);
-
-  const isPricesReady = true && !isPricesQueryReady;
 
   return (
     <main
@@ -103,12 +96,12 @@ export function PricingChoosePage({ subscriptionType, grade, period }: PricingCh
           {t('PricingChoosePage.ChoosePaymentMethod')}
         </h1>
         <p className="text-muted-foreground">
-          {t('PricingChoosePage.CompleteSubscription', { planName })}
+          {t('PricingChoosePage.CompleteSubscription', { planName: grade })}
         </p>
         <div className="mt-4 text-lg">
           <div className="flex flex-wrap items-baseline gap-1">
             <span className="h-9">{t('PricingChoosePage.YoureToPay')}:</span>
-            {isPricesReady ? (
+            {isPricesQueryReady ? (
               <span className="flex h-9 flex-wrap items-baseline gap-1">
                 <span className="flex flex-wrap items-center text-3xl font-bold">
                   <CurrencySign className="text-3xl" />

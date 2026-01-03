@@ -45,7 +45,7 @@ export function prettifyPrice(price?: number) {
   const intSize = intValStr.length;
   // Prettify...
   if (intSize > 1) {
-    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.floor(intSize / 2)) : 0;
+    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.round(intSize / 2)) : 0;
     const zerableBase = zerableDecimalPositions ? Math.pow(10, zerableDecimalPositions) : 5;
     value = Math.round(value / zerableBase) * zerableBase;
   } else {
@@ -69,10 +69,13 @@ export function calcPriceForCurrency(
     ratio /= customCurrencyRatios[currency];
   }
   const price = calcCurrencyFromBase(basePrice, ratio, currency);
-  return price;
+  return prettifyPrice(price) || 0;
 }
 
-export function calcAllPrices(basePrice: number, ratios?: TCurrencyRatios): TCurrencyPrices {
+export function calcAllCurrenciesFromBasePrice(
+  basePrice: number,
+  ratios?: TCurrencyRatios,
+): TCurrencyPrices {
   const prices = allCurrencies.reduce<TCurrencyPrices>((prices, currency) => {
     const ratio = ratios?.[currency];
     const price = calcPriceForCurrency(basePrice, ratio, currency);
