@@ -2,7 +2,7 @@
 
 import { ICreatePayment, IPaymentMethodType } from '@a2seven/yoo-checkout';
 
-import { WEBHOOK_HOST } from '@/config/envServer';
+import { useFakePrices, WEBHOOK_HOST } from '@/config/envServer';
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
@@ -12,7 +12,7 @@ import { TCurrencyType } from '@/features/currencies/types';
 import { ensurePaidableSubscriptionType, TSubscriptionType } from '@/features/subscriptions';
 import { getAllSubscriptionPrices } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
 
-import { getYookassCheckoutObject } from './getYookassCheckoutObject';
+import { getYookassCheckoutObject } from './helpers';
 
 export interface TMakeYookassaPaymentParams {
   subscriptionType: TSubscriptionType;
@@ -35,7 +35,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   const currency: TCurrencyType = 'RUB';
 
   const prices = await getAllSubscriptionPrices(subscriptionType);
-  const price = prices?.[currency];
+  const price = useFakePrices ? 1 : prices?.[currency];
 
   if (!price) {
     throw new Error(
