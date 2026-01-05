@@ -208,6 +208,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
       const choosePlanUrl = isBasicSubscription
         ? userStartAliasRoute
         : `${pricingChooseRoute}/${subscriptionType.toLowerCase()}`;
+      // eslint-disable-next-line no-console
       console.log('[PricingPlansSection:startSubscription]', {
         priceValue,
         subscriptionType,
@@ -217,6 +218,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         requiresUser,
         choosePlanUrl,
       });
+      // eslint-disable-next-line no-debugger
       debugger;
       if (requiresUser && !user) {
         const introText = isBasicSubscription

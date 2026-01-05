@@ -1,1 +1,1 @@
-export * from './getYookassCheckoutObject';
+export * from './getYookassaCheckoutObject';

@@ -467,6 +467,10 @@
     "ToastSuccessData": "Successfully retrieved AI generated data",
     "ToastSuccessQuestions": "Successfully added new questions"
   },
+  "MakeYookassaPayment": {
+    "PaymentError": "Error making yookassa payment",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
+  },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Add New Answer",
     "Cancel": "Cancel",
@@ -729,19 +733,31 @@
     }
   },
   "PricingChoosePage": {
+    "CheckAvailableSubscriptionPlans": "Check Available Subscription Plans",
     "ChoosePaymentMethod": "Choose Payment Method",
     "CompleteSubscription": "to complete your {planName} subscription",
+    "ContactSupport": "Contact Support",
+    "ContactSupportForDowngrade": "You are downgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong>. You need to contact <ContactsLink>support</ContactsLink> to downgrade.",
+    "DowngradeRequiresSupport": "Downgrade requires contacting support",
+    "DowngradeWarning": "Downgrade warning - please contact support",
+    "GuestNotAllowed": "Guest users are not allowed to make payments",
     "InternationalCard": "International Card",
     "InternationalCardDescription": "Pay with international payment methods. Supports major credit and debit cards worldwide.",
     "OpenTelegramBot": "Open @{botUsername}",
-    "OtherSubscriptionOptions": "If you want to choose other subscription options, please go to <PricingLink>the pricing page</PricingLink>.",
+    "OtherOptionsText": "If you want to choose other subscription options, please go to <PricingLink>the pricing page</PricingLink> or <ContactsLink>contact us</ContactsLink> in case of any problems.",
     "PayWithInternationalCard": "Pay with International Card",
     "PayWithRussianCard": "Pay with Russian Card",
+    "PaymentIsStarting": "The payment is starting",
+    "PaymentSuccessfullyStarted": "Payment has been successfully started",
     "RussianBankCard": "Russian Bank Card",
     "RussianBankCardDescription": "Pay with your Russian bank card. Works with cards from any bank and country.",
+    "SameGradeMessage": "You already have the {currentGrade} subscription plan",
     "TelegramStars": "Telegram Stars",
     "TelegramStarsCompletePayment": "Go to our Telegram bot to complete the payment using Telegram Stars.",
     "TelegramStarsOptionAvailable": "This option is available if you signed in via a Telegram account.",
+    "UpgradeMessage": "You are upgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong>",
+    "UpgradePriceInfo": "You will be charged for the difference between plans",
+    "UpgradePriceInfoWithDifference": "Upgrade price difference: {priceDifference}",
     "YoureToPay": "You're to pay"
   },
   "PricingChooseSuccess": {

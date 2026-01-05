@@ -1,8 +1,6 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 
-import { UserGradeSchema, UserGradeType } from '@/generated/prisma';
-
 import { pricingAliasRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getRandomHashString } from '@/lib/helpers';
@@ -11,6 +9,8 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
+import { getAllCurrencyRatios } from '@/features/currencies/actions';
+import { calculatePriceDifference, compareGrades } from '@/features/payments/helpers';
 import {
   ensurePaidableSubscriptionType,
   parsePaidableSubscriptionType,
@@ -56,100 +56,29 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
   );
 
   // Parse grade and period with Zod schemas
-  const { grade: requestedGrade } = parsePaidableSubscriptionType(subscriptionType, t);
+  const { grade: requestedGrade, period: requestedPeriod } = parsePaidableSubscriptionType(
+    subscriptionType,
+    t,
+  );
   const currentGrade = user.grade;
+  // For now, assume current period is the same as requested period for price calculation
+  // In a real scenario, you might want to get the user's current subscription period from their profile
+  const currentPeriod = requestedPeriod; // Default to requested period
 
-  // Check if user is GUEST - this is a normal case for upgrading from GUEST
-  if (currentGrade === 'GUEST') {
-    console.log('[PricingChooseRoute]', 'User is GUEST - normal upgrade scenario', {
-      user,
-      requestedGrade,
-      currentGrade,
-    });
-  }
+  // Compare grades using helper
+  const comparisonResult = compareGrades(currentGrade, requestedGrade);
 
-  // Check if user already has a higher grade (downgrade scenario)
-  if (currentGradeIndex > requestedGradeIndex) {
-    // Show warning about downgrade - suggest contacting admin
-    // For now, we'll allow the downgrade but in a real scenario,
-    // we might want to show a warning message
-    console.warn('[PricingChooseRoute]', 'User is attempting to downgrade', {
-      user,
-      requestedGrade,
-      currentGrade,
-    });
-  }
-
-  // Check if user has a lower grade (upgrade scenario)
-  if (currentGradeIndex < requestedGradeIndex) {
-    // This is a normal upgrade scenario - proceed with payment
-    console.log('[PricingChooseRoute]', 'User is upgrading', {
-      user,
-      requestedGrade,
-      currentGrade,
-    });
-  }
-
-  // Grade hierarchy for comparison (from lowest to highest)
-  const gradeHierarchy: UserGradeType[] = UserGradeSchema.options;
-  const currentGradeIndex = gradeHierarchy.indexOf(currentGrade);
-  const requestedGradeIndex = gradeHierarchy.indexOf(requestedGrade);
-
-  // If user has the same grade, they might be renewing or changing period
-  if (currentGradeIndex === requestedGradeIndex) {
-    console.log('[PricingChooseRoute]', 'User has same grade - renewal or period change', {
-      user,
-      requestedGrade,
-      currentGrade,
-    });
-  }
-
-  // Determine the comparison result
-  let comparisonResult: {
-    type: 'same' | 'upgrade' | 'downgrade' | 'guest';
-    currentGrade: string;
-    requestedGrade: string;
-    currentGradeIndex: number;
-    requestedGradeIndex: number;
-    priceDifference?: number; // For upgrade scenarios
-  };
-
-  if (currentGrade === 'GUEST') {
-    // GUEST users are always upgrading
-    comparisonResult = {
-      type: 'upgrade',
+  // Calculate price difference for upgrades
+  let upgradePriceDifference: number | undefined;
+  if (comparisonResult.type === 'upgrade') {
+    const currencyRatios = await getAllCurrencyRatios();
+    upgradePriceDifference = calculatePriceDifference(
       currentGrade,
       requestedGrade,
-      currentGradeIndex,
-      requestedGradeIndex,
-    };
-  } else if (currentGradeIndex > requestedGradeIndex) {
-    // Downgrade scenario
-    comparisonResult = {
-      type: 'downgrade',
-      currentGrade,
-      requestedGrade,
-      currentGradeIndex,
-      requestedGradeIndex,
-    };
-  } else if (currentGradeIndex < requestedGradeIndex) {
-    // Upgrade scenario - calculate price difference if needed
-    comparisonResult = {
-      type: 'upgrade',
-      currentGrade,
-      requestedGrade,
-      currentGradeIndex,
-      requestedGradeIndex,
-    };
-  } else {
-    // Same grade - renewal or period change
-    comparisonResult = {
-      type: 'same',
-      currentGrade,
-      requestedGrade,
-      currentGradeIndex,
-      requestedGradeIndex,
-    };
+      currentPeriod,
+      requestedPeriod,
+      currencyRatios,
+    );
   }
 
   return (
@@ -180,6 +109,8 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
         <PricingChoosePage
           subscriptionType={subscriptionType}
           comparisonResult={comparisonResult}
+          upgradePriceDifference={upgradePriceDifference}
+          // currentPeriod={currentPeriod}
           // grade={grade}
           // period={period}
         />

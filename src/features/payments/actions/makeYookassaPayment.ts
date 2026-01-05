@@ -9,14 +9,16 @@ import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
+import { compareGrades } from '@/features/payments/helpers';
 import {
   ensurePaidableSubscriptionType,
   getGradeFromSubscriptionType,
   TSubscriptionType,
 } from '@/features/subscriptions';
 import { getAllSubscriptionPrices } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
+import { getT } from '@/i18n';
 
-import { getYookassCheckoutObject } from './helpers';
+import { getYookassaCheckoutObject } from './helpers';
 
 export interface TMakeYookassaPaymentParams {
   subscriptionType: TSubscriptionType;
@@ -27,10 +29,11 @@ export interface TMakeYookassaPaymentParams {
 /** Start yookassa payment */
 export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   const { uniqueKey, paymentType, subscriptionType: rawSubscriptionType } = params;
+  const t = await getT();
 
   const user = await getCurrentUser();
   if (!user) {
-    throw new CustomAPIError('Cannot proceed payments for unauthorized users');
+    throw new CustomAPIError(t('MakeYookassaPayment.UnauthorizedPaymentError'));
   }
 
   // Parse and check paidable subscription type
@@ -42,9 +45,12 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   const requestedGrade = getGradeFromSubscriptionType(subscriptionType);
   const currentGrade = user.grade;
 
+  // Compare grades using helper
+  const comparisonResult = compareGrades(currentGrade, requestedGrade);
+
   // Get prices for the requested subscription type
   const prices = await getAllSubscriptionPrices(subscriptionType);
-  let price = useFakePrices ? 1 : prices?.[currency];
+  const price = useFakePrices ? 1 : prices?.[currency];
 
   if (!price) {
     throw new Error(
@@ -52,24 +58,21 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     );
   }
 
-  // Grade hierarchy for comparison (from lowest to highest)
-  const gradeHierarchy = ['GUEST', 'BASIC', 'PRO', 'PREMIUM', 'UNLIMITED'] as const;
-  const currentGradeIndex = gradeHierarchy.indexOf(currentGrade);
-  const requestedGradeIndex = gradeHierarchy.indexOf(requestedGrade);
-
   // Calculate price difference for upgrade scenarios
-  if (currentGradeIndex < requestedGradeIndex) {
+  if (comparisonResult.type === 'upgrade') {
     // This is an upgrade - user pays the full price of the new plan
     // In a real implementation, you might want to calculate the difference between current and new plan
     // For now, we'll use the full price of the requested plan
+    // eslint-disable-next-line no-console
     console.log('[makeYookassaPayment]', 'Processing upgrade payment', {
       user,
       currentGrade,
       requestedGrade,
       price,
     });
-  } else if (currentGradeIndex > requestedGradeIndex) {
+  } else if (comparisonResult.type === 'downgrade') {
     // This is a downgrade - should not happen in normal flow, but we'll log it
+    // eslint-disable-next-line no-console
     console.warn(
       '[makeYookassaPayment]',
       'Downgrade payment detected - this should not happen normally',
@@ -83,6 +86,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     throw new CustomAPIError('Downgrade requests should be processed through support');
   } else {
     // Same grade - renewal or period change
+    // eslint-disable-next-line no-console
     console.log('[makeYookassaPayment]', 'Processing renewal or period change', {
       user,
       currentGrade,
@@ -92,7 +96,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   }
 
   try {
-    const checkout = getYookassCheckoutObject();
+    const checkout = getYookassaCheckoutObject();
 
     const successKey = [
       // Compose success url from provider (YOOKASSA, in lowercase) and uniqueKey
@@ -117,6 +121,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       },
     };
 
+    // eslint-disable-next-line no-debugger
     debugger;
     const payment = await checkout.createPayment(createPayload, uniqueKey);
 
@@ -169,7 +174,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
 
     return resultData;
   } catch (error) {
-    const message = 'Error making yookassa payment';
+    const message = t('MakeYookassaPayment.PaymentError');
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     // eslint-disable-next-line no-console

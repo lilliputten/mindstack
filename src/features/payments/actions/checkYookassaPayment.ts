@@ -6,7 +6,7 @@ import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 
-import { getYookassCheckoutObject } from './helpers';
+import { getYookassaCheckoutObject } from './helpers';
 
 export interface TCheckYookassaPaymentParams {
   paymentId: string;
@@ -22,7 +22,7 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
   }
 
   try {
-    const checkout = getYookassCheckoutObject();
+    const checkout = getYookassaCheckoutObject();
 
     const payment: Payment = await checkout.getPayment(paymentId);
 

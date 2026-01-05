@@ -466,6 +466,10 @@
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA",
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
+  "MakeYookassaPayment": {
+    "PaymentError": "Error al realizar el pago de yookassa",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
+  },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
     "Cancel": "Cancelar",
@@ -728,19 +732,31 @@
     }
   },
   "PricingChoosePage": {
+    "CheckAvailableSubscriptionPlans": "Verificar planes de suscripción disponibles",
     "ChoosePaymentMethod": "Elegir Método de Pago",
     "CompleteSubscription": "para completar su suscripción {planName}",
+    "ContactSupport": "Contactar Soporte",
+    "ContactSupportForDowngrade": "Estás bajando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>. \nDebe comunicarse con <ContactsLink>soporte</ContactsLink> para bajar de categoría.",
+    "DowngradeRequiresSupport": "La degradación requiere contactar con soporte",
+    "DowngradeWarning": "Advertencia de degradación - por favor contacte con soporte",
+    "GuestNotAllowed": "Los usuarios invitados no tienen permitido hacer pagos",
     "InternationalCard": "Tarjeta Internacional",
     "InternationalCardDescription": "Pague con métodos de pago internacionales. Compatible con las principales tarjetas de crédito y débito en todo el mundo.",
     "OpenTelegramBot": "Abrir @{botUsername}",
-    "OtherSubscriptionOptions": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink>.",
+    "OtherOptionsText": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink> o <ContactsLink>contáctenos</ContactsLink> en caso de cualquier problema.",
     "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
     "PayWithRussianCard": "Pagar con Tarjeta Rusa",
+    "PaymentIsStarting": "El pago está comenzando",
+    "PaymentSuccessfullyStarted": "El pago ha sido iniciado exitosamente",
     "RussianBankCard": "Tarjeta Bancaria Rusa",
     "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
+    "SameGradeMessage": "Ya tienes el plan de suscripción {currentGrade}",
     "TelegramStars": "Estrellas de Telegram",
     "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
     "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
+    "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>",
+    "UpgradePriceInfo": "Se le cobrará la diferencia entre los planes",
+    "UpgradePriceInfoWithDifference": "Diferencia de precio para la actualización: {priceDifference}",
     "YoureToPay": "Usted debe pagar"
   },
   "PricingChooseSuccess": {
