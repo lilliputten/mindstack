@@ -9,7 +9,11 @@ import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
-import { ensurePaidableSubscriptionType, TSubscriptionType } from '@/features/subscriptions';
+import {
+  ensurePaidableSubscriptionType,
+  getGradeFromSubscriptionType,
+  TSubscriptionType,
+} from '@/features/subscriptions';
 import { getAllSubscriptionPrices } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
 
 import { getYookassCheckoutObject } from './helpers';
@@ -29,18 +33,62 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     throw new CustomAPIError('Cannot proceed payments for unauthorized users');
   }
 
-  // Parse and check paidable subscriptio type
+  // Parse and check paidable subscription type
   const subscriptionType = ensurePaidableSubscriptionType(rawSubscriptionType);
 
   const currency: TCurrencyType = 'RUB';
 
+  // Get the requested grade from the subscription type
+  const requestedGrade = getGradeFromSubscriptionType(subscriptionType);
+  const currentGrade = user.grade;
+
+  // Get prices for the requested subscription type
   const prices = await getAllSubscriptionPrices(subscriptionType);
-  const price = useFakePrices ? 1 : prices?.[currency];
+  let price = useFakePrices ? 1 : prices?.[currency];
 
   if (!price) {
     throw new Error(
       `Failed to calculate a proper price for the payment for the subscription type "${subscriptionType}"`,
     );
+  }
+
+  // Grade hierarchy for comparison (from lowest to highest)
+  const gradeHierarchy = ['GUEST', 'BASIC', 'PRO', 'PREMIUM', 'UNLIMITED'] as const;
+  const currentGradeIndex = gradeHierarchy.indexOf(currentGrade);
+  const requestedGradeIndex = gradeHierarchy.indexOf(requestedGrade);
+
+  // Calculate price difference for upgrade scenarios
+  if (currentGradeIndex < requestedGradeIndex) {
+    // This is an upgrade - user pays the full price of the new plan
+    // In a real implementation, you might want to calculate the difference between current and new plan
+    // For now, we'll use the full price of the requested plan
+    console.log('[makeYookassaPayment]', 'Processing upgrade payment', {
+      user,
+      currentGrade,
+      requestedGrade,
+      price,
+    });
+  } else if (currentGradeIndex > requestedGradeIndex) {
+    // This is a downgrade - should not happen in normal flow, but we'll log it
+    console.warn(
+      '[makeYookassaPayment]',
+      'Downgrade payment detected - this should not happen normally',
+      {
+        user,
+        currentGrade,
+        requestedGrade,
+      },
+    );
+    // For downgrades, we might want to redirect to support instead of processing payment
+    throw new CustomAPIError('Downgrade requests should be processed through support');
+  } else {
+    // Same grade - renewal or period change
+    console.log('[makeYookassaPayment]', 'Processing renewal or period change', {
+      user,
+      currentGrade,
+      requestedGrade,
+      price,
+    });
   }
 
   try {
@@ -69,6 +117,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       },
     };
 
+    debugger;
     const payment = await checkout.createPayment(createPayload, uniqueKey);
 
     /* // Sample payment result:

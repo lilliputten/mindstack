@@ -18,6 +18,7 @@ interface PricingChoosePaymentMethodCardProps {
   className?: string;
   link?: string;
   isLink?: boolean;
+  disabled?: boolean;
 }
 
 export function PricingChoosePaymentMethodCard({
@@ -29,6 +30,7 @@ export function PricingChoosePaymentMethodCard({
   className,
   link,
   isLink = false,
+  disabled = false,
 }: PricingChoosePaymentMethodCardProps) {
   return (
     <Card
@@ -46,19 +48,22 @@ export function PricingChoosePaymentMethodCard({
         {typeof description === 'string' ? <p>{description}</p> : description}
       </div>
       {isLink && link ? (
-        <Button variant="theme" className="mt-auto flex w-full">
+        <Button variant="theme" disabled={disabled} className="mt-auto flex w-full">
           <NextLink
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-1"
+            className={cn(
+              'flex w-full items-center justify-center gap-1',
+              disabled && 'pointer-events-none opacity-50',
+            )}
           >
             {buttonText}
             <Icons.ExternalLink className="size-3.5 opacity-50" />
           </NextLink>
         </Button>
       ) : buttonText && onClick ? (
-        <Button variant="theme" onClick={onClick} className="mt-auto w-full">
+        <Button variant="theme" onClick={onClick} disabled={disabled} className="mt-auto w-full">
           {buttonText}
         </Button>
       ) : null}

@@ -24,9 +24,17 @@ import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard
 
 interface PricingChoosePageProps {
   subscriptionType: TPaidableSubscriptionType;
+  comparisonResult?: {
+    type: 'same' | 'upgrade' | 'downgrade' | 'guest';
+    currentGrade: string;
+    requestedGrade: string;
+    currentGradeIndex: number;
+    requestedGradeIndex: number;
+    priceDifference?: number;
+  };
 }
 
-export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) {
+export function PricingChoosePage({ subscriptionType, comparisonResult }: PricingChoosePageProps) {
   const t = useT();
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
   const locale = useLocale() as TLocale;
@@ -44,6 +52,17 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
   const localePrice = prices?.[localeCurrency];
   const tgPrice = prices?.TGSTAR;
 
+  // Calculate price difference for upgrade scenarios
+  const calculatePriceDifference = React.useCallback(() => {
+    if (!isUpgrade || !comparisonResult || !prices) {
+      return null;
+    }
+
+    // For now, we'll return the full price as the difference
+    // In a real implementation, we would calculate the difference between current and requested plans
+    return localePrice;
+  }, [isUpgrade, comparisonResult, prices, localePrice]);
+
   const telegramUrl = `https://t.me/${BOT_USERNAME}`;
 
   const yookassaPayment = useYookassaPayment({ subscriptionType });
@@ -54,7 +73,27 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
     startYoukassaPayment,
   } = yookassaPayment;
 
+  // Handle different comparison scenarios
+  const isGuest = comparisonResult?.type === 'guest';
+  const isDowngrade = comparisonResult?.type === 'downgrade';
+  const isUpgrade = comparisonResult?.type === 'upgrade';
+  const isSame = comparisonResult?.type === 'same';
+
   const handleRussianCard = React.useCallback(() => {
+    if (isGuest) {
+      // Should not reach here as guest users are redirected at server level
+      toast.error(t('PricingChoosePage.GuestNotAllowed'));
+      return;
+    }
+
+    if (isDowngrade) {
+      // Show warning about downgrade and suggest contacting support
+      toast.warning(t('PricingChoosePage.DowngradeWarning'));
+      // In a real scenario, we might want to redirect to contact support
+      // For now, we'll just show the warning
+      return;
+    }
+
     startWorking(async () => {
       try {
         const promise = startYoukassaPayment();
@@ -88,15 +127,67 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
         toast.error(comboMsg);
       }
     });
-  }, [startYoukassaPayment]);
+  }, [startYoukassaPayment, isGuest, isDowngrade, t]);
 
   const handleInternationalCard = React.useCallback(() => {
+    if (isGuest) {
+      // Should not reach here as guest users are redirected at server level
+      toast.error(t('PricingChoosePage.GuestNotAllowed'));
+      return;
+    }
+
+    if (isDowngrade) {
+      // Show warning about downgrade
+      toast.warning(t('PricingChoosePage.DowngradeWarning'));
+      // In a real scenario, we might want to redirect to contact support
+      return;
+    }
+
     // TODO
     console.log('[PricingChoosePage:handleInternationalCard]', subscriptionType);
     debugger;
-  }, [subscriptionType]);
+  }, [subscriptionType, isGuest, isDowngrade, t]);
 
   const isReady = isYoukassaPaymentReady && !isWorking;
+
+  // Determine the appropriate message based on comparison result
+  const getSubscriptionMessage = () => {
+    if (isGuest) {
+      return t('PricingChoosePage.GuestNotAllowed');
+    } else if (isDowngrade) {
+      return t('PricingChoosePage.DowngradeMessage', {
+        currentGrade: comparisonResult?.currentGrade,
+        requestedGrade: comparisonResult?.requestedGrade,
+      });
+    } else if (isUpgrade) {
+      return t('PricingChoosePage.UpgradeMessage', {
+        currentGrade: comparisonResult?.currentGrade,
+        requestedGrade: comparisonResult?.requestedGrade,
+      });
+    } else {
+      return t('PricingChoosePage.CompleteSubscription', { planName: grade });
+    }
+  };
+
+  // Determine the appropriate payment message based on comparison result
+  const getPaymentMessage = () => {
+    if (isDowngrade) {
+      return t('PricingChoosePage.ContactSupportForDowngrade');
+    } else if (isUpgrade) {
+      return t('PricingChoosePage.YoureToPay');
+    } else {
+      return t('PricingChoosePage.YoureToPay');
+    }
+  };
+
+  // Determine the appropriate button text based on comparison result
+  const getButtonText = () => {
+    if (isDowngrade) {
+      return t('PricingChoosePage.ContactSupport');
+    } else {
+      return t('PricingChoosePage.CompleteSubscription');
+    }
+  };
 
   return (
     <main
@@ -119,13 +210,11 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
         >
           {t('PricingChoosePage.ChoosePaymentMethod')}
         </h1>
-        <p className="text-muted-foreground">
-          {t('PricingChoosePage.CompleteSubscription', { planName: grade })}
-        </p>
+        <p className="text-muted-foreground">{getSubscriptionMessage()}</p>
         <div className="mt-4 text-lg">
           <div className="flex flex-wrap items-baseline gap-1">
-            <span className="h-9">{t('PricingChoosePage.YoureToPay')}:</span>
-            {isPricesQueryReady ? (
+            <span className="h-9">{getPaymentMessage()}:</span>
+            {isPricesQueryReady && !isDowngrade ? (
               <span className="flex h-9 flex-wrap items-baseline gap-1">
                 <span className="flex flex-wrap items-center text-3xl font-bold">
                   <CurrencySign className="text-3xl" />
@@ -139,6 +228,10 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
                   </div>
                 )}
               </span>
+            ) : isDowngrade ? (
+              <span className="text-muted-foreground">
+                {t('PricingChoosePage.DowngradeRequiresSupport')}
+              </span>
             ) : (
               <Skeleton className="h-7 w-28 max-w-full rounded" />
             )}
@@ -146,6 +239,11 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
               /{period === 'YEAR' ? t('Pricing.billedAnnually') : t('Pricing.billedMonthly')}
             </span>
           </div>
+          {isUpgrade && isPricesQueryReady && (
+            <div className="mt-2 text-sm text-muted-foreground">
+              {t('PricingChoosePage.UpgradePriceInfo')}
+            </div>
+          )}
         </div>
       </div>
 
@@ -162,8 +260,13 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
           title={t('PricingChoosePage.RussianBankCard')}
           icon={Icons.Billing}
           description={t('PricingChoosePage.RussianBankCardDescription')}
-          buttonText={t('PricingChoosePage.PayWithRussianCard')}
+          buttonText={
+            isDowngrade
+              ? t('PricingChoosePage.ContactSupport')
+              : t('PricingChoosePage.PayWithRussianCard')
+          }
           onClick={handleRussianCard}
+          disabled={isDowngrade}
         />
 
         {/* International Card */}
@@ -171,8 +274,13 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
           title={t('PricingChoosePage.InternationalCard')}
           icon={Icons.Globe}
           description={t('PricingChoosePage.InternationalCardDescription')}
-          buttonText={t('PricingChoosePage.PayWithInternationalCard')}
+          buttonText={
+            isDowngrade
+              ? t('PricingChoosePage.ContactSupport')
+              : t('PricingChoosePage.PayWithInternationalCard')
+          }
           onClick={handleInternationalCard}
+          disabled={isDowngrade}
         />
 
         {/* Telegram Stars */}
@@ -188,9 +296,14 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
               </p>
             </>
           }
-          buttonText={t('PricingChoosePage.OpenTelegramBot', { botUsername: BOT_USERNAME })}
-          link={telegramUrl}
-          isLink={true}
+          buttonText={
+            isDowngrade
+              ? t('PricingChoosePage.ContactSupport')
+              : t('PricingChoosePage.OpenTelegramBot', { botUsername: BOT_USERNAME })
+          }
+          link={isDowngrade ? '#' : telegramUrl}
+          isLink={!isDowngrade}
+          disabled={isDowngrade}
         />
       </div>
 
