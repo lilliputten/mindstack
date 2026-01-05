@@ -1,4 +1,4 @@
-import { PricingChoosePageRoute } from './PricingChoosePageRoute';
+import { PricingChooseRoute } from './PricingChooseRoute';
 
-export { generateMetadata } from './PricingChoosePageRoute';
-export default PricingChoosePageRoute;
+export { generateMetadata } from './PricingChooseRoute';
+export default PricingChooseRoute;

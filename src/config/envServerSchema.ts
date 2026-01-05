@@ -18,6 +18,12 @@ export const envServerSchema = z.object({
   YOOKASSA_SHOP_ID_TEST: z.string().min(1),
   YOOKASSA_SECRET_KEY_TEST: z.string().min(1),
 
+  // Stripe
+  STRIPE_PUBLISHABLE_KEY: z.string().min(1),
+  STRIPE_SECRET_KEY: z.string().min(1),
+  STRIPE_PUBLISHABLE_KEY_TEST: z.string().min(1),
+  STRIPE_SECRET_KEY_TEST: z.string().min(1),
+
   // Telegram
   LOGGING_CHANNEL_ID: z.string().min(1),
   CONTROLLER_CHANNEL_ID: z.string().min(1),

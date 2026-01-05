@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
 
 const saveScrollHash = getRandomHashString();
 
-export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaitedProps) {
+export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProps) {
   const params = await awaitedParams;
   const { locale, subscriptionType: rawSubscriptionType } = params;
 
@@ -50,23 +50,23 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
   return (
     <PageWrapper
       className={cn(
-        isDev && '__PricingChoosePageRoute', // DEBUG
+        isDev && '__PricingChooseRoute', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__PricingChoosePageRoute_Inner', // DEBUG
+        isDev && '__PricingChooseRoute_Inner', // DEBUG
         'w-full h-full',
       )}
     >
       <ScrollArea
-        saveScrollKey="PricingChoosePageRoute"
+        saveScrollKey="PricingChooseRoute"
         saveScrollHash={saveScrollHash}
         className={cn(
-          isDev && '__PricingChoosePageRoute_Scroll', // DEBUG
+          isDev && '__PricingChooseRoute_Scroll', // DEBUG
           'flex flex-1 flex-col overflow-hidden',
           'bg-theme-500/5',
         )}
         viewportClassName={cn(
-          isDev && '__PricingChoosePageRoute_ScrollViewport', // DEBUG
+          isDev && '__PricingChooseRoute_ScrollViewport', // DEBUG
           'flex flex-1 flex-col',
           'bg-decorative-gradient',
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
