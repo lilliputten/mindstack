@@ -8,10 +8,15 @@ export const envServerSchema = z.object({
   VERCEL_ENV: z.string().optional(),
   NODE_ENV: z.string().optional(),
   NEXT_PUBLIC_URL: z.string(),
-  NEXT_PUBLIC_APP_URL: z.string().optional(),
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
+
+  // Yookassa
+  YOOKASSA_SHOP_ID: z.string().min(1),
+  YOOKASSA_SECRET_KEY: z.string().min(1),
+  YOOKASSA_SHOP_ID_TEST: z.string().min(1),
+  YOOKASSA_SECRET_KEY_TEST: z.string().min(1),
 
   // Telegram
   LOGGING_CHANNEL_ID: z.string().min(1),
@@ -39,7 +44,7 @@ export const envServerSchema = z.object({
   PRO_USER_MONTHLY_GENERATIONS: z.coerce.number(),
 
   // // Prisma
-  // DATABASE_URL: z.string().min(1),
+  DATABASE_URL: z.string().min(1),
   // CONFIG_ID: z.coerce.number().optional(), // Default config slot
 
   // Authentication (NextAuth.js)

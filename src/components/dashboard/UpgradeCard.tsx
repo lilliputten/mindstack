@@ -2,8 +2,9 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
+import { Link, useT } from '@/i18n';
 
 export function UpgradeCard({
   className,
@@ -36,7 +37,9 @@ export function UpgradeCard({
             onSidebar && 'bg-white text-theme-600 hover:bg-theme-700 hover:text-white',
           )}
         >
-          {t('UpgradeCard.Upgrade')}
+          <Link href={pricingAliasRoute} className="flex items-center gap-2">
+            {t('UpgradeCard.Upgrade')}
+          </Link>
         </Button>
       </CardContent>
     </Card>

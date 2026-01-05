@@ -8,7 +8,11 @@ import {
   UserPaymentProviderType,
 } from '@/generated/prisma';
 
-import { contactsAliasRoute, pricingAliasRoute } from '@/config/routesConfig';
+import {
+  contactsAliasRoute,
+  pricingAliasRoute,
+  // pricingChooseRoute,
+} from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { prisma } from '@/lib/db';
 import { ErrorLike } from '@/lib/errors';

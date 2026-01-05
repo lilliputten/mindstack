@@ -66,11 +66,10 @@ export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) 
         });
         const result = await promise;
         const { paymentUrl } = result;
-        /* console.log('[PricingChoosePage:handleRussianCard] done', {
-         *   result,
-         *   paymentUrl,
-         * });
-         */
+        console.log('[PricingChoosePage:handleRussianCard] done', {
+          result,
+          paymentUrl,
+        });
         if (!paymentUrl) {
           throw new Error('No payment url provided');
         }

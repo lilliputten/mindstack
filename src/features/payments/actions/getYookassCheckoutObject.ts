@@ -1,7 +1,7 @@
 import { YooCheckout } from '@a2seven/yoo-checkout';
 
-import { youkassaSecretKey, youkassaShopId } from '../constants/yookassa-payment-constants';
+import { yookassaSecretKey, yookassaShopId } from '@/config/envServer';
 
 export function getYookassCheckoutObject() {
-  return new YooCheckout({ shopId: youkassaShopId, secretKey: youkassaSecretKey });
+  return new YooCheckout({ shopId: yookassaShopId, secretKey: yookassaSecretKey });
 }

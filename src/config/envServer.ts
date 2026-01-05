@@ -28,11 +28,15 @@ export const {
   // App
   VERCEL_ENV,
   NODE_ENV,
-  NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_URL,
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL,
   VERCEL_URL,
+  // Yookassa
+  YOOKASSA_SHOP_ID,
+  YOOKASSA_SECRET_KEY,
+  YOOKASSA_SHOP_ID_TEST,
+  YOOKASSA_SECRET_KEY_TEST,
   // AI API
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
@@ -82,7 +86,7 @@ export const isDev = envServer.NODE_ENV === 'development';
 export const PUBLIC_URL = isVercel
   ? 'https://' +
     (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
-  : NEXT_PUBLIC_APP_URL || NEXT_PUBLIC_URL;
+  : NEXT_PUBLIC_URL;
 
 export const WEBHOOK_HOST = envServer.WEBHOOK_HOST || PUBLIC_URL;
 
@@ -94,6 +98,11 @@ export const BOT_TOKEN =
   (isDev || isVercelPreview) && envServer.BOT_TOKEN_TEST
     ? envServer.BOT_TOKEN_TEST
     : envServer.BOT_TOKEN;
+
+export const doTestPayments = ensureBoolean(process.env.DO_TEST_PAYMENTS);
+
+export const yookassaShopId = doTestPayments ? YOOKASSA_SHOP_ID_TEST : YOOKASSA_SHOP_ID;
+export const yookassaSecretKey = doTestPayments ? YOOKASSA_SECRET_KEY_TEST : YOOKASSA_SECRET_KEY;
 
 /* // DEBUG: Show environment (will appear in build logs)
  * console.log('[envServer]', {

@@ -34,6 +34,8 @@ interface TMemo {
   startedAt?: number;
 }
 
+type TPaymentResult = Awaited<ReturnType<typeof makeYookassaPayment>>;
+
 const maxWaitTimeout = isDev ? minuteMs * 1 : minuteMs * 10;
 
 export function useYookassaPayment(params: TYookassaPaymentParams) {
@@ -46,6 +48,47 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
 
   const isReady = true; // isPricesQueryReady;
 
+  /** The core hook -- it initialized the payment, and allows to jump to the
+   * payment link (`paymentUrl`, returned from the `makeYookassaPayment` API
+   * call), and/or to wait for a payment status updates
+   * (`resolveYookassaPaymentInLoop`) */
+  const startYoukassaPayment = React.useCallback(() => {
+    const makeYookassaPaymentParams: TMakeYookassaPaymentParams = {
+      subscriptionType,
+      uniqueKey: memo.uniqueKey,
+    };
+    return new Promise<TPaymentResult>((resolve, reject) => {
+      startApiWorking(async () => {
+        try {
+          const result = await makeYookassaPayment(makeYookassaPaymentParams);
+          const { paymentId, price, currency } = result;
+          await addUserPayment({
+            provider: 'YOOKASSA',
+            paymentId,
+            uniqueKey: memo.uniqueKey,
+            status: 'PENDING',
+            subscriptionType,
+            price,
+            currency,
+          });
+          resolve(result);
+        } catch (error) {
+          const message = 'Payment starting error';
+          const details = getErrorText(error);
+          const comboMsg = [message, details].filter(Boolean).join(': ');
+          // eslint-disable-next-line no-console
+          console.error('[PricingChoosePage:startYoukassaPayment]', comboMsg, {
+            error,
+            makeYookassaPaymentParams,
+          });
+          debugger; // eslint-disable-line no-debugger
+          reject(new InternalError(comboMsg, 'api-error'));
+        }
+      });
+    });
+  }, [subscriptionType, memo]);
+
+  /** Payment status checker procedure. */
   const checkPaymentStatus = React.useCallback(
     (status: Payment['status']) => {
       const now = Date.now();
@@ -53,12 +96,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
       const estimated = now - startedAt;
       if (status === 'succeeded') {
         // succeeded
-        /* console.log('[PricingChoosePage:checkPaymentStatus] succeeded', {
-         *   status,
-         *   estimated,
-         *   memo,
-         * });
-         */
         updateUserPayment({
           provider: 'YOOKASSA',
           uniqueKey: memo.uniqueKey,
@@ -71,12 +108,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         // Finish polling
       } else if (status === 'canceled') {
         // canceled
-        /* console.log('[PricingChoosePage:checkPaymentStatus] canceled', {
-         *   status,
-         *   estimated,
-         *   memo,
-         * });
-         */
         updateUserPayment({
           provider: 'YOOKASSA',
           uniqueKey: memo.uniqueKey,
@@ -89,13 +120,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         // Finish polling
       } else if (estimated > maxWaitTimeout) {
         // timeout exceeded
-        /* console.log('[PricingChoosePage:checkPaymentStatus] timeout exceeded', {
-         *   estimated,
-         *   maxWaitTimeout,
-         *   status,
-         *   memo,
-         * });
-         */
         updateUserPayment({
           provider: 'YOOKASSA',
           uniqueKey: memo.uniqueKey,
@@ -107,13 +131,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         setActivePaymentId(undefined);
       } else {
         // waiting
-        /* console.log('[PricingChoosePage:checkPaymentStatus] waiting', {
-         *   status,
-         *   estimated,
-         *   maxWaitTimeout,
-         *   memo,
-         * });
-         */
         // Continue polling...
         if (!memo.checkPayment) {
           memo.defer?.reject(
@@ -129,12 +146,15 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     [memo],
   );
 
-  const _checkPayment = React.useCallback(() => {
+  /** Check payment asynchronous handler (for calling via `setTimeout`), only
+   * for internal usage. It calls the `checkPaymentStatus` to check the status,
+   * received from API. */
+  const checkPayment = React.useCallback(() => {
     if (!memo.paymentId) {
       const errMsg = 'Failed to calculate a proper price for the payment';
       const error = new InternalError(errMsg, 'data-error');
       // eslint-disable-next-line no-console
-      console.error('[PricingChoosePage:_checkPayment]', errMsg, {
+      console.error('[PricingChoosePage:checkPayment]', errMsg, {
         error,
       });
       debugger; // eslint-disable-line no-debugger
@@ -146,10 +166,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     };
     startApiWorking(async () => {
       try {
-        /* console.log('[PricingChoosePage:checkPayment] start', {
-         *   checkYookassaPaymentParams,
-         * });
-         */
         const result = await checkYookassaPayment(checkYookassaPaymentParams);
         const { status } = result;
         checkPaymentStatus(status);
@@ -169,82 +185,46 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     });
   }, [memo, checkPaymentStatus]);
   // NOTE: Using only throught memo reference
-  memo.checkPayment = _checkPayment;
+  memo.checkPayment = checkPayment;
 
-  const startYoukassaPayment = React.useCallback(() => {
-    const makeYookassaPaymentParams: TMakeYookassaPaymentParams = {
-      subscriptionType,
-      uniqueKey: memo.uniqueKey,
-    };
-    return new Promise<Awaited<ReturnType<typeof makeYookassaPayment>>>((resolve, reject) => {
+  /** Start a payment (via `startYoukassaPayment`) and wait to its status
+   * updates, iteratively calling of the `checkPaymentStatus` callback.
+   * But keep in mind that the user must to make the payment on the real page,
+   * returned in the `redirectUrl` parameter.
+   *
+   * @param {TPaymentResult} result - The result of prviously invoked `startYoukassaPayment` hook
+   */
+  const resolveYookassaPaymentInLoop = React.useCallback(
+    (result: TPaymentResult) => {
+      const { paymentId, status } = result;
+      if (memo.defer) {
+        memo.defer.reject(new InternalError('New payment started', 'canceled'));
+      }
+      const defer = new Defer<TResult>();
+      memo.defer = defer;
       startApiWorking(async () => {
         try {
-          const result = await makeYookassaPayment(makeYookassaPaymentParams);
-          const { paymentId, price, currency } = result;
-          await addUserPayment({
-            provider: 'YOOKASSA',
-            paymentId,
-            uniqueKey: memo.uniqueKey,
-            status: 'PENDING',
-            subscriptionType,
-            price,
-            currency,
-          });
-          /* console.log('[PricingChoosePage:startYoukassaPayment] done', {
-           *   paymentId,
-           *   result,
-           *   makeYookassaPaymentParams,
-           *   // addedUserPaymentRecord,
-           *   // paymentUrl,
-           *   // status,
-           * });
-           */
-          resolve(result);
+          setActivePaymentId(paymentId);
+          memo.paymentId = paymentId;
+          memo.startedAt = Date.now();
+          checkPaymentStatus(status);
         } catch (error) {
-          const message = 'Payment starting error';
+          const message = 'Payment processing failure';
           const details = getErrorText(error);
           const comboMsg = [message, details].filter(Boolean).join(': ');
           // eslint-disable-next-line no-console
-          console.error('[PricingChoosePage:startYoukassaPayment]', comboMsg, {
+          console.error('[PricingChoosePage:resolveYookassaPaymentInLoop]', comboMsg, {
             error,
-            makeYookassaPaymentParams,
           });
           debugger; // eslint-disable-line no-debugger
-          reject(new InternalError(comboMsg, 'api-error'));
+          defer.reject(new InternalError(comboMsg, 'api-error'));
+          memo.defer = undefined;
         }
       });
-    });
-  }, [subscriptionType, memo]);
-
-  const startYoukassaPaymentLoop = React.useCallback(() => {
-    if (memo.defer) {
-      memo.defer.reject(new InternalError('New payment started', 'canceled'));
-    }
-    const defer = new Defer<TResult>();
-    memo.defer = defer;
-    startApiWorking(async () => {
-      try {
-        const result = await startYoukassaPayment();
-        const { paymentId, status } = result;
-        setActivePaymentId(paymentId);
-        memo.paymentId = paymentId;
-        memo.startedAt = Date.now();
-        checkPaymentStatus(status);
-      } catch (error) {
-        const message = 'Payment processing failure';
-        const details = getErrorText(error);
-        const comboMsg = [message, details].filter(Boolean).join(': ');
-        // eslint-disable-next-line no-console
-        console.error('[PricingChoosePage:startYoukassaPaymentLoop]', comboMsg, {
-          error,
-        });
-        debugger; // eslint-disable-line no-debugger
-        defer.reject(new InternalError(comboMsg, 'api-error'));
-        memo.defer = undefined;
-      }
-    });
-    return defer.promise;
-  }, [memo, startYoukassaPayment, checkPaymentStatus]);
+      return defer.promise;
+    },
+    [memo, checkPaymentStatus],
+  );
 
   return {
     isReady,
@@ -252,6 +232,6 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     paymentId: activePaymentId,
     isWorking: isApiWorking || !!activePaymentId,
     startYoukassaPayment,
-    startYoukassaPaymentLoop, // ???
+    resolveYookassaPaymentInLoop, // Is it really used?
   };
 }

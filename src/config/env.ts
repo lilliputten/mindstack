@@ -31,7 +31,7 @@ export const suppressMissingTranslations = ensureBoolean(
   process.env.NEXT_PUBLIC_SUPPRESS_MISSING_TRANSLATIONS,
 );
 
-export const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mindstack.vercel.app/';
+export const publicAppUrl = String(process.env.NEXT_PUBLIC_URL);
 
 export const dataContentType = 'application/json; charset=utf-8';
 
