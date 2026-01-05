@@ -18,6 +18,7 @@ import {
   updateUserPayment,
 } from '@/features/payments';
 import { TPaidableSubscriptionType } from '@/features/subscriptions';
+import { useT } from '@/i18n';
 
 interface TYookassaPaymentParams {
   subscriptionType: TPaidableSubscriptionType;
@@ -40,6 +41,7 @@ const maxWaitTimeout = isDev ? minuteMs * 1 : minuteMs * 10;
 
 export function useYookassaPayment(params: TYookassaPaymentParams) {
   const { subscriptionType } = params;
+  const t = useT();
 
   const memo = React.useMemo<TMemo>(() => ({ uniqueKey: getRandomHashString() }), []);
 
@@ -73,7 +75,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
           });
           resolve(result);
         } catch (error) {
-          const message = 'Payment starting error';
+          const message = t('UseYookassaPayment.PaymentStartingError');
           const details = getErrorText(error);
           const comboMsg = [message, details].filter(Boolean).join(': ');
           // eslint-disable-next-line no-console
@@ -86,7 +88,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         }
       });
     });
-  }, [subscriptionType, memo]);
+  }, [subscriptionType, memo.uniqueKey, t]);
 
   /** Payment status checker procedure. */
   const checkPaymentStatus = React.useCallback(
@@ -151,7 +153,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
    * received from API. */
   const checkPayment = React.useCallback(() => {
     if (!memo.paymentId) {
-      const errMsg = 'Failed to calculate a proper price for the payment';
+      const errMsg = t('UseYookassaPayment.FailedToCalculatePrice');
       const error = new InternalError(errMsg, 'data-error');
       // eslint-disable-next-line no-console
       console.error('[PricingChoosePage:checkPayment]', errMsg, {
@@ -170,7 +172,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         const { status } = result;
         checkPaymentStatus(status);
       } catch (error) {
-        const message = 'Payment checking failure';
+        const message = t('UseYookassaPayment.PaymentCheckingFailure');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
@@ -183,7 +185,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         memo.defer = undefined;
       }
     });
-  }, [memo, checkPaymentStatus]);
+  }, [memo, t, checkPaymentStatus]);
   // NOTE: Using only throught memo reference
   memo.checkPayment = checkPayment;
 
@@ -209,7 +211,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
           memo.startedAt = Date.now();
           checkPaymentStatus(status);
         } catch (error) {
-          const message = 'Payment processing failure';
+          const message = t('UseYookassaPayment.PaymentProcessingFailure');
           const details = getErrorText(error);
           const comboMsg = [message, details].filter(Boolean).join(': ');
           // eslint-disable-next-line no-console
@@ -223,7 +225,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
       });
       return defer.promise;
     },
-    [memo, checkPaymentStatus],
+    [memo, checkPaymentStatus, t],
   );
 
   return {

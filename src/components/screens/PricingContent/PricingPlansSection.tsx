@@ -21,6 +21,7 @@ import { useEnvConext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import {
   subscriptionsRequireUser,
+  TPaidableSubscriptionType,
   TSubscriptionType,
   useAllSubscriptionPrices,
 } from '@/features/subscriptions';
@@ -65,14 +66,12 @@ function usePlansData({
 }) {
   const t = useT();
   const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
-  const proSubscriptionType: 'PRO-MONTH' | 'PRO-YEAR' =
-    `PRO-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
+  const proSubscriptionType: TPaidableSubscriptionType = `PRO-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
   const proPricesQuery = useAllSubscriptionPrices({
     isReady,
     subscriptionType: proSubscriptionType,
   });
-  const premiumSubscriptionType: 'PREMIUM-MONTH' | 'PREMIUM-YEAR' =
-    `PREMIUM-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
+  const premiumSubscriptionType: TPaidableSubscriptionType = `PREMIUM-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
   const premiumPricesQuery = useAllSubscriptionPrices({
     isReady,
     subscriptionType: premiumSubscriptionType,

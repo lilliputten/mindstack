@@ -3,15 +3,19 @@ import {
   paidableSubscriptionTypesSchema,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
+import { TTranslator } from '@/i18n';
 
 /** Make sure the subscription type is expected and correct */
-export function ensurePaidableSubscriptionType(rawValue: string) {
+export function ensurePaidableSubscriptionType(rawValue: string, t?: TTranslator) {
   // Validate subscription type
   const parseResult = paidableSubscriptionTypesSchema.safeParse(rawValue?.toUpperCase());
 
   const subscriptionType: TPaidableSubscriptionType | undefined = parseResult.data;
   if (!parseResult.success || !subscriptionType) {
-    const error = new Error(`Invalid subscription type value: "${rawValue}"`);
+    const message = t
+      ? t('EnsurePaidableSubscriptionType.InvalidSubscriptionTypeValue', { value: rawValue })
+      : `Invalid subscription type value: "${rawValue}"`;
+    const error = new Error(message);
     // eslint-disable-next-line no-console
     console.error('[ensurePaidableSubscriptionType]', {
       error,
@@ -24,9 +28,12 @@ export function ensurePaidableSubscriptionType(rawValue: string) {
   }
 
   if (!paidableSubscriptionTypes.includes(subscriptionType)) {
-    const error = new Error(
-      `The subscription type "${subscriptionType}" is not subject to payment`,
-    );
+    const message = t
+      ? t('EnsurePaidableSubscriptionType.SubscriptionTypeNotSubjectToPayment', {
+          subscriptionType,
+        })
+      : `The subscription type "${subscriptionType}" is not subject to payment`;
+    const error = new Error(message);
     // eslint-disable-next-line no-console
     console.error('[ensurePaidableSubscriptionType]', {
       error,

@@ -27,9 +27,8 @@ interface PricingChoosePageProps {
 }
 
 export function PricingChoosePage({ subscriptionType }: PricingChoosePageProps) {
-  const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
-
   const t = useT();
+  const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
   const locale = useLocale() as TLocale;
   const localeCurrency = localeCurrencies[locale];
   const CurrencySign = CurrencySigns[localeCurrency];

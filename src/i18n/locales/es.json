@@ -389,6 +389,10 @@
     "SuccessMessage": "Se ha enviado un mensaje de inicio de sesión. Revise su correo electrónico para obtener un enlace de inicio de sesión.",
     "ValidationError": "Por favor ingrese una dirección de correo electrónico válida"
   },
+  "EnsurePaidableSubscriptionType": {
+    "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
+    "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago"
+  },
   "FeaturesSection": {
     "CreateCustomTopics": "Crear temas personalizados",
     "CreateCustomTopicsDescription": "Organice sus materiales de aprendizaje en temas personalizados. Cada tema puede contener múltiples preguntas y respuestas, lo que le permite estructurar su base de conocimientos exactamente como lo necesita. La compatibilidad con múltiples idiomas le ayuda a aprender en su idioma preferido.",
@@ -637,6 +641,10 @@
     "WelcomeTitle": "¡Bienvenido!",
     "WorkoutTopicGoTitle": "Entrenando el tema"
   },
+  "ParsePaidableSubscriptionType": {
+    "InvalidSubscriptionGrade": "Grado de suscripción no válido",
+    "InvalidSubscriptionPeriod": "Periodo de suscripción no válido"
+  },
   "Pricing": {
     "ContactUs": "Contáctanos",
     "Free": "Gratis",
@@ -743,6 +751,17 @@
     "StartWorking": "Empezar a trabajar con temas",
     "ViewPlans": "Ver otros planes de suscripción",
     "WelcomeTo": "¡Bienvenido a {plan}!"
+  },
+  "PricingChooseSuccessRoute": {
+    "CannotUpdateUserData": "No se pueden actualizar los datos del usuario",
+    "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
+    "PaymentFailedExplanation": "Por favor inténtelo de nuevo o contacte con <Link>soporte técnico</Link> si tiene algún problema.",
+    "PaymentFailedMessage": "Parece que el pago falló",
+    "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago",
+    "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
+    "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>.",
+    "TechnicalSupport": "soporte técnico"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",
@@ -869,6 +888,12 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "No se pueden cargar los datos de los temas"
+  },
+  "UseYookassaPayment": {
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago",
+    "PaymentCheckingFailure": "Error al verificar el pago",
+    "PaymentProcessingFailure": "Error al procesar el pago",
+    "PaymentStartingError": "Error al iniciar el pago"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
@@ -1056,5 +1081,11 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "common": {
+    "Expected": "Esperado",
+    "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
+    "butReceived": "pero recibido",
+    "ifYouHaveAnyProblems": "si tiene algún problema"
   }
 }

@@ -392,6 +392,10 @@
     "SuccessMessage": "Сообщение для входа отправлено. Проверьте вашу электронную почту для получения ссылки для входа.",
     "ValidationError": "Пожалуйста, введите действительный адрес электронной почты"
   },
+  "EnsurePaidableSubscriptionType": {
+    "InvalidSubscriptionTypeValue": "Недействительное значение типа подписки: {value}",
+    "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате"
+  },
   "FeaturesSection": {
     "CreateCustomTopics": "Создать пользовательские темы",
     "CreateCustomTopicsDescription": "Организуйте свои учебные материалы в пользовательские темы. Каждая тема может содержать несколько вопросов и ответов, что позволяет структурировать базу знаний именно так, как вам нужно. Поддержка нескольких языков помогает учиться на предпочитаемом языке.",
@@ -640,6 +644,10 @@
     "WelcomeTitle": "Добро пожаловать!",
     "WorkoutTopicGoTitle": "Обучение теме"
   },
+  "ParsePaidableSubscriptionType": {
+    "InvalidSubscriptionGrade": "Недействительный уровень подписки",
+    "InvalidSubscriptionPeriod": "Недействительный период подписки"
+  },
   "Pricing": {
     "ContactUs": "Свяжитесь с нами",
     "Free": "Бесплатно",
@@ -746,6 +754,17 @@
     "StartWorking": "Начните работать с темами",
     "ViewPlans": "Посмотреть другие планы подписки",
     "WelcomeTo": "Добро пожаловать в {plan}!"
+  },
+  "PricingChooseSuccessRoute": {
+    "CannotUpdateUserData": "Невозможно обновить данные пользователя",
+    "CannotUpdateUserDataExplanation": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "InvalidSubscriptionTypeValue": "Недействительное значение типа подписки: {value}",
+    "PaymentFailedExplanation": "Пожалуйста, попробуйте снова или свяжитесь с <Link>технической поддержкой</Link>, если у вас возникнут проблемы.",
+    "PaymentFailedMessage": "Похоже, оплата не прошла",
+    "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате",
+    "SubscriptionTypesMismatch": "Несоответствие типов подписки",
+    "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>.",
+    "TechnicalSupport": "техническая поддержка"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
@@ -872,6 +891,12 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Не удается загрузить данные тем"
+  },
+  "UseYookassaPayment": {
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты",
+    "PaymentCheckingFailure": "Ошибка проверки оплаты",
+    "PaymentProcessingFailure": "Ошибка обработки оплаты",
+    "PaymentStartingError": "Ошибка начала оплаты"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",

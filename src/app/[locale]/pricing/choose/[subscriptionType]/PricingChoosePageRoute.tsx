@@ -32,7 +32,7 @@ const saveScrollHash = getRandomHashString();
 
 export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaitedProps) {
   const params = await awaitedParams;
-  const { subscriptionType: rawSubscriptionType } = params;
+  const { locale, subscriptionType: rawSubscriptionType } = params;
 
   // Check if logged user
   const isLogged = await isLoggedUser();
@@ -41,8 +41,11 @@ export async function PricingChoosePageRoute({ params: awaitedParams }: TAwaited
     redirect(pricingAliasRoute);
   }
 
-  const subscriptionType: TPaidableSubscriptionType =
-    ensurePaidableSubscriptionType(rawSubscriptionType);
+  const t = await getT({ locale });
+  const subscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
+    rawSubscriptionType,
+    t,
+  );
 
   return (
     <PageWrapper

@@ -390,6 +390,10 @@
     "SuccessMessage": "A login message has been sent. Check your email for a sign-in link.",
     "ValidationError": "Please enter a valid email address"
   },
+  "EnsurePaidableSubscriptionType": {
+    "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
+    "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment"
+  },
   "FeaturesSection": {
     "CreateCustomTopics": "Create Custom Topics",
     "CreateCustomTopicsDescription": "Organize your learning materials into custom topics. Each topic can contain multiple questions and answers, allowing you to structure your knowledge base exactly how you need it. Support for multiple languages helps you learn in your preferred language.",
@@ -638,6 +642,10 @@
     "WelcomeTitle": "Welcome!",
     "WorkoutTopicGoTitle": "Training the Topic"
   },
+  "ParsePaidableSubscriptionType": {
+    "InvalidSubscriptionGrade": "Invalid subscription grade",
+    "InvalidSubscriptionPeriod": "Invalid subscription period"
+  },
   "Pricing": {
     "ContactUs": "Contact Us",
     "Free": "Free",
@@ -744,6 +752,17 @@
     "StartWorking": "Start working with topics",
     "ViewPlans": "View other subsription plans",
     "WelcomeTo": "Welcome to {plan}!"
+  },
+  "PricingChooseSuccessRoute": {
+    "CannotUpdateUserData": "Cannot update the user's data",
+    "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
+    "PaymentFailedExplanation": "Please try again or contact <Link>technical support</Link> if you have any problems.",
+    "PaymentFailedMessage": "It looks like the payment failed",
+    "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment",
+    "SubscriptionTypesMismatch": "Subscription types mismatch",
+    "SubscriptionTypesMismatchExplanation": "Expected <strong>{expected}</strong>, but received <strong>{received}</strong>.",
+    "TechnicalSupport": "technical support"
   },
   "PricingPlansSection": {
     "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",
@@ -870,6 +889,12 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Cannot load topics data"
+  },
+  "UseYookassaPayment": {
+    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment",
+    "PaymentCheckingFailure": "Payment checking failure",
+    "PaymentProcessingFailure": "Payment processing failure",
+    "PaymentStartingError": "Payment starting error"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Add New Answer",
@@ -1057,5 +1082,11 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
+  },
+  "common": {
+    "Expected": "Expected",
+    "PleaseTryAgainOrContact": "Please try again or contact",
+    "butReceived": "but received",
+    "ifYouHaveAnyProblems": "if you have any problems"
   }
 }

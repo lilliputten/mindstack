@@ -100,6 +100,7 @@ export async function PricingChooseSuccessRoute({
   // const searchParams = await awaitedSearchParams;
 
   setRequestLocale(locale);
+  const t = await getT({ locale });
 
   const [rawProvider, uniqueKey] = successKey.split('-');
 
@@ -114,8 +115,10 @@ export async function PricingChooseSuccessRoute({
   }
   const provider: UserPaymentProviderType = providerParseResult.data;
 
-  const subscriptionType: TPaidableSubscriptionType =
-    ensurePaidableSubscriptionType(rawSubscriptionType);
+  const subscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
+    rawSubscriptionType,
+    t,
+  );
 
   const userPayment = await findUserPayment({ provider, uniqueKey });
   if (!userPayment) {
@@ -134,7 +137,7 @@ export async function PricingChooseSuccessRoute({
   const { paymentId, status } = userPayment;
 
   if (status === 'FAILED') {
-    const message = 'It looks like the payment failed';
+    const message = t('PricingChooseSuccessRoute.PaymentFailedMessage');
     // eslint-disable-next-line no-console
     console.error('[PricingChooseSuccessRoute]', message, {
       userPayment,
@@ -144,18 +147,16 @@ export async function PricingChooseSuccessRoute({
     return (
       <PageError
         title={message}
-        explanation={
-          <>
-            Please try again or contact <Link href={contactsAliasRoute}>technical support</Link> if
-            you have any problems.
-          </>
-        }
+        explanation={t.rich('PricingChooseSuccessRoute.PaymentFailedExplanation', {
+          p: (chunks) => <>{chunks}</>,
+          Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
+        })}
         explanationClassName="text-content"
       />
     );
   }
   if (subscriptionType !== userPayment.subscriptionType) {
-    const message = 'Subscription types mismatch';
+    const message = t('PricingChooseSuccessRoute.SubscriptionTypesMismatch');
     // eslint-disable-next-line no-console
     console.error('[PricingChooseSuccessRoute]', message, {
       userPayment,
@@ -166,26 +167,25 @@ export async function PricingChooseSuccessRoute({
     return (
       <PageError
         title={message}
-        explanation={
-          <>
-            Expected <strong>{userPayment.subscriptionType}</strong>, but received{' '}
-            <strong>{subscriptionType}</strong>.
-          </>
-        }
+        explanation={t.rich('PricingChooseSuccessRoute.SubscriptionTypesMismatchExplanation', {
+          expected: userPayment.subscriptionType,
+          received: subscriptionType,
+          strong: (chunks) => <strong>{chunks}</strong>,
+        })}
         explanationClassName="text-content"
       />
     );
   }
 
   // Parse grade and period with Zod schemas
-  const { grade } = parsePaidableSubscriptionType(subscriptionType);
+  const { grade } = parsePaidableSubscriptionType(subscriptionType, t);
 
   // Update data if that hasn't been done yet
   if (status !== 'SUCCEED' || user.grade !== grade) {
     try {
       await finishPaymentAndUpdateUserGrade({ grade, userId, provider, paymentId, uniqueKey });
     } catch (error) {
-      const message = `Cannot update the user's data`;
+      const message = t('PricingChooseSuccessRoute.CannotUpdateUserData');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
@@ -200,11 +200,9 @@ export async function PricingChooseSuccessRoute({
         <PageError
           title={message}
           error={error as ErrorLike}
-          explanation={
-            <>
-              Please contact <Link href={contactsAliasRoute}>technical support</Link>.
-            </>
-          }
+          explanation={t.rich('PricingChooseSuccessRoute.CannotUpdateUserDataExplanation', {
+            Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
+          })}
         />
       );
     }
