@@ -9,7 +9,6 @@ import { IconProps, IconType } from './IconTypes';
 
 // Stock lucide icons...
 export const {
-  CheckCircle,
   Activity,
   ArrowLeft,
   ArrowRight,
@@ -23,6 +22,7 @@ export const {
   CalendarDays,
   ChartNoAxesGantt,
   Check,
+  CheckCircle,
   CheckIcon,
   ChevronDown,
   ChevronLeft,
@@ -61,7 +61,6 @@ export const {
   LogOut,
   Menu,
   MessageCircleQuestion,
-  ShieldQuestion,
   Minus,
   MonitorPlay,
   Moon,
@@ -81,6 +80,8 @@ export const {
   Shield,
   ShieldAlert,
   ShieldCheck,
+  ShieldQuestion,
+  ShieldX,
   Sparkles,
   SquareChartGantt,
   SquareDashedKanban,

@@ -245,6 +245,14 @@
     "SpacedRepetitionDescription": "Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance.",
     "Title": "Why Choose MindStack"
   },
+  "CheckStripePayment": {
+    "PaymentError": "Error checking stripe payment",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
+  },
+  "CheckYookassaPayment": {
+    "PaymentError": "Error checking yookassa payment",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
+  },
   "ContentFooter": {
     "AppDescription": "Memory Training Application",
     "BuiltWithText": "Built with <NextJSLink>Next.js</NextJSLink> and <VercelLink>Vercel</VercelLink> by <AuthorLink>{authorSite}</AuthorLink>",
@@ -640,6 +648,7 @@
     "MyTopicsTitle": "My Topics",
     "OfertaPageTitle": "The Offer",
     "PricingChoose": "Choose Subscription Plan",
+    "PricingChooseCancel": "Cancel the Payment",
     "PricingChooseSuccess": "Subscription Plan Confirmation",
     "PricingPageTitle": "Pricing",
     "PrivacyPageTitle": "Privacy Policy",
@@ -656,8 +665,7 @@
     "TrainingTopicReviewTitle": "Training Topic Review",
     "ViewAvailableTopicTitle": "View Available Topic",
     "WelcomeTitle": "Welcome!",
-    "WorkoutTopicGoTitle": "Training the Topic",
-    "PricingChooseCancel": "Cancel the Payment"
+    "WorkoutTopicGoTitle": "Training the Topic"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Invalid subscription grade",
@@ -744,6 +752,21 @@
         }
       }
     }
+  },
+  "PricingChooseCancel": {
+    "PaymentCanceled": "Payment has been canceled",
+    "StartWorking": "Start working with topics",
+    "ViewPlans": "View subscription plans"
+  },
+  "PricingChooseCancelRoute": {
+    "CannotCancelNotPendingPayment": "Cannot cancel a non-pending payment",
+    "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "ErrorCancelingPayment": "Error canceling the payment",
+    "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
+    "InvalidPaymentProvider": "Unknown payment provider ({provider})",
+    "PaymentNotFound": "The payment has not been found",
+    "SubscriptionTypesMismatch": "Subscription types mismatch",
+    "SubscriptionTypesMismatchExplanation": "Expected <strong>{expected}</strong>, but received <strong>{received}</strong>."
   },
   "PricingChoosePage": {
     "CheckAvailableSubscriptionPlans": "Check Other Available Subscription Plans",

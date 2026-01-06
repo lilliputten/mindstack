@@ -5,6 +5,7 @@ import { Payment } from '@a2seven/yoo-checkout';
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 
 import { getYookassaCheckoutObject } from './helpers';
 
@@ -18,7 +19,8 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
 
   const user = await getCurrentUser();
   if (!user) {
-    throw new CustomAPIError('Cannot proceed payments for unauthorized users');
+    const t = await getT();
+    throw new CustomAPIError(t('CheckYookassaPayment.UnauthorizedPaymentError'));
   }
 
   try {
@@ -70,7 +72,8 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
 
     return resultData;
   } catch (error) {
-    const message = 'Error checking yookassa payment';
+    const t = await getT();
+    const message = t('CheckYookassaPayment.PaymentError');
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     // eslint-disable-next-line no-console

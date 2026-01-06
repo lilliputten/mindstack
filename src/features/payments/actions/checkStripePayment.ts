@@ -6,6 +6,7 @@ import { stripeSecretKey } from '@/config/envServer';
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 
 export interface TCheckStripePaymentParams {
   paymentId: string;
@@ -17,7 +18,8 @@ export async function checkStripePayment(params: TCheckStripePaymentParams) {
 
   const user = await getCurrentUser();
   if (!user?.id) {
-    throw new CustomAPIError('Cannot proceed payments for unauthorized users');
+    const t = await getT();
+    throw new CustomAPIError(t('CheckStripePayment.UnauthorizedPaymentError'));
   }
 
   try {
@@ -238,7 +240,8 @@ export async function checkStripePayment(params: TCheckStripePaymentParams) {
 
     return resultData;
   } catch (error) {
-    const message = 'Error checking stripe payment';
+    const t = await getT();
+    const message = t('CheckStripePayment.PaymentError');
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     // eslint-disable-next-line no-console

@@ -17,7 +17,6 @@ import { isDev } from '@/config';
 import { cleanStaleUserPayments, findUserPayment, updateUserPayment } from '@/features/payments';
 import {
   ensurePaidableSubscriptionType,
-  parsePaidableSubscriptionType,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
 import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
@@ -99,7 +98,7 @@ export async function PricingChooseCancelRoute({
 
   const { paymentId, status } = userPayment;
 
-  if (status !== 'PENDING' && !isDev) {
+  if (status !== 'PENDING') {
     const message = t('PricingChooseCancelRoute.CannotCancelNotPendingPayment');
     // eslint-disable-next-line no-console
     console.error('[PricingChooseCancelRoute]', message, {
@@ -140,10 +139,7 @@ export async function PricingChooseCancelRoute({
     );
   }
 
-  // Parse grade and period with Zod schemas
-  const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
-
-  // Mark payment as FAILED
+  // Mark PENING payment as FAILED
   if (status === 'PENDING') {
     try {
       await updateUserPayment({

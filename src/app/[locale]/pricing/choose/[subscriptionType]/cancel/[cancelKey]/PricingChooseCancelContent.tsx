@@ -35,7 +35,7 @@ export function PricingChooseCancelContent() {
               'bg-red-500/70',
             )}
           >
-            <Icons.Trash className="size-12 text-white" />
+            <Icons.ShieldX className="size-12 text-white" />
           </div>
         </div>
 

@@ -243,6 +243,14 @@
     "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
     "Title": "Почему стоит выбрать MindStack"
   },
+  "CheckStripePayment": {
+    "PaymentError": "Ошибка проверки платежа stripe",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
+  },
+  "CheckYookassaPayment": {
+    "PaymentError": "Ошибка проверки платежа yookassa",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
+  },
   "ContentFooter": {
     "AppDescription": "Приложение для тренировки памяти",
     "BuiltWithText": "Создано в <AuthorLink>{authorSite}</AuthorLink> с использованием <NextJSLink>Next.js</NextJSLink> и <VercelLink>Vercel</VercelLink>",
@@ -638,6 +646,7 @@
     "MyTopicsTitle": "Мои темы",
     "OfertaPageTitle": "Оферта",
     "PricingChoose": "Выберите план подписки",
+    "PricingChooseCancel": "Отменить платёж",
     "PricingChooseSuccess": "Подтверждение плана подписки",
     "PricingPageTitle": "Тарифы",
     "PrivacyPageTitle": "Политика конфиденциальности",
@@ -654,8 +663,7 @@
     "TrainingTopicReviewTitle": "Обзор темы обучения",
     "ViewAvailableTopicTitle": "Посмотреть доступную тему",
     "WelcomeTitle": "Добро пожаловать!",
-    "WorkoutTopicGoTitle": "Обучение теме",
-    "PricingChooseCancel": "Отменить платёж"
+    "WorkoutTopicGoTitle": "Обучение теме"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Недействительный уровень подписки",
@@ -742,6 +750,21 @@
         }
       }
     }
+  },
+  "PricingChooseCancel": {
+    "PaymentCanceled": "Платёж был отменён",
+    "StartWorking": "Начните работать с темами",
+    "ViewPlans": "Посмотреть планы подписки"
+  },
+  "PricingChooseCancelRoute": {
+    "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
+    "CannotUpdateUserDataExplanation": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "ErrorCancelingPayment": "Ошибка при отмене платежа",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
+    "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
+    "PaymentNotFound": "Платеж не найден",
+    "SubscriptionTypesMismatch": "Несоответствие типов подписки",
+    "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>."
   },
   "PricingChoosePage": {
     "CheckAvailableSubscriptionPlans": "Посмотреть другие доступные планы подписки",

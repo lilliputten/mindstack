@@ -21,6 +21,7 @@
   "Delete": "Eliminar",
   "Description": "Descripción",
   "Edit": "Editar",
+  "Expected": "Esperado",
   "Finish": "Finalizar",
   "FinishedAt": "Terminado en",
   "GenerationMode": "Modo de generación",
@@ -34,6 +35,7 @@
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
   "NoTopicsAvailable": "No hay temas disponibles",
   "PageNotFound": "Página no encontrada",
+  "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
   "Private": "Privado",
   "Public": "Público",
   "Question": "Pregunta",
@@ -66,6 +68,8 @@
   "UserNotLoggedIn": "El usuario no ha iniciado sesión",
   "UserRole": "Rol de usuario",
   "Yes": "Sí",
+  "butReceived": "pero recibido",
+  "ifYouHaveAnyProblems": "si tiene algún problema",
   "or": "o",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Generaciones de IA disponibles: {availableGenerations}",
@@ -239,6 +243,14 @@
     "Description": "MindStack combina potentes funciones con una interfaz intuitiva para hacer que el entrenamiento de la memoria sea efectivo y agradable. Construye tu base de conocimientos y practica en cualquier lugar y en cualquier momento.",
     "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
     "Title": "Por qué elegir MindStack"
+  },
+  "CheckStripePayment": {
+    "PaymentError": "Error al verificar el pago de stripe",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
+  },
+  "CheckYookassaPayment": {
+    "PaymentError": "Error al verificar el pago de yookassa",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   },
   "ContentFooter": {
     "AppDescription": "Aplicación de Entrenamiento de Memoria",
@@ -635,6 +647,7 @@
     "MyTopicsTitle": "Mis Temas",
     "OfertaPageTitle": "La oferta",
     "PricingChoose": "Elija el plan de suscripción",
+    "PricingChooseCancel": "Cancelar el pago",
     "PricingChooseSuccess": "Confirmación del plan de suscripción",
     "PricingPageTitle": "Precios",
     "PrivacyPageTitle": "Política de Privacidad",
@@ -651,8 +664,7 @@
     "TrainingTopicReviewTitle": "Revisión del tema de capacitación",
     "ViewAvailableTopicTitle": "Ver tema disponible",
     "WelcomeTitle": "¡Bienvenido!",
-    "WorkoutTopicGoTitle": "Entrenando el tema",
-    "PricingChooseCancel": "Cancelar el pago"
+    "WorkoutTopicGoTitle": "Entrenando el tema"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Grado de suscripción no válido",
@@ -739,6 +751,21 @@
         }
       }
     }
+  },
+  "PricingChooseCancel": {
+    "PaymentCanceled": "El pago ha sido cancelado",
+    "StartWorking": "Empezar a trabajar con temas",
+    "ViewPlans": "Ver planes de suscripción"
+  },
+  "PricingChooseCancelRoute": {
+    "CannotCancelNotPendingPayment": "No se puede cancelar un pago que no está pendiente",
+    "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ErrorCancelingPayment": "Error al cancelar el pago",
+    "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
+    "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
+    "PaymentNotFound": "El pago no ha sido encontrado.",
+    "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
+    "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>."
   },
   "PricingChoosePage": {
     "CheckAvailableSubscriptionPlans": "Consulte otros planes de suscripción disponibles",
@@ -1128,11 +1155,5 @@
     "PaymentCheckingFailure": "Error al verificar el pago",
     "PaymentProcessingFailure": "Error al procesar el pago",
     "PaymentStartingError": "Error al iniciar el pago"
-  },
-  "common": {
-    "Expected": "Esperado",
-    "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
-    "butReceived": "pero recibido",
-    "ifYouHaveAnyProblems": "si tiene algún problema"
   }
 }
