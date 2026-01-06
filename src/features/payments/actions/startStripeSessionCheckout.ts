@@ -50,6 +50,7 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
 
     // Route: `/pricing/choose/[subscriptionType]/success/[successKey]`
     const successUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType.toLowerCase()}/success/${successKey}`;
+    const cancelUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType.toLowerCase()}/cancel/${successKey}`;
 
     const stripeConfig: Stripe.StripeConfig = {
       // apiVersion: '2022-11-15',
@@ -73,11 +74,14 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
       ],
       mode: 'payment',
       success_url: successUrl,
-      cancel_url: successUrl, // TODO: To use a different cancel URL?
+      cancel_url: cancelUrl, // TODO: To use a different cancel URL?
       metadata: {
         userId: user.id,
         subscriptionType,
         uniqueKey,
+      },
+      branding_settings: {
+        display_name: t('Pages.RootTitle'),
       },
     };
     const stripeOptions: Stripe.RequestOptions = {

@@ -217,6 +217,7 @@ export async function PricingChooseSuccessRoute({
   // Update data if that hasn't been done yet
   if (status === 'PENDING' || user.grade !== grade) {
     try {
+      // TODO: Check payment status
       await finishPaymentAndUpdateUserGrade({
         grade,
         period,
