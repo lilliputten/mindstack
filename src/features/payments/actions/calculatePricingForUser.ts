@@ -73,7 +73,9 @@ export async function calculatePricingForUser(
   // Calculate price difference for upgrades
   if (comparisonResult.type === 'upgrade') {
     if (!currentPeriod) {
-      const error = new Error(`Current subscription period is missing for user ${user.id}`);
+      const error = new Error(
+        t('CalculatePricingForUser.CurrentSubscriptionPeriodMissing', { userId: user.id }),
+      );
       // eslint-disable-next-line no-console
       console.error('[calculatePricingForUser]', 'Current subscription period is missing', {
         prices,
@@ -85,8 +87,11 @@ export async function calculatePricingForUser(
     }
 
     if (requestedPeriod !== currentPeriod) {
-      const message = 'Cannot upgrade to another subscription period';
-      const details = `You're trying to upgrade from the "${currentPeriod}" to the "${requestedPeriod}" subscription types. It's not possible. Please contact or report to technical support.`;
+      const message = t('CalculatePricingForUser.CannotUpgradeToAnotherSubscriptionPeriod');
+      const details = t('CalculatePricingForUser.UpgradeNotAllowedMessage', {
+        currentPeriod,
+        requestedPeriod,
+      });
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
       console.error('[calculatePricingForUser]', comboMsg, {

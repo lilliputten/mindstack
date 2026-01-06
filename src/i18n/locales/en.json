@@ -229,6 +229,11 @@
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Error loading users data."
   },
+  "CalculatePricingForUser": {
+    "CannotUpgradeToAnotherSubscriptionPeriod": "Cannot upgrade to another subscription period",
+    "CurrentSubscriptionPeriodMissing": "Current subscription period is missing for user {userId}",
+    "UpgradeNotAllowedMessage": "You're trying to upgrade from the \"{currentPeriod}\" to the \"{requestedPeriod}\" subscription types. It's not possible. Please contact or report to technical support."
+  },
   "CardsWithIconsSection": {
     "AIPoweredLearningDescription": "Leverage advanced AI to enhance your learning experience. Get personalized recommendations and intelligent content generation.",
     "ActiveRecallPracticeDescription": "Strengthen your memory through active recall. Practice retrieving information from memory rather than just re-reading, proven to be more effective for long-term retention.",
@@ -470,6 +475,7 @@
   },
   "MakeYookassaPayment": {
     "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
+    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
     "PaymentError": "Error making yookassa payment",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },

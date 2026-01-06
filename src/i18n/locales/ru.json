@@ -231,6 +231,11 @@
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Ошибка загрузки данных пользователей."
   },
+  "CalculatePricingForUser": {
+    "CannotUpgradeToAnotherSubscriptionPeriod": "Невозможно перейти на другой период подписки",
+    "CurrentSubscriptionPeriodMissing": "Текущий период подписки отсутствует для пользователя {userId}",
+    "UpgradeNotAllowedMessage": "Вы пытаетесь перейти с \"{currentPeriod}\" на \"{requestedPeriod}\" типы подписки. Это невозможно. Пожалуйста, свяжитесь или сообщите в техническую поддержку."
+  },
   "CardsWithIconsSection": {
     "AIPoweredLearningDescription": "Используйте передовой ИИ для улучшения процесса обучения. Получайте персонализированные рекомендации и интеллектуальную генерацию контента.",
     "ActiveRecallPracticeDescription": "Укрепляйте память с помощью активного воспроизведения. Практикуйте извлечение информации из памяти, а не просто повторное чтение, что доказано более эффективно для долгосрочного запоминания.",
@@ -472,6 +477,7 @@
   },
   "MakeYookassaPayment": {
     "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
     "PaymentError": "Ошибка при создании платежа через yookassa",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   },

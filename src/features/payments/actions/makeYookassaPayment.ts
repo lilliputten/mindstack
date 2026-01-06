@@ -40,7 +40,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
 
   if (!price) {
     throw new Error(
-      `Failed to calculate a proper price for the payment for the subscription type "${rawSubscriptionType}"`,
+      t('MakeYookassaPayment.FailedToCalculatePrice', { subscriptionType: rawSubscriptionType }),
     );
   }
 
@@ -104,14 +104,6 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
         return_url: successUrl,
       },
     };
-
-    console.log('[makeYookassaPayment]', {
-      price,
-      prices,
-      comparisonResult,
-      createPayload,
-    });
-    debugger;
 
     const payment = await checkout.createPayment(createPayload, uniqueKey);
 
