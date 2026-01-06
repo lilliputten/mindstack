@@ -20,7 +20,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared';
 import { isDev } from '@/config';
-import { cleanStaleUserPayments, findUserPayment } from '@/features/payments';
+import { checkPayment, cleanStaleUserPayments, findUserPayment } from '@/features/payments';
 import {
   ensurePaidableSubscriptionType,
   parsePaidableSubscriptionType,
@@ -137,7 +137,7 @@ export async function PricingChooseSuccessRoute({
 
   const userPayment = await findUserPayment({ provider, uniqueKey });
   if (!userPayment) {
-    const message = t('PricingChooseSuccessRoute.UserPaymentNotFound', { key: successKey });
+    const message = t('PricingChooseSuccessRoute.PaymentNotFound', { key: successKey });
     const error = new Error(message);
     // eslint-disable-next-line no-console
     console.error('[PricingChooseSuccessRoute]', message, {
@@ -217,7 +217,11 @@ export async function PricingChooseSuccessRoute({
   // Update data if that hasn't been done yet
   if (status === 'PENDING' || user.grade !== grade) {
     try {
-      // TODO: Check payment status
+      const checkResult = await checkPayment({ provider, paymentId, uniqueKey });
+      const { isPaid } = checkResult;
+      if (!isPaid) {
+        throw new Error('The payment was not paid');
+      }
       await finishPaymentAndUpdateUserGrade({
         grade,
         period,
@@ -229,12 +233,15 @@ export async function PricingChooseSuccessRoute({
       // Clean up payments
       await cleanStaleUserPayments();
     } catch (error) {
-      const message = t('PricingChooseSuccessRoute.CannotUpdateUserData');
+      const message = t('PricingChooseSuccessRoute.ErrorFinishingPayment');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
       console.error('[PricingChooseSuccessRoute]', comboMsg, {
         error,
+        provider,
+        paymentId,
+        uniqueKey,
         user,
         userPayment,
         subscriptionType,

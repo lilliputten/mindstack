@@ -791,12 +791,14 @@
     "WelcomeTo": "Welcome to {plan}!"
   },
   "PricingChooseSuccessRoute": {
-    "CannotUpdateUserData": "Cannot update the user's data",
     "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "ErrorFinishingPayment": "Error finalizing the payment",
     "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
+    "InvalidPaymentProvider": "Unknown payment provider ({provider})",
     "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
     "PaymentAlreadyProcessed": "The payment has been already processed",
     "PaymentFailedMessage": "It looks like the payment failed",
+    "PaymentNotFound": "The payment has not been found",
     "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment",
     "SubscriptionTypesMismatch": "Subscription types mismatch",
     "SubscriptionTypesMismatchExplanation": "Expected <strong>{expected}</strong>, but received <strong>{received}</strong>.",

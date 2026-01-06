@@ -24,7 +24,7 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
   const t = await getT();
 
   const user = await getCurrentUser();
-  if (!user) {
+  if (!user?.id) {
     throw new CustomAPIError(t('StripePayment.UnauthorizedPaymentError'));
   }
 

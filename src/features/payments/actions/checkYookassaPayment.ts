@@ -39,10 +39,6 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
      *     "gateway_id": "2607344"
      *   },
      *   "created_at": "2026-01-03T02:06:11.952Z",
-     *   "confirmation": {
-     *     "type": "redirect",
-     *     "confirmation_url": "https://yoomoney.ru/checkout/payments/v2/contract?orderId=30ea8d53-000f-5001-9000-1c965a6160df"
-     *   },
      *   "test": true,
      *   "paid": false,
      *   "refundable": false,
@@ -59,11 +55,12 @@ export async function checkYookassaPayment(params: TCheckYookassaPaymentParams) 
       paid,
       test,
     } = payment;
-    const { confirmation_url: paymentUrl } = confirmation;
+
+    const isPaid = !!paid;
 
     const resultData = {
+      isPaid,
       paymentId,
-      paymentUrl,
       status,
       createdAt,
       confirmation,

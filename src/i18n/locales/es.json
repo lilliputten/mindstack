@@ -786,12 +786,14 @@
     "WelcomeTo": "¡Bienvenido a {plan}!"
   },
   "PricingChooseSuccessRoute": {
-    "CannotUpdateUserData": "No se pueden actualizar los datos del usuario",
     "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ErrorFinishingPayment": "Error al finalizar el pago",
     "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
+    "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
     "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
     "PaymentAlreadyProcessed": "El pago ya ha sido procesado.",
     "PaymentFailedMessage": "Parece que el pago falló",
+    "PaymentNotFound": "El pago no ha sido encontrado.",
     "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago",
     "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
     "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>.",
