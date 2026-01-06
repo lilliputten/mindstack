@@ -149,7 +149,7 @@ export async function checkStripePayment(params: TCheckStripePaymentParams) {
      *     "canceled_at": null,
      *     "cancellation_reason": null,
      *     "capture_method": "automatic_async",
-     *     "client_secret": "pi_3SmZS9L41uPceS6J1SKu0bbf_secret_oPQbDWwGvVGUxDY5FWUI9WR6E",
+     *     "client_secret": "***",
      *     "confirmation_method": "automatic",
      *     "created": 1767702817,
      *     "currency": "usd",

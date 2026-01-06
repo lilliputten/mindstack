@@ -756,7 +756,7 @@
   "PricingChooseCancel": {
     "PaymentCanceled": "Payment has been canceled",
     "StartWorking": "Start working with topics",
-    "ViewPlans": "View subscription plans"
+    "ViewPlans": "Back to subscription plans"
   },
   "PricingChooseCancelRoute": {
     "CannotCancelNotPendingPayment": "Cannot cancel a non-pending payment",
@@ -906,7 +906,7 @@
     "FailedToCreateCheckoutSessionUrl": "Failed to create Stripe checkout session URL",
     "PaymentDescription": "Payment for subscription type {subscriptionType}",
     "PaymentError": "Error making Stripe payment",
-    "PaymentName": "Subscription for {subscriptionType}",
+    "PaymentName": "Mind Stack Trainer Subscription Plan",
     "PaymentStartingError": "Payment starting error",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },

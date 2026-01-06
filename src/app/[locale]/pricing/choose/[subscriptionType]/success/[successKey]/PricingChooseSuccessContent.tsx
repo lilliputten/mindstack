@@ -148,14 +148,19 @@ export function PricingChooseSuccessContent({
         <Button variant="theme" size="lg">
           <Link
             href={userStartAliasRoute}
-            className="flex h-full w-full items-center justify-center"
+            className="flex h-full w-full items-center justify-center gap-2"
           >
-            {t('PricingChooseSuccess.StartWorking')}
+            <Icons.ArrowRight className="size-4" />
+            <span>{t('PricingChooseSuccess.StartWorking')}</span>
           </Link>
         </Button>
         <Button variant="outline" size="lg">
-          <Link href={pricingAliasRoute} className="flex h-full w-full items-center justify-center">
-            {t('PricingChooseSuccess.ViewPlans')}
+          <Link
+            href={pricingAliasRoute}
+            className="flex h-full w-full items-center justify-center gap-2"
+          >
+            <Icons.ArrowRight className="size-4" />
+            <span>{t('PricingChooseSuccess.ViewPlans')}</span>
           </Link>
         </Button>
       </div>

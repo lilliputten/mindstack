@@ -35,7 +35,7 @@ export function PricingChooseCancelContent() {
               'bg-red-500/70',
             )}
           >
-            <Icons.ShieldX className="size-12 text-white" />
+            <Icons.CircleX className="size-12 text-white" />
           </div>
         </div>
 
@@ -47,15 +47,11 @@ export function PricingChooseCancelContent() {
       <div className="flex flex-col justify-center gap-4 sm:flex-row">
         <Button variant="theme" size="lg">
           <Link
-            href={userStartAliasRoute}
-            className="flex h-full w-full items-center justify-center"
+            href={pricingAliasRoute}
+            className="flex h-full w-full items-center justify-center gap-2"
           >
-            {t('PricingChooseCancel.StartWorking')}
-          </Link>
-        </Button>
-        <Button variant="outline" size="lg">
-          <Link href={pricingAliasRoute} className="flex h-full w-full items-center justify-center">
-            {t('PricingChooseCancel.ViewPlans')}
+            <Icons.ArrowRight className="size-4" />
+            <span>{t('PricingChooseCancel.ViewPlans')}</span>
           </Link>
         </Button>
       </div>

@@ -114,6 +114,7 @@ enum UserPaymentProvider {
 enum UserPaymentStatus {
   PENDING
   FAILED
+  CANCELED
   SUCCEED
 }
 

@@ -146,7 +146,7 @@ export async function PricingChooseCancelRoute({
         provider,
         paymentId,
         uniqueKey,
-        updates: { status: 'FAILED' },
+        updates: { status: 'CANCELED' },
       });
       // Clean up payments
       await cleanStaleUserPayments();

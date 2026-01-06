@@ -754,7 +754,7 @@
   "PricingChooseCancel": {
     "PaymentCanceled": "Платёж был отменён",
     "StartWorking": "Начните работать с темами",
-    "ViewPlans": "Посмотреть планы подписки"
+    "ViewPlans": "Вернуться к планам подписки"
   },
   "PricingChooseCancelRoute": {
     "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
@@ -904,7 +904,7 @@
     "FailedToCreateCheckoutSessionUrl": "Не удалось создать URL сессии оплаты Stripe",
     "PaymentDescription": "Оплата для типа подписки {subscriptionType}",
     "PaymentError": "Ошибка при создании платежа через Stripe",
-    "PaymentName": "Подписка для {subscriptionType}",
+    "PaymentName": "План подписки на Mind Stack Trainer",
     "PaymentStartingError": "Ошибка запуска платежа",
     "UnauthorizedPaymentError": "Невозможно проводить платежи для неавторизованных пользователей"
   },

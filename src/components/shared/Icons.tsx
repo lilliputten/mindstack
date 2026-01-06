@@ -31,6 +31,7 @@ export const {
   CircleCheck,
   CircleDollarSign,
   CircleUserRound,
+  CircleX,
   Clock,
   Columns3,
   Copy,

@@ -17,7 +17,7 @@ export async function immediatelyCleanStaleUserPayments(minAge: number = dayMs) 
       where: {
         userId: user.id,
         status: {
-          in: ['PENDING', 'FAILED'],
+          in: ['PENDING', 'CANCELED', 'FAILED'],
         },
         createdAt: {
           lt: beforeTime,
