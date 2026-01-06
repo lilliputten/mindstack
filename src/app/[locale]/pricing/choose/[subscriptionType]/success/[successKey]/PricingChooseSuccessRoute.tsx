@@ -6,6 +6,7 @@ import {
   UserGradeType,
   UserPaymentProviderSchema,
   UserPaymentProviderType,
+  UserSubscriptionPeriodType,
 } from '@/generated/prisma';
 
 import {
@@ -55,15 +56,26 @@ const saveScrollHash = getRandomHashString();
 
 interface TUpdateUserGradeParams {
   grade: UserGradeType;
+  period: UserSubscriptionPeriodType;
   userId: string;
   provider: UserPaymentProviderType;
   paymentId: string;
   uniqueKey: string;
+  subscriptionStartedAt?: Date;
 }
+
 async function finishPaymentAndUpdateUserGrade(params: TUpdateUserGradeParams) {
-  const { grade, userId, provider, paymentId, uniqueKey } = params;
+  const {
+    grade,
+    period,
+    subscriptionStartedAt = new Date(),
+    userId,
+    provider,
+    paymentId,
+    uniqueKey,
+  } = params;
   return await prisma.$transaction(async (tx) => {
-    // Update user payment status
+    // Update user payment status (analog of updateUserPayment)
     await tx.userPayment.update({
       where: {
         userId_provider_paymentId_uniqueKey: {
@@ -75,10 +87,15 @@ async function finishPaymentAndUpdateUserGrade(params: TUpdateUserGradeParams) {
       },
       data: { status: 'SUCCEED' },
     });
-    // Update user grade
+    // Update user grade (analog of updateCurrentUser)
     await tx.user.update({
       where: { id: userId },
-      data: { grade },
+      data: {
+        grade,
+        subscriptionPeriod: period,
+        // TODO: Add checking of the valid subscription period to the grade check
+        subscriptionStartedAt,
+      },
     });
   });
 }
@@ -178,12 +195,19 @@ export async function PricingChooseSuccessRoute({
   }
 
   // Parse grade and period with Zod schemas
-  const { grade } = parsePaidableSubscriptionType(subscriptionType, t);
+  const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
 
   // Update data if that hasn't been done yet
   if (status !== 'SUCCEED' || user.grade !== grade) {
     try {
-      await finishPaymentAndUpdateUserGrade({ grade, userId, provider, paymentId, uniqueKey });
+      await finishPaymentAndUpdateUserGrade({
+        grade,
+        period,
+        userId,
+        provider,
+        paymentId,
+        uniqueKey,
+      });
     } catch (error) {
       const message = t('PricingChooseSuccessRoute.CannotUpdateUserData');
       const details = getErrorText(error);

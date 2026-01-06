@@ -40,11 +40,8 @@ export const paidablePlansValues: UserGradeType[] = [
 // export const paidablePlansSchema = z.enum(paidablePlansValues);
 export type TPaidablePlan = (typeof paidablePlansValues)[number];
 
-/** Period types for subscription plans */
-const periodTypes = [
-  // Subscription plan periods
-  'MONTH',
-  'YEAR',
-] as const;
-export const periodTypesSchema = z.enum(periodTypes);
-export type TPeriodType = z.infer<typeof periodTypesSchema>;
+/** [>* Period types for subscription plans <]
+ * export const periodTypes = UserSubscriptionPeriodSchema.options
+ * export const periodTypesSchema = UserSubscriptionPeriodSchema;
+ * export type TPeriodType = UserSubscriptionPeriodType;
+ */
