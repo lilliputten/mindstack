@@ -1,6 +1,11 @@
-import { UserGradeSchema } from '@/generated/prisma';
+import {
+  UserGradeSchema,
+  UserGradeType,
+  UserSubscriptionPeriodSchema,
+  UserSubscriptionPeriodType,
+} from '@/generated/prisma';
 
-import { periodTypesSchema, TPaidableSubscriptionType } from '@/features/subscriptions';
+import { TPaidableSubscriptionType } from '@/features/subscriptions';
 import { TTranslator } from '@/i18n';
 
 /** Parse correct grade and period values from combined raw subscription type, usually in form '{grade}-{period}` */
@@ -12,8 +17,7 @@ export function parsePaidableSubscriptionType(
   const [gradeRaw, periodRaw] = subscriptionType.split('-');
 
   const gradeParseResult = UserGradeSchema.safeParse(gradeRaw);
-  const grade = gradeParseResult.data;
-  if (!gradeParseResult.success || !grade) {
+  if (!gradeParseResult.success || !gradeParseResult.data) {
     const message = t
       ? t('ParsePaidableSubscriptionType.InvalidSubscriptionGrade')
       : 'Invalid subscription grade';
@@ -28,10 +32,10 @@ export function parsePaidableSubscriptionType(
     debugger; // eslint-disable-line no-debugger
     throw error;
   }
+  const grade: UserGradeType = gradeParseResult.data;
 
-  const periodParseResult = periodTypesSchema.safeParse(periodRaw);
-  const period = periodParseResult.data;
-  if (!periodParseResult.success || !period) {
+  const periodParseResult = UserSubscriptionPeriodSchema.safeParse(periodRaw);
+  if (!periodParseResult.success || !periodParseResult.data) {
     const message = t
       ? t('ParsePaidableSubscriptionType.InvalidSubscriptionPeriod')
       : 'Invalid subscription period';
@@ -46,6 +50,7 @@ export function parsePaidableSubscriptionType(
     debugger; // eslint-disable-line no-debugger
     throw error;
   }
+  const period: UserSubscriptionPeriodType = periodParseResult.data;
 
   // Return result
   return { grade, period };

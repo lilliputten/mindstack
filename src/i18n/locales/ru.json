@@ -759,7 +759,7 @@
     "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
     "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade</strong> до <strong>{requestedGrade</strong>.",
     "UpgradePriceInfo": "С вас будет взиматься разница между планами",
-    "UpgradePriceInfoWithDifference": "Разница в цене при обновлении: {priceDifference}",
+    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Вы платите"
   },
   "PricingChooseSuccess": {

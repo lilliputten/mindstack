@@ -756,7 +756,7 @@
     "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
     "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>",
     "UpgradePriceInfo": "Se le cobrará la diferencia entre los planes",
-    "UpgradePriceInfoWithDifference": "Diferencia de precio para la actualización: {priceDifference}",
+    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Usted debe pagar"
   },
   "PricingChooseSuccess": {

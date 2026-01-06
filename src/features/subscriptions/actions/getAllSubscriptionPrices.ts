@@ -14,18 +14,14 @@ import {
 import { parsePaidableSubscriptionType } from '../helpers/parsePaidableSubscriptionType';
 import { paidableSubscriptionTypes, TPaidableSubscriptionType } from '../types/subscriptions';
 
-/** Get all prices for all curencies for given subscription type */
-export async function getAllSubscriptionPrices(subscriptionType: TPaidableSubscriptionType) {
-  if (!paidableSubscriptionTypes.includes(subscriptionType)) {
-    // eslint-disable-next-line no-console
-    console.warn('[getAllSubscriptionPrices]', 'Not a paidable subscription:', subscriptionType);
-    return undefined;
+export async function getAllPricesForSubscriptionTypeAndBasePrice(
+  subscriptionType: TPaidableSubscriptionType,
+  basePrice?: number,
+) {
+  if (basePrice == undefined) {
+    return basePrice;
   }
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType);
-  const basePrice = proSubscirptionMonthlyBasePrice;
-  if (basePrice == undefined) {
-    return undefined;
-  }
   const ratios = await getAllCurrencyRatios();
   const prices = allCurrencies.reduce<TCurrencyPrices>((prices, currency) => {
     const ratio = ratios?.[currency];
@@ -42,4 +38,29 @@ export async function getAllSubscriptionPrices(subscriptionType: TPaidableSubscr
     return prices;
   }, {} as TCurrencyPrices);
   return prices;
+}
+
+export function calculatePriceDifferencies(
+  minuends: TCurrencyPrices,
+  subtrahends: TCurrencyPrices,
+) {
+  const differencies = allCurrencies.reduce<TCurrencyPrices>(
+    (differencies, currency) => {
+      differencies[currency] -= subtrahends[currency];
+      return differencies;
+    },
+    { ...minuends },
+  );
+  return differencies;
+}
+
+/** Get all prices for all curencies for given subscription type */
+export async function getAllSubscriptionPrices(subscriptionType: TPaidableSubscriptionType) {
+  if (!paidableSubscriptionTypes.includes(subscriptionType)) {
+    // eslint-disable-next-line no-console
+    console.warn('[getAllSubscriptionPrices]', 'Not a paidable subscription:', subscriptionType);
+    return undefined;
+  }
+  const basePrice = proSubscirptionMonthlyBasePrice;
+  return getAllPricesForSubscriptionTypeAndBasePrice(subscriptionType, basePrice);
 }

@@ -416,6 +416,12 @@
     text-overflow: ellipsis;
   }
 
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
   // Define themes (from global variables `$themes` and `$defaultTheme`, see definitions in the `src/config/themeColors.ts`)
   @include defineAllThemes($themes, $defaultTheme);
   // Define all theme colors to use in scss

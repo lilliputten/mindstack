@@ -9,7 +9,7 @@ import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
-import { compareGrades } from '@/features/payments/helpers';
+import { gradeComparison } from '@/features/payments/helpers';
 import {
   ensurePaidableSubscriptionType,
   getGradeFromSubscriptionType,
@@ -46,7 +46,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   const currentGrade = user.grade;
 
   // Compare grades using helper
-  const comparisonResult = compareGrades(currentGrade, requestedGrade);
+  const comparisonResult = gradeComparison(currentGrade, requestedGrade);
 
   // Get prices for the requested subscription type
   const prices = await getAllSubscriptionPrices(subscriptionType);

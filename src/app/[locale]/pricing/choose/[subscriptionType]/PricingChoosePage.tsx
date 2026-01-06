@@ -1,56 +1,45 @@
 'use client';
 
 import React from 'react';
-import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingAliasRoute } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
-import { localeCurrencies, stringifyPrice } from '@/features/currencies';
-import { GradeComparisonResult } from '@/features/payments/helpers';
+import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
+import { TGradeComparisonResult } from '@/features/payments/helpers';
 import { useYookassaPayment } from '@/features/payments/hooks';
-import {
-  parsePaidableSubscriptionType,
-  TPaidableSubscriptionType,
-  useAllSubscriptionPrices,
-} from '@/features/subscriptions';
+import { parsePaidableSubscriptionType, TPaidableSubscriptionType } from '@/features/subscriptions';
 import { Link, TLocale, useT } from '@/i18n';
 
 import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard';
 
 interface PricingChoosePageProps {
   subscriptionType: TPaidableSubscriptionType;
-  comparisonResult?: GradeComparisonResult;
-  upgradePriceDifference?: number;
+  comparisonResult?: TGradeComparisonResult;
+  locale: TLocale;
+  prices: TCurrencyPrices;
 }
 
 export function PricingChoosePage({
   subscriptionType,
   comparisonResult,
-  upgradePriceDifference,
+  locale,
+  prices,
 }: PricingChoosePageProps) {
   const t = useT();
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
-  const locale = useLocale() as TLocale;
   const localeCurrency = localeCurrencies[locale];
 
-  // Determine current period - default to requested period if not provided
-  // const effectiveCurrentPeriod = currentPeriod || period;
   const CurrencySign = CurrencySigns[localeCurrency];
   const TgStarSign = CurrencySigns.TGSTAR;
   const { BOT_USERNAME } = useEnvConext();
 
   const [isWorking, startWorking] = React.useTransition();
-
-  const allSubscriptionPricesQuery = useAllSubscriptionPrices({ subscriptionType });
-  const { prices, isLoading, isFetched } = allSubscriptionPricesQuery;
-  const isPricesQueryReady = !!prices && !isLoading && isFetched;
 
   const localePrice = prices?.[localeCurrency];
   const tgPrice = prices?.TGSTAR;
@@ -66,35 +55,42 @@ export function PricingChoosePage({
   const isDowngrade = comparisonResult?.type === 'downgrade';
   const isUpgrade = comparisonResult?.type === 'upgrade';
 
-  // DEBUG: Effect:comparisonResult
-  React.useEffect(() => {
-    console.log('[PricingChoosePage] Effect:comparisonResult', {
-      isGuest,
-      isDowngrade,
-      isUpgrade,
-      comparisonResult,
-      // requestedGrade,
-      // currentGrade,
-    });
-  }, [comparisonResult, isDowngrade, isGuest, isUpgrade]);
+  /* // DEBUG: Effect:comparisonResult
+   * React.useEffect(() => {
+   *   console.log('[PricingChoosePage] Effect:comparisonResult', {
+   *     isGuest,
+   *     isDowngrade,
+   *     isUpgrade,
+   *     comparisonResult,
+   *     prices,
+   *   });
+   * }, [
+   *   ///
+   *   comparisonResult,
+   *   isDowngrade,
+   *   isGuest,
+   *   isUpgrade,
+   *   prices,
+   * ]);
+   */
 
-  const handleRussianCard = React.useCallback(() => {
-    // // Guest users should authorize in order to be able to make payments
+  const ensureValidConditions = React.useCallback(() => {
+    // Guest users should authorize in order to be able to make payments
     if (isGuest) {
       // Should not reach here as guest users are redirected at server level
-      toast.error(t('PricingChoosePage.GuestNotAllowed'));
-      return;
+      throw new Error(t('PricingChoosePage.GuestNotAllowed'));
     }
-
     if (isDowngrade) {
       // Show warning about downgrade and suggest contacting support
-      toast.warning(t('PricingChoosePage.DowngradeWarning'));
+      throw new Error(t('PricingChoosePage.DowngradeWarning'));
       // In a real scenario, we might want to redirect to contact support
       // For now, we'll just show the warning
-      return;
     }
+  }, [isDowngrade, isGuest, t]);
 
+  const handleRussianCard = React.useCallback(() => {
     startWorking(async () => {
+      ensureValidConditions();
       try {
         const promise = startYoukassaPayment();
         toast.promise(promise, {
@@ -128,28 +124,16 @@ export function PricingChoosePage({
         toast.error(comboMsg);
       }
     });
-  }, [startYoukassaPayment, isGuest, isDowngrade, t]);
+  }, [ensureValidConditions, startYoukassaPayment, t]);
 
   const handleInternationalCard = React.useCallback(() => {
-    if (isGuest) {
-      // Should not reach here as guest users are redirected at server level
-      toast.error(t('PricingChoosePage.GuestNotAllowed'));
-      return;
-    }
-
-    if (isDowngrade) {
-      // Show warning about downgrade
-      toast.warning(t('PricingChoosePage.DowngradeWarning'));
-      // In a real scenario, we might want to redirect to contact support
-      return;
-    }
-
+    ensureValidConditions();
     // TODO
     // eslint-disable-next-line no-console
     console.log('[PricingChoosePage:handleInternationalCard]', subscriptionType);
     // eslint-disable-next-line no-debugger
     debugger;
-  }, [subscriptionType, isGuest, isDowngrade, t]);
+  }, [ensureValidConditions, subscriptionType]);
 
   const isReady = isYoukassaPaymentReady && !isWorking;
 
@@ -199,31 +183,6 @@ export function PricingChoosePage({
     }
   }, [isDowngrade, t]);
 
-  // Calculate price difference for upgrades
-  const upgradePriceInfo = React.useMemo(() => {
-    if (!comparisonResult || !isUpgrade || !isPricesQueryReady || !prices) {
-      return t('PricingChoosePage.UpgradePriceInfo');
-    }
-
-    // If we have the price difference passed from the server component, use it
-    if (upgradePriceDifference !== undefined) {
-      return t('PricingChoosePage.UpgradePriceInfoWithDifference', {
-        priceDifference: `${localeCurrency} ${stringifyPrice(upgradePriceDifference)}`,
-      });
-    }
-
-    // Otherwise, return the default translation
-    return t('PricingChoosePage.UpgradePriceInfo');
-  }, [
-    comparisonResult,
-    isUpgrade,
-    isPricesQueryReady,
-    prices,
-    upgradePriceDifference,
-    t,
-    localeCurrency,
-  ]);
-
   return (
     <main
       className={cn(
@@ -239,7 +198,7 @@ export function PricingChoosePage({
             isDev && '__PricingChoosePage_Title', // DEBUG
             'text-3xl md:text-5xl lg:text-6xl',
             'text-balance leading-tight tracking-tight',
-            'text-gradient-brand font-semibold',
+            'text-gradient-brand text-truncate font-semibold',
             'mb-6 mt-12 p-4',
           )}
         >
@@ -248,7 +207,7 @@ export function PricingChoosePage({
         <p
           className={cn(
             isDev && '__PricingChoosePage_subscriptionMessage', // DEBUG
-            'text-content',
+            'text-content text-truncate',
           )}
         >
           {subscriptionMessage}
@@ -257,7 +216,9 @@ export function PricingChoosePage({
           <div className="mt-4">
             <Button variant="theme">
               <Link href={pricingAliasRoute} className="inline-flex items-center gap-2">
-                {t('PricingChoosePage.CheckAvailableSubscriptionPlans')}
+                <span className="truncate">
+                  {t('PricingChoosePage.CheckAvailableSubscriptionPlans')}
+                </span>
               </Link>
             </Button>
           </div>
@@ -266,14 +227,14 @@ export function PricingChoosePage({
           <div
             className={cn(
               isDev && '__PricingChoosePage_PriceInfo', // DEBUG
-              'mt-4 flex flex-col items-center',
+              'text-truncate mt-4 flex flex-col items-center',
             )}
           >
-            <div className="flex flex-wrap items-baseline gap-1">
+            <div className="text-truncate flex flex-wrap items-baseline gap-1">
               <span
                 className={cn(
                   isDev && '__PricingChoosePage_paymentMessage', // DEBUG
-                  'text-content h-9',
+                  'text-content text-truncate h-9',
                 )}
               >
                 {paymentMessage}:
@@ -282,7 +243,7 @@ export function PricingChoosePage({
                 <span className="text-muted-foreground">
                   {t('PricingChoosePage.DowngradeRequiresSupport')}
                 </span>
-              ) : isPricesQueryReady ? (
+              ) : (
                 <>
                   <span className="flex h-9 flex-wrap items-baseline gap-1">
                     <span className="flex flex-wrap items-center text-3xl font-bold">
@@ -297,16 +258,19 @@ export function PricingChoosePage({
                       </div>
                     )}
                   </span>
-                  <span className="h-9 text-sm">
-                    /{period === 'YEAR' ? t('Pricing.billedAnnually') : t('Pricing.billedMonthly')}
-                  </span>
+                  {!isUpgrade && (
+                    <span className="h-9 text-sm">
+                      /
+                      {period === 'YEAR' ? t('Pricing.billedAnnually') : t('Pricing.billedMonthly')}
+                    </span>
+                  )}
                 </>
-              ) : (
-                <Skeleton className="h-7 w-28 max-w-full rounded" />
               )}
             </div>
-            {isUpgrade && isPricesQueryReady && (
-              <div className="mt-2 text-sm text-muted-foreground">{upgradePriceInfo}</div>
+            {isUpgrade && (
+              <div className="text-truncate mt-2 w-full text-sm text-muted-foreground">
+                {t('PricingChoosePage.UpgradePriceInfo')}
+              </div>
             )}
           </div>
         )}
@@ -356,8 +320,10 @@ export function PricingChoosePage({
             icon={Icons.Telegram}
             description={
               <>
-                <p>{t('PricingChoosePage.TelegramStarsOptionAvailable')}</p>
-                <p className="text-sm opacity-50">
+                <p className="text-truncate">
+                  {t('PricingChoosePage.TelegramStarsOptionAvailable')}
+                </p>
+                <p className="text-truncate text-sm opacity-50">
                   {t('PricingChoosePage.TelegramStarsCompletePayment')}
                 </p>
               </>
@@ -375,7 +341,7 @@ export function PricingChoosePage({
       )}
 
       <div className="mt-12 flex flex-col items-center text-center">
-        <p className="text-content text-muted-foreground">
+        <p className="text-content text-truncate w-full">
           {t.rich('PricingChoosePage.OtherOptionsText', {
             PricingLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
             ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
