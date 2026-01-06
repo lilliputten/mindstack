@@ -8,17 +8,18 @@ import { InternalError } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
+import { TPaidableSubscriptionType } from '@/features/subscriptions';
+import { useT } from '@/i18n';
+
 import {
   addUserPayment,
   checkYookassaPayment,
   makeYookassaPayment,
-  paymentPollDelay,
   TCheckYookassaPaymentParams,
   TMakeYookassaPaymentParams,
   updateUserPayment,
-} from '@/features/payments';
-import { TPaidableSubscriptionType } from '@/features/subscriptions';
-import { useT } from '@/i18n';
+} from '../actions';
+import { paymentPollDelay } from '../constants';
 
 interface TYookassaPaymentParams {
   subscriptionType: TPaidableSubscriptionType;
