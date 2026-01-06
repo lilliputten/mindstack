@@ -36,7 +36,7 @@ export async function InfoPage({ params }: TInfoPageProps) {
       )}
       innerClassName={cn(
         isDev && '__InfoPage_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
     >
       <InfoScreen

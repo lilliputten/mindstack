@@ -42,13 +42,16 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
     redirect(pricingAliasRoute);
   }
 
+  const t = await getT({ locale });
+
   const { prices, comparisonResult, subscriptionType } =
     await calculatePricingForUser(rawSubscriptionType);
 
   if (!prices) {
     const error = new Error(
-      `Prices data is missing after calculation for subscription type: ${subscriptionType}`,
+      t('PricingChooseRoute.PricesDataMissingAfterCalculation', { subscriptionType }),
     );
+    // eslint-disable-next-line no-console
     console.error('[PricingChooseRoute]', 'Prices data is missing after calculation', {
       subscriptionType,
       comparisonResult,
@@ -57,10 +60,6 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
     throw error;
   }
 
-  console.log('[PricingChooseRoute] DEBUG', {
-    prices,
-  });
-
   return (
     <PageWrapper
       className={cn(
@@ -68,7 +67,7 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
       )}
       innerClassName={cn(
         isDev && '__PricingChooseRoute_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
     >
       <ScrollArea

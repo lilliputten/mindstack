@@ -773,7 +773,8 @@
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "No se pueden calcular precios para el tipo de suscripción \"{subscriptionType}\"",
-    "CannotCalculatePricesWithBasePrice": "No se pueden calcular precios para el tipo de suscripción \"{currentSubscriptionType}\" y un precio base de {basePrice}"
+    "CannotCalculatePricesWithBasePrice": "No se pueden calcular precios para el tipo de suscripción \"{currentSubscriptionType}\" y un precio base de {basePrice}",
+    "PricesDataMissingAfterCalculation": "Faltan datos de precios después del cálculo para el tipo de suscripción: {subscriptionType}"
   },
   "PricingChooseSuccess": {
     "Activated": "Activado",
@@ -869,6 +870,15 @@
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
   },
+  "StripePayment": {
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
+    "FailedToCreateCheckoutSessionUrl": "Error al crear la URL de la sesión de pago de Stripe",
+    "PaymentDescription": "Pago para el tipo de suscripción {subscriptionType}",
+    "PaymentError": "Error al realizar el pago con Stripe",
+    "PaymentName": "Suscripción para {subscriptionType}",
+    "PaymentStartingError": "Error al iniciar el pago",
+    "UnauthorizedPaymentError": "No se pueden realizar pagos para usuarios no autorizados"
+  },
   "TelegramSignIn": {
     "ButtonText": "Iniciar sesión con el bot de Telegram",
     "OrUseTelegram": "O use Telegram",
@@ -922,11 +932,6 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "No se pueden cargar los datos de los temas"
-  },
-  "UseYookassaPayment": {
-    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago",
-    "PaymentCheckingFailure": "Error al verificar el pago",
-    "PaymentProcessingFailure": "Error al procesar el pago"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
@@ -1114,6 +1119,12 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "YookassaPayment": {
+    "NotSpecifiedPaymentId": "ID de pago no especificado para verificar",
+    "PaymentCheckingFailure": "Error al verificar el pago",
+    "PaymentProcessingFailure": "Error al procesar el pago",
+    "PaymentStartingError": "Error al iniciar el pago"
   },
   "common": {
     "Expected": "Esperado",

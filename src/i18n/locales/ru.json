@@ -776,7 +776,8 @@
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Не удается рассчитать цены для типа подписки \"{subscriptionType}\"",
-    "CannotCalculatePricesWithBasePrice": "Не удается рассчитать цены для типа подписки \"{currentSubscriptionType}\" и базовой цены {basePrice}"
+    "CannotCalculatePricesWithBasePrice": "Не удается рассчитать цены для типа подписки \"{currentSubscriptionType}\" и базовой цены {basePrice}",
+    "PricesDataMissingAfterCalculation": "Данные о ценах отсутствуют после расчета для типа подписки: {subscriptionType}"
   },
   "PricingChooseSuccess": {
     "Activated": "Активировано",
@@ -872,6 +873,15 @@
     "MyTopics": "Мои темы",
     "Welcome": "Добро пожаловать"
   },
+  "StripePayment": {
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
+    "FailedToCreateCheckoutSessionUrl": "Не удалось создать URL сессии оплаты Stripe",
+    "PaymentDescription": "Оплата для типа подписки {subscriptionType}",
+    "PaymentError": "Ошибка при создании платежа через Stripe",
+    "PaymentName": "Подписка для {subscriptionType}",
+    "PaymentStartingError": "Ошибка запуска платежа",
+    "UnauthorizedPaymentError": "Невозможно проводить платежи для неавторизованных пользователей"
+  },
   "TelegramSignIn": {
     "ButtonText": "Войти через Telegram бота",
     "OrUseTelegram": "Или используйте Telegram",
@@ -926,11 +936,6 @@
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Не удается загрузить данные тем"
   },
-  "UseYookassaPayment": {
-    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты",
-    "PaymentCheckingFailure": "Ошибка проверки оплаты",
-    "PaymentProcessingFailure": "Ошибка обработки оплаты"
-  },
   "ViewAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",
     "DeleteAnswer": "Удалить ответ",
@@ -941,7 +946,7 @@
     "AiGenerated": "Сгенерировано ИИ",
     "AnswerText": "Текст ответа",
     "CorrectAnswer": "Правильный ответ",
-    "Explanation": "Объя��нение",
+    "Explanation": "Объяснение",
     "IncorrectAnswer": "Неправильный ответ",
     "ManageQuestion": "Параметры вопроса",
     "ManageTopic": "Управление темой",
@@ -1021,7 +1026,7 @@
     "CurrentProgress": "Текущий прогресс",
     "CurrentSessionRatio": "Текущее соотношение сессии",
     "FinishedAt": "Завершено в",
-    "FinishedText": "За��ершено {formattedDate}",
+    "FinishedText": "Завершено {formattedDate}",
     "InProgress": "В процессе",
     "NotStarted": "Не начато",
     "StartedAt": "Начато в",
@@ -1114,5 +1119,11 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
+  },
+  "YookassaPayment": {
+    "NotSpecifiedPaymentId": "Не указан идентификатор платежа для проверки",
+    "PaymentCheckingFailure": "Ошибка проверки оплаты",
+    "PaymentProcessingFailure": "Ошибка обработки оплаты",
+    "PaymentStartingError": "Ошибка начала платежа"
   }
 }

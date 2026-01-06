@@ -72,19 +72,6 @@ export function PricingChooseSuccessContent({
     }
   };
 
-  const getGradeTitle = (grade: UserGradeType) => {
-    switch (grade) {
-      case 'PRO':
-        return t('Pricing.Plans.Pro.Name');
-      case 'PREMIUM':
-        return t('Pricing.Plans.Premium.Name');
-      case 'BASIC':
-        return t('Pricing.Plans.Basic.Name');
-      default:
-        return t('Pricing.Plans.Basic.Name');
-    }
-  };
-
   const features = getFeaturesByGrade(grade);
 
   return (

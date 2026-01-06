@@ -119,7 +119,9 @@ export async function PricingChooseSuccessRoute({
 
   const providerParseResult = UserPaymentProviderSchema.safeParse(rawProvider.toUpperCase());
   if (!providerParseResult.success) {
-    const message = `Invalid payment provider: ${rawProvider}`;
+    const message = t('PricingChooseSuccessRoute.InvalidPaymentProvider', {
+      provider: rawProvider,
+    });
     const error = new Error(message);
     // eslint-disable-next-line no-console
     console.error('[PricingChooseSuccessRoute]', message, providerParseResult.error);
@@ -135,7 +137,7 @@ export async function PricingChooseSuccessRoute({
 
   const userPayment = await findUserPayment({ provider, uniqueKey });
   if (!userPayment) {
-    const message = `Not found user payment for the key: ${successKey}`;
+    const message = t('PricingChooseSuccessRoute.UserPaymentNotFound', { key: successKey });
     const error = new Error(message);
     // eslint-disable-next-line no-console
     console.error('[PricingChooseSuccessRoute]', message, {
@@ -256,7 +258,7 @@ export async function PricingChooseSuccessRoute({
       )}
       innerClassName={cn(
         isDev && '__PricingChooseSuccessRoute_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
     >
       <ScrollArea

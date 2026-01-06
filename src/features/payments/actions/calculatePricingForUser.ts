@@ -118,15 +118,7 @@ export async function calculatePricingForUser(
         }),
       );
     }
-    const _targetPrices = { ...prices };
     prices = calculatePriceDifferencies(prices, currentPrices);
-
-    // prettier-ignore
-    console.log('[calculatePricingForUser] calculatePriceDifferencies', currentSubscriptionType, '->', subscriptionType, {
-      prices,
-      _targetPrices,
-      currentPrices,
-    });
   }
 
   return {

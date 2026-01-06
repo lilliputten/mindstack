@@ -76,7 +76,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
           });
           resolve(result);
         } catch (error) {
-          const message = t('UseYookassaPayment.PaymentStartingError');
+          const message = t('YookassaPayment.PaymentStartingError');
           const details = getErrorText(error);
           const comboMsg = [message, details].filter(Boolean).join(': ');
           // eslint-disable-next-line no-console
@@ -154,7 +154,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
    * received from API. */
   const checkPayment = React.useCallback(() => {
     if (!memo.paymentId) {
-      const errMsg = t('UseYookassaPayment.FailedToCalculatePrice');
+      const errMsg = t('YookassaPayment.NotSpecifiedPaymentId');
       const error = new InternalError(errMsg, 'data-error');
       // eslint-disable-next-line no-console
       console.error('[PricingChoosePage:checkPayment]', errMsg, {
@@ -173,7 +173,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
         const { status } = result;
         checkPaymentStatus(status);
       } catch (error) {
-        const message = t('UseYookassaPayment.PaymentCheckingFailure');
+        const message = t('YookassaPayment.PaymentCheckingFailure');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
@@ -212,7 +212,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
           memo.startedAt = Date.now();
           checkPaymentStatus(status);
         } catch (error) {
-          const message = t('UseYookassaPayment.PaymentProcessingFailure');
+          const message = t('YookassaPayment.PaymentProcessingFailure');
           const details = getErrorText(error);
           const comboMsg = [message, details].filter(Boolean).join(': ');
           // eslint-disable-next-line no-console

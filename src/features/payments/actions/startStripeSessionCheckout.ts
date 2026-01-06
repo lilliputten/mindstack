@@ -12,23 +12,15 @@ import { calculatePricingForUser } from '@/features/payments/actions/calculatePr
 import { TSubscriptionType } from '@/features/subscriptions';
 import { getT } from '@/i18n';
 
-// import { getStripeCheckoutObject } from './helpers';
-
 export interface TMakeStripePaymentParams {
   subscriptionType: TSubscriptionType;
   uniqueKey: string; // Idempotency key
   currency?: TCurrencyType;
-  // paymentType?: IPaymentMethodType; // 'bank_card' etc
 }
 
 /** Start stripe payment */
 export async function startStripeSessionCheckout(params: TMakeStripePaymentParams) {
-  const {
-    ///
-    uniqueKey,
-    subscriptionType: rawSubscriptionType,
-    currency = 'USD',
-  } = params;
+  const { uniqueKey, subscriptionType: rawSubscriptionType, currency = 'USD' } = params;
   const t = await getT();
 
   const user = await getCurrentUser();
@@ -37,13 +29,7 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
   }
 
   // Use calculatePricingForUser to get proper pricing and comparison data
-  const {
-    prices,
-    subscriptionType,
-    // comparisonResult,
-    // requestedGrade,
-    // currentGrade,
-  } = await calculatePricingForUser(rawSubscriptionType);
+  const { prices, subscriptionType } = await calculatePricingForUser(rawSubscriptionType);
 
   const price = useFakePrices ? 1 : prices?.[currency];
 
@@ -77,8 +63,8 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
           price_data: {
             currency: currency,
             product_data: {
-              name: `Subscription - ${subscriptionType}`,
-              description: `Payment for subscription type ${subscriptionType}`,
+              name: t('StripePayment.PaymentName', { subscriptionType }),
+              description: t('StripePayment.PaymentDescription', { subscriptionType }),
             },
             unit_amount: priceCents,
           },
@@ -87,7 +73,7 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
       ],
       mode: 'payment',
       success_url: successUrl,
-      cancel_url: successUrl, // You might want to use a different cancel URL
+      cancel_url: successUrl, // TODO: To use a different cancel URL?
       metadata: {
         userId: user.id,
         subscriptionType,
@@ -102,7 +88,7 @@ export async function startStripeSessionCheckout(params: TMakeStripePaymentParam
       await stripe.checkout.sessions.create(checkoutParams, stripeOptions);
 
     if (!checkout.url) {
-      throw new Error('Failed to create Stripe checkout session URL');
+      throw new Error(t('StripePayment.FailedToCreateCheckoutSessionUrl'));
     }
 
     const resultData = {

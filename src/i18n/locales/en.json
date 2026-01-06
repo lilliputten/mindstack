@@ -778,7 +778,8 @@
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Can't calculate prices for a \"{subscriptionType}\" subscription type",
-    "CannotCalculatePricesWithBasePrice": "Can't calculate prices for a \"{currentSubscriptionType}\" subscription type and a {basePrice} base price"
+    "CannotCalculatePricesWithBasePrice": "Can't calculate prices for a \"{currentSubscriptionType}\" subscription type and a {basePrice} base price",
+    "PricesDataMissingAfterCalculation": "Prices data is missing after calculation for subscription type: {subscriptionType}"
   },
   "PricingChooseSuccess": {
     "Activated": "Activated",
@@ -874,6 +875,15 @@
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
   },
+  "StripePayment": {
+    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
+    "FailedToCreateCheckoutSessionUrl": "Failed to create Stripe checkout session URL",
+    "PaymentDescription": "Payment for subscription type {subscriptionType}",
+    "PaymentError": "Error making Stripe payment",
+    "PaymentName": "Subscription for {subscriptionType}",
+    "PaymentStartingError": "Payment starting error",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
+  },
   "TelegramSignIn": {
     "ButtonText": "Sign in with Telegram bot",
     "OrUseTelegram": "Or use Telegram",
@@ -927,11 +937,6 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Cannot load topics data"
-  },
-  "UseYookassaPayment": {
-    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment",
-    "PaymentCheckingFailure": "Payment checking failure",
-    "PaymentProcessingFailure": "Payment processing failure"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Add New Answer",
@@ -1119,5 +1124,11 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
+  },
+  "YookassaPayment": {
+    "NotSpecifiedPaymentId": "Not specified payment ID to check",
+    "PaymentCheckingFailure": "Payment checking failure",
+    "PaymentProcessingFailure": "Payment processing failure",
+    "PaymentStartingError": "Payment starting error"
   }
 }

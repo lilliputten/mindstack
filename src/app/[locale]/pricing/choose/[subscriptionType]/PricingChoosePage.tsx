@@ -60,24 +60,6 @@ export function PricingChoosePage({
   const isDowngrade = comparisonResult?.type === 'downgrade';
   const isUpgrade = comparisonResult?.type === 'upgrade';
 
-  // DEBUG: Effect:comparisonResult
-  React.useEffect(() => {
-    console.log('[PricingChoosePage] Effect:comparisonResult', {
-      isGuest,
-      isDowngrade,
-      isUpgrade,
-      comparisonResult,
-      prices,
-    });
-  }, [
-    ///
-    comparisonResult,
-    isDowngrade,
-    isGuest,
-    isUpgrade,
-    prices,
-  ]);
-
   const ensureValidConditions = React.useCallback(() => {
     // Guest users should authorize in order to be able to make payments
     if (isGuest) {
@@ -105,10 +87,6 @@ export function PricingChoosePage({
           });
           const result = await promise;
           const { paymentUrl } = result;
-          console.log('[PricingChoosePage:handlePayment] done', {
-            result,
-            paymentUrl,
-          });
           if (!paymentUrl) {
             throw new Error(t('PricingChoosePage.NoPaymentUrlProvided'));
           }

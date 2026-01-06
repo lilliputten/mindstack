@@ -34,7 +34,7 @@ export async function WelcomePage({ params }: TAwaitedLocaleProps) {
       )}
       innerClassName={cn(
         isDev && '__WelcomePage_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
     >
       <WelcomeScreen

@@ -30,8 +30,6 @@ export function useStripePayment(params: TStripePaymentParams) {
 
   const [isApiWorking, startApiWorking] = React.useTransition();
 
-  const isReady = true; // isPricesQueryReady;
-
   const runStartStripeCheckout = React.useCallback(() => {
     const stripeParams = {
       subscriptionType,
@@ -69,7 +67,7 @@ export function useStripePayment(params: TStripePaymentParams) {
   }, [subscriptionType, memo.uniqueKey, t]);
 
   return {
-    isReady,
+    isReady: true,
     isWorking: isApiWorking,
     runStartStripeCheckout,
   };

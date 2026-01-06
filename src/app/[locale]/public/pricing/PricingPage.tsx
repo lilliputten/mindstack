@@ -37,7 +37,7 @@ export async function PricingPage({ params }: TPricingPageProps) {
       )}
       innerClassName={cn(
         isDev && '__PricingPage_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
     >
       <ScrollArea

@@ -37,7 +37,7 @@ export async function LandingPage({ params }: TLandingPageProps) {
       )}
       innerClassName={cn(
         isDev && '__LandingPage_Inner', // DEBUG
-        'w-full h-full',
+        'size-full',
       )}
       // scrollable
       // limitWidth
