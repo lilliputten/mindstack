@@ -31,6 +31,12 @@ export const suppressMissingTranslations = ensureBoolean(
   process.env.NEXT_PUBLIC_SUPPRESS_MISSING_TRANSLATIONS,
 );
 
+// Stripe
+export const doTestPayments = ensureBoolean(process.env.NEXT_DO_TEST_PAYMENTS);
+export const stripePublishableKey = doTestPayments
+  ? String(process.env.NEXT_STRIPE_PUBLISHABLE_KEY_TEST)
+  : String(process.env.NEXT_STRIPE_PUBLISHABLE_KEY);
+
 export const publicAppUrl = String(process.env.NEXT_PUBLIC_URL);
 
 export const dataContentType = 'application/json; charset=utf-8';

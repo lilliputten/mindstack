@@ -38,9 +38,9 @@ export const {
   YOOKASSA_SHOP_ID_TEST,
   YOOKASSA_SECRET_KEY_TEST,
   // Stripe
-  STRIPE_PUBLISHABLE_KEY,
+  NEXT_STRIPE_PUBLISHABLE_KEY,
   STRIPE_SECRET_KEY,
-  STRIPE_PUBLISHABLE_KEY_TEST,
+  NEXT_STRIPE_PUBLISHABLE_KEY_TEST,
   STRIPE_SECRET_KEY_TEST,
   // AI API
   GIGACHAT_CREDENTIALS,
@@ -105,7 +105,7 @@ export const BOT_TOKEN =
     : envServer.BOT_TOKEN;
 
 // Debug & test payment options
-export const doTestPayments = ensureBoolean(process.env.DO_TEST_PAYMENTS);
+export const doTestPayments = ensureBoolean(process.env.NEXT_DO_TEST_PAYMENTS);
 export const useFakePrices = ensureBoolean(process.env.USE_FAKE_PRICES);
 
 // Yookassa
@@ -114,8 +114,8 @@ export const yookassaSecretKey = doTestPayments ? YOOKASSA_SECRET_KEY_TEST : YOO
 
 // Stripe
 export const stripePublishableKey = doTestPayments
-  ? STRIPE_PUBLISHABLE_KEY_TEST
-  : STRIPE_PUBLISHABLE_KEY;
+  ? NEXT_STRIPE_PUBLISHABLE_KEY_TEST
+  : NEXT_STRIPE_PUBLISHABLE_KEY;
 export const stripeSecretKey = doTestPayments ? STRIPE_SECRET_KEY_TEST : STRIPE_SECRET_KEY;
 
 /* // DEBUG: Show environment (will appear in build logs)
