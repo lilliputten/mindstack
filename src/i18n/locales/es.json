@@ -467,6 +467,7 @@
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
   "MakeYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
     "PaymentError": "Error al realizar el pago de yookassa",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   },
@@ -737,11 +738,13 @@
     "CompleteSubscription": "para completar su suscripción {planName}",
     "ContactSupport": "Contactar Soporte",
     "ContactSupportForDowngrade": "Estás bajando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>. \nDebe comunicarse con <ContactsLink>soporte</ContactsLink> para bajar de categoría.",
+    "ContactTechnicalSupport": "Contactar con soporte técnico",
     "DowngradeRequiresSupport": "La degradación requiere contactar con soporte",
     "DowngradeWarning": "Advertencia de degradación - por favor contacte con soporte",
     "GuestNotAllowed": "Los usuarios invitados no tienen permitido hacer pagos",
     "InternationalCard": "Tarjeta Internacional",
     "InternationalCardDescription": "Pague con métodos de pago internacionales. Compatible con las principales tarjetas de crédito y débito en todo el mundo.",
+    "NoPaymentUrlProvided": "No se proporcionó URL de pago",
     "OpenTelegramBot": "Abrir @{botUsername}",
     "OtherOptionsText": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink> o <ContactsLink>contáctenos</ContactsLink> en caso de cualquier problema.",
     "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
@@ -751,6 +754,7 @@
     "RussianBankCard": "Tarjeta Bancaria Rusa",
     "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
     "SameGradeMessage": "Ya tienes el plan de suscripción {currentGrade}",
+    "SelectAnotherSubscriptionType": "Seleccionar otro tipo de suscripción",
     "TelegramStars": "Estrellas de Telegram",
     "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
     "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
@@ -758,6 +762,10 @@
     "UpgradePriceInfo": "Se le cobrará la diferencia entre los planes",
     "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Usted debe pagar"
+  },
+  "PricingChooseRoute": {
+    "CannotCalculatePrices": "No se pueden calcular precios para el tipo de suscripción \"{subscriptionType}\"",
+    "CannotCalculatePricesWithBasePrice": "No se pueden calcular precios para el tipo de suscripción \"{currentSubscriptionType}\" y un precio base de {basePrice}"
   },
   "PricingChooseSuccess": {
     "Activated": "Activado",

@@ -470,6 +470,7 @@
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
   },
   "MakeYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
     "PaymentError": "Ошибка при создании платежа через yookassa",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   },
@@ -740,11 +741,13 @@
     "CompleteSubscription": "для подключения подписки {planName}",
     "ContactSupport": "Связаться с поддержкой",
     "ContactSupportForDowngrade": "Вы переходите с <strong>{currentGrade</strong> на <strong>{requestedGrade</strong>. \nЧтобы перейти на более раннюю версию, вам необходимо обратиться в <ContactsLink>поддержку</ContactsLink>.",
+    "ContactTechnicalSupport": "Обратитесь в техническую поддержку",
     "DowngradeRequiresSupport": "Для понижения уровня необходимо связаться с поддержкой",
     "DowngradeWarning": "Предупреждение о понижении уровня - пожалуйста, свяжитесь с поддержкой",
     "GuestNotAllowed": "Гостевым пользователям не разрешено совершать платежи",
     "InternationalCard": "Международная карта",
     "InternationalCardDescription": "Оплатите международными платежными системами. Поддерживает основные кредитные и дебетовые карты по всему миру.",
+    "NoPaymentUrlProvided": "Не предоставлен URL оплаты",
     "OpenTelegramBot": "Открыть @{botUsername}",
     "OtherOptionsText": "Если вы хотите выбрать другие варианты подписки, перейдите на <PricingLink>страницу цен</PricingLink> или <ContactsLink>свяжитесь с нами</ContactsLink> в случае возникновения каких-либо проблем.",
     "PayWithInternationalCard": "Оплатить международной картой",
@@ -754,6 +757,7 @@
     "RussianBankCard": "Российская банковская карта",
     "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
     "SameGradeMessage": "У вас уже есть план подписки {currentGrade}",
+    "SelectAnotherSubscriptionType": "Выберите другой тип подписки",
     "TelegramStars": "Звезды Telegram",
     "TelegramStarsCompletePayment": "Перейдите в нашего бота в Telegram, чтобы завершить оплату с помощью Звезд Telegram.",
     "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
@@ -761,6 +765,10 @@
     "UpgradePriceInfo": "С вас будет взиматься разница между планами",
     "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Вы платите"
+  },
+  "PricingChooseRoute": {
+    "CannotCalculatePrices": "Не удается рассчитать цены для типа подписки \"{subscriptionType}\"",
+    "CannotCalculatePricesWithBasePrice": "Не удается рассчитать цены для типа подписки \"{currentSubscriptionType}\" и базовой цены {basePrice}"
   },
   "PricingChooseSuccess": {
     "Activated": "Активировано",

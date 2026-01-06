@@ -468,6 +468,7 @@
     "ToastSuccessQuestions": "Successfully added new questions"
   },
   "MakeYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
     "PaymentError": "Error making yookassa payment",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },
@@ -738,11 +739,13 @@
     "CompleteSubscription": "to complete your {planName} subscription",
     "ContactSupport": "Contact Support",
     "ContactSupportForDowngrade": "You are downgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong>. You need to contact <ContactsLink>support</ContactsLink> to downgrade.",
+    "ContactTechnicalSupport": "Contact the technical support",
     "DowngradeRequiresSupport": "Downgrade requires contacting support",
     "DowngradeWarning": "Downgrade warning - please contact support",
     "GuestNotAllowed": "Guest users are not allowed to make payments",
     "InternationalCard": "International Card",
     "InternationalCardDescription": "Pay with international payment methods. Supports major credit and debit cards worldwide.",
+    "NoPaymentUrlProvided": "No payment url provided",
     "OpenTelegramBot": "Open @{botUsername}",
     "OtherOptionsText": "If you want to choose other subscription options, please go to <PricingLink>the pricing page</PricingLink> or <ContactsLink>contact us</ContactsLink> in case of any problems.",
     "PayWithInternationalCard": "Pay with International Card",
@@ -752,6 +755,7 @@
     "RussianBankCard": "Russian Bank Card",
     "RussianBankCardDescription": "Pay with your Russian bank card. Works with cards from any bank and country.",
     "SameGradeMessage": "You already have the {currentGrade} subscription plan",
+    "SelectAnotherSubscriptionType": "Select another subscription type",
     "TelegramStars": "Telegram Stars",
     "TelegramStarsCompletePayment": "Go to our Telegram bot to complete the payment using Telegram Stars.",
     "TelegramStarsOptionAvailable": "This option is available if you signed in via a Telegram account.",
@@ -759,6 +763,10 @@
     "UpgradePriceInfo": "You will be charged for the difference between plans",
     "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "You're to pay"
+  },
+  "PricingChooseRoute": {
+    "CannotCalculatePrices": "Can't calculate prices for a \"{subscriptionType}\" subscription type",
+    "CannotCalculatePricesWithBasePrice": "Can't calculate prices for a \"{currentSubscriptionType}\" subscription type and a {basePrice} base price"
   },
   "PricingChooseSuccess": {
     "Activated": "Activated",

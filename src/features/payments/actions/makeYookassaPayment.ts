@@ -83,7 +83,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       },
     );
     // For downgrades, we might want to redirect to support instead of processing payment
-    throw new CustomAPIError('Downgrade requests should be processed through support');
+    throw new CustomAPIError(t('MakeYookassaPayment.DowngradeRequestsThroughSupport'));
   } else {
     // Same grade - renewal or period change
     // eslint-disable-next-line no-console

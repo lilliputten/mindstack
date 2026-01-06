@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
-import { contactsAliasRoute, isDev, pricingAliasRoute } from '@/config';
+import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
@@ -44,7 +44,7 @@ export function PricingChoosePage({
   const localePrice = prices?.[localeCurrency];
   const tgPrice = prices?.TGSTAR;
 
-  const telegramUrl = `https://t.me/${BOT_USERNAME}`;
+  const telegramUrl = `${tgUrlPrefix}/${BOT_USERNAME}`;
 
   const yookassaPayment = useYookassaPayment({ subscriptionType });
   const { isReady: isYoukassaPaymentReady, startYoukassaPayment } = yookassaPayment;
@@ -106,7 +106,7 @@ export function PricingChoosePage({
           paymentUrl,
         });
         if (!paymentUrl) {
-          throw new Error('No payment url provided');
+          throw new Error(t('PricingChoosePage.NoPaymentUrlProvided'));
         }
         if (typeof window === 'object') {
           window.location.href = paymentUrl;

@@ -78,7 +78,7 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
   let prices = await getAllSubscriptionPrices(subscriptionType);
 
   if (!prices) {
-    throw new Error(`Can't calculate prices for a "${subscriptionType}" subscription type.`);
+    throw new Error(t('PricingChooseRoute.CannotCalculatePrices', { subscriptionType }));
   }
 
   // Calculate price difference for upgrades
@@ -102,13 +102,13 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
               <Button variant="theme">
                 <Link href={contactsAliasRoute} className={'flex items-center gap-2'}>
                   <Icons.ArrowRight className="size-4" />
-                  <span>Contact the technical support</span>
+                  <span>{t('PricingChoosePage.ContactTechnicalSupport')}</span>
                 </Link>
               </Button>
               <Button variant="theme">
                 <Link href={pricingAliasRoute} className={'flex items-center gap-2'}>
                   <Icons.ArrowRight className="size-4" />
-                  <span>Select another subsription type</span>
+                  <span>{t('PricingChoosePage.SelectAnotherSubscriptionType')}</span>
                 </Link>
               </Button>
             </>
@@ -127,7 +127,7 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
     );
     if (!currentPrices) {
       throw new Error(
-        `Can't calculate prices for a "${currentSubscriptionType}" sbscription type and a ${basePrice} base price`,
+        t('PricingChooseRoute.CannotCalculatePricesWithBasePrice', { currentSubscriptionType, basePrice }),
       );
     }
     const _targetPrices = { ...prices };
