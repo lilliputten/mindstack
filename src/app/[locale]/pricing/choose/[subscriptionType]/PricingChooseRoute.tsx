@@ -1,30 +1,18 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
 
-import { contactsAliasRoute, pricingAliasRoute } from '@/config/routesConfig';
+import { pricingAliasRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getRandomHashString } from '@/lib/helpers';
-import { getCurrentUser, isLoggedUser } from '@/lib/session';
+import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { PageError } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { proSubscirptionMonthlyBasePrice } from '@/constants';
-import { gradeComparison } from '@/features/payments/helpers';
-import {
-  ensurePaidableSubscriptionType,
-  parsePaidableSubscriptionType,
-  TPaidableSubscriptionType,
-} from '@/features/subscriptions';
-import {
-  calculatePriceDifferencies,
-  getAllPricesForSubscriptionTypeAndBasePrice,
-  getAllSubscriptionPrices,
-} from '@/features/subscriptions/actions/getAllSubscriptionPrices';
-import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
+import { calculatePricingForUser } from '@/features/payments/actions';
+import { TPaidableSubscriptionType } from '@/features/subscriptions';
+import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChoosePage } from './PricingChoosePage';
 
@@ -45,6 +33,8 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
   const params = await awaitedParams;
   const { locale, subscriptionType: rawSubscriptionType } = params;
 
+  setRequestLocale(locale);
+
   // Check if logged user
   const isLogged = await isLoggedUser();
   if (!isLogged) {
@@ -52,92 +42,19 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
     redirect(pricingAliasRoute);
   }
 
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect(pricingAliasRoute);
-  }
-
-  const t = await getT({ locale });
-  const subscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
-    rawSubscriptionType,
-    t,
-  );
-
-  // Parse grade and period with Zod schemas
-  const { grade: requestedGrade, period: requestedPeriod } = parsePaidableSubscriptionType(
-    subscriptionType,
-    t,
-  );
-
-  // Const get user paid period from database
-  const { grade: currentGrade, subscriptionPeriod: currentPeriod } = user;
-
-  // Compare grades using helper
-  const comparisonResult = gradeComparison(currentGrade, requestedGrade);
-
-  let prices = await getAllSubscriptionPrices(subscriptionType);
+  const { prices, comparisonResult, subscriptionType } =
+    await calculatePricingForUser(rawSubscriptionType);
 
   if (!prices) {
-    throw new Error(t('PricingChooseRoute.CannotCalculatePrices', { subscriptionType }));
-  }
-
-  // Calculate price difference for upgrades
-  if (comparisonResult.type === 'upgrade') {
-    if (requestedPeriod !== currentPeriod) {
-      const message = 'Cannot upgrade to another subscription period';
-      const details = `You're triyng to upgrade from the "${currentPeriod}" to the "${requestedPeriod}" subscription types. It's not possible. Please contact or report to technical support.`;
-      const comboMsg = [message, details].filter(Boolean).join(': ');
-      // eslint-disable-next-line no-console
-      console.error('[PricingChooseSuccessRoute]', comboMsg, {
-        prices,
-        subscriptionType,
-      });
-      // debugger; // eslint-disable-line no-debugger
-      return (
-        <PageError
-          title={message}
-          explanation={details}
-          extraActions={
-            <>
-              <Button variant="theme">
-                <Link href={contactsAliasRoute} className={'flex items-center gap-2'}>
-                  <Icons.ArrowRight className="size-4" />
-                  <span>{t('PricingChoosePage.ContactTechnicalSupport')}</span>
-                </Link>
-              </Button>
-              <Button variant="theme">
-                <Link href={pricingAliasRoute} className={'flex items-center gap-2'}>
-                  <Icons.ArrowRight className="size-4" />
-                  <span>{t('PricingChoosePage.SelectAnotherSubscriptionType')}</span>
-                </Link>
-              </Button>
-            </>
-          }
-        />
-      );
-    }
-
-    const currentSubscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
-      `${currentGrade}-${currentPeriod}`,
+    const error = new Error(
+      `Prices data is missing after calculation for subscription type: ${subscriptionType}`,
     );
-    const basePrice = proSubscirptionMonthlyBasePrice;
-    const currentPrices = await getAllPricesForSubscriptionTypeAndBasePrice(
-      currentSubscriptionType,
-      basePrice,
-    );
-    if (!currentPrices) {
-      throw new Error(
-        t('PricingChooseRoute.CannotCalculatePricesWithBasePrice', { currentSubscriptionType, basePrice }),
-      );
-    }
-    const _targetPrices = { ...prices };
-    prices = calculatePriceDifferencies(prices, currentPrices);
-    // prettier-ignore
-    console.log('[PricingChooseRoute] calculatePriceDifferencies', currentSubscriptionType, '->', subscriptionType, {
-      prices,
-      _targetPrices,
-      currentPrices,
+    console.error('[PricingChooseRoute]', 'Prices data is missing after calculation', {
+      subscriptionType,
+      comparisonResult,
     });
+    debugger; // eslint-disable-line no-debugger
+    throw error;
   }
 
   console.log('[PricingChooseRoute] DEBUG', {
@@ -174,9 +91,6 @@ export async function PricingChooseRoute({ params: awaitedParams }: TAwaitedProp
           comparisonResult={comparisonResult}
           locale={locale}
           prices={prices}
-          // currentPeriod={currentPeriod}
-          // grade={grade}
-          // period={period}
         />
       </ScrollArea>
     </PageWrapper>

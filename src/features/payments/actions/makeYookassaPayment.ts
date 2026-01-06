@@ -9,13 +9,8 @@ import { getCurrentUser } from '@/lib/session';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
-import { gradeComparison } from '@/features/payments/helpers';
-import {
-  ensurePaidableSubscriptionType,
-  getGradeFromSubscriptionType,
-  TSubscriptionType,
-} from '@/features/subscriptions';
-import { getAllSubscriptionPrices } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
+import { calculatePricingForUser } from '@/features/payments/actions/calculatePricingForUser';
+import { TSubscriptionType } from '@/features/subscriptions';
 import { getT } from '@/i18n';
 
 import { getYookassaCheckoutObject } from './helpers';
@@ -36,33 +31,22 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     throw new CustomAPIError(t('MakeYookassaPayment.UnauthorizedPaymentError'));
   }
 
-  // Parse and check paidable subscription type
-  const subscriptionType = ensurePaidableSubscriptionType(rawSubscriptionType);
+  // Use calculatePricingForUser to get proper pricing and comparison data
+  const { prices, comparisonResult, requestedGrade, currentGrade, subscriptionType } =
+    await calculatePricingForUser(rawSubscriptionType);
 
   const currency: TCurrencyType = 'RUB';
-
-  // Get the requested grade from the subscription type
-  const requestedGrade = getGradeFromSubscriptionType(subscriptionType);
-  const currentGrade = user.grade;
-
-  // Compare grades using helper
-  const comparisonResult = gradeComparison(currentGrade, requestedGrade);
-
-  // Get prices for the requested subscription type
-  const prices = await getAllSubscriptionPrices(subscriptionType);
   const price = useFakePrices ? 1 : prices?.[currency];
 
   if (!price) {
     throw new Error(
-      `Failed to calculate a proper price for the payment for the subscription type "${subscriptionType}"`,
+      `Failed to calculate a proper price for the payment for the subscription type "${rawSubscriptionType}"`,
     );
   }
 
-  // Calculate price difference for upgrade scenarios
+  // Log different scenarios based on comparison result
   if (comparisonResult.type === 'upgrade') {
-    // This is an upgrade - user pays the full price of the new plan
-    // In a real implementation, you might want to calculate the difference between current and new plan
-    // For now, we'll use the full price of the requested plan
+    // This is an upgrade scenario
     // eslint-disable-next-line no-console
     console.log('[makeYookassaPayment]', 'Processing upgrade payment', {
       user,
@@ -121,8 +105,14 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       },
     };
 
-    // eslint-disable-next-line no-debugger
+    console.log('[makeYookassaPayment]', {
+      price,
+      prices,
+      comparisonResult,
+      createPayload,
+    });
     debugger;
+
     const payment = await checkout.createPayment(createPayload, uniqueKey);
 
     /* // Sample payment result:

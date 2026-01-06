@@ -62,6 +62,7 @@
   "UpdatedDate": "Дата обновления",
   "UsedGenerations": "Использованные генерации",
   "UserGrade": "Уровень пользователя",
+  "UserNotLoggedIn": "Пользователь не авторизован",
   "UserRole": "Роль пользователя",
   "Yes": "Да",
   "or": "или",
@@ -752,8 +753,8 @@
     "OtherOptionsText": "Если вы хотите выбрать другие варианты подписки, перейдите на <PricingLink>страницу цен</PricingLink> или <ContactsLink>свяжитесь с нами</ContactsLink> в случае возникновения каких-либо проблем.",
     "PayWithInternationalCard": "Оплатить международной картой",
     "PayWithRussianCard": "Оплатить российской картой",
-    "PaymentIsStarting": "Платеж запускается",
-    "PaymentSuccessfullyStarted": "Платеж успешно запущен",
+    "PaymentCreated": "Платеж успешно создан",
+    "PaymentIsCreating": "Платеж создается",
     "RussianBankCard": "Российская банковская карта",
     "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
     "SameGradeMessage": "У вас уже есть план подписки {currentGrade}",
@@ -919,8 +920,8 @@
   "UseYookassaPayment": {
     "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты",
     "PaymentCheckingFailure": "Ошибка проверки оплаты",
-    "PaymentProcessingFailure": "Ошибка обработки оплаты",
-    "PaymentStartingError": "Ошибка начала оплаты"
+    "PaymentCreatingError": "Ошибка создания платежа",
+    "PaymentProcessingFailure": "Ошибка обработки оплаты"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",

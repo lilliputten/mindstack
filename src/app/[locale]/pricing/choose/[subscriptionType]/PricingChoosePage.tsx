@@ -94,8 +94,8 @@ export function PricingChoosePage({
       try {
         const promise = startYoukassaPayment();
         toast.promise(promise, {
-          loading: t('PricingChoosePage.PaymentIsStarting'),
-          success: t('PricingChoosePage.PaymentSuccessfullyStarted'),
+          loading: t('PricingChoosePage.PaymentIsCreating'),
+          success: t('PricingChoosePage.PaymentCreated'),
           // error: 'Payment starting error',
         });
         const result = await promise;
@@ -112,7 +112,7 @@ export function PricingChoosePage({
           window.location.href = paymentUrl;
         }
       } catch (error) {
-        const message = t('UseYookassaPayment.PaymentStartingError');
+        const message = t('UseYookassaPayment.PaymentCreatingError');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console

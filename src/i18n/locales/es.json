@@ -63,6 +63,7 @@
   "UpdatedDate": "Fecha actualizada",
   "UsedGenerations": "Generaciones usadas",
   "UserGrade": "Nivel de usuario",
+  "UserNotLoggedIn": "El usuario no ha iniciado sesión",
   "UserRole": "Rol de usuario",
   "Yes": "Sí",
   "or": "o",
@@ -749,8 +750,8 @@
     "OtherOptionsText": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink> o <ContactsLink>contáctenos</ContactsLink> en caso de cualquier problema.",
     "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
     "PayWithRussianCard": "Pagar con Tarjeta Rusa",
-    "PaymentIsStarting": "El pago está comenzando",
-    "PaymentSuccessfullyStarted": "El pago ha sido iniciado exitosamente",
+    "PaymentCreated": "El pago ha sido creado exitosamente.",
+    "PaymentIsCreating": "El pago está creando",
     "RussianBankCard": "Tarjeta Bancaria Rusa",
     "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
     "SameGradeMessage": "Ya tienes el plan de suscripción {currentGrade}",
@@ -916,8 +917,8 @@
   "UseYookassaPayment": {
     "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago",
     "PaymentCheckingFailure": "Error al verificar el pago",
-    "PaymentProcessingFailure": "Error al procesar el pago",
-    "PaymentStartingError": "Error al iniciar el pago"
+    "PaymentCreatingError": "Error al crear el pago",
+    "PaymentProcessingFailure": "Error al procesar el pago"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
