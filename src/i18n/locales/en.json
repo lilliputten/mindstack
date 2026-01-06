@@ -656,7 +656,8 @@
     "TrainingTopicReviewTitle": "Training Topic Review",
     "ViewAvailableTopicTitle": "View Available Topic",
     "WelcomeTitle": "Welcome!",
-    "WorkoutTopicGoTitle": "Training the Topic"
+    "WorkoutTopicGoTitle": "Training the Topic",
+    "PricingChooseCancel": "Cancel the Payment"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Invalid subscription grade",

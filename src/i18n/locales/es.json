@@ -651,7 +651,8 @@
     "TrainingTopicReviewTitle": "Revisión del tema de capacitación",
     "ViewAvailableTopicTitle": "Ver tema disponible",
     "WelcomeTitle": "¡Bienvenido!",
-    "WorkoutTopicGoTitle": "Entrenando el tema"
+    "WorkoutTopicGoTitle": "Entrenando el tema",
+    "PricingChooseCancel": "Cancelar el pago"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Grado de suscripción no válido",

@@ -654,7 +654,8 @@
     "TrainingTopicReviewTitle": "Обзор темы обучения",
     "ViewAvailableTopicTitle": "Посмотреть доступную тему",
     "WelcomeTitle": "Добро пожаловать!",
-    "WorkoutTopicGoTitle": "Обучение теме"
+    "WorkoutTopicGoTitle": "Обучение теме",
+    "PricingChooseCancel": "Отменить платёж"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Недействительный уровень подписки",
