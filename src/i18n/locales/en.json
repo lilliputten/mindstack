@@ -20,6 +20,7 @@
   "Delete": "Delete",
   "Description": "Description",
   "Edit": "Edit",
+  "Expected": "Expected",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
   "GenerationMode": "Generation mode",
@@ -33,6 +34,7 @@
   "NoAnswersHaveBeenCreatedYet": "No answers have been created yet",
   "NoTopicsAvailable": "No topics available",
   "PageNotFound": "Page not found",
+  "PleaseTryAgainOrContact": "Please try again or contact",
   "Private": "Private",
   "Public": "Public",
   "Question": "Question",
@@ -65,6 +67,8 @@
   "UserNotLoggedIn": "User is not logged in",
   "UserRole": "User role",
   "Yes": "Yes",
+  "butReceived": "but received",
+  "ifYouHaveAnyProblems": "if you have any problems",
   "or": "or",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Available AI generations: {availableGenerations}",
@@ -741,7 +745,7 @@
     }
   },
   "PricingChoosePage": {
-    "CheckAvailableSubscriptionPlans": "Check Available Subscription Plans",
+    "CheckAvailableSubscriptionPlans": "Check Other Available Subscription Plans",
     "ChoosePaymentMethod": "Choose Payment Method",
     "CompleteSubscription": "to complete your {planName} subscription",
     "ContactSupport": "Contact Support",
@@ -758,6 +762,7 @@
     "PayWithInternationalCard": "Pay with International Card",
     "PayWithRussianCard": "Pay with Russian Card",
     "PaymentCreated": "Payment has been successfully created",
+    "PaymentCreatingError": "Payment creating error",
     "PaymentIsCreating": "The payment is creating",
     "RussianBankCard": "Russian Bank Card",
     "RussianBankCardDescription": "Pay with your Russian bank card. Works with cards from any bank and country.",
@@ -767,7 +772,7 @@
     "TelegramStarsCompletePayment": "Go to our Telegram bot to complete the payment using Telegram Stars.",
     "TelegramStarsOptionAvailable": "This option is available if you signed in via a Telegram account.",
     "UpgradeMessage": "You are upgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong>",
-    "UpgradePriceInfo": "You will be charged for the difference between plans",
+    "UpgradePriceInfo": "You will only be charged the difference between the subscription plans.",
     "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "You're to pay"
   },
@@ -778,21 +783,23 @@
   "PricingChooseSuccess": {
     "Activated": "Activated",
     "Congratulations": "Congratulations!",
-    "Description": "Your subscription has been successfully upgraded to the {subscriptionType} plan.",
     "NewFeatures": "New Features Available",
     "StartWorking": "Start working with topics",
+    "SubscriptionUpgraded": "Your subscription has been successfully upgraded to the <strong>{grade}</strong> plan.",
     "ViewPlans": "View other subsription plans",
     "WelcomeTo": "Welcome to {plan}!"
   },
   "PricingChooseSuccessRoute": {
     "CannotUpdateUserData": "Cannot update the user's data",
     "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
     "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
-    "PaymentFailedExplanation": "Please try again or contact <Link>technical support</Link> if you have any problems.",
+    "PaymentAlreadyProcessed": "The payment has been already processed",
     "PaymentFailedMessage": "It looks like the payment failed",
     "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment",
     "SubscriptionTypesMismatch": "Subscription types mismatch",
     "SubscriptionTypesMismatchExplanation": "Expected <strong>{expected}</strong>, but received <strong>{received}</strong>.",
+    "SucceedPaymentAttemptExplanation": "It looks like you are trying to process the same payment repeatedly. Please try again or contact <Link>technical support</Link> if you have any problems.",
     "TechnicalSupport": "technical support"
   },
   "PricingPlansSection": {
@@ -924,7 +931,6 @@
   "UseYookassaPayment": {
     "FailedToCalculatePrice": "Failed to calculate a proper price for the payment",
     "PaymentCheckingFailure": "Payment checking failure",
-    "PaymentCreatingError": "Payment creating error",
     "PaymentProcessingFailure": "Payment processing failure"
   },
   "ViewAnswerCard": {
@@ -1113,11 +1119,5 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is already completed.",
     "TrainingIsStarting": "The training is starting..."
-  },
-  "common": {
-    "Expected": "Expected",
-    "PleaseTryAgainOrContact": "Please try again or contact",
-    "butReceived": "but received",
-    "ifYouHaveAnyProblems": "if you have any problems"
   }
 }

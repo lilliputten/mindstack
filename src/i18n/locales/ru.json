@@ -743,7 +743,7 @@
     }
   },
   "PricingChoosePage": {
-    "CheckAvailableSubscriptionPlans": "Проверить доступные планы подписки",
+    "CheckAvailableSubscriptionPlans": "Посмотреть другие доступные планы подписки",
     "ChoosePaymentMethod": "Выберите способ оплаты",
     "CompleteSubscription": "для подключения подписки {planName}",
     "ContactSupport": "Связаться с поддержкой",
@@ -760,6 +760,7 @@
     "PayWithInternationalCard": "Оплатить международной картой",
     "PayWithRussianCard": "Оплатить российской картой",
     "PaymentCreated": "Платеж успешно создан",
+    "PaymentCreatingError": "Ошибка создания платежа",
     "PaymentIsCreating": "Платеж создается",
     "RussianBankCard": "Российская банковская карта",
     "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
@@ -768,8 +769,8 @@
     "TelegramStars": "Звезды Telegram",
     "TelegramStarsCompletePayment": "Перейдите в нашего бота в Telegram, чтобы завершить оплату с помощью Звезд Telegram.",
     "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
-    "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade</strong> до <strong>{requestedGrade</strong>.",
-    "UpgradePriceInfo": "С вас будет взиматься разница между планами",
+    "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade}</strong> до <strong>{requestedGrade}</strong>.",
+    "UpgradePriceInfo": "С вас будет взиматься только разница между планами",
     "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Вы платите"
   },
@@ -780,21 +781,23 @@
   "PricingChooseSuccess": {
     "Activated": "Активировано",
     "Congratulations": "Поздравляем!",
-    "Description": "Ваша подписка была успешно обновлена до плана {subscriptionType}.",
     "NewFeatures": "Новые доступные функции",
     "StartWorking": "Начните работать с темами",
+    "SubscriptionUpgraded": "Ваша подписка была успешно повышена до плана <strong>{grade}</strong>.",
     "ViewPlans": "Посмотреть другие планы подписки",
     "WelcomeTo": "Добро пожаловать в {plan}!"
   },
   "PricingChooseSuccessRoute": {
     "CannotUpdateUserData": "Невозможно обновить данные пользователя",
     "CannotUpdateUserDataExplanation": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
     "InvalidSubscriptionTypeValue": "Недействительное значение типа подписки: {value}",
-    "PaymentFailedExplanation": "Пожалуйста, попробуйте снова или свяжитесь с <Link>технической поддержкой</Link>, если у вас возникнут проблемы.",
+    "PaymentAlreadyProcessed": "Платеж уже был обработан",
     "PaymentFailedMessage": "Похоже, оплата не прошла",
     "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате",
     "SubscriptionTypesMismatch": "Несоответствие типов подписки",
     "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>.",
+    "SucceedPaymentAttemptExplanation": "Похоже, вы пытаетесь несколько раз обработать один и тот же платеж. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
     "TechnicalSupport": "техническая поддержка"
   },
   "PricingPlansSection": {
@@ -926,7 +929,6 @@
   "UseYookassaPayment": {
     "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты",
     "PaymentCheckingFailure": "Ошибка проверки оплаты",
-    "PaymentCreatingError": "Ошибка создания платежа",
     "PaymentProcessingFailure": "Ошибка обработки оплаты"
   },
   "ViewAnswerCard": {

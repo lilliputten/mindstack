@@ -740,7 +740,7 @@
     }
   },
   "PricingChoosePage": {
-    "CheckAvailableSubscriptionPlans": "Verificar planes de suscripción disponibles",
+    "CheckAvailableSubscriptionPlans": "Consulte otros planes de suscripción disponibles",
     "ChoosePaymentMethod": "Elegir Método de Pago",
     "CompleteSubscription": "para completar su suscripción {planName}",
     "ContactSupport": "Contactar Soporte",
@@ -757,6 +757,7 @@
     "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
     "PayWithRussianCard": "Pagar con Tarjeta Rusa",
     "PaymentCreated": "El pago ha sido creado exitosamente.",
+    "PaymentCreatingError": "Error al crear el pago",
     "PaymentIsCreating": "El pago está creando",
     "RussianBankCard": "Tarjeta Bancaria Rusa",
     "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
@@ -766,7 +767,7 @@
     "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
     "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
     "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>",
-    "UpgradePriceInfo": "Se le cobrará la diferencia entre los planes",
+    "UpgradePriceInfo": "Sólo se te cobrará la diferencia entre los planes de suscripción.",
     "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
     "YoureToPay": "Usted debe pagar"
   },
@@ -777,21 +778,23 @@
   "PricingChooseSuccess": {
     "Activated": "Activado",
     "Congratulations": "¡Felicidades!",
-    "Description": "Tu suscripción se ha actualizado correctamente al plan {subscriptionType}.",
     "NewFeatures": "Nuevas Funciones Disponibles",
     "StartWorking": "Empezar a trabajar con temas",
+    "SubscriptionUpgraded": "Su suscripción se ha actualizado correctamente al plan <strong>{grade}</strong>.",
     "ViewPlans": "Ver otros planes de suscripción",
     "WelcomeTo": "¡Bienvenido a {plan}!"
   },
   "PricingChooseSuccessRoute": {
     "CannotUpdateUserData": "No se pueden actualizar los datos del usuario",
     "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
     "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
-    "PaymentFailedExplanation": "Por favor inténtelo de nuevo o contacte con <Link>soporte técnico</Link> si tiene algún problema.",
+    "PaymentAlreadyProcessed": "El pago ya ha sido procesado.",
     "PaymentFailedMessage": "Parece que el pago falló",
     "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago",
     "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
     "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>.",
+    "SucceedPaymentAttemptExplanation": "Parece que estás intentando procesar el mismo pago repetidamente. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
     "TechnicalSupport": "soporte técnico"
   },
   "PricingPlansSection": {
@@ -923,7 +926,6 @@
   "UseYookassaPayment": {
     "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago",
     "PaymentCheckingFailure": "Error al verificar el pago",
-    "PaymentCreatingError": "Error al crear el pago",
     "PaymentProcessingFailure": "Error al procesar el pago"
   },
   "ViewAnswerCard": {

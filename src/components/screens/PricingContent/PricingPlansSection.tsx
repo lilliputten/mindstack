@@ -202,24 +202,12 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
   const [unlimitedPlan, ...mainPlans] = plansData;
 
   const startSubscription = React.useCallback(
-    ({ subscriptionType, priceValue }: TStartSubscriptionParams) => {
+    ({ subscriptionType }: TStartSubscriptionParams) => {
       const requiresUser = subscriptionsRequireUser.includes(subscriptionType);
       const isBasicSubscription = subscriptionType === 'BASIC';
       const choosePlanUrl = isBasicSubscription
         ? userStartAliasRoute
         : `${pricingChooseRoute}/${subscriptionType.toLowerCase()}`;
-      // eslint-disable-next-line no-console
-      console.log('[PricingPlansSection:startSubscription]', {
-        priceValue,
-        subscriptionType,
-        isBasicSubscription,
-        user,
-        subscriptionsRequireUser,
-        requiresUser,
-        choosePlanUrl,
-      });
-      // eslint-disable-next-line no-debugger
-      debugger;
       if (requiresUser && !user) {
         const introText = isBasicSubscription
           ? t('PricingPlansSection.SignInModalIntroForBasic')

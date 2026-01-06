@@ -10,7 +10,11 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { TPaidableSubscriptionType } from '@/features/subscriptions';
+import {
+  ensurePaidableSubscriptionType,
+  parsePaidableSubscriptionType,
+  TPaidableSubscriptionType,
+} from '@/features/subscriptions';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 
@@ -19,12 +23,18 @@ interface PricingChooseSuccessContentProps {
 }
 
 export function PricingChooseSuccessContent({
-  subscriptionType,
+  subscriptionType: rawSubscriptionType,
 }: PricingChooseSuccessContentProps) {
   const t = useT();
 
-  // Extract grade from subscription type (e.g., 'PRO_MONTHLY' -> 'PRO')
-  const grade = subscriptionType.split('_')[0] as UserGradeType;
+  // Convert & check the subscription type
+  const subscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
+    rawSubscriptionType,
+    t,
+  );
+
+  // Extract grade from subscription type (e.g., 'PRO-MONTHLY' -> 'PRO')
+  const { grade } = parsePaidableSubscriptionType(subscriptionType, t);
 
   // Define features based on subscription grade using real features from pricing components
   const getFeaturesByGrade = (grade: UserGradeType) => {
@@ -76,7 +86,6 @@ export function PricingChooseSuccessContent({
   };
 
   const features = getFeaturesByGrade(grade);
-  const gradeTitle = getGradeTitle(grade);
 
   return (
     <div
@@ -109,8 +118,9 @@ export function PricingChooseSuccessContent({
         </h1>
 
         <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-          {t('PricingChooseSuccess.Description', {
-            subscriptionType: gradeTitle,
+          {t.rich('PricingChooseSuccess.SubscriptionUpgraded', {
+            grade,
+            strong: (chunks) => <strong>{chunks}</strong>,
           })}
         </p>
       </div>

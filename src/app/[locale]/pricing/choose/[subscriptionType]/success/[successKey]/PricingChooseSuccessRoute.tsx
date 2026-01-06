@@ -9,11 +9,7 @@ import {
   UserSubscriptionPeriodType,
 } from '@/generated/prisma';
 
-import {
-  contactsAliasRoute,
-  pricingAliasRoute,
-  // pricingChooseRoute,
-} from '@/config/routesConfig';
+import { contactsAliasRoute, pricingAliasRoute } from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { prisma } from '@/lib/db';
 import { ErrorLike } from '@/lib/errors';
@@ -164,7 +160,26 @@ export async function PricingChooseSuccessRoute({
     return (
       <PageError
         title={message}
-        explanation={t.rich('PricingChooseSuccessRoute.PaymentFailedExplanation', {
+        explanation={t.rich('PricingChooseSuccessRoute.FailedPaymentExplanation', {
+          p: (chunks) => <>{chunks}</>,
+          Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
+        })}
+        explanationClassName="text-content"
+      />
+    );
+  }
+  if (status === 'SUCCEED' && !isDev) {
+    const message = t('PricingChooseSuccessRoute.PaymentAlreadyProcessed');
+    // eslint-disable-next-line no-console
+    console.error('[PricingChooseSuccessRoute]', message, {
+      userPayment,
+      user,
+    });
+    // debugger; // eslint-disable-line no-debugger
+    return (
+      <PageError
+        title={message}
+        explanation={t.rich('PricingChooseSuccessRoute.SucceedPaymentAttemptExplanation', {
           p: (chunks) => <>{chunks}</>,
           Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
         })}
@@ -198,7 +213,7 @@ export async function PricingChooseSuccessRoute({
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
 
   // Update data if that hasn't been done yet
-  if (status !== 'SUCCEED' || user.grade !== grade) {
+  if (status === 'PENDING' || user.grade !== grade) {
     try {
       await finishPaymentAndUpdateUserGrade({
         grade,
@@ -208,6 +223,8 @@ export async function PricingChooseSuccessRoute({
         paymentId,
         uniqueKey,
       });
+      // Clean up payments
+      await cleanStaleUserPayments();
     } catch (error) {
       const message = t('PricingChooseSuccessRoute.CannotUpdateUserData');
       const details = getErrorText(error);
@@ -230,8 +247,6 @@ export async function PricingChooseSuccessRoute({
         />
       );
     }
-    // Clean up payments
-    await cleanStaleUserPayments();
   }
 
   return (

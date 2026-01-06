@@ -55,7 +55,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
    * payment link (`paymentUrl`, returned from the `makeYookassaPayment` API
    * call), and/or to wait for a payment status updates
    * (`resolveYookassaPaymentInLoop`) */
-  const startYoukassaPayment = React.useCallback(() => {
+  const startYookassaPayment = React.useCallback(() => {
     const makeYookassaPaymentParams: TMakeYookassaPaymentParams = {
       subscriptionType,
       uniqueKey: memo.uniqueKey,
@@ -190,12 +190,12 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
   // NOTE: Using only throught memo reference
   memo.checkPayment = checkPayment;
 
-  /** Start a payment (via `startYoukassaPayment`) and wait to its status
+  /** Start a payment (via `startYookassaPayment`) and wait to its status
    * updates, iteratively calling of the `checkPaymentStatus` callback.
    * But keep in mind that the user must to make the payment on the real page,
    * returned in the `redirectUrl` parameter.
    *
-   * @param {TPaymentResult} result - The result of prviously invoked `startYoukassaPayment` hook
+   * @param {TPaymentResult} result - The result of prviously invoked `startYookassaPayment` hook
    */
   const resolveYookassaPaymentInLoop = React.useCallback(
     (result: TPaymentResult) => {
@@ -234,7 +234,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     // uniqueKey,
     paymentId: activePaymentId,
     isWorking: isApiWorking || !!activePaymentId,
-    startYoukassaPayment,
+    startYookassaPayment,
     resolveYookassaPaymentInLoop, // Is it really used?
   };
 }

@@ -9,6 +9,7 @@ import {
 } from '@/generated/prisma';
 
 import { prisma } from '@/lib/db';
+import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { TCurrencyType } from '@/features/currencies';
 import { TSubscriptionType } from '@/features/subscriptions/types';
@@ -52,12 +53,16 @@ export async function addUserPayment(data: AddUserPaymentData) {
 
     return payment;
   } catch (error) {
+    const message = 'Error parsing user payment data';
+    const details = getErrorText(error);
+    const comboMsg = [message, details].filter(Boolean).join(': ');
+
     // eslint-disable-next-line no-console
-    console.error('[addUserPayment] catch', {
+    console.error('[addUserPayment]', comboMsg, {
       error,
       data,
     });
     debugger; // eslint-disable-line no-debugger
-    throw error;
+    throw new Error(message);
   }
 }

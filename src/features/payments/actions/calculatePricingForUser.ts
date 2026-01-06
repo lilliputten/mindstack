@@ -71,7 +71,7 @@ export async function calculatePricingForUser(
   }
 
   // Calculate price difference for upgrades
-  if (comparisonResult.type === 'upgrade') {
+  if (comparisonResult.currentGrade !== 'BASIC' && comparisonResult.type === 'upgrade') {
     if (!currentPeriod) {
       const error = new Error(
         t('CalculatePricingForUser.CurrentSubscriptionPeriodMissing', { userId: user.id }),

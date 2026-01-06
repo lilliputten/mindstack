@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 
 import { GenericIDError } from '@/lib/errors/GenericIDError';
 
-import { AIGenerationError, InternalError, ServerAuthError } from '../errors';
+import { AIGenerationError, ErrorPlainOnject, InternalError, ServerAuthError } from '../errors';
 
 interface TGetErrorTextOpts {
   omitErrorName?: boolean;
@@ -49,13 +49,14 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
       return `${path}${issue.message}`;
     });
     errorText = issues.join('; ');
-  } else if (isError) {
-    errorText = err.message;
+  } else if ((isError && err.message) || (err as ErrorPlainOnject).message) {
+    errorText = (err as ErrorPlainOnject).message;
   } else if (err instanceof Object && Object.prototype.hasOwnProperty.call(err, 'digest')) {
     errorText = String((err as { digest: string }).digest);
   }
   if (errorText) {
-    const errorName = isError && err.name;
+    const errorName =
+      ((isError && err.name) || (err as ErrorPlainOnject).name) && (err as ErrorPlainOnject).name;
     return [
       // Prepare combined error text
       !opts.omitErrorName && errorName !== 'Error' && errorName,

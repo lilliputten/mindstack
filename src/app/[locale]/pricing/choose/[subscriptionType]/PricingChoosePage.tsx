@@ -12,7 +12,7 @@ import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/con
 import { useEnvConext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
-import { useYookassaPayment } from '@/features/payments/hooks';
+import { useStripePayment, useYookassaPayment } from '@/features/payments/hooks';
 import { parsePaidableSubscriptionType, TPaidableSubscriptionType } from '@/features/subscriptions';
 import { Link, TLocale, useT } from '@/i18n';
 
@@ -24,6 +24,8 @@ interface PricingChoosePageProps {
   locale: TLocale;
   prices: TCurrencyPrices;
 }
+
+type TPaymentResult = { paymentUrl?: string };
 
 export function PricingChoosePage({
   subscriptionType,
@@ -46,8 +48,11 @@ export function PricingChoosePage({
 
   const telegramUrl = `${tgUrlPrefix}/${BOT_USERNAME}`;
 
+  const stripePayment = useStripePayment({ subscriptionType });
+  const { isReady: isStripePaymentReady, runStartStripeCheckout } = stripePayment;
+
   const yookassaPayment = useYookassaPayment({ subscriptionType });
-  const { isReady: isYoukassaPaymentReady, startYoukassaPayment } = yookassaPayment;
+  const { isReady: isYookassaPaymentReady, startYookassaPayment } = yookassaPayment;
 
   // Handle different comparison scenarios
   const isSame = comparisonResult?.type === 'same';
@@ -55,24 +60,23 @@ export function PricingChoosePage({
   const isDowngrade = comparisonResult?.type === 'downgrade';
   const isUpgrade = comparisonResult?.type === 'upgrade';
 
-  /* // DEBUG: Effect:comparisonResult
-   * React.useEffect(() => {
-   *   console.log('[PricingChoosePage] Effect:comparisonResult', {
-   *     isGuest,
-   *     isDowngrade,
-   *     isUpgrade,
-   *     comparisonResult,
-   *     prices,
-   *   });
-   * }, [
-   *   ///
-   *   comparisonResult,
-   *   isDowngrade,
-   *   isGuest,
-   *   isUpgrade,
-   *   prices,
-   * ]);
-   */
+  // DEBUG: Effect:comparisonResult
+  React.useEffect(() => {
+    console.log('[PricingChoosePage] Effect:comparisonResult', {
+      isGuest,
+      isDowngrade,
+      isUpgrade,
+      comparisonResult,
+      prices,
+    });
+  }, [
+    ///
+    comparisonResult,
+    isDowngrade,
+    isGuest,
+    isUpgrade,
+    prices,
+  ]);
 
   const ensureValidConditions = React.useCallback(() => {
     // Guest users should authorize in order to be able to make payments
@@ -88,54 +92,55 @@ export function PricingChoosePage({
     }
   }, [isDowngrade, isGuest, t]);
 
+  const handlePayment = React.useCallback(
+    (startPayment: () => Promise<TPaymentResult>) => {
+      startWorking(async () => {
+        ensureValidConditions();
+        try {
+          const promise = startPayment();
+          toast.promise(promise, {
+            loading: t('PricingChoosePage.PaymentIsCreating'),
+            success: t('PricingChoosePage.PaymentCreated'),
+            // error: 'Payment starting error',
+          });
+          const result = await promise;
+          const { paymentUrl } = result;
+          console.log('[PricingChoosePage:handlePayment] done', {
+            result,
+            paymentUrl,
+          });
+          if (!paymentUrl) {
+            throw new Error(t('PricingChoosePage.NoPaymentUrlProvided'));
+          }
+          if (typeof window === 'object') {
+            window.location.href = paymentUrl;
+          }
+        } catch (error) {
+          const message = t('PricingChoosePage.PaymentCreatingError');
+          const details = getErrorText(error);
+          const comboMsg = [message, details].filter(Boolean).join(': ');
+          // eslint-disable-next-line no-console
+          console.error('[PricingChoosePage:handlePayment]', comboMsg, {
+            error,
+          });
+          debugger; // eslint-disable-line no-debugger
+          // TODO: Use error in the toast.promise, without details
+          toast.error(comboMsg);
+        }
+      });
+    },
+    [ensureValidConditions, t],
+  );
+
   const handleRussianCard = React.useCallback(() => {
-    startWorking(async () => {
-      ensureValidConditions();
-      try {
-        const promise = startYoukassaPayment();
-        toast.promise(promise, {
-          loading: t('PricingChoosePage.PaymentIsCreating'),
-          success: t('PricingChoosePage.PaymentCreated'),
-          // error: 'Payment starting error',
-        });
-        const result = await promise;
-        const { paymentUrl } = result;
-        // eslint-disable-next-line no-console
-        console.log('[PricingChoosePage:handleRussianCard] done', {
-          result,
-          paymentUrl,
-        });
-        if (!paymentUrl) {
-          throw new Error(t('PricingChoosePage.NoPaymentUrlProvided'));
-        }
-        if (typeof window === 'object') {
-          window.location.href = paymentUrl;
-        }
-      } catch (error) {
-        const message = t('UseYookassaPayment.PaymentCreatingError');
-        const details = getErrorText(error);
-        const comboMsg = [message, details].filter(Boolean).join(': ');
-        // eslint-disable-next-line no-console
-        console.error('[PricingChoosePage:handleRussianCard]', comboMsg, {
-          error,
-        });
-        debugger; // eslint-disable-line no-debugger
-        // TODO: Use error in the toast.promise, without details
-        toast.error(comboMsg);
-      }
-    });
-  }, [ensureValidConditions, startYoukassaPayment, t]);
+    handlePayment(startYookassaPayment);
+  }, [handlePayment, startYookassaPayment]);
 
   const handleInternationalCard = React.useCallback(() => {
-    ensureValidConditions();
-    // TODO
-    // eslint-disable-next-line no-console
-    console.log('[PricingChoosePage:handleInternationalCard]', subscriptionType);
-    // eslint-disable-next-line no-debugger
-    debugger;
-  }, [ensureValidConditions, subscriptionType]);
+    handlePayment(runStartStripeCheckout);
+  }, [handlePayment, runStartStripeCheckout]);
 
-  const isReady = isYoukassaPaymentReady && !isWorking;
+  const isReady = isYookassaPaymentReady && isStripePaymentReady && !isWorking;
 
   // Determine the appropriate message based on comparison result
   const subscriptionMessage = React.useMemo(() => {
@@ -155,9 +160,12 @@ export function PricingChoosePage({
         requestedGrade: comparisonResult?.requestedGrade,
       });
     } else if (isSame) {
-      return t('PricingChoosePage.SameGradeMessage', {
-        currentGrade: comparisonResult?.currentGrade,
-      });
+      return null;
+      /* // NOTE: This message already displayed in the title
+       * return t('PricingChoosePage.SameGradeMessage', {
+       *   currentGrade: comparisonResult?.currentGrade,
+       * });
+       */
     } else {
       return t('PricingChoosePage.CompleteSubscription', { planName: grade });
     }
@@ -196,13 +204,17 @@ export function PricingChoosePage({
         <h1
           className={cn(
             isDev && '__PricingChoosePage_Title', // DEBUG
-            'text-3xl md:text-5xl lg:text-6xl',
+            'text-2xl md:text-4xl lg:text-5xl',
             'text-balance leading-tight tracking-tight',
             'text-gradient-brand text-truncate font-semibold',
             'mb-6 mt-12 p-4',
           )}
         >
-          {t('PricingChoosePage.ChoosePaymentMethod')}
+          {isSame
+            ? t('PricingChoosePage.SameGradeMessage', {
+                currentGrade: comparisonResult?.currentGrade,
+              })
+            : t('PricingChoosePage.ChoosePaymentMethod')}
         </h1>
         <p
           className={cn(
@@ -230,7 +242,7 @@ export function PricingChoosePage({
               'text-truncate mt-4 flex flex-col items-center',
             )}
           >
-            <div className="text-truncate flex flex-wrap items-baseline gap-1">
+            <div className="text-truncate flex flex-wrap items-baseline gap-2">
               <span
                 className={cn(
                   isDev && '__PricingChoosePage_paymentMessage', // DEBUG
