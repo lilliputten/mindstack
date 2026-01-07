@@ -88,6 +88,7 @@ model User {
   userTopicWorkout UserTopicWorkout[]
   workoutStats     WorkoutStats[]
   AIGenerations    AIGeneration[]
+  categories       Category[]
 
   @@map("users")
 }
@@ -208,6 +209,49 @@ model AIGeneration {
   @@map("ai_generations")
 }
 
+enum CategoryStatus {
+  PUBLIC
+  SUGGESTED
+  HIDDEN
+}
+
+model Category {
+  id String @id @default(cuid())
+
+  status  CategoryStatus @default(PUBLIC)
+
+  // Translated fields: name, description, keywords
+  translations CategoryTranslation[]
+
+  imageUrl String? // Stores Vercel Blob public URL
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  topics Topic[]
+
+  @@index([userId])
+  @@map("categories")
+}
+
+// Category records' translations: name, description, keywords
+model CategoryTranslation {
+  categoryId String
+  locale     String // e.g., 'en', 'es', 'ru'
+
+  name        String
+  description String?
+  keywords    String?
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, locale]) // Ensures one translation per locale per category
+  @@map("category_translations")
+}
+
 model Topic {
   id                 String             @id @default(cuid())
   name               String
@@ -227,6 +271,8 @@ model Topic {
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userTopicWorkout   UserTopicWorkout[]
   workoutStats       WorkoutStats[]
+  category           Category?          @relation(fields: [categoryId], references: [id])
+  categoryId         String?
 
   @@index([userId])
   @@map("topics")
