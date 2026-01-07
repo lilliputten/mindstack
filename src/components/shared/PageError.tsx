@@ -100,7 +100,11 @@ export function PageError(props: TErrorProps) {
       )}
     >
       <ErrorPlaceHolder.Icon
-        className={iconClassName}
+        className={cn(
+          isDev && '__PageError_Icon', // DEBUG
+          'mb-4',
+          iconClassName,
+        )}
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
       {titleText && <ErrorPlaceHolder.Title>{titleText}</ErrorPlaceHolder.Title>}
@@ -108,14 +112,20 @@ export function PageError(props: TErrorProps) {
       {explanation && (
         <div
           className={cn(
-            'mb-5 mt-1.5 text-center text-sm font-normal leading-6 text-muted-foreground',
+            isDev && '__PageError_Explanation', // DEBUG
+            'text-content text-center text-sm font-normal leading-6',
             explanationClassName,
           )}
         >
           {explanation}
         </div>
       )}
-      <div className="mt-2 flex w-full flex-wrap justify-center gap-4">
+      <div
+        className={cn(
+          isDev && '__PageError_Actions', // DEBUG
+          'mt-4 flex w-full flex-wrap justify-center gap-4',
+        )}
+      >
         <Button variant="theme" onClick={goBack} className="flex gap-2">
           <Icons.ArrowLeft className="size-4" />
           <span>Go back</span>

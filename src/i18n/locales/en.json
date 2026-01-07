@@ -754,7 +754,7 @@
   },
   "PricingChooseCancelRoute": {
     "CannotCancelNotPendingPayment": "Cannot cancel a non-pending payment",
-    "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "ContactTechSupport": "Please contact <Link>technical support</Link>.",
     "ErrorCancelingPayment": "Error canceling the payment",
     "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
     "InvalidPaymentProvider": "Unknown payment provider ({provider})",
@@ -809,7 +809,7 @@
     "WelcomeTo": "Welcome to {plan}!"
   },
   "PricingChooseSuccessRoute": {
-    "CannotUpdateUserDataExplanation": "Please contact <Link>technical support</Link>.",
+    "ContactTechSupport": "Please contact <Link>technical support</Link>.",
     "ErrorFinishingPayment": "Error finalizing the payment",
     "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
     "InvalidPaymentProvider": "Unknown payment provider ({provider})",
@@ -894,12 +894,6 @@
     "Info": "Information",
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
-  },
-  "StartYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
-    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
-    "PaymentError": "Error making yookassa payment",
-    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
@@ -1152,9 +1146,13 @@
     "TrainingIsStarting": "The training is starting..."
   },
   "YookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
+    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
     "NotSpecifiedPaymentId": "Not specified payment ID to check",
     "PaymentCheckingFailure": "Payment checking failure",
+    "PaymentError": "Error making yookassa payment",
     "PaymentProcessingFailure": "Payment processing failure",
-    "PaymentStartingError": "Payment starting error"
+    "PaymentStartingError": "Payment starting error",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   }
 }

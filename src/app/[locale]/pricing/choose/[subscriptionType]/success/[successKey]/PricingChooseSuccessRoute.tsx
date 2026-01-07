@@ -9,16 +9,23 @@ import {
   UserSubscriptionPeriodType,
 } from '@/generated/prisma';
 
-import { contactsAliasRoute, pricingAliasRoute } from '@/config/routesConfig';
+import {
+  contactsAliasRoute,
+  pricingAliasRoute,
+  pricingChooseRoute,
+  TRoutePath,
+} from '@/config/routesConfig';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { prisma } from '@/lib/db';
 import { ErrorLike } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { checkPayment, cleanStaleUserPayments, findUserPayment } from '@/features/payments';
 import {
@@ -72,27 +79,29 @@ async function finishPaymentAndUpdateUserGrade(params: TUpdateUserGradeParams) {
   } = params;
   return await prisma.$transaction(async (tx) => {
     // Update user payment status (analog of updateUserPayment)
-    await tx.userPayment.update({
-      where: {
-        userId_provider_paymentId_uniqueKey: {
-          userId,
-          provider,
-          paymentId,
-          uniqueKey,
+    return await Promise.all([
+      tx.userPayment.update({
+        where: {
+          userId_provider_paymentId_uniqueKey: {
+            userId,
+            provider,
+            paymentId,
+            uniqueKey,
+          },
         },
-      },
-      data: { status: 'SUCCEED' },
-    });
-    // Update user grade (analog of updateCurrentUser)
-    await tx.user.update({
-      where: { id: userId },
-      data: {
-        grade,
-        subscriptionPeriod: period,
-        // TODO: Add checking of the valid subscription period to the grade check
-        subscriptionStartedAt,
-      },
-    });
+        data: { status: 'SUCCEED' },
+      }),
+      // Update user grade (analog of updateCurrentUser)
+      tx.user.update({
+        where: { id: userId },
+        data: {
+          grade,
+          subscriptionPeriod: period,
+          // TODO: Add checking of the valid subscription period to the grade check
+          subscriptionStartedAt,
+        },
+      }),
+    ]);
   });
 }
 
@@ -133,6 +142,34 @@ export async function PricingChooseSuccessRoute({
   const subscriptionType: TPaidableSubscriptionType = ensurePaidableSubscriptionType(
     rawSubscriptionType,
     t,
+  );
+
+  const paymentChooseUrl = `${pricingChooseRoute}/${rawSubscriptionType}` as TRoutePath;
+
+  const extraErrorActions = (
+    <>
+      <Link
+        href={contactsAliasRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+      >
+        <Icons.ArrowRight className="size-4" />
+        <span>Reach technical support</span>
+      </Link>
+      <Link
+        href={pricingAliasRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+      >
+        <Icons.ArrowRight className="size-4" />
+        <span>Review subscription options</span>
+      </Link>
+      <Link
+        href={paymentChooseUrl}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+      >
+        <Icons.ArrowRight className="size-4" />
+        <span>Choose another payment method</span>
+      </Link>
+    </>
   );
 
   const userPayment = await findUserPayment({ provider, uniqueKey });
@@ -216,13 +253,15 @@ export async function PricingChooseSuccessRoute({
 
   // Update data if that hasn't been done yet
   if (status === 'PENDING' || user.grade !== grade) {
+    let checkResult: Awaited<ReturnType<typeof checkPayment>> | undefined;
+    let finishResult: Awaited<ReturnType<typeof finishPaymentAndUpdateUserGrade>> | undefined;
     try {
-      const checkResult = await checkPayment({ provider, paymentId, uniqueKey });
+      checkResult = await checkPayment({ provider, paymentId, uniqueKey });
       const { isPaid } = checkResult;
       if (!isPaid) {
         throw new Error('The payment was not paid');
       }
-      await finishPaymentAndUpdateUserGrade({
+      finishResult = await finishPaymentAndUpdateUserGrade({
         grade,
         period,
         userId,
@@ -239,6 +278,8 @@ export async function PricingChooseSuccessRoute({
       // eslint-disable-next-line no-console
       console.error('[PricingChooseSuccessRoute]', comboMsg, {
         error,
+        finishResult,
+        checkResult,
         provider,
         paymentId,
         uniqueKey,
@@ -246,14 +287,15 @@ export async function PricingChooseSuccessRoute({
         userPayment,
         subscriptionType,
       });
-      debugger; // eslint-disable-line no-debugger
+      // debugger; // eslint-disable-line no-debugger
       return (
         <PageError
           title={message}
           error={error as ErrorLike}
-          explanation={t.rich('PricingChooseSuccessRoute.CannotUpdateUserDataExplanation', {
-            Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
-          })}
+          explanation={
+            'The payment could have been canceled or an error could have occurred on the service side.'
+          }
+          extraActions={extraErrorActions}
         />
       );
     }

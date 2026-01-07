@@ -1,6 +1,10 @@
 'use server';
 
-import { ICreatePayment, IPaymentMethodType } from '@a2seven/yoo-checkout';
+import {
+  IConfirmationWithoutData,
+  ICreatePayment,
+  IPaymentMethodType,
+} from '@a2seven/yoo-checkout';
 
 import { useFakePrices, WEBHOOK_HOST } from '@/config/envServer';
 import { CustomAPIError } from '@/lib/errors';
@@ -22,13 +26,13 @@ export interface TStartYookassaPaymentParams {
 }
 
 /** Start yookassa payment */
-export async function startYookassaPayment(params: TStartYookassaPaymentParams) {
+export async function startYookassaCheckoutPayment(params: TStartYookassaPaymentParams) {
   const { uniqueKey, paymentType, subscriptionType: rawSubscriptionType } = params;
   const t = await getT();
 
   const user = await getCurrentUser();
   if (!user) {
-    throw new CustomAPIError(t('StartYookassaPayment.UnauthorizedPaymentError'));
+    throw new CustomAPIError(t('YookassaPayment.UnauthorizedPaymentError'));
   }
 
   // Use calculatePricingForUser to get proper pricing and comparison data
@@ -40,7 +44,7 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
 
   if (!price) {
     throw new Error(
-      t('StartYookassaPayment.FailedToCalculatePrice', { subscriptionType: rawSubscriptionType }),
+      t('YookassaPayment.FailedToCalculatePrice', { subscriptionType: rawSubscriptionType }),
     );
   }
 
@@ -48,7 +52,7 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
   if (comparisonResult.type === 'upgrade') {
     // This is an upgrade scenario
     // eslint-disable-next-line no-console
-    console.log('[startYookassaPayment]', 'Processing upgrade payment', {
+    console.log('[startYookassaCheckoutPayment]', 'Processing upgrade payment', {
       user,
       currentGrade,
       requestedGrade,
@@ -58,7 +62,7 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
     // This is a downgrade - should not happen in normal flow, but we'll log it
     // eslint-disable-next-line no-console
     console.warn(
-      '[startYookassaPayment]',
+      '[startYookassaCheckoutPayment]',
       'Downgrade payment detected - this should not happen normally',
       {
         user,
@@ -67,11 +71,11 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
       },
     );
     // For downgrades, we might want to redirect to support instead of processing payment
-    throw new CustomAPIError(t('StartYookassaPayment.DowngradeRequestsThroughSupport'));
+    throw new CustomAPIError(t('YookassaPayment.DowngradeRequestsThroughSupport'));
   } else {
     // Same grade - renewal or period change
     // eslint-disable-next-line no-console
-    console.log('[startYookassaPayment]', 'Processing renewal or period change', {
+    console.log('[startYookassaCheckoutPayment]', 'Processing renewal or period change', {
       user,
       currentGrade,
       requestedGrade,
@@ -90,19 +94,23 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
 
     // Route: `/pricing/choose/[subscriptionType]/success/[successKey]`
     const successUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType.toLowerCase()}/success/${successKey}`;
+    // const cancelUrl = `${WEBHOOK_HOST}${pricingChooseRoute}/${subscriptionType.toLowerCase()}/cancel/${successKey}`;
 
     const payment_method_data = paymentType ? { type: paymentType } : undefined;
+
+    const confirmationData: IConfirmationWithoutData = {
+      type: 'redirect',
+      return_url: successUrl,
+    };
+
     const createPayload: ICreatePayment = {
       amount: {
-        // TODO: Convert to cents (kopeks)?
         value: stringifyPrice(price),
         currency,
       },
       payment_method_data,
-      confirmation: {
-        type: 'redirect',
-        return_url: successUrl,
-      },
+      confirmation: confirmationData,
+      // language: locale, // TODO: There no locale support in the API
     };
 
     const payment = await checkout.createPayment(createPayload, uniqueKey);
@@ -156,11 +164,11 @@ export async function startYookassaPayment(params: TStartYookassaPaymentParams) 
 
     return resultData;
   } catch (error) {
-    const message = t('StartYookassaPayment.PaymentError');
+    const message = t('YookassaPayment.PaymentError');
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     // eslint-disable-next-line no-console
-    console.error('[startYookassaPayment]', comboMsg, {
+    console.error('[startYookassaCheckoutPayment]', comboMsg, {
       error,
       params,
     });

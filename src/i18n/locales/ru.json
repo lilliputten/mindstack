@@ -752,7 +752,7 @@
   },
   "PricingChooseCancelRoute": {
     "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
-    "CannotUpdateUserDataExplanation": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
     "ErrorCancelingPayment": "Ошибка при отмене платежа",
     "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
     "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
@@ -807,7 +807,7 @@
     "WelcomeTo": "Добро пожаловать в {plan}!"
   },
   "PricingChooseSuccessRoute": {
-    "CannotUpdateUserDataExplanation": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
     "ErrorFinishingPayment": "Ошибка завершения платежа",
     "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
     "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
@@ -892,12 +892,6 @@
     "Info": "Информация",
     "MyTopics": "Мои темы",
     "Welcome": "Добро пожаловать"
-  },
-  "StartYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
-    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
-    "PaymentError": "Ошибка при создании платежа через yookassa",
-    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
@@ -1147,9 +1141,13 @@
     "TrainingIsStarting": "Тренировка начинается..."
   },
   "YookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
     "NotSpecifiedPaymentId": "Не указан идентификатор платежа для проверки",
     "PaymentCheckingFailure": "Ошибка проверки оплаты",
+    "PaymentError": "Ошибка при создании платежа через yookassa",
     "PaymentProcessingFailure": "Ошибка обработки оплаты",
-    "PaymentStartingError": "Ошибка начала платежа"
+    "PaymentStartingError": "Ошибка начала платежа",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   }
 }

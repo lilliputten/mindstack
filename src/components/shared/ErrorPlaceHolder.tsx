@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { isDev } from '@/config';
 
 import { TGenericIcon } from './IconTypes';
 
@@ -15,6 +16,7 @@ export function ErrorPlaceHolder({
   return (
     <div
       className={cn(
+        isDev && '__ErrorPlaceHolder', // DEBUG
         'flex flex-1 items-center justify-center rounded-lg border border-dashed p-8 text-center shadow-sm animate-in fade-in-50',
         className,
       )}
@@ -22,8 +24,8 @@ export function ErrorPlaceHolder({
     >
       <div
         className={cn(
-          'flex flex-col items-center gap-6 text-center',
-          // 'max-w-[420px]',
+          isDev && '__ErrorPlaceHolder_Container', // DEBUG
+          'flex flex-col items-center gap-4 text-center',
           containerClassName,
         )}
       >
@@ -50,6 +52,7 @@ ErrorPlaceHolder.Icon = function ErrorPlaceHolderIcon({
     return (
       <div
         className={cn(
+          isDev && '__ErrorPlaceHolderIcon', // DEBUG
           'bg-error-stripes flex size-20 items-center justify-center rounded-full text-white',
           className,
         )}
@@ -66,7 +69,16 @@ ErrorPlaceHolder.Title = function ErrorPlaceHolderTitle({
   className,
   ...props
 }: ErrorPlaceHolderTitleProps) {
-  return <h3 className={cn('mt-2 font-heading text-2xl font-bold', className)} {...props} />;
+  return (
+    <h3
+      className={cn(
+        isDev && '__ErrorPlaceHolderTitle', // DEBUG
+        'font-heading text-2xl font-bold',
+        className,
+      )}
+      {...props}
+    />
+  );
 };
 
 type ErrorPlaceHolderDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
@@ -78,7 +90,8 @@ ErrorPlaceHolder.Description = function ErrorPlaceHolderDescription({
   return (
     <p
       className={cn(
-        'mb-5 mt-1.5 text-center text-sm font-normal leading-6 text-muted-foreground',
+        isDev && '__ErrorPlaceHolderDescription', // DEBUG
+        'text-center font-normal leading-6',
         className,
       )}
       {...props}

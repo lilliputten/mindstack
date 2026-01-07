@@ -1,5 +1,6 @@
 'use server';
 
+import { getLocale } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { stripeSecretKey, useFakePrices, WEBHOOK_HOST } from '@/config/envServer';
@@ -21,6 +22,7 @@ interface TStartStripePaymentParams {
 /** Start stripe payment */
 export async function startStripeSessionCheckout(params: TStartStripePaymentParams) {
   const { uniqueKey, subscriptionType: rawSubscriptionType, currency = 'USD' } = params;
+  const locale = await getLocale();
   const t = await getT();
 
   const user = await getCurrentUser();
@@ -57,8 +59,10 @@ export async function startStripeSessionCheckout(params: TStartStripePaymentPara
     };
     const stripe = new Stripe(stripeSecretKey, stripeConfig);
 
+    const stripeLocale = locale as Stripe.Checkout.SessionCreateParams.Locale;
+
     const checkoutParams: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: ['card'],
+      // payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
@@ -83,6 +87,7 @@ export async function startStripeSessionCheckout(params: TStartStripePaymentPara
       branding_settings: {
         display_name: t('Pages.RootTitle'),
       },
+      locale: stripeLocale,
     };
     const stripeOptions: Stripe.RequestOptions = {
       idempotencyKey: uniqueKey,

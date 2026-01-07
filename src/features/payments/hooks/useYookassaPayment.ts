@@ -14,7 +14,7 @@ import { useT } from '@/i18n';
 import {
   addUserPayment,
   checkYookassaPayment,
-  startYookassaPayment,
+  startYookassaCheckoutPayment,
   TCheckYookassaPaymentParams,
   TStartYookassaPaymentParams,
   updateUserPayment,
@@ -36,7 +36,7 @@ interface TMemo {
   startedAt?: number;
 }
 
-type TPaymentResult = Awaited<ReturnType<typeof startYookassaPayment>>;
+type TPaymentResult = Awaited<ReturnType<typeof startYookassaCheckoutPayment>>;
 
 const maxWaitTimeout = isDev ? minuteMs * 1 : minuteMs * 10;
 
@@ -63,7 +63,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
     return new Promise<TPaymentResult>((resolve, reject) => {
       startApiWorking(async () => {
         try {
-          const result = await startYookassaPayment(startYookassaPaymentParams);
+          const result = await startYookassaCheckoutPayment(startYookassaPaymentParams);
           const { paymentId, price, currency } = result;
           await addUserPayment({
             provider: 'YOOKASSA',

@@ -169,7 +169,7 @@ export async function PricingChooseCancelRoute({
         <PageError
           title={message}
           error={error as ErrorLike}
-          explanation={t.rich('PricingChooseCancelRoute.CannotUpdateUserDataExplanation', {
+          explanation={t.rich('PricingChooseCancelRoute.ContactTechSupport', {
             Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
           })}
         />

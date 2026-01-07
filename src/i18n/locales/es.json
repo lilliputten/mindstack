@@ -753,7 +753,7 @@
   },
   "PricingChooseCancelRoute": {
     "CannotCancelNotPendingPayment": "No se puede cancelar un pago que no está pendiente",
-    "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ContactTechSupport": "Por favor contacte con <Link>soporte técnico</Link>.",
     "ErrorCancelingPayment": "Error al cancelar el pago",
     "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
     "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
@@ -808,7 +808,7 @@
     "WelcomeTo": "¡Bienvenido a {plan}!"
   },
   "PricingChooseSuccessRoute": {
-    "CannotUpdateUserDataExplanation": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ContactTechSupport": "Por favor contacte con <Link>soporte técnico</Link>.",
     "ErrorFinishingPayment": "Error al finalizar el pago",
     "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
     "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
@@ -893,12 +893,6 @@
     "Info": "Información",
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
-  },
-  "StartYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
-    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
-    "PaymentError": "Error al realizar el pago de yookassa",
-    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
@@ -1151,9 +1145,13 @@
     "TrainingIsStarting": "El entrenamiento está comenzando..."
   },
   "YookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
     "NotSpecifiedPaymentId": "ID de pago no especificado para verificar",
     "PaymentCheckingFailure": "Error al verificar el pago",
+    "PaymentError": "Error al realizar el pago de yookassa",
     "PaymentProcessingFailure": "Error al procesar el pago",
-    "PaymentStartingError": "Error al iniciar el pago"
+    "PaymentStartingError": "Error al iniciar el pago",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   }
 }
