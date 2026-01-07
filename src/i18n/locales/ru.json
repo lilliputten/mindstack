@@ -807,6 +807,7 @@
     "WelcomeTo": "Добро пожаловать в {plan}!"
   },
   "PricingChooseSuccessRoute": {
+    "ChooseAnotherPaymentMethod": "Выбрать другой способ оплаты",
     "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
     "ErrorFinishingPayment": "Ошибка завершения платежа",
     "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
@@ -815,6 +816,10 @@
     "PaymentAlreadyProcessed": "Платеж уже был обработан",
     "PaymentFailedMessage": "Похоже, оплата не прошла",
     "PaymentNotFound": "Платеж не найден",
+    "PaymentServiceSideErrorExplanation": "Платеж мог быть отменен или могла произойти ошибка на стороне сервиса.",
+    "PaymentWasNotPaidError": "Платеж не был оплачен",
+    "ReachTechnicalSupport": "Обратиться в техническую поддержку",
+    "ReviewSubscriptionOptions": "Просмотреть варианты подписки",
     "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате",
     "SubscriptionTypesMismatch": "Несоответствие типов подписки",
     "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>.",

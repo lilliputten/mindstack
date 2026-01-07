@@ -809,6 +809,7 @@
     "WelcomeTo": "Welcome to {plan}!"
   },
   "PricingChooseSuccessRoute": {
+    "ChooseAnotherPaymentMethod": "Choose another payment method",
     "ContactTechSupport": "Please contact <Link>technical support</Link>.",
     "ErrorFinishingPayment": "Error finalizing the payment",
     "FailedPaymentExplanation": "An error probably occurred during payment processing. Please try again or contact <Link>technical support</Link> if you have any problems.",
@@ -817,6 +818,10 @@
     "PaymentAlreadyProcessed": "The payment has been already processed",
     "PaymentFailedMessage": "It looks like the payment failed",
     "PaymentNotFound": "The payment has not been found",
+    "PaymentServiceSideErrorExplanation": "The payment could have been canceled or an error could have occurred on the service side.",
+    "PaymentWasNotPaidError": "The payment was not paid",
+    "ReachTechnicalSupport": "Reach technical support",
+    "ReviewSubscriptionOptions": "Review subscription options",
     "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment",
     "SubscriptionTypesMismatch": "Subscription types mismatch",
     "SubscriptionTypesMismatchExplanation": "Expected <strong>{expected}</strong>, but received <strong>{received}</strong>.",

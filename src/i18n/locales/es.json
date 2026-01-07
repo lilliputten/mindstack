@@ -808,6 +808,7 @@
     "WelcomeTo": "¡Bienvenido a {plan}!"
   },
   "PricingChooseSuccessRoute": {
+    "ChooseAnotherPaymentMethod": "Elegir otro método de pago",
     "ContactTechSupport": "Por favor contacte con <Link>soporte técnico</Link>.",
     "ErrorFinishingPayment": "Error al finalizar el pago",
     "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
@@ -816,6 +817,10 @@
     "PaymentAlreadyProcessed": "El pago ya ha sido procesado.",
     "PaymentFailedMessage": "Parece que el pago falló",
     "PaymentNotFound": "El pago no ha sido encontrado.",
+    "PaymentServiceSideErrorExplanation": "El pago podría haber sido cancelado o pudo haber ocurrido un error en el lado del servicio.",
+    "PaymentWasNotPaidError": "El pago no se realizó",
+    "ReachTechnicalSupport": "Contactar con soporte técnico",
+    "ReviewSubscriptionOptions": "Revisar opciones de suscripción",
     "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago",
     "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
     "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>.",

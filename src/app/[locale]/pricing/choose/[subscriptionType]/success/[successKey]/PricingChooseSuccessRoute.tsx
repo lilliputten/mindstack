@@ -153,21 +153,21 @@ export async function PricingChooseSuccessRoute({
         className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
       >
         <Icons.ArrowRight className="size-4" />
-        <span>Reach technical support</span>
+        <span>{t('PricingChooseSuccessRoute.ReachTechnicalSupport')}</span>
       </Link>
       <Link
         href={pricingAliasRoute}
         className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
       >
         <Icons.ArrowRight className="size-4" />
-        <span>Review subscription options</span>
+        <span>{t('PricingChooseSuccessRoute.ReviewSubscriptionOptions')}</span>
       </Link>
       <Link
         href={paymentChooseUrl}
         className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
       >
         <Icons.ArrowRight className="size-4" />
-        <span>Choose another payment method</span>
+        <span>{t('PricingChooseSuccessRoute.ChooseAnotherPaymentMethod')}</span>
       </Link>
     </>
   );
@@ -259,7 +259,7 @@ export async function PricingChooseSuccessRoute({
       checkResult = await checkPayment({ provider, paymentId, uniqueKey });
       const { isPaid } = checkResult;
       if (!isPaid) {
-        throw new Error('The payment was not paid');
+        throw new Error(t('PricingChooseSuccessRoute.PaymentWasNotPaidError'));
       }
       finishResult = await finishPaymentAndUpdateUserGrade({
         grade,
@@ -292,9 +292,7 @@ export async function PricingChooseSuccessRoute({
         <PageError
           title={message}
           error={error as ErrorLike}
-          explanation={
-            'The payment could have been canceled or an error could have occurred on the service side.'
-          }
+          explanation={t('PricingChooseSuccessRoute.PaymentServiceSideErrorExplanation')}
           extraActions={extraErrorActions}
         />
       );
