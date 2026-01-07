@@ -35,6 +35,8 @@ interface TProps extends TPropsWithClassName {
   ignoreOnlyMy?: boolean;
 }
 
+// TODO: Add 'category' field
+
 function FormSection({ children }: TPropsWithChildren) {
   return (
     <div

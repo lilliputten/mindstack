@@ -1,115 +1,127 @@
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
-import { handleApiResponse } from '@/lib/api';
-import { useInvalidateReactQueryKeys } from '@/lib/data/invalidateReactQueryKeys';
+import { clearLocalStorage, deleteAllCookies, getErrorText } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { UserAvatar } from '@/components/shared/UserAvatar';
+import { isDev } from '@/config';
+import { deleteUser } from '@/features/users/actions';
 import { useT } from '@/i18n';
 
 function DeleteAccountModal({
-  showDeleteAccountModal,
-  setShowDeleteAccountModal,
+  isVisible,
+  setVisible,
 }: {
-  showDeleteAccountModal: boolean;
-  setShowDeleteAccountModal: Dispatch<SetStateAction<boolean>>;
+  isVisible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { data: session } = useSession();
-  const user = session?.user;
-  const [deleting, setDeleting] = useState(false);
-  const invalidateKeys = useInvalidateReactQueryKeys();
+  const session = useSession();
+  const {
+    // status,
+    data: sessionData,
+  } = session;
+  const user = sessionData?.user;
 
   const t = useT();
 
-  async function deleteAccount() {
-    setDeleting(true);
-    try {
-      const result = await handleApiResponse(
-        fetch(`/api/user`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }),
-        {
-          onInvalidateKeys: invalidateKeys,
-          debugDetails: {
-            initiator: 'DeleteAccountModal',
-            action: 'deleteAccount',
-          },
-        },
-      );
+  const confirmPattern = t('DeleteAccountModal.confirmPattern');
 
-      if (result.ok) {
-        // delay to allow for the route change to complete
-        await new Promise((resolve) =>
-          setTimeout(() => {
-            signOut({
-              callbackUrl: `${window.location.origin}/`,
-            });
-            resolve(null);
-          }, 500),
-        );
-      } else {
-        setDeleting(false);
-        throw new Error(result.error?.message || 'Failed to delete account');
-      }
-    } catch (error) {
-      setDeleting(false);
-      const details = error instanceof APIError ? error.details : null;
-      const message = 'Cannot delete account';
-      // eslint-disable-next-line no-console
-      console.error('[DeleteAccountModal]', message, {
-        details,
-        error,
-      });
-      debugger; // eslint-disable-line no-debugger
-      throw error;
+  const queryClient = useQueryClient();
+
+  const [isDeleting, setDeleting] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
+
+  const signOutAndClean = React.useCallback(() => {
+    // Clear react-query and local caches
+    queryClient.clear();
+    clearLocalStorage({ except: ['cookies-accepted'] });
+    if (typeof document !== 'undefined') {
+      deleteAllCookies();
     }
+    signOut({
+      // callbackUrl: `${window.location.origin}/`,
+    });
+  }, [queryClient]);
+
+  const doDeleteAccount = React.useCallback(() => {
+    startTransition(async () => {
+      try {
+        if (!user) {
+          throw new Error('User is not signed in');
+        }
+        const promise = deleteUser(user.id);
+        toast.promise(promise, {
+          loading: t('DeleteAccountModal.DeletingAccount'),
+          success: t('DeleteAccountModal.AccountDeletedSuccessfully'),
+          error: 'Error deleting account',
+        });
+        await promise;
+        setDeleting(true);
+        // Do other stuff...
+        setTimeout(signOutAndClean, 500);
+      } catch (error) {
+        const details = getErrorText(error);
+        const message = t('DeleteAccountModal.CannotDeleteAccount');
+        // eslint-disable-next-line no-console
+        console.error('[DeleteAccountModal:doDeleteAccount]', message, {
+          details,
+          error,
+        });
+        debugger; // eslint-disable-line no-debugger
+        toast.error(message);
+      }
+    });
+  }, [t, user, signOutAndClean]);
+
+  if (!user) {
+    return null;
   }
 
-  return (
-    <Modal
-      isVisible={showDeleteAccountModal}
-      toggleModal={setShowDeleteAccountModal}
-      className="gap-0"
-    >
-      <div className="flex flex-col items-center justify-center space-y-3 border-b p-4 pt-8 sm:px-16">
-        <UserAvatar user={user} />
-        <h3 className="text-lg font-semibold">Delete Account</h3>
-        <p className="text-center text-sm text-muted-foreground">
-          <b>Warning:</b> This will permanently delete your account and your active subscription!
-        </p>
+  const isBusy = isDeleting || isPending;
 
+  return (
+    <Modal isVisible={isVisible} toggleModal={setVisible} className="gap-0">
+      <div
+        data-testid="__DeleteAccountModal"
+        className={cn(
+          isDev && '__DeleteAccountModal', // DEBUG
+          'flex flex-col items-center justify-center space-y-3 border-b p-4 pt-8 sm:px-16',
+          isBusy && 'pointer-events-none opacity-50',
+        )}
+      >
+        <UserAvatar user={user} />
+        <h3 className="text-lg font-semibold">{t('DeleteAccountModal.DeleteAccount')}</h3>
+        <p className="text-center text-sm text-muted-foreground">
+          <b>{t('DeleteAccountModal.Warning')}:</b> {t('DeleteAccountModal.WarningText')}
+        </p>
         {/* TODO: Use getUserSubscriptionPlan(session.user.id) to display the user's subscription if he have a paid plan */}
       </div>
 
       <form
-        onSubmit={async (e) => {
+        onSubmit={(e) => {
           e.preventDefault();
-          toast.promise(deleteAccount(), {
-            loading: t('DeleteAccountModal.DeletingAccount'),
-            success: t('DeleteAccountModal.AccountDeletedSuccessfully'),
-            error: (err) => err,
-          });
+          doDeleteAccount();
         }}
         className="flex flex-col space-y-6 bg-accent px-4 py-8 text-left sm:px-16"
       >
-        <div>
+        <div className="flex flex-col gap-2">
           <label htmlFor="verification" className="block text-sm">
-            To verify, type{' '}
-            <span className="font-semibold text-black dark:text-white">confirm delete account</span>{' '}
-            below
+            {t.rich('DeleteAccountModal.TypeToVerifyText', {
+              ConfirmPattern: () => (
+                <span className="font-semibold text-black dark:text-white">{confirmPattern}</span>
+              ),
+            })}
           </label>
           <Input
             type="text"
             name="verification"
             id="verification"
-            pattern="confirm delete account"
+            pattern={confirmPattern}
             required
             autoFocus={false}
             autoComplete="off"
@@ -117,31 +129,47 @@ function DeleteAccountModal({
           />
         </div>
 
-        <Button variant={deleting ? 'disabled' : 'destructive'} disabled={deleting}>
-          Confirm delete account
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="flex-1"
+            variant={isBusy ? 'disabled' : 'destructive'}
+            disabled={isBusy}
+          >
+            {t('DeleteAccountModal.ConfirmDeleteAccount')}
+          </Button>
+          <Button variant="ghost" onClick={() => setVisible(false)}>
+            {t('Cancel')}
+          </Button>
+        </div>
       </form>
     </Modal>
   );
 }
 
 export function useDeleteAccountModal() {
-  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+  const [isVisible, setVisible] = React.useState(false);
 
-  const DeleteAccountModalCallback = useCallback(() => {
-    return (
-      <DeleteAccountModal
-        showDeleteAccountModal={showDeleteAccountModal}
-        setShowDeleteAccountModal={setShowDeleteAccountModal}
-      />
-    );
-  }, [showDeleteAccountModal, setShowDeleteAccountModal]);
+  const showDeleteAccountModal = React.useCallback(() => {
+    setVisible(true);
+  }, []);
 
-  return useMemo(
+  const DeleteAccountModalComponent = React.useCallback(() => {
+    return <DeleteAccountModal isVisible={isVisible} setVisible={setVisible} />;
+  }, [isVisible, setVisible]);
+
+  return React.useMemo(
     () => ({
-      setShowDeleteAccountModal,
-      DeleteAccountModal: DeleteAccountModalCallback,
+      isVisible,
+      setVisible,
+      showDeleteAccountModal,
+      DeleteAccountModal: DeleteAccountModalComponent,
     }),
-    [setShowDeleteAccountModal, DeleteAccountModalCallback],
+    [
+      isVisible,
+      setVisible,
+      ///
+      showDeleteAccountModal,
+      DeleteAccountModalComponent,
+    ],
   );
 }

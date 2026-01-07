@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 
 import { GenericIDError } from '@/lib/errors/GenericIDError';
 
-import { AIGenerationError, ServerAuthError } from '../errors';
+import { AIGenerationError, ErrorPlainOnject, InternalError, ServerAuthError } from '../errors';
 
 interface TGetErrorTextOpts {
   omitErrorName?: boolean;
@@ -41,19 +41,22 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
     errorText = getGenericIDErrorText(err, AIGenerationError);
   } else if (isErrorInstance(err, ServerAuthError)) {
     errorText = getGenericIDErrorText(err, ServerAuthError);
+  } else if (isErrorInstance(err, InternalError)) {
+    errorText = `${err.message} (${err.statusCode})`;
   } else if (err instanceof ZodError) {
     const issues = err.issues.map((issue) => {
       const path = issue.path.length > 0 ? `${issue.path.join('.')}: ` : '';
       return `${path}${issue.message}`;
     });
     errorText = issues.join('; ');
-  } else if (isError) {
-    errorText = err.message;
+  } else if ((isError && err.message) || (err as ErrorPlainOnject).message) {
+    errorText = (err as ErrorPlainOnject).message;
   } else if (err instanceof Object && Object.prototype.hasOwnProperty.call(err, 'digest')) {
     errorText = String((err as { digest: string }).digest);
   }
   if (errorText) {
-    const errorName = isError && err.name;
+    const errorName =
+      ((isError && err.name) || (err as ErrorPlainOnject).name) && (err as ErrorPlainOnject).name;
     return [
       // Prepare combined error text
       !opts.omitErrorName && errorName !== 'Error' && errorName,

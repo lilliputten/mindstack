@@ -8,6 +8,7 @@ Issue #45: Implement topics filtering for available and management pages
 This PR adds comprehensive filtering functionality for both available topics and topics management pages. The implementation includes server-side filtering for getAvailableTopics and client-side filter parameter handling through useAvailableTopics hook.
 
 Key changes:
+
 - Added AvailableTopicsFilters component with multiple filter fields and form handling using react-hook-form's FormProvider
 - Implemented filter persistence with default values from settings and ability to reset to defaults
 - Added filter context management and proper react query data clearing on filters update

@@ -1,6 +1,7 @@
+import { UserRoleType } from '@/generated/prisma';
+
 import { TRoutePath } from '@/config/routesConfig';
 import { TGenericIcon } from '@/components/shared/IconTypes';
-import { UserRoleType } from '@/generated/prisma';
 
 export interface NavItemBase {
   titleId: string; // Id for i18n

@@ -5,7 +5,7 @@
   "author": "lilliputten@gmail.com",
   "license": "ISC",
   "version": "0.0.4",
-  "timestamp": "2025.12.21 06:04:19 +0300",
+  "timestamp": "2026.01.07 23:08:05 +0300",
   "changed": "2025.12.27, 03:28",
   "private": false,
   "main": "src/app/page.tsx",
@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@a2seven/yoo-checkout": "^1.1.4",
     "@hookform/resolvers": "^3.9.1",
     "@langchain/cloudflare": "^1.0.0",
     "@langchain/core": "^1.0.1",
@@ -51,6 +52,8 @@
     "@react-email/button": "^0.0.19",
     "@react-email/components": "^0.0.38",
     "@react-email/html": "^0.0.11",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.0",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.0.4",
     "gigachat": "^0.0.16",
@@ -70,11 +73,12 @@
     "react-syntax-highlighter": "^16.1.0",
     "remark-gfm": "^4.0.1",
     "sonner": "^1.7.0",
+    "stripe": "^20.1.0",
     "tinycolor2": "^1.6.0",
     "vaul": "^1.1.1",
+    "yaml": "^2.8.0",
     "zod": "^3.23.8",
-    "zod-prisma-types": "^3.2.4",
-    "yaml": "^2.8.0"
+    "zod-prisma-types": "^3.2.4"
   },
   "devDependencies": {
     "@auth/core": "^0.40.0",
@@ -190,7 +194,7 @@
     "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
     "clear-all": "echo --Clear all cache and temp files-- && rimraf node_modules/.cache .next && jest --clearCache && echo Cleared cache",
     "dev-entry-UNUSED": "echo --Run nextjs server in iisnode mode-- && node iisnode-nextjs-entry.js",
-    "dev": "echo --Run nextjs server in development mode-- && next dev --turbo",
+    "dev": "echo --Run nextjs server in devepment mode-- && next dev --turbo",
     "dev-https-UNUSED": "echo --Run nextjs server in https mode-- && next dev --experimental-https",
     "build": "echo --Build the project-- && next build",
     "start": "echo --Start the project-- && next start",
@@ -200,6 +204,7 @@
     "prisma-format": "echo --Format prisma configuration file-- && prisma format",
     "prisma-generate": "echo --Generate database client-- && prisma generate && tsx prisma-patch-generated.ts",
     "prisma-migrate": "echo --Migrate database-- && prisma migrate deploy && tsx prisma-patch-generated.ts",
+    "prisma-migrate-dev": "echo --Migrate database-- && prisma migrate dev && tsx prisma-patch-generated.ts",
     "prisma-db-push-UNUSED": "echo --Create database-- && prisma db push --accept-data-loss",
     "prisma-db-push-test-UNUSED": "echo --Create test database-- && cross-env DATABASE_URL='file:.data/test.db' prisma db push --accept-data-loss",
     "prisma-db-push-all-UNUSED": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",

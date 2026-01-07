@@ -26,6 +26,7 @@ import { TGetAvailableQuestionsParams, TGetAvailableQuestionsResults } from '@/l
 import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import { getAvailableQuestions } from '@/features/questions/actions/getAvailableQuestions';
 import { TAvailableQuestion, TQuestionId } from '@/features/questions/types';
+import { useT } from '@/i18n';
 
 const staleTime = defaultStaleTime;
 
@@ -49,6 +50,8 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  const t = useT();
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
@@ -107,9 +110,9 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
            */
         } catch (error) {
           const details = error instanceof APIError ? error.details : null;
-          const message = 'Cannot load topics data';
+          const message = t('UseAvailableQuestions.CannotLoadQuestionsData');
           // eslint-disable-next-line no-console
-          console.error('[useAvailableTopics:queryFn]', message, {
+          console.error('[useAvailableQuestions:queryFn]', message, {
             details,
             error,
             pageParam,

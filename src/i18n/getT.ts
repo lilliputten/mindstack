@@ -6,7 +6,9 @@ import { debugLocale, debugTranslations } from '@/config';
 
 import { getDebugT } from './getDebugT';
 
-export async function getT(opts?: { locale?: string; namespace?: string }) {
+type TGetTOptions = { locale?: string; namespace?: string };
+
+export async function getT(opts?: TGetTOptions) {
   const locale = await getLocale();
   const isDebugLocale = debugTranslations || locale === debugLocale;
   if (isDebugLocale) {

@@ -3,11 +3,11 @@
 exports[`NavBarBrand snapshot 1`] = `
 <div>
   <a
-    class="h-12 flex items-center space-x-1.5 gap-2 transition-all mr-10 select-none hover:opacity-80"
+    class="h-12 flex items-center space-x-1.5 gap-2 transition-all select-none hover:opacity-80"
     href="/welcome"
   >
     <img
-      alt="mindstack"
+      alt="Mind Stack Trainer"
       class="h-auto w-48 select-none sm:min-w-48"
       data-nimg="1"
       data-testid="NavBarBrandImage"

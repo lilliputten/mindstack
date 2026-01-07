@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
@@ -10,6 +9,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';

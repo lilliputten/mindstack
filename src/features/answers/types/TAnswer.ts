@@ -1,7 +1,8 @@
 import z from 'zod';
 
-import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import { Answer, QuestionSchema } from '@/generated/prisma';
+
+import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 
 export type TAnswer = ExtendNullWithUndefined<Answer>;
 export type TAnswerReal = ReplaceNullWithUndefined<Answer>;

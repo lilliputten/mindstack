@@ -26,6 +26,7 @@ import { TGetAvailableAnswersParams, TGetAvailableAnswersResults } from '@/lib/z
 import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import { getAvailableAnswers } from '@/features/answers/actions/getAvailableAnswers';
 import { TAnswerId, TAvailableAnswer } from '@/features/answers/types';
+import { useT } from '@/i18n';
 
 const staleTime = defaultStaleTime;
 
@@ -49,6 +50,8 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  const t = useT();
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
@@ -87,9 +90,9 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
         return results;
       } catch (error) {
         const details = error instanceof APIError ? error.details : null;
-        const message = 'Cannot load questions data';
+        const message = t('UseAvailableAnswers.CannotLoadAnswersData');
         // eslint-disable-next-line no-console
-        console.error('[useAvailableQuestions:queryFn]', message, {
+        console.error('[useAvailableAnswers:queryFn]', message, {
           details,
           error,
           pageParam,

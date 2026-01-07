@@ -97,4 +97,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = 'Button';
 
+export type TButtonVariants = React.ComponentProps<typeof Button>['variant'];
+
 export { Button, buttonVariants };

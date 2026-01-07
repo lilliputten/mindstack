@@ -3,11 +3,11 @@
 import React from 'react';
 import { toast } from 'sonner';
 
-import { availableTopicsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { WorkoutQuestion } from '@/components/pages/AvailableTopics/WorkoutQuestion/WorkoutQuestion';
 import { PageError } from '@/components/shared/PageError';
+import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useAvailableAnswers, useGoToTheRoute } from '@/hooks';

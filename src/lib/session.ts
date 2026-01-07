@@ -30,7 +30,7 @@ export const getCurrentUser = cache<(params?: TParams) => Promise<TUser | undefi
 
 export async function isLoggedUser() {
   const user = await getCurrentUser();
-  return !!user;
+  return !!user?.id;
 }
 
 export async function isAdminUser() {

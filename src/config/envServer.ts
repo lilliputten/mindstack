@@ -28,11 +28,20 @@ export const {
   // App
   VERCEL_ENV,
   NODE_ENV,
-  NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_URL,
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL,
   VERCEL_URL,
+  // Yookassa
+  YOOKASSA_SHOP_ID,
+  YOOKASSA_SECRET_KEY,
+  YOOKASSA_SHOP_ID_TEST,
+  YOOKASSA_SECRET_KEY_TEST,
+  // Stripe
+  NEXT_STRIPE_PUBLISHABLE_KEY,
+  STRIPE_SECRET_KEY,
+  NEXT_STRIPE_PUBLISHABLE_KEY_TEST,
+  STRIPE_SECRET_KEY_TEST,
   // AI API
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
@@ -82,7 +91,7 @@ export const isDev = envServer.NODE_ENV === 'development';
 export const PUBLIC_URL = isVercel
   ? 'https://' +
     (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
-  : NEXT_PUBLIC_APP_URL || NEXT_PUBLIC_URL;
+  : NEXT_PUBLIC_URL;
 
 export const WEBHOOK_HOST = envServer.WEBHOOK_HOST || PUBLIC_URL;
 
@@ -94,6 +103,20 @@ export const BOT_TOKEN =
   (isDev || isVercelPreview) && envServer.BOT_TOKEN_TEST
     ? envServer.BOT_TOKEN_TEST
     : envServer.BOT_TOKEN;
+
+// Debug & test payment options
+export const doTestPayments = ensureBoolean(process.env.NEXT_DO_TEST_PAYMENTS);
+export const useFakePrices = ensureBoolean(process.env.USE_FAKE_PRICES);
+
+// Yookassa
+export const yookassaShopId = doTestPayments ? YOOKASSA_SHOP_ID_TEST : YOOKASSA_SHOP_ID;
+export const yookassaSecretKey = doTestPayments ? YOOKASSA_SECRET_KEY_TEST : YOOKASSA_SECRET_KEY;
+
+// Stripe
+export const stripePublishableKey = doTestPayments
+  ? NEXT_STRIPE_PUBLISHABLE_KEY_TEST
+  : NEXT_STRIPE_PUBLISHABLE_KEY;
+export const stripeSecretKey = doTestPayments ? STRIPE_SECRET_KEY_TEST : STRIPE_SECRET_KEY;
 
 /* // DEBUG: Show environment (will appear in build logs)
  * console.log('[envServer]', {

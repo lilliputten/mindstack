@@ -7,12 +7,12 @@ import { useLocale } from 'next-intl';
 
 import { NavItemBase, SidebarNavItem } from '@/lib/types/site/NavItem';
 import { dashboardLinks } from '@/config/dashboard';
-import { routesWithoutSidebar } from '@/config/routesConfig';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { NavBar } from '@/components/layout/NavBar';
 import { NavFooter } from '@/components/layout/NavFooter';
+import { routesWithoutSidebar } from '@/config';
 import { isDev } from '@/constants';
 import { TLocale } from '@/i18n/types';
 

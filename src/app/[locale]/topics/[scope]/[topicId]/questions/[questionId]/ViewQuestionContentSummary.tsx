@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useFormatter } from 'next-intl';
 
 import { generateArray } from '@/lib/helpers';
@@ -14,6 +13,7 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
+import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
@@ -22,6 +22,7 @@ import { TAvailableTopic } from '@/features/topics/types';
 import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TProps {
@@ -74,7 +75,9 @@ export function ViewQuestionContentSummary(props: TProps) {
         <div className="flex flex-wrap gap-2">
           <Button variant="ghost" size="sm" disabled={!isLogged}>
             <Link
-              href={`${routePath}/${question.topicId}/questions/${question.id}/answers`}
+              href={
+                `${routePath}/${question.topicId}/questions/${question.id}/answers` as TRoutePath
+              }
               className="flex items-center gap-2"
               title={t('ViewQuestionContentSummary.ManageAnswers')}
             >
@@ -88,7 +91,9 @@ export function ViewQuestionContentSummary(props: TProps) {
             disabled={!aiGenerationsAllowed || aiGenerationsLoading}
           >
             <Link
-              href={`${routePath}/${question.topicId}/questions/${question.id}/answers/generate`}
+              href={
+                `${routePath}/${question.topicId}/questions/${question.id}/answers/generate` as TRoutePath
+              }
               className="flex items-center gap-2"
               title={t('ViewQuestionContentSummary.GenerateAnswers')}
             >
@@ -145,7 +150,10 @@ export function ViewQuestionContentSummary(props: TProps) {
         <div className="flex flex-wrap gap-2">
           {isOwner && (
             <Button variant="ghost" size="sm">
-              <Link href={`${routePath}/${topic.id}`} className="flex items-center gap-2">
+              <Link
+                href={`${routePath}/${topic.id}` as TRoutePath}
+                className="flex items-center gap-2"
+              >
                 <Icons.Edit className="size-4 opacity-50" />
                 <span>{t('ViewQuestionContentSummary.ManageTopic')}</span>
               </Link>
@@ -153,7 +161,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           )}
           <Button variant="secondary" size="sm" disabled={!aiGenerationsAllowed}>
             <Link
-              href={`${routePath}/${topic.id}/questions/generate`}
+              href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
               className="flex items-center gap-2"
               title={t('ViewQuestionContentSummary.GenerateQuestions')}
             >

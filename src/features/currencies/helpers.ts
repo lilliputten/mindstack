@@ -1,145 +1,110 @@
-/* // Sample code:
-fetch(tgStarRatioUrl)
-  .then((r) => r.json())
-  .then((data) => console.log(1 / data.usdt_per_star + ' Stars per USD'));
-fetch(rubRatioUrl)
-  .then((r) => r.json())
-  .then((data) => console.log(`1 RUB = ${data.rates.USD} USD`));
-*/
+import { customCurrencyRatios } from '@/constants/prices';
 
-import { getErrorText } from '@/lib/helpers';
+import {
+  allCurrencies,
+  defaultCurrencyType,
+  TCurrencyPrices,
+  TCurrencyRatios,
+  TCurrencyStrings,
+  TCurrencyType,
+} from './types';
 
-import { rubRatioUrl, tgStarRatioUrl } from './constants';
-
-export type TCurrencyRatios = {
-  rubRatio: number;
-  tgStarRatio: number;
-};
-
-export async function fetchRubRatio(): Promise<number> {
-  let res: Response | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let data: any | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let value: any | unknown;
-  try {
-    res = await fetch(rubRatioUrl);
-    if (!res.ok) throw new Error('RUB API unavailable');
-    data = await res.json();
-    value = data.usdt_per_star;
-    if (!value || isNaN(value)) {
-      throw new Error('RUB ratio is not a number: ${value}');
-    }
-    return Number(value);
-  } catch (error) {
-    const message = 'RUB ratio fetch failed';
-    const details = getErrorText(error);
-    const errStr = [message, details].join(': ');
-    // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchRubRatio]', errStr, {
-      message,
-      details,
-      error,
-      res,
-      data,
-      value,
-    });
-    throw error;
-  }
-}
-
-export async function fetchTgStarRatio(): Promise<number> {
-  let res: Response | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let data: any | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let value: any | unknown;
-  try {
-    res = await fetch(tgStarRatioUrl);
-    if (!res.ok) throw new Error('TGSTAR API unavailable');
-    data = await res.json();
-    value = data.usdt_per_star;
-    if (!value || isNaN(value)) {
-      throw new Error('TGSTAR ratio is not a number: ${value}');
-    }
-    return Number(value);
-  } catch (error) {
-    const message = 'TGSTAR ratio fetch failed';
-    const details = getErrorText(error);
-    const errStr = [message, details].join(': ');
-    // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchTgStarRatio]', errStr, {
-      message,
-      details,
-      error,
-      res,
-      data,
-      value,
-    });
-    throw error;
-  }
-}
-
-export async function fetchCurrencyRatios(): Promise<TCurrencyRatios> {
-  try {
-    const [rubRatio, tgStarRatio] = await Promise.all([fetchRubRatio(), fetchTgStarRatio()]);
-    return {
-      rubRatio,
-      tgStarRatio,
-    };
-  } catch (error) {
-    const message = 'Price ratios fetch failed';
-    const details = getErrorText(error);
-    const errStr = [message, details].join(': ');
-    // eslint-disable-next-line no-console
-    console.error('[src/features/currencies/helpers:fetchCurrencyRatios]', errStr, {
-      message,
-      details,
-      error,
-    });
-    throw error;
-  }
-}
-
-/* On 2025.12.26:
- *
- * tgStarRatio: 0.015
- * rubRatio: 0.0128
- *
- * ->
- *
- *  1 USD = 67 TGSTAR
- *  1 USD = 78 RUB
+/* UNSED: Options
+ * export type TCalcCurrencyOptions = {
+ *   // round?: 'decimals' | 'pretty';
+ *   // Don't show zero, always show a minimal value
+ *   noZero?: boolean;
+ * };
+ * const defaultCalcCurrencyOptions: Partial<Record<TCurrencyType, TCalcCurrencyOptions>> = {
+ *   // USD: { round: 'pretty' },
+ *   // EUR: { round: 'pretty' },
+ *   // RUB: { round: 'pretty' },
+ *   // TGSTAR: { round: 'pretty' },
+ * };
  */
 
-export type TCalcCurrencyOptions = {
-  roundHunderds?: boolean;
-  roundDecimals?: boolean;
-  round?: boolean;
-  noZero?: boolean;
-};
-
-export function calcCurrencyFromUsd(
-  usdPrice: number,
-  ratio: number,
-  opts: TCalcCurrencyOptions = {},
+function calcCurrencyFromBase(
+  basePrice: number,
+  ratio?: number,
+  _currency: TCurrencyType = defaultCurrencyType,
 ) {
-  let value = usdPrice / ratio;
-  if (opts.roundHunderds) {
-    value = Math.round(value / 100) * 100;
-    if (!value && opts.noZero) {
-      value = 100;
-    }
-  } else if (opts.round) {
-    value = Math.round(value);
-    if (!value && opts.noZero) {
-      value = 1;
-    }
-  } else if (opts.roundDecimals) {
-    value = Math.round(value * 100) / 100;
-    if (!value && opts.noZero) {
-      value = 0.01;
-    }
+  if (!basePrice || !ratio) {
+    return 0;
   }
+  return basePrice / ratio;
+}
+
+export function prettifyPrice(price?: number) {
+  if (price == undefined) {
+    return undefined;
+  }
+  let value = price;
+  // Analyze the number...
+  const intVal = Math.round(value);
+  const intValStr = String(intVal);
+  const intSize = intValStr.length;
+  // Prettify...
+  if (intSize > 1) {
+    const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.round(intSize / 2)) : 0;
+    const zerableBase = zerableDecimalPositions ? Math.pow(10, zerableDecimalPositions) : 5;
+    value = Math.round(value / zerableBase) * zerableBase;
+  } else {
+    // Keep 2 fixed digits after floating point
+    value = Math.round(value * 10) / 10;
+  }
+  /* // DEBUG
+   * if (price) {
+   *   console.log('[helpers:prettifyPrice] done :', price, '->', value);
+   * }
+   */
   return value;
+}
+
+export function calcPriceForCurrency(
+  basePrice: number,
+  ratio?: number,
+  currency: TCurrencyType = defaultCurrencyType,
+) {
+  if (ratio && customCurrencyRatios[currency]) {
+    ratio /= customCurrencyRatios[currency];
+  }
+  const price = calcCurrencyFromBase(basePrice, ratio, currency);
+  return prettifyPrice(price) || 0;
+}
+
+export function calcAllCurrenciesFromBasePrice(
+  basePrice: number,
+  ratios?: TCurrencyRatios,
+): TCurrencyPrices {
+  const prices = allCurrencies.reduce<TCurrencyPrices>((prices, currency) => {
+    const ratio = ratios?.[currency];
+    const price = calcPriceForCurrency(basePrice, ratio, currency);
+    prices[currency] = price;
+    return prices;
+  }, {} as TCurrencyPrices);
+  return prices;
+}
+
+export function stringifyPrice(price: number = 0) {
+  const intVal = Math.round(price);
+  const isInt = intVal === price;
+  const decimals = isInt ? 0 : 2;
+  const result = decimals ? price.toFixed(decimals) : String(intVal);
+  return result;
+}
+
+export function stringifyPrices(prices: TCurrencyPrices): TCurrencyStrings {
+  const strings = allCurrencies.reduce<TCurrencyStrings>((strings, currency) => {
+    strings[currency] = stringifyPrice(prices[currency]);
+    return strings;
+  }, {} as TCurrencyStrings);
+  return strings;
+}
+
+export function prettifyPrices(prices: TCurrencyPrices): TCurrencyPrices {
+  const prettifiedPrices = allCurrencies.reduce<TCurrencyPrices>((prettifiedPrices, currency) => {
+    prettifiedPrices[currency] = prettifyPrice(prices[currency]) || 0;
+    return prettifiedPrices;
+  }, {} as TCurrencyPrices);
+  return prettifiedPrices;
 }

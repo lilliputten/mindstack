@@ -1,70 +1,197 @@
-export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
-export const adminBotControlRoute = '/admin/bot/control';
-export const adminRoute = '/admin';
-export const allTopicsRoute = '/topics/all';
-export const authErrorRoute = '/auth/error';
-export const availableTopicsRoute = '/topics/available'; // Example
-export const dashboardRoute = '/dashboard';
-export const myTopicsRoute = '/topics/my';
-export const settingsRoute = '/settings';
+import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
 
-// Root route
-export const publicRootRoute = '/';
+// 0. Root route
+export const publicRootRoute = '/public';
 
-// Alias routes
-export const publicStartRoute = availableTopicsRoute; // '/start';
+// 1. Public content routes (without sidebar, see root aliases below)
+export const publicAboutRoute = '/public/about';
+export const publicContactsRoute = '/public/contacts';
+export const publicDocsRoute = '/public/docs';
+export const publicPricingRoute = '/public/pricing';
+export const publicWelcomeRoute = '/public/welcome';
 
-// Public content routes (without sidebar)
-export const publicAboutRoute = '/about';
-export const publicDocsRoute = '/docs';
-export const publicPricingRoute = '/pricing';
-export const publicWelcomeRoute = '/welcome';
-
-// Legal page routes
+// 2. Legal page routes (without sidebar, see root aliases below)
 export const legalCookiesRoute = '/legal/cookies';
 export const legalOfferRoute = '/legal/offer';
 export const legalPrivacyRoute = '/legal/privacy';
 export const legalTermsRoute = '/legal/terms';
 
-/** NOTE: That's used only to mock real intl context */
-export const pathnames = {
-  [publicAboutRoute]: publicAboutRoute,
-  [adminAiTestTextQueryRoute]: adminAiTestTextQueryRoute,
-  [adminBotControlRoute]: adminBotControlRoute,
-  [adminRoute]: adminRoute,
-  [allTopicsRoute]: allTopicsRoute,
-  [availableTopicsRoute]: availableTopicsRoute,
-  [dashboardRoute]: dashboardRoute,
-  [publicDocsRoute]: publicDocsRoute,
-  [myTopicsRoute]: myTopicsRoute,
-  [settingsRoute]: settingsRoute,
-  [publicWelcomeRoute]: publicWelcomeRoute,
+// 3. Open routes (availale for guests, see aliases)
+export const availableTopicsRoute = '/topics/available';
+export const settingsRoute = '/settings';
 
-  // Public routes (without sidebar)
-  [publicRootRoute]: publicRootRoute,
-  [publicPricingRoute]: publicPricingRoute,
+// 4. User-only allowed routes
+export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
+export const adminBotControlRoute = '/admin/bot/control';
+export const adminRoute = '/admin';
+export const allTopicsRoute = '/topics/all';
+export const authErrorRoute = '/auth/error';
+export const myTopicsRoute = '/topics/my';
 
-  // Legal pages
-  [legalCookiesRoute]: legalCookiesRoute,
-  [legalOfferRoute]: legalOfferRoute,
-  [legalPrivacyRoute]: legalPrivacyRoute,
-  [legalTermsRoute]: legalTermsRoute,
-};
+// 5. Subsription routes
+export const pricingChooseRoute = '/pricing/choose';
 
-/** All routes to display without dashboard sidebar. */
-export const routesWithoutSidebar = [
-  // Root route
+// 6. Alias routes
+export const rootAliasRoute = '/';
+
+// 6.1. Public content routes (without sidebar)
+export const aboutAliasRoute = '/about';
+export const contactsAliasRoute = '/contacts';
+export const docsAliasRoute = '/docs';
+export const pricingAliasRoute = '/pricing';
+export const welcomeAliasRoute = '/welcome';
+
+// 6.2. Legal page routes
+export const cookiesAliasRoute = '/cookies';
+export const offerAliasRoute = '/offer';
+export const privacyAliasRoute = '/privacy';
+export const termsAliasRoute = '/terms';
+
+// 6.3. Redirect routes
+/** Default route for guests */
+export const startAliasRoute = '/start';
+/** Default route for authorized users */
+export const userStartAliasRoute = '/start/user';
+
+// Export aliases lists for the nextjs config
+export const staticRewrites: Rewrite[] = [
+  // 6.0. Root route
+  { source: rootAliasRoute, destination: publicRootRoute },
+  // 6.1. Public content routes (without sidebar)
+  { source: aboutAliasRoute, destination: publicAboutRoute },
+  { source: contactsAliasRoute, destination: publicContactsRoute },
+  { source: docsAliasRoute, destination: publicDocsRoute },
+  { source: pricingAliasRoute, destination: publicPricingRoute },
+  { source: welcomeAliasRoute, destination: publicWelcomeRoute },
+  // 6.2. Legal page routes
+  { source: cookiesAliasRoute, destination: legalCookiesRoute },
+  { source: offerAliasRoute, destination: legalOfferRoute },
+  { source: privacyAliasRoute, destination: legalPrivacyRoute },
+  { source: termsAliasRoute, destination: legalTermsRoute },
+] as const;
+export const staticRedirects: Redirect[] = [
+  // 6.3. Redirects
+  { source: userStartAliasRoute, destination: myTopicsRoute, permanent: true },
+  { source: startAliasRoute, destination: availableTopicsRoute, permanent: true },
+] as const;
+
+export const rewritedRoutes = staticRewrites.map(({ destination }) => destination);
+export const redirectedRoutes = staticRedirects.map(({ destination }) => destination);
+export const aliasedRoutes = rewritedRoutes.concat(redirectedRoutes);
+
+/** All used routes */
+const allRoutes = [
+  // 0. Root route
   publicRootRoute,
 
-  // Public content routes (without sidebar)
-  legalCookiesRoute,
+  // 1. Public content routes (without sidebar)
+  publicAboutRoute,
+  publicContactsRoute,
   publicDocsRoute,
   publicPricingRoute,
-  legalPrivacyRoute,
-  // publicStartRoute, // Don't include here, while it's only an aliad foe 'availableTopicsRoute`
-  legalTermsRoute,
   publicWelcomeRoute,
+
+  // 2. Legal page routes
+  legalCookiesRoute,
+  legalOfferRoute,
+  legalPrivacyRoute,
+  legalTermsRoute,
+
+  // 3. Open routes (availale for guests)
+  availableTopicsRoute,
+  settingsRoute,
+
+  // 4. User-only allowed routes
+  adminAiTestTextQueryRoute,
+  adminBotControlRoute,
+  adminRoute,
+  allTopicsRoute,
+  myTopicsRoute,
+
+  // 5. Subsription routes
+  pricingChooseRoute,
+
+  // NOTE: Put aliases first in order to produce nicier sitemap
+  // 6. Alias routes
+  rootAliasRoute,
+  // 6.1. Public content routes (without sidebar)
+  aboutAliasRoute,
+  contactsAliasRoute,
+  docsAliasRoute,
+  pricingAliasRoute,
+  welcomeAliasRoute,
+  // 6.2. Legal page routes
+  cookiesAliasRoute,
+  offerAliasRoute,
+  privacyAliasRoute,
+  termsAliasRoute,
+  // 6.3. Redirects
+  startAliasRoute,
+  userStartAliasRoute,
+] as const;
+export type TRoutePath = (typeof allRoutes)[number];
+export type TAnyRoutePath = string | TRoutePath;
+
+/** NOTE: That's used only to mock real intl context */
+export const pathnames = allRoutes.reduce(
+  (all, path) => {
+    all[path] = path;
+    return all;
+  },
+  {} as Record<TRoutePath, TRoutePath>,
+);
+
+/** Public routes */
+export const publicRoutes: TRoutePath[] = [
+  // 0. Root route
+  publicRootRoute,
+
+  // 1. Public content routes (without sidebar)
+  publicAboutRoute,
+  publicContactsRoute,
+  publicDocsRoute,
+  publicPricingRoute,
+  publicWelcomeRoute,
+
+  // 2. Legal page routes
+  legalCookiesRoute,
+  legalOfferRoute,
+  legalPrivacyRoute,
+  legalTermsRoute,
+
+  // 3. Open routes (availale for guests)
+  availableTopicsRoute,
+  // settingsRoute,
+
+  // 6. Alias routes
+  rootAliasRoute,
+  // 6.1. Public content routes (without sidebar)
+  aboutAliasRoute,
+  contactsAliasRoute,
+  docsAliasRoute,
+  pricingAliasRoute,
+  welcomeAliasRoute,
+  // 6.2. Legal page routes
+  cookiesAliasRoute,
+  offerAliasRoute,
+  privacyAliasRoute,
+  termsAliasRoute,
+  // 6.3. Redirects
+  startAliasRoute,
+  userStartAliasRoute,
+] as const;
+
+/** Public routes which should contain sidebars */
+const publicRoutesWithSidebar: TRoutePath[] = [
+  // 3. Open routes (availale for guests)
+  availableTopicsRoute,
+  settingsRoute,
+  // 6.3. Redirects
+  startAliasRoute,
+  userStartAliasRoute,
 ];
 
-export type TRoutePathKey = keyof typeof pathnames;
-export type TRoutePath = keyof typeof pathnames;
+/** All routes to display without dashboard sidebar. */
+export const routesWithoutSidebar: TRoutePath[] = publicRoutes.filter(
+  (r) => !publicRoutesWithSidebar.includes(r),
+);

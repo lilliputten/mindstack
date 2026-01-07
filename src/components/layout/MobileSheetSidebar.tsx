@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
@@ -22,6 +21,7 @@ import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { Link } from '@/i18n/routing';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 import { NavBarBrand } from './NavBarBrand';
@@ -61,7 +61,7 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
                       setOpen(false);
                     }
                   }}
-                  href={item.disabled ? '#' : item.href}
+                  href={item.href}
                   className={cn(
                     'flex items-center gap-3 rounded-md p-2 text-sm font-medium',
                     'text-white hover:bg-white hover:text-theme-700',

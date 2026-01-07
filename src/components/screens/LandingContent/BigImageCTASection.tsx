@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { availableTopicsRoute, isDev } from '@/config';
+import { isDev, startAliasRoute } from '@/config';
 import { Link } from '@/i18n/routing';
 
 export function BigImageCTASection() {
@@ -27,7 +27,7 @@ export function BigImageCTASection() {
         </p>
         <div className="mb-6 flex flex-wrap gap-3">
           <Button variant="theme" size="lg" rounded="lg">
-            <Link href={availableTopicsRoute} className="flex items-center gap-2">
+            <Link href={startAliasRoute} className="flex items-center gap-2">
               <Icons.ArrowRight className="size-4" />
               <span>Try It Free</span>
             </Link>

@@ -2,9 +2,10 @@
 
 import { z } from 'zod';
 
+import { UserTopicWorkoutSchema } from '@/generated/prisma';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { UserTopicWorkoutSchema } from '@/generated/prisma';
 
 const updateWorkoutSchema = UserTopicWorkoutSchema.omit({
   userId: true,

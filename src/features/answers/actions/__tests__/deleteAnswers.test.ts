@@ -147,10 +147,10 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-del-${dateTag}@test.com`, role: 'USER' },
       });
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `other-del-${dateTag}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: otherUser.id });
@@ -185,7 +185,7 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-empty-${dateTag}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 

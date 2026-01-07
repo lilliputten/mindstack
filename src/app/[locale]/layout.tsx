@@ -5,25 +5,20 @@ import { SessionProvider } from 'next-auth/react';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
 
-import { EnvContextProvider, EnvContextType } from '@/contexts/EnvContext';
+import { EnvContextRoot } from '@/contexts/EnvContext/EnvContextRoot';
 
 import '@/styles/globals.scss';
 import '@/styles/root.scss';
 
 import { AbstractIntlMessages } from 'next-intl';
 
-import {
-  BASIC_USER_GENERATIONS,
-  BOT_USERNAME,
-  PRO_USER_MONTHLY_GENERATIONS,
-} from '@/config/envServer';
 import { defaultThemeColor } from '@/config/themeColors';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/Toaster';
 import { GenericLayout } from '@/components/layout/GenericLayout';
-import ModalProvider from '@/components/modals/providers';
+import { SignInModalProvider } from '@/components/modals';
 import { CustomNextIntlClientProvider } from '@/components/providers/CustomNextIntlClientProvider';
 import { ReactQueryClientProvider } from '@/components/providers/ReactQueryClientProvider';
 import { TailwindIndicator } from '@/components/service/TailwindIndicator';
@@ -31,8 +26,7 @@ import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
-import { defaultLocale, TAwaitedLocaleProps, TLocale } from '@/i18n';
-import { routing } from '@/i18n/routing';
+import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
@@ -47,7 +41,7 @@ type TRootLayoutProps = TAwaitedLocaleProps & {
 };
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale: locale as TLocale }));
+  return localesList.map((locale) => ({ locale: locale as TLocale }));
 }
 
 async function RootLayout(props: TRootLayoutProps) {
@@ -57,7 +51,7 @@ async function RootLayout(props: TRootLayoutProps) {
   let { locale = defaultLocale } = params;
 
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale)) {
+  if (!localesList.includes(locale)) {
     // NOTE: Sometimes we got `.well-known` value here. TODO?
     const error = new Error(`Invalid locale: ${locale}, using default: ${defaultLocale}`);
     // eslint-disable-next-line no-console
@@ -90,12 +84,6 @@ async function RootLayout(props: TRootLayoutProps) {
   // Get theme color from setting or from cookie or get the default value
   const themeColor =
     settings?.themeColor || cookieStore.get('themeColor')?.value || defaultThemeColor;
-
-  const envContextProps = {
-    BOT_USERNAME,
-    BASIC_USER_GENERATIONS,
-    PRO_USER_MONTHLY_GENERATIONS,
-  } satisfies EnvContextType;
 
   return (
     <html lang={locale} data-theme-color={themeColor} suppressHydrationWarning>
@@ -137,7 +125,7 @@ async function RootLayout(props: TRootLayoutProps) {
       >
         <ReactQueryClientProvider>
           <SessionProvider>
-            <EnvContextProvider {...envContextProps}>
+            <EnvContextRoot>
               <CustomNextIntlClientProvider
                 locale={locale}
                 messages={messages}
@@ -150,7 +138,7 @@ async function RootLayout(props: TRootLayoutProps) {
                   disableTransitionOnChange
                   storageKey="app-theme"
                 >
-                  <ModalProvider>
+                  <SignInModalProvider>
                     {/* NOTE: The toaster should be located before the main content */}
                     <Toaster
                       // @see https://sonner.emilkowal.ski/toaster#api-reference
@@ -186,10 +174,10 @@ async function RootLayout(props: TRootLayoutProps) {
                       </GenericLayout>
                     </SettingsContextProvider>
                     <TailwindIndicator />
-                  </ModalProvider>
+                  </SignInModalProvider>
                 </ThemeProvider>
               </CustomNextIntlClientProvider>
-            </EnvContextProvider>
+            </EnvContextRoot>
           </SessionProvider>
         </ReactQueryClientProvider>
       </body>

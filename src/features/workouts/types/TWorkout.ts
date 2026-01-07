@@ -1,7 +1,8 @@
 import z from 'zod';
 
-import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import { UserTopicWorkout, UserTopicWorkoutSchema } from '@/generated/prisma';
+
+import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 
 export type TWorkout = ExtendNullWithUndefined<UserTopicWorkout> & { _count?: { answers: number } };
 export type TWorkoutReal = ReplaceNullWithUndefined<UserTopicWorkout>;

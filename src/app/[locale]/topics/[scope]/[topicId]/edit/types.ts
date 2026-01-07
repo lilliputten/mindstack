@@ -1,7 +1,8 @@
 import z from 'zod';
 
-import { makeNullableFieldsUndefined } from '@/lib/helpers/zod';
 import { TopicSchema } from '@/generated/prisma';
+
+import { makeNullableFieldsUndefined } from '@/lib/helpers/zod';
 
 const topicFormDataSchemaBase = TopicSchema.pick({
   name: true, // string

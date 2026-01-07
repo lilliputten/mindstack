@@ -3,15 +3,16 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
+import { UserRoleType } from '@/generated/prisma';
+
 import { SET_FIRST_USER_ADMIN, USE_ALLOWED_USERS } from '@/config/envServer';
-import { authErrorRoute, publicWelcomeRoute } from '@/config/routesConfig';
+import { authErrorRoute, welcomeAliasRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { checkIsAllowedUser } from '@/features/allowed-users/helpers/checkIsAllowedUser';
 import { TUserRejectReason } from '@/features/allowed-users/types/TUserRejectReason';
 import { getUserById } from '@/features/users/actions/';
 import { setFirstUserAsAdmin } from '@/features/users/helpers/setFirstUserAsAdmin';
-import { UserRoleType } from '@/generated/prisma';
 
 import authConfig from './auth.config.server';
 import { sessionMaxAge, sessionUpdateAge } from './constants';
@@ -54,7 +55,7 @@ export const nextAuthApp = NextAuth({
   },
   pages: {
     // @see https://next-auth.js.org/configuration/pages
-    signIn: publicWelcomeRoute, // <-- /api/auth/signin
+    signIn: welcomeAliasRoute, // <-- /api/auth/signin
     error: authErrorRoute, // <-- /api/auth/error
     // signOut: '/auth/signout',
   },

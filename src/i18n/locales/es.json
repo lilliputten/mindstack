@@ -21,19 +21,21 @@
   "Delete": "Eliminar",
   "Description": "Descripción",
   "Edit": "Editar",
+  "Expected": "Esperado",
   "Finish": "Finalizar",
   "FinishedAt": "Terminado en",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
   "Keywords": "Palabras clave",
   "Language": "Idioma",
-  "LegalOwnerName": "Igor Mikheev",
+  "LegalOwnerName": "Igor A. Lilliputten",
   "Modified": "Modificado",
   "Name": "Nombre",
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
   "NoTopicsAvailable": "No hay temas disponibles",
   "PageNotFound": "Página no encontrada",
+  "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
   "Private": "Privado",
   "Public": "Público",
   "Question": "Pregunta",
@@ -63,8 +65,12 @@
   "UpdatedDate": "Fecha actualizada",
   "UsedGenerations": "Generaciones usadas",
   "UserGrade": "Nivel de usuario",
+  "UserNotLoggedIn": "El usuario no ha iniciado sesión",
   "UserRole": "Rol de usuario",
   "Yes": "Sí",
+  "butReceived": "pero recibido",
+  "ifYouHaveAnyProblems": "si tiene algún problema",
+  "or": "o",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Generaciones de IA disponibles: {availableGenerations}",
     "CheckYourUsagePlan": "verifique su plan de uso",
@@ -226,6 +232,11 @@
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Error al cargar los datos de los usuarios."
   },
+  "CalculatePricingForUser": {
+    "CannotUpgradeToAnotherSubscriptionPeriod": "No se puede actualizar a otro periodo de suscripción",
+    "CurrentSubscriptionPeriodMissing": "El periodo de suscripción actual falta para el usuario {userId}",
+    "UpgradeNotAllowedMessage": "Estás intentando actualizar de \"{currentPeriod}\" a \"{requestedPeriod}\" tipos de suscripción. No es posible. Por favor, contacta o informa al soporte técnico."
+  },
   "CardsWithIconsSection": {
     "AIPoweredLearningDescription": "Aprovecha la IA avanzada para mejorar tu experiencia de aprendizaje. Obtén recomendaciones personalizadas y generación inteligente de contenido.",
     "ActiveRecallPracticeDescription": "Fortalece tu memoria a través de la recuperación activa. Practica la recuperación de información de la memoria en lugar de solo releer, lo que se ha demostrado que es más efectivo para la retención a largo plazo.",
@@ -233,9 +244,18 @@
     "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
     "Title": "Por qué elegir MindStack"
   },
+  "CheckStripePayment": {
+    "PaymentError": "Error al verificar el pago de stripe",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
+  },
+  "CheckYookassaPayment": {
+    "PaymentError": "Error al verificar el pago de yookassa",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
+  },
   "ContentFooter": {
     "AppDescription": "Aplicación de Entrenamiento de Memoria",
     "BuiltWithText": "Construido con <NextJSLink>Next.js</NextJSLink> y <VercelLink>Vercel</VercelLink> por <AuthorLink>{authorSite}</AuthorLink>",
+    "ContactsLink": "Contactos",
     "CookiePolicyLink": "Política de Cookies",
     "DocumentationLink": "Documentación",
     "PricingLink": "Precios",
@@ -247,7 +267,14 @@
   },
   "DeleteAccountModal": {
     "AccountDeletedSuccessfully": "¡Cuenta eliminada exitosamente!",
-    "DeletingAccount": "Eliminando cuenta..."
+    "CannotDeleteAccount": "Error al eliminar la cuenta",
+    "ConfirmDeleteAccount": "Confirmar eliminar cuenta",
+    "DeleteAccount": "Eliminar cuenta",
+    "DeletingAccount": "Eliminando cuenta...",
+    "TypeToVerifyText": "Para verificar, escriba \"<ConfirmPattern></ConfirmPattern>\" a continuación",
+    "Warning": "Advertencia",
+    "WarningText": "¡Esto eliminará permanentemente su cuenta y su suscripción activa!",
+    "confirmPattern": "confirmar eliminar cuenta"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Cancelar",
@@ -369,6 +396,20 @@
     "CannotSaveTopicData": "No se pueden guardar los datos del tema.",
     "SavingTopicData": "Guardando datos del tema...",
     "SuccessfullySavedTheTopic": "Guardado exitosamente el tema."
+  },
+  "EmailSignInForm": {
+    "ContactAdminMessage": "Comuníquese con el administrador a través de la página \"Contactos\".",
+    "EmailLabel": "O use correo electrónico:",
+    "EmailPlaceholder": "Ingrese su correo electrónico",
+    "ErrorMessage": "Ocurrió un error, por favor inténtelo de nuevo",
+    "ErrorMessageWithDetails": "Ocurrió un error, por favor inténtelo de nuevo: {error}",
+    "NotAllowedMessage": "Actualmente no tiene permiso para usar la aplicación (código de rechazo: {rejectReason}).",
+    "SuccessMessage": "Se ha enviado un mensaje de inicio de sesión. Revise su correo electrónico para obtener un enlace de inicio de sesión.",
+    "ValidationError": "Por favor ingrese una dirección de correo electrónico válida"
+  },
+  "EnsurePaidableSubscriptionType": {
+    "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
+    "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago"
   },
   "FeaturesSection": {
     "CreateCustomTopics": "Crear temas personalizados",
@@ -531,7 +572,7 @@
   },
   "NavAuthButton": {
     "Dashboard": "Panel",
-    "sign-in": "Iniciar Sesión"
+    "SignIn": "Iniciar Sesión"
   },
   "NavLinks": {
     "AboutProject": "Acerca del Proyecto",
@@ -546,6 +587,7 @@
     "MyData": "Mis Datos",
     "MyTopics": "Mis Temas",
     "Options": "Opciones",
+    "Pricing": "Precios",
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
@@ -564,6 +606,7 @@
   "NavUserAccount": {
     "Admin": "Administración",
     "Dashboard": "Panel",
+    "DeleteAccount": "Eliminar cuenta",
     "Settings": "Configuración",
     "SignOut": "Cerrar Sesión"
   },
@@ -580,6 +623,7 @@
     "Answers": "Respuestas",
     "AvailableTopicsDescription": "Temas disponibles para usar",
     "AvailableTopicsTitle": "Temas Disponibles",
+    "ContactsPageTitle": "Contactos del Proyecto",
     "CookiesPageTitle": "Política de cookies",
     "DocsTitle": "Documentación",
     "EditAnswerPropertiesTitle": "Editar propiedades de respuesta",
@@ -596,6 +640,9 @@
     "MyTopicsDescription": "Temas creados por mí",
     "MyTopicsTitle": "Mis Temas",
     "OfertaPageTitle": "La oferta",
+    "PricingChoose": "Elija el plan de suscripción",
+    "PricingChooseCancel": "Cancelar el pago",
+    "PricingChooseSuccess": "Confirmación del plan de suscripción",
     "PricingPageTitle": "Precios",
     "PrivacyPageTitle": "Política de Privacidad",
     "Questions": "Preguntas",
@@ -613,15 +660,20 @@
     "WelcomeTitle": "¡Bienvenido!",
     "WorkoutTopicGoTitle": "Entrenando el tema"
   },
+  "ParsePaidableSubscriptionType": {
+    "InvalidSubscriptionGrade": "Grado de suscripción no válido",
+    "InvalidSubscriptionPeriod": "Periodo de suscripción no válido"
+  },
   "Pricing": {
     "ContactUs": "Contáctanos",
     "Free": "Gratis",
     "FutureFeatureNote": "¡Próximamente! Suscríbete a nuestro boletín para mantenerte al día con las nuevas funciones.",
     "MostPopular": "Más Popular",
-    "PerMonth": "/mes",
     "Unlimited": "Ilimitado",
-    "billedAnnually": "anualmente",
-    "billedMonthly": "lmensualmente",
+    "billedAnnually": "anual",
+    "billedMonthly": "mes",
+    "payOnce": "una vez",
+    "payRegular": "regular",
     "Comparison": {
       "AiGenerations": "Generaciones de IA",
       "Analytics": "Análisis Detallados",
@@ -637,7 +689,9 @@
     },
     "Hero": {
       "Monthly": "Mensual",
-      "Subtitle": "Obtén 20% de descuento con el plan anual",
+      "Once": "Una vez",
+      "Regular": "Regular",
+      "Subtitle": "Obtenga un {yearlyDiscountPercents}% de descuento anual",
       "Title": "Precios",
       "Yearly": "Anual"
     },
@@ -656,7 +710,7 @@
       },
       "Premium": {
         "Button": "Elegir Premium",
-        "Description": "Para organizaciones",
+        "Description": "Para uso avanzado",
         "Name": "Premium",
         "Features": {
           "Advanced": "Integraciones avanzadas",
@@ -680,7 +734,7 @@
       },
       "Unlimited": {
         "Button": "Contáctanos",
-        "Description": "Para organizaciones que requieren el más alto nivel de seguridad y control.",
+        "Description": "Para personas o grupos que requieran el más alto nivel de seguridad y control.",
         "Name": "Ilimitado",
         "Features": {
           "Custom": "Integraciones personalizadas",
@@ -691,6 +745,91 @@
         }
       }
     }
+  },
+  "PricingChooseCancel": {
+    "PaymentCanceled": "El pago ha sido cancelado",
+    "StartWorking": "Empezar a trabajar con temas",
+    "ViewPlans": "Volver a planes de suscripción"
+  },
+  "PricingChooseCancelRoute": {
+    "CannotCancelNotPendingPayment": "No se puede cancelar un pago que no está pendiente",
+    "ContactTechSupport": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ErrorCancelingPayment": "Error al cancelar el pago",
+    "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
+    "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
+    "PaymentNotFound": "El pago no ha sido encontrado.",
+    "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
+    "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>."
+  },
+  "PricingChoosePage": {
+    "CheckAvailableSubscriptionPlans": "Consulte otros planes de suscripción disponibles",
+    "ChoosePaymentMethod": "Elegir Método de Pago",
+    "CompleteSubscription": "para completar su suscripción {planName}",
+    "ContactSupport": "Contactar Soporte",
+    "ContactSupportForDowngrade": "Estás bajando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>. \nDebe comunicarse con <ContactsLink>soporte</ContactsLink> para bajar de categoría.",
+    "ContactTechnicalSupport": "Contactar con soporte técnico",
+    "DowngradeRequiresSupport": "La degradación requiere contactar con soporte",
+    "DowngradeWarning": "Advertencia de degradación - por favor contacte con soporte",
+    "GuestNotAllowed": "Los usuarios invitados no tienen permitido hacer pagos",
+    "InternationalCard": "Tarjeta Internacional",
+    "InternationalCardDescription": "Pague con métodos de pago internacionales. Compatible con las principales tarjetas de crédito y débito en todo el mundo.",
+    "NoPaymentUrlProvided": "No se proporcionó URL de pago",
+    "OpenTelegramBot": "Abrir @{botUsername}",
+    "OtherOptionsText": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink> o <ContactsLink>contáctenos</ContactsLink> en caso de cualquier problema.",
+    "PayWithInternationalCard": "Pagar con Tarjeta Internacional",
+    "PayWithRussianCard": "Pagar con Tarjeta Rusa",
+    "PaymentCreated": "El pago ha sido creado exitosamente.",
+    "PaymentCreatingError": "Error al crear el pago",
+    "PaymentIsCreating": "El pago está creando",
+    "RussianBankCard": "Tarjeta Bancaria Rusa",
+    "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
+    "SameGradeMessage": "Ya tienes el plan de suscripción {currentGrade}",
+    "SelectAnotherSubscriptionType": "Seleccionar otro tipo de suscripción",
+    "TelegramStars": "Estrellas de Telegram",
+    "TelegramStarsCompletePayment": "Vaya a nuestro bot de Telegram para completar el pago usando Estrellas de Telegram.",
+    "TelegramStarsOptionAvailable": "Esta opción está disponible si inició sesión a través de una cuenta de Telegram.",
+    "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong>",
+    "UpgradePriceInfo": "Sólo se te cobrará la diferencia entre los planes de suscripción.",
+    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
+    "YoureToPay": "Usted debe pagar"
+  },
+  "PricingChooseRoute": {
+    "CannotCalculatePrices": "No se pueden calcular precios para el tipo de suscripción \"{subscriptionType}\"",
+    "CannotCalculatePricesWithBasePrice": "No se pueden calcular precios para el tipo de suscripción \"{currentSubscriptionType}\" y un precio base de {basePrice}",
+    "PricesDataMissingAfterCalculation": "Faltan datos de precios después del cálculo para el tipo de suscripción: {subscriptionType}"
+  },
+  "PricingChooseSuccess": {
+    "Activated": "Activado",
+    "Congratulations": "¡Felicidades!",
+    "NewFeatures": "Nuevas Funciones Disponibles",
+    "StartWorking": "Empezar a trabajar con temas",
+    "SubscriptionUpgraded": "Su suscripción se ha actualizado correctamente al plan <strong>{grade}</strong>.",
+    "ViewPlans": "Ver otros planes de suscripción",
+    "WelcomeTo": "¡Bienvenido a {plan}!"
+  },
+  "PricingChooseSuccessRoute": {
+    "ChooseAnotherPaymentMethod": "Elegir otro método de pago",
+    "ContactTechSupport": "Por favor contacte con <Link>soporte técnico</Link>.",
+    "ErrorFinishingPayment": "Error al finalizar el pago",
+    "FailedPaymentExplanation": "Probablemente se produjo un error durante el procesamiento del pago. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
+    "InvalidPaymentProvider": "Proveedor de pago desconocido ({provider})",
+    "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
+    "PaymentAlreadyProcessed": "El pago ya ha sido procesado.",
+    "PaymentFailedMessage": "Parece que el pago falló",
+    "PaymentNotFound": "El pago no ha sido encontrado.",
+    "PaymentServiceSideErrorExplanation": "El pago podría haber sido cancelado o pudo haber ocurrido un error en el lado del servicio.",
+    "PaymentWasNotPaidError": "El pago no se realizó",
+    "ReachTechnicalSupport": "Contactar con soporte técnico",
+    "ReviewSubscriptionOptions": "Revisar opciones de suscripción",
+    "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago",
+    "SubscriptionTypesMismatch": "Desajuste de tipos de suscripción",
+    "SubscriptionTypesMismatchExplanation": "Esperado <strong>{expected}</strong>, pero recibido <strong>{received}</strong>.",
+    "SucceedPaymentAttemptExplanation": "Parece que estás intentando procesar el mismo pago repetidamente. \nInténtelo de nuevo o comuníquese con <Link>soporte técnico</Link> si tiene algún problema.",
+    "TechnicalSupport": "soporte técnico"
+  },
+  "PricingPlansSection": {
+    "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",
+    "SignInModalIntroForBasic": "Para activar una suscripción básica, simplemente inicie sesión en el sistema."
   },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Código del idioma",
@@ -760,6 +899,26 @@
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
   },
+  "StripePayment": {
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
+    "FailedToCreateCheckoutSessionUrl": "Error al crear la URL de la sesión de pago de Stripe",
+    "PaymentDescription": "Pago para el tipo de suscripción {subscriptionType}",
+    "PaymentError": "Error al realizar el pago con Stripe",
+    "PaymentName": "Plan de suscripción a Mind Stack Trainer",
+    "PaymentStartingError": "Error al iniciar el pago",
+    "UnauthorizedPaymentError": "No se pueden realizar pagos para usuarios no autorizados"
+  },
+  "TelegramSignIn": {
+    "ButtonText": "Iniciar sesión con el bot de Telegram",
+    "OrUseTelegram": "O use Telegram",
+    "QRCodeAlt": "Código QR del Bot de Telegram",
+    "QRDescription": "Haga clic en el botón de arriba, use el código QR o vaya al <BotUsername></BotUsername> <BotLink>bot de Telegram</BotLink>, y seleccione el comando <code>/authorize</code> para obtener un token de autorización."
+  },
+  "TelegramSignInForm": {
+    "EnterTokenLabel": "Luego siga el enlace o ingrese el token aquí:",
+    "InvalidTokenMessage": "El token solo puede contener letras y números.",
+    "TokenPlaceholder": "Ingrese el token generado"
+  },
   "Themes": {
     "amber": "Ámbar",
     "blue": "Azul",
@@ -793,6 +952,15 @@
     "Description": "Desbloquea todas las funciones y obtén acceso ilimitado a nuestro equipo de soporte.",
     "Title": "Actualizar a Pro",
     "Upgrade": "Actualizar"
+  },
+  "UseAvailableAnswers": {
+    "CannotLoadAnswersData": "No se pueden cargar los datos de las respuestas"
+  },
+  "UseAvailableQuestions": {
+    "CannotLoadQuestionsData": "No se pueden cargar los datos de las preguntas"
+  },
+  "UseAvailableTopics": {
+    "CannotLoadTopicsData": "No se pueden cargar los datos de los temas"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
@@ -980,5 +1148,15 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "YookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
+    "NotSpecifiedPaymentId": "ID de pago no especificado para verificar",
+    "PaymentCheckingFailure": "Error al verificar el pago",
+    "PaymentError": "Error al realizar el pago de yookassa",
+    "PaymentProcessingFailure": "Error al procesar el pago",
+    "PaymentStartingError": "Error al iniciar el pago",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   }
 }

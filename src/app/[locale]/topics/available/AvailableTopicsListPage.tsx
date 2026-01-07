@@ -2,11 +2,11 @@
 
 import React from 'react';
 
-import { myTopicsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
+import { myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
@@ -26,7 +26,7 @@ export function AvailableTopicsListPage(props: TProps) {
   const t = useT();
   const user = useSessionUser();
   const goToTheRoute = useGoToTheRoute();
-  // const goBack = useGoBack(publicRootRoute);
+  // const goBack = useGoBack(rootAliasRoute);
 
   const {
     isFetched,

@@ -2,19 +2,18 @@ import { NextRequest } from 'next/server';
 import { encode } from '@auth/core/jwt';
 
 import { AUTH_SECRET, PUBLIC_URL } from '@/config/envServer';
-import { authErrorRoute, publicRootRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { ServerError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { cookieName, sessionMaxAge } from '@/auth/constants';
 import { verifyTelegramToken } from '@/auth/telegram/telegram-provider';
-import { isProd } from '@/config';
+import { authErrorRoute, isProd, rootAliasRoute } from '@/config';
 import { TUser } from '@/features/users/types/TUser';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
-  const callbackUrl = searchParams.get('callbackUrl') || publicRootRoute;
+  const callbackUrl = searchParams.get('callbackUrl') || rootAliasRoute;
 
   let tokenData: Awaited<ReturnType<typeof verifyTelegramToken>>;
 

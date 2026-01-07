@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@a2seven/yoo-checkout':
+        specifier: ^1.1.4
+        version: 1.1.4
       '@hookform/resolvers':
         specifier: ^3.9.1
         version: 3.10.0(react-hook-form@7.60.0(react@19.1.2))
@@ -116,6 +119,12 @@ importers:
       '@react-email/html':
         specifier: ^0.0.11
         version: 0.0.11(react@19.1.2)
+      '@stripe/react-stripe-js':
+        specifier: ^5.4.1
+        version: 5.4.1(@stripe/stripe-js@8.6.0)(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+      '@stripe/stripe-js':
+        specifier: ^8.6.0
+        version: 8.6.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -173,6 +182,9 @@ importers:
       sonner:
         specifier: ^1.7.0
         version: 1.7.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+      stripe:
+        specifier: ^20.1.0
+        version: 20.1.0(@types/node@24.0.10)
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0
@@ -479,6 +491,10 @@ importers:
         version: 5.0.8(@types/react@18.3.23)(react@19.1.2)(use-sync-external-store@1.5.0(react@19.1.2))
 
 packages:
+
+  '@a2seven/yoo-checkout@1.1.4':
+    resolution: {integrity: sha512-Xn8E6fJKVUpSqTTEgigoi0Woyvmc1/UuHukwpQUTEtxD2l4skTEeqPlhd0J4xum6lQ/0eGzeJP+/MgpkE9Ak9g==}
+    engines: {node: '>=12'}
 
   '@adobe/css-tools@4.4.3':
     resolution: {integrity: sha512-VQKMkwriZbaOgVCby1UDY/LDk5fIjhQicCvVPFqfe+69fWaPWydbWJ3wRt59/YzIwda1I81loas3oCoHxnqvdA==}
@@ -3185,6 +3201,17 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
+  '@stripe/react-stripe-js@5.4.1':
+    resolution: {integrity: sha512-ipeYcAHa4EPmjwfv0lFE+YDVkOQ0TMKkFWamW+BqmnSkEln/hO8rmxGPPWcd9WjqABx6Ro8Xg4pAS7evCcR9cw==}
+    peerDependencies:
+      '@stripe/stripe-js': '>=8.0.0 <9.0.0'
+      react: '>=16.8.0 <20.0.0'
+      react-dom: '>=16.8.0 <20.0.0'
+
+  '@stripe/stripe-js@8.6.0':
+    resolution: {integrity: sha512-EB0/GGgs4hfezzkiMkinlRgWtjz8fSdwVQhwYS7Sg/RQrSvuNOz+ssPjD+lAzqaYTCB0zlbrt0fcqVziLJrufQ==}
+    engines: {node: '>=12.16'}
+
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
@@ -3360,6 +3387,10 @@ packages:
 
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
+
+  '@types/axios@0.14.4':
+    resolution: {integrity: sha512-9JgOaunvQdsQ/qW2OPmE5+hCeUB52lQSolecrFrthct55QekhmXEwT203s20RL+UHtCQc15y3VXpby9E7Kkh/g==}
+    deprecated: This is a stub types definition. axios provides its own type definitions, so you do not need this installed.
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -3924,6 +3955,9 @@ packages:
   axe-core@4.10.3:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
     engines: {node: '>=4'}
+
+  axios@0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
 
   axios@1.12.2:
     resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
@@ -5043,10 +5077,6 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
-
-  form-data@4.0.3:
-    resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
-    engines: {node: '>= 6'}
 
   form-data@4.0.4:
     resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
@@ -6951,6 +6981,10 @@ packages:
   qr.js@0.0.0:
     resolution: {integrity: sha512-c4iYnWb+k2E+vYpRimHqSu575b1/wKl4XFeJGpFmrJQz5I88v9aY2czh7s0w36srfCM1sXgC/xpoJz5dJfq+OQ==}
 
+  qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
+    engines: {node: '>=0.6'}
+
   querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
 
@@ -7449,6 +7483,15 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
+  stripe@20.1.0:
+    resolution: {integrity: sha512-o1VNRuMkY76ZCq92U3EH3/XHm/WHp7AerpzDs4Zyo8uE5mFL4QUcv/2SudWsSnhBSp4moO2+ZoGCZ7mT8crPmQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@types/node': '>=16'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+
   strnum@2.1.1:
     resolution: {integrity: sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw==}
 
@@ -7884,6 +7927,10 @@ packages:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
     hasBin: true
 
+  uuid@8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
@@ -8121,6 +8168,14 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@a2seven/yoo-checkout@1.1.4':
+    dependencies:
+      '@types/axios': 0.14.4
+      axios: 0.21.4
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - debug
 
   '@adobe/css-tools@4.4.3': {}
 
@@ -11441,6 +11496,15 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
+  '@stripe/react-stripe-js@5.4.1(@stripe/stripe-js@8.6.0)(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+    dependencies:
+      '@stripe/stripe-js': 8.6.0
+      prop-types: 15.8.1
+      react: 19.1.2
+      react-dom: 19.1.2(react@19.1.2)
+
+  '@stripe/stripe-js@8.6.0': {}
+
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
@@ -11605,6 +11669,12 @@ snapshots:
     optional: true
 
   '@types/aria-query@5.0.4': {}
+
+  '@types/axios@0.14.4':
+    dependencies:
+      axios: 1.12.2
+    transitivePeerDependencies:
+      - debug
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -12246,6 +12316,12 @@ snapshots:
       possible-typed-array-names: 1.1.0
 
   axe-core@4.10.3: {}
+
+  axios@0.21.4:
+    dependencies:
+      follow-redirects: 1.15.11
+    transitivePeerDependencies:
+      - debug
 
   axios@1.12.2:
     dependencies:
@@ -13550,14 +13626,6 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  form-data@4.0.3:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      hasown: 2.0.2
-      mime-types: 2.1.35
-
   form-data@4.0.4:
     dependencies:
       asynckit: 0.4.0
@@ -14618,7 +14686,7 @@ snapshots:
       decimal.js: 10.5.0
       domexception: 4.0.0
       escodegen: 2.1.0
-      form-data: 4.0.3
+      form-data: 4.0.4
       html-encoding-sniffer: 3.0.0
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.1
@@ -15850,6 +15918,10 @@ snapshots:
 
   qr.js@0.0.0: {}
 
+  qs@6.14.1:
+    dependencies:
+      side-channel: 1.1.0
+
   querystringify@2.2.0: {}
 
   queue-microtask@1.2.3: {}
@@ -16460,6 +16532,12 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
+  stripe@20.1.0(@types/node@24.0.10):
+    dependencies:
+      qs: 6.14.1
+    optionalDependencies:
+      '@types/node': 24.0.10
+
   strnum@2.1.1: {}
 
   style-to-js@1.1.17:
@@ -16973,6 +17051,8 @@ snapshots:
   uuid@10.0.0: {}
 
   uuid@11.1.0: {}
+
+  uuid@8.3.2: {}
 
   uuid@9.0.1: {}
 

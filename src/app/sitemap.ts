@@ -1,14 +1,17 @@
 import { MetadataRoute } from 'next';
 
 import { publicAppUrl } from '@/config/env';
-import { pathnames } from '@/config/routesConfig';
-import { getPathname, routing } from '@/i18n/routing';
-import { TLocale } from '@/i18n/types';
+import { aliasedRoutes, publicRoutes } from '@/config';
+import { getPathname } from '@/i18n/routing';
+import { strictLocalesList, TLocale } from '@/i18n/types';
 
 type Href = Parameters<typeof getPathname>[0]['href'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return Object.values(pathnames).map((path) => getRouteEntry(path as Href));
+  // Retrieve all routes excluding
+  return publicRoutes
+    .filter((route) => !aliasedRoutes.includes(route))
+    .map((path) => getRouteEntry(path as Href));
 }
 
 function getRouteEntry(href: Href) {
@@ -16,7 +19,7 @@ function getRouteEntry(href: Href) {
     url: getFullUrl(href),
     alternates: {
       languages: Object.fromEntries(
-        routing.locales.map((locale) => [locale, getFullUrl(href, locale as TLocale)]),
+        strictLocalesList.map((locale) => [locale, getFullUrl(href, locale as TLocale)]),
       ),
     },
   };

@@ -55,9 +55,13 @@ enum UserGrade {
   BASIC
   PRO
   PREMIUM
+  UNLIMITED
 }
 
-// TODO: UNLIMITED
+enum UserSubscriptionPeriod {
+  MONTH
+  YEAR
+}
 
 model User {
   id            String    @id @default(cuid())
@@ -67,7 +71,11 @@ model User {
   image         String?
 
   role  UserRole  @default(USER)
-  grade UserGrade @default(GUEST)
+  grade UserGrade @default(BASIC)
+
+  // TODO: Control subscription period and return grade to the default when it's finished
+  subscriptionPeriod    UserSubscriptionPeriod? @map("subscription_period")
+  subscriptionStartedAt DateTime?               @updatedAt @map("subscription_started_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -75,6 +83,7 @@ model User {
   accounts         Account[]
   sessions         Session[]
   topics           Topic[]
+  userPayments     UserPayment[]
   userSettings     UserSettings?
   userTopicWorkout UserTopicWorkout[]
   workoutStats     WorkoutStats[]
@@ -95,6 +104,46 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+enum UserPaymentProvider {
+  YOOKASSA
+  STRIPE
+}
+
+enum UserPaymentStatus {
+  PENDING
+  FAILED
+  CANCELED
+  SUCCEED
+}
+
+// TODO: Rename to 'UserGradePayment'
+model UserPayment {
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider UserPaymentProvider @default(YOOKASSA)
+
+  subscriptionType String @map("subscription_type")
+
+  price    Float
+  currency CurrencyType
+
+  paymentId String @map("payment_id")
+  uniqueKey String @map("unique_key")
+
+  status UserPaymentStatus
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([userId, provider, paymentId, uniqueKey], map: "user_provider_payment_unique")
+  // Search created payments without paymentId (on success callback)
+  @@index([userId, provider, uniqueKey, createdAt], map: "user_provider_unique_created")
+  // Search outdated failed payments to clean then up
+  @@index([status, createdAt], map: "status_created")
+  @@map("user_payments")
 }
 
 model TelegramSession {
@@ -153,8 +202,7 @@ model AIGeneration {
   updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
 
   userId String @map("user_id")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("ai_generations")
@@ -270,19 +318,20 @@ model WorkoutStats {
 
 enum CurrencyType {
   USD
+  EUR
   RUB
   TGSTAR
 }
 
 model Currency {
-  id    Int          @id @default(autoincrement())
-  type  CurrencyType @unique @default(USD)
+  id   Int          @id @default(autoincrement())
+  type CurrencyType @unique @default(USD)
 
   // Used to calculate the currency value by dividing the USD currency: `{usdPrice} / ratio`, see the `calcCurrencyFromUsd` helper function
   ratio Float
 
   // This field is set if there the updating process has been active (since the specified time)
-  updatingSince  DateTime? @map("updating_since")
+  updatingSince DateTime? @map("updating_since")
 
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 

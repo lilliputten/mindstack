@@ -1,0 +1,32 @@
+import { UserGradeType } from '@/generated/prisma';
+
+import {
+  PRO_MONTHLY_USD_PRICE,
+  PREMIUM_MONTHLY_USD_PRICE,
+  PREMIUM_PLAIN_MULTIPLIER,
+  yearlyFromMonthlyRatio,
+} from '@/constants/prices';
+
+import { TPeriodType } from '../types';
+import { prettifyPrice } from '@/features/currencies';
+
+export function getMonthlySubscriptionPlanPrice(grade: UserGradeType = 'PRO') {
+  switch (grade) {
+    case 'PRO':
+      return PRO_MONTHLY_USD_PRICE;
+    case 'PREMIUM':
+      return PREMIUM_MONTHLY_USD_PRICE;
+    default:
+      return 0;
+  }
+}
+
+export function getBaseSubscriptionPlanPrice(grade: UserGradeType, period: TPeriodType) {
+  const monthlyPrice = prettifyPrice(getMonthlySubscriptionPlanPrice()) || 0;
+  const isYearly = period === 'YEAR';
+  let price = isYearly ? monthlyPrice * yearlyFromMonthlyRatio : monthlyPrice;
+  if (grade === 'PREMIUM') {
+    price *= 2;
+  }
+  return price;
+}

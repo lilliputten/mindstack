@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
+import { TRoutePath } from '@/config';
+import { Link } from '@/i18n/routing';
 
 export interface TActionItem extends Omit<ButtonProps, 'content'> {
   id: string;
@@ -59,7 +60,7 @@ export function ActionButton(props: TActionItem) {
     return (
       <Link
         id={id}
-        href={href}
+        href={href as TRoutePath}
         className={cn(buttonVariants({ variant, ...restButtonProps }), className)}
       >
         {buttonContent}

@@ -39,10 +39,12 @@ export function deleteCookie(id: string) {
   document.cookie = id + emptyCookieStr;
 }
 
-export function deleteAllCookies() {
+export function deleteAllCookies({ except }: { except?: string[] } = {}) {
   document.cookie.split(';').forEach((cookie) => {
     const eqPos = cookie.indexOf('=');
     const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-    document.cookie = name + emptyCookieStr;
+    if (!except || !except.includes(name)) {
+      document.cookie = name + emptyCookieStr;
+    }
   });
 }

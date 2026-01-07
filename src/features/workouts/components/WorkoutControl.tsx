@@ -3,12 +3,12 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 
-import { availableTopicsRoute, TRoutePath } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
+import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useGoToTheRoute } from '@/hooks';

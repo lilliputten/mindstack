@@ -1,4 +1,4 @@
-import { pathnames, TRoutePathKey } from '@/config/routesConfig';
+import { pathnames, TRoutePath } from '@/config/routesConfig';
 import { localesList, TLocale } from '@/i18n/types';
 
 const localizedPrefixRegStr = `^/(${localesList.join('|')})/`;
@@ -7,7 +7,7 @@ const localizedPrefixRegExp = new RegExp(localizedPrefixRegStr);
 export function getLocalizedRoute(route: string, locale: TLocale) {
   const pathKeys = Object.keys(pathnames);
   if (pathKeys.includes(route)) {
-    const item = pathnames[route as TRoutePathKey];
+    const item = pathnames[route as TRoutePath];
     if (typeof item === 'object') {
       return item[locale];
     }

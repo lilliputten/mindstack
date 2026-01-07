@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useSession } from 'next-auth/react';
 
 import { cn } from '@/lib/utils';
 import { PageError } from '@/components/shared/PageError';
@@ -21,6 +22,14 @@ import { AvailableTopicsListPage } from './AvailableTopicsListPage';
 
 export function AvailableTopicsListWrapper() {
   const manageScope: TTopicsManageScopeId = TopicsManageScopeIds.AVAILABLE_TOPICS;
+
+  const {
+    data: sessionData,
+    // status: sessionStatus,
+  } = useSession();
+  const user = sessionData?.user;
+
+  const ignoreOnlyMy = !user;
 
   const [filtersParams, setFiltersParams] = React.useState<
     TAvailableTopicsFiltersParams | undefined
@@ -100,6 +109,7 @@ export function AvailableTopicsListWrapper() {
       storeId="available-topics-filters"
       applyFilters={applyFilters}
       augmentDefaults={augmentFiltersDefaults}
+      ignoreOnlyMy={ignoreOnlyMy}
       // defaultExpanded // DEBUG: Open by default
     >
       <AvailableTopicsListPage

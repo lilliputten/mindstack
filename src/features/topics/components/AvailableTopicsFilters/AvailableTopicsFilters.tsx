@@ -162,7 +162,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       type="submit"
                       variant="theme"
                       disabled={!isSubmitEnabled}
-                      className="flex items-center gap-2"
+                      className="flex items-center justify-start gap-2"
                     >
                       <Icons.Check className="size-4 opacity-50" />
                       {t('AvailableTopicsFilters.Apply')}
@@ -172,7 +172,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       variant="outline"
                       onClick={handleResetToDefaults}
                       disabled={onDefaults}
-                      className="flex items-center gap-2"
+                      className="flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       {t('AvailableTopicsFilters.ResetToDefaults')}
@@ -182,7 +182,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       variant="outline"
                       onClick={handleClearChanges}
                       disabled={!form.formState.isDirty}
-                      className="flex items-center gap-2"
+                      className="flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       {t('AvailableTopicsFilters.ClearChanges')}
@@ -191,7 +191,7 @@ export function AvailableTopicsFilters(props: TProps) {
                       type="button"
                       variant="ghost"
                       onClick={hideFilters}
-                      className="flex items-center gap-2 md:ml-auto"
+                      className="flex items-center justify-start gap-2 md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
                       {t('AvailableTopicsFilters.Hide')}

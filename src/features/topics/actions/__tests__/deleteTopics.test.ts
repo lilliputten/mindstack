@@ -119,10 +119,10 @@ describe('deleteTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-auth-${dateTag}@test.com`, role: 'USER' },
       });
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `other-auth-${dateTag}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: otherUser.id });

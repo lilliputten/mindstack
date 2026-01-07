@@ -1,8 +1,9 @@
 import z from 'zod';
 
+import { Question, TopicSchema } from '@/generated/prisma';
+
 import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import { TAvailableAnswer } from '@/features/answers/types';
-import { Question, TopicSchema } from '@/generated/prisma';
 
 export type TQuestion = ExtendNullWithUndefined<Question> & { _count?: { answers: number } };
 export type TQuestionReal = ReplaceNullWithUndefined<Question>;

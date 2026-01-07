@@ -44,15 +44,15 @@
 - Ensure the confidentiality and security of the User's personal data in accordance with the Privacy Policy.
 - Consider User inquiries through official support channels indicated on the Platform.
 
-3.1.2. The Service Provider is entitled to:
+  3.1.2. The Service Provider is entitled to:
 
 - Unilaterally change the cost of Services, Platform functionality, and terms of this Offer by notifying the User through publication of the new version on the site {publicAddr} at least **7 (seven)** calendar days before the changes take effect. Continued use of Services after the changes take effect means the User's consent.
 - Suspend or restrict the User's access to the Platform in case of violation of this Offer's terms, including non-payment, as well as for scheduled maintenance.
 - Refuse registration or terminate the Agreement unilaterally if the User provides unreliable data, commits actions that may be qualified as fraudulent, infringing third parties' rights, Russian Federation legislation, or intellectual property rights.
 
-3.2. Rights and obligations of the User:
+  3.2. Rights and obligations of the User:
 
-3.2.1. The User undertakes to:
+  3.2.1. The User undertakes to:
 
 - Use the Platform and Content solely for lawful purposes, without infringing third parties' rights or Russian Federation legislation.
 - Provide accurate and up-to-date data during registration and keep it current.
@@ -60,7 +60,7 @@
 - Comply with the terms of use of any third-party services accessed through the Platform.
 - Immediately notify the Service Provider of any unauthorized use of their Account.
 
-3.2.2. The User is entitled to:
+  3.2.2. The User is entitled to:
 
 - Demand that the Service Provider provide Services in accordance with the terms of the paid Tariff Plan.
 - Refuse Services and terminate the Agreement as provided in Section 5 of this Offer.
@@ -103,7 +103,7 @@
 - For Users' Content and integrated third-party services (Clause 4.2).
 - For unauthorized access by third parties to the User's Account due to the User's violation of security rules.
 
-7.3. The Service Provider's aggregate liability for any claim or dispute related to the Agreement or Services is limited to the amount actually paid by the User to the Service Provider for the Services in connection with which such liability arose, for the last billing period.
+  7.3. The Service Provider's aggregate liability for any claim or dispute related to the Agreement or Services is limited to the amount actually paid by the User to the Service Provider for the Services in connection with which such liability arose, for the last billing period.
 
 ## 8. Force Majeure
 
@@ -136,7 +136,7 @@
 - **Service Provider:** Individual applying the special tax regime "Tax on Professional Income" (self-employed)
 - **Full Name:** {ownerName}
 - **TIN:** {internationalTIN}
-- **Contact Phone:** {contactPhone}
+- **Contact Phone:** {internationalPhone}
 - **Email for Legally Significant Messages and Claims:** {contactEmail}
 - **Service (Platform) Website:** {publicAddr}
 

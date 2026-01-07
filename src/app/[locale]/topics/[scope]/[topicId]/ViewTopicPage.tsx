@@ -3,7 +3,6 @@
 import React from 'react';
 import { toast } from 'sonner';
 
-import { availableTopicsRoute } from '@/config/routesConfig';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
@@ -11,6 +10,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
+import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';

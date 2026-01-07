@@ -7,7 +7,6 @@ import {
   isVercel,
   isVercelPreview,
   isVercelProduction,
-  NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_URL,
   NODE_ENV,
   PUBLIC_URL,
@@ -25,7 +24,6 @@ export async function getServerInfo() {
       versionInfo,
       VERCEL_ENV,
       NODE_ENV,
-      NEXT_PUBLIC_APP_URL,
       NEXT_PUBLIC_URL,
       // Vercel
       VERCEL_PROJECT_PRODUCTION_URL,

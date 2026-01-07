@@ -4,8 +4,7 @@ import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
 
-import { settingsRoute } from '@/config/routesConfig';
-import { deleteAllCookies } from '@/lib/helpers';
+import { clearLocalStorage, deleteAllCookies } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
@@ -13,8 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/DropdownMenu';
+import { useDeleteAccountModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
+import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
@@ -40,6 +41,8 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const user = session?.user;
   const t = useT();
 
+  const { showDeleteAccountModal } = useDeleteAccountModalContext();
+
   const queryClient = useQueryClient();
 
   const handleSignOut = React.useCallback(
@@ -48,14 +51,12 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       closeOuterMenu?.();
       // Clear react-query and local caches
       queryClient.clear();
-      if (typeof localStorage !== 'undefined') {
-        localStorage.clear();
-      }
+      clearLocalStorage({ except: ['cookies-accepted'] });
       if (typeof document !== 'undefined') {
         deleteAllCookies();
       }
       signOut({
-        callbackUrl: `${window.location.origin}/`,
+        // callbackUrl: `${window.location.origin}/`,
       });
     },
     [closeOuterMenu, queryClient],
@@ -81,7 +82,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
     >
       <div
         className={cn(
-          isDev && '__NavUserBlock_UserName', // DEBUG
+          isDev && '__NavUserBlock_User', // DEBUG
           'flex items-center justify-center gap-4',
           !onSidebar && 'px-2 py-1',
         )}
@@ -148,22 +149,53 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             </Link>
           </MenuItem>
 
+          <MenuItem asChild onSelect={showDeleteAccountModal}>
+            <div className="flex items-center space-x-2.5">
+              <Icons.Trash className="size-4" />
+              <p className="text-sm">{t('NavUserAccount.DeleteAccount')}</p>
+            </div>
+          </MenuItem>
+
           <DropdownMenuSeparator className="w-full" />
         </>
       )}
-      {/* Sign Out button */}
-      <MenuItem
+      <div
         className={cn(
-          isDev && '__NavUserBlock_SignOut_Button', // DEBUG
-          'cursor-pointer',
+          isDev && '__NavUserBlock_UserButtons', // DEBUG
+          'flex flex-wrap gap-2',
         )}
-        onSelect={handleSignOut}
       >
-        <div className="flex items-center space-x-2.5">
-          <Icons.LogOut className="size-4" />
-          <p className="text-sm">{t('NavUserAccount.SignOut')}</p>
-        </div>
-      </MenuItem>
+        {/* Sign Out button */}
+        <MenuItem
+          data-testid="__NavUserBlock_SignOut_Button"
+          className={cn(
+            isDev && '__NavUserBlock_SignOut_Button', // DEBUG
+            'cursor-pointer',
+          )}
+          onSelect={handleSignOut}
+        >
+          <div className="flex items-center space-x-2.5">
+            <Icons.LogOut className="size-4" />
+            <p className="text-sm">{t('NavUserAccount.SignOut')}</p>
+          </div>
+        </MenuItem>
+        {/* Delete Account button */}
+        {onSidebar && (
+          <MenuItem
+            data-testid="__NavAuthButton_DeleteAccountButton"
+            className={cn(
+              isDev && '__NavAuthButton_DeleteAccountButton', // DEBUG
+              'cursor-pointer',
+            )}
+            onSelect={showDeleteAccountModal}
+          >
+            <div className="flex items-center space-x-2.5">
+              <Icons.Trash className="size-4" />
+              <p className="text-sm">{t('NavUserAccount.DeleteAccount')}</p>
+            </div>
+          </MenuItem>
+        )}
+      </div>
     </Wrapper>
   );
 }

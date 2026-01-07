@@ -11,8 +11,8 @@ import {
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
 import { TAllUsedKeys, TAvailableTopicsResultsQueryData } from '@/lib/types/react-query';
+import { getErrorText } from '@/lib/helpers';
 import {
   addNewItemToQueryCache,
   deleteItemFromQueryCache,
@@ -31,6 +31,7 @@ import {
 } from '@/contexts/TopicsContext';
 import { getAvailableTopics } from '@/features/topics/actions';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
+import { useT } from '@/i18n';
 
 import { useSessionUser } from '../useSessionUser';
 
@@ -59,6 +60,8 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  const t = useT();
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
@@ -127,8 +130,8 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
          * return result.data as TGetAvailableTopicsResults;
          */
       } catch (error) {
-        const details = error instanceof APIError ? error.details : null;
-        const message = 'Cannot load topics data';
+        const details = getErrorText(error); // error instanceof APIError ? error.details : null;
+        const message = t('UseAvailableTopics.CannotLoadTopicsData');
         // eslint-disable-next-line no-console
         console.error('[useAvailableTopics:queryFn]', message, {
           details,

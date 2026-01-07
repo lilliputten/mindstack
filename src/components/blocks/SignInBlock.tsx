@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 import { SignInForm, SignInFormHeader } from '@/components/forms/SignInForm';
 import { isDev } from '@/constants';
 
-export function SignInBlock(props: TPropsWithClassName) {
-  const { className } = props;
+export function SignInBlock(props: { redirectUrl?: string } & TPropsWithClassName) {
+  const { className, redirectUrl } = props;
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   return (
@@ -21,15 +21,8 @@ export function SignInBlock(props: TPropsWithClassName) {
       <div
         className={cn(
           isDev && '__SignInBlock_Header', // DEBUG
-          'flex',
-          'flex-col',
-          'items-center',
-          'justify-center',
-          'space-y-3',
-          'px-6',
-          'py-6',
-          'pt-8',
-          'md:px-16',
+          'flex flex-col items-center justify-center',
+          'space-y-3 px-6 py-6 pt-8 md:px-16',
         )}
       >
         <SignInFormHeader dark={isDark} inBody />
@@ -37,15 +30,11 @@ export function SignInBlock(props: TPropsWithClassName) {
       <div
         className={cn(
           isDev && '__SignInBlock_Form', // DEBUG
-          'flex',
-          'flex-col',
-          'space-y-4',
-          'px-6',
-          'py-6',
-          'md:px-16',
+          'flex flex-col',
+          'space-y-4 px-6 py-6 md:px-16',
         )}
       >
-        <SignInForm inBody />
+        <SignInForm inBody redirectUrl={redirectUrl} />
       </div>
     </div>
   );

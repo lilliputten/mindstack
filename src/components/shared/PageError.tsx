@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { publicRootRoute } from '@/config/routesConfig';
 import { ErrorLike } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
@@ -12,17 +11,21 @@ import { Button } from '@/components/ui/Button';
 import { ErrorPlaceHolder } from '@/components/shared/ErrorPlaceHolder';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
+import { rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useGoBack } from '@/hooks';
 
 interface TErrorProps {
   title?: TReactNode;
+  explanation?: TReactNode;
+  explanationClassName?: string;
   extraActions?: TReactNode;
   ExtraActions?: React.FunctionComponent;
   error?: ErrorLike; // Error & { message?: string };
   reset?: () => void;
   className?: string;
-  icon?: TGenericIcon;
+  icon?: TGenericIcon | string;
+  iconClassName?: string;
   padded?: boolean;
   border?: boolean;
 }
@@ -30,13 +33,18 @@ interface TErrorProps {
 // NOTE: Only plain string should be passed from the server components
 // otherwise you'll get an 'Only plain objects... can be passed...' error.
 
+const defaultIcon = Icons.Warning;
+
 export function PageError(props: TErrorProps) {
   const {
     error,
     reset,
     className,
     title,
-    icon = Icons.Warning,
+    explanation,
+    explanationClassName,
+    icon = defaultIcon,
+    iconClassName,
     extraActions,
     ExtraActions,
     padded = true,
@@ -44,7 +52,12 @@ export function PageError(props: TErrorProps) {
   } = props;
   const router = useRouter();
 
-  const errText = getErrorText(error);
+  let titleText = title;
+  let errText = getErrorText(error);
+  if (!titleText && errText && errText.length < 80) {
+    titleText = errText;
+    errText = '';
+  }
 
   React.useEffect(() => {
     if (error) {
@@ -56,20 +69,25 @@ export function PageError(props: TErrorProps) {
     // TODO: Log the error to an error reporting service?
   }, [error, errText]);
 
-  const goBack = useGoBack(publicRootRoute);
+  const goBack = useGoBack(rootAliasRoute);
 
   const goHome = React.useCallback(() => {
     const { href } = window.location;
     // Do a hard reload
-    // window.location.href = publicRootRoute;
-    router.push(publicRootRoute);
+    // window.location.href = rootAliasRoute;
+    router.push(rootAliasRoute);
     setTimeout(() => {
       // If still on the same page after trying to go back, fallback
       if (document.visibilityState === 'visible' && href === window.location.href) {
-        window.location.href = publicRootRoute;
+        window.location.href = rootAliasRoute;
       }
     }, 200);
   }, [router]);
+
+  // Helper function to safely access icon by string name
+  const getIconByName = (name: string): TGenericIcon | undefined => {
+    return (Icons as { [key: string]: TGenericIcon })[name];
+  };
 
   return (
     <ErrorPlaceHolder
@@ -81,27 +99,43 @@ export function PageError(props: TErrorProps) {
         className,
       )}
     >
-      <ErrorPlaceHolder.Icon icon={icon} />
-      <ErrorPlaceHolder.Title>{title || errText}</ErrorPlaceHolder.Title>
-      {title && errText && (
-        <ErrorPlaceHolder.Description>
-          {/* // To show only general message for the users?
-          See error log for details.
-          */}
-          {errText}
-        </ErrorPlaceHolder.Description>
+      <ErrorPlaceHolder.Icon
+        className={cn(
+          isDev && '__PageError_Icon', // DEBUG
+          'mb-4',
+          iconClassName,
+        )}
+        icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
+      />
+      {titleText && <ErrorPlaceHolder.Title>{titleText}</ErrorPlaceHolder.Title>}
+      {errText && <ErrorPlaceHolder.Description>{errText}</ErrorPlaceHolder.Description>}
+      {explanation && (
+        <div
+          className={cn(
+            isDev && '__PageError_Explanation', // DEBUG
+            'text-content text-center text-sm font-normal leading-6',
+            explanationClassName,
+          )}
+        >
+          {explanation}
+        </div>
       )}
-      <div className="mt-2 flex w-full flex-wrap justify-center gap-4">
-        <Button onClick={goBack} className="flex gap-2">
+      <div
+        className={cn(
+          isDev && '__PageError_Actions', // DEBUG
+          'mt-4 flex w-full flex-wrap justify-center gap-4',
+        )}
+      >
+        <Button variant="theme" onClick={goBack} className="flex gap-2">
           <Icons.ArrowLeft className="size-4" />
           <span>Go back</span>
         </Button>
-        <Button onClick={goHome} className="flex gap-2">
+        <Button variant="theme" onClick={goHome} className="flex gap-2">
           <Icons.Home className="size-4" />
           Go home
         </Button>
         {/*
-        <Link href={publicRootRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
+        <Link href={rootAliasRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
           <span>Go home</span>
         </Link>

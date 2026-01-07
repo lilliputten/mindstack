@@ -62,8 +62,10 @@
   "UpdatedDate": "Дата обновления",
   "UsedGenerations": "Использованные генерации",
   "UserGrade": "Уровень пользователя",
+  "UserNotLoggedIn": "Пользователь не авторизован",
   "UserRole": "Роль пользователя",
   "Yes": "Да",
+  "or": "или",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Доступные генерации ИИ: {availableGenerations}",
     "CheckYourUsagePlan": "проверьте свой тарифный план",
@@ -229,6 +231,11 @@
   "CachedUsersForTopics": {
     "ErrorLoadingUsersData": "Ошибка загрузки данных пользователей."
   },
+  "CalculatePricingForUser": {
+    "CannotUpgradeToAnotherSubscriptionPeriod": "Невозможно перейти на другой период подписки",
+    "CurrentSubscriptionPeriodMissing": "Текущий период подписки отсутствует для пользователя {userId}",
+    "UpgradeNotAllowedMessage": "Вы пытаетесь перейти с \"{currentPeriod}\" на \"{requestedPeriod}\" типы подписки. Это невозможно. Пожалуйста, свяжитесь или сообщите в техническую поддержку."
+  },
   "CardsWithIconsSection": {
     "AIPoweredLearningDescription": "Используйте передовой ИИ для улучшения процесса обучения. Получайте персонализированные рекомендации и интеллектуальную генерацию контента.",
     "ActiveRecallPracticeDescription": "Укрепляйте память с помощью активного воспроизведения. Практикуйте извлечение информации из памяти, а не просто повторное чтение, что доказано более эффективно для долгосрочного запоминания.",
@@ -236,9 +243,18 @@
     "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
     "Title": "Почему стоит выбрать MindStack"
   },
+  "CheckStripePayment": {
+    "PaymentError": "Ошибка проверки платежа stripe",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
+  },
+  "CheckYookassaPayment": {
+    "PaymentError": "Ошибка проверки платежа yookassa",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
+  },
   "ContentFooter": {
     "AppDescription": "Приложение для тренировки памяти",
     "BuiltWithText": "Создано в <AuthorLink>{authorSite}</AuthorLink> с использованием <NextJSLink>Next.js</NextJSLink> и <VercelLink>Vercel</VercelLink>",
+    "ContactsLink": "Контакты",
     "CookiePolicyLink": "Политика в отношении файлов cookie",
     "DocumentationLink": "Документация",
     "PricingLink": "Цены",
@@ -250,7 +266,14 @@
   },
   "DeleteAccountModal": {
     "AccountDeletedSuccessfully": "Аккаунт успешно удален!",
-    "DeletingAccount": "Удаление аккаунта..."
+    "CannotDeleteAccount": "Ошибка удаления аккаунта",
+    "ConfirmDeleteAccount": "Подтвердить удаление аккаунта",
+    "DeleteAccount": "Удалить аккаунт",
+    "DeletingAccount": "Удаление аккаунта...",
+    "TypeToVerifyText": "Для проверки введите \"<ConfirmPattern></ConfirmPattern>\" ниже.",
+    "Warning": "Предупреждение",
+    "WarningText": "Это приведет к безвозвратному удалению вашей учетной записи и активной подписки!",
+    "confirmPattern": "подтвердить удаление аккаунта"
   },
   "DeleteAnswerModal": {
     "CancelButtonText": "Отмена",
@@ -372,6 +395,20 @@
     "CannotSaveTopicData": "Невозможно сохранить данные темы.",
     "SavingTopicData": "Сохранение данных темы...",
     "SuccessfullySavedTheTopic": "Тема успешно сохранена"
+  },
+  "EmailSignInForm": {
+    "ContactAdminMessage": "Свяжитесь с администратором через страницу \"Контакты\".",
+    "EmailLabel": "Или используйте электронную почту:",
+    "EmailPlaceholder": "Введите вашу электронную почту",
+    "ErrorMessage": "Произошла ошибка, пожалуйста, попробуйте снова",
+    "ErrorMessageWithDetails": "Произошла ошибка, пожалуйста, попробуйте снова: {error}",
+    "NotAllowedMessage": "Вам в настоящее время не разрешено использовать приложение (код отказа: {rejectReason}).",
+    "SuccessMessage": "Сообщение для входа отправлено. Проверьте вашу электронную почту для получения ссылки для входа.",
+    "ValidationError": "Пожалуйста, введите действительный адрес электронной почты"
+  },
+  "EnsurePaidableSubscriptionType": {
+    "InvalidSubscriptionTypeValue": "Недействительное значение типа подписки: {value}",
+    "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате"
   },
   "FeaturesSection": {
     "CreateCustomTopics": "Создать пользовательские темы",
@@ -534,7 +571,7 @@
   },
   "NavAuthButton": {
     "Dashboard": "Панель",
-    "sign-in": "Войти"
+    "SignIn": "Войти"
   },
   "NavLinks": {
     "AboutProject": "О проекте",
@@ -549,6 +586,7 @@
     "MyData": "Мои данные",
     "MyTopics": "Мои темы",
     "Options": "Опции",
+    "Pricing": "Цены",
     "Settings": "Настройки",
     "Support": "Поддержка",
     "TestAiTextQuery": "Тест ИИ",
@@ -567,6 +605,7 @@
   "NavUserAccount": {
     "Admin": "Администрирование",
     "Dashboard": "Панель управления",
+    "DeleteAccount": "Удалить аккаунт",
     "Settings": "Настройки",
     "SignOut": "Выйти"
   },
@@ -583,6 +622,7 @@
     "Answers": "Ответы",
     "AvailableTopicsDescription": "Темы, доступные для использования",
     "AvailableTopicsTitle": "Доступные темы",
+    "ContactsPageTitle": "Контакты проекта",
     "CookiesPageTitle": "Политика использования файлов cookie",
     "DocsTitle": "Документация",
     "EditAnswerPropertiesTitle": "Изменить свойства ответа",
@@ -599,6 +639,9 @@
     "MyTopicsDescription": "Темы, созданные мной",
     "MyTopicsTitle": "Мои темы",
     "OfertaPageTitle": "Оферта",
+    "PricingChoose": "Выберите план подписки",
+    "PricingChooseCancel": "Отменить платёж",
+    "PricingChooseSuccess": "Подтверждение плана подписки",
     "PricingPageTitle": "Тарифы",
     "PrivacyPageTitle": "Политика конфиденциальности",
     "Questions": "Вопросы",
@@ -616,15 +659,20 @@
     "WelcomeTitle": "Добро пожаловать!",
     "WorkoutTopicGoTitle": "Обучение теме"
   },
+  "ParsePaidableSubscriptionType": {
+    "InvalidSubscriptionGrade": "Недействительный уровень подписки",
+    "InvalidSubscriptionPeriod": "Недействительный период подписки"
+  },
   "Pricing": {
     "ContactUs": "Свяжитесь с нами",
     "Free": "Бесплатно",
     "FutureFeatureNote": "Скоро! Подпишитесь на нашу рассылку, чтобы узнавать о новых функциях.",
     "MostPopular": "Самый популярный",
-    "PerMonth": "/месяц",
     "Unlimited": "Неограниченно",
-    "billedAnnually": "ежегодно",
-    "billedMonthly": "ежемесячно",
+    "billedAnnually": "год",
+    "billedMonthly": "месяц",
+    "payOnce": "один раз",
+    "payRegular": "регулярно",
     "Comparison": {
       "AiGenerations": "ИИ генерации",
       "Analytics": "Подробная аналитика",
@@ -640,7 +688,9 @@
     },
     "Hero": {
       "Monthly": "Ежемесячно",
-      "Subtitle": "Получите скидку 20% при годовой оплате",
+      "Once": "Один раз",
+      "Regular": "Регулярно",
+      "Subtitle": "Получите скидку {yearlyDiscountPercents}% с годовой оплатой",
       "Title": "Тарифы",
       "Yearly": "Ежегодно"
     },
@@ -659,7 +709,7 @@
       },
       "Premium": {
         "Button": "Выбрать Премиум",
-        "Description": "Для организаций",
+        "Description": "Для продвинутого использования",
         "Name": "Премиум",
         "Features": {
           "Advanced": "Продвинутые интеграции",
@@ -683,7 +733,7 @@
       },
       "Unlimited": {
         "Button": "Свяжитесь с нами",
-        "Description": "Для организаций, которым требуется высочайший уровень безопасности и контроля.",
+        "Description": "Для лиц или групп, которым требуется высочайший уровень безопасности и контроля.",
         "Name": "Неограниченный",
         "Features": {
           "Custom": "Пользовательские интеграции",
@@ -694,6 +744,91 @@
         }
       }
     }
+  },
+  "PricingChooseCancel": {
+    "PaymentCanceled": "Платёж был отменён",
+    "StartWorking": "Начните работать с темами",
+    "ViewPlans": "Вернуться к планам подписки"
+  },
+  "PricingChooseCancelRoute": {
+    "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
+    "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "ErrorCancelingPayment": "Ошибка при отмене платежа",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
+    "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
+    "PaymentNotFound": "Платеж не найден",
+    "SubscriptionTypesMismatch": "Несоответствие типов подписки",
+    "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>."
+  },
+  "PricingChoosePage": {
+    "CheckAvailableSubscriptionPlans": "Посмотреть другие доступные планы подписки",
+    "ChoosePaymentMethod": "Выберите способ оплаты",
+    "CompleteSubscription": "для подключения подписки {planName}",
+    "ContactSupport": "Связаться с поддержкой",
+    "ContactSupportForDowngrade": "Вы переходите с <strong>{currentGrade</strong> на <strong>{requestedGrade</strong>. \nЧтобы перейти на более раннюю версию, вам необходимо обратиться в <ContactsLink>поддержку</ContactsLink>.",
+    "ContactTechnicalSupport": "Обратитесь в техническую поддержку",
+    "DowngradeRequiresSupport": "Для понижения уровня необходимо связаться с поддержкой",
+    "DowngradeWarning": "Предупреждение о понижении уровня - пожалуйста, свяжитесь с поддержкой",
+    "GuestNotAllowed": "Гостевым пользователям не разрешено совершать платежи",
+    "InternationalCard": "Международная карта",
+    "InternationalCardDescription": "Оплатите международными платежными системами. Поддерживает основные кредитные и дебетовые карты по всему миру.",
+    "NoPaymentUrlProvided": "Не предоставлен URL оплаты",
+    "OpenTelegramBot": "Открыть @{botUsername}",
+    "OtherOptionsText": "Если вы хотите выбрать другие варианты подписки, перейдите на <PricingLink>страницу цен</PricingLink> или <ContactsLink>свяжитесь с нами</ContactsLink> в случае возникновения каких-либо проблем.",
+    "PayWithInternationalCard": "Оплатить международной картой",
+    "PayWithRussianCard": "Оплатить российской картой",
+    "PaymentCreated": "Платеж успешно создан",
+    "PaymentCreatingError": "Ошибка создания платежа",
+    "PaymentIsCreating": "Платеж создается",
+    "RussianBankCard": "Российская банковская карта",
+    "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
+    "SameGradeMessage": "У вас уже есть план подписки {currentGrade}",
+    "SelectAnotherSubscriptionType": "Выберите другой тип подписки",
+    "TelegramStars": "Звезды Telegram",
+    "TelegramStarsCompletePayment": "Перейдите в нашего бота в Telegram, чтобы завершить оплату с помощью Звезд Telegram.",
+    "TelegramStarsOptionAvailable": "Эта опция доступна, если вы вошли через аккаунт Telegram.",
+    "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade}</strong> до <strong>{requestedGrade}</strong>.",
+    "UpgradePriceInfo": "С вас будет взиматься только разница между планами",
+    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
+    "YoureToPay": "Вы платите"
+  },
+  "PricingChooseRoute": {
+    "CannotCalculatePrices": "Не удается рассчитать цены для типа подписки \"{subscriptionType}\"",
+    "CannotCalculatePricesWithBasePrice": "Не удается рассчитать цены для типа подписки \"{currentSubscriptionType}\" и базовой цены {basePrice}",
+    "PricesDataMissingAfterCalculation": "Данные о ценах отсутствуют после расчета для типа подписки: {subscriptionType}"
+  },
+  "PricingChooseSuccess": {
+    "Activated": "Активировано",
+    "Congratulations": "Поздравляем!",
+    "NewFeatures": "Новые доступные функции",
+    "StartWorking": "Начните работать с темами",
+    "SubscriptionUpgraded": "Ваша подписка была успешно повышена до плана <strong>{grade}</strong>.",
+    "ViewPlans": "Посмотреть другие планы подписки",
+    "WelcomeTo": "Добро пожаловать в {plan}!"
+  },
+  "PricingChooseSuccessRoute": {
+    "ChooseAnotherPaymentMethod": "Выбрать другой способ оплаты",
+    "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
+    "ErrorFinishingPayment": "Ошибка завершения платежа",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
+    "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
+    "InvalidSubscriptionTypeValue": "Недействительное значение типа подписки: {value}",
+    "PaymentAlreadyProcessed": "Платеж уже был обработан",
+    "PaymentFailedMessage": "Похоже, оплата не прошла",
+    "PaymentNotFound": "Платеж не найден",
+    "PaymentServiceSideErrorExplanation": "Платеж мог быть отменен или могла произойти ошибка на стороне сервиса.",
+    "PaymentWasNotPaidError": "Платеж не был оплачен",
+    "ReachTechnicalSupport": "Обратиться в техническую поддержку",
+    "ReviewSubscriptionOptions": "Просмотреть варианты подписки",
+    "SubscriptionTypeNotSubjectToPayment": "Тип подписки \"{subscriptionType}\" не подлежит оплате",
+    "SubscriptionTypesMismatch": "Несоответствие типов подписки",
+    "SubscriptionTypesMismatchExplanation": "Ожидаемый <strong>{expected}</strong>, но получен <strong>{received}</strong>.",
+    "SucceedPaymentAttemptExplanation": "Похоже, вы пытаетесь несколько раз обработать один и тот же платеж. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
+    "TechnicalSupport": "техническая поддержка"
+  },
+  "PricingPlansSection": {
+    "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
+    "SignInModalIntroForBasic": "Для подключения базовой подписки просто авторизуйтесь в системе."
   },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Код языка",
@@ -763,6 +898,26 @@
     "MyTopics": "Мои темы",
     "Welcome": "Добро пожаловать"
   },
+  "StripePayment": {
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
+    "FailedToCreateCheckoutSessionUrl": "Не удалось создать URL сессии оплаты Stripe",
+    "PaymentDescription": "Оплата для типа подписки {subscriptionType}",
+    "PaymentError": "Ошибка при создании платежа через Stripe",
+    "PaymentName": "План подписки на Mind Stack Trainer",
+    "PaymentStartingError": "Ошибка запуска платежа",
+    "UnauthorizedPaymentError": "Невозможно проводить платежи для неавторизованных пользователей"
+  },
+  "TelegramSignIn": {
+    "ButtonText": "Войти через Telegram бота",
+    "OrUseTelegram": "Или используйте Telegram",
+    "QRCodeAlt": "QR-код Telegram бота",
+    "QRDescription": "Нажмите на кнопку выше, используйте QR-код или перейдите в <BotUsername></BotUsername> <BotLink>Telegram бота</BotLink>, и выберите команду <code>/authorize</code>, чтобы получить токен авторизации."
+  },
+  "TelegramSignInForm": {
+    "EnterTokenLabel": "Затем перейдите по ссылке или введите токен здесь:",
+    "InvalidTokenMessage": "Токен может содержать только буквы и цифры.",
+    "TokenPlaceholder": "Введите сгенерированный токен"
+  },
   "Themes": {
     "amber": "Янтарь",
     "blue": "Синий",
@@ -796,6 +951,15 @@
     "Description": "Разблокируйте все функции и получите неограниченный доступ к нашей службе поддержки.",
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
+  },
+  "UseAvailableAnswers": {
+    "CannotLoadAnswersData": "Не удается загрузить данные ответов"
+  },
+  "UseAvailableQuestions": {
+    "CannotLoadQuestionsData": "Не удается загрузить данные вопросов"
+  },
+  "UseAvailableTopics": {
+    "CannotLoadTopicsData": "Не удается загрузить данные тем"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Добавить новый ответ",
@@ -980,5 +1144,15 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка уже завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
+  },
+  "YookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
+    "NotSpecifiedPaymentId": "Не указан идентификатор платежа для проверки",
+    "PaymentCheckingFailure": "Ошибка проверки оплаты",
+    "PaymentError": "Ошибка при создании платежа через yookassa",
+    "PaymentProcessingFailure": "Ошибка обработки оплаты",
+    "PaymentStartingError": "Ошибка начала платежа",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   }
 }

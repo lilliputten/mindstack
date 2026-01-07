@@ -1,14 +1,9 @@
 'use client';
 
-import {
-  availableTopicsRoute,
-  myTopicsRoute,
-  publicAboutRoute,
-  publicWelcomeRoute,
-} from '@/config/routesConfig';
 import { generateArray } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { aboutAliasRoute, availableTopicsRoute, myTopicsRoute, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { getUserStatusText } from '@/features/users/helpers/getUserStatusText';
 import { useSessionData } from '@/hooks';
@@ -34,7 +29,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
     >
       {t.rich('AppIntro.BlockContent', {
         p: (chunks) => <p>{chunks}</p>,
-        AboutLink: (chunks) => <Link href={publicAboutRoute}>{chunks}</Link>,
+        AboutLink: (chunks) => <Link href={aboutAliasRoute}>{chunks}</Link>,
       })}
       {isUserLoading ? (
         <>
@@ -59,7 +54,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         <Link href={availableTopicsRoute}>available trainings</Link> created by other people.
       </p>
       <p>
-        If you have a <Link href={publicWelcomeRoute}>PRO subscription plan</Link>, then you can use
+        If you have a <Link href={welcomeAliasRoute}>PRO subscription plan</Link>, then you can use
         AI genration of topics' questions and answers.
       </p>
       {isAdmin && (

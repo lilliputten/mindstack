@@ -1,12 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
+import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
@@ -15,7 +14,9 @@ import { TAvailableTopic } from '@/features/topics/types';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { usePathname } from '@/i18n/routing'; // TODO: Use 'next/navigation'
+import { Link, usePathname } from '@/i18n/routing';
+
+// TODO: Use 'next/navigation'
 
 interface TAvailableTopicsListItemProps {
   index: number;
@@ -150,7 +151,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   );
   if (!isCurrentTopicRoutePath) {
     cardContent = (
-      <Link className="flex-1 text-xl font-medium" href={topicsRoutePath}>
+      <Link className="flex-1 text-xl font-medium" href={topicsRoutePath as TRoutePath}>
         {cardContent}
       </Link>
     );

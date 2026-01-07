@@ -6,8 +6,19 @@ import { formatDate, getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { currencyNames } from '@/components/currencies';
 import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
-import { contactEmail, effectiveTermsDate, isDev } from '@/config';
+import {
+  contactEmail,
+  effectiveTermsDate,
+  internationalPhone,
+  internationalTIN,
+  isDev,
+  privacyAliasRoute,
+  russianPhone,
+  russianTIN,
+} from '@/config';
+import { localeCurrencies } from '@/features/currencies';
 import { getT } from '@/i18n';
 import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
@@ -84,20 +95,25 @@ export async function OfertaPage(props: TOfertaPagePropsWithContent) {
     content = await getContent(locale);
   }
 
+  const localeCurrency = localeCurrencies[locale];
+  // const CurrencySign = CurrencySigns[localeCurrency];
+  const currencyName = currencyNames[localeCurrency];
+
   // Variables to render
   const vars = {
-    serviceName: t('Pages.RootTitle'),
     ownerName: t('LegalOwnerName'),
-    russianINN: '772857225118', // Russian INN number
-    internationalTIN: '31011746860014', // Uzbek TIN (PINFL) number
-    russianPhone: '+7 903 225-83-00', // Ru
-    contactPhone: '+998 97 877-11-74', // Uz
+
+    russianTIN, // Russian TIN (INN) number
+    internationalTIN, // Uzbek TIN (PINFL) number
+    russianPhone, // Russian phone
+    internationalPhone, // Uzbek phone
+
     effectiveDate: formatDate(effectiveTermsDate, locale),
     contactEmail,
     publicAddr: NEXT_PUBLIC_URL,
-    privacyPolicyUrl: 'https://example.com/privacy-policy',
-    currency: t('CurrencyUSD'),
-    currencyCode: 'USD',
+    privacyPolicyUrl: privacyAliasRoute,
+    currency: currencyName,
+    currencyCode: localeCurrency,
   };
 
   return (

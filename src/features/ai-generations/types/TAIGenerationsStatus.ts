@@ -1,5 +1,6 @@
-import { TAIGenerationErrorCode } from '@/lib/errors/AIGenerationError';
 import { UserGradeType, UserRoleType } from '@/generated/prisma';
+
+import { TAIGenerationErrorCode } from '@/lib/errors/AIGenerationError';
 
 export const unlimitedGenerations = 999999999;
 

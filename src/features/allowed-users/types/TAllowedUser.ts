@@ -1,7 +1,8 @@
 import * as z from 'zod';
 
-import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import { AllowedUserSchema } from '@/generated/prisma';
+
+import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 
 import { coercedAllosedUserTypeZType } from './AllowedUserType';
 

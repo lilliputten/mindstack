@@ -1,8 +1,9 @@
 'use server';
 
+import { WorkoutStatsSchema } from '@/generated/prisma';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { WorkoutStatsSchema } from '@/generated/prisma';
 
 type CreateWorkoutStatsData = Omit<typeof WorkoutStatsSchema._type, 'id' | 'userId' | 'createdAt'>;
 
