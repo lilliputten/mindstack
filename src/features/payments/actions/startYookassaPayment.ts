@@ -15,20 +15,20 @@ import { getT } from '@/i18n';
 
 import { getYookassaCheckoutObject } from './helpers';
 
-export interface TMakeYookassaPaymentParams {
+export interface TStartYookassaPaymentParams {
   subscriptionType: TSubscriptionType;
   uniqueKey: string; // Idempotency key
   paymentType?: IPaymentMethodType; // 'bank_card' etc
 }
 
 /** Start yookassa payment */
-export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
+export async function startYookassaPayment(params: TStartYookassaPaymentParams) {
   const { uniqueKey, paymentType, subscriptionType: rawSubscriptionType } = params;
   const t = await getT();
 
   const user = await getCurrentUser();
   if (!user) {
-    throw new CustomAPIError(t('MakeYookassaPayment.UnauthorizedPaymentError'));
+    throw new CustomAPIError(t('StartYookassaPayment.UnauthorizedPaymentError'));
   }
 
   // Use calculatePricingForUser to get proper pricing and comparison data
@@ -40,7 +40,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
 
   if (!price) {
     throw new Error(
-      t('MakeYookassaPayment.FailedToCalculatePrice', { subscriptionType: rawSubscriptionType }),
+      t('StartYookassaPayment.FailedToCalculatePrice', { subscriptionType: rawSubscriptionType }),
     );
   }
 
@@ -48,7 +48,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
   if (comparisonResult.type === 'upgrade') {
     // This is an upgrade scenario
     // eslint-disable-next-line no-console
-    console.log('[makeYookassaPayment]', 'Processing upgrade payment', {
+    console.log('[startYookassaPayment]', 'Processing upgrade payment', {
       user,
       currentGrade,
       requestedGrade,
@@ -58,7 +58,7 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
     // This is a downgrade - should not happen in normal flow, but we'll log it
     // eslint-disable-next-line no-console
     console.warn(
-      '[makeYookassaPayment]',
+      '[startYookassaPayment]',
       'Downgrade payment detected - this should not happen normally',
       {
         user,
@@ -67,11 +67,11 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
       },
     );
     // For downgrades, we might want to redirect to support instead of processing payment
-    throw new CustomAPIError(t('MakeYookassaPayment.DowngradeRequestsThroughSupport'));
+    throw new CustomAPIError(t('StartYookassaPayment.DowngradeRequestsThroughSupport'));
   } else {
     // Same grade - renewal or period change
     // eslint-disable-next-line no-console
-    console.log('[makeYookassaPayment]', 'Processing renewal or period change', {
+    console.log('[startYookassaPayment]', 'Processing renewal or period change', {
       user,
       currentGrade,
       requestedGrade,
@@ -156,11 +156,11 @@ export async function makeYookassaPayment(params: TMakeYookassaPaymentParams) {
 
     return resultData;
   } catch (error) {
-    const message = t('MakeYookassaPayment.PaymentError');
+    const message = t('StartYookassaPayment.PaymentError');
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     // eslint-disable-next-line no-console
-    console.error('[makeYookassaPayment]', comboMsg, {
+    console.error('[startYookassaPayment]', comboMsg, {
       error,
       params,
     });

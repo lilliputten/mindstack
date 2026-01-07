@@ -5,6 +5,6 @@ export * from './checkStripePayment';
 export * from './checkYookassaPayment';
 export * from './cleanStaleUserPayments';
 export * from './findUserPayment';
-export * from './makeYookassaPayment';
+export * from './startYookassaPayment';
 export * from './startStripeSessionCheckout';
 export * from './updateUserPayment';

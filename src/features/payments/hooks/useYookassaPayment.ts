@@ -14,9 +14,9 @@ import { useT } from '@/i18n';
 import {
   addUserPayment,
   checkYookassaPayment,
-  makeYookassaPayment,
+  startYookassaPayment,
   TCheckYookassaPaymentParams,
-  TMakeYookassaPaymentParams,
+  TStartYookassaPaymentParams,
   updateUserPayment,
 } from '../actions';
 import { paymentPollDelay } from '../constants';
@@ -36,7 +36,7 @@ interface TMemo {
   startedAt?: number;
 }
 
-type TPaymentResult = Awaited<ReturnType<typeof makeYookassaPayment>>;
+type TPaymentResult = Awaited<ReturnType<typeof startYookassaPayment>>;
 
 const maxWaitTimeout = isDev ? minuteMs * 1 : minuteMs * 10;
 
@@ -52,18 +52,18 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
   const isReady = true; // isPricesQueryReady;
 
   /** The core hook -- it initialized the payment, and allows to jump to the
-   * payment link (`paymentUrl`, returned from the `makeYookassaPayment` API
+   * payment link (`paymentUrl`, returned from the `startYookassaPayment` API
    * call), and/or to wait for a payment status updates
    * (`resolveYookassaPaymentInLoop`) */
   const startYookassaPayment = React.useCallback(() => {
-    const makeYookassaPaymentParams: TMakeYookassaPaymentParams = {
+    const startYookassaPaymentParams: TStartYookassaPaymentParams = {
       subscriptionType,
       uniqueKey: memo.uniqueKey,
     };
     return new Promise<TPaymentResult>((resolve, reject) => {
       startApiWorking(async () => {
         try {
-          const result = await makeYookassaPayment(makeYookassaPaymentParams);
+          const result = await startYookassaPayment(startYookassaPaymentParams);
           const { paymentId, price, currency } = result;
           await addUserPayment({
             provider: 'YOOKASSA',
@@ -82,7 +82,7 @@ export function useYookassaPayment(params: TYookassaPaymentParams) {
           // eslint-disable-next-line no-console
           console.error('[PricingChoosePage:startYoukassaPayment]', comboMsg, {
             error,
-            makeYookassaPaymentParams,
+            startYookassaPaymentParams,
           });
           debugger; // eslint-disable-line no-debugger
           reject(new InternalError(comboMsg, 'api-error'));

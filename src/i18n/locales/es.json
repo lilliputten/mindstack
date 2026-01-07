@@ -484,12 +484,6 @@
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA",
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
-  "MakeYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
-    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
-    "PaymentError": "Error al realizar el pago de yookassa",
-    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
-  },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",
     "Cancel": "Cancelar",
@@ -899,6 +893,12 @@
     "Info": "Información",
     "MyTopics": "Mis Temas",
     "Welcome": "Bienvenido"
+  },
+  "StartYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",
+    "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",
+    "PaymentError": "Error al realizar el pago de yookassa",
+    "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Error al calcular un precio adecuado para el pago para el tipo de suscripción \"{subscriptionType}\"",

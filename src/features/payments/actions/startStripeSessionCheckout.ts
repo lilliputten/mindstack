@@ -12,14 +12,14 @@ import { calculatePricingForUser } from '@/features/payments/actions/calculatePr
 import { TSubscriptionType } from '@/features/subscriptions';
 import { getT } from '@/i18n';
 
-export interface TMakeStripePaymentParams {
+interface TStartStripePaymentParams {
   subscriptionType: TSubscriptionType;
   uniqueKey: string; // Idempotency key
   currency?: TCurrencyType;
 }
 
 /** Start stripe payment */
-export async function startStripeSessionCheckout(params: TMakeStripePaymentParams) {
+export async function startStripeSessionCheckout(params: TStartStripePaymentParams) {
   const { uniqueKey, subscriptionType: rawSubscriptionType, currency = 'USD' } = params;
   const t = await getT();
 

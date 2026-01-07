@@ -483,12 +483,6 @@
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
   },
-  "MakeYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
-    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
-    "PaymentError": "Ошибка при создании платежа через yookassa",
-    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
-  },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Добавить новый ответ",
     "Cancel": "Отмена",
@@ -898,6 +892,12 @@
     "Info": "Информация",
     "MyTopics": "Мои темы",
     "Welcome": "Добро пожаловать"
+  },
+  "StartYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",
+    "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",
+    "PaymentError": "Ошибка при создании платежа через yookassa",
+    "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Не удалось рассчитать подходящую цену для оплаты для типа подписки \"{subscriptionType}\"",

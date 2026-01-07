@@ -485,12 +485,6 @@
     "ToastSuccessData": "Successfully retrieved AI generated data",
     "ToastSuccessQuestions": "Successfully added new questions"
   },
-  "MakeYookassaPayment": {
-    "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
-    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
-    "PaymentError": "Error making yookassa payment",
-    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
-  },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Add New Answer",
     "Cancel": "Cancel",
@@ -900,6 +894,12 @@
     "Info": "Information",
     "MyTopics": "My Topics",
     "Welcome": "Welcome"
+  },
+  "StartYookassaPayment": {
+    "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",
+    "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
+    "PaymentError": "Error making yookassa payment",
+    "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },
   "StripePayment": {
     "FailedToCalculatePrice": "Failed to calculate a proper price for the payment for the subscription type \"{subscriptionType}\"",
