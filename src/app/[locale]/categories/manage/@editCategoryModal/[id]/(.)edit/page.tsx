@@ -1,24 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
 
-export default function EditCategoryModalPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const isOpen = searchParams.get('edit') === 'true';
-
-  useEffect(() => {
-    if (!isOpen) {
-      router.push('/categories/manage');
-    }
-  }, [isOpen, router]);
-
-  // If not open, return null to prevent flash
-  if (!isOpen) {
-    return null;
-  }
-
-  return null;
+export default function EditCategoryModalPage({ params }: { params: { id: string } }) {
+  return <EditCategoryModal categoryId={params.id} onClose={() => window.history.back()} />;
 }

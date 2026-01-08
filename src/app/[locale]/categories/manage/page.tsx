@@ -1,26 +1,18 @@
 import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { prisma } from '@/lib/db';
+import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { auth } from '@/auth';
-import { isDev, startAliasRoute } from '@/config';
+import { isDev, manageCategoriesRoute, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
 import { TCategoryId } from '@/features/categories';
 import { TAwaitedLocaleProps } from '@/i18n';
 
 import { ManageCategoriesPageModalsWrapper } from './ManageCategoriesPageModalsWrapper';
-import { ManageCategoriesTable } from './ManageCategoriesTable';
 
 type TAwaitedProps = TAwaitedLocaleProps; // <{ scope: TTopicsManageScopeId }>;
-
-interface TManageCategoriesPageHolderProps extends TAwaitedProps {
-  showAddModal?: boolean;
-  deleteCategoryId?: TCategoryId;
-  editCategoryId?: TCategoryId;
-  from?: string;
-}
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
@@ -30,30 +22,40 @@ export async function generateMetadata({ params }: TAwaitedProps) {
     title: 'Manage Categories',
   });
 }
+
+interface TManageCategoriesPageHolderProps extends TAwaitedProps {
+  showAddModal?: boolean;
+  deleteCategoryId?: TCategoryId;
+  editCategoryId?: TCategoryId;
+  editTopicsCategoryId?: TCategoryId;
+  from?: string;
+}
+
 export default async function ManageCategoriesPageHolder(props: TManageCategoriesPageHolderProps) {
   const {
     showAddModal,
     deleteCategoryId,
     editCategoryId,
+    editTopicsCategoryId,
     from,
     // params,
   } = props;
 
-  const session = await auth();
-  const userId = session?.user?.id;
+  // Removed modal props since they will be handled by intercepted routes
+  const params = await props.params;
+  const locale = params.locale;
 
-  if (!userId) {
+  setRequestLocale(locale);
+
+  const user = await getCurrentUser();
+
+  if (!user?.id) {
     if (isDev) {
       // eslint-disable-next-line no-console
       console.debug('[ManageCategoriesPageHolder] Redirecting to auth');
     }
     redirect(startAliasRoute);
   }
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { role: true },
-  });
 
   if (user?.role !== 'ADMIN') {
     if (isDev) {
@@ -67,32 +69,22 @@ export default async function ManageCategoriesPageHolder(props: TManageCategorie
     <CategoriesProvider>
       <PageWrapper
         className={cn(
-          isDev && '__ManageCategoriesPageHolder', // DEBUG
+          isDev && '__ManageCategoriesPageHolder', // DEBUG class for outer container
         )}
         innerClassName={cn(
-          isDev && '__ManageCategoriesPageHolder_Inner', // DEBUG
+          isDev && '__ManageCategoriesPageHolder_Inner', // DEBUG class for inner container
           'w-full rounded-lg gap-6 py-6',
         )}
         limitWidth
       >
+        {/* Page wrapper provides consistent layout styling */}
         <ManageCategoriesPageModalsWrapper
           showAddModal={showAddModal}
           deleteCategoryId={deleteCategoryId}
           editCategoryId={editCategoryId}
+          editTopicsCategoryId={editTopicsCategoryId}
           from={from}
         />
-
-        {/*
-      <section className="container mx-auto px-4 py-8">
-        <h1 className="mb-6 text-3xl font-bold">Manage Categories</h1>
-        <p className="mb-8 text-muted-foreground">Manage your categories here</p>
-        <div className="space-y-6">
-          <ManageCategoriesTable />
-        </div>
-        <ManageCategoriesPageModalsWrapper />
-        <ManageCategoriesTable />
-      </section>
-      */}
       </PageWrapper>
     </CategoriesProvider>
   );

@@ -1,23 +1,23 @@
-'use client';
+import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+interface DeleteCategoriesModalPageProps {
+  searchParams: Promise<{ categoryId?: string; from?: string }>;
+}
 
-export default function DeleteCategoriesModalPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+export default async function DeleteCategoriesModalPage({
+  searchParams,
+}: DeleteCategoriesModalPageProps) {
+  const awaitedSearchParams = await searchParams;
+  const { categoryId, from } = awaitedSearchParams;
 
-  const isOpen = searchParams.get('delete') === 'true';
-
-  useEffect(() => {
-    if (!isOpen) {
-      router.push('/categories/manage');
-    }
-  }, [isOpen, router]);
-
-  // If not open, return null to prevent flash
-  if (!isOpen) {
-    return null;
+  if (categoryId) {
+    return (
+      <DeleteCategoriesModal
+        categoryId={categoryId}
+        from={from}
+        onClose={() => window.history.back()}
+      />
+    );
   }
 
   return null;

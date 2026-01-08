@@ -105,16 +105,9 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   );
   React.useEffect(() => {
     if (deleteCategoryId && isFetched) {
-      /* // UNUSED: Prevent opening the delete category midal with a browser url (but not with a programmatic router redirect)
-       * if (from?.startsWith('SERVER:')) {
-       *   // eslint-disable-next-line no-console
-       *   console.warn('No url-invoked category deletions allowed!');
-       *   router.replace(routePath);
-       * } else {
-       */
       openDeleteCategoryModal(
         deleteCategoryId,
-        from || 'Unknown_in_ManageCategoriesPageModalsWrapper',
+        from || 'Unknown_in_ManageCategorysPageModalsWrapper',
       );
     }
   }, [deleteCategoryId, openDeleteCategoryModal, from, isFetched]);
@@ -159,9 +152,8 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
     },
     [memo, goToTheRoute, t],
   );
-
   React.useEffect(() => {
-    // Use another id (`editTopicsCategoryId`)?
+    // Use another id (`editQuestionsCategoryId`)?
     if (editTopicsCategoryId) {
       openEditTopicsPage(editTopicsCategoryId);
     }
