@@ -8,6 +8,7 @@ import {
   allTopicsRoute,
   availableTopicsRoute,
   docsAliasRoute,
+  manageCategoriesRoute,
   myTopicsRoute,
   pricingAliasRoute,
   rootAliasRoute,
@@ -32,7 +33,8 @@ export const dashboardLinks: SidebarNavItem[] = [
     items: [
       { href: myTopicsRoute, icon: Icons.Topics, titleId: 'MyTopics' },
       { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'AllTopics', authorizedOnly: 'ADMIN' },
-      // Add other data links?
+      { href: manageCategoriesRoute, icon: Icons.Layers, titleId: 'ManageCategories', authorizedOnly: 'ADMIN' },
+      // Add other data management links?
     ],
   },
   {

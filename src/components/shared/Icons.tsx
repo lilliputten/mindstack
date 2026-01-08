@@ -54,6 +54,7 @@ export const {
   Info,
   Languages,
   Laptop,
+  Layers,
   LayoutDashboard,
   Library,
   Lightbulb,
