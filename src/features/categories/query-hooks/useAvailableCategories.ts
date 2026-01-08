@@ -29,7 +29,6 @@ import {
   TCategoryId,
   TGetAvailableCategoriesResults,
 } from '@/features/categories/types';
-import { useT } from '@/i18n';
 
 const itemsLimit = defaultItemsLimit;
 const staleTime = defaultStaleTime;
@@ -49,8 +48,6 @@ type TUseAvailableCategoriesProps = {
 export function useAvailableCategories(props: TUseAvailableCategoriesProps = {}) {
   const { traceId: _id, enabled = true } = props;
   const queryClient = useQueryClient();
-
-  const t = useT();
 
   const queryKey = React.useMemo<QueryKey>(() => ['available-categories'], []);
 
@@ -86,7 +83,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         return result;
       } catch (error) {
         const details = getErrorText(error);
-        const message = t('UseAvailableCategories.CannotLoadCategoriesData');
+        const message = 'Cannot load categories data';
         // eslint-disable-next-line no-console
         console.error('[useAvailableCategories:queryFn]', message, {
           details,

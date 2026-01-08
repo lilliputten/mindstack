@@ -1,7 +1,6 @@
 'use server';
 
 import { put } from '@vercel/blob';
-import { getTranslations } from 'next-intl/server';
 import sharp from 'sharp';
 
 import { nFormatter } from '@/lib/helpers/strings';
@@ -16,19 +15,17 @@ import {
 export type TUploadCategoryImageResult = Awaited<ReturnType<typeof uploadCategoryImage>>;
 
 export async function uploadCategoryImage(formData: FormData) {
-  const t = await getTranslations('errors');
-
   try {
     const user = await getCurrentUser();
     const userId = user?.id;
     const isAdmin = user?.role === 'ADMIN';
 
     if (!userId) {
-      throw new Error(t('AuthError'));
+      throw new Error('Authentication error');
     }
 
     if (!isAdmin) {
-      throw new Error(t('AccessDenied'));
+      throw new Error('Access denied');
     }
 
     const file = formData.get('image') as File;

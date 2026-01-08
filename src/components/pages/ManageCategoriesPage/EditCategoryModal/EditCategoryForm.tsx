@@ -10,6 +10,7 @@ import * as z from 'zod';
 import { CategorySchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText } from '@/lib/helpers';
+import { nFormatter } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
@@ -33,8 +34,6 @@ import {
 } from '@/features/categories/constants';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { defaultCategoryStatus, TAvailableCategory } from '@/features/categories/types';
-import { useT } from '@/i18n';
-import { nFormatter } from '@/lib/helpers/strings';
 
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
@@ -61,7 +60,6 @@ export function EditCategoryForm({
   onClose,
   className,
 }: IEditCategoryFormProps) {
-  const t = useT();
   const locale = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -169,7 +167,7 @@ export function EditCategoryForm({
       // Validate file size
       if (file.size > categoryImageSizeLimit) {
         const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
-        setUploadError(t('CategoriesPage.EditCategoryForm.ImageSizeError', { size: formattedSizeLimit }));
+        setUploadError(`Image size must be less than ${formattedSizeLimit}B`);
         return;
       }
 
@@ -177,13 +175,13 @@ export function EditCategoryForm({
       if (
         !categoryImageAllowedTypes.includes(file.type as (typeof categoryImageAllowedTypes)[number])
       ) {
-        setUploadError(t('CategoriesPage.EditCategoryForm.ImageTypeError'));
+        setUploadError('Invalid image type. Allowed types: JPEG, PNG, WebP, GIF');
         return;
       }
 
       handleImageUpload(file);
     },
-    [handleImageUpload, t],
+    [handleImageUpload],
   );
 
   const handleRemoveImage = useCallback(() => {
@@ -251,7 +249,7 @@ export function EditCategoryForm({
           control={form.control}
           render={() => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label>{t('CategoriesPage.EditCategoryForm.ImageLabel')}</Label>
+              <Label>Image</Label>
               <FormControl>
                 <div className="flex items-center gap-4">
                   {watchedImageUrl ? (
@@ -288,10 +286,7 @@ export function EditCategoryForm({
                   )}
                   <div className="flex-1">
                     <FormHint>
-                      {t('CategoriesPage.EditCategoryForm.ImageHint', {
-                        width: categoryImageConfig.maxWidth,
-                        height: categoryImageConfig.maxHeight,
-                      })}
+                      Maximum size: {categoryImageConfig.maxWidth}x{categoryImageConfig.maxHeight}px
                     </FormHint>
                   </div>
                 </div>
@@ -307,14 +302,12 @@ export function EditCategoryForm({
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-name">
-                {t('CategoriesPage.EditCategoryForm.NameLabel')}
-              </Label>
+              <Label htmlFor="category-name">Name</Label>
               <FormControl>
                 <Input
                   id="category-name"
                   type="text"
-                  placeholder={t('CategoriesPage.EditCategoryForm.NamePlaceholder')}
+                  placeholder="Enter category name"
                   {...field}
                 />
               </FormControl>
@@ -329,13 +322,11 @@ export function EditCategoryForm({
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-description">
-                {t('CategoriesPage.EditCategoryForm.DescriptionLabel')}
-              </Label>
+              <Label htmlFor="category-description">Description</Label>
               <FormControl>
                 <Textarea
                   id="category-description"
-                  placeholder={t('CategoriesPage.EditCategoryForm.DescriptionPlaceholder')}
+                  placeholder="Enter category description"
                   {...field}
                   value={field.value || ''}
                 />
@@ -351,17 +342,17 @@ export function EditCategoryForm({
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-keywords">{t('EditCategoryForm.KeywordsLabel')}</Label>
+              <Label htmlFor="category-keywords">Keywords</Label>
               <FormControl>
                 <Input
                   id="category-keywords"
                   type="text"
-                  placeholder={t('EditCategoryForm.KeywordsPlaceholder')}
+                  placeholder="Enter keywords separated by commas"
                   {...field}
                   value={field.value || ''}
                 />
               </FormControl>
-              <FormHint>{t('EditCategoryForm.KeywordsHint')}</FormHint>
+              <FormHint>Keywords help with search and categorization</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -373,17 +364,17 @@ export function EditCategoryForm({
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-status">{t('EditCategoryForm.StatusLabel')}</Label>
+              <Label htmlFor="category-status">Status</Label>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger id="category-status">
-                    <SelectValue placeholder={t('EditCategoryForm.StatusPlaceholder')} />
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="PUBLIC">{t('statuses.public')}</SelectItem>
-                  <SelectItem value="SUGGESTED">{t('statuses.suggested')}</SelectItem>
-                  <SelectItem value="HIDDEN">{t('statuses.hidden')}</SelectItem>
+                  <SelectItem value="PUBLIC">Public</SelectItem>
+                  <SelectItem value="SUGGESTED">Suggested</SelectItem>
+                  <SelectItem value="HIDDEN">Hidden</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -402,16 +393,16 @@ export function EditCategoryForm({
             {isPending ? (
               <>
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                <span>{t('EditCategoryForm.SavingButtonText')}</span>
+                <span>Saving...</span>
               </>
             ) : (
               <>
-                <span>{t('EditCategoryForm.SaveButtonText')}</span>
+                <span>Save</span>
               </>
             )}
           </Button>
           <Button variant="ghost" onClick={onCloseForm} className="gap-2">
-            <span>{t('Cancel')}</span>
+            <span>Cancel</span>
           </Button>
         </div>
       </form>

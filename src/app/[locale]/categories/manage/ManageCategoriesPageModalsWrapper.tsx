@@ -7,12 +7,10 @@ import { Modal } from '@/components/ui/Modal';
 import { AddCategoryModal } from '@/components/pages/ManageCategoriesPage/AddCategoryModal';
 import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
 import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
-import { useT } from '@/i18n';
 
 export function ManageCategoriesPageModalsWrapper() {
   const router = useRouter();
   const params = useParams();
-  const t = useT();
 
   // Determine modal state from route parameters
   const isAddOpen = Boolean(params.add);
@@ -28,8 +26,8 @@ export function ManageCategoriesPageModalsWrapper() {
     <>
       {/* Add Category Modal */}
       <Modal
-        title={t('CategoriesPage.Modals.Add.Title')}
-        description={t('CategoriesPage.Modals.Add.Description')}
+        title="Add Category"
+        description="Add a new category"
         isVisible={isAddOpen}
         hideModal={closeModal}
         className="max-w-2xl"
@@ -39,8 +37,8 @@ export function ManageCategoriesPageModalsWrapper() {
 
       {/* Delete Categories Modal */}
       <Modal
-        title={t('CategoriesPage.Modals.Delete.Title')}
-        description={t('CategoriesPage.Modals.Delete.Description')}
+        title="Delete Categories"
+        description="Delete selected categories"
         isVisible={isDeleteOpen}
         hideModal={closeModal}
         className="max-w-md"
@@ -50,8 +48,8 @@ export function ManageCategoriesPageModalsWrapper() {
 
       {/* Edit Category Modal */}
       <Modal
-        title={t('CategoriesPage.Modals.Edit.Title')}
-        description={t('CategoriesPage.Modals.Edit.Description')}
+        title="Edit Category"
+        description="Edit an existing category"
         isVisible={isEditOpen}
         hideModal={closeModal}
         className="max-w-2xl"

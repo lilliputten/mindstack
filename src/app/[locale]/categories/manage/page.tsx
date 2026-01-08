@@ -4,15 +4,11 @@ import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
 import { isDev, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
-import { getT } from '@/i18n';
 
-import { ManageCategoriesListCard } from './ManageCategoriesListCard';
 import { ManageCategoriesPageModalsWrapper } from './ManageCategoriesPageModalsWrapper';
 import { ManageCategoriesTable } from './ManageCategoriesTable';
 
 export default async function ManageCategoriesPage() {
-  const t = await getT();
-
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -40,15 +36,11 @@ export default async function ManageCategoriesPage() {
   return (
     <CategoriesProvider>
       <section className="container mx-auto px-4 py-8">
-        <h1 className="mb-6 text-3xl font-bold">{t('CategoriesPage.Title')}</h1>
-        <p className="mb-8 text-muted-foreground">{t('CategoriesPage.Description')}</p>
-
+        <h1 className="mb-6 text-3xl font-bold">Manage Categories</h1>
+        <p className="mb-8 text-muted-foreground">Manage your categories here</p>
         <div className="space-y-6">
-          <ManageCategoriesListCard>
-            <ManageCategoriesTable />
-          </ManageCategoriesListCard>
+          <ManageCategoriesTable />
         </div>
-
         <ManageCategoriesPageModalsWrapper />
       </section>
     </CategoriesProvider>

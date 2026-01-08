@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import {
@@ -23,16 +24,15 @@ import {
   TableRow,
 } from '@/components/ui/Table';
 import * as Icons from '@/components/shared/Icons';
+import { isDev } from '@/config';
 import { useCategoriesContext } from '@/contexts/CategoriesContext';
 import { deleteCategories } from '@/features/categories/actions/deleteCategories';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory } from '@/features/categories/types';
-import { useT } from '@/i18n';
 
 export function ManageCategoriesTable() {
   const locale = useLocale();
   const router = useRouter();
-  const t = useT();
 
   const {
     allCategories,
@@ -55,6 +55,8 @@ export function ManageCategoriesTable() {
     areAllCategoriesSelected,
     getSelectedCategories,
   } = useCategoriesContext();
+
+  const hasCategories = !!allCategories.length;
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -87,7 +89,7 @@ export function ManageCategoriesTable() {
     const names = selected.slice(0, 3).map(getCategoryName).join(', ');
     const moreText = count > 3 ? ` and ${count - 3} more` : '';
 
-    if (!confirm(t('CategoriesPage.Modals.Delete.Confirm', { count, names: names + moreText }))) {
+    if (!confirm(`Are you sure you want to delete ${count} categories: ${names}${moreText}?`)) {
       return;
     }
 
@@ -95,12 +97,12 @@ export function ManageCategoriesTable() {
     try {
       const result = await deleteCategories({ ids: selectedCategoryIds });
       if (result?.count) {
-        toast.success(t('CategoriesPage.Modals.Delete.Success', { count: result.count }));
+        toast.success(`${result.count} categories deleted successfully`);
         clearSelection();
         router.refresh();
       }
     } catch (error) {
-      toast.error(t('CategoriesPage.Modals.Delete.Error'));
+      toast.error('Error deleting categories');
       // eslint-disable-next-line no-console
       console.error('[ManageCategoriesTable] Delete error:', error);
     } finally {
@@ -112,7 +114,6 @@ export function ManageCategoriesTable() {
     getSelectedCategories,
     clearSelection,
     router,
-    t,
     getCategoryName,
   ]);
 
@@ -129,24 +130,24 @@ export function ManageCategoriesTable() {
 
   const handleDeleteCategory = useCallback(
     async (categoryId: string) => {
-      if (!confirm(t('CategoriesPage.Modals.Delete.ConfirmSingle'))) return;
+      if (!confirm('Are you sure you want to delete this category?')) return;
 
       setIsDeleting(true);
       try {
         const result = await deleteCategories({ ids: [categoryId] });
         if (result?.count) {
-          toast.success(t('CategoriesPage.Modals.Delete.Success', { count: result.count }));
+          toast.success(`${result.count} category deleted successfully`);
           router.refresh();
         }
       } catch (error) {
-        toast.error(t('CategoriesPage.Modals.Delete.Error'));
+        toast.error('Error deleting category');
         // eslint-disable-next-line no-console
         console.error('[ManageCategoriesTable] Delete single error:', error);
       } finally {
         setIsDeleting(false);
       }
     },
-    [router, t],
+    [router],
   );
 
   const handleLoadMore = useCallback(() => {
@@ -169,31 +170,28 @@ export function ManageCategoriesTable() {
   );
 
   // Status badge helper
-  const getStatusBadge = useCallback(
-    (status: string) => {
-      const statusConfig: Record<string, { label: string; className: string }> = {
-        PUBLIC: {
-          label: t('CategoriesPage.Statuses.Public'),
-          className: 'bg-green-100 text-green-800',
-        },
-        SUGGESTED: {
-          label: t('CategoriesPage.Statuses.Suggested'),
-          className: 'bg-yellow-100 text-yellow-800',
-        },
-        HIDDEN: {
-          label: t('CategoriesPage.Statuses.Hidden'),
-          className: 'bg-gray-100 text-gray-800',
-        },
-      };
-      const config = statusConfig[status] || { label: status, className: 'bg-gray-100' };
-      return (
-        <span className={`rounded-full px-2 py-1 text-xs font-medium ${config.className}`}>
-          {config.label}
-        </span>
-      );
-    },
-    [t],
-  );
+  const getStatusBadge = useCallback((status: string) => {
+    const statusConfig: Record<string, { label: string; className: string }> = {
+      PUBLIC: {
+        label: 'Public',
+        className: 'bg-green-100 text-green-800',
+      },
+      SUGGESTED: {
+        label: 'Suggested',
+        className: 'bg-yellow-100 text-yellow-800',
+      },
+      HIDDEN: {
+        label: 'Hidden',
+        className: 'bg-gray-100 text-gray-800',
+      },
+    };
+    const config = statusConfig[status] || { label: status, className: 'bg-gray-100' };
+    return (
+      <span className={`rounded-full px-2 py-1 text-xs font-medium ${config.className}`}>
+        {config.label}
+      </span>
+    );
+  }, []);
 
   if (isLoading) {
     return (
@@ -214,59 +212,81 @@ export function ManageCategoriesTable() {
   if (isError) {
     return (
       <div className="py-8 text-center">
-        <p className="text-red-500">{t('CategoriesPage.Errors.LoadFailed')}</p>
+        <p className="text-red-500">Failed to load categories</p>
         <p className="mt-2 text-sm text-muted-foreground">{String(error)}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div
+      className={cn(
+        isDev && '__ManageCategoriesTable', // DEBUG
+        'space-y-4',
+      )}
+    >
       {/* Toolbar */}
-      <div className="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-4">
-          <Checkbox
-            id="select-all"
-            checked={allCurrentSelected}
-            onCheckedChange={handleSelectAll}
-            aria-label={t('CategoriesPage.SelectAll')}
-          />
-          <label htmlFor="select-all" className="cursor-pointer text-sm font-medium">
-            {allCurrentSelected ? t('CategoriesPage.DeselectAll') : t('CategoriesPage.SelectAll')}
-          </label>
-          {selectedCategoryIds.length > 0 && (
-            <span className="text-sm text-muted-foreground">
-              {t('CategoriesPage.SelectedCount', { count: selectedCategoryIds.length })}
-            </span>
+      {hasCategories && (
+        <div
+          className={cn(
+            isDev && '__ManageCategoriesTable_Toolbar', // DEBUG
+            'mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center',
           )}
-        </div>
+        >
+          <div
+            className={cn(
+              isDev && '__ManageCategoriesTable_TopSelector', // DEBUG
+              'flex items-center gap-4',
+            )}
+          >
+            <Checkbox
+              id="select-all"
+              checked={allCurrentSelected}
+              onCheckedChange={handleSelectAll}
+              aria-label="Select all"
+            />
+            <label htmlFor="select-all" className="cursor-pointer text-sm font-medium">
+              {allCurrentSelected ? 'Deselect All' : 'Select All'}
+            </label>
+            {selectedCategoryIds.length > 0 && (
+              <span className="text-sm text-muted-foreground">
+                {selectedCategoryIds.length} selected
+              </span>
+            )}
+          </div>
 
-        <div className="flex items-center gap-2">
-          {selectedCategoryIds.length > 0 && (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleDeleteSelected}
-              disabled={isDeleting}
-            >
-              <Icons.Trash className="mr-2 h-4 w-4" />
-              {t('CategoriesPage.DeleteSelected')}
+          <div
+            className={cn(
+              isDev && '__ManageCategoriesTable_TopActions', // DEBUG
+              'flex items-center gap-2',
+            )}
+          >
+            {selectedCategoryIds.length > 0 && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleDeleteSelected}
+                disabled={isDeleting}
+              >
+                <Icons.Trash className="mr-2 h-4 w-4" />
+                Delete Selected
+              </Button>
+            )}
+            <Button size="sm" onClick={handleAddCategory}>
+              <Icons.Plus className="mr-2 h-4 w-4" />
+              Add Category
             </Button>
-          )}
-          <Button size="sm" onClick={handleAddCategory}>
-            <Icons.Plus className="mr-2 h-4 w-4" />
-            {t('CategoriesPage.AddCategory')}
-          </Button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Table */}
-      {allCategories.length === 0 ? (
+      {!hasCategories ? (
         <div className="rounded-lg border-2 border-dashed py-12 text-center">
-          <p className="text-muted-foreground">{t('CategoriesPage.NoCategories')}</p>
+          <p className="text-muted-foreground">No categories found</p>
           <Button variant="outline" className="mt-4" onClick={handleAddCategory}>
             <Icons.Plus className="mr-2 h-4 w-4" />
-            {t('CategoriesPage.AddFirstCategory')}
+            Add First Category
           </Button>
         </div>
       ) : (
@@ -279,31 +299,31 @@ export function ManageCategoriesTable() {
                     {/* Checkbox */}
                   </TableHead>
                   <TableHead id="status" className="w-24 p-4 text-left font-medium">
-                    {t('CategoriesPage.Columns.Status')}
+                    Status
                   </TableHead>
                   <TableHead id="topics" className="w-24 p-4 text-left font-medium">
-                    {t('CategoriesPage.Columns.Topics')}
+                    Topics
                   </TableHead>
                   <TableHead id="name" className="p-4 text-left font-medium">
-                    {t('CategoriesPage.Columns.Name')}
+                    Name
                   </TableHead>
                   <TableHead
                     id="description"
                     className="hidden max-w-xs p-4 text-left font-medium lg:table-cell"
                   >
-                    {t('CategoriesPage.Columns.Description')}
+                    Description
                   </TableHead>
                   <TableHead
                     id="keywords"
                     className="hidden p-4 text-left font-medium xl:table-cell"
                   >
-                    {t('CategoriesPage.Columns.Keywords')}
+                    Keywords
                   </TableHead>
                   <TableHead id="image" className="w-24 p-4 text-center font-medium">
-                    {t('CategoriesPage.Columns.Image')}
+                    Image
                   </TableHead>
                   <TableHead id="created" className="w-40 p-4 text-left font-medium">
-                    {t('CategoriesPage.Columns.Created')}
+                    Created
                   </TableHead>
                   <TableHead id="actions" className="w-16 p-4">
                     {/* Actions */}
@@ -326,9 +346,7 @@ export function ManageCategoriesTable() {
                         <Checkbox
                           checked={isSelected}
                           onCheckedChange={() => toggleCategorySelection(category.id)}
-                          aria-label={t('CategoriesPage.SelectCategory', {
-                            name: translation.name,
-                          })}
+                          aria-label={`Select category ${translation.name}`}
                         />
                       </TableCell>
                       <TableCell id={`status-${category.id}`} className="p-4">
@@ -372,13 +390,13 @@ export function ManageCategoriesTable() {
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-8 w-8">
                               <Icons.MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">{t('CategoriesPage.OpenMenu')}</span>
+                              <span className="sr-only">Open menu</span>
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleEditCategory(category.id)}>
                               <Icons.Edit className="mr-2 h-4 w-4" />
-                              {t('CategoriesPage.Edit')}
+                              Edit
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
@@ -386,7 +404,7 @@ export function ManageCategoriesTable() {
                               className="text-red-600"
                             >
                               <Icons.Trash className="mr-2 h-4 w-4" />
-                              {t('CategoriesPage.Delete')}
+                              Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -402,7 +420,7 @@ export function ManageCategoriesTable() {
           {hasNextPage && (
             <div className="flex justify-center pt-4">
               <Button variant="outline" onClick={handleLoadMore} disabled={isFetchingNextPage}>
-                {isFetchingNextPage ? t('CategoriesPage.Loading') : t('CategoriesPage.LoadMore')}
+                {isFetchingNextPage ? 'Loading...' : 'Load More'}
               </Button>
             </div>
           )}

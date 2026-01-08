@@ -7,14 +7,12 @@ import { Button } from '@/components/ui/Button';
 import { useCategoriesContext } from '@/contexts/CategoriesContext';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory } from '@/features/categories/types';
-import { useT } from '@/i18n';
 
 export interface IDeleteCategoriesFormProps {
   onClose: () => void;
 }
 
 export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
-  const t = useT();
   const locale = useLocale();
 
   const { selectedCategoryIds, getSelectedCategories, clearSelection } = useCategoriesContext();
@@ -67,7 +65,7 @@ export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm text-muted-foreground">
-        {t('CategoriesPage.Modals.Delete.ConfirmMulti', { count: selected.length })}
+        Are you sure you want to delete {selected.length} categories?
       </p>
 
       {selected.length > 0 && (
@@ -79,9 +77,7 @@ export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
               </li>
             ))}
             {selected.length > 10 && (
-              <li className="text-sm text-muted-foreground">
-                {t('CategoriesPage.Modals.Delete.More', { count: selected.length - 10 })}
-              </li>
+              <li className="text-sm text-muted-foreground">and {selected.length - 10} more</li>
             )}
           </ul>
         </div>
@@ -89,10 +85,10 @@ export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
 
       <div className="flex justify-end gap-4">
         <Button variant="destructive" onClick={handleDelete}>
-          {t('CategoriesPage.Modals.Delete.ConfirmButton')}
+          Delete
         </Button>
         <Button variant="ghost" onClick={handleCancel}>
-          {t('CategoriesPage.Cancel')}
+          Cancel
         </Button>
       </div>
     </div>

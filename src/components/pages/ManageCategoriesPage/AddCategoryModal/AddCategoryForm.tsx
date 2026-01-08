@@ -10,6 +10,7 @@ import * as z from 'zod';
 import { CategorySchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText } from '@/lib/helpers';
+import { nFormatter } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
@@ -32,8 +33,6 @@ import {
   categoryImageSizeLimit,
 } from '@/features/categories/constants';
 import { defaultCategoryStatus } from '@/features/categories/types';
-import { useT } from '@/i18n';
-import { nFormatter } from '@/lib/helpers/strings';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 100;
@@ -65,7 +64,6 @@ interface IFormData {
 
 export function AddCategoryForm(props: IAddCategoryFormProps) {
   const { onSuccess, onClose, className } = props;
-  const t = useT();
   const locale = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -148,7 +146,7 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
       // Validate file size
       if (file.size > categoryImageSizeLimit) {
         const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
-        setUploadError(t('CategoriesPage.AddCategoryForm.ImageSizeError', { size: formattedSizeLimit }));
+        setUploadError(`Image size must be less than ${formattedSizeLimit}B`);
         return;
       }
 
@@ -156,13 +154,13 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
       if (
         !categoryImageAllowedTypes.includes(file.type as (typeof categoryImageAllowedTypes)[number])
       ) {
-        setUploadError(t('CategoriesPage.AddCategoryForm.ImageTypeError'));
+        setUploadError('Invalid image type. Allowed types: JPEG, PNG, WebP, GIF');
         return;
       }
 
       handleImageUpload(file);
     },
-    [handleImageUpload, t],
+    [handleImageUpload],
   );
 
   const handleRemoveImage = useCallback(() => {
@@ -228,7 +226,7 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
           control={form.control}
           render={() => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label>{t('CategoriesPage.AddCategoryForm.ImageLabel')}</Label>
+              <Label>Image</Label>
               <FormControl>
                 <div className="flex items-center gap-4">
                   {watchedImageUrl ? (
@@ -265,10 +263,7 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
                   )}
                   <div className="flex-1">
                     <FormHint>
-                      {t('CategoriesPage.AddCategoryForm.ImageHint', {
-                        width: categoryImageConfig.maxWidth,
-                        height: categoryImageConfig.maxHeight,
-                      })}
+                      Maximum size: {categoryImageConfig.maxWidth}x{categoryImageConfig.maxHeight}px
                     </FormHint>
                   </div>
                 </div>
@@ -284,12 +279,12 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-name">{t('CategoriesPage.AddCategoryForm.NameLabel')}</Label>
+              <Label htmlFor="category-name">Name</Label>
               <FormControl>
                 <Input
                   id="category-name"
                   type="text"
-                  placeholder={t('CategoriesPage.AddCategoryForm.NamePlaceholder')}
+                  placeholder="Enter category name"
                   {...field}
                 />
               </FormControl>
@@ -304,13 +299,11 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-description">
-                {t('CategoriesPage.AddCategoryForm.DescriptionLabel')}
-              </Label>
+              <Label htmlFor="category-description">Description</Label>
               <FormControl>
                 <Textarea
                   id="category-description"
-                  placeholder={t('CategoriesPage.AddCategoryForm.DescriptionPlaceholder')}
+                  placeholder="Enter category description"
                   {...field}
                   value={field.value || ''}
                 />
@@ -326,19 +319,17 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-keywords">
-                {t('CategoriesPage.AddCategoryForm.KeywordsLabel')}
-              </Label>
+              <Label htmlFor="category-keywords">Keywords</Label>
               <FormControl>
                 <Input
                   id="category-keywords"
                   type="text"
-                  placeholder={t('CategoriesPage.AddCategoryForm.KeywordsPlaceholder')}
+                  placeholder="Enter keywords separated by commas"
                   {...field}
                   value={field.value || ''}
                 />
               </FormControl>
-              <FormHint>{t('CategoriesPage.AddCategoryForm.KeywordsHint')}</FormHint>
+              <FormHint>Keywords help with search and categorization</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -350,23 +341,17 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-status">
-                {t('CategoriesPage.AddCategoryForm.StatusLabel')}
-              </Label>
+              <Label htmlFor="category-status">Status</Label>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger id="category-status">
-                    <SelectValue
-                      placeholder={t('CategoriesPage.AddCategoryForm.StatusPlaceholder')}
-                    />
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="PUBLIC">{t('CategoriesPage.Statuses.Public')}</SelectItem>
-                  <SelectItem value="SUGGESTED">
-                    {t('CategoriesPage.Statuses.Suggested')}
-                  </SelectItem>
-                  <SelectItem value="HIDDEN">{t('CategoriesPage.Statuses.Hidden')}</SelectItem>
+                  <SelectItem value="PUBLIC">Public</SelectItem>
+                  <SelectItem value="SUGGESTED">Suggested</SelectItem>
+                  <SelectItem value="HIDDEN">Hidden</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -385,17 +370,17 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
             {isPending ? (
               <>
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                <span>{t('CategoriesPage.AddCategoryForm.AddingButtonText')}</span>
+                <span>Adding...</span>
               </>
             ) : (
               <>
                 <Icons.Save className="h-4 w-4" />
-                <span>{t('CategoriesPage.AddCategoryForm.AddButtonText')}</span>
+                <span>Add</span>
               </>
             )}
           </Button>
           <Button variant="ghost" onClick={onCloseForm} className="gap-2">
-            <span>{t('CategoriesPage.Cancel')}</span>
+            <span>Cancel</span>
           </Button>
         </div>
       </form>
