@@ -218,7 +218,7 @@ enum CategoryStatus {
 model Category {
   id String @id @default(cuid())
 
-  status  CategoryStatus @default(PUBLIC)
+  status CategoryStatus @default(PUBLIC)
 
   // Translated fields: name, description, keywords
   translations CategoryTranslation[]

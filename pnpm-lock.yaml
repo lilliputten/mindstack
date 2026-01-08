@@ -182,6 +182,9 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
       sonner:
         specifier: ^1.7.0
         version: 1.7.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
@@ -438,9 +441,6 @@ importers:
       sass:
         specifier: ^1.81.0
         version: 1.89.2
-      sharp:
-        specifier: ^0.34.5
-        version: 0.34.5
       stylelint:
         specifier: ^16.21.1
         version: 16.21.1(typescript@5.8.3)
