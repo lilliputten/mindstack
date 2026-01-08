@@ -31,9 +31,9 @@ export const dashboardLinks: SidebarNavItem[] = [
     titleId: 'MyData',
     authorizedOnly: true,
     items: [
+      { href: manageCategoriesRoute, icon: Icons.Layers, titleId: 'ManageCategories', authorizedOnly: 'ADMIN' },
       { href: myTopicsRoute, icon: Icons.Topics, titleId: 'MyTopics' },
       { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'AllTopics', authorizedOnly: 'ADMIN' },
-      { href: manageCategoriesRoute, icon: Icons.Layers, titleId: 'ManageCategories', authorizedOnly: 'ADMIN' },
       // Add other data management links?
     ],
   },

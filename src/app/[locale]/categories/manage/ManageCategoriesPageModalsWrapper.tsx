@@ -7,15 +7,30 @@ import { Modal } from '@/components/ui/Modal';
 import { AddCategoryModal } from '@/components/pages/ManageCategoriesPage/AddCategoryModal';
 import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
 import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
+import { TCategoryId } from '@/features/categories';
 
-export function ManageCategoriesPageModalsWrapper() {
+interface TCategorysListProps {
+  showAddModal?: boolean;
+  deleteCategoryId?: TCategoryId;
+  editCategoryId?: TCategoryId;
+  from?: string;
+}
+
+export function ManageCategoriesPageModalsWrapper(props: TCategorysListProps) {
+  const {
+    showAddModal,
+    deleteCategoryId,
+    editCategoryId,
+    // from, // TODO: To use in the delete modal url?
+  } = props;
+
   const router = useRouter();
   const params = useParams();
 
   // Determine modal state from route parameters
-  const isAddOpen = Boolean(params.add);
-  const isDeleteOpen = Boolean(params.delete);
-  const isEditOpen = Boolean(params.edit);
+  const isAddOpen = !!showAddModal; // Boolean(params.add);
+  const isDeleteOpen = !!deleteCategoryId; // Boolean(params.delete);
+  const isEditOpen = !!editCategoryId; // Boolean(params.edit);
   const editId = params.edit as string;
 
   const closeModal = React.useCallback(() => {
