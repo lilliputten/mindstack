@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { pricingAliasRoute, userStartAliasRoute } from '@/config/routesConfig';
+import { pricingAliasRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
