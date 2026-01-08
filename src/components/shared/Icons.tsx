@@ -50,6 +50,7 @@ export const {
   Hash,
   Heart,
   Home,
+  ImageIcon,
   Info,
   Languages,
   Laptop,
@@ -65,6 +66,7 @@ export const {
   Minus,
   MonitorPlay,
   Moon,
+  MoreHorizontal,
   Package,
   PanelLeft,
   PanelLeftClose,
@@ -92,6 +94,7 @@ export const {
   Trash,
   User,
   WandSparkles,
+  X,
   XIcon,
 } = icons;
 

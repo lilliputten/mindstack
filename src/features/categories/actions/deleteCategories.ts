@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 
 import { TDeleteCategoriesParams } from '../types/Categories';
+import { deleteCategoryImage } from './deleteCategoryImage';
 
 interface TOptions {
   noDebug?: boolean;
@@ -61,11 +62,25 @@ export async function deleteCategories(params: TDeleteCategoriesParams & TOption
       }
     }
 
+    // Fetch categories with their images before deletion
+    const categories = await prisma.category.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, imageUrl: true },
+    } satisfies Prisma.CategoryFindManyArgs);
+
+    // Delete categories (translations will be deleted via cascade)
     const deleteResult = await prisma.category.deleteMany({
       where: {
         id: { in: ids },
       },
     } satisfies Prisma.CategoryDeleteManyArgs);
+
+    // Delete associated images from blob storage
+    for (const category of categories) {
+      if (category.imageUrl) {
+        await deleteCategoryImage(category.imageUrl);
+      }
+    }
 
     return { count: deleteResult.count };
   } catch (error) {

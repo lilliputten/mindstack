@@ -24,6 +24,7 @@ export const settingsRoute = '/settings';
 export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
 export const adminBotControlRoute = '/admin/bot/control';
 export const adminRoute = '/admin';
+export const manageCategoriesRoute = '/categories/manage';
 export const allTopicsRoute = '/topics/all';
 export const authErrorRoute = '/auth/error';
 export const myTopicsRoute = '/topics/my';
@@ -105,6 +106,7 @@ const allRoutes = [
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   adminRoute,
+  manageCategoriesRoute,
   allTopicsRoute,
   myTopicsRoute,
 

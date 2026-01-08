@@ -9,7 +9,8 @@ import {
   UseInfiniteQueryResult,
   useQueryClient,
 } from '@tanstack/react-query';
-import { toast } from 'sonner';
+
+// import { toast } from 'sonner';
 
 import { TAllUsedKeys, TAvailableTopicsResultsQueryData } from '@/lib/types/react-query';
 import { getErrorText } from '@/lib/helpers';
@@ -139,9 +140,8 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
           pageParam,
           // url,
         });
-        // eslint-disable-next-line no-debugger
-        debugger;
-        toast.error(message);
+        debugger; // eslint-disable-line no-debugger
+        // toast.error(message);
         throw error;
       }
     },

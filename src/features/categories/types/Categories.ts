@@ -5,16 +5,20 @@ import {
   CategoryOrderByWithRelationInputSchema,
   CategorySchema,
   CategoryStatusSchema,
-  CategoryTranslation,
+  // CategoryStatusType,
+  // CategoryTranslation,
   CategoryTranslationSchema,
   UserSchema,
-  // CategoryStatusType,
 } from '@/generated/prisma';
 
 import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
+import { TGetResultsInfiniteQueryData } from '@/lib/types';
 
-export type TCategory = ExtendNullWithUndefined<Category>;
+export type TCategory = ExtendNullWithUndefined<Category> & {
+  _count?: { topics: number };
+};
 export type TCategoryReal = ReplaceNullWithUndefined<TCategory>;
+// TODO: Extend `TCategory` with `translations` (using zod schema)?
 
 export type TCategoryId = TCategory['id'];
 
@@ -109,6 +113,7 @@ export const GetAvailableCategoriesParamsSchema = CategoryIncludeParamsSchema.ex
   orderBy: z
     .union([CategoryOrderByWithRelationInputSchema.array(), CategoryOrderByWithRelationInputSchema])
     .optional(),
+  includeTranslations: z.boolean().optional(),
   includeUser: z.boolean().optional(),
   searchText: z.string().optional(),
   status: CategoryStatusSchema.optional(),
@@ -133,10 +138,30 @@ export const DeleteCategoriesParamsSchema = z.object({
 
 export type TDeleteCategoriesParams = z.infer<typeof DeleteCategoriesParamsSchema>;
 
+/** Extended category, includes some user data, see `getAvailableCategorys` */
+export type TAvailableCategory = TCategory & {
+  /** For `includeUser` flag */
+  user?: TIncludedUser;
+  /** For `includeTranslations` flag - include top-level fallbacks for convenience */
+  translations?: Array<{
+    locale: string;
+    name: string;
+    description: string | null;
+    keywords: string | null;
+    categoryId: string;
+  }>;
+  /** Fallback fields from translations for convenience */
+  name?: string;
+  description?: string | null;
+  keywords?: string | null;
+};
+
 // Results types
 export type TGetAvailableCategoriesResults = {
-  items: (Category & {
-    translations: CategoryTranslation[];
-  })[];
+  items: TAvailableCategory[];
   totalCount: number;
 };
+
+// Available category queries results data
+
+export type TAvailableCategoriesResultsQueryData = TGetResultsInfiniteQueryData<TCategory>;

@@ -1,0 +1,10 @@
+# ex: set ft=conf :
+
+/dist
+/node_modules
+/.next
+/build
+/.contentlayer
+/coverage
+
+# **/*.mdx

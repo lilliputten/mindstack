@@ -27,8 +27,9 @@ export async function getAvailableCategories(
     take,
     orderBy = { updatedAt: 'desc' },
     includeUser = false,
+    includeTranslations = true,
     searchText,
-    status,
+    status = defaultCategoryStatus,
     minCreatedAt,
     maxCreatedAt,
     minUpdatedAt,
@@ -42,6 +43,8 @@ export async function getAvailableCategories(
 
   const user: ExtendedUser | undefined = await getCurrentUser();
   const userId = user?.id;
+
+  // TODO: Throw an error if the user is not admin and status is not default (not public)
 
   const include: Prisma.CategoryInclude = {};
   const where: Prisma.CategoryWhereInput = {};
@@ -57,6 +60,12 @@ export async function getAvailableCategories(
     if (includeUser) {
       include.user = { select: IncludedUserSelect };
     }
+
+    // Always include translations for the current locale and topics count
+    if (includeTranslations) {
+      include.translations = true;
+    }
+    include._count = { select: { topics: true } };
 
     if (!userId) {
       where.status = defaultCategoryStatus;
