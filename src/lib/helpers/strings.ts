@@ -16,10 +16,30 @@ export function quoteHtmlAttr(str: string, preserveCR?: boolean) {
   );
 }
 
+/**
+ * Formats a number to a shortened string representation with SI unit prefixes.
+ *
+ * This function takes a number and formats it using appropriate SI unit prefixes
+ * (K for thousands, M for millions, G for billions, T for trillions, etc.) to make
+ * large numbers more readable. It also handles decimal precision and removes
+ * trailing zeros.
+ *
+ * @param num - The number to format
+ * @param digits - The number of digits after the decimal point (default: 1)
+ * @returns A formatted string with SI unit suffix (K, M, G, T, P, E) or '0' if the number is falsy
+ *
+ * @example
+ * nFormatter(1000) // Returns '1K'
+ * nFormatter(1500) // Returns '1.5K'
+ * nFormatter(1000000) // Returns '1M'
+ * nFormatter(1234567, 2) // Returns '1.23M'
+ * nFormatter(0) // Returns '0'
+ */
 export function nFormatter(num: number, digits?: number) {
   if (!num) {
     return '0';
   }
+  const defaultDigits = 1;
   // TODO: Use translator?
   const lookup = [
     { value: 1, symbol: '' },
@@ -37,7 +57,11 @@ export function nFormatter(num: number, digits?: number) {
     .find(function (item) {
       return num >= item.value;
     });
-  return item ? (num / item.value).toFixed(digits || 1).replace(rx, '$1') + item.symbol : '0';
+  return item
+    ? (num / item.value)
+        .toFixed(typeof digits === 'number' ? digits : defaultDigits)
+        .replace(rx, '$1') + item.symbol
+    : '0';
 }
 
 export function capitalizeString(str: string) {
