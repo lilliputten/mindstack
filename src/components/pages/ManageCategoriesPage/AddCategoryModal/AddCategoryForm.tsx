@@ -33,6 +33,7 @@ import {
 } from '@/features/categories/constants';
 import { defaultCategoryStatus } from '@/features/categories/types';
 import { useT } from '@/i18n';
+import { nFormatter } from '@/lib/helpers/strings';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 100;
@@ -146,7 +147,8 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
 
       // Validate file size
       if (file.size > categoryImageSizeLimit) {
-        setUploadError(`Image size must be less than ${categoryImageSizeLimit / 1024 / 1024}MB`);
+        const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
+        setUploadError(t('CategoriesPage.AddCategoryForm.ImageSizeError', { size: formattedSizeLimit }));
         return;
       }
 
@@ -154,13 +156,13 @@ export function AddCategoryForm(props: IAddCategoryFormProps) {
       if (
         !categoryImageAllowedTypes.includes(file.type as (typeof categoryImageAllowedTypes)[number])
       ) {
-        setUploadError('Invalid image type. Allowed types: JPEG, PNG, WebP, GIF');
+        setUploadError(t('CategoriesPage.AddCategoryForm.ImageTypeError'));
         return;
       }
 
       handleImageUpload(file);
     },
-    [handleImageUpload],
+    [handleImageUpload, t],
   );
 
   const handleRemoveImage = useCallback(() => {

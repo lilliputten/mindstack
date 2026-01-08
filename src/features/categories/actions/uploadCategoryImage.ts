@@ -24,11 +24,11 @@ export async function uploadCategoryImage(formData: FormData) {
     const isAdmin = user?.role === 'ADMIN';
 
     if (!userId) {
-      throw new Error(t('authError'));
+      throw new Error(t('AuthError'));
     }
 
     if (!isAdmin) {
-      throw new Error(t('accessDenied'));
+      throw new Error(t('AccessDenied'));
     }
 
     const file = formData.get('image') as File;
