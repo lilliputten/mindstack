@@ -1,11 +1,18 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { TDeleteCategoryParams } from '@/lib/zod-schemas';
 
-export async function deleteCategory(params: TDeleteCategoryParams) {
-  const { id } = params;
+import { TDeleteCategoryParams } from '../types/Categories';
+
+interface TOptions {
+  noDebug?: boolean;
+}
+
+export async function deleteCategory(params: TDeleteCategoryParams & TOptions) {
+  const { id, noDebug } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -19,7 +26,7 @@ export async function deleteCategory(params: TDeleteCategoryParams) {
     const existingCategory = await prisma.category.findUnique({
       where: { id },
       select: { userId: true },
-    });
+    } satisfies Prisma.CategoryFindUniqueArgs);
 
     if (!existingCategory) {
       throw new Error('Category not found');
@@ -31,13 +38,15 @@ export async function deleteCategory(params: TDeleteCategoryParams) {
 
     const category = await prisma.category.delete({
       where: { id },
-    });
+    } satisfies Prisma.CategoryDeleteArgs);
 
     return category;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[deleteCategory] catch', { error });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[deleteCategory] catch', { error });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }

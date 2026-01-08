@@ -5,10 +5,14 @@ import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { TGetAvailableCategoriesParams, TGetAvailableCategoriesResults } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-import { IncludedUserSelect } from '../types';
+import {
+  defaultCategoryStatus,
+  IncludedUserSelect,
+  TGetAvailableCategoriesParams,
+  TGetAvailableCategoriesResults,
+} from '../types';
 
 interface TOptions {
   noDebug?: boolean;
@@ -55,9 +59,9 @@ export async function getAvailableCategories(
     }
 
     if (!userId) {
-      where.status = 'PUBLIC';
+      where.status = defaultCategoryStatus;
     } else {
-      where.OR = [{ userId }, { status: 'PUBLIC' }];
+      where.OR = [{ userId }, { status: defaultCategoryStatus }];
     }
 
     if (categoryIds) {

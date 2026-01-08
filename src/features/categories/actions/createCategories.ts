@@ -1,12 +1,19 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { TCreateCategoriesParams } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-export async function createCategories(params: TCreateCategoriesParams) {
-  const { categories } = params;
+import { defaultCategoryStatus, TCreateCategoriesParams } from '../types/Categories';
+
+interface TOptions {
+  noDebug?: boolean;
+}
+
+export async function createCategories(params: TCreateCategoriesParams & TOptions) {
+  const { categories, noDebug } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -24,25 +31,27 @@ export async function createCategories(params: TCreateCategoriesParams) {
     for (const categoryData of categories) {
       const createdCategory = await prisma.category.create({
         data: {
-          status: categoryData.status || 'PUBLIC',
+          status: categoryData.status || defaultCategoryStatus,
           userId,
           imageUrl: categoryData.imageUrl,
           translations: {
             create: categoryData.translations,
           },
-        },
+        } satisfies Prisma.CategoryCreateArgs['data'],
         include: {
           translations: true,
-        },
-      });
+        } satisfies Prisma.CategoryCreateArgs['include'],
+      } satisfies Prisma.CategoryCreateArgs);
       createdCategoriesWithTranslations.push(createdCategory);
     }
 
     return createdCategoriesWithTranslations;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[createCategories] catch', { error });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[createCategories] catch', { error });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }

@@ -1,11 +1,18 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { TDeleteCategoriesParams } from '@/lib/zod-schemas';
 
-export async function deleteCategories(params: TDeleteCategoriesParams) {
-  const { ids } = params;
+import { TDeleteCategoriesParams } from '../types/Categories';
+
+interface TOptions {
+  noDebug?: boolean;
+}
+
+export async function deleteCategories(params: TDeleteCategoriesParams & TOptions) {
+  const { ids, noDebug } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -28,10 +35,24 @@ export async function deleteCategories(params: TDeleteCategoriesParams) {
           userId,
         },
         select: { id: true },
-      });
+      } satisfies Prisma.CategoryFindManyArgs);
 
       const userCategoryIds = userCategories.map((c) => c.id);
-      const unauthorizedIds = ids.filter((id) => !userCategoryIds.includes(id));
+
+      // Find IDs that exist but user doesn't own (unlike non-existent IDs which will be ignored)
+      const unauthorizedIds = [];
+      for (const id of ids) {
+        // Check if ID exists in database
+        const categoryExists = await prisma.category.findUnique({
+          where: { id },
+          select: { id: true },
+        } satisfies Prisma.CategoryFindUniqueArgs);
+
+        // If category exists but user doesn't own it, add to unauthorized list
+        if (categoryExists && !userCategoryIds.includes(id)) {
+          unauthorizedIds.push(id);
+        }
+      }
 
       if (unauthorizedIds.length > 0) {
         throw new Error(
@@ -44,13 +65,15 @@ export async function deleteCategories(params: TDeleteCategoriesParams) {
       where: {
         id: { in: ids },
       },
-    });
+    } satisfies Prisma.CategoryDeleteManyArgs);
 
     return { count: deleteResult.count };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[deleteCategories] catch', { error });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[deleteCategories] catch', { error });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }

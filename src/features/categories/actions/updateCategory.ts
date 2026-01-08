@@ -1,12 +1,19 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { TUpdateCategoryParams } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-export async function updateCategory(params: TUpdateCategoryParams) {
-  const { id, status, translations, imageUrl } = params;
+import { TUpdateCategoryParams } from '../types';
+
+interface TOptions {
+  noDebug?: boolean;
+}
+
+export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
+  const { id, status, translations, imageUrl, noDebug } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -24,7 +31,7 @@ export async function updateCategory(params: TUpdateCategoryParams) {
     const existingCategory = await prisma.category.findUnique({
       where: { id },
       select: { userId: true },
-    });
+    } satisfies Prisma.CategoryFindUniqueArgs);
 
     if (!existingCategory) {
       throw new Error('Category not found');
@@ -34,8 +41,9 @@ export async function updateCategory(params: TUpdateCategoryParams) {
       throw new Error('User is not authorized to update this category');
     }
 
+    /*
     const updateData: {
-      status?: 'PUBLIC' | 'SUGGESTED' | 'HIDDEN';
+      status?: CategoryStatusType;
       imageUrl?: string | null;
       translations?: {
         upsert: Array<{
@@ -50,41 +58,47 @@ export async function updateCategory(params: TUpdateCategoryParams) {
         }>;
       };
     } = {};
+    */
+    const updateData: Prisma.CategoryUpdateArgs['data'] = {};
     if (status !== undefined) updateData.status = status;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
 
     if (translations) {
       updateData.translations = {
         upsert: translations.map((translation) => ({
-          where: { categoryId_locale: { categoryId: id, locale: translation.locale } },
+          where: {
+            categoryId_locale: { categoryId: id, locale: translation.locale },
+          }, // satisfies Prisma.CategoryTranslationWhereUniqueInput, // CategoryTranslationUpdateManyWithoutCategoryNestedInput['where'],
           update: {
             name: translation.name,
-            description: translation.description,
-            keywords: translation.keywords,
-          },
+            description: translation.description ?? null,
+            keywords: translation.keywords ?? null,
+          }, // satisfies Prisma.CategoryTranslationUpdateWithoutCategoryInput, // Prisma.CategoryTranslationUpdateManyWithoutCategoryNestedInput['update'],
           create: {
             locale: translation.locale,
-            name: translation.name,
-            description: translation.description,
-            keywords: translation.keywords,
-          },
-        })),
-      };
+            name: translation.name ?? '',
+            description: translation.description ?? null,
+            keywords: translation.keywords ?? null,
+          }, // satisfies Prisma.CategoryTranslationUpdateManyWithoutCategoryNestedInput['create'],
+        })), // satisfies Prisma.TopicUpsertWithWhereUniqueWithoutCategoryInput)),
+      } satisfies Prisma.CategoryTranslationUpdateManyWithoutCategoryNestedInput;
     }
 
     const category = await prisma.category.update({
       where: { id },
-      data: updateData,
+      data: updateData satisfies Prisma.CategoryUpdateArgs['data'],
       include: {
         translations: true,
-      },
-    });
+      } satisfies Prisma.CategoryUpdateArgs['include'],
+    } satisfies Prisma.CategoryUpdateArgs);
 
     return category;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[updateCategory] catch', { error });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[updateCategory] catch', { error });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }

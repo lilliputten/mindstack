@@ -1,21 +1,55 @@
-import { z } from 'zod';
+import z from 'zod';
 
 import {
+  Category,
   CategoryOrderByWithRelationInputSchema,
+  CategorySchema,
   CategoryStatusSchema,
-  CategoryTranslationSchema as PrismaCategoryTranslationSchema,
+  CategoryTranslation,
+  CategoryTranslationSchema,
+  UserSchema,
+  // CategoryStatusType,
 } from '@/generated/prisma';
-// Import the actual types
-import type { Category, CategoryTranslation } from '@/generated/prisma';
 
-export const CategoryTranslationSchema = PrismaCategoryTranslationSchema;
-export type TCategoryTranslation = CategoryTranslation;
+import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
+
+export type TCategory = ExtendNullWithUndefined<Category>;
+export type TCategoryReal = ReplaceNullWithUndefined<TCategory>;
+
+export type TCategoryId = TCategory['id'];
+
+/** User fields to include with a flag */
+export const IncludedUserSelect = {
+  id: true as const,
+  name: true as const,
+  email: true as const,
+} as const;
+const _IncludedUserSchema = UserSchema.pick(IncludedUserSelect);
+export type TIncludedUser = z.infer<typeof _IncludedUserSchema>;
+
+// Add other category-related types here as needed
+
+export const defaultCategoryStatus = CategoryStatusSchema.options[0];
+
+export const CreateCategoryTranslationSchema = CategoryTranslationSchema.omit({
+  categoryId: true,
+}).extend({
+  // name: CategoryTranslationSchema.shape.name.optional(), // Name is required for translation creating
+  description: CategoryTranslationSchema.shape.description.optional(),
+  keywords: CategoryTranslationSchema.shape.keywords.optional(),
+});
 
 // TODO: Derive the schema from the prisma generated ones
-export const CreateCategoryParamsSchema = z.object({
+const CreateCategoryParamsSchemaBase = CategorySchema.omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+const CreateCategoryParamsSchema = CreateCategoryParamsSchemaBase.extend({
   status: CategoryStatusSchema.optional(),
-  translations: z.array(CategoryTranslationSchema),
-  imageUrl: z.string().nullable().optional(),
+  imageUrl: CreateCategoryParamsSchemaBase.shape.imageUrl.optional(),
+  translations: z.array(CreateCategoryTranslationSchema).optional(),
 });
 
 export type TCreateCategoryParams = z.infer<typeof CreateCategoryParamsSchema>;
@@ -27,11 +61,24 @@ export const CreateCategoriesParamsSchema = z.object({
 export type TCreateCategoriesParams = z.infer<typeof CreateCategoriesParamsSchema>;
 
 // TODO: Derive the schema from the prisma generated ones
-export const UpdateCategoryParamsSchema = z.object({
-  id: z.string().cuid(), // Using cuid() to match Prisma schema
+const UpdateCategoryParamsSchemaBase = CategorySchema.omit({
+  // id: true, // Id s required for update
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const UpdateCategoryTranslationSchema = CategoryTranslationSchema.omit({
+  categoryId: true,
+}).extend({
+  name: CategoryTranslationSchema.shape.name.optional(),
+  description: CategoryTranslationSchema.shape.description.optional(),
+  keywords: CategoryTranslationSchema.shape.keywords.optional(),
+});
+export type TUpdateCategoryTranslation = z.infer<typeof UpdateCategoryTranslationSchema>;
+export const UpdateCategoryParamsSchema = UpdateCategoryParamsSchemaBase.extend({
   status: CategoryStatusSchema.optional(),
-  translations: z.array(CategoryTranslationSchema).optional(),
-  imageUrl: z.string().nullable().optional(),
+  imageUrl: UpdateCategoryParamsSchemaBase.shape.imageUrl.optional(),
+  translations: z.array(UpdateCategoryTranslationSchema).optional(),
 });
 
 export type TUpdateCategoryParams = z.infer<typeof UpdateCategoryParamsSchema>;
@@ -43,7 +90,7 @@ export const UpdateCategoriesParamsSchema = z.object({
 export type TUpdateCategoriesParams = z.infer<typeof UpdateCategoriesParamsSchema>;
 
 export const GetCategoryByIdParamsSchema = z.object({
-  id: z.string(),
+  id: z.string().cuid(),
   includeUser: z.boolean().optional(),
 });
 
