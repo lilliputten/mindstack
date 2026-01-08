@@ -13,7 +13,7 @@ import {
 
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types/api';
 import { TAllUsedKeys } from '@/lib/types/react-query';
-import { getErrorText } from '@/lib/helpers';
+import { composeUrlQuery, getErrorText } from '@/lib/helpers';
 import {
   addNewItemToQueryCache,
   deleteItemFromQueryCache,
@@ -27,6 +27,7 @@ import { getAvailableCategories } from '@/features/categories/actions/getAvailab
 import {
   TAvailableCategory,
   TCategoryId,
+  TGetAvailableCategoriesParams,
   TGetAvailableCategoriesResults,
 } from '@/features/categories/types';
 
@@ -39,18 +40,32 @@ const staleTime = defaultStaleTime;
  */
 const allUsedKeys: TAllUsedKeys = {};
 
-type TUseAvailableCategoriesProps = {
+type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' | 'take'> & {
   traceId?: string;
   enabled?: boolean;
 };
 
 /** Hook to fetch available categories with pagination support */
 export function useAvailableCategories(props: TUseAvailableCategoriesProps = {}) {
-  const { traceId: _id, enabled = true } = props;
+  const { traceId: _id, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
 
-  const queryKey = React.useMemo<QueryKey>(() => ['available-categories'], []);
-
+  /* Use partrial query url as a part of the query key */
+  const queryUrlHash = React.useMemo(() => {
+    // Convert Date objects to ISO strings for URL composition
+    const urlParams = {
+      ...queryProps,
+      minCreatedAt: queryProps.minCreatedAt?.toISOString(),
+      maxCreatedAt: queryProps.maxCreatedAt?.toISOString(),
+      minUpdatedAt: queryProps.minUpdatedAt?.toISOString(),
+      maxUpdatedAt: queryProps.maxUpdatedAt?.toISOString(),
+    };
+    return composeUrlQuery(urlParams);
+  }, [queryProps]);
+  const queryKey = React.useMemo<QueryKey>(
+    () => ['available-categories', queryUrlHash],
+    [queryUrlHash],
+  );
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
 
   const query = useInfiniteQuery<
@@ -142,6 +157,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
       deleteCategory,
       updateCategory,
       invalidateAllKeysExcept,
+      queryUrlHash,
     };
   }, [
     query,
@@ -152,6 +168,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     deleteCategory,
     updateCategory,
     invalidateAllKeysExcept,
+    queryUrlHash,
   ]);
 }
 

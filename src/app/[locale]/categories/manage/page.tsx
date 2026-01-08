@@ -15,7 +15,7 @@ import { ManageCategoriesTable } from './ManageCategoriesTable';
 
 type TAwaitedProps = TAwaitedLocaleProps; // <{ scope: TTopicsManageScopeId }>;
 
-interface TManageTopicsPageHolderProps extends TAwaitedProps {
+interface TManageCategoriesPageHolderProps extends TAwaitedProps {
   showAddModal?: boolean;
   deleteCategoryId?: TCategoryId;
   editCategoryId?: TCategoryId;
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
     title: 'Manage Categories',
   });
 }
-export default async function ManageCategoriesPageHolder(props: TManageTopicsPageHolderProps) {
+export default async function ManageCategoriesPageHolder(props: TManageCategoriesPageHolderProps) {
   const {
     showAddModal,
     deleteCategoryId,
@@ -67,10 +67,10 @@ export default async function ManageCategoriesPageHolder(props: TManageTopicsPag
     <CategoriesProvider>
       <PageWrapper
         className={cn(
-          isDev && '__ManageTopicsPageHolder', // DEBUG
+          isDev && '__ManageCategoriesPageHolder', // DEBUG
         )}
         innerClassName={cn(
-          isDev && '__ManageTopicsPageHolder_Inner', // DEBUG
+          isDev && '__ManageCategoriesPageHolder_Inner', // DEBUG
           'w-full rounded-lg gap-6 py-6',
         )}
         limitWidth
@@ -81,7 +81,6 @@ export default async function ManageCategoriesPageHolder(props: TManageTopicsPag
           editCategoryId={editCategoryId}
           from={from}
         />
-        <ManageCategoriesTable />
 
         {/*
       <section className="container mx-auto px-4 py-8">
@@ -91,6 +90,7 @@ export default async function ManageCategoriesPageHolder(props: TManageTopicsPag
           <ManageCategoriesTable />
         </div>
         <ManageCategoriesPageModalsWrapper />
+        <ManageCategoriesTable />
       </section>
       */}
       </PageWrapper>

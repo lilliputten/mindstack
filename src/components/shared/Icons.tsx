@@ -123,6 +123,7 @@ export const Spinner = icons.Loader2;
 export const Sun = icons.SunMedium;
 export const Topics = icons.Library;
 export const Warning = icons.AlertTriangle;
+export const Categories = icons.Layers;
 
 // Custom icons...
 export const Github: IconType = ({ ...props }: IconProps) => (

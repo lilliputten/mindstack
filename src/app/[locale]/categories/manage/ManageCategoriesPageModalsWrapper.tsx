@@ -1,76 +1,206 @@
 'use client';
 
 import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-import { Modal } from '@/components/ui/Modal';
-import { AddCategoryModal } from '@/components/pages/ManageCategoriesPage/AddCategoryModal';
-import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
-import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
-import { TCategoryId } from '@/features/categories';
+import { manageCategoriesRoute } from '@/config';
+import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
+/* // TODO: Filters
+ * import {
+ *   convertAvailableFiltersToParams,
+ *   TApplyFiltersData,
+ *   TAvailableCategoriesFiltersParams,
+ *   CategoriesFiltersProvider,
+ * } from '@/contexts/CategoriesFiltersContext';
+ */
+import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
+import { useGoToTheRoute } from '@/hooks';
+import { useT } from '@/i18n';
 
-interface TCategorysListProps {
+// import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
+
+import { ContentSkeleton } from './ContentSkeleton';
+import { ManageCategoriesList } from './ManageCategoriesList';
+
+interface TCategoriesListProps {
   showAddModal?: boolean;
   deleteCategoryId?: TCategoryId;
   editCategoryId?: TCategoryId;
+  editTopicsCategoryId?: TCategoryId;
   from?: string;
 }
 
-export function ManageCategoriesPageModalsWrapper(props: TCategorysListProps) {
+interface TMemo {
+  allCategories?: TAvailableCategory[];
+  routePath?: string;
+  // isFetched?: boolean;
+}
+
+export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+  const { showAddModal, deleteCategoryId, editCategoryId, editTopicsCategoryId, from } = props;
+  // const { manageScope } = useManageCategoriesStore();
+  // const isOnlyMy = manageScope === CategoriesManageScopeIds.MY_CATEGORIES;
+  const routePath = manageCategoriesRoute; // `/categories/${manageScope}`;
+  memo.routePath = routePath;
+
+  const t = useT();
+
+  /* // TODO: Filters
+  const [filtersParams, setFiltersParams] = React.useState<
+    TAvailableCategoriesFiltersParams | undefined
+  >();
+  */
+
+  const availableCategoriesQuery = useAvailableCategories({
+    /* // TODO: Filters
+     * enabled: !!filtersParams,
+     * showOnlyMyCategories: isOnlyMy,
+     * ...filtersParams,
+     */
+  });
   const {
-    showAddModal,
-    deleteCategoryId,
-    editCategoryId,
-    // from, // TODO: To use in the delete modal url?
-  } = props;
+    allCategories,
+    isFetched,
+    /* // TODO: Filters
+     * queryClient,
+     * queryKey,
+     */
+  } = availableCategoriesQuery;
+  // memo.isFetched = isFetched;
+  memo.allCategories = allCategories;
 
-  const router = useRouter();
-  const params = useParams();
+  const goToTheRoute = useGoToTheRoute();
 
-  // Determine modal state from route parameters
-  const isAddOpen = !!showAddModal; // Boolean(params.add);
-  const isDeleteOpen = !!deleteCategoryId; // Boolean(params.delete);
-  const isEditOpen = !!editCategoryId; // Boolean(params.edit);
-  const editId = params.edit as string;
+  // Add Category Modal
+  const openAddCategoryModal = React.useCallback(() => {
+    const { routePath } = memo;
+    if (routePath) {
+      const url = `${routePath}/add`;
+      goToTheRoute(url);
+    }
+  }, [memo, goToTheRoute]);
+  React.useEffect(() => {
+    if (showAddModal) {
+      openAddCategoryModal();
+    }
+  }, [showAddModal, openAddCategoryModal]);
 
-  const closeModal = React.useCallback(() => {
-    router.push('/categories/manage');
-  }, [router]);
+  // Delete Category Modal
+  const openDeleteCategoryModal = React.useCallback(
+    (categoryId: TCategoryId, from: string) => {
+      const { allCategories, routePath } = memo;
+      if (allCategories && routePath) {
+        const hasCategory = allCategories.find(({ id }) => id === categoryId);
+        if (hasCategory) {
+          const url = `${routePath}/delete?categoryId=${categoryId}&from=${from}`;
+          goToTheRoute(url);
+        } else {
+          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
+          goToTheRoute(routePath, true);
+        }
+      }
+    },
+    [memo, goToTheRoute, t],
+  );
+  React.useEffect(() => {
+    if (deleteCategoryId && isFetched) {
+      /* // UNUSED: Prevent opening the delete category midal with a browser url (but not with a programmatic router redirect)
+       * if (from?.startsWith('SERVER:')) {
+       *   // eslint-disable-next-line no-console
+       *   console.warn('No url-invoked category deletions allowed!');
+       *   router.replace(routePath);
+       * } else {
+       */
+      openDeleteCategoryModal(
+        deleteCategoryId,
+        from || 'Unknown_in_ManageCategoriesPageModalsWrapper',
+      );
+    }
+  }, [deleteCategoryId, openDeleteCategoryModal, from, isFetched]);
+
+  // Edit Category Card
+  const openEditCategoryCard = React.useCallback(
+    (categoryId: TCategoryId) => {
+      const { allCategories, routePath } = memo;
+      if (allCategories && routePath) {
+        const hasCategory = allCategories.find(({ id }) => id === categoryId);
+        if (hasCategory) {
+          const url = `${routePath}/${categoryId}/edit`;
+          goToTheRoute(url);
+        } else {
+          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
+          goToTheRoute(routePath, true);
+        }
+      }
+    },
+    [memo, goToTheRoute, t],
+  );
+  React.useEffect(() => {
+    if (editCategoryId && isFetched) {
+      openEditCategoryCard(editCategoryId);
+    }
+  }, [editCategoryId, openEditCategoryCard, isFetched]);
+
+  // Edit Topics Page
+  const openEditTopicsPage = React.useCallback(
+    (categoryId: TCategoryId) => {
+      const { allCategories, routePath } = memo;
+      if (allCategories && routePath) {
+        const hasCategory = allCategories.find(({ id }) => id === categoryId);
+        if (hasCategory) {
+          const url = `${routePath}/${categoryId}/topics`;
+          goToTheRoute(url);
+        } else {
+          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
+          goToTheRoute(routePath, true);
+        }
+      }
+    },
+    [memo, goToTheRoute, t],
+  );
+
+  React.useEffect(() => {
+    // Use another id (`editTopicsCategoryId`)?
+    if (editTopicsCategoryId) {
+      openEditTopicsPage(editTopicsCategoryId);
+    }
+  }, [editTopicsCategoryId, openEditTopicsPage]);
+
+  /* // TODO: Filters
+  const applyFilters = React.useCallback(
+    async (filtersData: TApplyFiltersData) => {
+      const filtersParams = convertAvailableFiltersToParams(filtersData);
+      setFiltersParams(filtersParams);
+      queryClient.removeQueries({ queryKey });
+    },
+    [queryClient, queryKey],
+  );
+  */
 
   return (
     <>
-      {/* Add Category Modal */}
-      <Modal
-        title="Add Category"
-        description="Add a new category"
-        isVisible={isAddOpen}
-        hideModal={closeModal}
-        className="max-w-2xl"
+      {/* // TODO: Filters
+      <TopicsFiltersProvider
+        storeId={`manage-topics-filters-${manageScope}`}
+        applyFilters={applyFilters}
+        // ignoreOnlyMy={isOnlyMy}
       >
-        <AddCategoryModal onClose={closeModal} />
-      </Modal>
-
-      {/* Delete Categories Modal */}
-      <Modal
-        title="Delete Categories"
-        description="Delete selected categories"
-        isVisible={isDeleteOpen}
-        hideModal={closeModal}
-        className="max-w-md"
-      >
-        <DeleteCategoriesModal onClose={closeModal} />
-      </Modal>
-
-      {/* Edit Category Modal */}
-      <Modal
-        title="Edit Category"
-        description="Edit an existing category"
-        isVisible={isEditOpen}
-        hideModal={closeModal}
-        className="max-w-2xl"
-      >
-        <EditCategoryModal categoryId={editId} onClose={closeModal} />
-      </Modal>
+      {filtersParams ? (
+      */}
+      <ManageCategoriesList
+        handleDeleteCategory={openDeleteCategoryModal}
+        handleEditCategory={openEditCategoryCard}
+        handleEditTopics={openEditTopicsPage}
+        handleAddCategory={openAddCategoryModal}
+        availableCategoriesQuery={availableCategoriesQuery}
+      />
+      {/*
+      ) : (
+        <ContentSkeleton className="px-6 py-0" />
+      )}
+      </TopicsFiltersProvider>
+      */}
     </>
   );
 }

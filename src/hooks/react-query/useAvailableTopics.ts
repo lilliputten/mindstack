@@ -44,6 +44,7 @@ const staleTime = defaultStaleTime;
 
 type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'> & {
   traceId?: string;
+  enabled?: boolean;
 };
 
 /** Collection of the all used query keys (mb, already invalidated).
