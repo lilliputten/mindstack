@@ -6,14 +6,16 @@ import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
 
 import { defaultCategoryStatus, TUpdateCategoryParams } from '../../types/Categories';
-import { deleteCategoryImage } from '../deleteCategoryImage';
-import { updateCategory } from '../updateCategory';
 
-// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
+// Setup the mock before any imports that might depend on deleteCategoryImage
+// This ensures the mock is in place before updateCategory module is loaded in tests
+// If this mock is not at the top, tests that verify deleteCategoryImage function calls will fail
 const mockedDeleteCategoryImage = jest.fn();
 jest.mock('../deleteCategoryImage', () => ({
   deleteCategoryImage: mockedDeleteCategoryImage,
 }));
+
+// updateCategory will be dynamically imported in each test
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
@@ -43,6 +45,8 @@ describe('updateCategory', () => {
   });
 
   it('should update a category when user is the owner', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -127,6 +131,8 @@ describe('updateCategory', () => {
   });
 
   it('should update a category when user is admin', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -183,6 +189,8 @@ describe('updateCategory', () => {
   });
 
   it('should throw error when user is not authenticated', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -239,6 +247,8 @@ describe('updateCategory', () => {
   });
 
   it('should throw error when category does not exist', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -265,6 +275,8 @@ describe('updateCategory', () => {
   });
 
   it('should throw error when user is not authorized to update category', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -326,6 +338,8 @@ describe('updateCategory', () => {
   });
 
   it('should update only specified fields (partial update)', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -385,6 +399,8 @@ describe('updateCategory', () => {
   });
 
   it('should update translations using upsert (create new and update existing)', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -456,6 +472,8 @@ describe('updateCategory', () => {
   });
 
   it('should set imageUrl to null explicitly', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -507,6 +525,8 @@ describe('updateCategory', () => {
   });
 
   it('should not delete old image when updating with the same imageUrl value', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -561,6 +581,8 @@ describe('updateCategory', () => {
   });
 
   it('should delete old image when imageUrl is updated to a new value', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -613,6 +635,8 @@ describe('updateCategory', () => {
   });
 
   it('should not delete old image when imageUrl is not changed', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -666,6 +690,8 @@ describe('updateCategory', () => {
   });
 
   it('should not delete old image when old imageUrl is null', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
@@ -718,6 +744,8 @@ describe('updateCategory', () => {
   });
 
   it('should delete old image when imageUrl is updated to null', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
