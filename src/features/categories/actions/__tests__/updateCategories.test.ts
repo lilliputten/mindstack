@@ -10,14 +10,18 @@ import {
   TUpdateCategoryParams,
   TUpdateCategoryTranslation,
 } from '../../types/Categories';
-import { deleteCategoryImage } from '../deleteCategoryImage';
-import { updateCategories } from '../updateCategories';
 
-// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
+// Setup the mock before any imports that might depend on deleteCategoryImage
+// This ensures the mock is in place before updateCategories module is loaded in tests
+// If this mock is not at the top, tests that verify deleteCategoryImage function calls will fail
 const mockedDeleteCategoryImage = jest.fn();
 jest.mock('../deleteCategoryImage', () => ({
   deleteCategoryImage: mockedDeleteCategoryImage,
 }));
+
+// We can't dynamically import updateCategories here because the module is already being tested
+// with the mock in place, so we'll remove the import of updateCategories and only import it in tests
+// where we need to make sure the mock is in place
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
@@ -47,6 +51,9 @@ describe('updateCategories', () => {
   });
 
   it('should update multiple categories when user is the owner', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-${timestamp}`;
@@ -141,6 +148,9 @@ describe('updateCategories', () => {
   });
 
   it('should update multiple categories when user is admin', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-admin-${timestamp}`;
@@ -233,6 +243,9 @@ describe('updateCategories', () => {
   });
 
   it('should throw error when user is not authenticated', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-unauthed-${timestamp}`;
@@ -295,6 +308,9 @@ describe('updateCategories', () => {
   });
 
   it('should throw error when user is not authorized to update some categories', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-auth-${timestamp}`;
@@ -392,6 +408,9 @@ describe('updateCategories', () => {
   });
 
   it('should handle mixed ownership correctly', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-mixed-${timestamp}`;
@@ -487,6 +506,9 @@ describe('updateCategories', () => {
   });
 
   it('should update translations using upsert for multiple categories', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-upsert-${timestamp}`;
@@ -580,6 +602,9 @@ describe('updateCategories', () => {
   });
 
   it('should handle partial updates for multiple categories', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-partial-${timestamp}`;
@@ -646,7 +671,6 @@ describe('updateCategories', () => {
                 name: `Category 3 Updated ${testId}`,
                 description: null,
                 keywords: null,
-                categoryId: categories[2].id,
               },
             ],
             // No status or imageUrl
@@ -670,6 +694,9 @@ describe('updateCategories', () => {
   });
 
   it('should handle single category update in batch', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-single-${timestamp}`;
@@ -727,6 +754,9 @@ describe('updateCategories', () => {
   });
 
   it('should delete old images when imageUrl is updated to new values in batch update', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-batch-update-${timestamp}`;
@@ -802,6 +832,9 @@ describe('updateCategories', () => {
   });
 
   it('should not delete images when imageUrl is not changed in batch update', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-no-change-${timestamp}`;
@@ -883,6 +916,9 @@ describe('updateCategories', () => {
   });
 
   it('should handle mixed updates (some with image changes, some without) in batch', async () => {
+    // Dynamically import updateCategories to ensure mock is in place
+    const { updateCategories } = await import('../updateCategories');
+
     // Create a more unique identifier for this specific test
     const timestamp = Date.now().toString();
     const testId = `ucs-mixed-${timestamp}`;
