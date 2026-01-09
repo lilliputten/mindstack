@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 
 import { TUpdateCategoryParams } from '../types';
+import { deleteCategoryImage } from './deleteCategoryImage';
 
 interface TOptions {
   noDebug?: boolean;
@@ -30,7 +31,7 @@ export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
 
     const existingCategory = await prisma.category.findUnique({
       where: { id },
-      select: { userId: true },
+      select: { userId: true, imageUrl: true },
     } satisfies Prisma.CategoryFindUniqueArgs);
 
     if (!existingCategory) {
@@ -61,7 +62,15 @@ export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
     */
     const updateData: Prisma.CategoryUpdateArgs['data'] = {};
     if (status !== undefined) updateData.status = status;
-    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+
+    // Check if imageUrl is being updated to a new value
+    if (imageUrl !== undefined && imageUrl !== existingCategory.imageUrl) {
+      // If the existing imageUrl is not empty, delete the old image
+      if (existingCategory.imageUrl) {
+        await deleteCategoryImage(existingCategory.imageUrl);
+      }
+      updateData.imageUrl = imageUrl;
+    }
 
     if (translations) {
       updateData.translations = {

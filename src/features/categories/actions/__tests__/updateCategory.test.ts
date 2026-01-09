@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
+// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
+const mockedDeleteCategoryImage = jest.fn();
+jest.mock('../deleteCategoryImage', () => ({
+  deleteCategoryImage: mockedDeleteCategoryImage,
+}));
+
 import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
@@ -7,6 +13,8 @@ import { TUser } from '@/features/users/types/TUser';
 
 import { defaultCategoryStatus, TUpdateCategoryParams } from '../../types/Categories';
 import { updateCategory } from '../updateCategory';
+
+import { deleteCategoryImage } from '../deleteCategoryImage';
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
@@ -32,6 +40,7 @@ const cleanupDb = async (ids: CreatedId[]) => {
 describe('updateCategory', () => {
   afterEach(() => {
     mockedGetCurrentUser.mockReset();
+    mockedDeleteCategoryImage.mockClear();
   });
 
   it('should update a category when user is the owner', async () => {
@@ -493,6 +502,269 @@ describe('updateCategory', () => {
       const result = await updateCategory({ ...updateData, noDebug: true });
 
       expect(result.imageUrl).toBeNull();
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should not delete old image when updating with the same imageUrl value', async () => {
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-same-url-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const imageUrl = `https://example.com/same-url-${dateTag}.jpg`;
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          imageUrl: imageUrl,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `Same URL Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      // Update with the same imageUrl value
+      const updateData = {
+        id: category.id,
+        imageUrl: imageUrl, // Same URL as before
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.imageUrl).toBe(imageUrl);
+      expect(mockedDeleteCategoryImage).not.toHaveBeenCalled(); // Should not delete when same URL
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should delete old image when imageUrl is updated to a new value', async () => {
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-delete-old-image-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          imageUrl: `https://example.com/old-${dateTag}.jpg`,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `Old Image Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      const updateData = {
+        id: category.id,
+        imageUrl: `https://example.com/new-${dateTag}.jpg`,
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.imageUrl).toBe(updateData.imageUrl);
+      expect(mockedDeleteCategoryImage).toHaveBeenCalledWith(category.imageUrl);
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should not delete old image when imageUrl is not changed', async () => {
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-no-change-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          imageUrl: `https://example.com/same-${dateTag}.jpg`,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `Same Image Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      const updateData = {
+        id: category.id,
+        status: 'HIDDEN' as const, // Only update status, not imageUrl
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.status).toBe('HIDDEN');
+      expect(result.imageUrl).toBe(category.imageUrl);
+      expect(mockedDeleteCategoryImage).not.toHaveBeenCalled();
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should not delete old image when old imageUrl is null', async () => {
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-null-old-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          imageUrl: null, // No initial image
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `Null Old Image Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      const updateData = {
+        id: category.id,
+        imageUrl: `https://example.com/new-from-null-${dateTag}.jpg`,
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.imageUrl).toBe(updateData.imageUrl);
+      expect(mockedDeleteCategoryImage).not.toHaveBeenCalled(); // Should not be called when old imageUrl is null
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should delete old image when imageUrl is updated to null', async () => {
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-to-null-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          imageUrl: `https://example.com/to-be-deleted-${dateTag}.jpg`,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `To Null Image Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      const updateData = {
+        id: category.id,
+        imageUrl: null,
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.imageUrl).toBeNull();
+      expect(mockedDeleteCategoryImage).toHaveBeenCalledWith(category.imageUrl);
     } finally {
       await cleanupDb(createdIds);
     }

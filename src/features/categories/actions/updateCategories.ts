@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 
 import { TUpdateCategoriesParams } from '../types';
+import { deleteCategoryImage } from './deleteCategoryImage';
 
 interface TOptions {
   noDebug?: boolean;
@@ -33,7 +34,7 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
     // Check ownership for all categories
     const existingCategories = await prisma.category.findMany({
       where: { id: { in: categoryIds } },
-      select: { id: true, userId: true },
+      select: { id: true, userId: true, imageUrl: true },
     } satisfies Prisma.CategoryFindManyArgs);
 
     const ownedCategoryIds = existingCategories
@@ -43,6 +44,9 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
     if (ownedCategoryIds.length !== categoryIds.length) {
       throw new Error('User is not authorized to update some categories');
     }
+
+    // Create a map of existing category image URLs for quick lookup
+    const existingCategoryMap = new Map(existingCategories.map((cat) => [cat.id, cat.imageUrl]));
 
     const updatePromises = updates.map(async (update) => {
       const { id, status, translations, imageUrl } = update;
@@ -67,7 +71,18 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
       } = {};
        */
       if (status !== undefined) updateData.status = status;
-      if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+
+      // Check if imageUrl is being updated to a new value
+      if (imageUrl !== undefined) {
+        const existingImageUrl = existingCategoryMap.get(id);
+        if (imageUrl !== existingImageUrl) {
+          // If the existing imageUrl is not empty, delete the old image
+          if (existingImageUrl) {
+            await deleteCategoryImage(existingImageUrl);
+          }
+          updateData.imageUrl = imageUrl;
+        }
+      }
 
       if (translations) {
         updateData.translations = {
