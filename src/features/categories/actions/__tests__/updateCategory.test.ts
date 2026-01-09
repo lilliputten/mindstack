@@ -796,4 +796,75 @@ describe('updateCategory', () => {
       await cleanupDb(createdIds);
     }
   });
+
+  it('should validate locale values against allowed locales', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
+    // Import the schema we created
+    const { LocaleSchema } = await import('@/i18n/types');
+
+    // Test valid locales
+    expect(LocaleSchema.safeParse('en').success).toBe(true);
+    expect(LocaleSchema.safeParse('es').success).toBe(true);
+    expect(LocaleSchema.safeParse('ru').success).toBe(true);
+
+    // Test invalid locale
+    expect(LocaleSchema.safeParse('fr').success).toBe(false);
+
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `uc-locale-validation-${dateTag}@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          userId: user.id,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `Locale Validation Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      // Valid update with allowed locale
+      const updateData = {
+        id: category.id,
+        translations: [
+          {
+            locale: 'es', // Valid locale
+            name: `Updated with valid locale ${dateTag}`,
+          },
+        ],
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.translations).toHaveLength(1);
+      const esTranslation = result.translations.find((t) => t.locale === 'es');
+      expect(esTranslation?.name).toBe(`Updated with valid locale ${dateTag}`);
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
 });
