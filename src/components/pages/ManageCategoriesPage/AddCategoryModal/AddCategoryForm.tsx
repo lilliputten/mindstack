@@ -36,7 +36,7 @@ import {
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
 import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
-import { TLocale } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 100;
@@ -60,8 +60,9 @@ export interface TAddCategoryFormProps {
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
-  /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
+  /** Is the dialog in edit or add mode? */
   editMode?: boolean;
+  /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
   suggestionMode?: boolean;
 }
 
@@ -127,6 +128,15 @@ interface TMemo {
   imagePreviewUrl?: string;
 }
 
+/** Custom function to translate double-translated edit/editNew modal form
+ * texts. We're using the `ManageCategories.Edit` as a default namespace, and
+ * the `ManageCategories.EditNew` as another for category creating.
+ */
+export function useTranslations(defaultNamespace: 'ManageCategories.Edit', editMode?: boolean) {
+  const namespace = editMode ? defaultNamespace : defaultNamespace + 'New';
+  return useT(namespace);
+}
+
 export function AddCategoryForm(props: TAddCategoryFormProps) {
   const {
     initialCategory,
@@ -134,10 +144,17 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
     handleAddCategory,
     handleClose,
     isPending,
+    /** Is the dialog in edit or add mode? */
+    editMode = true,
     /** Is it a suggestion? Then offer a limited editing mode */
-    suggestionMode,
+    suggestionMode = true,
   } = props;
   const locale = useLocale() as TLocale;
+
+  /** We're using the `ManageCategories.Edit` as a default namespace, and the
+   * `ManageCategories.EditNew` as another for category creating
+   */
+  const _t = useTranslations('ManageCategories.Edit', editMode);
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -176,7 +193,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const {
     isDirty, // boolean;
-    // isLoading, // boolean;
+    isLoading, // boolean;
     // isSubmitted, // boolean;
     // isSubmitSuccessful, // boolean;
     // isSubmitting, // boolean;
@@ -250,7 +267,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const uploadImageFileToVercel = useCallback(
     async (file: File) => {
-      setIsUploading(true);
       try {
         const formData = new FormData();
         formData.append('image', file);
@@ -289,8 +305,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         debugger; // eslint-disable-line no-debugger
         form.setError('imageUrl', { type: 'manual', message: comboMsg });
         throw new Error(comboMsg);
-      } finally {
-        setIsUploading(false);
       }
     },
     [form],
@@ -298,6 +312,10 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const handleSubmitForm = React.useCallback(
     async (formData: TFormData) => {
+      setIsUploading(true);
+      if (isDev) {
+        await new Promise((r) => setTimeout(r, 2000)); // DEBUG
+      }
       let newImageUrl: string | undefined;
       const convertedCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
       const newCategory = {
@@ -311,9 +329,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       });
       debugger;
       if (memo.imageFile) {
-        if (isDev) {
-          await new Promise((r) => setTimeout(r, 2000)); // DEBUG
-        }
         newImageUrl = await uploadImageFileToVercel(memo.imageFile);
         if (newImageUrl) {
           newCategory.imageUrl = newImageUrl;
@@ -370,6 +385,8 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         debugger; // eslint-disable-line no-debugger
         toast.error(comboMsg);
         debugger; // eslint-disable-line no-debugger
+      } finally {
+        setIsUploading(false);
       }
     },
     [memo, handleAddCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
@@ -382,7 +399,10 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
     ev.preventDefault();
   };
 
-  const isSubmitEnabled = !isPending && !isUploading && isDirty && isValid;
+  const isBusy = isLoading || isPending || isUploading;
+  const isSubmitEnabled = !isBusy && isDirty && isValid;
+
+  const SaveIcon = !isLoading ? Icons.Save : Icons.Spinner;
 
   return (
     <FormProvider {...form}>
@@ -391,6 +411,8 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         className={cn(
           isDev && '__AddCategoryForm', // DEBUG
           'flex w-full flex-col gap-4',
+          'transition',
+          isBusy && 'opacity-50',
           className,
         )}
       >
@@ -587,14 +609,14 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
             disabled={!isSubmitEnabled}
             className="gap-2"
           >
-            {isPending ? (
+            {isBusy ? (
               <>
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
                 <span>Adding...</span>
               </>
             ) : (
               <>
-                <Icons.Save className="h-4 w-4" />
+                <SaveIcon className={cn('h-4 w-4', isBusy && 'animate-spin')} />
                 <span>Add</span>
               </>
             )}

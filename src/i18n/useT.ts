@@ -28,4 +28,7 @@ export function useT(namespace?: string) {
   }
 }
 
+/** Alias for shorthand useT */
+export const useTranslations = useT;
+
 export type TTranslator = ReturnType<typeof useT>;

@@ -14,11 +14,7 @@ import { isDev } from '@/constants';
 import { useSettings } from '@/contexts/SettingsContext';
 import { createCategory } from '@/features/categories/actions';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
-import {
-  TAvailableCategory,
-  TCreateCategoriesParams,
-  TCreateCategoryParams,
-} from '@/features/categories/types';
+import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories/types';
 import {
   useGoBack,
   useGoToTheRoute,
@@ -28,15 +24,13 @@ import {
 } from '@/hooks';
 import { useT } from '@/i18n';
 
-// import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
-
-import { AddCategoryForm } from './AddCategoryForm';
-
-// import { AddCategoryForm } from './AddCategoryForm';
+import { AddCategoryForm, useTranslations } from './AddCategoryForm';
 
 const urlPostfix = '/add';
 
 interface TProps {
+  /** Is the dialog in edit or add mode? */
+  editMode?: boolean;
   /** Is it a suggestion? Then offer a limited editing mode */
   suggestionMode?: boolean;
 }
@@ -55,16 +49,24 @@ const initialCategory: TCreateCategoryParams = {
 };
 
 export function AddCategoryModal(props: TProps) {
-  const { suggestionMode } = props;
+  const {
+    // DEBUG DATA...
+    /** Is the dialog in edit or add mode? */
+    editMode = true,
+    /** Is it a suggestion? Then offer a limited editing mode */
+    suggestionMode = true,
+  } = props;
 
-  // const { manageScope } = useManageCategoriesStore();
-  // const routePath = `/categories/${manageScope}`;
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
   const { jumpToNewEntities } = useSettings();
-  const t = useT();
+
+  /** We're using the `ManageCategories.Edit` as a default namespace, and the
+   * `ManageCategories.EditNew` as another for category creating
+   */
+  const t = useTranslations('ManageCategories.Edit', editMode);
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
@@ -81,7 +83,7 @@ export function AddCategoryModal(props: TProps) {
     goBack();
   }, [goBack]);
 
-  useModalTitle(t('AddCategoryModal.ModalTitle'), shouldBeVisible);
+  useModalTitle(t('ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
@@ -112,7 +114,7 @@ export function AddCategoryModal(props: TProps) {
       }
     },
     onError: (error, newCategory) => {
-      const message = t('AddCategoryModal.ToastError');
+      const message = t('ToastError');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
@@ -134,10 +136,9 @@ export function AddCategoryModal(props: TProps) {
       debugger;
       const promise = addCategoryMutation.mutateAsync(newCategory);
       toast.promise(promise, {
-        loading: t('AddCategoryModal.ToastLoading'),
-        success: (category) =>
-          t('AddCategoryModal.ToastSuccess', { name: category.translations?.[0]?.name }),
-        error: t('AddCategoryModal.ToastError'),
+        loading: t('ToastLoading'),
+        success: (category) => t('ToastSuccess', { name: category.translations?.[0]?.name }),
+        error: t('ToastError'),
       });
       return promise;
     },
@@ -165,18 +166,19 @@ export function AddCategoryModal(props: TProps) {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('AddCategoryModal.DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('AddCategoryModal.DialogDescription')}
+          {t('DialogDescription')}
         </DialogDescription>
       </div>
       <AddCategoryForm
-        initialCategory={initialCategory}
-        suggestionMode={suggestionMode}
         handleAddCategory={handleAddCategory}
         className="p-8 text-foreground"
         handleClose={hideModal}
         isPending={addCategoryMutation.isPending}
+        suggestionMode={suggestionMode}
+        // initialCategory={initialCategory}
+        editMode
       />
     </Modal>
   );

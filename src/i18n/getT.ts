@@ -16,3 +16,6 @@ export async function getT(opts?: TGetTOptions) {
   }
   return await nextIntlGetTranslations(opts);
 }
+
+/** Alias for shorthand getT */
+export const getTranslations = getT;
