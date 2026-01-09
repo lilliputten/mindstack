@@ -32,7 +32,7 @@ export function DeleteCategoriesForm({ categoryId, from }: IDeleteCategoriesForm
   const getCategoryName = React.useCallback(
     (category: TAvailableCategory) => {
       const translation = category.translations?.find((t) => t.locale === locale);
-      return translation?.name || category.name || 'Unnamed';
+      return translation?.name || 'Unnamed';
     },
     [locale],
   );

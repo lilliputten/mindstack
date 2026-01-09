@@ -18,3 +18,6 @@ export const categoryImageAllowedTypes = [
   'image/webp',
   'image/gif',
 ] as const;
+export type TCategoryImageAllowedTypes = (typeof categoryImageAllowedTypes)[number];
+
+export const categoryImageAllowedTypesString = 'JPEG, PNG, WebP, GIF';

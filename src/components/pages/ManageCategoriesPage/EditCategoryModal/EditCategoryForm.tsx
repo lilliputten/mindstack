@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { CategorySchema, CategoryStatusType } from '@/generated/prisma';
+import { CategoryStatusSchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -38,14 +38,14 @@ const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
 const MAX_KEYWORDS_LENGTH = 200;
 
-export interface IEditCategoryFormProps {
+export interface TEditCategoryFormProps {
   categoryId: string;
   onSuccess?: () => void;
   onClose?: () => void;
   className?: string;
 }
 
-interface IFormData {
+interface TFormData {
   name: string;
   description: string;
   keywords: string;
@@ -58,7 +58,7 @@ export function EditCategoryForm({
   onSuccess,
   onClose,
   className,
-}: IEditCategoryFormProps) {
+}: TEditCategoryFormProps) {
   const locale = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -85,13 +85,13 @@ export function EditCategoryForm({
         name: z.string().min(2).max(MAX_NAME_LENGTH),
         description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
         keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
-        status: CategorySchema,
+        status: CategoryStatusSchema,
       }),
     [],
   );
 
   // Initialize with existing category data
-  const defaultValues: IFormData = React.useMemo(() => {
+  const defaultValues: TFormData = React.useMemo(() => {
     if (!category) {
       return {
         name: '',
@@ -102,15 +102,15 @@ export function EditCategoryForm({
       };
     }
     return {
-      name: translation?.name || category.name || '',
-      description: translation?.description || category.description || '',
-      keywords: translation?.keywords || category.keywords || '',
+      name: translation?.name || category.translations?.[0].name || '',
+      description: translation?.description || category.translations?.[0].description || '',
+      keywords: translation?.keywords || category.translations?.[0].keywords || '',
       status: category.status as CategoryStatusType,
       imageUrl: category.imageUrl || undefined,
     };
   }, [category, translation]);
 
-  const form = useForm<IFormData>({
+  const form = useForm<TFormData>({
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
@@ -364,7 +364,7 @@ export function EditCategoryForm({
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label htmlFor="category-status">Status</Label>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                 <FormControl>
                   <SelectTrigger id="category-status">
                     <SelectValue placeholder="Select status" />

@@ -3,7 +3,7 @@
 import { put } from '@vercel/blob';
 import sharp from 'sharp';
 
-import { nFormatter } from '@/lib/helpers';
+import { getErrorText, nFormatter } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 
 import {
@@ -63,18 +63,30 @@ export async function uploadCategoryImage(formData: FormData) {
       .toBuffer();
 
     // Upload to Vercel Blob
-    const { url } = await put(file.name, optimizedBuffer, {
+    const result = await put(file.name, optimizedBuffer, {
       access: 'public',
       addRandomSuffix: true,
     });
+    const { url } = result;
+
+    console.log('[uploadCategoryImage] done', {
+      url,
+      result,
+      file,
+      formData,
+    });
+    debugger;
 
     return {
       success: true,
       data: { url },
     };
   } catch (error) {
+    const details = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[uploadCategoryImage] Error:', error);
+    console.error('[uploadCategoryImage]', details, {
+      error,
+    });
     debugger; // eslint-disable-line no-debugger
     throw error;
   }

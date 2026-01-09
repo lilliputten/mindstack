@@ -1,2 +1,5 @@
 export { EditCategoryModal, type IEditCategoryModalProps } from './EditCategoryModal';
-export { EditCategoryForm, type IEditCategoryFormProps } from './EditCategoryForm';
+export {
+  EditCategoryForm,
+  type TEditCategoryFormProps as IEditCategoryFormProps,
+} from './EditCategoryForm';

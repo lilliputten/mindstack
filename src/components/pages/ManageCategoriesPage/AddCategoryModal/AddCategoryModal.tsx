@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
+import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
@@ -14,7 +14,11 @@ import { isDev } from '@/constants';
 import { useSettings } from '@/contexts/SettingsContext';
 import { createCategory } from '@/features/categories/actions';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
-import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories/types';
+import {
+  TAvailableCategory,
+  TCreateCategoriesParams,
+  TCreateCategoryParams,
+} from '@/features/categories/types';
 import {
   useGoBack,
   useGoToTheRoute,
@@ -32,7 +36,27 @@ import { AddCategoryForm } from './AddCategoryForm';
 
 const urlPostfix = '/add';
 
-export function AddCategoryModal() {
+interface TProps {
+  /** Is it a suggestion? Then offer a limited editing mode */
+  suggestionMode?: boolean;
+}
+
+// Test data
+const initialCategory: TCreateCategoryParams = {
+  status: 'PUBLIC',
+  imageUrl:
+    'https://dtd6kgwmdtb71uj7.public.blob.vercel-storage.com/51uXWRfDCkL._AC_SL1000_-EyzCLFJQLBzdX4fCoYSUi6x8qZKsi6.jpg',
+  translations: [
+    {
+      locale: 'en',
+      name: 'Initial data test',
+    },
+  ],
+};
+
+export function AddCategoryModal(props: TProps) {
+  const { suggestionMode } = props;
+
   // const { manageScope } = useManageCategoriesStore();
   // const routePath = `/categories/${manageScope}`;
   const routePath = manageCategoriesRoute; // `/categories/manage`;
@@ -62,7 +86,17 @@ export function AddCategoryModal() {
 
   const addCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn: createCategory,
+    onMutate: async (newCategory) => {
+      console.error('[AddCategoryModal:addCategoryMutation] onMutate', {
+        newCategory,
+      });
+      // debugger;
+    },
     onSuccess: (addedCategory) => {
+      console.error('[AddCategoryModal:addCategoryMutation] onSuccess', {
+        addedCategory,
+      });
+      debugger;
       // Add the created item to the cached react-query data
       availableCategoriesQuery.addNewCategory(addedCategory, true);
       // Invalidate all other keys...
@@ -78,24 +112,31 @@ export function AddCategoryModal() {
       }
     },
     onError: (error, newCategory) => {
-      const details = error instanceof APIError ? error.details : null;
       const message = t('AddCategoryModal.ToastError');
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
-      console.error('[AddCategoryModal:addCategoryMutation]', message, {
+      console.error('[AddCategoryModal:addCategoryMutation]', comboMsg, {
         error,
         details,
         newCategory,
       });
       debugger; // eslint-disable-line no-debugger
+      toast.error(comboMsg);
     },
   });
 
   const handleAddCategory = React.useCallback(
     (newCategory: TCreateCategoryParams) => {
+      console.log('[AddCategoryModal:handleAddCategory] before', {
+        newCategory,
+      });
+      debugger;
       const promise = addCategoryMutation.mutateAsync(newCategory);
       toast.promise(promise, {
         loading: t('AddCategoryModal.ToastLoading'),
-        success: (category) => t('AddCategoryModal.ToastSuccess', { name: category.name }),
+        success: (category) =>
+          t('AddCategoryModal.ToastSuccess', { name: category.translations?.[0]?.name }),
         error: t('AddCategoryModal.ToastError'),
       });
       return promise;
@@ -130,6 +171,8 @@ export function AddCategoryModal() {
         </DialogDescription>
       </div>
       <AddCategoryForm
+        initialCategory={initialCategory}
+        suggestionMode={suggestionMode}
         handleAddCategory={handleAddCategory}
         className="p-8 text-foreground"
         handleClose={hideModal}

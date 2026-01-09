@@ -6,7 +6,7 @@ import {
   CategorySchema,
   CategoryStatusSchema,
   // CategoryStatusType,
-  // CategoryTranslation,
+  CategoryTranslation,
   CategoryTranslationSchema,
   UserSchema,
 } from '@/generated/prisma';
@@ -55,6 +55,7 @@ const CreateCategoryParamsSchema = CreateCategoryParamsSchemaBase.extend({
   imageUrl: CreateCategoryParamsSchemaBase.shape.imageUrl.optional(),
   translations: z.array(CreateCategoryTranslationSchema).optional(),
 });
+export type TCreateCategoryTranslation = z.infer<typeof CreateCategoryTranslationSchema>;
 
 export type TCreateCategoryParams = z.infer<typeof CreateCategoryParamsSchema>;
 
@@ -142,18 +143,19 @@ export type TDeleteCategoriesParams = z.infer<typeof DeleteCategoriesParamsSchem
 export type TAvailableCategory = TCategory & {
   /** For `includeUser` flag */
   user?: TIncludedUser;
+  translations?: TCreateCategoryTranslation[];
   /** For `includeTranslations` flag - include top-level fallbacks for convenience */
-  translations?: Array<{
-    locale: string;
-    name: string;
-    description: string | null;
-    keywords: string | null;
-    categoryId: string;
-  }>;
-  /** Fallback fields from translations for convenience */
-  name?: string;
-  description?: string | null;
-  keywords?: string | null;
+  // translations?: Array<{
+  //   locale: string;
+  //   name: string;
+  //   description: string | null;
+  //   keywords: string | null;
+  //   // categoryId: string;
+  // }>;
+  // [>* Fallback fields from translations for convenience <]
+  // name?: string;
+  // description?: string | null;
+  // keywords?: string | null;
 };
 
 // Results types

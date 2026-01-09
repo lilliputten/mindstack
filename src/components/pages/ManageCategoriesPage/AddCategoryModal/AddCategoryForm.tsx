@@ -5,9 +5,10 @@ import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { CategorySchema, CategoryStatusType } from '@/generated/prisma';
+import { CategoryStatusSchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -25,27 +26,27 @@ import {
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
+import { isDev } from '@/config';
 import { uploadCategoryImage } from '@/features/categories/actions/uploadCategoryImage';
 import {
   categoryImageAllowedTypes,
+  categoryImageAllowedTypesString,
   categoryImageConfig,
   categoryImageSizeLimit,
+  TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
-import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
+import {
+  defaultCategoryStatus,
+  TAvailableCategory,
+  TCreateCategoryParams,
+} from '@/features/categories/types';
+import { TLocale } from '@/i18n';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
 const MAX_KEYWORDS_LENGTH = 200;
 
-// // TODO: Derive from `CreateCategoryParamsSchema` and `CreateCategoryTranslationSchema`
-// type TAddCategoryParams = {
-//   name: string;
-//   description?: string;
-//   keywords?: string;
-//   status: CategoryStatusType;
-//   imageUrl?: string;
-// };
 type TAddCategoryParams = TCreateCategoryParams;
 
 interface TFormData {
@@ -58,31 +59,92 @@ interface TFormData {
 }
 
 export interface TAddCategoryFormProps {
-  /*
-  onSuccess?: () => void;
-  onClose?: () => void;
-  className?: string;
-  */
+  initialCategory?: TCreateCategoryParams;
   handleAddCategory: (p: TAddCategoryParams) => Promise<unknown>;
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
+  /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
+  editMode?: boolean;
+  suggestionMode?: boolean;
+}
+
+interface TConvertFormDataOptions {
+  locale: TLocale;
+  suggestionMode?: boolean;
+}
+
+function convertFormDataToCategory(formData: TFormData, opts: TConvertFormDataOptions) {
+  const { locale, suggestionMode } = opts;
+  const {
+    status,
+    imageUrl,
+    // NOTE,
+    name,
+    description,
+    keywords,
+  } = formData;
+  const category: TCreateCategoryParams = {
+    status,
+    imageUrl,
+    // NOTE: Use translated values, according to `localesList`
+    translations: [
+      {
+        locale,
+        name,
+        description,
+        keywords,
+      },
+    ],
+  };
+  return category;
+}
+
+function convertCategoryToFormData(
+  category: TCreateCategoryParams | undefined,
+  opts: TConvertFormDataOptions,
+) {
+  if (!category) {
+    return undefined;
+  }
+  const { locale, suggestionMode } = opts;
+  const translation = category.translations?.[0];
+  const formData: TFormData = {
+    status: category.status || suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
+    imageUrl: category.imageUrl || undefined,
+    // NOTE,
+    name: translation?.name || '',
+    description: translation?.description || '',
+    keywords: translation?.keywords || '',
+  };
+  return formData;
+}
+
+interface TMemo {
+  imageFile?: File | null;
+  imagePreviewUrl?: string;
 }
 
 export function AddCategoryForm(props: TAddCategoryFormProps) {
   const {
-    /*
-    onSuccess,
-    onClose,
-    className,
-    */
+    initialCategory,
     className,
     handleAddCategory,
     handleClose,
     isPending,
+    /** Is it a suggestion? Then offer a limited editing mode */
+    suggestionMode,
   } = props;
-  const locale = useLocale();
-  // const [isPending, setIsPending] = useState(false);
+  const locale = useLocale() as TLocale;
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  /* // UNUSED
+   * const [imageFile, setImageFile] = React.useState<File | undefined>();
+   * const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string | undefined>(
+   *   initialData?.imageUrl || undefined,
+   * );
+   */
 
   const formSchema = React.useMemo(
     () =>
@@ -90,7 +152,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
         description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
         keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
-        status: CategorySchema,
+        status: CategoryStatusSchema,
       }),
     [],
   );
@@ -100,175 +162,245 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       name: '',
       description: '',
       keywords: '',
-      status: defaultCategoryStatus,
+      status: suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
     }),
-    [],
+    [suggestionMode],
+  );
+
+  const initialValues = React.useMemo(
+    () => convertCategoryToFormData(initialCategory, { locale, suggestionMode }),
+    [initialCategory, locale, suggestionMode],
   );
 
   const form = useForm<TFormData>({
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
-    defaultValues,
+    // defaultValues,
+    defaultValues: initialValues || defaultValues,
   });
 
+  /* // DEBUG
+   * const values = form.watch();
+   * console.log('[AddCategoryForm] DEBUG: values, defaultValues, initialValues', {
+   *   values,
+   *   initialValues,
+   *   defaultValues,
+   * });
+   */
+
+  // const {
+  //   formState,
+  //   // handleSubmit,
+  //   // watch,
+  //   // setFocus,
+  //   // setValue,
+  //   // setError,
+  // } = form;
+
   const {
-    formState: { isDirty, isValid },
-    handleSubmit,
-    setValue,
-    watch,
-    setFocus,
-  } = form;
+    isDirty, // boolean;
+    // isLoading, // boolean;
+    // isSubmitted, // boolean;
+    // isSubmitSuccessful, // boolean;
+    // isSubmitting, // boolean;
+    // isValidating, // boolean;
+    isValid, // boolean;
+    // disabled, // boolean;
+    // submitCount, // number;
+    // dirtyFields, // Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>;
+    // touchedFields, // Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>;
+    // validatingFields, // Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>;
+    // errors, // FieldErrors<TFieldValues>;
+    // isReady, // boolean;
+  } = form.formState;
 
   React.useEffect(() => {
-    setFocus('name');
-  }, [setFocus]);
+    form.setFocus('name');
+  }, [form]);
 
   // Image handling. TODO: Refactor to process the image right before the form data submiting
-  const watchedImageUrl = watch('imageUrl');
+  const imagePreviewUrl = form.watch('imageUrl');
+  memo.imagePreviewUrl = imagePreviewUrl;
+
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const handleImageUpload = useCallback(
+  // const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleImageChange = useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      const file = ev.target.files?.[0];
+      if (!file) {
+        return;
+      }
+      const errors = [];
+      // Validate file size
+      if (file.size > categoryImageSizeLimit) {
+        const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
+        errors.push(`Image size must be less than ${formattedSizeLimit}B`);
+      }
+      // Validate file type
+      if (!categoryImageAllowedTypes.includes(file.type as TCategoryImageAllowedTypes)) {
+        errors.push(`Invalid image type. Allowed types: ${categoryImageAllowedTypesString}`);
+      }
+      if (errors.length) {
+        const message = errors.join(' ');
+        form.setError('imageUrl', { type: 'manual', message });
+        return;
+      }
+      form.clearErrors('imageUrl');
+      const url = URL.createObjectURL(file);
+      console.log('[AddCategoryForm:handleImageChange] before', {
+        url,
+        file,
+      });
+      if (memo.imagePreviewUrl) {
+        URL.revokeObjectURL(memo.imagePreviewUrl);
+      }
+      memo.imageFile = file;
+      memo.imagePreviewUrl = url;
+      form.setValue('imageUrl', url, { shouldDirty: true });
+    },
+    [memo, form],
+  );
+  const handleRemoveImage = useCallback(() => {
+    form.clearErrors('imageUrl');
+    if (memo.imagePreviewUrl) {
+      URL.revokeObjectURL(memo.imagePreviewUrl);
+    }
+    memo.imageFile = null;
+    memo.imagePreviewUrl = undefined;
+    form.setValue('imageUrl', undefined, { shouldDirty: true });
+  }, [memo, form]);
+
+  const uploadImageFileToVercel = useCallback(
     async (file: File) => {
       setIsUploading(true);
-      setUploadError(null);
       try {
         const formData = new FormData();
         formData.append('image', file);
+        console.log('[AddCategoryForm:uploadImageFileToVercel] before', {
+          file,
+          formData,
+        });
         const result = await uploadCategoryImage(formData);
-        if (result.success && result.data?.url) {
-          setValue('imageUrl', result.data.url);
-        } else {
-          setUploadError('Failed to upload image');
+        if (!result.success || !result.data?.url) {
+          const message = 'Failed to upload image';
+          const error = new Error(message);
+          // eslint-disable-next-line no-console
+          console.error('[AddCategoryForm:uploadImageFileToVercel] Invalid result', message, {
+            result,
+            error,
+            formData,
+          });
+          debugger; // eslint-disable-line no-debugger
+          throw error;
         }
+        const url = result?.data?.url;
+        console.log('[AddCategoryForm:uploadImageFileToVercel] success', {
+          url,
+        });
+        debugger;
+        // setValue('imageUrl', url);
+        return url;
       } catch (error) {
-        setUploadError(getErrorText(error) || 'Failed to upload image');
+        const message = 'Failed to upload image';
+        const details = getErrorText(error);
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[AddCategoryForm] Image upload error:', error);
+        console.error('[AddCategoryForm:uploadImageFileToVercel]', comboMsg, {
+          error,
+          file,
+        });
+        debugger; // eslint-disable-line no-debugger
+        form.setError('imageUrl', { type: 'manual', message: comboMsg });
+        throw new Error(comboMsg);
       } finally {
         setIsUploading(false);
       }
     },
-    [setValue],
+    [form],
   );
-  const handleImageChange = useCallback(
-    (ev: React.ChangeEvent<HTMLInputElement>) => {
-      const file = ev.target.files?.[0];
-      if (!file) return;
-      // Validate file size
-      if (file.size > categoryImageSizeLimit) {
-        const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
-        setUploadError(`Image size must be less than ${formattedSizeLimit}B`);
-        return;
-      }
-      // Validate file type
-      if (
-        !categoryImageAllowedTypes.includes(file.type as (typeof categoryImageAllowedTypes)[number])
-      ) {
-        setUploadError('Invalid image type. Allowed types: JPEG, PNG, WebP, GIF');
-        return;
-      }
-      handleImageUpload(file);
-    },
-    [handleImageUpload],
-  );
-  const handleRemoveImage = useCallback(() => {
-    setValue('imageUrl', undefined);
-  }, [setValue]);
 
-  /*
-  const onSubmit = handleSubmit(async (formData) => {
-    setIsPending(true);
-    try {
-      const { createCategories } = await import('@/features/categories/actions/createCategories');
-      const result = await createCategories({
-        categories: [
-          {
-            status: formData.status,
-            imageUrl: formData.imageUrl,
-            translations: [
-              {
-                locale,
-                name: formData.name,
-                description: formData.description || null,
-                keywords: formData.keywords || null,
-              },
-            ],
-          },
-        ],
+  const handleSubmitForm = React.useCallback(
+    async (formData: TFormData) => {
+      let newImageUrl: string | undefined;
+      const convertedCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
+      const newCategory = {
+        ...initialCategory,
+        ...convertedCategory,
+        // Set an original image, if it wasn't removed by the user
+        imageUrl: memo.imageFile !== null ? initialCategory?.imageUrl : undefined,
+      };
+      console.log('[AddCategoryForm:handleSubmitForm] before uploading image', {
+        formData,
       });
-      if (result && result.length > 0) {
-        if (onSuccess) {
-          onSuccess();
+      debugger;
+      if (memo.imageFile) {
+        if (isDev) {
+          await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
-        if (handleClose) {
-          handleClose();
+        newImageUrl = await uploadImageFileToVercel(memo.imageFile);
+        if (newImageUrl) {
+          newCategory.imageUrl = newImageUrl;
         }
-      } else {
-        throw new Error('Failed to create category');
       }
-    } catch (error) {
-      const message = getErrorText(error) || 'An unknown error has occurred.';
-      // eslint-disable-next-line no-console
-      console.error('[AddCategoryForm:onSubmit]', message, { error });
-      setUploadError(message);
-    } finally {
-      setIsPending(false);
-    }
-  });
-  */
-
-  const onSubmit = handleSubmit((formData) => {
-    const {
-      status,
-      imageUrl,
-      // NOTE,
-      name,
-      description,
-      keywords,
-    } = formData;
-    const newCategory: TCreateCategoryParams = {
-      status,
-      imageUrl,
-      // NOTE: Use translated values, according to `localesList`
-      translations: [
-        {
-          locale,
+      try {
+        const {
+          status,
+          imageUrl,
+          // NOTE,
           name,
           description,
           keywords,
-        },
-      ],
-    };
-    console.log('[AddCategoryForm:onSubmit] before', {
-      newCategory,
-      formData,
-    });
-    debugger;
-    return handleAddCategory(newCategory)
-      .then((result) => {
-        console.log('[AddCategoryForm:onSubmit] done', {
-          result,
+        } = formData;
+        const newCategory: TCreateCategoryParams = {
+          status,
+          imageUrl,
+          // NOTE: Use translated values, according to `localesList`
+          translations: [
+            {
+              locale,
+              name,
+              description,
+              keywords,
+            },
+          ],
+        };
+        console.log('[AddCategoryForm:handleSubmitForm] before adding', {
           newCategory,
+          convertedCategory,
+          initialCategory,
+          newImageUrl,
           formData,
         });
         debugger;
-        // reset();
-        // if (handleClose) {
-        //   handleClose();
-        // }
-      })
-      .catch((error) => {
-        const message = getErrorText(error) || 'An unknown error has occurred.';
+        if (isDev) {
+          await new Promise((r) => setTimeout(r, 2000)); // DEBUG
+        }
+        return await handleAddCategory(newCategory);
+      } catch (error) {
+        const message = 'Failed to submit form data';
+        const details = getErrorText(error);
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[AddCategoryForm:onSubmit]', message, {
+        console.error('[AddCategoryModal:handleSubmitForm]', comboMsg, {
           error,
+          details,
+          newCategory,
+          convertedCategory,
+          initialCategory,
+          newImageUrl,
+          formData,
         });
         debugger; // eslint-disable-line no-debugger
-      });
-  });
+        toast.error(comboMsg);
+        debugger; // eslint-disable-line no-debugger
+      }
+    },
+    [memo, handleAddCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
+  );
 
-  const onCloseForm = (ev: React.MouseEvent) => {
+  const handleCloseForm = (ev: React.MouseEvent) => {
     if (handleClose) {
       handleClose();
     }
@@ -279,20 +411,37 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit} className={cn('flex w-full flex-col gap-4', className)}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmitForm)}
+        className={cn(
+          isDev && '__AddCategoryForm', // DEBUG
+          'flex w-full flex-col gap-4',
+          className,
+        )}
+      >
         {/* Image Upload */}
         <FormField
           name="imageUrl"
           control={form.control}
           render={() => (
-            <FormItem className="flex w-full flex-col gap-4">
+            <FormItem
+              className={cn(
+                isDev && '__AddCategoryForm_imageUrl', // DEBUG
+                'flex w-full flex-col gap-4',
+              )}
+            >
               <Label>Image</Label>
               <FormControl>
                 <div className="flex items-center gap-4">
-                  {watchedImageUrl ? (
-                    <div className="relative h-24 w-24 overflow-hidden rounded-lg border">
+                  {imagePreviewUrl ? (
+                    <div
+                      className={cn(
+                        isDev && '__AddCategoryForm_imageUrl_Preview', // DEBUG
+                        'relative h-24 w-24 overflow-hidden rounded-lg border',
+                      )}
+                    >
                       <Image
-                        src={watchedImageUrl}
+                        src={imagePreviewUrl}
                         alt="Category image"
                         fill
                         className="object-cover"
@@ -306,7 +455,12 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                       </button>
                     </div>
                   ) : (
-                    <label className="flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted">
+                    <label
+                      className={cn(
+                        isDev && '__AddCategoryForm_imageUrl_Info', // DEBUG
+                        'flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted',
+                      )}
+                    >
                       <input
                         type="file"
                         accept={categoryImageAllowedTypes.join(',')}
@@ -315,20 +469,20 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                         disabled={isUploading}
                       />
                       {isUploading ? (
-                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-theme border-t-transparent" />
                       ) : (
                         <Icons.ImageIcon className="h-8 w-8 text-muted-foreground" />
                       )}
                     </label>
                   )}
-                  <div className="flex-1">
+                  <div className="flex flex-1 flex-col gap-2">
                     <FormHint>
                       Maximum size: {categoryImageConfig.size}x{categoryImageConfig.size}px
                     </FormHint>
+                    <FormMessage />
                   </div>
                 </div>
               </FormControl>
-              {uploadError && <p className="text-sm text-red-500">{uploadError}</p>}
             </FormItem>
           )}
         />
@@ -338,7 +492,12 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           name="name"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
+            <FormItem
+              className={cn(
+                isDev && '__AddCategoryForm_name', // DEBUG
+                'flex w-full flex-col gap-4',
+              )}
+            >
               <Label htmlFor="category-name">Name</Label>
               <FormControl>
                 <Input
@@ -358,7 +517,12 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           name="description"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
+            <FormItem
+              className={cn(
+                isDev && '__AddCategoryForm_description', // DEBUG
+                'flex w-full flex-col gap-4',
+              )}
+            >
               <Label htmlFor="category-description">Description</Label>
               <FormControl>
                 <Textarea
@@ -378,7 +542,12 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           name="keywords"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
+            <FormItem
+              className={cn(
+                isDev && '__AddCategoryForm_keywords', // DEBUG
+                'flex w-full flex-col gap-4',
+              )}
+            >
               <Label htmlFor="category-keywords">Keywords</Label>
               <FormControl>
                 <Input
@@ -396,31 +565,47 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         />
 
         {/* Status */}
-        <FormField
-          name="status"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor="category-status">Status</Label>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger id="category-status">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="PUBLIC">Public</SelectItem>
-                  <SelectItem value="SUGGESTED">Suggested</SelectItem>
-                  <SelectItem value="HIDDEN">Hidden</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!suggestionMode && (
+          <FormField
+            name="status"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem
+                className={cn(
+                  isDev && '__AddCategoryForm_status', // DEBUG
+                  'flex w-full flex-col gap-4',
+                )}
+              >
+                <Label htmlFor="category-status">Status</Label>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  value={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger id="category-status">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="PUBLIC">Public</SelectItem>
+                    <SelectItem value="SUGGESTED">Suggested</SelectItem>
+                    <SelectItem value="HIDDEN">Hidden</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {/* Actions */}
-        <div className="mt-4 flex w-full gap-4">
+        <div
+          className={cn(
+            isDev && '__AddCategoryForm_actions', // DEBUG
+            'mt-4 flex w-full gap-4',
+          )}
+        >
           <Button
             type="submit"
             variant={isSubmitEnabled ? 'success' : 'disabled'}
@@ -429,7 +614,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           >
             {isPending ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
                 <span>Adding...</span>
               </>
             ) : (
@@ -439,7 +624,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
               </>
             )}
           </Button>
-          <Button variant="ghost" onClick={onCloseForm} className="gap-2">
+          <Button variant="ghost" onClick={handleCloseForm} className="gap-2">
             <span>Cancel</span>
           </Button>
         </div>

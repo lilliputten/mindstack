@@ -21,6 +21,11 @@ import { defaultLocale, localesList } from './src/i18n/types';
 
 const isDev = process.env.NODE_ENV === 'development';
 
+/** Host name for blob storage server
+ * @see https://vercel.com/docs/vercel-blob
+ */
+const vercelBlobHost = 'dtd6kgwmdtb71uj7.public.blob.vercel-storage.com';
+
 /* // Show loaded environment variables
  * declare global {
  *   var __IS_NEXT_STARTED: boolean | undefined;
@@ -135,6 +140,16 @@ const nextConfig: NextConfig = {
   sassOptions: {
     additionalData: scssVariables,
     silenceDeprecations: ['legacy-js-api'],
+  },
+  images: {
+    domains: [vercelBlobHost], // Vercel Blob Storage
+    // If you have other image domains, add them here as well
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: vercelBlobHost,
+      },
+    ],
   },
   compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
   reactStrictMode: true,
