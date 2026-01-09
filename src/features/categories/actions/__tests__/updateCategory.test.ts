@@ -847,12 +847,16 @@ describe('updateCategory', () => {
 
       mockedGetCurrentUser.mockResolvedValue(user as TUser);
 
-      // Valid update with allowed locale
+      // Update with a new translation, keeping the original
       const updateData = {
         id: category.id,
         translations: [
           {
-            locale: 'es', // Valid locale
+            locale: 'en', // Existing locale - update it
+            name: `Updated EN with valid locale ${dateTag}`,
+          },
+          {
+            locale: 'es', // New locale
             name: `Updated with valid locale ${dateTag}`,
           },
         ],
@@ -860,8 +864,11 @@ describe('updateCategory', () => {
 
       const result = await updateCategory({ ...updateData, noDebug: true });
 
-      expect(result.translations).toHaveLength(1);
+      expect(result.translations).toHaveLength(2); // Now expect 2 translations
+      const enTranslation = result.translations.find((t) => t.locale === 'en');
       const esTranslation = result.translations.find((t) => t.locale === 'es');
+
+      expect(enTranslation?.name).toBe(`Updated EN with valid locale ${dateTag}`);
       expect(esTranslation?.name).toBe(`Updated with valid locale ${dateTag}`);
     } finally {
       await cleanupDb(createdIds);

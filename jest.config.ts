@@ -14,14 +14,16 @@ const customJestConfig: Config.InitialOptions = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     // '^uuid$': require.resolve('uuid'), // Example for the 'uuid' package
+    'next-auth/react': '<rootDir>/__mocks__/next-auth/react.js',
+    'next-auth': '<rootDir>/__mocks__/next-auth/index.js',
   },
   transformIgnorePatterns: [
-    // Transform ES modules in node_modules that need to be transformed
-    'node_modules/(?!(@auth/prisma-adapter|@auth/core)/)',
+    // Ignore transformation for most node_modules, but allow specific packages to be transformed
+    'node_modules/(?!.*@auth|.*@panva)',
   ],
   transform: {
     // Ensure we use the correct transform for TypeScript files
-    '^.+\\.(ts|tsx|js)$': 'ts-jest',
+    '^.+\\.(ts|tsx|js|jsx)$': 'ts-jest',
     // '^.+\\.js$': ['babel-jest', { configFile: './babel.config.jest.js' }],
     // '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },

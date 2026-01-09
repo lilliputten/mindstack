@@ -5,11 +5,23 @@ import '@/jest/jestReactSetup';
 
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getErrorText } from '@/lib/helpers';
 
 // Import the component after all mocks are set up
 import { ManageCategoriesPageModalsWrapper } from '../ManageCategoriesPageModalsWrapper';
+
+// Create a test query client
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: Infinity, // Prevent garbage collection during tests
+      },
+    },
+  });
 
 // Mock all complex dependencies BEFORE importing the component
 jest.mock('next/navigation', () => ({
@@ -31,6 +43,8 @@ jest.mock('next-intl', () => ({
 jest.mock('@/i18n', () => ({
   useT: () => (key: string) => {
     const translations: Record<string, string> = {
+      'ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists':
+        'Requested category does not exist',
       'CategoriesPage.Modals.Add.Title': 'Add Category',
       'CategoriesPage.Modals.Add.Description': 'Add a new category',
       'CategoriesPage.Modals.Edit.Title': 'Edit Category',
@@ -42,22 +56,36 @@ jest.mock('@/i18n', () => ({
   },
 }));
 
-// Mock the CategoriesContext if it's being used somewhere
-jest.mock('@/contexts/CategoriesContext', () => ({
-  useCategoriesContext: () => ({
-    selectedCategoryIds: [],
-    toggleCategorySelection: jest.fn(),
-    selectAllCategories: jest.fn(),
-    clearSelection: jest.fn(),
-    isCategorySelected: jest.fn(),
-    areAllCategoriesSelected: jest.fn(),
-    getSelectedCategories: jest.fn(),
-  }),
+// Mock the useGoToTheRoute hook
+jest.mock('@/hooks', () => ({
+  useGoToTheRoute: () => jest.fn(),
 }));
+
+// Define proper types for the useAvailableCategories hook return value
+type TUseAvailableCategoriesReturn = {
+  allCategories:
+    | Array<{
+        id: string;
+        name: string;
+        description?: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId?: string;
+        topicsCount?: number;
+      }>
+    | undefined;
+  hasNextPage: boolean;
+  fetchNextPage: () => void;
+  isFetchingNextPage: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  isFetched: boolean;
+};
 
 // Mock the useAvailableCategories hook
 jest.mock('@/features/categories/query-hooks/useAvailableCategories', () => ({
-  useAvailableCategories: () => ({
+  useAvailableCategories: (): TUseAvailableCategoriesReturn => ({
     allCategories: [],
     hasNextPage: false,
     fetchNextPage: jest.fn(),
@@ -65,43 +93,71 @@ jest.mock('@/features/categories/query-hooks/useAvailableCategories', () => ({
     isLoading: false,
     isError: false,
     error: null,
+    isFetched: true,
   }),
 }));
 
-jest.mock('@/components/ui/Modal', () => ({
-  Modal: ({ children }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div data-testid="modal">{children}</div>
-  ),
-}));
+// Define proper types for the ManageCategoriesList component props
+type TManageCategoriesListProps = {
+  handleDeleteCategory: (categoryId: string, from: string) => void;
+  handleEditCategory: (categoryId: string) => void;
+  handleEditTopics: (categoryId: string) => void;
+  handleAddCategory: () => void;
+  availableCategoriesQuery: {
+    allCategories: Array<{ id: string; name: string }> | undefined;
+    hasNextPage: boolean;
+    fetchNextPage: () => void;
+    isFetchingNextPage: boolean;
+    isLoading: boolean;
+    isError: boolean;
+    error: Error | null;
+    isFetched: boolean;
+  };
+};
 
-jest.mock('@/components/pages/ManageCategoriesPage/AddCategoryModal', () => ({
-  AddCategoryModal: ({ onClose }: { onClose?: () => void }) => (
-    <div data-testid="add-category-modal" onClick={onClose}>
-      Add Category Modal
-    </div>
-  ),
-}));
-
-jest.mock('@/components/pages/ManageCategoriesPage/DeleteCategoriesModal', () => ({
-  DeleteCategoriesModal: ({ onClose }: { onClose?: () => void }) => (
-    <div data-testid="delete-categories-modal" onClick={onClose}>
-      Delete Categories Modal
-    </div>
-  ),
-}));
-
-jest.mock('@/components/pages/ManageCategoriesPage/EditCategoryModal', () => ({
-  EditCategoryModal: ({ categoryId, onClose }: { categoryId?: string; onClose?: () => void }) => (
-    <div data-testid="edit-category-modal" data-category-id={categoryId} onClick={onClose}>
-      Edit Category Modal: {categoryId}
+// Mock the ManageCategoriesList component
+jest.mock('../ManageCategoriesList', () => ({
+  ManageCategoriesList: ({
+    handleDeleteCategory,
+    handleEditCategory,
+    handleEditTopics,
+    handleAddCategory,
+    // availableCategoriesQuery,
+  }: TManageCategoriesListProps) => (
+    <div data-testid="manage-categories-list">
+      <div>Manage Categories List</div>
+      <div data-testid="handle-delete-category">
+        {typeof handleDeleteCategory === 'function' ? 'function' : 'not a function'}
+      </div>
+      <div data-testid="handle-edit-category">
+        {typeof handleEditCategory === 'function' ? 'function' : 'not a function'}
+      </div>
+      <div data-testid="handle-edit-topics">
+        {typeof handleEditTopics === 'function' ? 'function' : 'not a function'}
+      </div>
+      <div data-testid="handle-add-category">
+        {typeof handleAddCategory === 'function' ? 'function' : 'not a function'}
+      </div>
     </div>
   ),
 }));
 
 describe('ManageCategoriesPageModalsWrapper', () => {
+  const defaultProps = {};
+
+  const renderWithProviders = (props = {}) => {
+    const queryClient = createTestQueryClient();
+
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <ManageCategoriesPageModalsWrapper {...defaultProps} {...props} />
+      </QueryClientProvider>,
+    );
+  };
+
   it('should render without crashing', () => {
     try {
-      const { container } = render(<ManageCategoriesPageModalsWrapper />);
+      const { container } = renderWithProviders();
       expect(container).toBeInTheDocument();
     } catch (error) {
       const errorMessage = getErrorText(error);
@@ -112,17 +168,12 @@ describe('ManageCategoriesPageModalsWrapper', () => {
     }
   });
 
-  it('should contain the modal wrapper structure', () => {
+  it('should render the ManageCategoriesList component', () => {
     try {
-      render(<ManageCategoriesPageModalsWrapper />);
+      renderWithProviders();
 
-      // Look for the rendered modals
-      const addModal = screen.queryByTestId('add-category-modal');
-      const deleteModal = screen.queryByTestId('delete-categories-modal');
-      const editModal = screen.queryByTestId('edit-category-modal');
-
-      // Expect the containers to exist even if modals are closed
-      expect(addModal || deleteModal || editModal).toBeDefined();
+      const manageCategoriesList = screen.getByTestId('manage-categories-list');
+      expect(manageCategoriesList).toBeInTheDocument();
     } catch (error) {
       const errorMessage = getErrorText(error);
       const nextError = new Error(`Structure test error: ${errorMessage}`);
@@ -132,9 +183,26 @@ describe('ManageCategoriesPageModalsWrapper', () => {
     }
   });
 
+  it('should pass handler functions to ManageCategoriesList', () => {
+    try {
+      renderWithProviders();
+
+      expect(screen.getByTestId('handle-delete-category')).toHaveTextContent('function');
+      expect(screen.getByTestId('handle-edit-category')).toHaveTextContent('function');
+      expect(screen.getByTestId('handle-edit-topics')).toHaveTextContent('function');
+      expect(screen.getByTestId('handle-add-category')).toHaveTextContent('function');
+    } catch (error) {
+      const errorMessage = getErrorText(error);
+      const nextError = new Error(`Handler functions test error: ${errorMessage}`);
+      // eslint-disable-next-line no-console
+      console.error('[ManageCategoriesPageModalsWrapper.test]', errorMessage, { error });
+      throw nextError;
+    }
+  });
+
   it('should handle component unmounting correctly', () => {
     try {
-      const { unmount } = render(<ManageCategoriesPageModalsWrapper />);
+      const { unmount } = renderWithProviders();
       expect(() => unmount()).not.toThrow();
     } catch (error) {
       const errorMessage = getErrorText(error);

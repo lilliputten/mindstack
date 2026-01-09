@@ -138,7 +138,7 @@ export function formatDateTag(input?: string | number | Date, omitTime: boolean 
   const formattedDate = [
     // date...
     date.getFullYear(),
-    numPad(date.getMonth()),
+    numPad(date.getMonth() + 1), // Adding 1 because getMonth() returns 0-11, but we want 1-12
     numPad(date.getDate()),
   ]
     .filter(Boolean)

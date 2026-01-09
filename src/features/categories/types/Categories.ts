@@ -6,7 +6,7 @@ import {
   CategorySchema,
   CategoryStatusSchema,
   // CategoryStatusType,
-  CategoryTranslation,
+  // CategoryTranslation,
   CategoryTranslationSchema,
   UserSchema,
 } from '@/generated/prisma';
