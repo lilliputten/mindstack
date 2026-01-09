@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
@@ -37,6 +38,7 @@ import {
 } from '@/features/categories/constants';
 import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
 import { TLocale, useT } from '@/i18n';
+import { strictLocalesList } from '@/i18n/types';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 100;
@@ -48,10 +50,14 @@ type TAddCategoryParams = TCreateCategoryParams;
 interface TFormData {
   status: CategoryStatusType;
   imageUrl?: string;
-  // NOTE: Use translated values, according to `localesList`
-  name: string;
-  description: string;
-  keywords: string;
+  // NOTE: Use translated values, according to `strictLocalesList`
+  translations: {
+    [K in TLocale]?: {
+      name: string;
+      description: string;
+      keywords: string;
+    };
+  };
 }
 
 export interface TAddCategoryFormProps {
@@ -76,26 +82,20 @@ function convertFormDataToCategory(formData: TFormData, opts: TConvertFormDataOp
     locale,
     // suggestionMode,
   } = opts;
-  const {
-    status,
-    imageUrl,
-    // NOTE,
-    name,
-    description,
-    keywords,
-  } = formData;
+  const { status, imageUrl, translations } = formData;
+
+  // Convert the translations object to an array of CategoryTranslation objects
+  const translationArray = Object.entries(translations).map(([localeKey, translationData]) => ({
+    locale: localeKey,
+    name: translationData.name,
+    description: translationData.description,
+    keywords: translationData.keywords,
+  }));
+
   const category: TCreateCategoryParams = {
     status,
     imageUrl,
-    // NOTE: Use translated values, according to `localesList`
-    translations: [
-      {
-        locale,
-        name,
-        description,
-        keywords,
-      },
-    ],
+    translations: translationArray,
   };
   return category;
 }
@@ -111,14 +111,23 @@ function convertCategoryToFormData(
     // locale,
     suggestionMode,
   } = opts;
-  const translation = category.translations?.[0];
+
+  // Convert the translations array to an object keyed by locale
+  const translations: TFormData['translations'] = {};
+  if (category.translations) {
+    category.translations.forEach((translation) => {
+      translations[translation.locale as TLocale] = {
+        name: translation.name,
+        description: translation.description || '',
+        keywords: translation.keywords || '',
+      };
+    });
+  }
+
   const formData: TFormData = {
-    status: category.status || suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
+    status: category.status || (suggestionMode ? 'SUGGESTED' : defaultCategoryStatus),
     imageUrl: category.imageUrl || undefined,
-    // NOTE,
-    name: translation?.name || '',
-    description: translation?.description || '',
-    keywords: translation?.keywords || '',
+    translations,
   };
   return formData;
 }
@@ -161,20 +170,24 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
   const formSchema = React.useMemo(
     () =>
       z.object({
-        name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
-        description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
-        keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
         status: CategoryStatusSchema,
+        imageUrl: z.string().optional(),
+        translations: z.record(
+          z.string(),
+          z.object({
+            name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
+            description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
+            keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
+          }),
+        ),
       }),
     [],
   );
 
   const defaultValues: TFormData = React.useMemo(
     () => ({
-      name: '',
-      description: '',
-      keywords: '',
       status: suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
+      translations: {},
     }),
     [suggestionMode],
   );
@@ -209,7 +222,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
   } = form.formState;
 
   React.useEffect(() => {
-    form.setFocus('name');
+    form.setFocus(`translations.${strictLocalesList[0]}.name`);
   }, [form]);
 
   // Image handling. TODO: Refactor to process the image right before the form data submiting
@@ -338,27 +351,8 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         }
       }
       try {
-        const {
-          status,
-          imageUrl,
-          // NOTE,
-          name,
-          description,
-          keywords,
-        } = formData;
-        const newCategory: TCreateCategoryParams = {
-          status,
-          imageUrl,
-          // NOTE: Use translated values, according to `localesList`
-          translations: [
-            {
-              locale,
-              name,
-              description,
-              keywords,
-            },
-          ],
-        };
+        // const newCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
+
         console.log('[AddCategoryForm:handleSubmitForm] before adding', {
           newCategory,
           convertedCategory,
@@ -487,82 +481,104 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           )}
         />
 
-        {/* Name */}
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem
-              className={cn(
-                isDev && '__AddCategoryForm_name', // DEBUG
-                'flex w-full flex-col gap-4',
-              )}
-            >
-              <Label htmlFor="category-name">Name</Label>
-              <FormControl>
-                <Input
-                  id="category-name"
-                  type="text"
-                  placeholder="Enter category name"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+        {/* Translations Tabs */}
+        <Tabs
+          className={cn(
+            isDev && '__AddCategoryForm_translations', // DEBUG
+            'mt-4',
           )}
-        />
+          defaultValue={strictLocalesList[0]}
+        >
+          <TabsList className={cn('__AddCategoryForm_TabsList')}>
+            {strictLocalesList.map((locale) => (
+              <TabsTrigger key={locale} className="TabsTrigger" value={locale}>
+                {locale.toUpperCase()}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        {/* Description */}
-        <FormField
-          name="description"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem
-              className={cn(
-                isDev && '__AddCategoryForm_description', // DEBUG
-                'flex w-full flex-col gap-4',
-              )}
-            >
-              <Label htmlFor="category-description">Description</Label>
-              <FormControl>
-                <Textarea
-                  id="category-description"
-                  placeholder="Enter category description"
-                  {...field}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {strictLocalesList.map((locale) => (
+            <TabsContent key={locale} className="TabsContent" value={locale}>
+              {/* Name for {locale} */}
+              <FormField
+                name={`translations.${locale}.name`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      isDev && `__AddCategoryForm_name_${locale}`, // DEBUG
+                      'flex w-full flex-col gap-4',
+                    )}
+                  >
+                    <Label htmlFor={`category-name-${locale}`}>Name ({locale})</Label>
+                    <FormControl>
+                      <Input
+                        id={`category-name-${locale}`}
+                        type="text"
+                        placeholder={`Enter category name in ${locale}`}
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        {/* Keywords */}
-        <FormField
-          name="keywords"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem
-              className={cn(
-                isDev && '__AddCategoryForm_keywords', // DEBUG
-                'flex w-full flex-col gap-4',
-              )}
-            >
-              <Label htmlFor="category-keywords">Keywords</Label>
-              <FormControl>
-                <Input
-                  id="category-keywords"
-                  type="text"
-                  placeholder="Enter keywords separated by commas"
-                  {...field}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormHint>Keywords help with search and categorization</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              {/* Description for {locale} */}
+              <FormField
+                name={`translations.${locale}.description`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      isDev && `__AddCategoryForm_description_${locale}`, // DEBUG
+                      'flex w-full flex-col gap-4',
+                    )}
+                  >
+                    <Label htmlFor={`category-description-${locale}`}>Description ({locale})</Label>
+                    <FormControl>
+                      <Textarea
+                        id={`category-description-${locale}`}
+                        placeholder={`Enter category description in ${locale}`}
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Keywords for {locale} */}
+              <FormField
+                name={`translations.${locale}.keywords`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      isDev && `__AddCategoryForm_keywords_${locale}`, // DEBUG
+                      'flex w-full flex-col gap-4',
+                    )}
+                  >
+                    <Label htmlFor={`category-keywords-${locale}`}>Keywords ({locale})</Label>
+                    <FormControl>
+                      <Input
+                        id={`category-keywords-${locale}`}
+                        type="text"
+                        placeholder={`Enter keywords separated by commas in ${locale}`}
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormHint>Keywords help with search and categorization</FormHint>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </TabsContent>
+          ))}
+        </Tabs>
 
         {/* Status */}
         {!suggestionMode && (
