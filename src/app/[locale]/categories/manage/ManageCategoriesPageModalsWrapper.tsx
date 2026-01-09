@@ -17,9 +17,6 @@ import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoToTheRoute } from '@/hooks';
 import { useT } from '@/i18n';
 
-// import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
-
-import { ContentSkeleton } from './ContentSkeleton';
 import { ManageCategoriesList } from './ManageCategoriesList';
 
 interface TCategoriesListProps {

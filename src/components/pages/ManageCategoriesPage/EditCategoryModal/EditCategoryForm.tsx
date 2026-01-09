@@ -9,8 +9,7 @@ import * as z from 'zod';
 
 import { CategorySchema, CategoryStatusType } from '@/generated/prisma';
 
-import { getErrorText } from '@/lib/helpers';
-import { nFormatter } from '@/lib/helpers/strings';
+import { getErrorText, nFormatter } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
@@ -286,7 +285,7 @@ export function EditCategoryForm({
                   )}
                   <div className="flex-1">
                     <FormHint>
-                      Maximum size: {categoryImageConfig.maxWidth}x{categoryImageConfig.maxHeight}px
+                      Maximum size: {categoryImageConfig.size}x{categoryImageConfig.size}px
                     </FormHint>
                   </div>
                 </div>

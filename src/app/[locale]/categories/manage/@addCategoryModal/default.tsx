@@ -8,7 +8,7 @@ import { manageCategoriesRoute } from '@/config';
 export default function AddCategoryModalDefault() {
   const pathname = usePathname();
 
-  // Only render the modal if we're on the /add route
+  // Only render the modal if we're on the `/add` route
   const checkAdd = '/add';
   const isAddRoute = pathname?.endsWith(checkAdd);
 
@@ -17,7 +17,7 @@ export default function AddCategoryModalDefault() {
     const prevChunk = pathname.substring(0, pathname.length - checkAdd.length);
     // Check if the previous path ends with `manageCategoriesRoute` ('/categories/manage')
     if (prevChunk.endsWith(manageCategoriesRoute)) {
-      return <AddCategoryModal onClose={() => window.history.back()} />;
+      return <AddCategoryModal />;
     }
   }
 

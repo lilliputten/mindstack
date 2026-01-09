@@ -3,5 +3,5 @@
 import { AddCategoryModal } from '@/components/pages/ManageCategoriesPage/AddCategoryModal';
 
 export default function AddCategoryModalPage() {
-  return <AddCategoryModal onClose={() => window.history.back()} />;
+  return <AddCategoryModal />;
 }

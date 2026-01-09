@@ -5,7 +5,7 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { isDev, manageCategoriesRoute, startAliasRoute } from '@/config';
+import { isDev, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
 import { TCategoryId } from '@/features/categories';
 import { TAwaitedLocaleProps } from '@/i18n';
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
-interface TManageCategoriesPageHolderProps extends TAwaitedProps {
+interface TManageCategoriesPageRouteProps extends TAwaitedProps {
   showAddModal?: boolean;
   deleteCategoryId?: TCategoryId;
   editCategoryId?: TCategoryId;
@@ -31,7 +31,7 @@ interface TManageCategoriesPageHolderProps extends TAwaitedProps {
   from?: string;
 }
 
-export default async function ManageCategoriesPageHolder(props: TManageCategoriesPageHolderProps) {
+export default async function ManageCategoriesPageRoute(props: TManageCategoriesPageRouteProps) {
   const {
     showAddModal,
     deleteCategoryId,
@@ -52,7 +52,7 @@ export default async function ManageCategoriesPageHolder(props: TManageCategorie
   if (!user?.id) {
     if (isDev) {
       // eslint-disable-next-line no-console
-      console.debug('[ManageCategoriesPageHolder] Redirecting to auth');
+      console.debug('[ManageCategoriesPageRoute] Redirecting to auth');
     }
     redirect(startAliasRoute);
   }
@@ -60,7 +60,7 @@ export default async function ManageCategoriesPageHolder(props: TManageCategorie
   if (user?.role !== 'ADMIN') {
     if (isDev) {
       // eslint-disable-next-line no-console
-      console.debug('[ManageCategoriesPageHolder] User is not admin, redirecting to home');
+      console.debug('[ManageCategoriesPageRoute] User is not admin, redirecting to home');
     }
     redirect('/');
   }
@@ -69,10 +69,10 @@ export default async function ManageCategoriesPageHolder(props: TManageCategorie
     <CategoriesProvider>
       <PageWrapper
         className={cn(
-          isDev && '__ManageCategoriesPageHolder', // DEBUG class for outer container
+          isDev && '__ManageCategoriesPageRoute', // DEBUG class for outer container
         )}
         innerClassName={cn(
-          isDev && '__ManageCategoriesPageHolder_Inner', // DEBUG class for inner container
+          isDev && '__ManageCategoriesPageRoute_Inner', // DEBUG class for inner container
           'w-full rounded-lg gap-6 py-6',
         )}
         limitWidth

@@ -2,10 +2,8 @@
 
 /** Category image optimization settings */
 export const categoryImageConfig = {
-  /** Maximum width for category image */
-  maxWidth: 300,
-  /** Maximum height for category image */
-  maxHeight: 300,
+  /** Maximum category image size (in pixels) */
+  size: 300,
   /** Quality setting for image optimization (0-100) */
   quality: 80,
 } as const;

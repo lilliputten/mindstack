@@ -38,7 +38,7 @@ import { Link } from '@/i18n/routing';
 
 // import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
 
-import { ContentSkeletonTable } from './ContentSkeleton';
+import { ContentSkeleton, ContentSkeletonTable } from './ContentSkeleton';
 
 const sessionSaveScrollHash = getRandomHashString();
 
@@ -436,7 +436,7 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
     return (
       <ScrollArea
         className={cn(
-          isDev && '__ManageCategoriesList_CategoriesTableContent_PageEmpty_Scroll', // DEBUG
+          isDev && '__ManageCategoriesList_CategoriesTableContent_Scroll', // DEBUG
           'flex flex-1 flex-col overflow-hidden',
           'mx-6',
           className,
@@ -451,14 +451,15 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
           className={cn(
             isDev && '__ManageCategoriesList_CategoriesTableContent_PageEmpty', // DEBUG
           )}
+          padded={false}
           icon={Icons.Categories}
           title={t('ManageCategoriesList.NoCategoriesFound')}
           description={t('ManageCategoriesList.NoCategoriesFoundDescription')}
           buttons={
             <>
-              <Button variant="ghost" onClick={goBack} className="flex gap-2">
+              <Button variant="ghost" onClick={goBack} className="text-truncate flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageCategoriesList.GoBack')}
+                <span className="truncate">{t('ManageCategoriesList.GoBack')}</span>
               </Button>
               {/* // TODO: Filters
               {!isFiltersExpanded && (
@@ -468,9 +469,13 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
                 </Button>
               )}
               */}
-              <Button onClick={handleAddCategory} className="flex gap-2">
+              <Button
+                variant="theme"
+                onClick={handleAddCategory}
+                className="text-truncate flex gap-2"
+              >
                 <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageCategoriesList.AddCategory')}
+                <span className="truncate">{t('ManageCategoriesList.AddCategory')}</span>
               </Button>
             </>
           }

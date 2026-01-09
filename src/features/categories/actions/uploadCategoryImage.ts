@@ -3,7 +3,7 @@
 import { put } from '@vercel/blob';
 import sharp from 'sharp';
 
-import { nFormatter } from '@/lib/helpers/strings';
+import { nFormatter } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 
 import {
@@ -54,8 +54,8 @@ export async function uploadCategoryImage(formData: FormData) {
     // Optimize image with sharp
     const optimizedBuffer = await sharp(buffer)
       .resize({
-        width: categoryImageConfig.maxWidth,
-        height: categoryImageConfig.maxHeight,
+        width: categoryImageConfig.size,
+        height: categoryImageConfig.size,
         fit: 'inside',
         withoutEnlargement: true,
       })
