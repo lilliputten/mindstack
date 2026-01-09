@@ -22,7 +22,7 @@ export default function DeleteCategoriesModalDefault() {
         <DeleteCategoriesModal
           categoryId={categoryId}
           from={from}
-          onClose={() => window.history.back()}
+          // onClose={() => window.history.back()}
         />
       );
     }

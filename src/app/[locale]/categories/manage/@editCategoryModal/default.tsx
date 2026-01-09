@@ -11,7 +11,7 @@ export default function EditCategoryModalDefault() {
   // Only render the modal if we're on the /edit route
   const checkEdit = '/edit';
   const isEditRoute = pathname?.endsWith(checkEdit);
-  const categoryId = params?.id;
+  const categoryId = String(params?.id);
 
   if (isEditRoute && categoryId) {
     // A path without final '/edit'

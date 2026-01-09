@@ -15,7 +15,7 @@ export default async function DeleteCategoriesModalPage({
       <DeleteCategoriesModal
         categoryId={categoryId}
         from={from}
-        onClose={() => window.history.back()}
+        // onClose={() => window.history.back()}
       />
     );
   }

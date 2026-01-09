@@ -5,14 +5,17 @@ import { useLocale } from 'next-intl';
 
 import { Button } from '@/components/ui/Button';
 import { useCategoriesContext } from '@/contexts/CategoriesContext';
+import { TAvailableCategory, TCategoryId } from '@/features/categories';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
-import { TAvailableCategory } from '@/features/categories/types';
 
 export interface IDeleteCategoriesFormProps {
-  onClose: () => void;
+  // onClose: () => void;
+  categoryId: TCategoryId;
+  from?: string;
 }
 
-export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
+export function DeleteCategoriesForm({ categoryId, from }: IDeleteCategoriesFormProps) {
+  // TODO: categoryId, from
   const locale = useLocale();
 
   const { selectedCategoryIds, getSelectedCategories, clearSelection } = useCategoriesContext();
@@ -45,21 +48,21 @@ export function DeleteCategoriesForm({ onClose }: IDeleteCategoriesFormProps) {
           deleteCategory(id);
         }
         clearSelection();
-        onClose();
+        // onClose();
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('[DeleteCategoriesForm] Error deleting categories:', error);
     }
-  }, [selectedCategoryIds, deleteCategory, clearSelection, onClose]);
+  }, [selectedCategoryIds, deleteCategory, clearSelection]);
 
   const handleCancel = React.useCallback(
     (ev: React.MouseEvent) => {
       clearSelection();
-      onClose();
+      // onClose();
       ev.preventDefault();
     },
-    [clearSelection, onClose],
+    [clearSelection],
   );
 
   return (

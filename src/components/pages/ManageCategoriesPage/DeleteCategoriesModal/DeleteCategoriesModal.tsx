@@ -2,12 +2,22 @@
 
 import React from 'react';
 
+import { TCategoryId } from '@/features/categories';
+
 import { DeleteCategoriesForm } from './DeleteCategoriesForm';
 
-export interface IDeleteCategoriesModalProps {
-  onClose: () => void;
+export interface TDeleteCategoriesModalProps {
+  // onClose: () => void;
+  categoryId: TCategoryId;
+  from?: string;
 }
 
-export function DeleteCategoriesModal({ onClose }: IDeleteCategoriesModalProps) {
-  return <DeleteCategoriesForm onClose={onClose} />;
+export function DeleteCategoriesModal({ from, categoryId }: TDeleteCategoriesModalProps) {
+  return (
+    <DeleteCategoriesForm
+      // onClose={onClose}
+      categoryId={categoryId}
+      from={from}
+    />
+  );
 }
