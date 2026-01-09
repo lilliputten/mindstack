@@ -35,11 +35,7 @@ import {
   categoryImageSizeLimit,
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
-import {
-  defaultCategoryStatus,
-  TAvailableCategory,
-  TCreateCategoryParams,
-} from '@/features/categories/types';
+import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
 import { TLocale } from '@/i18n';
 
 const MIN_NAME_LENGTH = 2;
@@ -75,7 +71,10 @@ interface TConvertFormDataOptions {
 }
 
 function convertFormDataToCategory(formData: TFormData, opts: TConvertFormDataOptions) {
-  const { locale, suggestionMode } = opts;
+  const {
+    locale,
+    // suggestionMode,
+  } = opts;
   const {
     status,
     imageUrl,
@@ -107,7 +106,10 @@ function convertCategoryToFormData(
   if (!category) {
     return undefined;
   }
-  const { locale, suggestionMode } = opts;
+  const {
+    // locale,
+    suggestionMode,
+  } = opts;
   const translation = category.translations?.[0];
   const formData: TFormData = {
     status: category.status || suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
@@ -139,13 +141,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
-  /* // UNUSED
-   * const [imageFile, setImageFile] = React.useState<File | undefined>();
-   * const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string | undefined>(
-   *   initialData?.imageUrl || undefined,
-   * );
-   */
-
   const formSchema = React.useMemo(
     () =>
       z.object({
@@ -176,27 +171,8 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
-    // defaultValues,
     defaultValues: initialValues || defaultValues,
   });
-
-  /* // DEBUG
-   * const values = form.watch();
-   * console.log('[AddCategoryForm] DEBUG: values, defaultValues, initialValues', {
-   *   values,
-   *   initialValues,
-   *   defaultValues,
-   * });
-   */
-
-  // const {
-  //   formState,
-  //   // handleSubmit,
-  //   // watch,
-  //   // setFocus,
-  //   // setValue,
-  //   // setError,
-  // } = form;
 
   const {
     isDirty, // boolean;
@@ -300,7 +276,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           url,
         });
         debugger;
-        // setValue('imageUrl', url);
         return url;
       } catch (error) {
         const message = 'Failed to upload image';
