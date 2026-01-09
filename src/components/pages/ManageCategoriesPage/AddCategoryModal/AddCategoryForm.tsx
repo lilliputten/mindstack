@@ -145,9 +145,9 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
     handleClose,
     isPending,
     /** Is the dialog in edit or add mode? */
-    editMode = true,
+    editMode,
     /** Is it a suggestion? Then offer a limited editing mode */
-    suggestionMode = true,
+    suggestionMode,
   } = props;
   const locale = useLocale() as TLocale;
 
@@ -325,6 +325,9 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         imageUrl: memo.imageFile !== null ? initialCategory?.imageUrl : undefined,
       };
       console.log('[AddCategoryForm:handleSubmitForm] before uploading image', {
+        newCategory,
+        initialCategory,
+        convertedCategory,
         formData,
       });
       debugger;

@@ -22,7 +22,6 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { AddCategoryForm, useTranslations } from './AddCategoryForm';
 
@@ -177,7 +176,7 @@ export function AddCategoryModal(props: TProps) {
         handleClose={hideModal}
         isPending={addCategoryMutation.isPending}
         suggestionMode={suggestionMode}
-        // initialCategory={initialCategory}
+        initialCategory={initialCategory}
         editMode
       />
     </Modal>
