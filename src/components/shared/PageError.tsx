@@ -107,13 +107,19 @@ export function PageError(props: TErrorProps) {
         )}
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
-      {titleText && <ErrorPlaceHolder.Title>{titleText}</ErrorPlaceHolder.Title>}
-      {errText && <ErrorPlaceHolder.Description>{errText}</ErrorPlaceHolder.Description>}
+      {titleText && (
+        <ErrorPlaceHolder.Title className="text-truncate">{titleText}</ErrorPlaceHolder.Title>
+      )}
+      {errText && (
+        <ErrorPlaceHolder.Description className="text-truncate">
+          {errText}
+        </ErrorPlaceHolder.Description>
+      )}
       {explanation && (
         <div
           className={cn(
             isDev && '__PageError_Explanation', // DEBUG
-            'text-content text-center text-sm font-normal leading-6',
+            'text-content text-truncate text-center text-sm font-normal leading-6',
             explanationClassName,
           )}
         >
@@ -126,9 +132,9 @@ export function PageError(props: TErrorProps) {
           'mt-4 flex w-full flex-wrap justify-center gap-4',
         )}
       >
-        <Button variant="theme" onClick={goBack} className="flex gap-2">
+        <Button variant="theme" onClick={goBack} className="text-truncate flex gap-2">
           <Icons.ArrowLeft className="size-4" />
-          <span>Go back</span>
+          <span className="truncate">Go back</span>
         </Button>
         <Button variant="theme" onClick={goHome} className="flex gap-2">
           <Icons.Home className="size-4" />

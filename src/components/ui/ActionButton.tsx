@@ -51,17 +51,17 @@ export function ActionButton(props: TActionItem) {
           {...restIconProps}
         />
       )}
-      {textContent && !isIcon && <span className="flex flex-1 truncate">{textContent}</span>}
+      {textContent && !isIcon && <span className="truncate">{textContent}</span>}
     </>
   );
   const variant = isDisabled ? 'ghost' : buttonVariant;
-  const className = cn('flex gap-2', buttonClassName);
+  const className = cn('flex justify-start items-center gap-2 truncate', buttonClassName);
   if (href) {
     return (
       <Link
         id={id}
         href={href as TRoutePath}
-        className={cn(buttonVariants({ variant, ...restButtonProps }), className)}
+        className={cn(buttonVariants({ variant, ...restButtonProps }), 'truncate', className)}
       >
         {buttonContent}
       </Link>

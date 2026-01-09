@@ -17,7 +17,7 @@ export function ErrorPlaceHolder({
     <div
       className={cn(
         isDev && '__ErrorPlaceHolder', // DEBUG
-        'flex flex-1 items-center justify-center rounded-lg border border-dashed p-8 text-center shadow-sm animate-in fade-in-50',
+        'flex flex-1 items-center justify-center rounded-lg border border-dashed text-center shadow-sm animate-in fade-in-50',
         className,
       )}
       {...props}

@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { TMediaWidth } from '@/lib/types/ui/TMediaWidth';
+import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { ActionButton, TActionItem } from '@/components/ui/ActionButton';
 import { Button } from '@/components/ui/Button';
@@ -73,9 +74,9 @@ export function DashboardActions(props: DashboardActionsProps) {
           className,
         )}
       >
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-10" />
+        {generateArray(3).map((n) => (
+          <Skeleton key={n} className="h-10 w-24" />
+        ))}
       </div>
     );
   }

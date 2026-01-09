@@ -118,8 +118,8 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
 
   /** Add new category record to the pages data */
   const addNewCategory = React.useCallback(
-    (newCategory: TAvailableCategory) =>
-      addNewItemToQueryCache<TAvailableCategory>(queryClient, queryKey, newCategory, true),
+    (newCategory: TAvailableCategory, toStart: boolean = true) =>
+      addNewItemToQueryCache<TAvailableCategory>(queryClient, queryKey, newCategory, toStart),
     [queryClient, queryKey],
   );
 
