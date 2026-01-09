@@ -10,15 +10,14 @@ import {
   TUpdateCategoryParams,
   TUpdateCategoryTranslation,
 } from '../../types/Categories';
+import { deleteCategoryImage } from '../deleteCategoryImage';
 import { updateCategories } from '../updateCategories';
 
-// Mock the deleteCategoryImage function
+// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
+const mockedDeleteCategoryImage = jest.fn();
 jest.mock('../deleteCategoryImage', () => ({
-  deleteCategoryImage: jest.fn(),
+  deleteCategoryImage: mockedDeleteCategoryImage,
 }));
-
-import { deleteCategoryImage } from '../deleteCategoryImage';
-const mockedDeleteCategoryImage = deleteCategoryImage as jest.MockedFunction<typeof deleteCategoryImage>;
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
@@ -44,7 +43,7 @@ const cleanupDb = async (ids: CreatedId[]) => {
 describe('updateCategories', () => {
   afterEach(() => {
     mockedGetCurrentUser.mockReset();
-    mockedDeleteCategoryImage.mockReset();
+    mockedDeleteCategoryImage.mockClear();
   });
 
   it('should update multiple categories when user is the owner', async () => {

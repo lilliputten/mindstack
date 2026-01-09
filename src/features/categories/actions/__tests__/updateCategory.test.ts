@@ -1,20 +1,19 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
-// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
-const mockedDeleteCategoryImage = jest.fn();
-jest.mock('../deleteCategoryImage', () => ({
-  deleteCategoryImage: mockedDeleteCategoryImage,
-}));
-
 import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
 
 import { defaultCategoryStatus, TUpdateCategoryParams } from '../../types/Categories';
+import { deleteCategoryImage } from '../deleteCategoryImage';
 import { updateCategory } from '../updateCategory';
 
-import { deleteCategoryImage } from '../deleteCategoryImage';
+// Mock the deleteCategoryImage function BEFORE importing modules that depend on it
+const mockedDeleteCategoryImage = jest.fn();
+jest.mock('../deleteCategoryImage', () => ({
+  deleteCategoryImage: mockedDeleteCategoryImage,
+}));
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
