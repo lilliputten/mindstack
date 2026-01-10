@@ -88,7 +88,7 @@ model User {
   userTopicWorkout UserTopicWorkout[]
   workoutStats     WorkoutStats[]
   AIGenerations    AIGeneration[]
-  categories       Category[]
+  // categories       Category[]
 
   @@map("users")
 }
@@ -223,17 +223,21 @@ model Category {
   // Translated fields: name, description, keywords
   translations CategoryTranslation[]
 
-  imageUrl String? // Stores Vercel Blob public URL
+  imageUrl String? @map("image_url") // Stores Vercel Blob public URL
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
+  // Categories are not tied to the users, but we want to keep information about creators and updaters
+  createdBy String? @map("created_by") // The creator user id
+  updatedBy String? @map("updated_by") // The updater user id
+
+  // user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // userId String @map("user_id")
 
   topics Topic[]
 
-  @@index([userId])
+  @@index([status])
   @@map("categories")
 }
 
