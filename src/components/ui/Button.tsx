@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   cn(
     'inline-flex',
     'items-center',
@@ -84,7 +84,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, rounded, ...props }, ref) => {
     return (
       <button
@@ -98,5 +98,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export type TButtonVariants = React.ComponentProps<typeof Button>['variant'];
-
-export { Button, buttonVariants };

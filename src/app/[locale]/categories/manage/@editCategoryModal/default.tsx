@@ -2,7 +2,7 @@
 
 import { useParams, usePathname } from 'next/navigation';
 
-import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
+import { EditCategoryModal } from '@/features/categories';
 
 export default function EditCategoryModalDefault() {
   const pathname = usePathname();
@@ -10,17 +10,13 @@ export default function EditCategoryModalDefault() {
 
   // Only render the modal if we're on the /edit route
   const checkEdit = '/edit';
-  const isEditRoute = pathname?.endsWith(checkEdit);
-  const categoryId = String(params?.id);
-
-  if (isEditRoute && categoryId) {
+  if (pathname?.endsWith(checkEdit) && params?.id) {
+    const categoryId = String(params.id);
     // A path without final '/edit'
     const prevChunk = pathname.substring(0, pathname.length - checkEdit.length);
     // Check if the previous path ends with the category ID
     if (prevChunk.endsWith(`/${categoryId}`)) {
-      return <EditCategoryModal categoryId={categoryId} onClose={() => window.history.back()} />;
+      return <EditCategoryModal categoryId={categoryId} />;
     }
   }
-
-  return null;
 }

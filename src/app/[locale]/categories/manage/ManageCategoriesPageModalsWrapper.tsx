@@ -30,14 +30,11 @@ interface TCategoriesListProps {
 interface TMemo {
   allCategories?: TAvailableCategory[];
   routePath?: string;
-  // isFetched?: boolean;
 }
 
 export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { showAddModal, deleteCategoryId, editCategoryId, editTopicsCategoryId, from } = props;
-  // const { manageScope } = useManageCategoriesStore();
-  // const isOnlyMy = manageScope === CategoriesManageScopeIds.MY_CATEGORIES;
   const routePath = manageCategoriesRoute; // `/categories/${manageScope}`;
   memo.routePath = routePath;
 
@@ -64,7 +61,6 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
      * queryKey,
      */
   } = availableCategoriesQuery;
-  // memo.isFetched = isFetched;
   memo.allCategories = allCategories;
 
   const goToTheRoute = useGoToTheRoute();

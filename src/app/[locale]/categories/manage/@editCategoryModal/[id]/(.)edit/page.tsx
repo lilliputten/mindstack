@@ -1,7 +1,7 @@
 'use client';
 
-import { EditCategoryModal } from '@/components/pages/ManageCategoriesPage/EditCategoryModal';
+import { EditCategoryModal } from '@/features/categories';
 
 export default function EditCategoryModalPage({ params }: { params: { id: string } }) {
-  return <EditCategoryModal categoryId={params.id} onClose={() => window.history.back()} />;
+  return <EditCategoryModal categoryId={params.id} />;
 }

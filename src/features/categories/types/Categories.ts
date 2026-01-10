@@ -8,7 +8,7 @@ import {
   // CategoryStatusType,
   // CategoryTranslation,
   CategoryTranslationSchema,
-  UserSchema,
+  // UserSchema,
 } from '@/generated/prisma';
 
 import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
@@ -21,17 +21,6 @@ export type TCategoryReal = ReplaceNullWithUndefined<TCategory>;
 // TODO: Extend `TCategory` with `translations` (using zod schema)?
 
 export type TCategoryId = TCategory['id'];
-
-/* // UNUSED
- * [>* User fields to include with a flag <]
- * export const IncludedUserSelect = {
- *   id: true as const,
- *   name: true as const,
- *   email: true as const,
- * } as const;
- * const _IncludedUserSchema = UserSchema.pick(IncludedUserSelect);
- * export type TIncludedUser = z.infer<typeof _IncludedUserSchema>;
- */
 
 // Add other category-related types here as needed
 
@@ -74,7 +63,6 @@ export type TCreateCategoriesParams = z.infer<typeof CreateCategoriesParamsSchem
 
 // TODO: Derive the schema from the prisma generated ones
 const UpdateCategoryParamsSchemaBase = CategorySchema.omit({
-  // id: true, // Id s required for update
   createdBy: true,
   updatedBy: true,
   createdAt: true,
@@ -157,3 +145,11 @@ export type TGetAvailableCategoriesResults = {
 // Available category queries results data
 
 export type TAvailableCategoriesResultsQueryData = TGetResultsInfiniteQueryData<TCategory>;
+
+// Get Category by id
+
+export const GetAvailableCategoryByIdParamsSchema = CategoryIncludeParamsSchema.extend({
+  id: z.coerce.string().optional(), // TCategoryId
+});
+
+export type TGetAvailableCategoryByIdParams = z.infer<typeof GetAvailableCategoryByIdParamsSchema>;

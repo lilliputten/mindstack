@@ -132,7 +132,7 @@ function CategoriesTableHeader({
         )}
         <TableHead
           id="image"
-          className="max-w-16 truncate text-center"
+          className="max-w-6 truncate text-center"
           title={t('ManageCategoriesList.Image')}
         >
           {t('ManageCategoriesList.Image')}
@@ -149,7 +149,7 @@ function CategoriesTableHeader({
         </TableHead>
         <TableHead
           id="topicsCount"
-          className="max-w-8 truncate max-lg:hidden"
+          className="max-w-6 truncate max-lg:hidden"
           title={t('ManageCategoriesList.TopicsCount')}
         >
           {t('ManageCategoriesList.TopicsCount')}
@@ -243,11 +243,11 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           </div>
         </TableCell>
       )}
-      <TableCell id="image" className="w-6 truncate text-center">
+      <TableCell id="image" className="max-w-6 text-center">
         {category.imageUrl ? (
           <Icons.ImageIcon className="mx-auto size-5 text-green-600" />
         ) : (
-          <span className="text-muted-foreground">—</span>
+          <span className="opacity-30">—</span>
         )}
       </TableCell>
       <TableCell id="name" className="max-w-24 truncate">
@@ -261,14 +261,12 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
       <TableCell id="status" className="max-w-32 truncate max-md:hidden">
         {t(category.status)}
       </TableCell>
-      <TableCell id="topicsCount" className="max-w-6 truncate max-lg:hidden">
-        <div className="truncate">
-          {topicsCount ? (
-            <span className="font-medium">{topicsCount}</span>
-          ) : (
-            <span className="opacity-30">—</span>
-          )}
-        </div>
+      <TableCell id="topicsCount" className="max-w-6 max-lg:hidden">
+        {topicsCount ? (
+          <span className="font-medium">{topicsCount}</span>
+        ) : (
+          <span className="opacity-30">—</span>
+        )}
       </TableCell>
       <TableCell id="Actions" className="text-right">
         <div className="flex justify-end gap-1">
@@ -276,16 +274,31 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             variant="ghost"
             size="icon"
             className="size-9 shrink-0"
+            aria-label={t('ManageCategoriesList.EditTopics')}
+            title={t('ManageCategoriesList.EditTopics')}
+          >
+            <Link href={`${routePath}/${category.id}/edit` as TRoutePath}>
+              <Icons.Topics className="size-5" />
+            </Link>
+          </Button>
+          {/*
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-9 shrink-0"
+            // TODO: Use link
             onClick={() => handleEditTopics(category.id)}
             aria-label={t('ManageCategoriesList.EditTopics')}
             title={t('ManageCategoriesList.EditTopics')}
           >
             <Icons.Topics className="size-5" />
           </Button>
+          */}
           <Button
             variant="ghost"
             size="icon"
             className="size-9 shrink-0"
+            // TODO: Use link
             onClick={() => handleEditCategory(category.id)}
             aria-label={t('ManageCategoriesList.Edit')}
             title={t('ManageCategoriesList.Edit')}
@@ -296,6 +309,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             variant="ghost"
             size="icon"
             className="size-9 shrink-0 text-destructive"
+            // TODO: Use link
             onClick={() => handleDeleteCategory(category.id, 'ManageCategoriesList')}
             aria-label={t('ManageCategoriesList.Delete')}
             title={t('ManageCategoriesList.Delete')}
@@ -499,8 +513,6 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
 
 export function ManageCategoriesList(props: TManageCategoriesListProps) {
   const { handleAddCategory, availableCategoriesQuery } = props;
-  // const { manageScope } = useManageCategoriesStore();
-  // const namespace = categoriesNamespaces[manageScope];
   const t = useT();
   const [selectedCategories, setSelectedCategories] = React.useState<Set<TCategoryId>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);

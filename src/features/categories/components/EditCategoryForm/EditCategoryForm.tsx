@@ -39,14 +39,16 @@ import {
   categoryImageSizeLimit,
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
-import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
+import {
+  defaultCategoryStatus,
+  TAvailableCategory,
+  TCreateCategoryParams,
+} from '@/features/categories/types';
 
 const MIN_NAME_LENGTH = 3;
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
 const MAX_KEYWORDS_LENGTH = 200;
-
-type TAddCategoryParams = TCreateCategoryParams;
 
 interface TFormData {
   status: CategoryStatusType;
@@ -61,14 +63,14 @@ interface TFormData {
   };
 }
 
-export interface TAddCategoryFormProps {
-  initialCategory?: TCreateCategoryParams;
-  handleAddCategory: (p: TAddCategoryParams) => Promise<unknown>;
+export interface TEditCategoryFormProps {
+  initialCategory?: TAvailableCategory;
+  handleSaveCategory: (p: TAvailableCategory) => Promise<unknown>;
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
   /** Is the dialog in edit or add mode? */
-  editMode?: boolean;
+  newMode?: boolean;
   /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
   suggestionMode?: boolean;
 }
@@ -79,12 +81,6 @@ interface TConvertFormDataOptions {
 }
 
 function convertFormDataToCategory(formData: TFormData, _opts: TConvertFormDataOptions) {
-  /* // UNUSE: Options
-   * const {
-   *   locale,
-   *   suggestionMode,
-   * } = opts;
-   */
   const { status, imageUrl, translations } = formData;
 
   // Convert the translations object to an array of CategoryTranslation objects
@@ -144,20 +140,20 @@ interface TMemo {
  * texts. We're using the `ManageCategories.Edit` as a default namespace, and
  * the `ManageCategories.EditNew` as another for category creating.
  */
-export function useTranslations(defaultNamespace: 'ManageCategories.Edit', editMode?: boolean) {
-  const namespace = editMode ? defaultNamespace : defaultNamespace + 'New';
+export function useTranslations(defaultNamespace: 'ManageCategories.EditForm', newMode?: boolean) {
+  const namespace = !newMode ? defaultNamespace : defaultNamespace + 'New';
   return useT(namespace);
 }
 
-export function AddCategoryForm(props: TAddCategoryFormProps) {
+export function EditCategoryForm(props: TEditCategoryFormProps) {
   const {
     initialCategory,
     className,
-    handleAddCategory,
+    handleSaveCategory,
     handleClose,
     isPending,
     /** Is the dialog in edit or add mode? */
-    editMode,
+    newMode,
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode,
   } = props;
@@ -166,7 +162,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
    */
-  const _t = useTranslations('ManageCategories.Edit', editMode);
+  const _t = useTranslations('ManageCategories.EditForm', newMode);
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -294,7 +290,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       }
       form.clearErrors('imageUrl');
       const url = URL.createObjectURL(file);
-      console.log('[AddCategoryForm:handleImageChange] before', {
+      console.log('[EditCategoryForm:handleImageChange] before', {
         url,
         file,
       });
@@ -322,7 +318,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       try {
         const formData = new FormData();
         formData.append('image', file);
-        console.log('[AddCategoryForm:uploadImageFileToVercel] before', {
+        console.log('[EditCategoryForm:uploadImageFileToVercel] before', {
           file,
           formData,
         });
@@ -331,7 +327,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           const message = 'Failed to upload image';
           const error = new Error(message);
           // eslint-disable-next-line no-console
-          console.error('[AddCategoryForm:uploadImageFileToVercel] Invalid result', message, {
+          console.error('[EditCategoryForm:uploadImageFileToVercel] Invalid result', message, {
             result,
             error,
             formData,
@@ -340,7 +336,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           throw error;
         }
         const url = result?.data?.url;
-        console.log('[AddCategoryForm:uploadImageFileToVercel] success', {
+        console.log('[EditCategoryForm:uploadImageFileToVercel] success', {
           url,
         });
         debugger;
@@ -350,7 +346,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[AddCategoryForm:uploadImageFileToVercel]', comboMsg, {
+        console.error('[EditCategoryForm:uploadImageFileToVercel]', comboMsg, {
           error,
           file,
         });
@@ -364,7 +360,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const handleSubmitForm = React.useCallback(
     async (formData: TFormData) => {
-      // setIsUploading(true);
       // NOTE: If `memo.imageFile` is defined then there is an image to upload
       const imageCleared = memo.imageFile === null;
       if (isDev) {
@@ -373,14 +368,14 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       let newImageUrl: string | undefined;
       const convertedCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
       // Compose the full data
-      const newCategory = {
+      const updatedCategory: TAvailableCategory | TCreateCategoryParams = {
         ...initialCategory,
         ...convertedCategory,
         // Set an original image, if it wasn't removed by the user
         imageUrl: !imageCleared ? initialCategory?.imageUrl : undefined,
       };
-      console.log('[AddCategoryForm:handleSubmitForm] before uploading image', {
-        newCategory,
+      console.log('[EditCategoryForm:handleSubmitForm] before uploading image', {
+        updatedCategory,
         initialCategory,
         convertedCategory,
         formData,
@@ -389,12 +384,12 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       if (memo.imageFile) {
         newImageUrl = await uploadImageFileToVercel(memo.imageFile);
         if (newImageUrl) {
-          newCategory.imageUrl = newImageUrl;
+          updatedCategory.imageUrl = newImageUrl;
         }
       }
       try {
-        console.log('[AddCategoryForm:handleSubmitForm] before adding', {
-          newCategory,
+        console.log('[EditCategoryForm:handleSubmitForm] before adding', {
+          updatedCategory,
           convertedCategory,
           initialCategory,
           newImageUrl,
@@ -404,16 +399,16 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         if (isDev) {
           await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
-        return await handleAddCategory(newCategory);
+        return await handleSaveCategory(updatedCategory as TAvailableCategory);
       } catch (error) {
         const message = 'Failed to submit form data';
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[AddCategoryModal:handleSubmitForm]', comboMsg, {
+        console.error('[EditCategoryModal:handleSubmitForm]', comboMsg, {
           error,
           details,
-          newCategory,
+          updatedCategory,
           convertedCategory,
           initialCategory,
           newImageUrl,
@@ -426,11 +421,9 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
           // NOTE: Don't wait for the promise
           deleteCategoryImage(newImageUrl);
         }
-      } finally {
-        // setIsUploading(false);
       }
     },
-    [memo, handleAddCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
+    [memo, handleSaveCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
   );
 
   const handleCloseForm = (ev: React.MouseEvent) => {
@@ -450,7 +443,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
       <form
         onSubmit={form.handleSubmit(handleSubmitForm)}
         className={cn(
-          isDev && '__AddCategoryForm', // DEBUG
+          isDev && '__EditCategoryForm', // DEBUG
           'flex w-full flex-col gap-4',
           'relative transition',
           isBusy && 'opacity-50',
@@ -461,7 +454,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         {isSubmitSuccessful ? (
           <div
             className={cn(
-              isDev && '__AddCategoryForm_Success', // DEBUG
+              isDev && '__EditCategoryForm_Success', // DEBUG
               // 'absolute',
               'inset-0 flex flex-col items-center justify-center gap-4 transition',
               'my-2 bg-background',
@@ -480,7 +473,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         ) : (
           <div
             className={cn(
-              isDev && '__AddCategoryForm_Fields', // DEBUG
+              isDev && '__EditCategoryForm_Fields', // DEBUG
               'relative flex w-full flex-col gap-4',
             )}
           >
@@ -491,7 +484,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
               render={() => (
                 <FormItem
                   className={cn(
-                    isDev && '__AddCategoryForm_imageUrl', // DEBUG
+                    isDev && '__EditCategoryForm_imageUrl', // DEBUG
                     'flex w-full flex-col gap-4',
                   )}
                 >
@@ -501,7 +494,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                       {imagePreviewUrl ? (
                         <div
                           className={cn(
-                            isDev && '__AddCategoryForm_imageUrl_Preview', // DEBUG
+                            isDev && '__EditCategoryForm_imageUrl_Preview', // DEBUG
                             'relative h-24 w-24 overflow-hidden rounded-lg border',
                           )}
                         >
@@ -522,7 +515,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                       ) : (
                         <label
                           className={cn(
-                            isDev && '__AddCategoryForm_imageUrl_Info', // DEBUG
+                            isDev && '__EditCategoryForm_imageUrl_Info', // DEBUG
                             'flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted',
                           )}
                         >
@@ -550,7 +543,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
             {/* Instruction for users */}
             <div
               className={cn(
-                isDev && '__AddCategoryForm_Info', // DEBUG
+                isDev && '__EditCategoryForm_Info', // DEBUG
                 'flex items-center gap-2 rounded-md border border-theme/20 p-2',
               )}
             >
@@ -565,7 +558,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
             {allNamesEmpty && (
               <div
                 className={cn(
-                  isDev && '__AddCategoryForm_Error', // DEBUG
+                  isDev && '__EditCategoryForm_Error', // DEBUG
                   'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
                 )}
               >
@@ -579,14 +572,14 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
             {/* Translations Tabs */}
             <Tabs
               className={cn(
-                isDev && '__AddCategoryForm_Translations_Tabs', // DEBUG
+                isDev && '__EditCategoryForm_Translations_Tabs', // DEBUG
                 'flex flex-col items-stretch gap-2',
               )}
               defaultValue={locale}
             >
               <TabsList
                 className={cn(
-                  isDev && '__AddCategoryForm_TabsList', // DEBUG
+                  isDev && '__EditCategoryForm_TabsList', // DEBUG
                   'flex justify-start gap-1',
                 )}
               >
@@ -594,7 +587,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                   <TabsTrigger
                     key={locale}
                     className={cn(
-                      isDev && '__AddCategoryForm_TabsTrigger', // DEBUG
+                      isDev && '__EditCategoryForm_TabsTrigger', // DEBUG
                       'block flex-1 truncate',
                     )}
                     value={locale}
@@ -608,7 +601,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                 <TabsContent
                   key={locale}
                   className={cn(
-                    isDev && '__AddCategoryForm_TabsContent', // DEBUG
+                    isDev && '__EditCategoryForm_TabsContent', // DEBUG
                     'flex-col items-start gap-4',
                     'data-[state=active]:flex',
                   )}
@@ -621,7 +614,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                     render={({ field }) => (
                       <FormItem
                         className={cn(
-                          isDev && `__AddCategoryForm_name_${locale}`, // DEBUG
+                          isDev && `__EditCategoryForm_name_${locale}`, // DEBUG
                           'flex w-full flex-col gap-4',
                         )}
                       >
@@ -647,7 +640,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                     render={({ field }) => (
                       <FormItem
                         className={cn(
-                          isDev && `__AddCategoryForm_description_${locale}`, // DEBUG
+                          isDev && `__EditCategoryForm_description_${locale}`, // DEBUG
                           'flex w-full flex-col gap-4',
                         )}
                       >
@@ -674,7 +667,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                     render={({ field }) => (
                       <FormItem
                         className={cn(
-                          isDev && `__AddCategoryForm_keywords_${locale}`, // DEBUG
+                          isDev && `__EditCategoryForm_keywords_${locale}`, // DEBUG
                           'flex w-full flex-col gap-4',
                         )}
                       >
@@ -705,7 +698,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
                 render={({ field }) => (
                   <FormItem
                     className={cn(
-                      isDev && '__AddCategoryForm_status', // DEBUG
+                      isDev && '__EditCategoryForm_status', // DEBUG
                       'flex w-full flex-col gap-4',
                     )}
                   >
@@ -737,7 +730,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         {/* Actions */}
         <div
           className={cn(
-            isDev && '__AddCategoryForm_Actions', // DEBUG
+            isDev && '__EditCategoryForm_Actions', // DEBUG
             'mt-4 flex w-full gap-4',
             isSubmitSuccessful && 'justify-center',
           )}
@@ -747,7 +740,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
             variant={isSubmitEnabled ? 'success' : 'disabled'}
             disabled={!isSubmitEnabled}
             className={cn(
-              isDev && '__AddCategoryForm_SaveButton', // DEBUG
+              isDev && '__EditCategoryForm_SaveButton', // DEBUG
               'gap-2',
               isSubmitSuccessful && 'hidden',
             )}
@@ -776,7 +769,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         {/* LoadingSplash */}
         <div
           className={cn(
-            isDev && '__AddCategoryForm_LoadingSplash', // DEBUG
+            isDev && '__EditCategoryForm_LoadingSplash', // DEBUG
             'absolute',
             'inset-0 flex flex-col items-center justify-center gap-4 transition',
             'my-2 bg-background',
