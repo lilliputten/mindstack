@@ -33,7 +33,7 @@ export async function deleteCategories(params: TDeleteCategoriesParams & TOption
       const userCategories = await prisma.category.findMany({
         where: {
           id: { in: ids },
-          userId,
+          createdBy: userId,
         },
         select: { id: true },
       } satisfies Prisma.CategoryFindManyArgs);

@@ -31,8 +31,8 @@ export async function createCategories(params: TCreateCategoriesParams & TOption
     for (const categoryData of categories) {
       const createdCategory = await prisma.category.create({
         data: {
+          createdBy: userId,
           status: categoryData.status || defaultCategoryStatus,
-          userId,
           imageUrl: categoryData.imageUrl,
           translations: {
             create: categoryData.translations,

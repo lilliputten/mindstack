@@ -58,7 +58,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -149,7 +149,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: owner.id,
+          createdBy: owner.id,
           translations: {
             create: [
               {
@@ -202,7 +202,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -293,7 +293,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: owner.id,
+          createdBy: owner.id,
           translations: {
             create: [
               {
@@ -351,7 +351,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/original-${dateTag}.jpg`,
           translations: {
             create: [
@@ -412,7 +412,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -485,7 +485,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/to-be-null-${dateTag}.jpg`,
           translations: {
             create: [
@@ -539,7 +539,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: imageUrl,
           translations: {
             create: [
@@ -594,7 +594,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/old-${dateTag}.jpg`,
           translations: {
             create: [
@@ -648,7 +648,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/same-${dateTag}.jpg`,
           translations: {
             create: [
@@ -703,7 +703,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: null, // No initial image
           translations: {
             create: [
@@ -757,7 +757,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/to-be-deleted-${dateTag}.jpg`,
           translations: {
             create: [
@@ -822,7 +822,7 @@ describe('updateCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {

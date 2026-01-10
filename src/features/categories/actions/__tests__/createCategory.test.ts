@@ -76,7 +76,7 @@ describe('createCategory', () => {
       });
 
       expect(result.status).toBe(defaultCategoryStatus);
-      expect(result.userId).toBe(user.id);
+      expect(result.createdBy).toBe(user.id);
       expect(result.imageUrl).toBe(categoryData.imageUrl);
       expect(result.translations).toHaveLength(2);
       expect(result.translations[0].name).toBe(categoryData.translations?.[0].name);
@@ -129,7 +129,7 @@ describe('createCategory', () => {
       });
 
       expect(result.status).toBe(defaultCategoryStatus); // Default status
-      expect(result.userId).toBe(user.id);
+      expect(result.createdBy).toBe(user.id);
       expect(result.imageUrl).toBeNull();
       expect(result.translations).toHaveLength(1);
     } finally {
@@ -209,7 +209,7 @@ describe('createCategory', () => {
       });
 
       expect(result.status).toBe('HIDDEN');
-      expect(result.userId).toBe(user.id);
+      expect(result.createdBy).toBe(user.id);
     } finally {
       await cleanupDb(createdIds);
     }
@@ -250,7 +250,7 @@ describe('createCategory', () => {
       });
 
       expect(result.status).toBe('SUGGESTED');
-      expect(result.userId).toBe(user.id);
+      expect(result.createdBy).toBe(user.id);
     } finally {
       await cleanupDb(createdIds);
     }

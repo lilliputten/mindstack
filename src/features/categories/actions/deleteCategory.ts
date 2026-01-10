@@ -25,14 +25,14 @@ export async function deleteCategory(params: TDeleteCategoryParams & TOptions) {
   try {
     const existingCategory = await prisma.category.findUnique({
       where: { id },
-      select: { userId: true },
+      select: { createdBy: true },
     } satisfies Prisma.CategoryFindUniqueArgs);
 
     if (!existingCategory) {
       throw new Error('Category not found');
     }
 
-    if (existingCategory.userId !== userId && !isAdmin) {
+    if (existingCategory.createdBy !== userId && !isAdmin) {
       throw new Error('User is not authorized to delete this category');
     }
 

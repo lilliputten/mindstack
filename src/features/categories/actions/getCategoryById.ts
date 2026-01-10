@@ -6,14 +6,14 @@ import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 
-import { defaultCategoryStatus, IncludedUserSelect, TGetCategoryByIdParams } from '../types';
+import { defaultCategoryStatus, TGetCategoryByIdParams } from '../types';
 
 interface TOptions {
   noDebug?: boolean;
 }
 
 export async function getCategoryById(params: TGetCategoryByIdParams & TOptions) {
-  const { id, includeUser = false, noDebug } = params;
+  const { id, noDebug } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -27,9 +27,9 @@ export async function getCategoryById(params: TGetCategoryByIdParams & TOptions)
     const where: Prisma.CategoryWhereUniqueInput = { id };
     const include: Prisma.CategoryInclude = {};
 
-    if (includeUser) {
-      include.user = { select: IncludedUserSelect };
-    }
+    // if (includeUser) {
+    //   include.user = { select: IncludedUserSelect };
+    // }
 
     const category = await prisma.category.findUnique({
       where,
@@ -40,7 +40,7 @@ export async function getCategoryById(params: TGetCategoryByIdParams & TOptions)
       throw new Error('No category found');
     }
 
-    if (category.status !== defaultCategoryStatus && userId !== category.userId && !isAdmin) {
+    if (category.status !== defaultCategoryStatus && userId !== category.createdBy && !isAdmin) {
       throw new Error('Current user is not allowed to access the category');
     }
 

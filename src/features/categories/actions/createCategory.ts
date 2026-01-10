@@ -33,8 +33,8 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
     }
 
     data = {
+      createdBy: userId,
       status,
-      userId,
       imageUrl,
       translations: {
         create: translations,

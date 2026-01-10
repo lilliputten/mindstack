@@ -34,11 +34,11 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
     // Check ownership for all categories
     const existingCategories = await prisma.category.findMany({
       where: { id: { in: categoryIds } },
-      select: { id: true, userId: true, imageUrl: true },
+      select: { id: true, createdBy: true, imageUrl: true },
     } satisfies Prisma.CategoryFindManyArgs);
 
     const ownedCategoryIds = existingCategories
-      .filter((cat) => cat.userId === userId || isAdmin)
+      .filter((cat) => cat.createdBy === userId || isAdmin)
       .map((cat) => cat.id);
 
     if (ownedCategoryIds.length !== categoryIds.length) {
@@ -52,25 +52,9 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
       const { id, status, translations, imageUrl } = update;
 
       const updateData: Prisma.CategoryUpdateArgs['data'] = {};
-      /*
-      const updateData: {
-        status?: CategoryStatusType;
-        imageUrl?: string | null;
-        translations?: {
-          upsert: Array<{
-            where: { categoryId_locale: { categoryId: string; locale: string } };
-            update: { name: string; description?: string | null; keywords?: string | null };
-            create: {
-              locale: string;
-              name: string;
-              description?: string | null;
-              keywords?: string | null;
-            };
-          }>;
-        };
-      } = {};
-       */
-      if (status !== undefined) updateData.status = status;
+      if (status !== undefined) {
+        updateData.status = status;
+      }
 
       // Check if imageUrl is being updated to a new value
       if (imageUrl !== undefined) {

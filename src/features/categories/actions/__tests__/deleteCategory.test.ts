@@ -46,7 +46,7 @@ describe('deleteCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           imageUrl: `https://example.com/image-${dateTag}.jpg`,
           translations: {
             create: [
@@ -111,7 +111,7 @@ describe('deleteCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: owner.id,
+          createdBy: owner.id,
           imageUrl: `https://example.com/image-${dateTag}.jpg`,
           translations: {
             create: [
@@ -164,7 +164,7 @@ describe('deleteCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -235,7 +235,7 @@ describe('deleteCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: owner.id,
+          createdBy: owner.id,
           translations: {
             create: [
               {
@@ -286,7 +286,7 @@ describe('deleteCategory', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {

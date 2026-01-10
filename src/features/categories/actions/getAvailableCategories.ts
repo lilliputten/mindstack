@@ -9,7 +9,6 @@ import { isDev } from '@/constants';
 
 import {
   defaultCategoryStatus,
-  IncludedUserSelect,
   TGetAvailableCategoriesParams,
   TGetAvailableCategoriesResults,
 } from '../types';
@@ -26,10 +25,9 @@ export async function getAvailableCategories(
     skip,
     take,
     orderBy = { updatedAt: 'desc' },
-    includeUser = false,
     includeTranslations = true,
     searchText,
-    status = defaultCategoryStatus,
+    status,
     minCreatedAt,
     maxCreatedAt,
     minUpdatedAt,
@@ -57,21 +55,19 @@ export async function getAvailableCategories(
   };
 
   try {
-    if (includeUser) {
-      include.user = { select: IncludedUserSelect };
-    }
-
     // Always include translations for the current locale and topics count
     if (includeTranslations) {
       include.translations = true;
     }
     include._count = { select: { topics: true } };
 
-    if (!userId) {
-      where.status = defaultCategoryStatus;
-    } else {
-      where.OR = [{ userId }, { status: defaultCategoryStatus }];
-    }
+    /* // ???
+     * if (!userId) {
+     *   where.status = defaultCategoryStatus;
+     * } else {
+     *   where.OR = [{ createdBy: userId }, { status }];
+     * }
+     */
 
     if (categoryIds) {
       where.id = { in: categoryIds };
@@ -91,9 +87,7 @@ export async function getAvailableCategories(
       }
     }
 
-    if (status) {
-      where.status = status;
-    }
+    where.status = userId && status ? status : defaultCategoryStatus;
 
     if (minCreatedAt !== undefined || maxCreatedAt !== undefined) {
       where.createdAt = {};

@@ -108,7 +108,7 @@ describe('createCategories', () => {
 
       // Verify each category
       expect(results[0].status).toBe(defaultCategoryStatus);
-      expect(results[0].userId).toBe(user.id);
+      expect(results[0].createdBy).toBe(user.id);
       expect(results[0].translations).toHaveLength(1);
 
       expect(results[1].status).toBe('HIDDEN');
@@ -210,7 +210,7 @@ describe('createCategories', () => {
 
       expect(results).toHaveLength(1);
       expect(results[0].status).toBe(defaultCategoryStatus);
-      expect(results[0].userId).toBe(user.id);
+      expect(results[0].createdBy).toBe(user.id);
     } finally {
       await cleanupDb(createdIds);
     }

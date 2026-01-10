@@ -31,35 +31,17 @@ export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
 
     const existingCategory = await prisma.category.findUnique({
       where: { id },
-      select: { userId: true, imageUrl: true },
+      select: { createdBy: true, imageUrl: true },
     } satisfies Prisma.CategoryFindUniqueArgs);
 
     if (!existingCategory) {
       throw new Error('Category not found');
     }
 
-    if (existingCategory.userId !== userId && !isAdmin) {
+    if (existingCategory.createdBy !== userId && !isAdmin) {
       throw new Error('User is not authorized to update this category');
     }
 
-    /*
-    const updateData: {
-      status?: CategoryStatusType;
-      imageUrl?: string | null;
-      translations?: {
-        upsert: Array<{
-          where: { categoryId_locale: { categoryId: string; locale: string } };
-          update: { name: string; description?: string | null; keywords?: string | null };
-          create: {
-            locale: string;
-            name: string;
-            description?: string | null;
-            keywords?: string | null;
-          };
-        }>;
-      };
-    } = {};
-    */
     const updateData: Prisma.CategoryUpdateArgs['data'] = {};
     if (status !== undefined) updateData.status = status;
 

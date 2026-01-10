@@ -69,7 +69,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               translations: {
                 create: [
                   {
@@ -176,7 +176,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -193,7 +193,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -262,7 +262,7 @@ describe('updateCategories', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -336,7 +336,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -353,7 +353,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -433,7 +433,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -450,7 +450,7 @@ describe('updateCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -527,7 +527,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               translations: {
                 create: [
                   {
@@ -623,7 +623,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               imageUrl: `https://example.com/cat${num}-original-${testId}.jpg`,
               translations: {
                 create: [
@@ -713,7 +713,7 @@ describe('updateCategories', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -775,7 +775,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               imageUrl: `https://example.com/old-cat${num}-${testId}.jpg`,
               translations: {
                 create: [
@@ -853,7 +853,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               imageUrl: `https://example.com/existing-cat${num}-${testId}.jpg`,
               translations: {
                 create: [
@@ -937,7 +937,7 @@ describe('updateCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               imageUrl: `https://example.com/mixed-cat${num}-${testId}.jpg`,
               translations: {
                 create: [

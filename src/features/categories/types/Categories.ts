@@ -22,14 +22,16 @@ export type TCategoryReal = ReplaceNullWithUndefined<TCategory>;
 
 export type TCategoryId = TCategory['id'];
 
-/** User fields to include with a flag */
-export const IncludedUserSelect = {
-  id: true as const,
-  name: true as const,
-  email: true as const,
-} as const;
-const _IncludedUserSchema = UserSchema.pick(IncludedUserSelect);
-export type TIncludedUser = z.infer<typeof _IncludedUserSchema>;
+/* // UNUSED
+ * [>* User fields to include with a flag <]
+ * export const IncludedUserSelect = {
+ *   id: true as const,
+ *   name: true as const,
+ *   email: true as const,
+ * } as const;
+ * const _IncludedUserSchema = UserSchema.pick(IncludedUserSelect);
+ * export type TIncludedUser = z.infer<typeof _IncludedUserSchema>;
+ */
 
 // Add other category-related types here as needed
 
@@ -46,7 +48,8 @@ export const CreateCategoryTranslationSchema = CategoryTranslationSchema.omit({
 // TODO: Derive the schema from the prisma generated ones
 const CreateCategoryParamsSchemaBase = CategorySchema.omit({
   id: true,
-  userId: true,
+  createdBy: true,
+  updatedBy: true,
   createdAt: true,
   updatedAt: true,
 });
@@ -72,7 +75,8 @@ export type TCreateCategoriesParams = z.infer<typeof CreateCategoriesParamsSchem
 // TODO: Derive the schema from the prisma generated ones
 const UpdateCategoryParamsSchemaBase = CategorySchema.omit({
   // id: true, // Id s required for update
-  userId: true,
+  createdBy: true,
+  updatedBy: true,
   createdAt: true,
   updatedAt: true,
 });
@@ -100,14 +104,11 @@ export type TUpdateCategoriesParams = z.infer<typeof UpdateCategoriesParamsSchem
 
 export const GetCategoryByIdParamsSchema = z.object({
   id: z.string().cuid(),
-  includeUser: z.boolean().optional(),
 });
 
 export type TGetCategoryByIdParams = z.infer<typeof GetCategoryByIdParamsSchema>;
 
-export const CategoryIncludeParamsSchema = z.object({
-  includeUser: z.boolean().optional(),
-});
+export const CategoryIncludeParamsSchema = z.object({});
 
 export type TCategoryIncludeParams = z.infer<typeof CategoryIncludeParamsSchema>;
 
@@ -119,7 +120,6 @@ export const GetAvailableCategoriesParamsSchema = CategoryIncludeParamsSchema.ex
     .union([CategoryOrderByWithRelationInputSchema.array(), CategoryOrderByWithRelationInputSchema])
     .optional(),
   includeTranslations: z.boolean().optional(),
-  includeUser: z.boolean().optional(),
   searchText: z.string().optional(),
   status: CategoryStatusSchema.optional(),
   minCreatedAt: z.coerce.date().optional(),
@@ -145,21 +145,7 @@ export type TDeleteCategoriesParams = z.infer<typeof DeleteCategoriesParamsSchem
 
 /** Extended category, includes some user data, see `getAvailableCategorys` */
 export type TAvailableCategory = TCategory & {
-  /** For `includeUser` flag */
-  user?: TIncludedUser;
   translations?: TCreateCategoryTranslation[];
-  /** For `includeTranslations` flag - include top-level fallbacks for convenience */
-  // translations?: Array<{
-  //   locale: string;
-  //   name: string;
-  //   description: string | null;
-  //   keywords: string | null;
-  //   // categoryId: string;
-  // }>;
-  // [>* Fallback fields from translations for convenience <]
-  // name?: string;
-  // description?: string | null;
-  // keywords?: string | null;
 };
 
 // Results types

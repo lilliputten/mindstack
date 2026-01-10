@@ -48,7 +48,7 @@ describe('deleteCategories', () => {
           jestPrisma.category.create({
             data: {
               status: defaultCategoryStatus,
-              userId: user.id,
+              createdBy: user.id,
               translations: {
                 create: [
                   {
@@ -122,7 +122,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -139,7 +139,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -196,7 +196,7 @@ describe('deleteCategories', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
@@ -269,7 +269,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -286,7 +286,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -349,7 +349,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner1.id,
+            createdBy: owner1.id,
             translations: {
               create: [
                 {
@@ -366,7 +366,7 @@ describe('deleteCategories', () => {
         jestPrisma.category.create({
           data: {
             status: defaultCategoryStatus,
-            userId: owner2.id,
+            createdBy: owner2.id,
             translations: {
               create: [
                 {
@@ -424,7 +424,7 @@ describe('deleteCategories', () => {
       const category = await jestPrisma.category.create({
         data: {
           status: defaultCategoryStatus,
-          userId: user.id,
+          createdBy: user.id,
           translations: {
             create: [
               {
