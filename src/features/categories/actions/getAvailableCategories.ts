@@ -87,7 +87,9 @@ export async function getAvailableCategories(
       }
     }
 
-    where.status = userId && status ? status : defaultCategoryStatus;
+    if (!userId || status) {
+      where.status = userId && status ? status : defaultCategoryStatus;
+    }
 
     if (minCreatedAt !== undefined || maxCreatedAt !== undefined) {
       where.createdAt = {};

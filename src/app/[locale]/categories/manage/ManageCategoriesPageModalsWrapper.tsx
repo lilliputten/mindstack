@@ -112,7 +112,7 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
       if (allCategories && routePath) {
         const hasCategory = allCategories.find(({ id }) => id === categoryId);
         if (hasCategory) {
-          const url = `${routePath}/${categoryId}/edit`;
+          const url = `${routePath}/edit/${categoryId}`;
           goToTheRoute(url);
         } else {
           toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));

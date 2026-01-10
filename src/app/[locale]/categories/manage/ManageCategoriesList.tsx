@@ -277,7 +277,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             aria-label={t('ManageCategoriesList.EditTopics')}
             title={t('ManageCategoriesList.EditTopics')}
           >
-            <Link href={`${routePath}/${category.id}/edit` as TRoutePath}>
+            <Link href={`${routePath}/edit/${category.id}` as TRoutePath}>
               <Icons.Topics className="size-5" />
             </Link>
           </Button>
