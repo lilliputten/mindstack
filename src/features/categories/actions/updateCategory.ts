@@ -54,6 +54,9 @@ export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
       updateData.imageUrl = imageUrl;
     }
 
+    // Set updatedBy field with current userId
+    updateData.updatedBy = userId;
+
     if (translations) {
       updateData.translations = {
         upsert: translations.map((translation) => ({

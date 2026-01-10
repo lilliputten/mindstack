@@ -68,6 +68,9 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
         }
       }
 
+      // Set updatedBy field with current userId
+      updateData.updatedBy = userId;
+
       if (translations) {
         updateData.translations = {
           upsert: translations.map((translation) => ({

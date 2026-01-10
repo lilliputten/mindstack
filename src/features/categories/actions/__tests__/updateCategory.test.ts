@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
 import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
+import { getRandomHashString } from '@/lib/helpers/strings';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
 
@@ -51,7 +52,7 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-user-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -137,12 +138,15 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `uc-admin-owner-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-admin-owner-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: owner.id });
 
       const admin = await jestPrisma.user.create({
-        data: { email: `uc-admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: `uc-admin-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: admin.id });
 
@@ -195,7 +199,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-unauthed-owner-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-unauthed-owner-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -253,7 +260,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-nonexist-user-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-nonexist-user-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -281,12 +291,12 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `uc-owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-owner-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
 
       const otherUser = await jestPrisma.user.create({
-        data: { email: `uc-other-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-other-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: otherUser.id });
 
@@ -344,7 +354,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-partial-user-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-partial-user-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -405,7 +418,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-upsert-user-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-upsert-user-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -478,7 +494,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-null-image-user-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-null-image-user-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -531,7 +550,7 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-same-url-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-same-url-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -587,7 +606,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-delete-old-image-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-delete-old-image-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -641,7 +663,7 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-no-change-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-no-change-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -696,7 +718,7 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-null-old-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-null-old-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -750,7 +772,7 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-to-null-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `uc-to-null-${dateTag}-${getRandomHashString(6)}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -815,7 +837,10 @@ describe('updateCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `uc-locale-validation-${dateTag}@test.com`, role: 'USER' },
+        data: {
+          email: `uc-locale-validation-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -870,6 +895,133 @@ describe('updateCategory', () => {
 
       expect(enTranslation?.name).toBe(`Updated EN with valid locale ${dateTag}`);
       expect(esTranslation?.name).toBe(`Updated with valid locale ${dateTag}`);
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should set updatedBy field with current userId when updating category', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: {
+          email: `uc-updatedby-user-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          createdBy: user.id,
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `UpdatedBy Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      const updateData = {
+        id: category.id,
+        status: 'HIDDEN' as const,
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.id).toBe(category.id);
+      expect(result.updatedBy).toBe(user.id);
+      expect(result.updatedBy).not.toBeNull();
+
+      // Also verify in database that updatedBy was set
+      const dbCategory = await jestPrisma.category.findUnique({
+        where: { id: category.id },
+      });
+      expect(dbCategory?.updatedBy).toBe(user.id);
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should update updatedBy field with current userId on subsequent updates', async () => {
+    const { updateCategory } = await import('../updateCategory');
+
+    const dateTag = formatDateTag();
+    const createdIds: CreatedId[] = [];
+    try {
+      const user = await jestPrisma.user.create({
+        data: {
+          email: `uc-updatedby-update-${dateTag}-${getRandomHashString(6)}@test.com`,
+          role: 'USER',
+        },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      const category = await jestPrisma.category.create({
+        data: {
+          status: defaultCategoryStatus,
+          createdBy: user.id,
+          updatedBy: user.id, // Initially set to user id
+          translations: {
+            create: [
+              {
+                locale: 'en',
+                name: `UpdatedBy Subsequent Update Test ${dateTag}`,
+              },
+            ],
+          },
+        },
+        include: {
+          translations: true,
+        },
+      });
+      createdIds.push({ type: 'category', id: category.id });
+      category.translations.forEach((translation) => {
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: translation.locale,
+        });
+      });
+
+      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+      // Perform another update
+      const updateData = {
+        id: category.id,
+        status: 'SUGGESTED' as const,
+      };
+
+      const result = await updateCategory({ ...updateData, noDebug: true });
+
+      expect(result.id).toBe(category.id);
+      expect(result.updatedBy).toBe(user.id); // Should be updated with current user id
+
+      // Verify in database that updatedBy was updated
+      const dbCategory = await jestPrisma.category.findUnique({
+        where: { id: category.id },
+      });
+      expect(dbCategory?.updatedBy).toBe(user.id);
     } finally {
       await cleanupDb(createdIds);
     }
