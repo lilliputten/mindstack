@@ -22,6 +22,8 @@ importOrder:
   - '^@/lib/types/(.*)$'
   - '^@/config/(.*)$'
   - '^@/lib/(.*)$'
+  - '^@/i18n(.*)$'
+  - '^@/auth(.*)$'
   - '^@/hooks/(.*)$'
   - '^@/components/ui/(.*)$'
   - '^@/components/(.*)$'

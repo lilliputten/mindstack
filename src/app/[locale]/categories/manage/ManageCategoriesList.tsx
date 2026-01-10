@@ -1,11 +1,14 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { TLocale, useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
@@ -27,18 +30,19 @@ import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
+import { getCategoryName } from '@/features/categories';
 // import { useCategoriesFiltersContext } from '@/contexts/CategoriesFiltersContext';
 import { deleteCategories, updateCategory } from '@/features/categories/actions';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 // import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 // import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
 
-import { ContentSkeleton, ContentSkeletonTable } from './ContentSkeleton';
+import { ContentSkeletonTable } from './ContentSkeleton';
+
+const __showId = false;
 
 const sessionSaveScrollHash = getRandomHashString();
 
@@ -114,19 +118,41 @@ function CategoriesTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead id="no" className="truncate text-right max-lg:hidden">
+        <TableHead
+          id="no"
+          className="max-w-16 truncate text-right max-lg:hidden"
+          title={t('ManageCategoriesList.No')}
+        >
           {t('ManageCategoriesList.No')}
         </TableHead>
-        {isDev && (
-          <TableHead id="categoryId" className="truncate max-xl:hidden">
+        {__showId && isDev && (
+          <TableHead id="categoryId" className="truncate max-xl:hidden" title="ID">
             ID
           </TableHead>
         )}
-        <TableHead id="name" className="truncate">
+        <TableHead
+          id="image"
+          className="max-w-16 truncate text-center"
+          title={t('ManageCategoriesList.Image')}
+        >
+          {t('ManageCategoriesList.Image')}
+        </TableHead>
+        <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
           {t('ManageCategoriesList.CategoryName')}
         </TableHead>
-        <TableHead id="topics" className="truncate max-lg:hidden">
-          {t('ManageCategoriesList.Topics')}
+        <TableHead
+          id="status"
+          className="max-w-32 truncate max-md:hidden"
+          title={t('ManageCategoriesList.Status')}
+        >
+          {t('ManageCategoriesList.Status')}
+        </TableHead>
+        <TableHead
+          id="topicsCount"
+          className="max-w-8 truncate max-lg:hidden"
+          title={t('ManageCategoriesList.TopicsCount')}
+        >
+          {t('ManageCategoriesList.TopicsCount')}
         </TableHead>
         {/*
         {isAdminMode && (
@@ -174,58 +200,11 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
     idx,
     isSelected,
     toggleSelected,
-    availableCategoriesQuery,
+    // availableCategoriesQuery,
   } = props;
-  const { id, userId, status, _count, translations } = category;
-  // TODO: Fetch translated fields
-  const name = `Category ${id}`;
+  const locale = useLocale() as TLocale;
   const t = useT();
-
-  const [isPending, startTransition] = React.useTransition();
-  const queryClient = useQueryClient();
-
-  const updateAndInvalidateCategory = React.useCallback(
-    async (updatedCategory: TAvailableCategory) => {
-      await updateCategory(updatedCategory);
-      availableCategoriesQuery.updateCategory(updatedCategory);
-      const invalidatePrefixes = [
-        ['available-category', category.id],
-        ['available-categories'],
-      ].map(makeQueryKeyPrefix);
-      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
-        availableCategoriesQuery.queryKey,
-      ]);
-    },
-    [category.id, availableCategoriesQuery, queryClient],
-  );
-
-  /* // TODO: Use handleStatus instead
-   * const handleTogglePublic = React.useCallback(
-   *   (checked: boolean) => {
-   *     startTransition(async () => {
-   *       const updatedCategory = { ...category, isPublic: checked };
-   *       try {
-   *         await updateAndInvalidateCategory(updatedCategory);
-   *       } catch (error) {
-   *         const details = error instanceof APIError ? error.details : null;
-   *         const message = t('ManageCategoriesList.CannotUpdateCategoryPublicStatus');
-   *         // eslint-disable-next-line no-console
-   *         console.error('[CategoriesTableRow:handleTogglePublic]', message, {
-   *           details,
-   *           error,
-   *           categoryId: category.id,
-   *         });
-   *         debugger; // eslint-disable-line no-debugger
-   *         toast.error(message);
-   *       }
-   *     });
-   *   },
-   *   [t, category, updateAndInvalidateCategory],
-   * );
-   */
-  const topicsCount = _count?.topics;
-  // const categoryUser = isAdminMode ? cachedUsers[userId] : undefined;
-  // const { manageScope } = useManageCategoriesStore();
+  const topicsCount = category._count?.topics;
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   return (
     <TableRow
@@ -236,7 +215,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
         'hover:bg-theme-500/5',
         isSelected && 'bg-theme-500/10 hover:bg-theme-500/15',
       )}
-      data-category-id={id}
+      data-category-id={category.id}
     >
       <TableCell
         id="select"
@@ -244,7 +223,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           'w-[3em] cursor-pointer text-center transition',
           'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
         )}
-        onClick={() => toggleSelected(id)}
+        onClick={() => toggleSelected(category.id)}
         title={t('ManageCategoriesList.SelectCategory')}
       >
         <Checkbox
@@ -253,26 +232,36 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           aria-label={t('ManageCategoriesList.SelectCategory')}
         />
       </TableCell>
-      <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
+      <TableCell id="no" className="max-w-6 truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {isDev && (
-        <TableCell id="categoryId" className="max-w-6 truncate max-xl:hidden" title={id}>
+      {__showId && isDev && (
+        <TableCell id="categoryId" className="max-w-6 truncate max-xl:hidden" title={category.id}>
           <div className="truncate opacity-50">
             <span className="mr-[2px] opacity-30">#</span>
-            {id}
+            {category.id}
           </div>
         </TableCell>
       )}
+      <TableCell id="image" className="w-6 truncate text-center">
+        {category.imageUrl ? (
+          <Icons.ImageIcon className="mx-auto size-5 text-green-600" />
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )}
+      </TableCell>
       <TableCell id="name" className="max-w-24 truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
-          href={`${routePath}/${id}` as TRoutePath}
+          href={`${routePath}/${category.id}` as TRoutePath}
         >
-          {truncateString(name, 40)}
+          {truncateString(getCategoryName(category, locale, t), 40)}
         </Link>
       </TableCell>
-      <TableCell id="topics" className="max-w-[8em] truncate max-lg:hidden">
+      <TableCell id="status" className="max-w-32 truncate max-md:hidden">
+        {t(category.status)}
+      </TableCell>
+      <TableCell id="topicsCount" className="max-w-6 truncate max-lg:hidden">
         <div className="truncate">
           {topicsCount ? (
             <span className="font-medium">{topicsCount}</span>
@@ -281,34 +270,6 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           )}
         </div>
       </TableCell>
-      {/*
-      {isAdminMode && (
-        <TableCell id="categoryUser" className="max-w-[8em] truncate max-lg:hidden">
-          {categoryUser ? (
-            <div className="truncate" title={categoryUser?.name || undefined}>
-              {categoryUser?.name}
-            </div>
-          ) : (
-            <Skeleton className="h-[2em] w-full rounded-sm" />
-          )}
-        </TableCell>
-        )}
-      <TableCell id="language" className="max-w-[8em] truncate max-xl:hidden">
-        <div className="truncate">
-          {[langName, langCode && `(${langCode})`].filter(Boolean).join(' ')}
-        </div>
-      </TableCell>
-      <TableCell id="keywords" className="max-w-[8em] truncate max-xl:hidden">
-        <div className="truncate">{keywords}</div>
-      </TableCell>
-      <TableCell id="isPublic" className="w-[8em] max-lg:hidden">
-        <Switch
-          checked={isPublic || false}
-          onCheckedChange={handleTogglePublic}
-          disabled={isPending}
-        />
-      </TableCell>
-      */}
       <TableCell id="Actions" className="text-right">
         <div className="flex justify-end gap-1">
           <Button

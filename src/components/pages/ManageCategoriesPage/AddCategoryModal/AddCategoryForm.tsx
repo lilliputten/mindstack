@@ -12,6 +12,8 @@ import { CategoryStatusSchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { localeNames, TLocale, useT } from '@/i18n';
+import { strictLocalesList } from '@/i18n/types';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -28,6 +30,7 @@ import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { deleteCategoryImage } from '@/features/categories/actions/deleteCategoryImage';
 import { uploadCategoryImage } from '@/features/categories/actions/uploadCategoryImage';
 import {
   categoryImageAllowedTypes,
@@ -37,10 +40,8 @@ import {
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
 import { defaultCategoryStatus, TCreateCategoryParams } from '@/features/categories/types';
-import { TLocale, useT } from '@/i18n';
-import { strictLocalesList } from '@/i18n/types';
 
-const MIN_NAME_LENGTH = 2;
+const MIN_NAME_LENGTH = 3;
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 500;
 const MAX_KEYWORDS_LENGTH = 200;
@@ -77,17 +78,19 @@ interface TConvertFormDataOptions {
   suggestionMode?: boolean;
 }
 
-function convertFormDataToCategory(formData: TFormData, opts: TConvertFormDataOptions) {
-  const {
-    locale,
-    // suggestionMode,
-  } = opts;
+function convertFormDataToCategory(formData: TFormData, _opts: TConvertFormDataOptions) {
+  /* // UNUSE: Options
+   * const {
+   *   locale,
+   *   suggestionMode,
+   * } = opts;
+   */
   const { status, imageUrl, translations } = formData;
 
   // Convert the translations object to an array of CategoryTranslation objects
   const translationArray = Object.entries(translations).map(([localeKey, translationData]) => ({
     locale: localeKey,
-    name: translationData.name,
+    name: translationData.name || '',
     description: translationData.description,
     keywords: translationData.keywords,
   }));
@@ -167,20 +170,39 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
+  // TODO: Add a service to translate other texts?
   const formSchema = React.useMemo(
     () =>
-      z.object({
-        status: CategoryStatusSchema,
-        imageUrl: z.string().optional(),
-        translations: z.record(
-          z.string(),
-          z.object({
-            name: z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH),
-            description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
-            keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
-          }),
+      z
+        .object({
+          status: CategoryStatusSchema,
+          imageUrl: z.string().optional(),
+          translations: z.record(
+            z.string(),
+            z.object({
+              name: z.preprocess(
+                (val) => (val === '' ? undefined : val),
+                z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH).optional(),
+              ),
+              description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
+              keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
+            }),
+          ),
+        })
+        .refine(
+          (data) => {
+            // Check if at least one translation has a valid name
+            const translations = data.translations;
+            if (!translations) return false;
+            return Object.values(translations).some(
+              (translation) => translation.name !== undefined && translation.name.trim() !== '',
+            );
+          },
+          {
+            message: 'At least one name field must be filled across all translations',
+            path: ['translations'], // Error will appear at the translations level
+          },
         ),
-      }),
     [],
   );
 
@@ -207,11 +229,11 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
   const {
     isDirty, // boolean;
     isLoading, // boolean;
-    // isSubmitted, // boolean;
-    // isSubmitSuccessful, // boolean;
-    // isSubmitting, // boolean;
-    // isValidating, // boolean;
     isValid, // boolean;
+    isSubmitSuccessful, // boolean;
+    isSubmitting, // boolean;
+    // isSubmitted, // boolean;
+    // isValidating, // boolean;
     // disabled, // boolean;
     // submitCount, // number;
     // dirtyFields, // Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>;
@@ -222,15 +244,32 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
   } = form.formState;
 
   React.useEffect(() => {
-    form.setFocus(`translations.${strictLocalesList[0]}.name`);
+    form.setFocus(`translations.${locale}.name`);
+  }, [form, locale]);
+
+  const [allNamesEmpty, setAllNamesEmpty] = useState(false);
+
+  // Validate that at least one name field is filled across all translations
+  React.useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      // Run validation when any translation field changes
+      if (!name || name.startsWith('translations')) {
+        const translations = value.translations;
+        if (translations) {
+          const hasValidName = Object.values(translations).some(
+            (translation) => translation?.name && translation.name.trim() !== '',
+          );
+          // Update the allNamesEmpty state
+          setAllNamesEmpty(!hasValidName);
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
   }, [form]);
 
   // Image handling. TODO: Refactor to process the image right before the form data submiting
   const imagePreviewUrl = form.watch('imageUrl');
   memo.imagePreviewUrl = imagePreviewUrl;
-
-  const [isUploading, setIsUploading] = useState(false);
-  // const [uploadError, setUploadError] = useState<string | null>(null);
 
   const handleImageChange = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -325,17 +364,20 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
 
   const handleSubmitForm = React.useCallback(
     async (formData: TFormData) => {
-      setIsUploading(true);
+      // setIsUploading(true);
+      // NOTE: If `memo.imageFile` is defined then there is an image to upload
+      const imageCleared = memo.imageFile === null;
       if (isDev) {
         await new Promise((r) => setTimeout(r, 2000)); // DEBUG
       }
       let newImageUrl: string | undefined;
       const convertedCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
+      // Compose the full data
       const newCategory = {
         ...initialCategory,
         ...convertedCategory,
         // Set an original image, if it wasn't removed by the user
-        imageUrl: memo.imageFile !== null ? initialCategory?.imageUrl : undefined,
+        imageUrl: !imageCleared ? initialCategory?.imageUrl : undefined,
       };
       console.log('[AddCategoryForm:handleSubmitForm] before uploading image', {
         newCategory,
@@ -351,8 +393,6 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         }
       }
       try {
-        // const newCategory = convertFormDataToCategory(formData, { locale, suggestionMode });
-
         console.log('[AddCategoryForm:handleSubmitForm] before adding', {
           newCategory,
           convertedCategory,
@@ -381,9 +421,13 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         });
         debugger; // eslint-disable-line no-debugger
         toast.error(comboMsg);
-        debugger; // eslint-disable-line no-debugger
+        // If new image has been uploaded, try to remove it
+        if (newImageUrl) {
+          // NOTE: Don't wait for the promise
+          deleteCategoryImage(newImageUrl);
+        }
       } finally {
-        setIsUploading(false);
+        // setIsUploading(false);
       }
     },
     [memo, handleAddCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
@@ -396,7 +440,7 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
     ev.preventDefault();
   };
 
-  const isBusy = isLoading || isPending || isUploading;
+  const isBusy = isSubmitting || isLoading || isPending; /* || isUploading */
   const isSubmitEnabled = !isBusy && isDirty && isValid;
 
   const SaveIcon = !isLoading ? Icons.Save : Icons.Spinner;
@@ -408,225 +452,305 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
         className={cn(
           isDev && '__AddCategoryForm', // DEBUG
           'flex w-full flex-col gap-4',
-          'transition',
+          'relative transition',
           isBusy && 'opacity-50',
           className,
         )}
       >
-        {/* Image Upload */}
-        <FormField
-          name="imageUrl"
-          control={form.control}
-          render={() => (
-            <FormItem
+        {/* Actions */}
+        {isSubmitSuccessful ? (
+          <div
+            className={cn(
+              isDev && '__AddCategoryForm_Success', // DEBUG
+              // 'absolute',
+              'inset-0 flex flex-col items-center justify-center gap-4 transition',
+              'my-2 bg-background',
+              !isSubmitSuccessful && 'pointer-events-none opacity-0',
+            )}
+          >
+            <Icons.CheckCircle className="mt-2 size-16 text-green-500" />
+            <div className="flex flex-col gap-4 text-center">
+              <h3 className="text-xl font-semibold text-green-500">Successfully Added!</h3>
+              <p className="text-content">
+                The category has been successfully added to your list. You can now close this
+                dialog.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={cn(
+              isDev && '__AddCategoryForm_Fields', // DEBUG
+              'relative flex w-full flex-col gap-4',
+            )}
+          >
+            {/* Image Upload */}
+            <FormField
+              name="imageUrl"
+              control={form.control}
+              render={() => (
+                <FormItem
+                  className={cn(
+                    isDev && '__AddCategoryForm_imageUrl', // DEBUG
+                    'flex w-full flex-col gap-4',
+                  )}
+                >
+                  <Label>Image</Label>
+                  <FormControl>
+                    <div className="flex items-center gap-4">
+                      {imagePreviewUrl ? (
+                        <div
+                          className={cn(
+                            isDev && '__AddCategoryForm_imageUrl_Preview', // DEBUG
+                            'relative h-24 w-24 overflow-hidden rounded-lg border',
+                          )}
+                        >
+                          <Image
+                            src={imagePreviewUrl}
+                            alt="Category image"
+                            fill
+                            className="object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleRemoveImage}
+                            className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                          >
+                            <Icons.X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label
+                          className={cn(
+                            isDev && '__AddCategoryForm_imageUrl_Info', // DEBUG
+                            'flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted',
+                          )}
+                        >
+                          <input
+                            type="file"
+                            accept={categoryImageAllowedTypes.join(',')}
+                            onChange={handleImageChange}
+                            className="hidden"
+                          />
+                          <Icons.ImageIcon className="h-8 w-8 text-muted-foreground" />
+                        </label>
+                      )}
+                      <div className="flex flex-1 flex-col gap-2">
+                        <FormHint>
+                          Maximum size: {categoryImageConfig.size}x{categoryImageConfig.size}px
+                        </FormHint>
+                        <FormMessage />
+                      </div>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Instruction for users */}
+            <div
               className={cn(
-                isDev && '__AddCategoryForm_imageUrl', // DEBUG
-                'flex w-full flex-col gap-4',
+                isDev && '__AddCategoryForm_Info', // DEBUG
+                'flex items-center gap-2 rounded-md border border-theme/20 p-2',
               )}
             >
-              <Label>Image</Label>
-              <FormControl>
-                <div className="flex items-center gap-4">
-                  {imagePreviewUrl ? (
-                    <div
-                      className={cn(
-                        isDev && '__AddCategoryForm_imageUrl_Preview', // DEBUG
-                        'relative h-24 w-24 overflow-hidden rounded-lg border',
-                      )}
-                    >
-                      <Image
-                        src={imagePreviewUrl}
-                        alt="Category image"
-                        fill
-                        className="object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleRemoveImage}
-                        className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-                      >
-                        <Icons.X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label
-                      className={cn(
-                        isDev && '__AddCategoryForm_imageUrl_Info', // DEBUG
-                        'flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted',
-                      )}
-                    >
-                      <input
-                        type="file"
-                        accept={categoryImageAllowedTypes.join(',')}
-                        onChange={handleImageChange}
-                        className="hidden"
-                        disabled={isUploading}
-                      />
-                      {isUploading ? (
-                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-theme border-t-transparent" />
-                      ) : (
-                        <Icons.ImageIcon className="h-8 w-8 text-muted-foreground" />
-                      )}
-                    </label>
-                  )}
-                  <div className="flex flex-1 flex-col gap-2">
-                    <FormHint>
-                      Maximum size: {categoryImageConfig.size}x{categoryImageConfig.size}px
-                    </FormHint>
-                    <FormMessage />
-                  </div>
-                </div>
-              </FormControl>
-            </FormItem>
-          )}
-        />
+              <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+              <p className="flex-1 text-sm opacity-50">
+                Please enter the properties of the category (name, description, keywords) for all or
+                only one of the application languages.
+              </p>
+            </div>
 
-        {/* Translations Tabs */}
-        <Tabs
-          className={cn(
-            isDev && '__AddCategoryForm_translations', // DEBUG
-            'mt-4',
-          )}
-          defaultValue={strictLocalesList[0]}
-        >
-          <TabsList className={cn('__AddCategoryForm_TabsList')}>
-            {strictLocalesList.map((locale) => (
-              <TabsTrigger key={locale} className="TabsTrigger" value={locale}>
-                {locale.toUpperCase()}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {strictLocalesList.map((locale) => (
-            <TabsContent key={locale} className="TabsContent" value={locale}>
-              {/* Name for {locale} */}
-              <FormField
-                name={`translations.${locale}.name`}
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem
-                    className={cn(
-                      isDev && `__AddCategoryForm_name_${locale}`, // DEBUG
-                      'flex w-full flex-col gap-4',
-                    )}
-                  >
-                    <Label htmlFor={`category-name-${locale}`}>Name ({locale})</Label>
-                    <FormControl>
-                      <Input
-                        id={`category-name-${locale}`}
-                        type="text"
-                        placeholder={`Enter category name in ${locale}`}
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Description for {locale} */}
-              <FormField
-                name={`translations.${locale}.description`}
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem
-                    className={cn(
-                      isDev && `__AddCategoryForm_description_${locale}`, // DEBUG
-                      'flex w-full flex-col gap-4',
-                    )}
-                  >
-                    <Label htmlFor={`category-description-${locale}`}>Description ({locale})</Label>
-                    <FormControl>
-                      <Textarea
-                        id={`category-description-${locale}`}
-                        placeholder={`Enter category description in ${locale}`}
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Keywords for {locale} */}
-              <FormField
-                name={`translations.${locale}.keywords`}
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem
-                    className={cn(
-                      isDev && `__AddCategoryForm_keywords_${locale}`, // DEBUG
-                      'flex w-full flex-col gap-4',
-                    )}
-                  >
-                    <Label htmlFor={`category-keywords-${locale}`}>Keywords ({locale})</Label>
-                    <FormControl>
-                      <Input
-                        id={`category-keywords-${locale}`}
-                        type="text"
-                        placeholder={`Enter keywords separated by commas in ${locale}`}
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormHint>Keywords help with search and categorization</FormHint>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
-          ))}
-        </Tabs>
-
-        {/* Status */}
-        {!suggestionMode && (
-          <FormField
-            name="status"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem
+            {/* General error message when all names are empty */}
+            {allNamesEmpty && (
+              <div
                 className={cn(
-                  isDev && '__AddCategoryForm_status', // DEBUG
-                  'flex w-full flex-col gap-4',
+                  isDev && '__AddCategoryForm_Error', // DEBUG
+                  'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
                 )}
               >
-                <Label htmlFor="category-status">Status</Label>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger id="category-status">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="PUBLIC">Public</SelectItem>
-                    <SelectItem value="SUGGESTED">Suggested</SelectItem>
-                    <SelectItem value="HIDDEN">Hidden</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
+                <Icons.CircleAlert className="size-6 flex-shrink-0 text-red-500" />
+                <p className="flex-1 text-sm text-red-500">
+                  At least one name field must be filled across all translations
+                </p>
+              </div>
             )}
-          />
+
+            {/* Translations Tabs */}
+            <Tabs
+              className={cn(
+                isDev && '__AddCategoryForm_Translations_Tabs', // DEBUG
+                'flex flex-col items-stretch gap-2',
+              )}
+              defaultValue={locale}
+            >
+              <TabsList
+                className={cn(
+                  isDev && '__AddCategoryForm_TabsList', // DEBUG
+                  'flex justify-start gap-1',
+                )}
+              >
+                {strictLocalesList.map((locale) => (
+                  <TabsTrigger
+                    key={locale}
+                    className={cn(
+                      isDev && '__AddCategoryForm_TabsTrigger', // DEBUG
+                      'block flex-1 truncate',
+                    )}
+                    value={locale}
+                  >
+                    {localeNames[locale]} ({locale})
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+
+              {strictLocalesList.map((locale) => (
+                <TabsContent
+                  key={locale}
+                  className={cn(
+                    isDev && '__AddCategoryForm_TabsContent', // DEBUG
+                    'flex-col items-start gap-4',
+                    'data-[state=active]:flex',
+                  )}
+                  value={locale}
+                >
+                  {/* Name for {locale} */}
+                  <FormField
+                    name={`translations.${locale}.name`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem
+                        className={cn(
+                          isDev && `__AddCategoryForm_name_${locale}`, // DEBUG
+                          'flex w-full flex-col gap-4',
+                        )}
+                      >
+                        <Label htmlFor={`category-name-${locale}`}>Name ({locale})</Label>
+                        <FormControl>
+                          <Input
+                            id={`category-name-${locale}`}
+                            type="text"
+                            placeholder={`Enter category name in ${locale}`}
+                            {...field}
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Description for {locale} */}
+                  <FormField
+                    name={`translations.${locale}.description`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem
+                        className={cn(
+                          isDev && `__AddCategoryForm_description_${locale}`, // DEBUG
+                          'flex w-full flex-col gap-4',
+                        )}
+                      >
+                        <Label htmlFor={`category-description-${locale}`}>
+                          Description ({locale})
+                        </Label>
+                        <FormControl>
+                          <Textarea
+                            id={`category-description-${locale}`}
+                            placeholder={`Enter category description in ${locale}`}
+                            {...field}
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Keywords for {locale} */}
+                  <FormField
+                    name={`translations.${locale}.keywords`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem
+                        className={cn(
+                          isDev && `__AddCategoryForm_keywords_${locale}`, // DEBUG
+                          'flex w-full flex-col gap-4',
+                        )}
+                      >
+                        <Label htmlFor={`category-keywords-${locale}`}>Keywords ({locale})</Label>
+                        <FormControl>
+                          <Input
+                            id={`category-keywords-${locale}`}
+                            type="text"
+                            placeholder={`Enter keywords separated by commas in ${locale}`}
+                            {...field}
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormHint>Keywords help with search and categorization</FormHint>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+              ))}
+            </Tabs>
+
+            {/* Status */}
+            {!suggestionMode && (
+              <FormField
+                name="status"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      isDev && '__AddCategoryForm_status', // DEBUG
+                      'flex w-full flex-col gap-4',
+                    )}
+                  >
+                    <Label htmlFor="category-status">Status</Label>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger id="category-status">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="PUBLIC">Public</SelectItem>
+                        <SelectItem value="SUGGESTED">Suggested</SelectItem>
+                        <SelectItem value="HIDDEN">Hidden</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+          </div>
         )}
 
         {/* Actions */}
         <div
           className={cn(
-            isDev && '__AddCategoryForm_actions', // DEBUG
+            isDev && '__AddCategoryForm_Actions', // DEBUG
             'mt-4 flex w-full gap-4',
+            isSubmitSuccessful && 'justify-center',
           )}
         >
           <Button
             type="submit"
             variant={isSubmitEnabled ? 'success' : 'disabled'}
             disabled={!isSubmitEnabled}
-            className="gap-2"
+            className={cn(
+              isDev && '__AddCategoryForm_SaveButton', // DEBUG
+              'gap-2',
+              isSubmitSuccessful && 'hidden',
+            )}
           >
             {isBusy ? (
               <>
@@ -640,9 +764,27 @@ export function AddCategoryForm(props: TAddCategoryFormProps) {
               </>
             )}
           </Button>
-          <Button variant="ghost" onClick={handleCloseForm} className="gap-2">
-            <span>Cancel</span>
+          <Button
+            variant={isSubmitSuccessful ? 'theme' : 'ghost'}
+            onClick={handleCloseForm}
+            className="gap-2"
+          >
+            <span>{isSubmitSuccessful ? 'Close' : 'Cancel'}</span>
           </Button>
+        </div>
+
+        {/* LoadingSplash */}
+        <div
+          className={cn(
+            isDev && '__AddCategoryForm_LoadingSplash', // DEBUG
+            'absolute',
+            'inset-0 flex flex-col items-center justify-center gap-4 transition',
+            'my-2 bg-background',
+            'opacity-50',
+            !isBusy && 'pointer-events-none opacity-0',
+          )}
+        >
+          <Icons.Spinner className="size-16 animate-spin text-theme" />
         </div>
       </form>
     </FormProvider>

@@ -1155,5 +1155,9 @@
     "PaymentProcessingFailure": "Ошибка обработки оплаты",
     "PaymentStartingError": "Ошибка начала платежа",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
-  }
+  },
+  "Category": "Категория",
+  "PUBLIC": "Общественный",
+  "SUGGESTED": "Предложенный",
+  "HIDDEN": "Скрытый"
 }

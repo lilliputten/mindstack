@@ -42,7 +42,11 @@ const initialCategory: TCreateCategoryParams = {
   translations: [
     {
       locale: 'en',
-      name: 'Initial data test',
+      name: '',
+    },
+    {
+      locale: 'es',
+      name: 'Texto en español',
     },
   ],
 };
@@ -102,15 +106,17 @@ export function AddCategoryModal(props: TProps) {
       availableCategoriesQuery.addNewCategory(addedCategory, true);
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
-      // Close the modal first
-      setVisible(false);
-      if (jumpToNewEntities) {
-        // Then navigate to the edit page after a short delay to ensure modal is closed
-        // setTimeout(() => goToTheRoute(`${routePath}/${addedCategory.id}`, true), 100);
-        goToTheRoute(`${routePath}/${addedCategory.id}`, true);
-      } else {
-        goBack();
-      }
+      /* // NOTE: Don't close th modal automatically: there will be a message displayed and it'll be closed manually by the user.
+       * // Close the modal first
+       * setVisible(false);
+       * if (jumpToNewEntities) {
+       *   // Then navigate to the edit page after a short delay to ensure modal is closed
+       *   // setTimeout(() => goToTheRoute(`${routePath}/${addedCategory.id}`, true), 100);
+       *   goToTheRoute(`${routePath}/${addedCategory.id}`, true);
+       * } else {
+       *   goBack();
+       * }
+       */
     },
     onError: (error, newCategory) => {
       const message = t('ToastError');
@@ -129,10 +135,6 @@ export function AddCategoryModal(props: TProps) {
 
   const handleAddCategory = React.useCallback(
     (newCategory: TCreateCategoryParams) => {
-      console.log('[AddCategoryModal:handleAddCategory] before', {
-        newCategory,
-      });
-      debugger;
       const promise = addCategoryMutation.mutateAsync(newCategory);
       toast.promise(promise, {
         loading: t('ToastLoading'),

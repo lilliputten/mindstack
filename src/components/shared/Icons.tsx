@@ -28,6 +28,7 @@ export const {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  CircleAlert,
   CircleCheck,
   CircleDollarSign,
   CircleUserRound,

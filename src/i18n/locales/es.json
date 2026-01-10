@@ -1159,5 +1159,9 @@
     "PaymentProcessingFailure": "Error al procesar el pago",
     "PaymentStartingError": "Error al iniciar el pago",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
-  }
+  },
+  "Category": "Categoría",
+  "PUBLIC": "Público",
+  "SUGGESTED": "sugerido",
+  "HIDDEN": "Oculto"
 }

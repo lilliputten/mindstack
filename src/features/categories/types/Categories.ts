@@ -57,7 +57,11 @@ const CreateCategoryParamsSchema = CreateCategoryParamsSchemaBase.extend({
 });
 export type TCreateCategoryTranslation = z.infer<typeof CreateCategoryTranslationSchema>;
 
+// @see CategoryCreateInput, CategoryUpdateInput
 export type TCreateCategoryParams = z.infer<typeof CreateCategoryParamsSchema>;
+
+/** A safe category object with mininal data set */
+export type TSafeCategory = TCreateCategoryParams;
 
 export const CreateCategoriesParamsSchema = z.object({
   categories: z.array(CreateCategoryParamsSchema),
