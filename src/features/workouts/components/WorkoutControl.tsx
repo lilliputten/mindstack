@@ -4,6 +4,9 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { Link } from '@/i18n/routing';
 import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -12,9 +15,6 @@ import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useGoToTheRoute } from '@/hooks';
-import { useT } from '@/i18n';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { Link } from '@/i18n/routing';
 
 import { WorkoutStateDetails } from './WorkoutStateDetails';
 

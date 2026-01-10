@@ -24,6 +24,7 @@ import {
 } from '@/lib/helpers/react-query';
 import { composeUrlQuery } from '@/lib/helpers/urls';
 import { TGetAvailableTopicsParams, TGetAvailableTopicsResults } from '@/lib/zod-schemas';
+import { useT } from '@/i18n';
 import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import {
   defaultTopicsManageScope,
@@ -32,7 +33,6 @@ import {
 } from '@/contexts/TopicsContext';
 import { getAvailableTopics } from '@/features/topics/actions';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { useSessionUser } from '../useSessionUser';
 

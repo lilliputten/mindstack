@@ -1,10 +1,10 @@
 import { InlineKeyboard } from 'grammy';
 
+import { getT, localeNames } from '@/i18n';
+import { localesList } from '@/i18n/types';
 import { TCommandContext } from '@/features/bot/core/botTypes';
 import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
-import { getT, localeNames } from '@/i18n';
-import { localesList } from '@/i18n/types';
 
 const bot = getBot();
 

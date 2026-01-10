@@ -1,8 +1,8 @@
 import ms from 'ms';
 import { useFormatter } from 'next-intl';
 
-import { dayMs, halfYearMs, hourMs, minuteMs } from '@/constants';
 import { defaultLocale, TLocale, useT } from '@/i18n';
+import { dayMs, halfYearMs, hourMs, minuteMs } from '@/constants';
 
 /* // TODO: Translations:
  *

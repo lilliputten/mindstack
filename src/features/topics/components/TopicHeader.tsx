@@ -4,6 +4,9 @@ import { useFormatter } from 'next-intl';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { safeJsonParse } from '@/lib/helpers/json';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { Link, usePathname } from '@/i18n/routing';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
@@ -12,9 +15,6 @@ import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/cont
 import { TAvailableTopic, TIncludedUserTopicWorkout } from '@/features/topics/types';
 import { TWorkoutData } from '@/features/workouts/types';
 import { useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { Link, usePathname } from '@/i18n/routing';
 
 // TODO: Use 'next/navigation'
 

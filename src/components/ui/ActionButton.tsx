@@ -4,11 +4,11 @@ import React from 'react';
 
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n/routing';
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
 import { TRoutePath } from '@/config';
-import { Link } from '@/i18n/routing';
 
 export interface TActionItem extends Omit<ButtonProps, 'content'> {
   id: string;

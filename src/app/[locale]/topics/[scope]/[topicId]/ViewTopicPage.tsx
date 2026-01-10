@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Card } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
@@ -21,7 +22,6 @@ import {
   useGoBack,
   useGoToTheRoute,
 } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewTopicContentSummary } from './ViewTopicContentSummary';

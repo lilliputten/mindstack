@@ -3,10 +3,10 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
 import { yearlyDiscountPercents } from '@/constants';
-import { useT } from '@/i18n';
 
 import { ToggleButton, ToggleContainer } from './shared';
 import { TBillingPeriod } from './shared/types';

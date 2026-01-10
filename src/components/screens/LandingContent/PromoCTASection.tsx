@@ -3,10 +3,10 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { aboutAliasRoute, isDev, startAliasRoute } from '@/config';
-import { Link } from '@/i18n/routing';
 
 export function PromoCTASection() {
   return (

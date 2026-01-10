@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
@@ -12,7 +13,6 @@ import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 import { TFormData } from './types';
 

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -38,7 +39,6 @@ import {
   questionsGenerationTypeTexts,
 } from '@/features/ai/types/GenerateQuestionsTypes';
 import { TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 const formSchema = generateTopicQuestionsParamsSchema.pick({
   debugData: true,

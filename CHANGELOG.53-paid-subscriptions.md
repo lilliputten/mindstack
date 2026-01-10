@@ -8,6 +8,7 @@ Add paid subscribtions.
 This PR implements the core paid subscriptions system for issue #53. It adds multi-currency pricing, payment processing via Yookassa and Stripe, and the necessary user subscription management.
 
 Key changes:
+
 - Added a new `Currency` Prisma model with a migration for storing exchange rates, using datetime stamps for updates.
 - Created dynamic price calculation logic on the server, supporting multiple currencies. Added React Query hooks (`useCurrencyRatios`) and server actions for fetching rates.
 - Implemented payment infrastructure: added `UserPayment` database model with migrations and supporting server actions.

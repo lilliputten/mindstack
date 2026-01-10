@@ -5,8 +5,8 @@ import {
   UserSubscriptionPeriodType,
 } from '@/generated/prisma';
 
-import { TPaidableSubscriptionType } from '@/features/subscriptions';
 import { TTranslator } from '@/i18n';
+import { TPaidableSubscriptionType } from '@/features/subscriptions';
 
 /** Parse correct grade and period values from combined raw subscription type, usually in form '{grade}-{period}` */
 export function parsePaidableSubscriptionType(

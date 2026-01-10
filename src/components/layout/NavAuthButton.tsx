@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import {
@@ -13,7 +14,6 @@ import {
 } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 import { NavUserAccount } from './NavUserAccount';
 import { NavUserBlock } from './NavUserBlock';

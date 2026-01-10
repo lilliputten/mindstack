@@ -3,6 +3,8 @@ import React from 'react';
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
@@ -13,8 +15,6 @@ import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 import { AvailableTopicsListItem } from './AvailableTopicsListItem';
 import { ContentListSkeleton } from './ContentSkeleton';

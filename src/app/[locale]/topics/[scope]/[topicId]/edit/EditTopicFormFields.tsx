@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -16,7 +17,6 @@ import { MarkdownHint } from '@/components/blocks/MarkdownHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { TTopicFormData } from './types';
 

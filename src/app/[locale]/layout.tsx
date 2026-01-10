@@ -16,6 +16,7 @@ import { defaultThemeColor } from '@/config/themeColors';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 import { Toaster } from '@/components/ui/Toaster';
 import { GenericLayout } from '@/components/layout/GenericLayout';
 import { SignInModalProvider } from '@/components/modals';
@@ -26,7 +27,6 @@ import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
-import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;

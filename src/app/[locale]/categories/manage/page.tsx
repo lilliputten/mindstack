@@ -4,11 +4,11 @@ import { setRequestLocale } from 'next-intl/server';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { TAwaitedLocaleProps } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
 import { TCategoryId } from '@/features/categories';
-import { TAwaitedLocaleProps } from '@/i18n';
 
 import { ManageCategoriesPageModalsWrapper } from './ManageCategoriesPageModalsWrapper';
 

@@ -10,12 +10,12 @@ import { handleApiResponse } from '@/lib/api';
 import { getErrorText } from '@/lib/helpers';
 import { deleteCookie, setCookie } from '@/lib/helpers/cookies';
 import { removeFalsyValues, removeNullUndefinedValues } from '@/lib/helpers/objects';
-import { getSettings } from '@/features/settings/actions';
-import { defaultSettings, settingsSchema, TSettings } from '@/features/settings/types';
-import { useSwitchRouterLocale } from '@/hooks';
 import { useT } from '@/i18n';
 // import { TDefinedUserId } from '@/features/users/types/TUser';
 import { defaultLocale, TLocale } from '@/i18n/types';
+import { getSettings } from '@/features/settings/actions';
+import { defaultSettings, settingsSchema, TSettings } from '@/features/settings/types';
+import { useSwitchRouterLocale } from '@/hooks';
 
 import { SettingsContextData } from './SettingsContextDefinitions';
 

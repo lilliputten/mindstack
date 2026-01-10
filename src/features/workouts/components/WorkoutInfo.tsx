@@ -5,10 +5,10 @@ import { useFormatter } from 'next-intl';
 
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TWorkoutData } from '@/features/workouts/types';
-import { useT } from '@/i18n';
 
 interface TWorkoutInfoProps {
   workout: TWorkoutData | null;

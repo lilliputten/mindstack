@@ -2,10 +2,10 @@ import React from 'react';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
+import { useT } from '@/i18n';
 import { TTopic } from '@/features/topics/types';
 import { getUsersByIdsList } from '@/features/users/actions';
 import { TUser, TUserId } from '@/features/users/types/TUser';
-import { useT } from '@/i18n';
 
 export type TCachedUsers = Record<TUserId, TUser>;
 

@@ -5,6 +5,7 @@ import React from 'react';
 import { truncateString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { isDev } from '@/config';
 import {
   getActiveFilterIds,
@@ -12,7 +13,6 @@ import {
   getFiltersDataValueString,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
-import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   filtersData?: TFiltersData;

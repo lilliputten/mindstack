@@ -6,6 +6,8 @@ import { APIError } from '@/lib/types/api';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { TCachedUsers, useCachedUsersForTopics } from '@/hooks/topics/useCachedUsersForTopics';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
@@ -35,8 +37,6 @@ import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ContentSkeletonTable } from './ContentSkeleton';

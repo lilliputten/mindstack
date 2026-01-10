@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import * as Icons from '@/components/shared/Icons';
 import { useT } from '@/i18n';
+import * as Icons from '@/components/shared/Icons';
 
 export function MarkdownHint() {
   const t = useT();

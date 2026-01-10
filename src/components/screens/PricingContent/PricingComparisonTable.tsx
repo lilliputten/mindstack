@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import {
   Table,
@@ -15,7 +16,6 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { useEnvConext } from '@/contexts/EnvContext';
-import { useT } from '@/i18n';
 
 interface ComparisonFeature {
   name: string;

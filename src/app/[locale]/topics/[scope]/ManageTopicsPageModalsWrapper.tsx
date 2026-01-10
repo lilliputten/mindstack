@@ -3,6 +3,7 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import { useT } from '@/i18n';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import {
   convertAvailableFiltersToParams,
@@ -12,7 +13,6 @@ import {
 } from '@/contexts/TopicsFiltersContext';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoToTheRoute } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ContentSkeleton } from './ContentSkeleton';

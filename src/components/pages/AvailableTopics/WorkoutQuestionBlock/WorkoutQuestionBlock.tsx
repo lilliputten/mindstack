@@ -4,6 +4,7 @@ import React from 'react';
 import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { WorkoutQuestion } from '@/components/pages/AvailableTopics/WorkoutQuestion/WorkoutQuestion';
 import { PageError } from '@/components/shared/PageError';
@@ -11,7 +12,6 @@ import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useAvailableAnswers, useGoToTheRoute } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { WorkoutQuestionBlockSkeleton } from './WorkoutQuestionBlockSkeleton';
 

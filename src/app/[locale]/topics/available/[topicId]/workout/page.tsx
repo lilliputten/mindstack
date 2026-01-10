@@ -1,10 +1,10 @@
 import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { WorkoutTopic } from './WorkoutTopic';
 

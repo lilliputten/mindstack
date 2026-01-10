@@ -10,11 +10,11 @@ import * as z from 'zod';
 import { clearLocalStorage, getErrorText } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Spinner } from '@/components/shared/Icons';
 import { contactEmail, isDev } from '@/config';
 import { checkIsAllowedEmail } from '@/features/allowed-users/helpers/checkIsAllowedEmail';
-import { useT } from '@/i18n';
 
 const __debugUseTestEmail = false;
 

@@ -4,6 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
@@ -15,7 +16,6 @@ import {
   TTopicLanguageData,
 } from '@/features/topics/types';
 import { useMediaQuery } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { SelectLanguageCustomForm } from './SelectLanguageCustomForm';
 import { SelectLanguagePredefinedForm } from './SelectLanguagePredefinedForm';

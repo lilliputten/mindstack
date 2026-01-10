@@ -4,9 +4,9 @@ import React from 'react';
 import { useFormatter } from 'next-intl';
 
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
+import { useT } from '@/i18n';
 import * as Icons from '@/components/shared/Icons';
 import { TAvailableTopic } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 interface TTopicPropertiesOptions {
   showDates?: boolean;

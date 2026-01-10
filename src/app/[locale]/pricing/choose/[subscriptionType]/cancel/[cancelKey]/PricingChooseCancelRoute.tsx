@@ -10,6 +10,7 @@ import { ErrorLike } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared';
@@ -19,7 +20,6 @@ import {
   ensurePaidableSubscriptionType,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
-import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChooseCancelContent } from './PricingChooseCancelContent';
 

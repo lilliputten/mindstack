@@ -6,6 +6,9 @@ import { usePathname } from 'next/navigation';
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
 import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { removePathLocalePrefix } from '@/i18n/helpers';
+import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
@@ -15,9 +18,6 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
-import { useT } from '@/i18n';
-import { removePathLocalePrefix } from '@/i18n/helpers';
-import { Link } from '@/i18n/routing';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 

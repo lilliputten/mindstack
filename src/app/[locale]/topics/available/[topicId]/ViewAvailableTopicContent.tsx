@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
@@ -12,7 +13,6 @@ import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TAvailableTopic } from '@/features/topics/types';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
-import { useT } from '@/i18n';
 
 interface TViewAvailableTopicContentProps {
   topic: TAvailableTopic;

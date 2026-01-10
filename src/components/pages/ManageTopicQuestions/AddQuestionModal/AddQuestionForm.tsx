@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -16,7 +17,6 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewQuestion, TQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { maxTextLength, minTextLength } from '../constants';
 

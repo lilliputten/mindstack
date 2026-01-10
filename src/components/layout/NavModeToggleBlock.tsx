@@ -4,10 +4,10 @@ import { useTheme } from 'next-themes';
 
 import { defaultSystemTheme, systemThemeIcons, TSystemThemeId } from '@/config/themes';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/DropdownMenu';
 import { isDev } from '@/config';
 import { useSettingsContext } from '@/contexts/SettingsContext';
-import { useT } from '@/i18n';
 
 import { SidebarMenuItem, SidebarWrapper, TSidebarBlockProps } from './SidebarComponents';
 

@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
@@ -11,7 +12,6 @@ import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { useAvailableTopicsByScope, useGoToTheRoute, useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { AvailableTopicsList } from './AvailableTopicsList';
 

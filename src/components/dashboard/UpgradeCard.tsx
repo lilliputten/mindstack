@@ -1,10 +1,10 @@
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Link, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
-import { Link, useT } from '@/i18n';
 
 export function UpgradeCard({
   className,

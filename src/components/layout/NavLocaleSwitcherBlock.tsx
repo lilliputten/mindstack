@@ -4,13 +4,13 @@ import React from 'react';
 import { useLocale } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { localeNames, localeSymbols } from '@/i18n';
+import { routing } from '@/i18n/routing';
 import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/DropdownMenu';
 import { debugLocale, showDebugLocale } from '@/config';
 import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { useSessionUser } from '@/hooks';
-import { localeNames, localeSymbols } from '@/i18n';
-import { routing } from '@/i18n/routing';
 
 import { SidebarMenuItem, SidebarWrapper, TSidebarBlockProps } from './SidebarComponents';
 

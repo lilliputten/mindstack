@@ -10,6 +10,8 @@ import {
 } from '@/generated/prisma';
 
 import { cn } from '@/lib/utils';
+import { TLocale, useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button, TButtonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -26,8 +28,6 @@ import {
   useAllSubscriptionPrices,
 } from '@/features/subscriptions';
 import { useGoToTheRoute } from '@/hooks';
-import { TLocale, useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 import { TBillingPeriod } from './shared/types';
 

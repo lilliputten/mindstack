@@ -4,13 +4,13 @@ import React from 'react';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 import { useAIGenerationsStatus } from '../query-hooks/useAIGenerationsStatus';
 import { unlimitedGenerations } from '../types/TAIGenerationsStatus';

@@ -3,12 +3,12 @@ import { CallbackQueryContext, InlineKeyboard } from 'grammy';
 import { getFormatter } from 'next-intl/server';
 
 import { prisma } from '@/lib/db';
+import { getT, localeNames } from '@/i18n';
 import { BotContext, TCommandContext } from '@/features/bot/core/botTypes';
 import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
 import { getTelegramUserAvatarUrl } from '@/features/bot/helpers/getTelegramUserAvatarUrl';
 import { createUserOrUpdateTelegramUser } from '@/features/users/actions';
-import { getT, localeNames } from '@/i18n';
 
 const bot = getBot();
 

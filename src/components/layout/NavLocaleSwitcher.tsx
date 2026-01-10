@@ -5,10 +5,10 @@ import { useLocale } from 'next-intl';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { localeNames, localeSymbols, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
 import { isDev } from '@/constants';
-import { localeNames, localeSymbols, useT } from '@/i18n';
 
 import { NavLocaleSwitcherBlock } from './NavLocaleSwitcherBlock';
 

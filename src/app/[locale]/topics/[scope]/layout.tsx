@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
 import { isAdminUser, isLoggedUser } from '@/lib/session';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { welcomeAliasRoute } from '@/config';
 import {
   TopicsManageScopeIds,
@@ -9,7 +10,6 @@ import {
   topicsRoutes,
   TTopicsManageScopeId,
 } from '@/contexts/TopicsContext';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 import { ManageTopicsStoreProvider } from '@/stores/ManageTopicsStoreProvider';
 
 type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId }>;

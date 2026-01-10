@@ -4,6 +4,7 @@ import React from 'react';
 
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -26,7 +27,6 @@ import {
   useGoToTheRoute,
   useSessionUser,
 } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { ContentSkeleton } from './ContentSkeleton';
 import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';

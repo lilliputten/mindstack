@@ -4,8 +4,8 @@ import React from 'react';
 import { useFormatter } from 'next-intl';
 
 import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
-import { TWorkoutData } from '@/features/workouts/types';
 import { useT } from '@/i18n';
+import { TWorkoutData } from '@/features/workouts/types';
 
 export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
   const format = useFormatter();

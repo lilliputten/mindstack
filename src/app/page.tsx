@@ -2,9 +2,9 @@ import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
-import { startAliasRoute, welcomeAliasRoute } from '@/config';
 import { getT } from '@/i18n';
 import { defaultLocale, TAwaitedLocaleProps } from '@/i18n/types';
+import { startAliasRoute, welcomeAliasRoute } from '@/config';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;

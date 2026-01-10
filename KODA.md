@@ -14,16 +14,19 @@ MindStack is a NextJS Memory Training Application designed to help users learn a
 ## Technology Stack
 
 ### Core Framework
+
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type-safe development
 - **React 19** - UI library
 
 ### Database & ORM
+
 - **PostgreSQL** - Primary database
 - **Prisma 6** - ORM with type-safe database access
 - **zod-prisma-types** - Auto-generated Zod schemas from Prisma
 
 ### Styling & UI
+
 - **Tailwind CSS 3.4** - Utility-first CSS framework
 - **Radix UI** - Unstyled, accessible UI components
 - **SCSS/Sass** - Additional styling with CSS variables and theming
@@ -32,34 +35,41 @@ MindStack is a NextJS Memory Training Application designed to help users learn a
 - **tailwind-merge** - Tailwind class merging utility
 
 ### State Management & Data Fetching
+
 - **React Query (TanStack Query 5)** - Server state management
 - **Zustand 5** - Client-side state management
 - **Context API** - React context for local state
 
 ### Authentication & Security
+
 - **NextAuth.js 5** - Authentication with multiple providers
 - **Telegram Auth** - Telegram-based authentication
 - **Zod** - Schema validation
 
 ### Internationalization
+
 - **next-intl** - Internationalization for Next.js App Router
 - **Supported locales:** English (en), Spanish (es), Russian (ru)
 
 ### AI Integration
+
 - **GigaChat** - AI content generation
 - **LangChain** - AI model orchestration
 - **Cloudflare Workers AI** - Alternative AI provider
 
 ### Payments
+
 - **Stripe** - Payment processing
 - **Yookassa** - Russian payment processor
 
 ### Testing
+
 - **Jest** - Testing framework
 - **React Testing Library** - Component testing
 - **ts-jest** - TypeScript Jest support
 
 ### Development Tools
+
 - **ESLint** - Code linting with TypeScript support
 - **Prettier** - Code formatting
 - **Stylelint** - SCSS/CSS linting
@@ -138,33 +148,39 @@ mindstack/
 ## Key Features
 
 ### Core Functionality
+
 1. **Topic Management** - Create, edit, delete, and manage learning topics
 2. **Question & Answer System** - Add questions with multiple answers to topics
 3. **Workout System** - Interactive quiz-based learning sessions
 4. **Progress Tracking** - Track workout statistics and performance
 
 ### User System
+
 1. **Authentication** - Multiple auth providers (Telegram, Email, GitHub, Google, Yandex)
 2. **User Roles** - USER and ADMIN roles
 3. **User Grades** - GUEST, BASIC, PRO, PREMIUM, UNLIMITED tiers
 4. **Subscription System** - Monthly and yearly subscriptions
 
 ### AI Features
+
 1. **Question Generation** - AI-powered question generation for topics
 2. **Answer Generation** - AI-powered answer generation for questions
 3. **Usage Tracking** - Track AI generation usage per user
 
 ### Payments
+
 1. **Stripe Integration** - International payment processing
 2. **Yookassa Integration** - Russian payment processor
 3. **Subscription Management** - Manage user subscriptions
 
 ### Telegram Bot
+
 1. **Command Handling** - Bot commands for various actions
 2. **User Authorization** - Telegram-based user management
 3. **Notifications** - Bot-based user notifications
 
 ### Localization
+
 1. **Multi-language Support** - English, Spanish, Russian
 2. **Dynamic Locale Switching** - User can change language
 3. **Language Detection** - Auto-detect user locale
@@ -174,6 +190,7 @@ mindstack/
 ## Build & Run Commands
 
 ### Development
+
 ```bash
 # Run development server with turbo mode
 pnpm dev
@@ -183,6 +200,7 @@ npm run dev
 ```
 
 ### Build
+
 ```bash
 # Build for production
 pnpm build
@@ -194,6 +212,7 @@ npm run preview
 ```
 
 ### Production
+
 ```bash
 # Start production server
 pnpm start
@@ -201,6 +220,7 @@ npm run start
 ```
 
 ### Database Operations
+
 ```bash
 # Generate Prisma client
 pnpm prisma-generate
@@ -222,6 +242,7 @@ pnpm prisma-studio
 ```
 
 ### Linting & Formatting
+
 ```bash
 # Run ESLint
 pnpm eslint
@@ -250,6 +271,7 @@ pnpm check-all
 ```
 
 ### Type Checking
+
 ```bash
 # TypeScript type checking
 pnpm check-types
@@ -257,6 +279,7 @@ npm run check-types
 ```
 
 ### Testing
+
 ```bash
 # Run tests
 pnpm test
@@ -273,6 +296,7 @@ pnpm test-watch
 ```
 
 ### Maintenance
+
 ```bash
 # Clear all caches
 pnpm clear-all
@@ -288,6 +312,7 @@ pnpm scripts-help
 ```
 
 ### Full CI Pipeline
+
 ```bash
 # Run all checks and tests
 pnpm check-and-test
@@ -300,36 +325,47 @@ pnpm check-and-test
 ### Main Models
 
 **User** - Core user entity with roles, grades, and subscriptions
+
 - Relations: Accounts, Sessions, Topics, Payments, Settings, Workouts, AI Generations, Categories
 
 **Topic** - Learning topic with questions
+
 - Relations: Questions, User, Category, UserTopicWorkouts, WorkoutStats
 
 **Question** - Quiz question within a topic
+
 - Relations: Answers, Topic
 
 **Answer** - Answer option for a question
+
 - Relations: Question
 
 **UserTopicWorkout** - Active workout session
+
 - Relations: User, Topic, WorkoutStats
 
 **WorkoutStats** - Completed workout statistics
+
 - Relations: User, Topic, UserTopicWorkout
 
 **Category** - Topic categories
+
 - Relations: Topics, Translations, User
 
 **UserPayment** - Payment records
+
 - Relations: User
 
 **AIGeneration** - AI generation usage tracking
+
 - Relations: User
 
 **AllowedUser** - Email/Telegram allowlist for access control
+
 - Relations: None (standalone)
 
 ### Enums
+
 - `UserRole`: USER, ADMIN
 - `UserGrade`: GUEST, BASIC, PRO, PREMIUM, UNLIMITED
 - `UserSubscriptionPeriod`: MONTH, YEAR
@@ -344,12 +380,14 @@ pnpm check-and-test
 ## Coding Standards
 
 ### TypeScript
+
 - Strict mode enabled in `tsconfig.json`
 - No `any` types - use explicit types or `unknown`
 - Use TypeScript ESLint plugin for additional rules
 - Path aliases: `@/*` maps to `src/*`
 
 ### React Components
+
 - Use functional components with hooks
 - Prefer named exports for components
 - Use proper TypeScript types for props
@@ -357,6 +395,7 @@ pnpm check-and-test
 - Use Radix UI primitives for accessible components
 
 ### Styling
+
 - Tailwind CSS for component-level styling
 - SCSS for global styles and theming
 - CSS variables for dynamic theming (colors, fonts, etc.)
@@ -364,24 +403,28 @@ pnpm check-and-test
 - `clsx` for conditional classes
 
 ### State Management
+
 - React Query for server state
 - Zustand for complex client state
 - React Context for simple shared state
 - LocalStorage for persistence when needed
 
 ### API Routes
+
 - Use Next.js App Router API routes (`src/app/api/`)
 - Return proper Next.js `Response` objects
 - Validate inputs with Zod schemas
 - Use try/catch with proper error handling
 
 ### Testing
+
 - Jest for unit tests
 - React Testing Library for component tests
 - Place tests alongside source files (`*.test.ts`)
 - Use snapshots for component output tests
 
 ### Git & Commits
+
 - Conventional commit messages (commitlint)
 - Husky for pre-commit hooks
 - lint-staged for staged file linting
@@ -391,6 +434,7 @@ pnpm check-and-test
 ## Environment Variables
 
 ### Required Variables
+
 ```env
 # App
 NEXT_PUBLIC_URL=<application_url>
@@ -413,6 +457,7 @@ GIGACHAT_MODEL=<gigachat_model>
 ```
 
 ### Optional Variables
+
 ```env
 # Stripe
 NEXT_STRIPE_PUBLISHABLE_KEY=<stripe_key>
@@ -448,11 +493,13 @@ USE_ALLOWED_USERS=true|false
 ## Internationalization
 
 ### Supported Locales
+
 - `en` - English
 - `es` - Spanish
 - `ru` - Russian
 
 ### Configuration
+
 - Default locale: `en`
 - Locale files: `src/i18n/locales/*.json`
 - Translation keys follow naming conventions
@@ -460,6 +507,7 @@ USE_ALLOWED_USERS=true|false
 - Use `getT` function for server-side translations
 
 ### Adding New Translations
+
 1. Add locale to `src/i18n/types.ts`
 2. Create locale file in `src/i18n/locales/`
 3. Add translations for all keys
@@ -470,9 +518,11 @@ USE_ALLOWED_USERS=true|false
 ## API Structure
 
 ### API Routes Location
+
 All API routes are located in `src/app/api/`
 
 ### Main API Endpoints
+
 - `/api/auth/*` - Authentication endpoints
 - `/api/topics/*` - Topic management
 - `/api/questions/*` - Question management
@@ -482,6 +532,7 @@ All API routes are located in `src/app/api/`
 - `/api/bot/*` - Telegram bot webhook
 
 ### Response Format
+
 ```typescript
 // Success response
 {
@@ -504,6 +555,7 @@ All API routes are located in `src/app/api/`
 ## Development Workflow
 
 ### Setting Up Development Environment
+
 1. Clone the repository
 2. Install dependencies: `pnpm install`
 3. Set up environment variables (copy `.env.SAMPLE` to `.env`)
@@ -511,6 +563,7 @@ All API routes are located in `src/app/api/`
 5. Run development server: `pnpm dev`
 
 ### Making Changes
+
 1. Create feature branch from `main`
 2. Make changes following coding standards
 3. Run linting: `pnpm lint-all`
@@ -519,6 +572,7 @@ All API routes are located in `src/app/api/`
 6. Push and create pull request
 
 ### Code Review
+
 - Ensure all linting passes
 - Ensure all tests pass
 - Check TypeScript compilation
@@ -530,11 +584,13 @@ All API routes are located in `src/app/api/`
 ## Testing Guidelines
 
 ### Test Files Location
+
 - Unit tests: `__tests__/` directories
 - Component tests: `__tests__/` alongside components
 - Action tests: `__tests__/` in feature directories
 
 ### Running Tests
+
 ```bash
 # Run all tests
 pnpm test
@@ -550,6 +606,7 @@ pnpm test-watch
 ```
 
 ### Writing Tests
+
 - Use React Testing Library for components
 - Mock external dependencies
 - Test happy path and error cases
@@ -560,11 +617,13 @@ pnpm test-watch
 ## Deployment
 
 ### Vercel (Recommended)
+
 1. Connect repository to Vercel
 2. Configure environment variables
 3. Deploy automatically on push
 
 ### Docker
+
 ```bash
 # Build image
 docker build -t mindstack .
@@ -574,6 +633,7 @@ docker run -p 3000:3000 mindstack
 ```
 
 ### Manual Deployment
+
 1. Build: `pnpm build`
 2. Start: `pnpm start`
 
@@ -584,26 +644,31 @@ docker run -p 3000:3000 mindstack
 ### Common Issues
 
 **Prisma Client Generation Fails**
+
 ```bash
 pnpm prisma-generate
 ```
 
 **Database Connection Issues**
+
 - Check `DATABASE_URL` in `.env`
 - Ensure database is running
 - Run `pnpm prisma-validate`
 
 **TypeScript Errors**
+
 ```bash
 pnpm check-types
 ```
 
 **ESLint Issues**
+
 ```bash
 pnpm eslint-fix
 ```
 
 ### Debug Mode
+
 Set `NEXT_PUBLIC_DEBUG_TRANSLATIONS=true` to see translation keys instead of translated text.
 
 ---
@@ -630,12 +695,15 @@ Set `NEXT_PUBLIC_DEBUG_TRANSLATIONS=true` to see translation keys instead of tra
 7. **API Responses:** Use `handleApiResponse` utility for consistent responses
 
 ### SCSS Variables
+
 - Theme colors defined in `src/config/themeColors.ts`
 - CSS variables generated in `next.config.ts`
 - SCSS variables in `src/styles/variables.scss`
 
 ### Feature Development
+
 When adding new features:
+
 1. Create feature directory in `src/features/`
 2. Define types in `types/` subdirectory
 3. Create actions in `actions/` subdirectory
@@ -647,6 +715,7 @@ When adding new features:
 9. Update documentation
 
 ### Database Changes
+
 1. Update `prisma/schema.prisma`
 2. Run `pnpm prisma-migrate-dev` to create migration
 3. Run `pnpm prisma-generate` to update types

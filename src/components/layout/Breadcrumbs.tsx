@@ -4,10 +4,10 @@ import React from 'react';
 
 import { TPropsWithClassName, TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n/routing';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { Link } from '@/i18n/routing';
 
 function BreadcrumbsDelim() {
   return <span className="opacity-50">&raquo;</span>;

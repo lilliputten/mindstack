@@ -7,10 +7,10 @@ import { X } from 'lucide-react';
 import { Drawer } from 'vaul';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { isDev } from '@/constants';
 import { useMediaQuery } from '@/hooks';
-import { useT } from '@/i18n';
 
 interface ModalProps {
   children: React.ReactNode;

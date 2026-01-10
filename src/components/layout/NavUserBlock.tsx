@@ -7,6 +7,8 @@ import { signOut, useSession } from 'next-auth/react';
 import { clearLocalStorage, deleteAllCookies } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import {
   DropdownMenuContent,
   DropdownMenuItem,
@@ -17,8 +19,6 @@ import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 import { SidebarMenuItem, SidebarWrapper } from './SidebarComponents';
 

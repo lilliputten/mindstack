@@ -1,9 +1,9 @@
+import { TTranslator } from '@/i18n';
 import {
   paidableSubscriptionTypes,
   paidableSubscriptionTypesSchema,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
-import { TTranslator } from '@/i18n';
 
 /** Make sure the subscription type is expected and correct */
 export function ensurePaidableSubscriptionType(rawValue: string, t?: TTranslator) {

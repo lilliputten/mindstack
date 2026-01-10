@@ -3,12 +3,12 @@ import { setRequestLocale } from 'next-intl/server';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PricingContent } from '@/components/screens/PricingContent';
 import { isDev } from '@/constants';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TPricingPageProps = TAwaitedLocaleProps;
 

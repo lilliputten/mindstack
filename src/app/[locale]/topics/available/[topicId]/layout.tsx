@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/lib/session';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageError } from '@/components/shared/PageError';
 import { WorkoutContextProvider } from '@/contexts/WorkoutContext';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TAwaitedProps = TAwaitedLocaleProps<{
   //  scope: TTopicsManageScopeId;

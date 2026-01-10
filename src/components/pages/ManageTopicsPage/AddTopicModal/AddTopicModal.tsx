@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { isDev } from '@/constants';
@@ -21,7 +22,6 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';

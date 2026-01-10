@@ -3,12 +3,12 @@ import { redirect } from 'next/navigation';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, welcomeAliasRoute } from '@/config';
 import { topicsNamespaces, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TTopicId } from '@/features/topics/types';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { ManageTopicsPageModalsWrapper } from './ManageTopicsPageModalsWrapper';
 

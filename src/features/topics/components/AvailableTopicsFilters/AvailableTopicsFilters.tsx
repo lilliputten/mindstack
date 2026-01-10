@@ -4,6 +4,7 @@ import React from 'react';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { FormProvider } from '@/components/ui/Form';
@@ -12,7 +13,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
-import { useT } from '@/i18n';
 
 import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
 import { AvailableTopicsFiltersInfo } from './AvailableTopicsFiltersInfo';

@@ -3,9 +3,9 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Heart, Sparkles, Star } from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useT } from '@/i18n';
 
 import { CardWithIcon } from './shared';
 

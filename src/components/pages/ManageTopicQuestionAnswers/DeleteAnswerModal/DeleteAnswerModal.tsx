@@ -7,11 +7,11 @@ import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
+import { useT } from '@/i18n';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteAnswer } from '@/features/answers/actions';
 import { TAnswerId, TAvailableAnswer } from '@/features/answers/types';
 import { useAvailableAnswers, useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { topicAnswerDeletedEventId } from './constants';

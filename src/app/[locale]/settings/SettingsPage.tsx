@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { getErrorText, getRandomHashString, removeNullUndefinedValues } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Card, CardContent } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
@@ -19,7 +20,6 @@ import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { settingsSchema, TSettings } from '@/features/settings/types';
 import { TUserId } from '@/features/users/types/TUser';
-import { useT } from '@/i18n';
 
 import { CardContentSkeleton } from './skeletons';
 

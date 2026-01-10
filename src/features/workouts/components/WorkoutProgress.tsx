@@ -3,11 +3,11 @@ import React from 'react';
 import { generateArray } from '@/lib/helpers';
 import { TReactPrimitive } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Progress } from '@/components/ui/Progress';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
-import { useT } from '@/i18n';
 
 export function WorkoutProgress() {
   const t = useT();

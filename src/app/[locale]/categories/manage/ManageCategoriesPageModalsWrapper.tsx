@@ -3,6 +3,7 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import { useT } from '@/i18n';
 import { manageCategoriesRoute } from '@/config';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 /* // TODO: Filters
@@ -15,7 +16,6 @@ import { useAvailableCategories } from '@/features/categories/query-hooks/useAva
  */
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoToTheRoute } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { ManageCategoriesList } from './ManageCategoriesList';
 

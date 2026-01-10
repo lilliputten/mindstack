@@ -7,6 +7,7 @@ import * as z from 'zod';
 
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -16,7 +17,6 @@ import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { maxNameLength, minNameLength } from '../constants';
 

@@ -1,10 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 // TODO: Force 404 status code for the response
 

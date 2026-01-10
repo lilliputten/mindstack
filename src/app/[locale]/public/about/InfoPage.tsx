@@ -3,11 +3,11 @@ import { setRequestLocale } from 'next-intl/server';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { InfoScreen } from '@/components/screens/InfoScreen';
 import { isDev } from '@/constants';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TInfoPageProps = TAwaitedLocaleProps;
 

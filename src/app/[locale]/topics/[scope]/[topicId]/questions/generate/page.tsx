@@ -1,5 +1,5 @@
-import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TAwaitedLocaleProps } from '@/i18n/types';
+import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 
 import ManageTopicQuestionsPage from '../page';
 

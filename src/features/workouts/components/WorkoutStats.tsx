@@ -6,6 +6,8 @@ import { useFormatter } from 'next-intl';
 import { getErrorText } from '@/lib/helpers';
 import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -24,8 +26,6 @@ import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useSessionData } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 interface TWorkoutStatsProps {
   className?: string;

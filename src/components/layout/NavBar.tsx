@@ -4,14 +4,14 @@ import React from 'react';
 
 import { siteMenu } from '@/config/siteMenu';
 import { cn } from '@/lib/utils';
+import { removePathLocalePrefix, useT } from '@/i18n';
+import { Link, usePathname } from '@/i18n/routing';
 import { NavUserAuthButton } from '@/components/layout/NavAuthButton';
 import { NavBarBrand } from '@/components/layout/NavBarBrand';
 import { NavLocaleSwitcher } from '@/components/layout/NavLocaleSwitcher';
 import { NavModeToggle } from '@/components/layout/NavModeToggle';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { removePathLocalePrefix, useT } from '@/i18n';
-import { Link, usePathname } from '@/i18n/routing';
 
 interface NavBarProps {
   large?: boolean;

@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithChildren, TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -28,7 +29,6 @@ import {
   orderBySelectOptions,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
-import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
