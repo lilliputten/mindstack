@@ -4,8 +4,6 @@
 import '@/jest/jestDomSetup';
 import '@/jest/jestReactSetup';
 
-// import { render } from '@testing-library/react';
-
 describe('ManageCategoriesPageModalsWrapper snapshots', () => {
   // Skip this test for now as it requires complex setup
   it.skip('should match snapshot when no modals are open', () => {

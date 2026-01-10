@@ -137,11 +137,14 @@ describe('updateCategories', () => {
       }
 
       // Verify database is updated
-      const dbCategories = await jestPrisma.category.findMany({
-        where: { id: { in: categories.map((c) => c.id) } },
+      const dbCategory1 = await jestPrisma.category.findUnique({
+        where: { id: categories[0].id },
       });
-      expect(dbCategories[0].status).toBe('HIDDEN');
-      expect(dbCategories[1].status).toBe('SUGGESTED');
+      const dbCategory2 = await jestPrisma.category.findUnique({
+        where: { id: categories[1].id },
+      });
+      expect(dbCategory1?.status).toBe('HIDDEN');
+      expect(dbCategory2?.status).toBe('SUGGESTED');
     } finally {
       await cleanupDb(createdIds);
     }
