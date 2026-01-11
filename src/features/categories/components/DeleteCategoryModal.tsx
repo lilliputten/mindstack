@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { usePathname } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -10,7 +9,6 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
-import * as Icons from '@/components/shared/Icons';
 import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev, manageCategoriesRoute } from '@/config';
 import { getCategoryName, useAvailableCategoryById } from '@/features/categories';
@@ -22,6 +20,9 @@ interface TDeleteCategoryModalProps {
   categoryId?: TCategoryId;
   from?: string;
 }
+
+const autoCloseTimeout = 2000;
+const invalidateTimeout = 500;
 
 export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
   const { categoryId } = props;
@@ -42,7 +43,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
     traceId: 'DeleteCategoryModal',
     id: categoryId,
   });
-  const { data: deletingCategory, error, isError, isFetched, isLoading } = availableCategoryQuery;
+  const { data: deletingCategory, isFetched, isLoading } = availableCategoryQuery;
 
   const categoryName = deletingCategory ? getCategoryName(deletingCategory) : 'Unknown category';
 
@@ -73,9 +74,11 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
           ['available-categories'],
         ].map(makeQueryKeyPrefix);
         invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
+      }, invalidateTimeout);
+      setTimeout(() => {
         // Hide modal (go back)
         hideModal();
-      }, 1000);
+      }, autoCloseTimeout);
     },
     onError: (error, deletingCategory) => {
       const message = 'Cannot delete category';
@@ -118,8 +121,8 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       dialogTitle={t('DeleteCategoryModal.DeleteCategoryQuestionForTitle')}
       confirmButtonVariant="destructive"
       confirmButtonText={t('Delete')}
-      confirmButtonBusyText={t('Deleteing')}
-      cancelButtonText={hasDeleted ? t('Ok') : t('Cancel')}
+      confirmButtonBusyText={t('Deleting')}
+      cancelButtonText={t('Close')}
       cancelButtonVariant={hasDeleted ? 'theme' : 'ghost'}
       handleConfirm={confirmDeleteCategory}
       handleClose={hideModal}

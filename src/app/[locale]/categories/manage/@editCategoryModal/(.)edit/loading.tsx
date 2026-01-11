@@ -6,7 +6,7 @@ export default function ModalLoading() {
   return (
     <SkeletonPopup
       className={cn(
-        isDev && '__ManageCategoriesListSkeleton_deleteCategoriesModal', // DEBUG
+        isDev && '__ManageCategoriesListSkeleton_editCategoryModal', // DEBUG
       )}
     />
   );

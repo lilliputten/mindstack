@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { PageError } from '@/components/shared';
 import { manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { updateCategory } from '@/features/categories/actions';
@@ -16,23 +17,22 @@ import { useAvailableCategories } from '@/features/categories/query-hooks/useAva
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
 
+import { getCategoryName } from '../../helpers';
 import { useAvailableCategoryById } from '../../query-hooks';
 import { EditCategoryForm } from './EditCategoryForm';
-
-// const urlPostfix = '/edit';
+import { EditCategoryFormSkeleton } from './EditCategoryFormSkeleton';
 
 interface TProps {
   categoryId?: TCategoryId;
   /** Is it a suggestion? Then offer a limited editing mode */
   suggestionMode?: boolean;
+  from?: string;
 }
 
 export function EditCategoryModal(props: TProps) {
   const {
     categoryId,
-    // DEBUG DATA...
-    // [>* Is the dialog in edit or add mode? <]
-    // newMode = true,
+    // from,
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode = true,
   } = props;
@@ -45,7 +45,17 @@ export function EditCategoryModal(props: TProps) {
     traceId: 'EditCategoryModal',
     id: categoryId,
   });
-  const { data: initialCategory } = initialCategoryQuery;
+  const {
+    data: initialCategory,
+    isFetched: isCategoryFetched,
+    isLoading: isCategoryLoading,
+    error: categoryError,
+    isRefetching: isCategoryRefetching,
+    refetch: categoryRefetch,
+  } = initialCategoryQuery;
+
+  const isCategoryBusy = isCategoryLoading || isCategoryRefetching;
+  const isCategoryReady = isCategoryFetched && !!initialCategory;
 
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
@@ -77,18 +87,21 @@ export function EditCategoryModal(props: TProps) {
   // const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
   const saveCategoryMutation = useMutation({
     mutationFn,
-    onMutate: async (updatedCategory) => {
-      console.error('[EditCategoryModal:saveCategoryMutation] onMutate', {
-        updatedCategory,
-      });
-    },
+    /* // DEBUG
+     * onMutate: async (updatedCategory) => {
+     *   console.error('[EditCategoryModal:saveCategoryMutation] onMutate', {
+     *     updatedCategory,
+     *   });
+     * },
+     */
     onSuccess: (updatedCategory) => {
-      const { id: categoryId } = updatedCategory;
-      console.error('[EditCategoryModal:saveCategoryMutation] onSuccess', {
-        categoryId,
-        updatedCategory,
-      });
-      debugger;
+      /* // DEBUG
+       * const { id: categoryId } = updatedCategory;
+       * console.error('[EditCategoryModal:saveCategoryMutation] onSuccess', {
+       *   categoryId,
+       *   updatedCategory,
+       * });
+       */
       // Update the item to the cached react-query data
       availableCategoriesQuery.updateCategory(updatedCategory);
       // Invalidate all other keys...
@@ -116,7 +129,7 @@ export function EditCategoryModal(props: TProps) {
       const promise = saveCategoryMutation.mutateAsync(updatedCategory);
       toast.promise(promise, {
         loading: t('ToastLoading'),
-        success: (category) => t('ToastSuccess', { name: category.translations?.[0]?.name }),
+        success: (category) => t('ToastSuccess', { name: getCategoryName(category) }),
         error: t('ToastError'),
       });
       return promise;
@@ -135,6 +148,7 @@ export function EditCategoryModal(props: TProps) {
       className={cn(
         isDev && '__EditCategoryModal', // DEBUG
         'flex flex-col gap-0 text-theme-foreground',
+        isCategoryBusy && 'opacity-50',
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
@@ -150,14 +164,29 @@ export function EditCategoryModal(props: TProps) {
           {t('DialogDescription')}
         </DialogDescription>
       </div>
-      <EditCategoryForm
-        handleSaveCategory={handleSaveCategory}
-        className="p-8 text-foreground"
-        handleClose={hideModal}
-        isPending={saveCategoryMutation.isPending}
-        initialCategory={initialCategory}
-        suggestionMode={suggestionMode}
-      />
+      {categoryError ? (
+        <PageError
+          className={cn(
+            isDev && '__EditCategoryModal_error', // DEBUG
+          )}
+          title="Error loading category data"
+          error={categoryError}
+          reset={categoryRefetch}
+        />
+      ) : !isCategoryReady ? (
+        <div className="relative">
+          <EditCategoryFormSkeleton />
+        </div>
+      ) : (
+        <EditCategoryForm
+          handleSaveCategory={handleSaveCategory}
+          className="p-8 text-foreground"
+          handleClose={hideModal}
+          isPending={saveCategoryMutation.isPending}
+          initialCategory={initialCategory}
+          suggestionMode={suggestionMode}
+        />
+      )}
     </Modal>
   );
 }

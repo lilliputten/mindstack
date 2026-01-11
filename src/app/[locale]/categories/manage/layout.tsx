@@ -14,7 +14,7 @@ type TManageCategoriesLayoutProps = TAwaitedLocaleProps & {
   children: React.ReactNode;
   addCategoryModal: React.ReactNode; // slot from @addCategoryModal
   editCategoryModal: React.ReactNode; // slot from @editCategoryModal
-  deleteCategoriesModal: React.ReactNode; // slot from @deleteCategoriesModal
+  deleteCategoryModal: React.ReactNode; // slot from @deleteCategoryModal
 };
 
 export default async function ManageCategoriesLayout(props: TManageCategoriesLayoutProps) {
@@ -22,7 +22,7 @@ export default async function ManageCategoriesLayout(props: TManageCategoriesLay
     children,
     addCategoryModal, // slot from @addCategoryModal
     editCategoryModal, // slot from @editCategoryModal
-    deleteCategoriesModal, // slot from @deleteCategoriesModal
+    deleteCategoryModal, // slot from @deleteCategoryModal
     params,
   } = props;
   const { locale } = await params;
@@ -59,7 +59,7 @@ export default async function ManageCategoriesLayout(props: TManageCategoriesLay
       {children}
       {addCategoryModal}
       {editCategoryModal}
-      {deleteCategoriesModal}
+      {deleteCategoryModal}
     </CategoriesProvider>
   );
 }

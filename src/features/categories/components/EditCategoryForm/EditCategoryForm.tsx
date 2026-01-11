@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale } from 'next-intl';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
@@ -25,8 +25,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
+import { SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev } from '@/config';
 import { deleteCategoryImage } from '@/features/categories/actions/deleteCategoryImage';
 import { uploadCategoryImage } from '@/features/categories/actions/uploadCategoryImage';
@@ -44,7 +44,7 @@ import {
 } from '@/features/categories/types';
 
 import { convertCategoryToFormData, convertFormDataToCategory } from './helpers';
-import { formSchema, TEditCategoryFormProps, TFormData } from './types';
+import { formSchema, TFormData } from './types';
 
 interface TMemo {
   imageFile?: File | null;
@@ -60,6 +60,22 @@ export function useTranslations(defaultNamespace: 'ManageCategories.EditForm', n
   return useT(namespace);
 }
 
+const autoCloseTimeout = 2000;
+
+interface TEditCategoryFormProps {
+  initialCategory?: TAvailableCategory;
+  handleSaveCategory: (p: TAvailableCategory) => Promise<unknown>;
+  handleClose?: () => void;
+  className?: string;
+  isPending?: boolean;
+  /** Is the dialog in edit or add mode? */
+  newMode?: boolean;
+  /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
+  suggestionMode?: boolean;
+  setForm?: (form?: UseFormReturn<TFormData>) => void;
+  autoClose?: boolean;
+}
+
 export function EditCategoryForm(props: TEditCategoryFormProps) {
   const {
     initialCategory,
@@ -72,15 +88,14 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode,
     setForm,
-    setHandleSubmit,
-    setHandleSubmitForm,
+    autoClose = true,
   } = props;
   const locale = useLocale() as TLocale;
 
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
    */
-  const _t = useTranslations('ManageCategories.EditForm', newMode);
+  const t = useTranslations('ManageCategories.EditForm', newMode);
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -243,7 +258,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         console.log('[EditCategoryForm:uploadImageFileToVercel] success', {
           url,
         });
-        debugger;
         return url;
       } catch (error) {
         const message = 'Failed to upload image';
@@ -301,7 +315,14 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         if (isDev) {
           await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
-        return await handleSaveCategory(updatedCategory as TAvailableCategory);
+        const result = await handleSaveCategory(updatedCategory as TAvailableCategory);
+        if (autoClose && handleClose) {
+          setTimeout(() => {
+            // Hide modal (go back)
+            handleClose();
+          }, autoCloseTimeout);
+        }
+        return result;
       } catch (error) {
         const message = 'Failed to submit form data';
         const details = getErrorText(error);
@@ -325,35 +346,22 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         }
       }
     },
-    [memo, handleSaveCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
+    [
+      memo.imageFile,
+      locale,
+      suggestionMode,
+      initialCategory,
+      uploadImageFileToVercel,
+      handleSaveCategory,
+      autoClose,
+      handleClose,
+    ],
   );
 
   const handleSubmit = React.useMemo(
     () => form.handleSubmit(handleSubmitForm),
     [form, handleSubmitForm],
   );
-
-  // setHandleSubmitForm setter
-  React.useEffect(() => {
-    if (setHandleSubmitForm) {
-      console.log('[EditCategoryForm:setHandleSubmitForm setter]', {
-        handleSubmitForm,
-      });
-      debugger;
-      setHandleSubmitForm(handleSubmitForm);
-    }
-  }, [handleSubmitForm, setHandleSubmitForm]);
-
-  // // setHandleSubmit setter
-  // React.useEffect(() => {
-  //   if (setHandleSubmit) {
-  //     console.log('[EditCategoryForm:setHandleSubmit setter]', {
-  //       handleSubmit,
-  //     });
-  //     debugger;
-  //     setHandleSubmit(handleSubmit);
-  //   }
-  // }, [handleSubmit, setHandleSubmit]);
 
   const handleCloseForm = (ev: React.MouseEvent) => {
     if (handleClose) {
@@ -381,10 +389,11 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       >
         {isSubmitSuccessful ? (
           <SuccessSplash
-            title="Successfully Added!"
+            title="Successfully saved!"
             className={!isSubmitSuccessful ? 'pointer-events-none opacity-0' : ''}
           >
-            The category has been successfully added to your list. You can now close this dialog.
+            The category has been successfully saved. You can now close this dialog.
+            {/* The dialog will be closed automatically. */}
           </SuccessSplash>
         ) : (
           <div
@@ -664,12 +673,12 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
             {isBusy ? (
               <>
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
-                <span>Adding...</span>
+                <span>Saving...</span>
               </>
             ) : (
               <>
                 <SaveIcon className={cn('h-4 w-4', isBusy && 'animate-spin')} />
-                <span>Add</span>
+                <span>Save</span>
               </>
             )}
           </Button>

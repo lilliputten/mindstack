@@ -42,10 +42,10 @@ const __showId = false;
 const sessionSaveScrollHash = getRandomHashString();
 
 interface TManageCategoriesListProps {
-  handleDeleteCategory: (categoryId: TCategoryId, from: string) => void;
-  handleEditCategory: (categoryId: TCategoryId) => void;
-  handleEditTopics: (categoryId: TCategoryId) => void;
-  handleAddCategory: () => void;
+  // handleDeleteCategory: (categoryId: TCategoryId, from: string) => void;
+  // handleEditCategory: (categoryId: TCategoryId, from: string) => void;
+  // handleEditTopics: (categoryId: TCategoryId) => void;
+  // handleAddCategory: () => void;
   availableCategoriesQuery: ReturnType<typeof useAvailableCategories>;
 }
 interface TCategoriesTableContentProps extends TManageCategoriesListProps {
@@ -174,11 +174,10 @@ function CategoriesTableHeader({
 interface TCategoriesTableRowProps {
   category: TAvailableCategory;
   idx: number;
-  handleDeleteCategory: TManageCategoriesListProps['handleDeleteCategory'];
-  handleEditCategory: TManageCategoriesListProps['handleEditCategory'];
-  handleEditTopics: TManageCategoriesListProps['handleEditTopics'];
+  // handleDeleteCategory: TManageCategoriesListProps['handleDeleteCategory'];
+  // handleEditCategory: TManageCategoriesListProps['handleEditCategory'];
+  // handleEditTopics: TManageCategoriesListProps['handleEditTopics']; // TODO
   // isAdminMode: boolean;
-  // cachedUsers: TCachedUsers;
   isSelected: boolean;
   toggleSelected: (categoryId: TCategoryId) => void;
   availableCategoriesQuery: ReturnType<typeof useAvailableCategories>;
@@ -187,11 +186,10 @@ interface TCategoriesTableRowProps {
 function CategoriesTableRow(props: TCategoriesTableRowProps) {
   const {
     category,
-    handleDeleteCategory,
-    handleEditCategory,
-    handleEditTopics,
+    // handleDeleteCategory,
+    // handleEditCategory,
+    // handleEditTopics, // TODO
     // isAdminMode,
-    // cachedUsers,
     idx,
     isSelected,
     toggleSelected,
@@ -269,11 +267,30 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             variant="ghost"
             size="icon"
             className="size-9 shrink-0"
-            aria-label={t('ManageCategoriesList.EditTopics')}
-            title={t('ManageCategoriesList.EditTopics')}
+            aria-label={t('ManageCategoriesList.Edit')}
+            title={t('ManageCategoriesList.Edit')}
           >
-            <Link href={`${routePath}/${category.id}/edit` as TRoutePath}>
-              <Icons.Topics className="size-5" />
+            <Link
+              href={
+                `${routePath}/edit?categoryId=${category.id}&from=ManageCategoriesList` as TRoutePath
+              }
+            >
+              <Icons.Edit className="size-4" />
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-9 shrink-0 text-destructive"
+            aria-label={t('ManageCategoriesList.Delete')}
+            title={t('ManageCategoriesList.Delete')}
+          >
+            <Link
+              href={
+                `${routePath}/delete?categoryId=${category.id}&from=ManageCategoriesList` as TRoutePath
+              }
+            >
+              <Icons.Trash className="size-4" />
             </Link>
           </Button>
           {/*
@@ -281,7 +298,6 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             variant="ghost"
             size="icon"
             className="size-9 shrink-0"
-            // TODO: Use link
             onClick={() => handleEditTopics(category.id)}
             aria-label={t('ManageCategoriesList.EditTopics')}
             title={t('ManageCategoriesList.EditTopics')}
@@ -289,28 +305,6 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
             <Icons.Topics className="size-5" />
           </Button>
           */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0"
-            // TODO: Use link
-            onClick={() => handleEditCategory(category.id)}
-            aria-label={t('ManageCategoriesList.Edit')}
-            title={t('ManageCategoriesList.Edit')}
-          >
-            <Icons.Edit className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0 text-destructive"
-            // TODO: Use link
-            onClick={() => handleDeleteCategory(category.id, 'ManageCategoriesList')}
-            aria-label={t('ManageCategoriesList.Delete')}
-            title={t('ManageCategoriesList.Delete')}
-          >
-            <Icons.Trash className="size-4" />
-          </Button>
         </div>
       </TableCell>
     </TableRow>
@@ -320,20 +314,17 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
 export function CategoriesTableContent(props: TCategoriesTableContentProps) {
   const {
     className,
-    handleDeleteCategory,
-    handleEditCategory,
-    handleEditTopics,
-    handleAddCategory,
+    // handleDeleteCategory,
+    // handleEditCategory,
+    // handleEditTopics,
+    // handleAddCategory,
     availableCategoriesQuery,
     goBack,
     selectedCategories,
     setSelectedCategories,
   } = props;
-  // const { manageScope } = useManageCategoriesStore();
   const t = useT();
-  // const isAdminMode = true; // manageScope === CategoriesManageScopeIds.ALL_CATEGORIES; // || user?.role === 'ADMIN';
-
-  // const { isExpanded: isFiltersExpanded, expandFilters } = useCategoriesFiltersContext();
+  const routePath = manageCategoriesRoute; // `/categories/manage`;
 
   const {
     isLoading,
@@ -352,13 +343,6 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
     () => sessionSaveScrollHash + getAbcHashString(queryUrlHash),
     [queryUrlHash],
   );
-
-  /* // UNUSED: CachedUsers
-   * const cachedUsers = useCachedUsersForCategories({
-   *   categories: allCategories,
-   *   bypass: !isAdminMode, // Do not use users data if not admin user role
-   * });
-   */
 
   const memo = React.useMemo<TMemo>(() => ({ allCategories: [] }), []);
   memo.allCategories = allCategories;
@@ -441,11 +425,13 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
               */}
               <Button
                 variant="theme"
-                onClick={handleAddCategory}
+                // onClick={handleAddCategory}
                 className="text-truncate flex gap-2"
               >
-                <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
-                <span className="truncate">{t('ManageCategoriesList.AddCategory')}</span>
+                <Link href={`${routePath}/add` as TRoutePath}>
+                  <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
+                  <span className="truncate">{t('ManageCategoriesList.AddCategory')}</span>
+                </Link>
               </Button>
             </>
           }
@@ -490,11 +476,9 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
               key={category.id}
               idx={idx}
               category={category}
-              handleDeleteCategory={handleDeleteCategory}
-              handleEditCategory={handleEditCategory}
-              handleEditTopics={handleEditTopics}
-              // isAdminMode={isAdminMode}
-              // cachedUsers={cachedUsers}
+              // handleDeleteCategory={handleDeleteCategory}
+              // handleEditCategory={handleEditCategory}
+              // handleEditTopics={handleEditTopics}
               isSelected={selectedCategories.has(category.id)}
               toggleSelected={toggleSelected}
               availableCategoriesQuery={availableCategoriesQuery}
@@ -507,11 +491,16 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
 }
 
 export function ManageCategoriesList(props: TManageCategoriesListProps) {
-  const { handleAddCategory, availableCategoriesQuery } = props;
+  const {
+    // handleAddCategory,
+    availableCategoriesQuery,
+  } = props;
   const t = useT();
   const [selectedCategories, setSelectedCategories] = React.useState<Set<TCategoryId>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
+
+  const routePath = manageCategoriesRoute; // `/categories/manage`;
 
   const { refetch, isFetched, isRefetching, isLoading } = availableCategoriesQuery;
 
@@ -705,13 +694,15 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
         content: t('ManageCategoriesList.AddNewCategory'),
         icon: Icons.Add,
         visibleFor: 'md',
-        onClick: handleAddCategory,
+        // onClick: handleAddCategory,
+        href: `${routePath}/add`,
       },
     ],
     [
       t,
+      routePath,
       goBack,
-      handleAddCategory,
+      // handleAddCategory,
       handleReload,
       isRefetching,
       selectedCategories.size,
@@ -764,7 +755,7 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
         dialogTitle={t('ManageCategoriesList.ConfirmDeleteCategories')}
         confirmButtonVariant="destructive"
         confirmButtonText={t('Delete')}
-        confirmButtonBusyText={t('Deleteing')}
+        confirmButtonBusyText={t('Deleting')}
         cancelButtonText={t('Cancel')}
         cancelButtonVariant={'ghost'}
         handleClose={handleHideDeleteConfirm}

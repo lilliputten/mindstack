@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useFormatter, useLocale } from 'next-intl';
 
 import { CategoryStatusSchema } from '@/generated/prisma';
 
+import { generateArray, getFormattedRelativeDate } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
@@ -15,7 +17,6 @@ import { isDev } from '@/constants';
 import { getCategoryDescription, getCategoryName } from '@/features/categories/helpers';
 import { useAvailableCategoryById } from '@/features/categories/query-hooks';
 import { TAvailableCategory } from '@/features/categories/types';
-import { getFormattedRelativeDate } from '@/lib/helpers';
 
 interface TViewCategoryContentSummaryProps extends TPropsWithClassName {
   availableCategoryQuery: ReturnType<typeof useAvailableCategoryById>;
@@ -142,7 +143,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       {category.imageUrl && (
         <div className="mb-6">
           <h2 className="mb-4 text-xl font-semibold">{t('ViewCategoryContentSummary.Image')}</h2>
-          <img
+          <Image
             src={category.imageUrl}
             alt={getCategoryName(category, locale, t)}
             className="h-auto max-w-xs rounded-lg border"
@@ -178,7 +179,7 @@ function CategoryContentSummarySkeleton() {
           <Skeleton className="h-6 w-1/4 rounded" />
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {[...Array(6)].map((_, i) => (
+          {generateArray(6).map((i) => (
             <div key={i}>
               <Skeleton className="mb-2 h-4 w-1/3 rounded" />
               <Skeleton className="h-4 w-2/3 rounded" />
@@ -200,7 +201,7 @@ function CategoryContentSummarySkeleton() {
           <Skeleton className="h-6 w-1/4 rounded" />
         </h2>
         <div className="flex flex-wrap gap-2">
-          {[...Array(4)].map((_, i) => (
+          {generateArray(4).map((i) => (
             <Skeleton key={i} className="h-6 w-16 rounded" />
           ))}
         </div>

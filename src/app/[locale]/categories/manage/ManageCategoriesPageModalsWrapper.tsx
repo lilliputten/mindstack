@@ -1,9 +1,7 @@
 'use client';
 
 import React from 'react';
-import { toast } from 'sonner';
 
-import { useT } from '@/i18n';
 import { manageCategoriesRoute } from '@/config';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 /* // TODO: Filters
@@ -37,8 +35,6 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   const { showAddModal, deleteCategoryId, editCategoryId, editTopicsCategoryId, from } = props;
   const routePath = manageCategoriesRoute; // `/categories/${manageScope}`;
   memo.routePath = routePath;
-
-  const t = useT();
 
   /* // TODO: Filters
   const [filtersParams, setFiltersParams] = React.useState<
@@ -82,19 +78,10 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   // Delete Category Modal
   const openDeleteCategoryModal = React.useCallback(
     (categoryId: TCategoryId, from: string) => {
-      const { allCategories, routePath } = memo;
-      if (allCategories && routePath) {
-        const hasCategory = allCategories.find(({ id }) => id === categoryId);
-        if (hasCategory) {
-          const url = `${routePath}/delete?categoryId=${categoryId}&from=${from}`;
-          goToTheRoute(url);
-        } else {
-          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
-          goToTheRoute(routePath, true);
-        }
-      }
+      const url = `${routePath}/delete?categoryId=${categoryId}&from=${from}`;
+      goToTheRoute(url);
     },
-    [memo, goToTheRoute, t],
+    [goToTheRoute, routePath],
   );
   React.useEffect(() => {
     if (deleteCategoryId && isFetched) {
@@ -106,44 +93,26 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   }, [deleteCategoryId, openDeleteCategoryModal, from, isFetched]);
 
   // Edit Category Card
-  const openEditCategoryCard = React.useCallback(
-    (categoryId: TCategoryId) => {
-      const { allCategories, routePath } = memo;
-      if (allCategories && routePath) {
-        const hasCategory = allCategories.find(({ id }) => id === categoryId);
-        if (hasCategory) {
-          const url = `${routePath}/${categoryId}/edit`;
-          goToTheRoute(url);
-        } else {
-          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
-          goToTheRoute(routePath, true);
-        }
-      }
+  const openEditCategoryModal = React.useCallback(
+    (categoryId: TCategoryId, from: string) => {
+      const url = `${routePath}/edit?categoryId=${categoryId}&from=${from}`;
+      goToTheRoute(url);
     },
-    [memo, goToTheRoute, t],
+    [routePath, goToTheRoute],
   );
   React.useEffect(() => {
     if (editCategoryId && isFetched) {
-      openEditCategoryCard(editCategoryId);
+      openEditCategoryModal(editCategoryId, from || 'Unknown_in_ManageCategorysPageModalsWrapper');
     }
-  }, [editCategoryId, openEditCategoryCard, isFetched]);
+  }, [editCategoryId, openEditCategoryModal, from, isFetched]);
 
   // Edit Topics Page
   const openEditTopicsPage = React.useCallback(
     (categoryId: TCategoryId) => {
-      const { allCategories, routePath } = memo;
-      if (allCategories && routePath) {
-        const hasCategory = allCategories.find(({ id }) => id === categoryId);
-        if (hasCategory) {
-          const url = `${routePath}/${categoryId}/topics`;
-          goToTheRoute(url);
-        } else {
-          toast.error(t('ManageCategoriesPageModalsWrapper.RequestedCategoryNotExists'));
-          goToTheRoute(routePath, true);
-        }
-      }
+      const url = `${routePath}/${categoryId}/topics`;
+      goToTheRoute(url);
     },
-    [memo, goToTheRoute, t],
+    [routePath, goToTheRoute],
   );
   React.useEffect(() => {
     // Use another id (`editQuestionsCategoryId`)?
@@ -174,10 +143,10 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
       {filtersParams ? (
       */}
       <ManageCategoriesList
-        handleDeleteCategory={openDeleteCategoryModal}
-        handleEditCategory={openEditCategoryCard}
-        handleEditTopics={openEditTopicsPage}
-        handleAddCategory={openAddCategoryModal}
+        // handleDeleteCategory={openDeleteCategoryModal}
+        // handleEditCategory={openEditCategoryModal}
+        // handleEditTopics={openEditTopicsPage}
+        // handleAddCategory={openAddCategoryModal}
         availableCategoriesQuery={availableCategoriesQuery}
       />
       {/*

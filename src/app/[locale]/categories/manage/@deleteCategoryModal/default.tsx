@@ -18,13 +18,7 @@ export default function DeleteCategoriesModalDefault() {
     // Check if the previous path ends with '/categories/manage'
     if (prevChunk.endsWith('/categories/manage')) {
       const from = searchParams.get('from') || undefined;
-      return (
-        <DeleteCategoryModal
-          categoryId={categoryId}
-          from={from}
-          // onClose={() => window.history.back()}
-        />
-      );
+      return <DeleteCategoryModal categoryId={categoryId} from={from} />;
     }
   }
 

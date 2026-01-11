@@ -61,7 +61,6 @@ export function ViewCategoryPage(props: TViewCategoryPageProps) {
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -70,18 +69,18 @@ export function ViewCategoryPage(props: TViewCategoryPageProps) {
       {
         id: 'Reload',
         content: t('ViewCategoryPage.Reload'),
-        // variant: 'ghost',
         icon: Icons.Refresh,
-        // visibleFor: 'lg',
         onClick: handleReload,
       },
       {
         id: 'Edit',
         content: t('Edit'),
-        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${categoriesListRoutePath}/${categoryId}/edit`),
+        onClick: () =>
+          goToTheRoute(
+            `${categoriesListRoutePath}/edit?categoryId=${categoryId}&from=ViewCategoryPage`,
+          ),
       },
     ],
     [t, goBack, handleReload, categoryId, goToTheRoute, categoriesListRoutePath],

@@ -11,13 +11,7 @@ export default async function DeleteCategoriesModalPage({
   const { categoryId, from } = awaitedSearchParams;
 
   if (categoryId) {
-    return (
-      <DeleteCategoryModal
-        categoryId={categoryId}
-        from={from}
-        // onClose={() => window.history.back()}
-      />
-    );
+    return <DeleteCategoryModal categoryId={categoryId} from={from} />;
   }
 
   return null;
