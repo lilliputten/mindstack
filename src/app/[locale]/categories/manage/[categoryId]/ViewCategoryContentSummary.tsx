@@ -14,9 +14,15 @@ import { Badge } from '@/components/ui/Badge';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
-import { getCategoryDescription, getCategoryName } from '@/features/categories/helpers';
+import {
+  getAllCategoryKeywords,
+  getCategoryDescription,
+  getCategoryName,
+} from '@/features/categories/helpers';
 import { useAvailableCategoryById } from '@/features/categories/query-hooks';
 import { TAvailableCategory } from '@/features/categories/types';
+import { SmallUserBlock } from '@/features/users';
+import { useUserById } from '@/features/users/query-hooks';
 
 interface TViewCategoryContentSummaryProps extends TPropsWithClassName {
   availableCategoryQuery: ReturnType<typeof useAvailableCategoryById>;
@@ -29,7 +35,12 @@ export function ViewCategoryContentSummary(props: TViewCategoryContentSummaryPro
     category,
     isFetched: isCategoryFetched,
     isLoading: isCategoryLoading,
+    queryKey,
   } = availableCategoryQuery;
+
+  console.log('[ViewCategoryContentSummary:ViewCategoryContentSummary]', {
+    queryKey,
+  });
 
   if (!isCategoryFetched || isCategoryLoading || !category) {
     return <CategoryContentSummarySkeleton />;
@@ -61,29 +72,56 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
     }
   };
 
+  const categoryName = getCategoryName(category, locale, t);
+
+  const createdUserQuery = useUserById(category.createdBy || undefined);
+  const {
+    data: createdUser,
+    isLoading: isCreatedUserLoading,
+    // isFetched: isCreatedUserFetched,
+    // isEnabled: isCreatedUserEnabled,
+  } = createdUserQuery;
+  const updatedUserQuery = useUserById(category.updatedBy || undefined);
+  const {
+    data: updatedUser,
+    isLoading: isUpdatedUserLoading,
+    // isFetched: isUpdatedUserFetched,
+    // isEnabled: isUpdatedUserEnabled,
+  } = updatedUserQuery;
+
   return (
-    <div className={cn(isDev && '__ViewCategoryContentDetails', 'p-4', className)}>
+    <div
+      className={cn(
+        isDev && '__ViewCategoryContentDetails', // DEBUG
+        'w-full p-6',
+        className,
+      )}
+    >
       {/* Basic Info Section */}
       <div className="mb-6">
-        <h2 className="mb-4 text-xl font-semibold">{t('ViewCategoryContentSummary.BasicInfo')}</h2>
+        <h2 className="mb-4 truncate text-xl font-semibold">
+          {t('ViewCategoryContentSummary.BasicInfo')}
+        </h2>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* // DEBUG?
+          <div className="flex flex-col gap-2">
+            <h3 className="truncate text-sm font-medium opacity-50">
               {t('ViewCategoryContentSummary.Id')}
             </h3>
-            <p className="text-base">{category.id}</p>
+            <p className="text-truncate">{category.id}</p>
           </div>
+          */}
 
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col gap-2">
+            <h3 className="truncate text-sm font-medium opacity-50">
               {t('ViewCategoryContentSummary.Name')}
             </h3>
-            <p className="text-base">{getCategoryName(category, locale, t)}</p>
+            <p className="text-truncate">{categoryName}</p>
           </div>
 
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col gap-2">
+            <h3 className="truncate text-sm font-medium opacity-50">
               {t('ViewCategoryContentSummary.Status')}
             </h3>
             <div className="pt-1">
@@ -91,35 +129,21 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              {t('ViewCategoryContentSummary.CreatedAt')}
-            </h3>
-            <p className="text-base">{getFormattedRelativeDate(format, category.createdAt)}</p>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              {t('ViewCategoryContentSummary.UpdatedAt')}
-            </h3>
-            <p className="text-base">{getFormattedRelativeDate(format, category.updatedAt)}</p>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col gap-2">
+            <h3 className="truncate text-sm font-medium opacity-50">
               {t('ViewCategoryContentSummary.TopicsCount')}
             </h3>
-            <p className="text-base">{category._count?.topics || 0}</p>
+            <p className="text-truncate">{category._count?.topics || 0}</p>
           </div>
         </div>
       </div>
 
       {/* Description Section */}
       <div className="mb-6">
-        <h2 className="mb-4 text-xl font-semibold">
+        <h2 className="mb-4 truncate text-xl font-semibold">
           {t('ViewCategoryContentSummary.Description')}
         </h2>
-        <p className="text-base text-gray-700 dark:text-gray-300">
+        <p className="text-truncate opacity-50">
           {getCategoryDescription(category, locale, t) ||
             t('ViewCategoryContentSummary.NoDescription')}
         </p>
@@ -128,9 +152,11 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       {/* Keywords Section */}
       {category.translations && category.translations.length > 0 && (
         <div className="mb-6">
-          <h2 className="mb-4 text-xl font-semibold">{t('ViewCategoryContentSummary.Keywords')}</h2>
+          <h2 className="mb-4 truncate text-xl font-semibold">
+            {t('ViewCategoryContentSummary.Keywords')}
+          </h2>
           <div className="flex flex-wrap gap-2">
-            {(category.translations[0].keywords || '').split(',').map((keyword, idx) => (
+            {getAllCategoryKeywords(category).map((keyword, idx) => (
               <Badge key={idx} variant="secondary">
                 {keyword.trim()}
               </Badge>
@@ -142,29 +168,57 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       {/* Image Section */}
       {category.imageUrl && (
         <div className="mb-6">
-          <h2 className="mb-4 text-xl font-semibold">{t('ViewCategoryContentSummary.Image')}</h2>
-          <Image
-            src={category.imageUrl}
-            alt={getCategoryName(category, locale, t)}
-            className="h-auto max-w-xs rounded-lg border"
-          />
+          <h2 className="mb-4 truncate text-xl font-semibold">
+            {t('ViewCategoryContentSummary.Image')}
+          </h2>
+          <div
+            className={cn(
+              isDev && '__ViewCategoryContentSummary_ImageWrapper', // DEBUG
+              'relative size-32 overflow-hidden rounded-lg border',
+            )}
+          >
+            <Image
+              src={category.imageUrl}
+              alt={categoryName}
+              fill
+              className={cn(
+                isDev && '__ViewCategoryContentDetails', // DEBUG
+                'object-cover',
+              )}
+            />
+          </div>
         </div>
       )}
 
       {/* Creator/Updater Info */}
       <Separator className="my-6" />
       <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
-        <div>
-          <h3 className="font-medium text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col gap-2">
+          <h3 className="truncate font-medium opacity-50">
             {t('ViewCategoryContentSummary.CreatedBy')}
           </h3>
-          <p>{category.createdBy || t('ViewCategoryContentSummary.Unknown')}</p>
+          <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
         </div>
-        <div>
-          <h3 className="font-medium text-gray-500 dark:text-gray-400">
+
+        <div className="flex flex-col gap-2">
+          <h3 className="truncate font-medium opacity-50">
             {t('ViewCategoryContentSummary.UpdatedBy')}
           </h3>
-          <p>{category.updatedBy || t('ViewCategoryContentSummary.Unknown')}</p>
+          <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="truncate text-sm font-medium opacity-50">
+            {t('ViewCategoryContentSummary.CreatedAt')}
+          </h3>
+          <p className="text-truncate">{getFormattedRelativeDate(format, category.createdAt)}</p>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="truncate text-sm font-medium opacity-50">
+            {t('ViewCategoryContentSummary.UpdatedAt')}
+          </h3>
+          <p className="text-truncate">{getFormattedRelativeDate(format, category.updatedAt)}</p>
         </div>
       </div>
     </div>
@@ -174,7 +228,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
 function CategoryContentSummarySkeleton() {
   return (
     <div className="space-y-6 p-4">
-      <div>
+      <div className="flex flex-col gap-2">
         <h2 className="mb-4 text-xl font-semibold">
           <Skeleton className="h-6 w-1/4 rounded" />
         </h2>
@@ -188,7 +242,7 @@ function CategoryContentSummarySkeleton() {
         </div>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2">
         <h2 className="mb-4 text-xl font-semibold">
           <Skeleton className="h-6 w-1/4 rounded" />
         </h2>
@@ -196,7 +250,7 @@ function CategoryContentSummarySkeleton() {
         <Skeleton className="h-4 w-5/6 rounded" />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2">
         <h2 className="mb-4 text-xl font-semibold">
           <Skeleton className="h-6 w-1/4 rounded" />
         </h2>

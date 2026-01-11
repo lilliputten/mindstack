@@ -1,9 +1,10 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useLocale } from 'next-intl';
+import { useFormatter, useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
+import { getFormattedRelativeDate } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
@@ -140,6 +141,13 @@ function CategoriesTableHeader({
           {t('ManageCategoriesList.Status')}
         </TableHead>
         <TableHead
+          id="createdAt"
+          className="max-w-32 truncate max-md:hidden"
+          title={t('ManageCategoriesList.CreatedAt')}
+        >
+          {t('ManageCategoriesList.Status')}
+        </TableHead>
+        <TableHead
           id="topicsCount"
           className="max-w-6 truncate max-lg:hidden"
           title={t('ManageCategoriesList.TopicsCount')}
@@ -164,6 +172,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
   const { category, idx, isSelected, toggleSelected } = props;
   const locale = useLocale() as TLocale;
   const t = useT();
+  const format = useFormatter();
   const topicsCount = category._count?.topics;
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   return (
@@ -221,6 +230,9 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
       <TableCell id="status" className="max-w-32 truncate max-md:hidden">
         {t(category.status)}
       </TableCell>
+      <TableCell id="createdAt" className="max-w-32 truncate max-md:hidden">
+        {getFormattedRelativeDate(format, category.createdAt)}
+      </TableCell>
       <TableCell id="topicsCount" className="max-w-6 max-lg:hidden">
         {topicsCount ? (
           <span className="font-medium">{topicsCount}</span>
@@ -273,8 +285,8 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
   const routePath = manageCategoriesRoute; // `/categories/manage`;
 
   const {
-    isInited: isFiltersInited,
-    isPending: isFiltersPending,
+    // isInited: isFiltersInited,
+    // isPending: isFiltersPending,
     isExpanded: isFiltersExpanded,
     expandFilters,
   } = useCategoriesFiltersContext();
@@ -451,8 +463,8 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
   const {
     isInited: isFiltersInited,
     isPending: isFiltersPending,
-    isExpanded: isFiltersExpanded,
-    expandFilters,
+    // isExpanded: isFiltersExpanded,
+    // expandFilters,
   } = useCategoriesFiltersContext();
 
   const isDataInited = isFetched && isFiltersInited;

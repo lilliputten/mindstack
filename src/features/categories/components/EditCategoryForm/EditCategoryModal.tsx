@@ -4,7 +4,7 @@ import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { getErrorText } from '@/lib/helpers';
+import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -106,11 +106,18 @@ export function EditCategoryModal(props: TProps) {
       availableCategoriesQuery.updateCategory(updatedCategory);
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
-      // TODO: Update/invalidate queries for this category
-      // ['available-category', categoryId
+      // Update/invalidate queries for this category
+      const invalidatePrefixes = [
+        // Keys to invalidate...
+        ['available-category', categoryId],
+        ['available-categories'],
+      ].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
+        availableCategoriesQuery.queryKey,
+      ]);
     },
     onError: (error, updatedCategory) => {
-      const message = t('ToastError');
+      const message = t('CannotSaveCategory');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console

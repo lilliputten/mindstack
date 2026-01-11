@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
+import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -29,8 +29,6 @@ export function AddCategoryModal(props: TProps) {
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode = false,
   } = props;
-
-  const queryClient = useQueryClient();
 
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   const [isVisible, setVisible] = React.useState(false);
@@ -69,8 +67,8 @@ export function AddCategoryModal(props: TProps) {
      * },
      */
     onSuccess: (updatedCategory) => {
-      const { id: categoryId } = updatedCategory;
       /* // DEBUG
+       * const { id: categoryId } = updatedCategory;
        * console.log('[AddCategoryModal:saveCategoryMutation] onSuccess', {
        *   categoryId,
        *   updatedCategory,
@@ -80,16 +78,6 @@ export function AddCategoryModal(props: TProps) {
       availableCategoriesQuery.addNewCategory(updatedCategory, true);
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
-      // TODO: Update/invalidate queries for this category
-      // ['available-category', categoryId
-      const invalidatePrefixes = [
-        // Keys to invalidate...
-        ['available-category', categoryId],
-        ['available-categories'],
-      ].map(makeQueryKeyPrefix);
-      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
-        availableCategoriesQuery.queryKey,
-      ]);
     },
     onError: (error, newCategory) => {
       const message = t('CantSaveCategory');
@@ -112,7 +100,7 @@ export function AddCategoryModal(props: TProps) {
       toast.promise(promise, {
         loading: t('ToastLoading'),
         success: (category) => t('ToastSuccess', { name: getCategoryName(category) }),
-        error: t('ToastError'),
+        error: t('CannotSaveCategory'),
       });
       return promise;
     },

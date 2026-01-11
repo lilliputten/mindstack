@@ -68,7 +68,7 @@ export function ViewCategoryPage(props: TViewCategoryPageProps) {
       },
       {
         id: 'Reload',
-        content: t('ViewCategoryPage.Reload'),
+        content: t('Reload'),
         icon: Icons.Refresh,
         onClick: handleReload,
       },

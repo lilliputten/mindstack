@@ -76,7 +76,7 @@ export const orderByMap: Record<TOrderBySelectOption, TCategoryOrderBy> = {
   byRecent: { updatedAt: 'desc' },
   byOldest: { createdAt: 'asc' },
   byNameAsc: { updatedAt: 'desc' }, // TODO: Sort by translation name when supported
-  byNameDesc: { updatedAt: 'desc' }, // TODO: Sort by translation name when supported
+  byNameDesc: { updatedAt: 'asc' }, // TODO: Sort by translation name when supported
 };
 
 /** Don't omit field label for short info (in the `AvailableCategoriesFiltersInfo`) */

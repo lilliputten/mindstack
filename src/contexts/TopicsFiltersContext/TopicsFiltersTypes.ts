@@ -55,8 +55,8 @@ export const filtersDataDefaults: TFiltersData = {
 export const orderByMap: Record<TOrderBySelectOption, TTopicOrderBy> = {
   byRecent: [{ updatedAt: 'desc' as const }, { name: 'asc' as const }],
   byOldest: [{ updatedAt: 'asc' as const }, { name: 'asc' as const }],
-  byNameAsc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],
-  byNameDesc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],
+  byNameAsc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],
+  byNameDesc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],
 };
 
 /** Don't omit filed label for short info (in the `AvailableTopicsFiltersInfo`) */

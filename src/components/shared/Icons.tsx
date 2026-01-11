@@ -1,6 +1,16 @@
-// NOTE: See stock icons at: https://lucide.dev/icons/
+/* NOTE: See stock icons at: https://lucide.dev/icons/
 
-// Data definitions: node_modules/lucide-react/dist/lucide-react.d.ts
+Import as:
+
+```
+import * as Icons from '@/components/shared/Icons';
+```
+
+Data definitions at:
+
+node_modules/lucide-react/dist/lucide-react.d.ts
+
+*/
 
 import React from 'react';
 import * as icons from 'lucide-react';

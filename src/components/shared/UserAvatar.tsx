@@ -1,8 +1,9 @@
 import { ExtendedUser } from '@/@types/next-auth';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Avatar, AvatarFallback, AvatarImage, AvatarProps } from '@/components/ui/Avatar';
-import { User as UserIcon } from '@/components/shared/Icons';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 interface UserAvatarProps extends AvatarProps {
@@ -10,6 +11,7 @@ interface UserAvatarProps extends AvatarProps {
 }
 
 export function UserAvatar({ user, className, ...props }: UserAvatarProps) {
+  const t = useT();
   if (!user) {
     return null;
   }
@@ -32,11 +34,11 @@ export function UserAvatar({ user, className, ...props }: UserAvatarProps) {
         {...props}
       >
         {user.image ? (
-          <AvatarImage alt="User avatar image" src={user.image} referrerPolicy="no-referrer" />
+          <AvatarImage alt={t('UserAvatarImage')} src={user.image} referrerPolicy="no-referrer" />
         ) : (
           <AvatarFallback>
             <span className="sr-only">{user.name}</span>
-            <UserIcon className="size-4" />
+            <Icons.User className="size-4" />
           </AvatarFallback>
         )}
       </Avatar>
