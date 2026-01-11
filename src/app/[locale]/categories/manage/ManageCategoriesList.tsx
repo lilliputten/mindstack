@@ -31,6 +31,8 @@ import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { getCategoryName } from '@/features/categories';
 import { deleteCategories, updateCategory } from '@/features/categories/actions';
+import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';
+import { useCategoriesFiltersContext } from '@/features/categories/contexts/CategoriesFiltersContext';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack } from '@/hooks';
@@ -271,6 +273,13 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
   const routePath = manageCategoriesRoute; // `/categories/manage`;
 
   const {
+    isInited: isFiltersInited,
+    isPending: isFiltersPending,
+    isExpanded: isFiltersExpanded,
+    expandFilters,
+  } = useCategoriesFiltersContext();
+
+  const {
     isLoading,
     hasCategories,
     allCategories,
@@ -359,14 +368,16 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
                 <span className="truncate">{t('ManageCategoriesList.GoBack')}</span>
               </Button>
-              {/* // TODO: Filters
               {!isFiltersExpanded && (
-                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={expandFilters}
+                  className="text-truncate flex gap-2"
+                >
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  {t('ManageCategoriesList.ChangeFilters')}
+                  <span className="truncate">{t('ManageCategoriesList.ChangeFilters')}</span>
                 </Button>
               )}
-              */}
               <Button variant="theme" className="text-truncate flex gap-2">
                 <Link href={`${routePath}/add` as TRoutePath}>
                   <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
@@ -437,13 +448,16 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
 
   const { refetch, isFetched, isRefetching, isLoading } = availableCategoriesQuery;
 
-  /* // // TODO: Filters
-   * const { isInited: isFiltersInited, isPending: isFiltersPending } = useCategoriesFiltersContext();
-   */
+  const {
+    isInited: isFiltersInited,
+    isPending: isFiltersPending,
+    isExpanded: isFiltersExpanded,
+    expandFilters,
+  } = useCategoriesFiltersContext();
 
-  const isDataInited = isFetched; /* && isFiltersInited */
+  const isDataInited = isFetched && isFiltersInited;
 
-  const isDataLoading = isRefetching || isLoading; /* || isFiltersPending */
+  const isDataLoading = isRefetching || isLoading || isFiltersPending;
 
   const goBack = useGoBack(rootAliasRoute);
 
@@ -657,7 +671,6 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
         // breadcrumbs={breadcrumbs}
         actions={actions}
       />
-      {/*
       <AvailableCategoriesFilters
         className={cn(
           isDev && '__ManageCategoriesList_Filters', // DEBUG
@@ -665,7 +678,6 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
           isFiltersPending && 'opacity-50',
         )}
       />
-      */}
       {isDataInited ? (
         <CategoriesTableContent
           {...props}

@@ -27,7 +27,10 @@ export async function getAvailableCategories(
     orderBy = { updatedAt: 'desc' },
     includeTranslations = true,
     searchText,
+    searchLang,
     status,
+    hasImage,
+    hasTopics,
     minCreatedAt,
     maxCreatedAt,
     minUpdatedAt,
@@ -87,8 +90,47 @@ export async function getAvailableCategories(
       }
     }
 
+    if (searchLang) {
+      const langConditions: Prisma.CategoryWhereInput = {
+        translations: {
+          some: {
+            OR: [
+              { locale: { contains: searchLang, mode: 'insensitive' } },
+              // If searchLang is a 2-letter code, also search in locale exactly
+              ...(searchLang.length === 2 ? [{ locale: searchLang }] : []),
+            ],
+          },
+        },
+      };
+      if (where.AND) {
+        const andArray = Array.isArray(where.AND) ? where.AND : [where.AND];
+        where.AND = [...andArray, langConditions];
+      } else if (where.OR) {
+        where.AND = [{ OR: where.OR }, langConditions];
+        delete where.OR;
+      } else {
+        Object.assign(where, langConditions);
+      }
+    }
+
     if (!userId || status) {
       where.status = userId && status ? status : defaultCategoryStatus;
+    }
+
+    if (hasImage !== undefined) {
+      if (hasImage) {
+        where.imageUrl = { not: null };
+      } else {
+        where.imageUrl = null;
+      }
+    }
+
+    if (hasTopics !== undefined) {
+      if (hasTopics) {
+        where.topics = { some: {} };
+      } else {
+        where.topics = { none: {} };
+      }
     }
 
     if (minCreatedAt !== undefined || maxCreatedAt !== undefined) {

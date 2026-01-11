@@ -3,18 +3,17 @@
 import React from 'react';
 
 import { manageCategoriesRoute } from '@/config';
+import {
+  CategoriesFiltersProvider,
+  convertAvailableFiltersToParams,
+  TApplyFiltersData,
+  TAvailableCategoriesFiltersParams,
+} from '@/features/categories/contexts/CategoriesFiltersContext';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
-/* // TODO: Filters
- * import {
- *   convertAvailableFiltersToParams,
- *   TApplyFiltersData,
- *   TAvailableCategoriesFiltersParams,
- *   CategoriesFiltersProvider,
- * } from '@/contexts/CategoriesFiltersContext';
- */
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoToTheRoute } from '@/hooks';
 
+import { ContentSkeleton } from './ContentSkeleton';
 import { ManageCategoriesList } from './ManageCategoriesList';
 
 interface TCategoriesListProps {
@@ -36,26 +35,22 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   const routePath = manageCategoriesRoute; // `/categories/${manageScope}`;
   memo.routePath = routePath;
 
-  /* // TODO: Filters
+  // TODO: Filters
   const [filtersParams, setFiltersParams] = React.useState<
     TAvailableCategoriesFiltersParams | undefined
   >();
-  */
 
   const availableCategoriesQuery = useAvailableCategories({
-    /* // TODO: Filters
-     * enabled: !!filtersParams,
-     * showOnlyMyCategories: isOnlyMy,
-     * ...filtersParams,
-     */
+    // TODO: Filters
+    enabled: !!filtersParams,
+    ...filtersParams,
   });
   const {
     allCategories,
     isFetched,
-    /* // TODO: Filters
-     * queryClient,
-     * queryKey,
-     */
+    // TODO: Filters
+    queryClient,
+    queryKey,
   } = availableCategoriesQuery;
   memo.allCategories = allCategories;
 
@@ -121,7 +116,7 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
     }
   }, [editTopicsCategoryId, openEditTopicsPage]);
 
-  /* // TODO: Filters
+  // TODO: Filters
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {
       const filtersParams = convertAvailableFiltersToParams(filtersData);
@@ -130,25 +125,16 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
     },
     [queryClient, queryKey],
   );
-  */
 
   return (
     <>
-      {/* // TODO: Filters
-      <TopicsFiltersProvider
-        storeId={`manage-topics-filters-${manageScope}`}
-        applyFilters={applyFilters}
-        // ignoreOnlyMy={isOnlyMy}
-      >
-      {filtersParams ? (
-      */}
-      <ManageCategoriesList availableCategoriesQuery={availableCategoriesQuery} />
-      {/*
-      ) : (
-        <ContentSkeleton className="px-6 py-0" />
-      )}
-      </TopicsFiltersProvider>
-      */}
+      <CategoriesFiltersProvider storeId={`manage-categories-filters`} applyFilters={applyFilters}>
+        {filtersParams ? (
+          <ManageCategoriesList availableCategoriesQuery={availableCategoriesQuery} />
+        ) : (
+          <ContentSkeleton className="px-6 py-0" />
+        )}
+      </CategoriesFiltersProvider>
     </>
   );
 }
