@@ -28,6 +28,7 @@ interface TErrorProps {
   iconClassName?: string;
   padded?: boolean;
   border?: boolean;
+  noActions?: boolean;
 }
 
 // NOTE: Only plain string should be passed from the server components
@@ -49,6 +50,7 @@ export function PageError(props: TErrorProps) {
     ExtraActions,
     padded = true,
     border = true,
+    noActions,
   } = props;
   const router = useRouter();
 
@@ -94,7 +96,7 @@ export function PageError(props: TErrorProps) {
       className={cn(
         isDev && '__PageError', // DEBUG
         'overflow-auto',
-        padded && 'm-6',
+        padded && 'p-6',
         !border && 'border-none',
         className,
       )}
@@ -126,35 +128,37 @@ export function PageError(props: TErrorProps) {
           {explanation}
         </div>
       )}
-      <div
-        className={cn(
-          isDev && '__PageError_Actions', // DEBUG
-          'mt-4 flex w-full flex-wrap justify-center gap-4',
-        )}
-      >
-        <Button variant="theme" onClick={goBack} className="text-truncate flex gap-2">
-          <Icons.ArrowLeft className="size-4" />
-          <span className="truncate">Go back</span>
-        </Button>
-        <Button variant="theme" onClick={goHome} className="flex gap-2">
-          <Icons.Home className="size-4" />
-          Go home
-        </Button>
-        {/*
+      {!noActions && (
+        <div
+          className={cn(
+            isDev && '__PageError_Actions', // DEBUG
+            'mt-4 flex w-full flex-wrap justify-center gap-4',
+          )}
+        >
+          <Button variant="theme" onClick={goBack} className="text-truncate flex gap-2">
+            <Icons.ArrowLeft className="size-4" />
+            <span className="truncate">Go back</span>
+          </Button>
+          <Button variant="theme" onClick={goHome} className="flex gap-2">
+            <Icons.Home className="size-4" />
+            Go home
+          </Button>
+          {/*
         <Link href={rootAliasRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
           <span>Go home</span>
         </Link>
         */}
-        {!!reset && (
-          <Button onClick={reset} className="flex gap-2">
-            <Icons.Refresh className="size-4" />
-            <span>Try again</span>
-          </Button>
-        )}
-        {extraActions}
-        {ExtraActions && <ExtraActions />}
-      </div>
+          {!!reset && (
+            <Button onClick={reset} className="flex gap-2">
+              <Icons.Refresh className="size-4" />
+              <span>Try again</span>
+            </Button>
+          )}
+          {extraActions}
+          {ExtraActions && <ExtraActions />}
+        </div>
+      )}
     </ErrorPlaceHolder>
   );
 }

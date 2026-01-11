@@ -69,14 +69,6 @@ export async function uploadCategoryImage(formData: FormData) {
     });
     const { url } = result;
 
-    console.log('[uploadCategoryImage] done', {
-      url,
-      result,
-      file,
-      formData,
-    });
-    debugger;
-
     return {
       success: true,
       data: { url },

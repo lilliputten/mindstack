@@ -142,13 +142,7 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
       >
       {filtersParams ? (
       */}
-      <ManageCategoriesList
-        // handleDeleteCategory={openDeleteCategoryModal}
-        // handleEditCategory={openEditCategoryModal}
-        // handleEditTopics={openEditTopicsPage}
-        // handleAddCategory={openAddCategoryModal}
-        availableCategoriesQuery={availableCategoriesQuery}
-      />
+      <ManageCategoriesList availableCategoriesQuery={availableCategoriesQuery} />
       {/*
       ) : (
         <ContentSkeleton className="px-6 py-0" />

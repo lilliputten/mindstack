@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
+import { PageError } from '@/components/shared';
 import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev, manageCategoriesRoute } from '@/config';
 import { getCategoryName, useAvailableCategoryById } from '@/features/categories';
@@ -29,8 +30,6 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   const t = useT();
 
-  // const pathname = usePathname();
-
   const shouldBeVisible = true; // pathname.endsWith(urlPostfix);
 
   const [isVisible, setVisible] = React.useState(true);
@@ -43,11 +42,17 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
     traceId: 'DeleteCategoryModal',
     id: categoryId,
   });
-  const { data: deletingCategory, isFetched, isLoading } = availableCategoryQuery;
+  const {
+    data: deletingCategory,
+    isFetched,
+    isRefetching,
+    isLoading,
+    error,
+  } = availableCategoryQuery;
 
   const categoryName = deletingCategory ? getCategoryName(deletingCategory) : 'Unknown category';
 
-  const isCategoryReady = isFetched && !isLoading;
+  const isCategoryReady = isFetched && !isLoading && !isRefetching;
 
   const goBack = useGoBack(routePath);
 
@@ -111,14 +116,16 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
     return null;
   }
 
-  // TODO: Add this component to strorybook as a template for ConfirmModal usage
+  const isPending = deleteCategoryMutation.isPending || !isCategoryReady;
+
+  // TODO: Add this component to storybook as a template for ConfirmModal usage
 
   return (
     <ConfirmModal
       className={cn(
         isDev && '__DeleteCategoryModal', // DEBUG
       )}
-      dialogTitle={t('DeleteCategoryModal.DeleteCategoryQuestionForTitle')}
+      dialogTitle="Delete Category?"
       confirmButtonVariant="destructive"
       confirmButtonText={t('Delete')}
       confirmButtonBusyText={t('Deleting')}
@@ -126,7 +133,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       cancelButtonVariant={hasDeleted ? 'theme' : 'ghost'}
       handleConfirm={confirmDeleteCategory}
       handleClose={hideModal}
-      isPending={deleteCategoryMutation.isPending}
+      isPending={isPending}
       isDone={hasDeleted}
       isVisible={isVisible}
       actionsClassName="justify-center"
@@ -135,6 +142,15 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
         <SuccessSplash title="The category has been deleted">
           The category has been successfully deleted. The dialog will be closed automatically.
         </SuccessSplash>
+      ) : error ? (
+        <PageError
+          className={cn(
+            isDev && '__AuthErrorPage', // DEBUG
+          )}
+          title="Can not find category to delete"
+          error={error}
+          noActions
+        />
       ) : (
         <div
           className={cn(

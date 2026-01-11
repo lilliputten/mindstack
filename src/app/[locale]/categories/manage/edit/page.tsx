@@ -8,10 +8,6 @@ interface EditCategoryPageProps {
   searchParams: Promise<{ categoryId: string; from?: string }>;
 }
 
-export default async function EditCategoryPage({
-  searchParams,
-  params,
-}: EditCategoryPageProps & TAwaitedProps) {
-  const { categoryId, from } = await searchParams;
+export default async function EditCategoryPage({ params }: EditCategoryPageProps & TAwaitedProps) {
   return <ManageCategoriesPage params={params} />;
 }

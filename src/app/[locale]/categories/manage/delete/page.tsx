@@ -9,10 +9,7 @@ interface DeleteCategoryPageProps {
 }
 
 export default async function DeleteCategoryPage({
-  searchParams,
   params,
 }: DeleteCategoryPageProps & TAwaitedProps) {
-  const { categoryId, from } = await searchParams;
-
   return <ManageCategoriesPage params={params} />;
 }
