@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale } from 'next-intl';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -45,91 +45,8 @@ import {
   TCreateCategoryParams,
 } from '@/features/categories/types';
 
-const MIN_NAME_LENGTH = 3;
-const MAX_NAME_LENGTH = 100;
-const MAX_DESCRIPTION_LENGTH = 500;
-const MAX_KEYWORDS_LENGTH = 200;
-
-interface TFormData {
-  status: CategoryStatusType;
-  imageUrl?: string;
-  // NOTE: Use translated values, according to `strictLocalesList`
-  translations: {
-    [K in TLocale]?: {
-      name: string;
-      description: string;
-      keywords: string;
-    };
-  };
-}
-
-export interface TEditCategoryFormProps {
-  initialCategory?: TAvailableCategory;
-  handleSaveCategory: (p: TAvailableCategory) => Promise<unknown>;
-  handleClose?: () => void;
-  className?: string;
-  isPending?: boolean;
-  /** Is the dialog in edit or add mode? */
-  newMode?: boolean;
-  /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
-  suggestionMode?: boolean;
-}
-
-interface TConvertFormDataOptions {
-  locale: TLocale;
-  suggestionMode?: boolean;
-}
-
-function convertFormDataToCategory(formData: TFormData, _opts: TConvertFormDataOptions) {
-  const { status, imageUrl, translations } = formData;
-
-  // Convert the translations object to an array of CategoryTranslation objects
-  const translationArray = Object.entries(translations).map(([localeKey, translationData]) => ({
-    locale: localeKey,
-    name: translationData.name || '',
-    description: translationData.description,
-    keywords: translationData.keywords,
-  }));
-
-  const category: TCreateCategoryParams = {
-    status,
-    imageUrl,
-    translations: translationArray,
-  };
-  return category;
-}
-
-function convertCategoryToFormData(
-  category: TCreateCategoryParams | undefined,
-  opts: TConvertFormDataOptions,
-) {
-  if (!category) {
-    return undefined;
-  }
-  const {
-    // locale,
-    suggestionMode,
-  } = opts;
-
-  // Convert the translations array to an object keyed by locale
-  const translations: TFormData['translations'] = {};
-  if (category.translations) {
-    category.translations.forEach((translation) => {
-      translations[translation.locale as TLocale] = {
-        name: translation.name,
-        description: translation.description || '',
-        keywords: translation.keywords || '',
-      };
-    });
-  }
-
-  const formData: TFormData = {
-    status: category.status || (suggestionMode ? 'SUGGESTED' : defaultCategoryStatus),
-    imageUrl: category.imageUrl || undefined,
-    translations,
-  };
-  return formData;
-}
+import { convertCategoryToFormData, convertFormDataToCategory } from './helpers';
+import { formSchema, TEditCategoryFormProps, TFormData } from './types';
 
 interface TMemo {
   imageFile?: File | null;
@@ -156,6 +73,9 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     newMode,
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode,
+    setForm,
+    setHandleSubmit,
+    setHandleSubmitForm,
   } = props;
   const locale = useLocale() as TLocale;
 
@@ -166,41 +86,41 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
-  // TODO: Add a service to translate other texts?
-  const formSchema = React.useMemo(
-    () =>
-      z
-        .object({
-          status: CategoryStatusSchema,
-          imageUrl: z.string().optional(),
-          translations: z.record(
-            z.string(),
-            z.object({
-              name: z.preprocess(
-                (val) => (val === '' ? undefined : val),
-                z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH).optional(),
-              ),
-              description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
-              keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
-            }),
-          ),
-        })
-        .refine(
-          (data) => {
-            // Check if at least one translation has a valid name
-            const translations = data.translations;
-            if (!translations) return false;
-            return Object.values(translations).some(
-              (translation) => translation.name !== undefined && translation.name.trim() !== '',
-            );
-          },
-          {
-            message: 'At least one name field must be filled across all translations',
-            path: ['translations'], // Error will appear at the translations level
-          },
-        ),
-    [],
-  );
+  // // TODO: Add a service to translate other texts?
+  // const formSchema = React.useMemo(
+  //   () =>
+  //     z
+  //       .object({
+  //         status: CategoryStatusSchema,
+  //         imageUrl: z.string().optional(),
+  //         translations: z.record(
+  //           z.string(),
+  //           z.object({
+  //             name: z.preprocess(
+  //               (val) => (val === '' ? undefined : val),
+  //               z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH).optional(),
+  //             ),
+  //             description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
+  //             keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
+  //           }),
+  //         ),
+  //       })
+  //       .refine(
+  //         (data) => {
+  //           // Check if at least one translation has a valid name
+  //           const translations = data.translations;
+  //           if (!translations) return false;
+  //           return Object.values(translations).some(
+  //             (translation) => translation.name !== undefined && translation.name.trim() !== '',
+  //           );
+  //         },
+  //         {
+  //           message: 'At least one name field must be filled across all translations',
+  //           path: ['translations'], // Error will appear at the translations level
+  //         },
+  //       ),
+  //   [],
+  // );
 
   const defaultValues: TFormData = React.useMemo(
     () => ({
@@ -218,9 +138,31 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
   const form = useForm<TFormData>({
     mode: 'onChange',
     criteriaMode: 'all',
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(
+      formSchema.refine(
+        (data) => {
+          // Check if at least one translation has a valid name
+          const translations = data.translations;
+          if (!translations) return false;
+          return Object.values(translations).some(
+            (translation) => translation.name !== undefined && translation.name.trim() !== '',
+          );
+        },
+        {
+          message: 'At least one name field must be filled across all translations',
+          path: ['translations'], // Error will appear at the translations level
+        },
+      ),
+    ),
     defaultValues: initialValues || defaultValues,
   });
+
+  // Form setter
+  React.useEffect(() => {
+    if (setForm) {
+      setForm(form);
+    }
+  }, [form, setForm]);
 
   const {
     isDirty, // boolean;
@@ -360,6 +302,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
 
   const handleSubmitForm = React.useCallback(
     async (formData: TFormData) => {
+      debugger;
       // NOTE: If `memo.imageFile` is defined then there is an image to upload
       const imageCleared = memo.imageFile === null;
       if (isDev) {
@@ -426,6 +369,33 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     [memo, handleSaveCategory, initialCategory, locale, suggestionMode, uploadImageFileToVercel],
   );
 
+  const handleSubmit = React.useMemo(
+    () => form.handleSubmit(handleSubmitForm),
+    [form, handleSubmitForm],
+  );
+
+  // setHandleSubmitForm setter
+  React.useEffect(() => {
+    if (setHandleSubmitForm) {
+      console.log('[EditCategoryForm:setHandleSubmitForm setter]', {
+        handleSubmitForm,
+      });
+      debugger;
+      setHandleSubmitForm(handleSubmitForm);
+    }
+  }, [handleSubmitForm, setHandleSubmitForm]);
+
+  // // setHandleSubmit setter
+  // React.useEffect(() => {
+  //   if (setHandleSubmit) {
+  //     console.log('[EditCategoryForm:setHandleSubmit setter]', {
+  //       handleSubmit,
+  //     });
+  //     debugger;
+  //     setHandleSubmit(handleSubmit);
+  //   }
+  // }, [handleSubmit, setHandleSubmit]);
+
   const handleCloseForm = (ev: React.MouseEvent) => {
     if (handleClose) {
       handleClose();
@@ -441,7 +411,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmitForm)}
+        onSubmit={handleSubmit}
         className={cn(
           isDev && '__EditCategoryForm', // DEBUG
           'flex w-full flex-col gap-4',

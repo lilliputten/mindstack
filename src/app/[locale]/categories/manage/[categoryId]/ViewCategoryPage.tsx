@@ -81,7 +81,7 @@ export function ViewCategoryPage(props: TViewCategoryPageProps) {
         // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${categoriesListRoutePath}/edit/${categoryId}`),
+        onClick: () => goToTheRoute(`${categoriesListRoutePath}/${categoryId}/edit`),
       },
     ],
     [t, goBack, handleReload, categoryId, goToTheRoute, categoriesListRoutePath],

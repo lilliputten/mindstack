@@ -34,24 +34,6 @@ interface TProps {
   suggestionMode?: boolean;
 }
 
-/* // Test data
- * const sampleInitialCategory: TCreateCategoryParams = {
- *   status: 'PUBLIC',
- *   imageUrl:
- *     'https://dtd6kgwmdtb71uj7.public.blob.vercel-storage.com/51uXWRfDCkL._AC_SL1000_-EyzCLFJQLBzdX4fCoYSUi6x8qZKsi6.jpg',
- *   translations: [
- *     {
- *       locale: 'en',
- *       name: '',
- *     },
- *     {
- *       locale: 'es',
- *       name: 'Texto en español',
- *     },
- *   ],
- * };
- */
-
 export function AddCategoryModal(props: TProps) {
   const {
     // // urlPostfix, // = '/add',
