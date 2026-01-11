@@ -37,8 +37,10 @@ export const filterFieldNames: Record<TFiltersDataKey, string> = {
   hasImage: 'Label-HasImage',
   hasTopics: 'Label-HasTopics',
   orderBySelect: 'Label-OrderBy',
-  minCreatedAt: 'Label-MinCreatedAt',
-  maxCreatedAt: 'Label-MaxCreatedAt',
-  minUpdatedAt: 'Label-MinUpdatedAt',
-  maxUpdatedAt: 'Label-MaxUpdatedAt',
+  /* // NOTE: Date filtering is not used yet
+   * minCreatedAt: 'Label-MinCreatedAt',
+   * maxCreatedAt: 'Label-MaxCreatedAt',
+   * minUpdatedAt: 'Label-MinUpdatedAt',
+   * maxUpdatedAt: 'Label-MaxUpdatedAt',
+   */
 };

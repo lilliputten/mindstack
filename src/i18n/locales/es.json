@@ -141,6 +141,29 @@
   "AppIntro": {
     "BlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>"
   },
+  "AvailableCategoriesFilterTexts": {
+    "Ignore": "Ignorar",
+    "Label-HasImage": "Tiene Imagens",
+    "Label-HasTopics": "Tiene Temas",
+    "Label-OrderBy": "Ordenar por",
+    "Label-SearchLang": "Idioma",
+    "Label-SearchText": "Buscar por",
+    "Label-Status": "Estado",
+    "No": "No",
+    "NoActiveFilters": "No hay filtros activos",
+    "OrderBy-Name": "Por Nombre",
+    "OrderBy-NameDescending": "Por Nombre (descendente)",
+    "OrderBy-Oldest": "Más Antiguo",
+    "OrderBy-Recent": "Reciente",
+    "Status-Hidden": "Oculto",
+    "Status-Public": "Público",
+    "Status-Suggested": "Sugerido",
+    "WithImage": "Con Imagens",
+    "WithTopics": "Con Temas",
+    "WithoutImage": "Sin Imagens",
+    "WithoutTopics": "Sin Temas",
+    "Yes": "Sí"
+  },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
     "ManageQuestion": "Gestionar Pregunta",

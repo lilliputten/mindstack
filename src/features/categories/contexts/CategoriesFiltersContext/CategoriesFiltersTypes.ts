@@ -43,10 +43,12 @@ export const filtersDataSchema = z.object({
   hasImage: threeStateSchema,
   hasTopics: threeStateSchema,
   orderBySelect: orderBySelectSchema.optional(),
-  minCreatedAt: z.coerce.date().optional(),
-  maxCreatedAt: z.coerce.date().optional(),
-  minUpdatedAt: z.coerce.date().optional(),
-  maxUpdatedAt: z.coerce.date().optional(),
+  /* // NOTE: Date filtering is not used yet
+   * minCreatedAt: z.coerce.date().optional(),
+   * maxCreatedAt: z.coerce.date().optional(),
+   * minUpdatedAt: z.coerce.date().optional(),
+   * maxUpdatedAt: z.coerce.date().optional(),
+   */
 });
 
 export type TFiltersData = z.infer<typeof filtersDataSchema>;
@@ -59,10 +61,12 @@ export const filtersDataDefaults: TFiltersData = {
   hasImage: null,
   hasTopics: null,
   orderBySelect: orderBySelectDefault,
-  minCreatedAt: undefined,
-  maxCreatedAt: undefined,
-  minUpdatedAt: undefined,
-  maxUpdatedAt: undefined,
+  /* // NOTE: Date filtering is not used yet
+   * minCreatedAt: undefined,
+   * maxCreatedAt: undefined,
+   * minUpdatedAt: undefined,
+   * maxUpdatedAt: undefined,
+   */
 };
 
 // Note: Categories don't have a direct name field, they have translations

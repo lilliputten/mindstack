@@ -25,7 +25,7 @@ export function getCategoryDescription(
       }
     }
     // Otherwise try to find any translation
-    if (!description && defaultLocale !== locale) {
+    if (!description) {
       const found = translations.find((tr) => tr.description);
       if (found?.description) {
         description = found?.description;

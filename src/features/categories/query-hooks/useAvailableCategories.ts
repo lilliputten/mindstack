@@ -92,6 +92,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
       const { pageParam = 0 } = params;
       try {
         const result = await getAvailableCategories({
+          ...queryProps,
           skip: pageParam as number,
           take: itemsLimit,
         });

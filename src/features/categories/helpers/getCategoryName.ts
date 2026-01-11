@@ -21,7 +21,7 @@ export function getCategoryName(category: TAvailableCategory, locale?: TLocale, 
       }
     }
     // Otherwise try to find any translation
-    if (!name && defaultLocale !== locale) {
+    if (!name) {
       const found = translations.find((tr) => tr.name);
       if (found?.name) {
         name = found?.name;
