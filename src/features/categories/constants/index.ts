@@ -8,8 +8,8 @@ export const categoryImageConfig = {
   quality: 80,
 } as const;
 
-/** Category image file size limit in bytes (5MB) */
-export const categoryImageSizeLimit = 5 * 1024 * 1024;
+/** Category image file size limit in bytes */
+export const categoryImageSizeLimit = 500 * 1024; // 500KB
 
 /** Allowed MIME types for category images */
 export const categoryImageAllowedTypes = [

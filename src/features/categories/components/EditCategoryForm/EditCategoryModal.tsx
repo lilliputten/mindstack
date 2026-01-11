@@ -34,7 +34,7 @@ export function EditCategoryModal(props: TProps) {
     categoryId,
     // from,
     /** Is it a suggestion? Then offer a limited editing mode */
-    suggestionMode = true,
+    suggestionMode,
   } = props;
 
   const routePath = manageCategoriesRoute; // `/categories/manage`;

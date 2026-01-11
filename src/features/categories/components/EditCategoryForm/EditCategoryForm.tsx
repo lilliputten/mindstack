@@ -465,20 +465,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
               )}
             />
 
-            {/* Instruction for users */}
-            <div
-              className={cn(
-                isDev && '__EditCategoryForm_Info', // DEBUG
-                'flex items-center gap-2 rounded-md border border-theme/20 p-2',
-              )}
-            >
-              <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-              <p className="flex-1 text-sm opacity-50">
-                Please enter the properties of the category (name, description, keywords) for all or
-                only one of the application languages.
-              </p>
-            </div>
-
             {/* General error message when all names are empty */}
             {allNamesEmpty && (
               <div
@@ -493,6 +479,55 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 </p>
               </div>
             )}
+
+            {/* Status */}
+            {!suggestionMode && (
+              <FormField
+                name="status"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      isDev && '__EditCategoryForm_status', // DEBUG
+                      'flex w-full flex-col gap-4',
+                    )}
+                  >
+                    <Label htmlFor="category-status">Status</Label>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger id="category-status">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="PUBLIC">Public</SelectItem>
+                        <SelectItem value="SUGGESTED">Suggested</SelectItem>
+                        <SelectItem value="HIDDEN">Hidden</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Instruction for users */}
+            <div
+              className={cn(
+                isDev && '__EditCategoryForm_Info', // DEBUG
+                'flex items-center gap-2 rounded-md border border-theme/20 p-2',
+              )}
+            >
+              <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+              <p className="flex-1 text-sm opacity-50">
+                Please enter the properties of the category (name, description, keywords) for all or
+                only one of the application languages.
+              </p>
+            </div>
 
             {/* Translations Tabs */}
             <Tabs
@@ -614,41 +649,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 </TabsContent>
               ))}
             </Tabs>
-
-            {/* Status */}
-            {!suggestionMode && (
-              <FormField
-                name="status"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem
-                    className={cn(
-                      isDev && '__EditCategoryForm_status', // DEBUG
-                      'flex w-full flex-col gap-4',
-                    )}
-                  >
-                    <Label htmlFor="category-status">Status</Label>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger id="category-status">
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PUBLIC">Public</SelectItem>
-                        <SelectItem value="SUGGESTED">Suggested</SelectItem>
-                        <SelectItem value="HIDDEN">Hidden</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
           </div>
         )}
 

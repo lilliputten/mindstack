@@ -110,10 +110,12 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
       if (typeof value === 'string' && !value.trim()) {
         return null;
       }
-      if (value instanceof Date) {
-        // Dates are considered active if they exist
-        return id;
-      }
+      /* // NOTE: Date filtering is not used yet
+       * if (value instanceof Date) {
+       *   // Dates are considered active if they exist
+       *   return id;
+       * }
+       */
       const shape = filtersDataSchema.shape;
       const field = shape[fieldId];
       const baseField = getBaseField(field);
@@ -134,10 +136,12 @@ export function convertAvailableFiltersToParams(
     hasImage,
     hasTopics,
     orderBySelect,
-    minCreatedAt,
-    maxCreatedAt,
-    minUpdatedAt,
-    maxUpdatedAt,
+    /* // NOTE: Date filtering is not used yet
+     * minCreatedAt,
+     * maxCreatedAt,
+     * minUpdatedAt,
+     * maxUpdatedAt,
+     */
     ...rest
   } = filtersData;
   return {
@@ -145,9 +149,11 @@ export function convertAvailableFiltersToParams(
     hasImage: hasImage != null ? hasImage : undefined,
     hasTopics: hasTopics != null ? hasTopics : undefined,
     orderBy: orderBySelect ? orderByMap[orderBySelect] : undefined,
-    minCreatedAt: minCreatedAt ? minCreatedAt : undefined,
-    maxCreatedAt: maxCreatedAt ? maxCreatedAt : undefined,
-    minUpdatedAt: minUpdatedAt ? minUpdatedAt : undefined,
-    maxUpdatedAt: maxUpdatedAt ? maxUpdatedAt : undefined,
+    /* // NOTE: Date filtering is not used yet
+     * minCreatedAt: minCreatedAt ? minCreatedAt : undefined,
+     * maxCreatedAt: maxCreatedAt ? maxCreatedAt : undefined,
+     * minUpdatedAt: minUpdatedAt ? minUpdatedAt : undefined,
+     * maxUpdatedAt: maxUpdatedAt ? maxUpdatedAt : undefined,
+     */
   };
 }
