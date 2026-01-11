@@ -165,39 +165,43 @@ export function AvailableCategoriesFilters(props: TProps) {
                       type="submit"
                       variant="theme"
                       disabled={!isSubmitEnabled}
-                      className="flex items-center justify-start gap-2"
+                      className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Check className="size-4 opacity-50" />
-                      {t('AvailableCategoriesFilters.Apply')}
+                      <span className="truncate">{t('AvailableCategoriesFilters.Apply')}</span>
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
                       onClick={handleResetToDefaults}
                       disabled={onDefaults}
-                      className="flex items-center justify-start gap-2"
+                      className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      {t('AvailableCategoriesFilters.ResetToDefaults')}
+                      <span className="truncate">
+                        {t('AvailableCategoriesFilters.ResetToDefaults')}
+                      </span>
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
                       onClick={handleClearChanges}
                       disabled={!form.formState.isDirty}
-                      className="flex items-center justify-start gap-2"
+                      className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      {t('AvailableCategoriesFilters.ClearChanges')}
+                      <span className="truncate">
+                        {t('AvailableCategoriesFilters.ClearChanges')}
+                      </span>
                     </Button>
                     <Button
                       type="button"
                       variant="ghost"
                       onClick={hideFilters}
-                      className="flex items-center justify-start gap-2 md:ml-auto"
+                      className="text-truncate flex items-center justify-start gap-2 md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
-                      {t('AvailableCategoriesFilters.Hide')}
+                      <span className="truncate">{t('AvailableCategoriesFilters.Hide')}</span>
                     </Button>
                   </div>
                 </form>

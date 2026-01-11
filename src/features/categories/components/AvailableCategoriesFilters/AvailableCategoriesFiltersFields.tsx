@@ -78,7 +78,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label htmlFor={searchTextKey}>{getFilterFieldName('searchText', tTexts)}</Label>
+              <Label className="truncate" htmlFor={searchTextKey}>
+                {getFilterFieldName('searchText', tTexts)}
+              </Label>
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input
@@ -107,7 +109,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   )}
                 </div>
               </FormControl>
-              <FormHint>{t('AvailableCategoriesFiltersFields.SearchForTextHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('AvailableCategoriesFiltersFields.SearchForTextHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -117,7 +121,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label htmlFor={searchLangKey}>{getFilterFieldName('searchLang', tTexts)}</Label>
+              <Label className="truncate" htmlFor={searchLangKey}>
+                {getFilterFieldName('searchLang', tTexts)}
+              </Label>
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input
@@ -146,7 +152,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   )}
                 </div>
               </FormControl>
-              <FormHint className="MarkdownText">
+              <FormHint className="MarkdownText text-truncate">
                 {t.rich('AvailableCategoriesFiltersFields.SearchForLanguageHint', {
                   code: (chunks) => <code>{chunks}</code>,
                 })}
@@ -160,12 +166,14 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label htmlFor={statusKey}>{getFilterFieldName('status', tTexts)}</Label>
+              <Label className="truncate" htmlFor={statusKey}>
+                {getFilterFieldName('status', tTexts)}
+              </Label>
               <FormControl>
                 <Select
-                  value={field.value || ''}
+                  value={field.value || 'all'}
                   onValueChange={(value) => {
-                    field.onChange(value || undefined);
+                    field.onChange(value === 'all' ? undefined : value);
                   }}
                 >
                   <SelectTrigger>
@@ -174,7 +182,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">
+                    <SelectItem value="all">
                       {t('AvailableCategoriesFiltersFields.AllStatuses')}
                     </SelectItem>
                     {statusOptions.map((status) => (
@@ -185,7 +193,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>{t('AvailableCategoriesFiltersFields.SelectStatusHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('AvailableCategoriesFiltersFields.SelectStatusHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -200,7 +210,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                 (!field.value || field.value === orderBySelectDefault) && 'opacity-50',
               )}
             >
-              <Label htmlFor={orderBySelectKey}>
+              <Label className="truncate" htmlFor={orderBySelectKey}>
                 {getFilterFieldName('orderBySelect', tTexts)}
               </Label>
               <FormControl>
@@ -219,7 +229,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>{t('AvailableCategoriesFiltersFields.ChooseSortOrderHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('AvailableCategoriesFiltersFields.ChooseSortOrderHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -235,7 +247,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
               <FormItem
                 className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
               >
-                <Label htmlFor={hasImageKey}>{getFilterFieldName('hasImage', tTexts)}</Label>
+                <Label className="truncate" htmlFor={hasImageKey}>
+                  {getFilterFieldName('hasImage', tTexts)}
+                </Label>
                 <FormControl>
                   <Select
                     value={value}
@@ -262,7 +276,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint>
+                <FormHint className="text-truncate">
                   {t('AvailableCategoriesFiltersFields.DisplayCategoriesWithImageHint')}
                 </FormHint>
                 <FormMessage />
@@ -279,7 +293,9 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
               <FormItem
                 className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
               >
-                <Label htmlFor={hasTopicsKey}>{getFilterFieldName('hasTopics', tTexts)}</Label>
+                <Label className="truncate" htmlFor={hasTopicsKey}>
+                  {getFilterFieldName('hasTopics', tTexts)}
+                </Label>
                 <FormControl>
                   <Select
                     value={value}
@@ -306,7 +322,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint>
+                <FormHint className="text-truncate">
                   {t('AvailableCategoriesFiltersFields.DisplayCategoriesWithTopicsHint')}
                 </FormHint>
                 <FormMessage />
