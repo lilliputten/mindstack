@@ -1,0 +1,153 @@
+'use client';
+
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { ConfirmModal } from '@/components/modals/ConfirmModal';
+import * as Icons from '@/components/shared/Icons';
+import { SuccessSplash } from '@/components/shared/SuccessSplash';
+import { isDev, manageCategoriesRoute } from '@/config';
+import { getCategoryName, useAvailableCategoryById } from '@/features/categories';
+import { deleteCategory } from '@/features/categories/actions/deleteCategory';
+import { TAvailableCategory, TCategory, TCategoryId } from '@/features/categories/types';
+import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+
+interface TDeleteCategoryModalProps {
+  categoryId?: TCategoryId;
+  from?: string;
+}
+
+export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
+  const { categoryId } = props;
+  const routePath = manageCategoriesRoute; // `/categories/manage`;
+  const t = useT();
+
+  // const pathname = usePathname();
+
+  const shouldBeVisible = true; // pathname.endsWith(urlPostfix);
+
+  const [isVisible, setVisible] = React.useState(true);
+  const [hasDeleted, setDeleted] = React.useState(false);
+
+  const queryClient = useQueryClient();
+
+  const availableCategoryQuery = useAvailableCategoryById({
+    enabled: !hasDeleted && !!categoryId && shouldBeVisible,
+    traceId: 'DeleteCategoryModal',
+    id: categoryId,
+  });
+  const { data: deletingCategory, error, isError, isFetched, isLoading } = availableCategoryQuery;
+
+  const categoryName = deletingCategory ? getCategoryName(deletingCategory) : 'Unknown category';
+
+  const isCategoryReady = isFetched && !isLoading;
+
+  const goBack = useGoBack(routePath);
+
+  const hideModal = React.useCallback(() => {
+    setVisible(false);
+    goBack();
+  }, [goBack]);
+
+  if (!categoryId) {
+    throw new Error('No category id passed for deletion');
+  }
+  useModalTitle(t('DeleteCategoryModal.ModalTitle'));
+  useUpdateModalVisibility(setVisible, shouldBeVisible);
+
+  const deleteCategoryMutation = useMutation<TAvailableCategory, Error, TCategory>({
+    mutationFn: deleteCategory,
+    onSuccess: () => {
+      setDeleted(true);
+      // Useing delayed invalidation combined with auto close
+      setTimeout(() => {
+        const invalidatePrefixes = [
+          // Keys to invalidate...
+          ['available-category', categoryId],
+          ['available-categories'],
+        ].map(makeQueryKeyPrefix);
+        invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
+        // Hide modal (go back)
+        hideModal();
+      }, 1000);
+    },
+    onError: (error, deletingCategory) => {
+      const message = 'Cannot delete category';
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
+      // eslint-disable-next-line no-console
+      console.error('[DeleteCategoryModal:deleteCategoryMutation]', comboMsg, {
+        error,
+        details,
+        deletingCategory,
+      });
+      debugger; // eslint-disable-line no-debugger
+    },
+  });
+
+  const confirmDeleteCategory = React.useCallback(() => {
+    if (!deletingCategory) {
+      return Promise.reject(new Error('No category to delete provided'));
+    }
+    const promise = deleteCategoryMutation.mutateAsync(deletingCategory);
+    toast.promise(promise, {
+      loading: t('DeleteCategoryModal.DeletingCategory', { categoryName }),
+      success: t('DeleteCategoryModal.CategoryDeleted', { categoryName }),
+      error: t('DeleteCategoryModal.ErrorDeletingCatgory', { categoryName }),
+    });
+    return promise;
+  }, [categoryName, deleteCategoryMutation, deletingCategory, t]);
+
+  if (!categoryName) {
+    return null;
+  }
+
+  // TODO: Add this component to strorybook as a template for ConfirmModal usage
+
+  return (
+    <ConfirmModal
+      className={cn(
+        isDev && '__DeleteCategoryModal', // DEBUG
+      )}
+      dialogTitle={t('DeleteCategoryModal.DeleteCategoryQuestionForTitle')}
+      confirmButtonVariant="destructive"
+      confirmButtonText={t('Delete')}
+      confirmButtonBusyText={t('Deleteing')}
+      cancelButtonText={hasDeleted ? t('Ok') : t('Cancel')}
+      cancelButtonVariant={hasDeleted ? 'theme' : 'ghost'}
+      handleConfirm={confirmDeleteCategory}
+      handleClose={hideModal}
+      isPending={deleteCategoryMutation.isPending}
+      isDone={hasDeleted}
+      isVisible={isVisible}
+      actionsClassName="justify-center"
+    >
+      {hasDeleted ? (
+        <SuccessSplash title="The category has been deleted">
+          The category has been successfully deleted. The dialog will be closed automatically.
+        </SuccessSplash>
+      ) : (
+        <div
+          className={cn(
+            isDev && '__DeleteCategoryModal_Content', // DEBUG
+            'text-truncate text-center',
+          )}
+        >
+          {isCategoryReady ? (
+            <>
+              Are you sure to delete category <span className="font-bold">"{categoryName}"</span>?
+            </>
+          ) : (
+            <Skeleton className="mx-auto h-7 w-3/4" />
+          )}
+        </div>
+      )}
+    </ConfirmModal>
+  );
+}

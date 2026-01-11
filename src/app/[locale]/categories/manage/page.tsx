@@ -49,20 +49,12 @@ export default async function ManageCategoriesPageRoute(props: TManageCategories
 
   const user = await getCurrentUser();
 
-  if (!user?.id) {
-    if (isDev) {
-      // eslint-disable-next-line no-console
-      console.debug('[ManageCategoriesPageRoute] Redirecting to auth');
-    }
-    redirect(startAliasRoute);
-  }
-
-  if (user?.role !== 'ADMIN') {
+  if (/* !user?.id || */ user?.role !== 'ADMIN') {
     if (isDev) {
       // eslint-disable-next-line no-console
       console.debug('[ManageCategoriesPageRoute] User is not admin, redirecting to home');
     }
-    redirect('/');
+    redirect(startAliasRoute);
   }
 
   return (

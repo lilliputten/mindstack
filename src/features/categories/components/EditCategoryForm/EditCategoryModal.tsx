@@ -41,7 +41,10 @@ export function EditCategoryModal(props: TProps) {
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
-  const initialCategoryQuery = useAvailableCategoryById({ id: categoryId });
+  const initialCategoryQuery = useAvailableCategoryById({
+    traceId: 'EditCategoryModal',
+    id: categoryId,
+  });
   const { data: initialCategory } = initialCategoryQuery;
 
   /** We're using the `ManageCategories.Edit` as a default namespace, and the

@@ -14,35 +14,44 @@ import { ConfirmForm, TConfirmFormProps } from './ConfirmForm';
 interface TConfirmModalProps
   extends Pick<
     TConfirmFormProps,
+    | 'actionsClassName'
     | 'confirmButtonVariant'
     | 'confirmButtonText'
     | 'confirmButtonBusyText'
     | 'cancelButtonText'
     | 'confirmButtonIcon'
+    | 'cancelButtonVariant'
+    | 'actionsClassName'
+    | 'handleConfirm'
+    | 'handleClose'
+    | 'isPending'
+    | 'isDone'
   > {
   children?: TReactNode;
+  className?: string;
   dialogDescription?: TReactNode;
   dialogTitle: TReactNode;
-  handleClose?: () => void;
-  handleConfirm: () => unknown;
-  isPending?: boolean;
   isVisible: boolean;
 }
 
 export function ConfirmModal(props: TConfirmModalProps) {
   const {
     children,
+    className,
+    actionsClassName,
     dialogDescription,
     dialogTitle,
     handleClose,
     handleConfirm,
     isPending,
+    isDone,
     isVisible,
     confirmButtonVariant,
     confirmButtonText,
     confirmButtonBusyText,
     confirmButtonIcon,
     cancelButtonText,
+    cancelButtonVariant,
   } = props;
   const { isMobile } = useMediaQuery();
 
@@ -55,33 +64,44 @@ export function ConfirmModal(props: TConfirmModalProps) {
         'pb-4 text-theme-foreground',
         // '[&_button[data-id=close]]:text-theme-foreground', // Example: reaching & customizing the nested close button
         isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        className,
       )}
     >
       <div
         className={cn(
           isDev && '__ConfirmModal_Header', // DEBUG
           !isMobile && 'max-h-[90vh]',
-          'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
+          'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
-        <DialogDescription aria-hidden="true" hidden>
+        <DialogTitle
+          className={cn(
+            isDev && '__ConfirmModal_DialogTitle', // DEBUG
+            'truncate',
+          )}
+        >
+          {dialogTitle}
+        </DialogTitle>
+        <DialogDescription className="sr-only" aria-hidden="true" hidden>
           {dialogDescription}
         </DialogDescription>
       </div>
       <ConfirmForm
         className={cn(
           isDev && '__ConfirmModal_Form', // DEBUG
-          'flex flex-col p-8 text-foreground',
+          'flex flex-col p-6 text-foreground',
         )}
+        actionsClassName={actionsClassName}
         handleConfirm={handleConfirm}
         handleClose={handleClose}
         isPending={isPending}
+        isDone={isDone}
         confirmButtonVariant={confirmButtonVariant}
         confirmButtonText={confirmButtonText}
         confirmButtonBusyText={confirmButtonBusyText}
         confirmButtonIcon={confirmButtonIcon}
         cancelButtonText={cancelButtonText}
+        cancelButtonVariant={cancelButtonVariant}
       >
         {children}
       </ConfirmForm>

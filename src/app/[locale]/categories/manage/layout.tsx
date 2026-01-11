@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
-import { isDev, manageCategoriesRoute } from '@/config';
+import { isDev, manageCategoriesRoute, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
 
 type TAwaitedLocaleProps = {
@@ -48,7 +48,7 @@ export default async function ManageCategoriesLayout(props: TManageCategoriesLay
       // eslint-disable-next-line no-console
       console.debug('[ManageCategoriesLayout] User is not admin, redirecting to home');
     }
-    redirect('/');
+    redirect(startAliasRoute);
   }
 
   // Enable static rendering

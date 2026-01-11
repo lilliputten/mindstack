@@ -55,7 +55,10 @@ export function EditCategoryPage(props: TEditCategoryPageProps) {
   //   ReturnType<typeof useAvailableCategoryById> | undefined
   // >();
 
-  const availableCategoryQuery = useAvailableCategoryById({ id: categoryId });
+  const availableCategoryQuery = useAvailableCategoryById({
+    traceId: 'EditCategoryPage',
+    id: categoryId,
+  });
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryPage' });
 
   // DEBUG: AvailableCategoryQuery checker

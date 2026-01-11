@@ -28,6 +28,7 @@ export function EditCategoryPageHolder(props: TEditCategoryPageHolderProps) {
     availableCategoriesQuery;
 
   const availableCategoryQuery = useAvailableCategoryById({
+    traceId: 'EditCategoryPageHolder',
     id: categoryId,
     availableCategoriesQueryKey,
   });

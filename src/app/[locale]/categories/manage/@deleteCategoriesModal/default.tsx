@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
+import { DeleteCategoryModal } from '@/features/categories';
 
 export default function DeleteCategoriesModalDefault() {
   const pathname = usePathname();
@@ -19,7 +19,7 @@ export default function DeleteCategoriesModalDefault() {
     if (prevChunk.endsWith('/categories/manage')) {
       const from = searchParams.get('from') || undefined;
       return (
-        <DeleteCategoriesModal
+        <DeleteCategoryModal
           categoryId={categoryId}
           from={from}
           // onClose={() => window.history.back()}

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { getErrorText } from '@/lib/helpers';
+import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -42,14 +42,16 @@ export function AddCategoryModal(props: TProps) {
     // [>* Is the dialog in edit or add mode? <]
     // newMode = true,
     /** Is it a suggestion? Then offer a limited editing mode */
-    suggestionMode = true,
+    suggestionMode = false,
   } = props;
+
+  const queryClient = useQueryClient();
 
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
-  // const initialCategoryQuery = useAvailableCategoryById({ id: categoryId });
+  // const initialCategoryQuery = useAvailableCategoryById({ traceId: 'AddCategoryModal', id: categoryId });
   // const { data: initialCategory } = initialCategoryQuery;
 
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
@@ -82,26 +84,33 @@ export function AddCategoryModal(props: TProps) {
   const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn,
     onMutate: async (newCategory) => {
-      console.error('[AddCategoryModal:saveCategoryMutation] onMutate', {
+      console.log('[AddCategoryModal:saveCategoryMutation] onMutate', {
         newCategory,
       });
     },
     onSuccess: (updatedCategory) => {
       const { id: categoryId } = updatedCategory;
-      console.error('[AddCategoryModal:saveCategoryMutation] onSuccess', {
+      console.log('[AddCategoryModal:saveCategoryMutation] onSuccess', {
         categoryId,
         updatedCategory,
       });
-      debugger;
       // Add the created item to the cached react-query data
       availableCategoriesQuery.addNewCategory(updatedCategory, true);
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
       // TODO: Update/invalidate queries for this category
       // ['available-category', categoryId
+      const invalidatePrefixes = [
+        // Keys to invalidate...
+        ['available-category', categoryId],
+        ['available-categories'],
+      ].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
+        availableCategoriesQuery.queryKey,
+      ]);
     },
     onError: (error, newCategory) => {
-      const message = t('ToastError');
+      const message = t('CantSaveCategory');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console

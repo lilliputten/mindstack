@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
-import { Switch } from '@/components/ui/Switch';
 import {
   Table,
   TableBody,
@@ -31,14 +30,10 @@ import { PageError } from '@/components/shared/PageError';
 import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { getCategoryName } from '@/features/categories';
-// import { useCategoriesFiltersContext } from '@/contexts/CategoriesFiltersContext';
 import { deleteCategories, updateCategory } from '@/features/categories/actions';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
-// import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack } from '@/hooks';
-
-// import { useManageCategoriesStore } from '@/stores/ManageCategoriesStoreProvider';
 
 import { ContentSkeletonTable } from './ContentSkeleton';
 
@@ -567,7 +562,6 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
   const handleDeleteSelected = React.useCallback(() => {
     const selectedIds = Array.from(selectedCategories);
     if (selectedIds.length === 0) return;
-
     const promise = deleteSelectedMutation.mutateAsync({ ids: selectedIds });
     toast.promise(promise, {
       loading: t('ManageCategoriesList.DeletingSelectedCategories'),
@@ -769,17 +763,21 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
       <ConfirmModal
         dialogTitle={t('ManageCategoriesList.ConfirmDeleteCategories')}
         confirmButtonVariant="destructive"
-        confirmButtonText={t('ManageCategoriesList.Delete')}
-        confirmButtonBusyText={t('ManageCategoriesList.Deleting')}
+        confirmButtonText={t('Delete')}
+        confirmButtonBusyText={t('Deleteing')}
         cancelButtonText={t('Cancel')}
+        cancelButtonVariant={'ghost'}
         handleClose={handleHideDeleteConfirm}
         handleConfirm={handleDeleteSelected}
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteConfirm}
+        actionsClassName="justify-center"
       >
-        {t('ManageCategoriesList.ConfirmDeleteCategoriesMessage', {
-          count: selectedCategories.size,
-        })}
+        <div className="text-truncate text-center">
+          {t('ManageCategoriesList.ConfirmDeleteCategoriesMessage', {
+            count: selectedCategories.size,
+          })}
+        </div>
       </ConfirmModal>
     </>
   );

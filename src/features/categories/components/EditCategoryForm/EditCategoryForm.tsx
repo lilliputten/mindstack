@@ -4,11 +4,8 @@ import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale } from 'next-intl';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import * as z from 'zod';
-
-import { CategoryStatusSchema, CategoryStatusType } from '@/generated/prisma';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -29,6 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
+import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev } from '@/config';
 import { deleteCategoryImage } from '@/features/categories/actions/deleteCategoryImage';
 import { uploadCategoryImage } from '@/features/categories/actions/uploadCategoryImage';
@@ -86,42 +84,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
-  // // TODO: Add a service to translate other texts?
-  // const formSchema = React.useMemo(
-  //   () =>
-  //     z
-  //       .object({
-  //         status: CategoryStatusSchema,
-  //         imageUrl: z.string().optional(),
-  //         translations: z.record(
-  //           z.string(),
-  //           z.object({
-  //             name: z.preprocess(
-  //               (val) => (val === '' ? undefined : val),
-  //               z.string().min(MIN_NAME_LENGTH).max(MAX_NAME_LENGTH).optional(),
-  //             ),
-  //             description: z.string().max(MAX_DESCRIPTION_LENGTH).optional(),
-  //             keywords: z.string().max(MAX_KEYWORDS_LENGTH).optional(),
-  //           }),
-  //         ),
-  //       })
-  //       .refine(
-  //         (data) => {
-  //           // Check if at least one translation has a valid name
-  //           const translations = data.translations;
-  //           if (!translations) return false;
-  //           return Object.values(translations).some(
-  //             (translation) => translation.name !== undefined && translation.name.trim() !== '',
-  //           );
-  //         },
-  //         {
-  //           message: 'At least one name field must be filled across all translations',
-  //           path: ['translations'], // Error will appear at the translations level
-  //         },
-  //       ),
-  //   [],
-  // );
-
   const defaultValues: TFormData = React.useMemo(
     () => ({
       status: suggestionMode ? 'SUGGESTED' : defaultCategoryStatus,
@@ -145,7 +107,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
           const translations = data.translations;
           if (!translations) return false;
           return Object.values(translations).some(
-            (translation) => translation.name !== undefined && translation.name.trim() !== '',
+            (translation) => translation?.name && translation.name.trim() !== '',
           );
         },
         {
@@ -302,7 +264,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
 
   const handleSubmitForm = React.useCallback(
     async (formData: TFormData) => {
-      debugger;
       // NOTE: If `memo.imageFile` is defined then there is an image to upload
       const imageCleared = memo.imageFile === null;
       if (isDev) {
@@ -323,7 +284,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         convertedCategory,
         formData,
       });
-      debugger;
       if (memo.imageFile) {
         newImageUrl = await uploadImageFileToVercel(memo.imageFile);
         if (newImageUrl) {
@@ -338,7 +298,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
           newImageUrl,
           formData,
         });
-        debugger;
         if (isDev) {
           await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
@@ -420,26 +379,13 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
           className,
         )}
       >
-        {/* Actions */}
         {isSubmitSuccessful ? (
-          <div
-            className={cn(
-              isDev && '__EditCategoryForm_Success', // DEBUG
-              // 'absolute',
-              'inset-0 flex flex-col items-center justify-center gap-4 transition',
-              'my-2 bg-background',
-              !isSubmitSuccessful && 'pointer-events-none opacity-0',
-            )}
+          <SuccessSplash
+            title="Successfully Added!"
+            className={!isSubmitSuccessful ? 'pointer-events-none opacity-0' : ''}
           >
-            <Icons.CheckCircle className="mt-2 size-16 text-green-500" />
-            <div className="flex flex-col gap-4 text-center">
-              <h3 className="text-xl font-semibold text-green-500">Successfully Added!</h3>
-              <p className="text-content">
-                The category has been successfully added to your list. You can now close this
-                dialog.
-              </p>
-            </div>
-          </div>
+            The category has been successfully added to your list. You can now close this dialog.
+          </SuccessSplash>
         ) : (
           <div
             className={cn(

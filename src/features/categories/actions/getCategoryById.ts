@@ -13,7 +13,7 @@ interface TOptions {
 }
 
 export async function getCategoryById(params: TGetCategoryByIdParams & TOptions) {
-  const { id, noDebug } = params;
+  const { id, noDebug, includeTranslations = true } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -27,9 +27,9 @@ export async function getCategoryById(params: TGetCategoryByIdParams & TOptions)
     const where: Prisma.CategoryWhereUniqueInput = { id };
     const include: Prisma.CategoryInclude = {};
 
-    // if (includeUser) {
-    //   include.user = { select: IncludedUserSelect };
-    // }
+    if (includeTranslations) {
+      include.translations = true;
+    }
 
     const category = await prisma.category.findUnique({
       where,

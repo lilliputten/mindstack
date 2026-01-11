@@ -1,4 +1,4 @@
-import { DeleteCategoriesModal } from '@/components/pages/ManageCategoriesPage/DeleteCategoriesModal';
+import { DeleteCategoryModal } from '@/features/categories';
 
 interface DeleteCategoriesModalPageProps {
   searchParams: Promise<{ categoryId?: string; from?: string }>;
@@ -12,7 +12,7 @@ export default async function DeleteCategoriesModalPage({
 
   if (categoryId) {
     return (
-      <DeleteCategoriesModal
+      <DeleteCategoryModal
         categoryId={categoryId}
         from={from}
         // onClose={() => window.history.back()}

@@ -9,7 +9,7 @@ import { isDev, manageCategoriesRoute } from '@/config';
 export default function DeleteCategoriesModalLoading() {
   const pathname = usePathname();
 
-  // Check if we're on the delete route
+  // Check if we're on the delete route (?)
   const checkPath = '/delete';
   if (pathname?.endsWith(checkPath)) {
     const prevChunk = pathname.substring(0, pathname.length - checkPath.length);

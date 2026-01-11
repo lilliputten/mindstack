@@ -47,7 +47,7 @@ type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' |
 
 /** Hook to fetch available categories with pagination support */
 export function useAvailableCategories(props: TUseAvailableCategoriesProps = {}) {
-  const { traceId: _id, enabled = true, ...queryProps } = props;
+  const { traceId, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
 
   /* Use partrial query url as a part of the query key */
@@ -101,6 +101,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         const message = 'Cannot load categories data';
         // eslint-disable-next-line no-console
         console.error('[useAvailableCategories:queryFn]', message, {
+          traceId,
           details,
           error,
           pageParam,

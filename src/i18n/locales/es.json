@@ -9,6 +9,7 @@
   "Availability": "Disponibilidad",
   "Back": "Atrás",
   "Cancel": "Cancelar",
+  "Category": "Categoría",
   "ChangeFilters": "Cambiar Filtros",
   "ClearText": "Borrar texto",
   "Close": "Cerrar",
@@ -26,6 +27,7 @@
   "FinishedAt": "Terminado en",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
+  "HIDDEN": "Oculto",
   "Keywords": "Palabras clave",
   "Language": "Idioma",
   "LegalOwnerName": "Igor A. Lilliputten",
@@ -34,6 +36,8 @@
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
   "NoTopicsAvailable": "No hay temas disponibles",
+  "Ok": "De acuerdo",
+  "PUBLIC": "Público",
   "PageNotFound": "Página no encontrada",
   "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
   "Private": "Privado",
@@ -46,6 +50,7 @@
   "Reload": "Recargar",
   "Reset": "Reiniciar",
   "ResetChanges": "Restablecer cambios",
+  "SUGGESTED": "Sugerido",
   "Save": "Guardar",
   "SelectAnswer": "Seleccionar respuesta",
   "SelectDeselectAll": "Seleccionar/deseleccionar todo",
@@ -1159,9 +1164,5 @@
     "PaymentProcessingFailure": "Error al procesar el pago",
     "PaymentStartingError": "Error al iniciar el pago",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
-  },
-  "Category": "Categoría",
-  "PUBLIC": "Público",
-  "SUGGESTED": "Sugerido",
-  "HIDDEN": "Oculto"
+  }
 }

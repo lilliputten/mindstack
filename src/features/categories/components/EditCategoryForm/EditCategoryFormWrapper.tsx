@@ -47,7 +47,10 @@ export function EditCategoryFormWrapper(props: TProps) {
   // const [isVisible, setVisible] = React.useState(false);
   // const { isMobile } = useMediaQuery();
 
-  const availableCategoryQuery = useAvailableCategoryById({ id: categoryId });
+  const availableCategoryQuery = useAvailableCategoryById({
+    traceId: 'EditCategoryFormWrapper',
+    id: categoryId,
+  });
   const { data: initialCategory } = availableCategoryQuery;
 
   // // AvailableCategoryQuery setter

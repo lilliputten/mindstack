@@ -14,13 +14,21 @@ import {
 interface TUseAvailableCategoryByIdProps extends TGetAvailableCategoryByIdParams {
   /** availableCategoriesQueryKey - A query key from `useAvailableCategories` */
   availableCategoriesQueryKey?: QueryKey;
+  traceId?: string;
+  enabled?: boolean;
 }
 
 const staleTime = defaultStaleTime;
 
 /** Get category data from cached `useAvailableCategories` query data or fetch it now */
 export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) {
-  const { availableCategoriesQueryKey, id: categoryId, ...queryProps } = props;
+  const {
+    enabled = true,
+    traceId,
+    availableCategoriesQueryKey,
+    id: categoryId,
+    ...queryProps
+  } = props;
   // const invalidateKeys = useInvalidateReactQueryKeys();
 
   const queryClient = useQueryClient();
@@ -44,7 +52,7 @@ export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) 
     .find((category) => category.id === categoryId);
 
   const isCached = !!cachedCategory;
-  const isEnabled = !!categoryId && !isCached;
+  const isEnabled = enabled && !!categoryId && !isCached;
 
   // Only fetch if the category is not cached
   const query = useQuery<TAvailableCategory | undefined>({
@@ -62,12 +70,20 @@ export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) 
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
         console.error('[useAvailableCategoryById:queryFn]', comboMsg, {
+          traceId,
+          _params,
           details,
           error,
           queryProps,
+          queryUrlHash,
+          queryKey,
           categoryId,
+          isEnabled,
+          enabled,
         });
-        debugger; // eslint-disable-line no-debugger
+        if (isEnabled) {
+          debugger; // eslint-disable-line no-debugger
+        }
         throw new Error(message);
       }
     },

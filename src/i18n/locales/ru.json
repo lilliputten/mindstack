@@ -8,6 +8,7 @@
   "Authors": "Авторы",
   "Availability": "Доступность",
   "Back": "Назад",
+  "Category": "Категория",
   "ChangeFilters": "Изменить фильтры",
   "ClearText": "Очистить текст",
   "Close": "Закрыть",
@@ -24,6 +25,7 @@
   "FinishedAt": "Завершено в",
   "GenerationMode": "Режим генерации",
   "GoBack": "Назад",
+  "HIDDEN": "Скрытый",
   "Keywords": "Ключевые слова",
   "Language": "Язык",
   "LegalOwnerName": "Михеев И.А.",
@@ -32,6 +34,8 @@
   "No": "Нет",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
   "NoTopicsAvailable": "Нет доступных тем",
+  "Ok": "Хорошо",
+  "PUBLIC": "Общественный",
   "PageNotFound": "Страница не найдена",
   "Private": "Приватный",
   "Public": "Публичный",
@@ -43,6 +47,7 @@
   "Reload": "Перезагрузить",
   "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
+  "SUGGESTED": "Предложенный",
   "Save": "Сохранить",
   "SelectAnswer": "Выбрать ответ",
   "SelectDeselectAll": "Выбрать/отменить всё",
@@ -1155,9 +1160,5 @@
     "PaymentProcessingFailure": "Ошибка обработки оплаты",
     "PaymentStartingError": "Ошибка начала платежа",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
-  },
-  "Category": "Категория",
-  "PUBLIC": "Общественный",
-  "SUGGESTED": "Предложенный",
-  "HIDDEN": "Скрытый"
+  }
 }

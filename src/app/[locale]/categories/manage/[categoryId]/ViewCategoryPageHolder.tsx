@@ -24,6 +24,7 @@ export function ViewCategoryPageHolder(props: TViewCategoryPageHolderProps) {
   }
 
   const availableCategoryQuery = useAvailableCategoryById({
+    traceId: 'ViewCategoryPageHolder',
     id: categoryId,
   });
 
