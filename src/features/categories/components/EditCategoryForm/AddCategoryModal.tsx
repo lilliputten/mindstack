@@ -47,7 +47,6 @@ export function AddCategoryModal(props: TProps) {
   useModalTitle(t('AddCategoryModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
-  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(routePath);
 
   const hideModal = React.useCallback(() => {
@@ -59,21 +58,7 @@ export function AddCategoryModal(props: TProps) {
 
   const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn,
-    /* // DEBUG
-     * onMutate: async (newCategory) => {
-     *   console.log('[AddCategoryModal:saveCategoryMutation] onMutate', {
-     *     newCategory,
-     *   });
-     * },
-     */
     onSuccess: (updatedCategory) => {
-      /* // DEBUG
-       * const { id: categoryId } = updatedCategory;
-       * console.log('[AddCategoryModal:saveCategoryMutation] onSuccess', {
-       *   categoryId,
-       *   updatedCategory,
-       * });
-       */
       // Add the created item to the cached react-query data
       availableCategoriesQuery.addNewCategory(updatedCategory, true);
       // Invalidate all other keys...
@@ -141,7 +126,6 @@ export function AddCategoryModal(props: TProps) {
         handleClose={hideModal}
         isPending={saveCategoryMutation.isPending}
         suggestionMode={suggestionMode}
-        newMode
       />
     </Modal>
   );

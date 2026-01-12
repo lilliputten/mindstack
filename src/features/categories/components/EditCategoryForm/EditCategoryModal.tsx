@@ -32,7 +32,6 @@ interface TProps {
 export function EditCategoryModal(props: TProps) {
   const {
     categoryId,
-    // from,
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode,
   } = props;
@@ -64,17 +63,12 @@ export function EditCategoryModal(props: TProps) {
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryModal' });
 
-  /* // Check if we're still on the add route
-   * const pathname = usePathname();
-   * [>* Should the modal be visible? <]
-   */
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
   useModalTitle(t('EditCategoryModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
-  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(routePath);
 
   const hideModal = React.useCallback(() => {
@@ -87,21 +81,7 @@ export function EditCategoryModal(props: TProps) {
   // const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
   const saveCategoryMutation = useMutation({
     mutationFn,
-    /* // DEBUG
-     * onMutate: async (updatedCategory) => {
-     *   console.error('[EditCategoryModal:saveCategoryMutation] onMutate', {
-     *     updatedCategory,
-     *   });
-     * },
-     */
     onSuccess: (updatedCategory) => {
-      /* // DEBUG
-       * const { id: categoryId } = updatedCategory;
-       * console.error('[EditCategoryModal:saveCategoryMutation] onSuccess', {
-       *   categoryId,
-       *   updatedCategory,
-       * });
-       */
       // Update the item to the cached react-query data
       availableCategoriesQuery.updateCategory(updatedCategory);
       // Invalidate all other keys...

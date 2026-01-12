@@ -241,8 +241,8 @@
   [data-radix-popper-content-wrapper] {
     // min-width: auto !important;
     min-width: var(--radix-popper-anchor-width) !important;
-    // max-width: var(--radix-popper-available-width);
-    max-width: var(--radix-popper-anchor-width);
+    max-width: var(--radix-popper-available-width);
+    // max-width: var(--radix-popper-anchor-width);
   }
 }
 

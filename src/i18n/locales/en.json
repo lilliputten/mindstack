@@ -112,6 +112,15 @@
     "ToastLoading": "Creating a new answer...",
     "ToastSuccess": "Successfully created new answer."
   },
+  "AddCategoryModal": {
+    "CannotSaveCategory": "Cannot save category",
+    "CantSaveCategory": "Cannot save category",
+    "DialogDescription": "Add Category Dialog",
+    "DialogTitle": "Add New Category",
+    "ModalTitle": "Add Category",
+    "ToastLoading": "Creating a new category...",
+    "ToastSuccess": "Successfully created new category \"{name}\""
+  },
   "AddQuestionForm": {
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
@@ -306,6 +315,12 @@
     "SpacedRepetitionDescription": "Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance.",
     "Title": "Why Choose MindStack"
   },
+  "CategorySelect": {
+    "NoCategoriesFound": "No categories found.",
+    "RemoveCategory": "Remove category \"{name}\"",
+    "SearchCategoriesPlaceholder": "Search categories...",
+    "SelectCategories": "Select categories"
+  },
   "CheckStripePayment": {
     "PaymentError": "Error checking stripe payment",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
@@ -440,6 +455,18 @@
     "SuggestedOption": "Suggested",
     "UploadImageError": "Failed to upload image"
   },
+  "EditCategoryModal": {
+    "CannotSaveCategory": "Cannot save category",
+    "DataSaveError": "Cannot save category data",
+    "DataSaved": "Successfully saved category \"{name}\"",
+    "ModalTitle": "Edit Category",
+    "SavingData": "Saving category data...",
+    "ManageCategoriesList": {
+      "DialogDescription": "Edit Category Dialog",
+      "DialogTitle": "Edit Category",
+      "ErrorLoadingCategoriesData": "Error loading category data"
+    }
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Add New Question",
     "Back": "Back",
@@ -473,13 +500,17 @@
     "UseRandomQuestionsCountHint": "Allow to generate random number of answers for questions (if it's not overidden in the question settings)."
   },
   "EditTopicFormFields": {
+    "Categories": "Categories",
+    "CategoriesHint": "Select one or more categories for this topic.",
     "IsPublic": "Is the topic public?",
     "IsPublicHint": "If the topic is public it's available for all the users, not only for you.",
     "Keywords": "Keywords",
     "KeywordsHint": "Optional list of keywords separated by commas. It can be used to generate questions and answers, as well as to navigate and search for users.",
+    "KeywordsPlaceholder": "Keywords",
     "MaximalQuestionsCount": "Maximal questions count",
     "MinimalQuestionsCount": "Minimal questions count",
     "Name": "Name",
+    "SelectCategories": "Select categories",
     "SelectLanguage": "Select language",
     "TopicDescription": "Topic Description",
     "TopicDescriptionHint": "A topic description. This text can be used both to generate questions and answers by the system itself, and by users for navigation and search.",
@@ -494,6 +525,10 @@
   },
   "EditTopicPage": {
     "CannotSaveTopicData": "Cannot save topic data.",
+    "DeleteTopic": "Delete topic",
+    "Heading": "Edit Topic Properties",
+    "ReloadDataFromServer": "Reload the data from the server",
+    "ResetFormFieldsToOriginalValues": "Reset form fields to original values",
     "SavingTopicData": "Saving topic data...",
     "SuccessfullySavedTheTopic": "Successfully saved the topic"
   },

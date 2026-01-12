@@ -66,8 +66,6 @@ interface TEditCategoryFormProps {
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
-  /** Is the dialog in edit or add mode? */
-  newMode?: boolean;
   /** Is it a suggestion? Then offer a limited editing mode, without a status selector */
   suggestionMode?: boolean;
   setForm?: (form?: UseFormReturn<TFormData>) => void;
@@ -81,9 +79,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     handleSaveCategory,
     handleClose,
     isPending,
-    /* [>* Is the dialog in edit or add mode? <]
-     * newMode,
-     */
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode,
     setForm,

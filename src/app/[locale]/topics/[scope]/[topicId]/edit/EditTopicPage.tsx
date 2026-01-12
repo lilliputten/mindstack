@@ -337,15 +337,15 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     () => [
       {
         id: 'Back',
-        content: 'Back',
+        content: t('Back'),
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
       },
       {
         id: 'Reload',
-        content: 'Reload',
-        title: 'Reload the data from the server',
+        content: t('Reload'),
+        title: t('EditTopicPage.ReloadDataFromServer'),
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableTopicQuery.isRefetching,
@@ -353,8 +353,8 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       },
       {
         id: 'Reset',
-        content: 'Reset',
-        title: 'Reset form fields to original values',
+        content: t('Reset'),
+        title: t('EditTopicPage.ResetFormFieldsToOriginalValues'),
         icon: Icons.Close,
         visibleFor: 'lg',
         hidden: !isDirty,
@@ -362,7 +362,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       },
       {
         id: 'Delete',
-        content: 'Delete topic',
+        content: t('EditTopicPage.DeleteTopic'),
         variant: 'destructive',
         icon: Icons.Trash,
         visibleFor: 'lg',
@@ -370,7 +370,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       },
       {
         id: 'Save',
-        content: 'Save',
+        content: t('Save'),
         variant: 'success',
         icon: Icons.Save,
         visibleFor: 'sm',
@@ -380,22 +380,23 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       },
     ],
     [
-      availableTopicQuery,
-      form,
+      t,
       goBack,
-      handleDeleteTopic,
-      handleSubmit,
+      availableTopicQuery.isRefetching,
+      handleReload,
       isDirty,
+      form.reset,
+      handleDeleteTopic,
       isPending,
       isSubmitEnabled,
-      handleReload,
+      handleSubmit,
     ],
   );
 
   return (
     <>
       <DashboardHeader
-        heading="Edit Topic Properties"
+        heading={t('EditTopicPage.Heading')}
         // text="Extra long testing text string for text wrap and layout test"
         className={cn(
           isDev && '__EditTopicPage_DashboardHeader', // DEBUG

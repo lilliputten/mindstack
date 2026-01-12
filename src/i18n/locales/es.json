@@ -113,6 +113,15 @@
     "ToastLoading": "Creando una nueva respuesta...",
     "ToastSuccess": "Nueva respuesta creada correctamente."
   },
+  "AddCategoryModal": {
+    "CannotSaveCategory": "No se puede guardar la categoría",
+    "CantSaveCategory": "No se puede guardar la categoría",
+    "DialogDescription": "Agregar Diálogo de Categoría",
+    "DialogTitle": "Agregar Nueva Categoría",
+    "ModalTitle": "Agregar Categoría",
+    "ToastLoading": "Creando una nueva categoría...",
+    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
+  },
   "AddQuestionForm": {
     "AddButtonText": "Agregar",
     "AddingButtonText": "Agregando",
@@ -305,6 +314,12 @@
     "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
     "Title": "Por qué elegir MindStack"
   },
+  "CategorySelect": {
+    "NoCategoriesFound": "No se encontraron categorías.",
+    "RemoveCategory": "Eliminar categoría \"{nombre}\"",
+    "SearchCategoriesPlaceholder": "Buscar categorías...",
+    "SelectCategories": "Seleccionar categorías"
+  },
   "CheckStripePayment": {
     "PaymentError": "Error al verificar el pago de stripe",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
@@ -439,6 +454,18 @@
     "SuggestedOption": "Sugerido",
     "UploadImageError": "Error al subir la imagen"
   },
+  "EditCategoryModal": {
+    "CannotSaveCategory": "No se puede guardar la categoría",
+    "DataSaveError": "No se pueden guardar los datos de la categoría",
+    "DataSaved": "Categoría \"{name}\" guardada exitosamente",
+    "ModalTitle": "Editar Categoría",
+    "SavingData": "Guardando datos de categoría...",
+    "ManageCategoriesList": {
+      "DialogDescription": "Editar Diálogo de Categoría",
+      "DialogTitle": "Editar Categoría",
+      "ErrorLoadingCategoriesData": "Error al cargar los datos de la categoría"
+    }
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Agregar Nueva Pregunta",
     "Back": "Atrás",
@@ -472,13 +499,17 @@
     "UseRandomQuestionsCountHint": "Permitir generar un número aleatorio de respuestas para preguntas (si no se anula en la configuración de la pregunta)."
   },
   "EditTopicFormFields": {
+    "Categories": "Categorías",
+    "CategoriesHint": "Seleccione una o más categorías para este tema.",
     "IsPublic": "¿Es público el tema?",
     "IsPublicHint": "Si el tema es público está disponible para todos los usuarios, no solo para ti.",
     "Keywords": "Palabras clave",
     "KeywordsHint": "Lista opcional de palabras clave separadas por comas. Se puede usar para generar preguntas y respuestas, así como para navegar y buscar usuarios.",
+    "KeywordsPlaceholder": "Palabras clave",
     "MaximalQuestionsCount": "Cantidad máxima de preguntas",
     "MinimalQuestionsCount": "Cantidad mínima de preguntas",
     "Name": "Nombre",
+    "SelectCategories": "Seleccionar categorías",
     "SelectLanguage": "Seleccionar idioma",
     "TopicDescription": "Descripción del tema",
     "TopicDescriptionHint": "Una descripción del tema. Este texto puede ser usado tanto para generar preguntas y respuestas por el sistema mismo, como por usuarios para navegación y búsqueda.",
@@ -493,6 +524,10 @@
   },
   "EditTopicPage": {
     "CannotSaveTopicData": "No se pueden guardar los datos del tema.",
+    "DeleteTopic": "Eliminar tema",
+    "Heading": "Editar Propiedades del Tema",
+    "ReloadDataFromServer": "Recargar los datos del servidor",
+    "ResetFormFieldsToOriginalValues": "Restablecer campos de formulario a valores originales",
     "SavingTopicData": "Guardando datos del tema...",
     "SuccessfullySavedTheTopic": "Guardado exitosamente el tema."
   },

@@ -108,6 +108,15 @@
     "ToastLoading": "Создание нового ответа...",
     "ToastSuccess": "Успешно создан новый ответ."
   },
+  "AddCategoryModal": {
+    "CannotSaveCategory": "Невозможно сохранить категорию",
+    "CantSaveCategory": "Невозможно сохранить категорию",
+    "DialogDescription": "Добавить диалог категории",
+    "DialogTitle": "Добавить новую категорию",
+    "ModalTitle": "Добавить категорию",
+    "ToastLoading": "Создание новой категории...",
+    "ToastSuccess": "Новая категория \"{name}\" успешно создана"
+  },
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
@@ -304,6 +313,12 @@
     "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
     "Title": "Почему стоит выбрать MindStack"
   },
+  "CategorySelect": {
+    "NoCategoriesFound": "Категории не найдены.",
+    "RemoveCategory": "Удалить категорию \"{name}\"",
+    "SearchCategoriesPlaceholder": "Поиск категорий...",
+    "SelectCategories": "Выбрать категории"
+  },
   "CheckStripePayment": {
     "PaymentError": "Ошибка проверки платежа stripe",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
@@ -438,6 +453,18 @@
     "SuggestedOption": "Предложенный",
     "UploadImageError": "Не удалось загрузить изображение"
   },
+  "EditCategoryModal": {
+    "CannotSaveCategory": "Невозможно сохранить категорию",
+    "DataSaveError": "Невозможно сохранить данные категории",
+    "DataSaved": "Категория \"{name}\" успешно сохранена",
+    "ModalTitle": "Редактировать категорию",
+    "SavingData": "Сохранение данных категории...",
+    "ManageCategoriesList": {
+      "DialogDescription": "Редактировать диалог категории",
+      "DialogTitle": "Редактировать категорию",
+      "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории"
+    }
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",
     "Back": "Назад",
@@ -471,13 +498,17 @@
     "UseRandomQuestionsCountHint": "Разрешить генерацию случайного количества ответов для вопросов (если это не переопределено в настройках вопроса)."
   },
   "EditTopicFormFields": {
+    "Categories": "Категории",
+    "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",
     "IsPublic": "Публичная ли тема?",
     "IsPublicHint": "Если тема публичная, она доступна всем пользователям, а не только вам.",
     "Keywords": "Ключевые слова",
     "KeywordsHint": "Необязательный список ключевых слов, разделённых запятыми. Может использоваться для генерации вопросов и ответов, а также для навигации и поиска пользователями.",
+    "KeywordsPlaceholder": "Ключевые слова",
     "MaximalQuestionsCount": "Максимальное количество вопросов",
     "MinimalQuestionsCount": "Минимальное количество вопросов",
     "Name": "Название",
+    "SelectCategories": "Выбрать категории",
     "SelectLanguage": "Выбрать язык",
     "TopicDescription": "Описание темы",
     "TopicDescriptionHint": "Описание темы. Этот текст может использоваться как для генерации вопросов и ответов самой системой, так и пользователями для навигации и поиска.",
@@ -492,6 +523,10 @@
   },
   "EditTopicPage": {
     "CannotSaveTopicData": "Невозможно сохранить данные темы.",
+    "DeleteTopic": "Удалить тему",
+    "Heading": "Редактировать свойства темы",
+    "ReloadDataFromServer": "Перезагрузить данные с сервера",
+    "ResetFormFieldsToOriginalValues": "Сбросить поля формы к исходным значениям",
     "SavingTopicData": "Сохранение данных темы...",
     "SuccessfullySavedTheTopic": "Тема успешно сохранена"
   },
@@ -868,7 +903,7 @@
           "Analytics": "Подробная аналитика",
           "Generations": "100 ИИ генераций в месяц",
           "Support": "Приоритетная поддержка",
-          "Unlimited": "Неограниченные темы и вопросы"
+          "Unlimited": "Неограниченные темы и во��росы"
         }
       },
       "Unlimited": {
@@ -894,7 +929,7 @@
     "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
     "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
     "ErrorCancelingPayment": "Ошибка при отмене платежа",
-    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас воз��икнут проблемы.",
     "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
     "PaymentNotFound": "Платеж не найден",
     "SubscriptionTypesMismatch": "Несоответствие типов подписки",

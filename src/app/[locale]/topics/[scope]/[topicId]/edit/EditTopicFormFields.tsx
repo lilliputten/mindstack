@@ -130,7 +130,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Input
                   id={keywordsKey}
                   type="text"
-                  placeholder={t('EditTopicFormFields.Keywords')}
+                  placeholder={t('EditTopicFormFields.KeywordsPlaceholder')}
                   {...field}
                 />
               </FormControl>

@@ -40,7 +40,8 @@ export function CategorySelect({
 }: CategorySelectProps) {
   const t = useT();
   const locale = useLocale() as TLocale;
-  const [open, setOpen] = React.useState(true);
+
+  const [open, setOpen] = React.useState(false);
 
   const { publicCategories, isLoading: isCategoriesLoading } = useAllPublicCategories();
 
@@ -53,18 +54,6 @@ export function CategorySelect({
     },
     [onSelectedCategoryIdsChange, selectedCategoryIds],
   );
-
-  /* // UNUSED
-   * const categories = React.useMemo(() => {
-   *   return publicCategories.reduce(
-   *     (names, category) => {
-   *       names[category.id] = category;
-   *       return names;
-   *     },
-   *     {} as Record<string, TAvailableCategory>,
-   *   );
-   * }, [publicCategories]);
-   */
 
   const categoryNames = React.useMemo(() => {
     return publicCategories.reduce(
@@ -88,6 +77,8 @@ export function CategorySelect({
 
   const hasSelected = !!selectedCategories.length;
 
+  const ToggleIcon = open ? Icons.ChevronUp : Icons.ChevronDown;
+
   return (
     <div
       className={cn(
@@ -106,7 +97,9 @@ export function CategorySelect({
           >
             <div className="flex-1 truncate">
               {!hasSelected ? (
-                <span className="truncate">{placeholder || 'Select categories'}</span>
+                <span className="truncate">
+                  {placeholder || t('CategorySelect.SelectCategories')}
+                </span>
               ) : (
                 <>
                   <span
@@ -133,7 +126,7 @@ export function CategorySelect({
                         'after:inline-block',
                         'after:opacity-50',
                       )}
-                      title="Remove category"
+                      title={t('CategorySelect.RemoveCategory', { name: categoryNames[id] })}
                       onClick={(ev) => {
                         ev.preventDefault();
                         handleCategoryToggle(id);
@@ -146,19 +139,19 @@ export function CategorySelect({
               )}
             </div>
             <div className="flex items-center justify-center rounded opacity-50 transition hover:opacity-100">
-              <Icons.ChevronDown className="size-4" />
+              <ToggleIcon className="size-4" />
             </div>
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
           <Command filter={filterCategory}>
-            <CommandInput placeholder="Search categories..." />
+            <CommandInput placeholder={t('CategorySelect.SearchCategoriesPlaceholder')} />
             <CommandList>
               <CommandEmpty>
                 {isCategoriesLoading ? (
                   <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
                 ) : (
-                  <>No categories found.</>
+                  <>{t('CategorySelect.NoCategoriesFound')}</>
                 )}
               </CommandEmpty>
               <CommandGroup>
