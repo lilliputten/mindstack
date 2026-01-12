@@ -13,6 +13,7 @@ import {
   IncludedStatsSelect,
   IncludedUserSelect,
   IncludedUserTopicWorkoutSelect,
+  TAvailableTopic,
 } from '../types';
 
 interface TOptions {
@@ -80,7 +81,7 @@ export async function getAvailableTopics(
     }
     // Create the "include" data...
     if (includeCategories) {
-      include.categories = true; // { select: IncludedCategorySelect };
+      include.categories = { select: IncludedCategorySelect };
     }
     if (includeUser) {
       include.user = { select: IncludedUserSelect };
@@ -198,10 +199,18 @@ export async function getAvailableTopics(
 
   // Retrieve data...
   try {
-    const [items, totalCount] = await prisma.$transaction([
+    const [topics, totalCount] = await prisma.$transaction([
       prisma.topic.findMany(findManyArgs),
       prisma.topic.count({ where }),
     ]);
+
+    const items = (topics as TAvailableTopic[]).map((topic) => {
+      if (topic?.categories?.length) {
+        topic.categoryIds = topic.categories.map(({ id }) => id);
+      }
+      return topic;
+    });
+
     return { items, totalCount } satisfies TGetAvailableTopicsResults;
   } catch (error) {
     if (!noDebug) {

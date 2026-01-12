@@ -22,6 +22,7 @@ import {
 } from '@/components/pages/ManageTopicsPage/constants';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { updateTopic } from '@/features/topics/actions';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
@@ -216,13 +217,14 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         answersCountMax: formData.answersCountMax,
       };
       startTransition(async () => {
-        const savePromise = updateTopic(editedTopic);
-        toast.promise(savePromise, {
-          loading: t('EditTopicPage.SavingTopicData'),
-          success: t('EditTopicPage.SuccessfullySavedTheTopic'),
-          error: t('EditTopicPage.CannotSaveTopicData'),
-        });
         try {
+          const updateTopicData = getUpdateTopicFromBroaderData(editedTopic);
+          const savePromise = updateTopic(updateTopicData);
+          toast.promise(savePromise, {
+            loading: t('EditTopicPage.SavingTopicData'),
+            success: t('EditTopicPage.SuccessfullySavedTheTopic'),
+            error: t('EditTopicPage.CannotSaveTopicData'),
+          });
           const topic = await savePromise;
           // Convert topic data
           const cleanedTopic = removeNullUndefinedValues(topic);

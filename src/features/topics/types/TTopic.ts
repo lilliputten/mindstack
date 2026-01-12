@@ -99,7 +99,7 @@ export type TAvailableTopic = TTopic & {
   user?: TIncludedUser;
   /** For `includeCategories` flag */
   categories?: TIncludedCategory[];
-  // categoryIds?: string[];
+  categoryIds?: string[];
   /** For `includeWorkout` flag */
   userTopicWorkout?: TIncludedUserTopicWorkout[];
   /** For `includeStats` flag */

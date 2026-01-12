@@ -5,52 +5,55 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
-import { TAvailableTopic, TTopic } from '@/features/topics/types';
+import { TAvailableTopic } from '@/features/topics/types';
 
-export async function updateTopic(topic: TTopic) {
+import { TUpdateTopicParams } from '../types/TUpdateTopicData';
+
+export async function updateTopic(topic: TUpdateTopicParams) {
+  const { categoryIds, ...data } = topic;
+
   const user = await getCurrentUser();
-  const userId = user?.id;
-  // Prepare data to save...
-  const data = { ...topic } as Partial<TAvailableTopic>;
-  delete data.userId;
-  delete data.user;
-  delete data.userTopicWorkout;
-  delete data.questions;
-  delete data._count;
-  delete data.createdAt;
-  delete data.updatedAt;
+
+  if (!user?.id) {
+    throw new Error('Unauthorized user');
+  }
+  if (!topic?.id) {
+    throw new Error('Not specified topic ID');
+  }
+  // We expect semi-filled data, not only update
+  if (!topic.name) {
+    throw new Error('Not specified topic name');
+  }
+
   try {
     if (isDev) {
       // DEBUG: Emulate network delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    if (!userId) {
-      throw new Error('Got undefined user');
-    }
-    if (!topic.name) {
-      throw new Error('Not specified topic name');
-    }
-    /* NOTE: Ensure if the user exists (should be checked on the page load)
-     * const isUserExists = await checkIfUserExists(userId);
-     * if (!isUserExists) {
-     *   throw new Error('The specified user does not exist.');
-     * }
-     */
     const where: Prisma.TopicWhereUniqueInput = { id: topic.id };
     // Do allow to save only own data if it's no admin user
     if (user.role !== 'ADMIN') {
-      where.userId = userId;
+      where.userId = user.id;
     }
+    // Handle categories relationship update if categoryIds are provided
+    if (categoryIds && !data.categories) {
+      data.categories = {
+        set: categoryIds.map((id) => ({ id })),
+      };
+    }
+
     const updatedTopic = await prisma.topic.update({
       where,
-      data: data as TTopic,
+      data,
     });
-    return updatedTopic as TTopic;
+
+    return updatedTopic as TAvailableTopic; // TTopic
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('[updateTopic] catch', {
       error,
       data,
+      categoryIds,
       topic,
       user,
     });

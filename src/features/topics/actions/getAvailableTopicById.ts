@@ -82,14 +82,7 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
     const topic: TAvailableTopic = topicWithWorkouts;
 
     if (topic?.categories?.length) {
-      // topic.categoryIds = topic.categories.map(({ id }) => id);
-      console.log('[getAvailableTopicById] done', {
-        topic,
-        where,
-        include,
-        params,
-      });
-      debugger;
+      topic.categoryIds = topic.categories.map(({ id }) => id);
     }
 
     // Check if the current user is allowed to see the topic?

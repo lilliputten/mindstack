@@ -33,6 +33,7 @@ import { rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
+import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
 import { TTopic, TTopicId } from '@/features/topics/types';
@@ -592,7 +593,11 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const makeSelectedPublicMutation = useMutation({
     mutationFn: async (topicIds: TTopicId[]) => {
       const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
-      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: true })));
+      await Promise.all(
+        topics.map((topic) =>
+          updateTopic(getUpdateTopicFromBroaderData({ ...topic, isPublic: true })),
+        ),
+      );
       return topics;
     },
     onSuccess: (topics) => {
@@ -617,7 +622,11 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const resetSelectedPublicMutation = useMutation({
     mutationFn: async (topicIds: TTopicId[]) => {
       const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
-      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: false })));
+      await Promise.all(
+        topics.map((topic) =>
+          updateTopic(getUpdateTopicFromBroaderData({ ...topic, isPublic: false })),
+        ),
+      );
       return topics;
     },
     onSuccess: (topics) => {

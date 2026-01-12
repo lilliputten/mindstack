@@ -95,7 +95,7 @@ export async function PUT(
     const body = await request.json();
     const topicData = updateTopicSchema.parse({ ...body, id: topicId });
 
-    const updatedTopic = await updateTopic(topicData as TTopic);
+    const updatedTopic = await updateTopic(topicData);
 
     const response: TApiResponse<typeof updatedTopic> = {
       data: updatedTopic,
