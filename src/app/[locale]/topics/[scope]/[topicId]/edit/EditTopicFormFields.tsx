@@ -73,7 +73,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={nameKey}>{t('EditTopicFormFields.TopicName')}</Label>
+              <Label className="truncate" htmlFor={nameKey}>
+                {t('EditTopicFormFields.TopicName')}
+              </Label>
               <FormControl>
                 <Input
                   id={nameKey}
@@ -83,7 +85,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.TopicNameHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('EditTopicFormFields.TopicNameHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -94,7 +98,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={descriptionKey}>{t('EditTopicFormFields.TopicDescription')}</Label>
+              <Label className="truncate" htmlFor={descriptionKey}>
+                {t('EditTopicFormFields.TopicDescription')}
+              </Label>
               <FormControl>
                 <Textarea
                   id={descriptionKey}
@@ -104,7 +110,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint>
+              <FormHint className="text-truncate">
                 {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
               </FormHint>
               <FormMessage />
@@ -117,7 +123,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={keywordsKey}>{t('EditTopicFormFields.Keywords')}</Label>
+              <Label className="truncate" htmlFor={keywordsKey}>
+                {t('EditTopicFormFields.Keywords')}
+              </Label>
               <FormControl>
                 <Input
                   id={keywordsKey}
@@ -126,7 +134,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.KeywordsHint')}</FormHint>
+              <FormHint className="text-truncate">{t('EditTopicFormFields.KeywordsHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -148,11 +156,13 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={isPublicKey}>{t('EditTopicFormFields.IsPublic')}</Label>
+              <Label className="truncate" htmlFor={isPublicKey}>
+                {t('EditTopicFormFields.IsPublic')}
+              </Label>
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.IsPublicHint')}</FormHint>
+              <FormHint className="text-truncate">{t('EditTopicFormFields.IsPublicHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -169,7 +179,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
             ]);
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={langCodeKey}>{t('EditTopicFormFields.TopicLanguage')}</Label>
+                <Label className="truncate" htmlFor={langCodeKey}>
+                  {t('EditTopicFormFields.TopicLanguage')}
+                </Label>
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
@@ -191,7 +203,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   )}
                   {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
                 </Button>
-                <FormHint>{t('EditTopicFormFields.TopicLanguageHint')}</FormHint>
+                <FormHint className="text-truncate">
+                  {t('EditTopicFormFields.TopicLanguageHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -203,7 +217,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={answersCountRandomKey}>
+              <Label className="truncate" htmlFor={answersCountRandomKey}>
                 {t('EditTopicFormFields.UseRandomQuestionsCount')}
               </Label>
               <FormControl>
@@ -219,7 +233,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   }}
                 />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.UseRandomQuestionsCountHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('EditTopicFormFields.UseRandomQuestionsCountHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -232,7 +248,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMinKey}>
+                  <Label className="truncate" htmlFor={answersCountMinKey}>
                     {t('EditTopicFormFields.MinimalQuestionsCount')}
                   </Label>
                   <FormControl>
@@ -253,7 +269,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMaxKey}>
+                  <Label className="truncate" htmlFor={answersCountMaxKey}>
                     {t('EditTopicFormFields.MaximalQuestionsCount')}
                   </Label>
                   <FormControl>

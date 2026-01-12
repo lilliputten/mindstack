@@ -77,7 +77,7 @@ const CommandInput = React.forwardRef<
         'py-3',
         'text-sm',
         'outline-none',
-        'disabled:cursor-not-allowed',
+        'disabled:cursor-default',
         'disabled:opacity-50',
         className,
       )}
@@ -154,7 +154,7 @@ const CommandItem = React.forwardRef<
     className={cn(
       'relative',
       'flex',
-      'cursor-default',
+      // 'cursor-default',
       'select-none',
       'items-center',
       'rounded-sm',
@@ -162,10 +162,10 @@ const CommandItem = React.forwardRef<
       'py-1.5',
       'text-sm',
       'outline-none',
-      'aria-selected:bg-accent',
-      'aria-selected:text-accent-foreground',
-      'data-[disabled]:pointer-events-none',
-      'data-[disabled]:opacity-50',
+      // 'aria-selected:bg-accent',
+      // 'aria-selected:text-accent-foreground',
+      'data-[disabled="true"]:pointer-events-none',
+      'data-[disabled="true"]:opacity-50',
       className,
     )}
     {...props}
