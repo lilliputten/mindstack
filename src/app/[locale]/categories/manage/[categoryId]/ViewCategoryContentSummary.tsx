@@ -199,28 +199,24 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
           <h3 className="truncate font-medium opacity-50">
             {t('ViewCategoryContentSummary.CreatedBy')}
           </h3>
-          <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
+          <div className="flex flex-wrap items-center gap-2">
+            <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
+            <div className="text-truncate opacity-50">
+              {getFormattedRelativeDate(format, category.createdAt)}
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
           <h3 className="truncate font-medium opacity-50">
             {t('ViewCategoryContentSummary.UpdatedBy')}
           </h3>
-          <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="truncate text-sm font-medium opacity-50">
-            {t('ViewCategoryContentSummary.CreatedAt')}
-          </h3>
-          <p className="text-truncate">{getFormattedRelativeDate(format, category.createdAt)}</p>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="truncate text-sm font-medium opacity-50">
-            {t('ViewCategoryContentSummary.UpdatedAt')}
-          </h3>
-          <p className="text-truncate">{getFormattedRelativeDate(format, category.updatedAt)}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
+            <div className="text-truncate opacity-50">
+              {getFormattedRelativeDate(format, category.updatedAt)}
+            </div>
+          </div>
         </div>
       </div>
     </div>

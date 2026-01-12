@@ -86,7 +86,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       }, autoCloseTimeout);
     },
     onError: (error, deletingCategory) => {
-      const message = 'Cannot delete category';
+      const message = t('DeleteCategoryModal.CannotDeleteCategory');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
@@ -125,7 +125,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       className={cn(
         isDev && '__DeleteCategoryModal', // DEBUG
       )}
-      dialogTitle="Delete Category?"
+      dialogTitle={t('DeleteCategoryModal.ConfirmDialogTitle')}
       confirmButtonVariant="destructive"
       confirmButtonText={t('Delete')}
       confirmButtonBusyText={t('Deleting')}
@@ -139,15 +139,15 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       actionsClassName="justify-center"
     >
       {hasDeleted ? (
-        <SuccessSplash title="The category has been deleted">
-          The category has been successfully deleted. The dialog will be closed automatically.
+        <SuccessSplash title={t('DeleteCategoryModal.CategoryDeletedTitle')}>
+          {t('DeleteCategoryModal.CategoryDeletedContent')}
         </SuccessSplash>
       ) : error ? (
         <PageError
           className={cn(
             isDev && '__AuthErrorPage', // DEBUG
           )}
-          title="Can not find category to delete"
+          title={t('DeleteCategoryModal.NotFoundCategoryTitle')}
           error={error}
           noActions
         />
@@ -159,9 +159,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
           )}
         >
           {isCategoryReady ? (
-            <>
-              Are you sure to delete category <span className="font-bold">"{categoryName}"</span>?
-            </>
+            <>{t('DeleteCategoryModal.ConfirmDeleteContent', { categoryName })}</>
           ) : (
             <Skeleton className="mx-auto h-7 w-3/4" />
           )}

@@ -349,6 +349,14 @@
     "ToastLoading": "Deleting the answer...",
     "ToastSuccess": "Successfully deleted the answer."
   },
+  "DeleteCategoryModal": {
+    "CannotDeleteCategory": "Cannot delete category",
+    "CategoryDeletedContent": "The category has been successfully deleted. The dialog will be closed automatically.",
+    "CategoryDeletedTitle": "The category has been deleted",
+    "ConfirmDeleteContent": "Are you sure to delete category \"{categoryName}\"?",
+    "ConfirmDialogTitle": "Delete Category?",
+    "NotFoundCategoryTitle": "Can not find category to delete"
+  },
   "DeleteQuestionModal": {
     "CancelButtonText": "Cancel",
     "ConfirmButtonBusyText": "Deleting",
@@ -403,6 +411,7 @@
     "IsGeneratedHint": "If the answer has been generated automatically, then it could be updated or removed later."
   },
   "EditCategoryForm": {
+    "AllNamesEmptyError": "At least one name field must be filled across all translations",
     "CancelText": "Cancel",
     "CategoryDescriptionHint": "A category description. This text can be used by users for navigation and search.",
     "CategoryNameHint": "A category name. It's good if it's a unique value.",
@@ -590,6 +599,8 @@
     "Delete": "Delete",
     "DeleteSelected": "Delete Selected",
     "DeletingSelectedCategories": "Deleting selected categories...",
+    "Description": "Description",
+    "DialogTitle": "Delete Selected Categories?",
     "Edit": "Edit",
     "ErrorLoadingCategoriesData": "Error loading categories data",
     "GoBack": "Go Back",

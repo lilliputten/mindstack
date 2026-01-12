@@ -716,7 +716,7 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
         <ContentSkeletonTable className="px-6" />
       )}
       <ConfirmModal
-        dialogTitle="Delete Selected Categories?"
+        dialogTitle={t('ManageCategoriesList.DialogTitle')}
         confirmButtonVariant="destructive"
         confirmButtonText={t('Delete')}
         confirmButtonBusyText={t('Deleting')}

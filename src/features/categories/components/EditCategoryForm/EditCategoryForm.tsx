@@ -452,7 +452,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 >
                   <Icons.CircleAlert className="size-6 flex-shrink-0 text-red-500" />
                   <p className="flex-1 text-sm text-red-500">
-                    At least one name field must be filled across all translations
+                    {t('EditCategoryForm.AllNamesEmptyError')}
                   </p>
                 </div>
               )}

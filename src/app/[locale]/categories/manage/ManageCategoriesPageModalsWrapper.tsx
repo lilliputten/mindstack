@@ -132,7 +132,7 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
         {filtersParams ? (
           <ManageCategoriesList availableCategoriesQuery={availableCategoriesQuery} />
         ) : (
-          <ContentSkeleton className="px-6 py-0" />
+          <ContentSkeleton className="px-6" />
         )}
       </CategoriesFiltersProvider>
     </>

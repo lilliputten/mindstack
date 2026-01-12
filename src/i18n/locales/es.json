@@ -348,6 +348,14 @@
     "ToastLoading": "Eliminando la respuesta...",
     "ToastSuccess": "Se eliminó exitosamente la respuesta."
   },
+  "DeleteCategoryModal": {
+    "CannotDeleteCategory": "No se puede eliminar la categoría",
+    "CategoryDeletedContent": "La categoría ha sido eliminada exitosamente. El diálogo se cerrará automáticamente.",
+    "CategoryDeletedTitle": "La categoría ha sido eliminada",
+    "ConfirmDeleteContent": "¿Está seguro de eliminar la categoría \"{categoryName}\"?",
+    "ConfirmDialogTitle": "¿Eliminar Categoría?",
+    "NotFoundCategoryTitle": "No se puede encontrar la categoría para eliminar"
+  },
   "DeleteQuestionModal": {
     "CancelButtonText": "Cancelar",
     "ConfirmButtonBusyText": "Eliminando",
@@ -402,6 +410,7 @@
     "IsGeneratedHint": "Si la respuesta ha sido generada automáticamente, entonces podría ser actualizada o eliminada más tarde."
   },
   "EditCategoryForm": {
+    "AllNamesEmptyError": "Al menos un campo de nombre debe estar lleno en todas las traducciones",
     "CancelText": "Cancelar",
     "CategoryDescriptionHint": "Una descripción de categoría. Este texto puede ser usado por los usuarios para navegar y buscar.",
     "CategoryNameHint": "Un nombre de categoría. Es bueno si es un valor único.",
@@ -589,6 +598,8 @@
     "Delete": "Eliminar",
     "DeleteSelected": "Eliminar Seleccionados",
     "DeletingSelectedCategories": "Eliminando categorías seleccionadas...",
+    "Description": "Descripción",
+    "DialogTitle": "¿Eliminar categorías seleccionadas?",
     "Edit": "Editar",
     "ErrorLoadingCategoriesData": "Error al cargar los datos de categorías",
     "GoBack": "Volver",

@@ -8,7 +8,7 @@ import { isDev } from '@/config';
 
 export const ContentSkeletonTable = GenericContentSkeleton;
 
-const __showDebugInfo = true;
+const __showDebugInfo = false;
 
 export function ContentSkeleton({ className }: TPropsWithClassName) {
   return (
@@ -19,7 +19,7 @@ export function ContentSkeleton({ className }: TPropsWithClassName) {
       )}
       innerClassName={cn(
         isDev && '__ManageCategoriesPage_ContentSkeleton_Inner', // DEBUG class for inner container
-        'w-full rounded-lg gap-6 py-6',
+        'w-full rounded-lg gap-6',
       )}
       limitWidth
     >
@@ -28,16 +28,15 @@ export function ContentSkeleton({ className }: TPropsWithClassName) {
           heading="__ManageCategoriesPage_ContentSkeleton_DashboardHeader"
           className={cn(
             isDev && '__ManageCategoriesPage_ContentSkeleton_DashboardHeader', // DEBUG
-            'mx-6',
           )}
           // breadcrumbs={breadcrumbs}
           // actions={actions}
         />
       ) : (
-        <Skeleton className="mx-6 h-10 w-48 shrink-0 rounded-lg" />
+        <Skeleton className="h-10 w-48 shrink-0 rounded-lg" />
       )}
-      <Skeleton className="mx-6 h-12 w-full shrink-0 rounded-lg" />
-      <ContentSkeletonTable className="mx-6" />
+      <Skeleton className="h-12 w-full shrink-0 rounded-lg" />
+      <ContentSkeletonTable />
     </PageWrapper>
   );
 }
