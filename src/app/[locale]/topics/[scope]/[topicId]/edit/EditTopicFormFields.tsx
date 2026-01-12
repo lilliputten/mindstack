@@ -93,7 +93,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={descriptionKey}>{t('EditTopicFormFields.QuestionDescription')}</Label>
+              <Label htmlFor={descriptionKey}>{t('EditTopicFormFields.TopicDescription')}</Label>
               <FormControl>
                 <Textarea
                   id={descriptionKey}
@@ -104,7 +104,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 />
               </FormControl>
               <FormHint>
-                {t('EditTopicFormFields.QuestionDescriptionHint')} <MarkdownHint />
+                {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
               </FormHint>
               <FormMessage />
             </FormItem>

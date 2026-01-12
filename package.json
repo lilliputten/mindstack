@@ -200,7 +200,7 @@
     "dev-https-UNUSED": "echo --Run nextjs server in https mode-- && next dev --experimental-https",
     "build": "echo --Build the project-- && next build",
     "start": "echo --Start the project-- && next start",
-    "lint-UNUSED": "next lint",
+    "lint-next-UNUSED": "next lint",
     "preview": "next build && next start",
     "prisma-validate": "echo --Check prisma configuration-- && prisma validate",
     "prisma-format": "echo --Format prisma configuration file-- && prisma format",
@@ -217,7 +217,7 @@
     "test": "echo --Run tests-- && jest",
     "test-update-snapshots": "echo --Run tests and update snapshots-- && jest --updateSnapshot",
     "test-watch": "echo --Run tests in a watch mode-- && jest --watch",
-    "test:ci": "echo --Run tests in a CI mode-- && jest --ci",
+    "test-ci": "echo --Run tests in a CI mode-- && jest --ci",
     "vercel-clean": "vercel remove --safe --yes mind-stack-trainer",
     "scripts-help": "echo --List all available script commands-- && npm-package-user-scripts-list"
   }

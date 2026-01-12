@@ -99,7 +99,7 @@ export function ViewCategoryPage(props: TViewCategoryPageProps) {
       <Card
         className={cn(
           isDev && '__ViewCategoryCard', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden py-6 xl:col-span-2',
+          'relative mx-6 flex flex-1 flex-col overflow-hidden xl:col-span-2',
         )}
       >
         <ScrollArea>
