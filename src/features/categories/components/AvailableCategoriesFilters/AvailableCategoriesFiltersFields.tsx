@@ -102,7 +102,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                         'rounded-sm',
                         'opacity-30 transition hover:opacity-50',
                       )}
-                      title={t('AvailableCategoriesFiltersFields.ClearText')}
+                      title={t('ClearText')}
                     >
                       <Images.Close className="size-4" />
                     </Button>

@@ -111,12 +111,8 @@ function CategoriesTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead
-          id="no"
-          className="max-w-16 truncate text-right max-lg:hidden"
-          title={t('ManageCategoriesList.No')}
-        >
-          {t('ManageCategoriesList.No')}
+        <TableHead id="no" className="max-w-16 truncate text-right max-lg:hidden" title={t('NN')}>
+          {t('NN')}
         </TableHead>
         {__showId && isDev && (
           <TableHead id="categoryId" className="truncate max-xl:hidden" title="ID">
@@ -133,19 +129,15 @@ function CategoriesTableHeader({
         <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
           {t('ManageCategoriesList.CategoryName')}
         </TableHead>
-        <TableHead
-          id="status"
-          className="max-w-32 truncate max-md:hidden"
-          title={t('ManageCategoriesList.Status')}
-        >
-          {t('ManageCategoriesList.Status')}
+        <TableHead id="status" className="max-w-32 truncate max-md:hidden" title={t('Status')}>
+          {t('Status')}
         </TableHead>
         <TableHead
           id="createdAt"
           className="max-w-32 truncate max-md:hidden"
           title={t('ManageCategoriesList.CreatedAt')}
         >
-          {t('ManageCategoriesList.Status')}
+          {t('ManageCategoriesList.CreatedAt')}
         </TableHead>
         <TableHead
           id="topicsCount"

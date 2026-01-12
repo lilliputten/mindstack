@@ -168,7 +168,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Check className="size-4 opacity-50" />
-                      <span className="truncate">{t('AvailableCategoriesFilters.Apply')}</span>
+                      <span className="truncate">{t('Apply')}</span>
                     </Button>
                     <Button
                       type="button"
@@ -178,9 +178,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      <span className="truncate">
-                        {t('AvailableCategoriesFilters.ResetToDefaults')}
-                      </span>
+                      <span className="truncate">{t('ResetToDefaults')}</span>
                     </Button>
                     <Button
                       type="button"
@@ -190,9 +188,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       className="text-truncate flex items-center justify-start gap-2"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      <span className="truncate">
-                        {t('AvailableCategoriesFilters.ClearChanges')}
-                      </span>
+                      <span className="truncate">{t('ClearChanges')}</span>
                     </Button>
                     <Button
                       type="button"
@@ -201,7 +197,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       className="text-truncate flex items-center justify-start gap-2 md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
-                      <span className="truncate">{t('AvailableCategoriesFilters.Hide')}</span>
+                      <span className="truncate">{t('Hide')}</span>
                     </Button>
                   </div>
                 </form>

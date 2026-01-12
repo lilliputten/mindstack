@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   const t = await getT({ locale });
   return constructMetadata({
     locale,
-    title: t('Pages.ManageCategoryTitle'),
+    title: t('Pages.ViewCategoryTitle'),
   });
 }
 
