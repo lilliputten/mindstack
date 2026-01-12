@@ -177,7 +177,7 @@ export function EditCategoryModal(props: TProps) {
           className={cn(
             isDev && '__EditCategoryModal_error', // DEBUG
           )}
-          title="Error loading category data"
+          title={t('ManageCategoriesList.ErrorLoadingCategoriesData')}
           error={categoryError}
           reset={categoryRefetch}
         />

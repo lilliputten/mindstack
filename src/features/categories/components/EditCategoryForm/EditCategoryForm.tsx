@@ -186,11 +186,11 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       // Validate file size
       if (file.size > categoryImageSizeLimit) {
         const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
-        errors.push(`Image size must be less than ${formattedSizeLimit}B`);
+        errors.push(t('ImageSizeError', { size: formattedSizeLimit }));
       }
       // Validate file type
       if (!categoryImageAllowedTypes.includes(file.type as TCategoryImageAllowedTypes)) {
-        errors.push(`Invalid image type. Allowed types: ${categoryImageAllowedTypesString}`);
+        errors.push(t('InvalidImageTypeError', { allowedTypes: categoryImageAllowedTypesString }));
       }
       if (errors.length) {
         const message = errors.join(' ');
@@ -199,10 +199,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       }
       form.clearErrors('imageUrl');
       const url = URL.createObjectURL(file);
-      console.log('[EditCategoryForm:handleImageChange] before', {
-        url,
-        file,
-      });
       if (memo.imagePreviewUrl) {
         URL.revokeObjectURL(memo.imagePreviewUrl);
       }
@@ -210,7 +206,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       memo.imagePreviewUrl = url;
       form.setValue('imageUrl', url, { shouldDirty: true });
     },
-    [memo, form],
+    [memo, form, t],
   );
   const handleRemoveImage = useCallback(() => {
     form.clearErrors('imageUrl');
@@ -227,13 +223,9 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       try {
         const formData = new FormData();
         formData.append('image', file);
-        console.log('[EditCategoryForm:uploadImageFileToVercel] before', {
-          file,
-          formData,
-        });
         const result = await uploadCategoryImage(formData);
         if (!result.success || !result.data?.url) {
-          const message = 'Failed to upload image';
+          const message = t('UploadImageError');
           const error = new Error(message);
           // eslint-disable-next-line no-console
           console.error('[EditCategoryForm:uploadImageFileToVercel] Invalid result', message, {
@@ -245,12 +237,9 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
           throw error;
         }
         const url = result?.data?.url;
-        console.log('[EditCategoryForm:uploadImageFileToVercel] success', {
-          url,
-        });
         return url;
       } catch (error) {
-        const message = 'Failed to upload image';
+        const message = t('UploadImageError');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
@@ -263,7 +252,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         throw new Error(comboMsg);
       }
     },
-    [form],
+    [form, t],
   );
 
   const handleSubmitForm = React.useCallback(
@@ -282,12 +271,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         // Set an original image, if it wasn't removed by the user
         imageUrl: !imageCleared ? initialCategory?.imageUrl : undefined,
       };
-      console.log('[EditCategoryForm:handleSubmitForm] before uploading image', {
-        updatedCategory,
-        initialCategory,
-        convertedCategory,
-        formData,
-      });
       if (memo.imageFile) {
         newImageUrl = await uploadImageFileToVercel(memo.imageFile);
         if (newImageUrl) {
@@ -295,13 +278,6 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         }
       }
       try {
-        console.log('[EditCategoryForm:handleSubmitForm] before adding', {
-          updatedCategory,
-          convertedCategory,
-          initialCategory,
-          newImageUrl,
-          formData,
-        });
         if (isDev) {
           await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
@@ -314,7 +290,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         }
         return result;
       } catch (error) {
-        const message = 'Failed to submit form data';
+        const message = t('SubmitFormError');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
@@ -345,6 +321,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       handleSaveCategory,
       autoClose,
       handleClose,
+      t,
     ],
   );
 
@@ -384,10 +361,10 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         >
           {isSubmitSuccessful ? (
             <SuccessSplash
-              title="Successfully saved!"
+              title={t('SuccessfullySavedTitle')}
               className={!isSubmitSuccessful ? 'pointer-events-none opacity-0' : ''}
             >
-              The category has been successfully saved. You can now close this dialog.
+              {t('SuccessfullySavedMessage')}
               {/* The dialog will be closed automatically. */}
             </SuccessSplash>
           ) : (
@@ -408,7 +385,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                       'flex w-full flex-col gap-4',
                     )}
                   >
-                    <Label>Image</Label>
+                    <Label>{t('ImageLabel')}</Label>
                     <FormControl>
                       <div className="flex items-center gap-4">
                         {imagePreviewUrl ? (
@@ -450,7 +427,8 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                         )}
                         <div className="flex flex-1 flex-col gap-2">
                           <FormHint>
-                            Maximum size: {categoryImageConfig.size}x{categoryImageConfig.size}px
+                            {t('MaximumSize')}: {categoryImageConfig.size}x
+                            {categoryImageConfig.size}px
                           </FormHint>
                           <FormMessage />
                         </div>
@@ -487,7 +465,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                         'flex w-full flex-col gap-4',
                       )}
                     >
-                      <Label htmlFor="category-status">Status</Label>
+                      <Label htmlFor="category-status">{t('StatusLabel')}</Label>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -495,13 +473,13 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                       >
                         <FormControl>
                           <SelectTrigger id="category-status">
-                            <SelectValue placeholder="Select status" />
+                            <SelectValue placeholder={t('SelectStatusPlaceholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="PUBLIC">Public</SelectItem>
-                          <SelectItem value="SUGGESTED">Suggested</SelectItem>
-                          <SelectItem value="HIDDEN">Hidden</SelectItem>
+                          <SelectItem value="PUBLIC">{t('PublicOption')}</SelectItem>
+                          <SelectItem value="SUGGESTED">{t('SuggestedOption')}</SelectItem>
+                          <SelectItem value="HIDDEN">{t('HiddenOption')}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -518,10 +496,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 )}
               >
                 <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-                <p className="flex-1 text-sm opacity-50">
-                  Please enter the properties of the category (name, description, keywords) for all
-                  or only one of the application languages.
-                </p>
+                <p className="flex-1 text-sm opacity-50">{t('CategoryPropertiesInstruction')}</p>
               </div>
 
               {/* Translations Tabs */}
@@ -573,17 +548,19 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                             'flex w-full flex-col gap-4',
                           )}
                         >
-                          <Label htmlFor={`category-name-${locale}`}>Name ({locale})</Label>
+                          <Label htmlFor={`category-name-${locale}`}>
+                            {t('NameWithLocale', { locale })}
+                          </Label>
                           <FormControl>
                             <Input
                               id={`category-name-${locale}`}
                               type="text"
-                              placeholder={`Enter category name in ${locale}`}
+                              placeholder={t('EnterCategoryNamePlaceholder', { locale })}
                               {...field}
                               value={field.value || ''}
                             />
                           </FormControl>
-                          <FormHint>{t('EditCategoryForm.CategoryNameHint')}</FormHint>
+                          <FormHint>{t('CategoryNameHint')}</FormHint>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -601,18 +578,18 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                           )}
                         >
                           <Label htmlFor={`category-description-${locale}`}>
-                            Description ({locale})
+                            {t('DescriptionWithLocale', { locale })}
                           </Label>
                           <FormControl>
                             <Textarea
                               id={`category-description-${locale}`}
-                              placeholder={`Enter category description in ${locale}`}
+                              placeholder={t('EnterCategoryDescriptionPlaceholder', { locale })}
                               {...field}
                               value={field.value || ''}
                             />
                           </FormControl>
                           <FormHint>
-                            {t('EditCategoryForm.CategoryDescriptionHint')} <MarkdownHint />
+                            {t('CategoryDescriptionHint')} <MarkdownHint />
                           </FormHint>
                           <FormMessage />
                         </FormItem>
@@ -630,20 +607,19 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                             'flex w-full flex-col gap-4',
                           )}
                         >
-                          <Label htmlFor={`category-keywords-${locale}`}>Keywords ({locale})</Label>
+                          <Label htmlFor={`category-keywords-${locale}`}>
+                            {t('KeywordsWithLocale', { locale })}
+                          </Label>
                           <FormControl>
                             <Input
                               id={`category-keywords-${locale}`}
                               type="text"
-                              placeholder={`Enter keywords separated by commas in ${locale}`}
+                              placeholder={t('EnterKeywordsPlaceholder', { locale })}
                               {...field}
                               value={field.value || ''}
                             />
                           </FormControl>
-                          <FormHint>
-                            Enter keywords separated by commas. Example: keyword1, keyword2,
-                            keyword3
-                          </FormHint>
+                          <FormHint>{t('KeywordsHintText')}</FormHint>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -675,12 +651,12 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
               {isBusy ? (
                 <>
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
-                  <span>Saving...</span>
+                  <span>{t('SavingText')}</span>
                 </>
               ) : (
                 <>
                   <SaveIcon className={cn('h-4 w-4', isBusy && 'animate-spin')} />
-                  <span>Save</span>
+                  <span>{t('SaveText')}</span>
                 </>
               )}
             </Button>
@@ -689,7 +665,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
               onClick={handleCloseForm}
               className="gap-2"
             >
-              <span>{isSubmitSuccessful ? 'Close' : 'Cancel'}</span>
+              <span>{isSubmitSuccessful ? t('CloseText') : t('CancelText')}</span>
             </Button>
           </div>
 
