@@ -416,6 +416,7 @@
     "InvalidImageTypeError": "Недопустимый тип изображения. Разрешенные типы: {allowedTypes}",
     "KeywordsHintText": "Введите ключевые слова, разделенные запятыми. Пример: слово1, слово2, слово3",
     "KeywordsWithLocale": "Ключевые слова ({locale})",
+    "MaximumSize": "Максимальный размер",
     "NameWithLocale": "Название ({locale})",
     "PublicOption": "Публичный",
     "SaveText": "Сохранить",
@@ -426,8 +427,7 @@
     "SuccessfullySavedMessage": "Категория была успешно сохранена. Теперь вы можете закрыть этот диалог.",
     "SuccessfullySavedTitle": "Успешно сохранено!",
     "SuggestedOption": "Предложенный",
-    "UploadImageError": "Не удалось загрузить изображение",
-    "MaximumSize": "Максимальный размер"
+    "UploadImageError": "Не удалось загрузить изображение"
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",

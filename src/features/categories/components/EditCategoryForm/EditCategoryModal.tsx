@@ -60,7 +60,7 @@ export function EditCategoryModal(props: TProps) {
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
    */
-  const t = useT('ManageCategories.Edit');
+  const t = useT();
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryModal' });
 
@@ -71,7 +71,7 @@ export function EditCategoryModal(props: TProps) {
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  useModalTitle(t('ModalTitle'), shouldBeVisible);
+  useModalTitle(t('EditCategoryModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // const goToTheRoute = useGoToTheRoute();
@@ -117,7 +117,7 @@ export function EditCategoryModal(props: TProps) {
       ]);
     },
     onError: (error, updatedCategory) => {
-      const message = t('CannotSaveCategory');
+      const message = t('EditCategoryModal.CannotSaveCategory');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
@@ -135,9 +135,10 @@ export function EditCategoryModal(props: TProps) {
     (updatedCategory: TAvailableCategory) => {
       const promise = saveCategoryMutation.mutateAsync(updatedCategory);
       toast.promise(promise, {
-        loading: t('ToastLoading'),
-        success: (category) => t('ToastSuccess', { name: getCategoryName(category) }),
-        error: t('ToastError'),
+        loading: t('EditCategoryModal.SavingData'),
+        success: (category) =>
+          t('EditCategoryModal.DataSaved', { name: getCategoryName(category) }),
+        error: t('EditCategoryModal.DataSaveError'),
       });
       return promise;
     },
@@ -167,9 +168,11 @@ export function EditCategoryModal(props: TProps) {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">
+          {t('EditCategoryModal.ManageCategoriesList.DialogTitle')}
+        </DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('DialogDescription')}
+          {t('EditCategoryModal.ManageCategoriesList.DialogDescription')}
         </DialogDescription>
       </div>
       {categoryError ? (
@@ -177,7 +180,7 @@ export function EditCategoryModal(props: TProps) {
           className={cn(
             isDev && '__EditCategoryModal_error', // DEBUG
           )}
-          title={t('ManageCategoriesList.ErrorLoadingCategoriesData')}
+          title={t('EditCategoryModal.ManageCategoriesList.ErrorLoadingCategoriesData')}
           error={categoryError}
           reset={categoryRefetch}
         />

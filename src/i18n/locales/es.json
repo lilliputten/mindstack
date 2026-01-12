@@ -417,6 +417,7 @@
     "InvalidImageTypeError": "Tipo de imagen inválido. Tipos permitidos: {allowedTypes}",
     "KeywordsHintText": "Ingresa palabras clave separadas por comas. Ejemplo: palabra1, palabra2, palabra3",
     "KeywordsWithLocale": "Palabras clave ({locale})",
+    "MaximumSize": "Tamaño máximo",
     "NameWithLocale": "Nombre ({locale})",
     "PublicOption": "Público",
     "SaveText": "Guardar",
@@ -427,8 +428,7 @@
     "SuccessfullySavedMessage": "La categoría ha sido guardada exitosamente. Ahora puedes cerrar este diálogo.",
     "SuccessfullySavedTitle": "¡Guardado exitosamente!",
     "SuggestedOption": "Sugerido",
-    "UploadImageError": "Error al subir la imagen",
-    "MaximumSize": "Tamaño máximo"
+    "UploadImageError": "Error al subir la imagen"
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Agregar Nueva Pregunta",

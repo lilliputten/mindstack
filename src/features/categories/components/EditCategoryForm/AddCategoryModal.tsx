@@ -37,14 +37,14 @@ export function AddCategoryModal(props: TProps) {
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
    */
-  const t = useT('ManageCategories.Add');
+  const t = useT();
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  useModalTitle(t('ModalTitle'), shouldBeVisible);
+  useModalTitle(t('AddCategoryModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // const goToTheRoute = useGoToTheRoute();
@@ -80,7 +80,7 @@ export function AddCategoryModal(props: TProps) {
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
     },
     onError: (error, newCategory) => {
-      const message = t('CantSaveCategory');
+      const message = t('AddCategoryModal.CantSaveCategory');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
@@ -98,9 +98,10 @@ export function AddCategoryModal(props: TProps) {
     (updatedCategory: TCreateCategoryParams) => {
       const promise = saveCategoryMutation.mutateAsync(updatedCategory);
       toast.promise(promise, {
-        loading: t('ToastLoading'),
-        success: (category) => t('ToastSuccess', { name: getCategoryName(category) }),
-        error: t('CannotSaveCategory'),
+        loading: t('AddCategoryModal.ToastLoading'),
+        success: (category) =>
+          t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category) }),
+        error: t('AddCategoryModal.CannotSaveCategory'),
       });
       return promise;
     },
@@ -129,9 +130,9 @@ export function AddCategoryModal(props: TProps) {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">{t('AddCategoryModal.DialogTitle')}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('DialogDescription')}
+          {t('AddCategoryModal.DialogDescription')}
         </DialogDescription>
       </div>
       <EditCategoryForm

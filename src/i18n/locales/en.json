@@ -418,6 +418,7 @@
     "InvalidImageTypeError": "Invalid image type. Allowed types: {allowedTypes}",
     "KeywordsHintText": "Enter keywords separated by commas. Example: keyword1, keyword2, keyword3",
     "KeywordsWithLocale": "Keywords ({locale})",
+    "MaximumSize": "Maximum size",
     "NameWithLocale": "Name ({locale})",
     "PublicOption": "Public",
     "SaveText": "Save",
@@ -428,8 +429,7 @@
     "SuccessfullySavedMessage": "The category has been successfully saved. You can now close this dialog.",
     "SuccessfullySavedTitle": "Successfully saved!",
     "SuggestedOption": "Suggested",
-    "UploadImageError": "Failed to upload image",
-    "MaximumSize": "Maximum size"
+    "UploadImageError": "Failed to upload image"
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Add New Question",
