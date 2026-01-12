@@ -154,6 +154,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       answersCountRandom: topic.answersCountRandom || false,
       answersCountMin: topic.answersCountMin || undefined,
       answersCountMax: topic.answersCountMax || undefined,
+      categoryIds: topic.categoryIds || [],
     }),
     [topic],
   );
@@ -215,6 +216,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         answersCountRandom: formData.answersCountRandom,
         answersCountMin: formData.answersCountMin,
         answersCountMax: formData.answersCountMax,
+        categoryIds: formData.categoryIds,
       };
       startTransition(async () => {
         try {

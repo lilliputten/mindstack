@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-
 import { TAvailableTopic } from '@/features/topics/types';
 
 import { TTopicUpdateInput, UpdateTopicSchema } from '../types/TUpdateTopicData';

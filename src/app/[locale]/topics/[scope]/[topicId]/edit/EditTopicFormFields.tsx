@@ -14,6 +14,7 @@ import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
+import { CategorySelectField } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
@@ -132,6 +133,15 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
         />
       </FormSection>
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={t('EditTopicFormFields.Categories')}
+          hint={t('EditTopicFormFields.CategoriesHint')}
+          placeholder={t('EditTopicFormFields.SelectCategories')}
+        />
         {/* isPublic */}
         <FormField
           name="isPublic"
