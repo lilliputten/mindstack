@@ -1,6 +1,8 @@
 import z from 'zod';
 
 import {
+  // Category,
+  CategorySchema,
   Question,
   Topic,
   // TopicIncludeSchema,
@@ -20,7 +22,23 @@ export type TTopicReal = ReplaceNullWithUndefined<TTopic>;
 
 export type TTopicId = TTopic['id'];
 
-/** User fields to include with a flag `iGetAvailableTopicsParamsSchema.ncludeUser` */
+/** Basic (with general info: id and status) category fields to include with a flag `GetAvailableTopicsParamsSchema.includeCategory` */
+export const IncludedCategorySelect = {
+  id: true as const,
+  // status: true as const,
+  // imageUrl: true as const,
+  // translations: true as const,
+  // _count: true as const, // {translations: 2, topics: 1}
+  // createdAt: true as const,
+  // updatedAt: true as const,
+  // createdBy: true as const,
+  // updatedBy: true as const,
+  // topics: true as const,
+};
+const _IncludedCategorySchema = CategorySchema.pick(IncludedCategorySelect);
+export type TIncludedCategory = z.infer<typeof _IncludedCategorySchema>;
+
+/** User fields to include with a flag `GetAvailableTopicsParamsSchema.includeUser` */
 export const IncludedUserSelect = {
   id: true as const, // z.string().cuid(),
   name: true as const, // z.string().nullable(),
@@ -79,6 +97,9 @@ export type TIncludedStats = z.infer<typeof _IncludedStatsSchema>;
 export type TAvailableTopic = TTopic & {
   /** For `includeUser` flag */
   user?: TIncludedUser;
+  /** For `includeCategories` flag */
+  categories?: TIncludedCategory[];
+  // categoryIds?: string[];
   /** For `includeWorkout` flag */
   userTopicWorkout?: TIncludedUserTopicWorkout[];
   /** For `includeStats` flag */

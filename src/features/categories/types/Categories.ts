@@ -99,7 +99,7 @@ export type TGetCategoryByIdParams = z.infer<typeof GetCategoryByIdParamsSchema>
 
 export const CategoryIncludeParamsSchema = z.object({});
 
-export type TCategoryIncludeParams = z.infer<typeof CategoryIncludeParamsSchema>;
+// type TCategoryIncludeParams = z.infer<typeof CategoryIncludeParamsSchema>;
 
 export const GetAvailableCategoriesParamsSchema = CategoryIncludeParamsSchema.extend({
   categoryIds: z.array(z.string()).optional(),
@@ -152,8 +152,8 @@ export type TAvailableCategoriesResultsQueryData = TGetResultsInfiniteQueryData<
 
 // Get Category by id
 
-export const GetAvailableCategoryByIdParamsSchema = CategoryIncludeParamsSchema.extend({
+const _GetAvailableCategoryByIdParamsSchema = CategoryIncludeParamsSchema.extend({
   id: z.coerce.string().optional(), // TCategoryId
 });
 
-export type TGetAvailableCategoryByIdParams = z.infer<typeof GetAvailableCategoryByIdParamsSchema>;
+export type TGetAvailableCategoryByIdParams = z.infer<typeof _GetAvailableCategoryByIdParamsSchema>;

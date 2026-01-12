@@ -26,6 +26,7 @@ export async function getAvailableCategories(
     take,
     orderBy = { updatedAt: 'desc' },
     includeTranslations = true,
+    // includeTopics, // TODO?
     searchText,
     searchLang,
     status,

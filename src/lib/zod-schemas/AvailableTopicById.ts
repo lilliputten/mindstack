@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 export const TopicIncludeParamsSchema = z.object({
+  /** Include related categories */
+  includeCategories: z.coerce.boolean().optional(),
   /** Include (limited) workout data */
   includeWorkout: z.coerce.boolean().optional(),
   /** Include stats data */

@@ -5,5 +5,5 @@ export * from './deleteTopics';
 export * from './getAvailableTopicById';
 export * from './getAvailableTopics';
 export * from './getThisUserTopics';
-export * from './getTopic';
+// export * from './getTopic';
 export * from './updateTopic';

@@ -8,7 +8,12 @@ import { getCurrentUser } from '@/lib/session';
 import { TGetAvailableTopicsParams, TGetAvailableTopicsResults } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-import { IncludedStatsSelect, IncludedUserSelect, IncludedUserTopicWorkoutSelect } from '../types';
+import {
+  IncludedCategorySelect,
+  IncludedStatsSelect,
+  IncludedUserSelect,
+  IncludedUserTopicWorkoutSelect,
+} from '../types';
 
 interface TOptions {
   noDebug?: boolean;
@@ -26,6 +31,7 @@ export async function getAvailableTopics(
     orderBy = { updatedAt: 'desc' },
     // TopicIncludeParamsSchema
     includeUser = false,
+    includeCategories = true,
     includeWorkout = false,
     includeStats = false,
     includeQuestionsCount = true,
@@ -73,6 +79,9 @@ export async function getAvailableTopics(
       return { items: [], totalCount: 0 };
     }
     // Create the "include" data...
+    if (includeCategories) {
+      include.categories = true; // { select: IncludedCategorySelect };
+    }
     if (includeUser) {
       include.user = { select: IncludedUserSelect };
     }
