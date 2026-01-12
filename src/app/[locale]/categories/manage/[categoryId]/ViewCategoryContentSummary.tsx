@@ -35,12 +35,7 @@ export function ViewCategoryContentSummary(props: TViewCategoryContentSummaryPro
     category,
     isFetched: isCategoryFetched,
     isLoading: isCategoryLoading,
-    queryKey,
   } = availableCategoryQuery;
-
-  console.log('[ViewCategoryContentSummary:ViewCategoryContentSummary]', {
-    queryKey,
-  });
 
   if (!isCategoryFetched || isCategoryLoading || !category) {
     return <CategoryContentSummarySkeleton />;

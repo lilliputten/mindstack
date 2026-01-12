@@ -44,7 +44,9 @@ describe('getAvailableTopics', () => {
     const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
-      const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+      const user = await jestPrisma.user.create({
+        data: { email: `user-PUBLIC-TOPICS-${dateTag}@test.com` },
+      });
       createdIds.push({ type: 'user', id: user.id });
       const topic1 = await jestPrisma.topic.create({
         data: { name: 'Public', isPublic: true, userId: user.id },
@@ -69,9 +71,11 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user1-AUTH-DEFAULT-${dateTag}@test.com`, role: 'USER' },
       });
-      const user2 = await jestPrisma.user.create({ data: { email: `user2-${dateTag}@test.com` } });
+      const user2 = await jestPrisma.user.create({
+        data: { email: `user2-AUTH-DEFAULT-${dateTag}@test.com` },
+      });
       [user1, user2].forEach(({ id }) => createdIds.push({ type: 'user', id }));
       const topic0 = await jestPrisma.topic.create({
         data: { name: 'Public', isPublic: true, userId: user2.id },
@@ -98,17 +102,17 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user1-SHOW-MY-TOPICS-${dateTag}@test.com`, role: 'USER' },
       });
       const user2 = await jestPrisma.user.create({
-        data: { email: `user2-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user2-SHOW-MY-TOPICS-${dateTag}@test.com`, role: 'USER' },
       });
       [user1, user2].forEach(({ id }) => createdIds.push({ type: 'user', id }));
       const topic1 = await jestPrisma.topic.create({
-        data: { name: `public-${dateTag}`, isPublic: false, userId: user1.id },
+        data: { name: `public-show-my-topics-${dateTag}`, isPublic: false, userId: user1.id },
       });
       const topic2 = await jestPrisma.topic.create({
-        data: { name: `public-${dateTag}`, isPublic: true, userId: user2.id },
+        data: { name: `public-show-my-topics-${dateTag}`, isPublic: true, userId: user2.id },
       });
       const topicIds = [topic1, topic2].map(({ id }) => id);
       topicIds.forEach((id) => createdIds.push({ type: 'topic', id }));
@@ -130,11 +134,11 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const admin = await jestPrisma.user.create({
-        data: { email: `admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: `admin-ALL-TOPICS-${dateTag}@test.com`, role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: admin.id });
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user1-ALL-TOPICS-${dateTag}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user1.id });
       const t1 = await jestPrisma.topic.create({
@@ -166,7 +170,7 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user1-NON-ADMIN-${dateTag}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user1.id });
       mockedGetCurrentUser.mockResolvedValue(user1);
@@ -183,7 +187,7 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com` },
+        data: { email: `user1-INCLUDE-USER-${dateTag}@test.com` },
       });
       createdIds.push({ type: 'user', id: user1.id });
       const publicTopic = await jestPrisma.topic.create({
@@ -204,7 +208,7 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com` },
+        data: { email: `user1-NO-USER-INFO-${dateTag}@test.com` },
       });
       createdIds.push({ type: 'user', id: user1.id });
       const publicTopic = await jestPrisma.topic.create({
@@ -224,7 +228,9 @@ describe('getAvailableTopics', () => {
     const dateTag = formatDateTag(now);
     const createdIds: CreatedId[] = [];
     try {
-      const user1 = await jestPrisma.user.create({ data: { email: `user1-${dateTag}@test.com` } });
+      const user1 = await jestPrisma.user.create({
+        data: { email: `user1-INCLUDE-WORKOUT-${dateTag}@test.com` },
+      });
       createdIds.push({ type: 'user', id: user1.id });
       const t1 = await jestPrisma.topic.create({
         data: { name: 'Public', isPublic: true, userId: user1.id },
@@ -248,7 +254,7 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user1 = await jestPrisma.user.create({
-        data: { email: `user1-${dateTag}@test.com` },
+        data: { email: `user1-QUESTIONS-COUNT-${dateTag}@test.com` },
       });
       createdIds.push({ type: 'user', id: user1.id });
       const publicTopic = await jestPrisma.topic.create({
@@ -272,17 +278,17 @@ describe('getAvailableTopics', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-pagination-${dateTag}@test.com` },
+        data: { email: `user-PAGINATION-${dateTag}@test.com` },
       });
       createdIds.push({ type: 'user', id: user.id });
       const t1 = await jestPrisma.topic.create({
-        data: { name: `t1-${dateTag}`, isPublic: true, userId: user.id },
+        data: { name: `t1-pagination-${dateTag}`, isPublic: true, userId: user.id },
       });
       const t2 = await jestPrisma.topic.create({
-        data: { name: `t2-${dateTag}`, isPublic: true, userId: user.id },
+        data: { name: `t2-pagination-${dateTag}`, isPublic: true, userId: user.id },
       });
       const t3 = await jestPrisma.topic.create({
-        data: { name: `t3-${dateTag}`, isPublic: true, userId: user.id },
+        data: { name: `t3-pagination-${dateTag}`, isPublic: true, userId: user.id },
       });
       const topicIds = [t1.id, t2.id, t3.id];
       topicIds.forEach((id) => createdIds.push({ type: 'topic', id }));
@@ -312,7 +318,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-SEARCH-TEXT-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: {
@@ -357,7 +365,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-WORKOUT-STATS-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: { name: 'With Stats', isPublic: true, userId: user.id },
@@ -409,7 +419,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-ACTIVE-WORKOUTS-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: { name: 'Active Workout', isPublic: true, userId: user.id },
@@ -440,7 +452,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-DATE-RANGES-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const oldDate = new Date('2023-01-01');
         const recentDate = new Date('2024-01-01');
@@ -488,7 +502,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-LANGUAGE-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: {
@@ -534,7 +550,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-HAS-QUESTIONS-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: { name: 'With Questions', isPublic: true, userId: user.id },
@@ -573,7 +591,7 @@ describe('getAvailableTopics', () => {
       const createdIds: CreatedId[] = [];
       try {
         const user = await jestPrisma.user.create({
-          data: { email: `user-searchlang-${dateTag}@test.com` },
+          data: { email: `user-SEARCH-LANG-${dateTag}@test.com` },
         });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
@@ -633,7 +651,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-ORDER-BY-NAME-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: { name: 'B Topic', isPublic: true, userId: user.id },
@@ -678,7 +698,9 @@ describe('getAvailableTopics', () => {
       const dateTag = formatDateTag();
       const createdIds: CreatedId[] = [];
       try {
-        const user = await jestPrisma.user.create({ data: { email: `user-${dateTag}@test.com` } });
+        const user = await jestPrisma.user.create({
+          data: { email: `user-ORDER-BY-QUESTION-${dateTag}@test.com` },
+        });
         createdIds.push({ type: 'user', id: user.id });
         const t1 = await jestPrisma.topic.create({
           data: { name: 'Topic 1 (1q)', isPublic: true, userId: user.id },

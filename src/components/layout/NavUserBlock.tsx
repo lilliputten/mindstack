@@ -170,6 +170,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           data-testid="__NavUserBlock_SignOut_Button"
           className={cn(
             isDev && '__NavUserBlock_SignOut_Button', // DEBUG
+            !onSidebar && 'w-full',
             'cursor-pointer',
           )}
           onSelect={handleSignOut}

@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
-import { prisma } from '@/lib/db';
 import { auth } from '@/auth';
-import { isDev, manageCategoriesRoute, startAliasRoute } from '@/config';
+import { isDev, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
 
 type TAwaitedLocaleProps = {
@@ -28,20 +27,7 @@ export default async function ManageCategoriesLayout(props: TManageCategoriesLay
   const { locale } = await params;
 
   const session = await auth();
-  const userId = session?.user?.id;
-
-  if (!userId) {
-    if (isDev) {
-      // eslint-disable-next-line no-console
-      console.debug('[ManageCategoriesLayout] Redirecting to auth');
-    }
-    redirect(manageCategoriesRoute);
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { role: true },
-  });
+  const user = session?.user;
 
   if (user?.role !== 'ADMIN') {
     if (isDev) {

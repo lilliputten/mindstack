@@ -30,11 +30,11 @@ export function UpgradeCard({
       <CardContent className="md:max-xl:px-4">
         <Button
           size="sm"
-          variant="theme"
+          variant={onSidebar ? 'temeInverted' : 'theme'}
           className={cn(
             isDev && '__UpgradeCard_Button', // DEBUG
             'w-full',
-            onSidebar && 'bg-white text-theme-600 hover:bg-theme-700 hover:text-white',
+            // onSidebar && 'bg-white text-theme-600 hover:bg-theme-700 hover:text-white',
           )}
         >
           <Link href={pricingAliasRoute} className="flex items-center gap-2">
