@@ -88,7 +88,6 @@ model User {
   userTopicWorkout UserTopicWorkout[]
   workoutStats     WorkoutStats[]
   AIGenerations    AIGeneration[]
-  // categories       Category[]
 
   @@map("users")
 }
@@ -221,6 +220,9 @@ model Category {
   status CategoryStatus @default(PUBLIC)
 
   // Translated fields: name, description, keywords
+  // - name - Required for at least one translation
+  // - description - Markdown text
+  // - keywords - Comma-separated list
   translations CategoryTranslation[]
 
   imageUrl String? @map("image_url") // Stores Vercel Blob public URL
@@ -231,9 +233,6 @@ model Category {
   // Categories are not tied to the users, but we want to keep information about creators and updaters
   createdBy String? @map("created_by") // The creator user id
   updatedBy String? @map("updated_by") // The updater user id
-
-  // user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // userId String @map("user_id")
 
   topics Topic[]
 
@@ -246,8 +245,13 @@ model CategoryTranslation {
   categoryId String
   locale     String // e.g., 'en', 'es', 'ru'
 
+  // name - Required for at least one translation
   name        String
+
+  // description - Markdown text
   description String?
+
+  // keywords - Comma-separated list
   keywords    String?
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -275,8 +279,7 @@ model Topic {
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userTopicWorkout   UserTopicWorkout[]
   workoutStats       WorkoutStats[]
-  category           Category?          @relation(fields: [categoryId], references: [id])
-  categoryId         String?
+  categories         Category[]
 
   @@index([userId])
   @@map("topics")
