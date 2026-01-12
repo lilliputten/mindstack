@@ -7,7 +7,7 @@ import { Control } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
-import { Button, buttonVariants } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import {
   Command,
   CommandEmpty,
@@ -54,6 +54,18 @@ export function CategorySelect({
     [onSelectedCategoryIdsChange, selectedCategoryIds],
   );
 
+  /* // UNUSED
+   * const categories = React.useMemo(() => {
+   *   return publicCategories.reduce(
+   *     (names, category) => {
+   *       names[category.id] = category;
+   *       return names;
+   *     },
+   *     {} as Record<string, TAvailableCategory>,
+   *   );
+   * }, [publicCategories]);
+   */
+
   const categoryNames = React.useMemo(() => {
     return publicCategories.reduce(
       (names, category) => {
@@ -63,6 +75,14 @@ export function CategorySelect({
       {} as Record<string, string>,
     );
   }, [locale, publicCategories, t]);
+
+  const filterCategory = React.useCallback(
+    (id: string, search: string, _keywords?: string[]) => {
+      const name = categoryNames[id];
+      return Number((name || '').trim().toLowerCase().includes(search.toLowerCase()));
+    },
+    [categoryNames],
+  );
 
   const selectedCategories = publicCategories.filter((cat) => selectedCategoryIds.includes(cat.id));
 
@@ -131,7 +151,7 @@ export function CategorySelect({
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
-          <Command>
+          <Command filter={filterCategory}>
             <CommandInput placeholder="Search categories..." />
             <CommandList>
               <CommandEmpty>
@@ -207,7 +227,7 @@ export function CategorySelect({
 }
 
 interface CategorySelectFieldProps {
-  control: Control<{ categoryIds?: string[] }>;
+  control: Control<{ categoryIds: string[] }>;
   name: 'categoryIds';
   label: string;
   hint?: string;

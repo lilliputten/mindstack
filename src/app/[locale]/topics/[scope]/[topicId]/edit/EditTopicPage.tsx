@@ -41,6 +41,21 @@ import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 import { EditTopicForm } from './EditTopicForm';
 import { topicFormDataSchema, TTopicFormData } from './types';
 
+const formBaseSchema = z.object({
+  name: z.string().min(minNameLength).max(maxNameLength),
+  // NOTE: It's impossible to limit minimal length (min) for optional strings?
+  description: z.string().max(maxTextLength).optional(),
+  isPublic: z.boolean().optional(),
+  keywords: z.string().optional(),
+  langCode: z.string().optional(),
+  langName: z.string().optional(),
+  langCustom: z.boolean().optional(),
+  answersCountRandom: z.boolean().optional(),
+  answersCountMin: z.union([z.string().optional(), z.number()]),
+  answersCountMax: z.union([z.string().optional(), z.number()]),
+  categoryIds: z.array(z.string()),
+});
+
 interface TEditTopicPageProps extends TPropsWithClassName {
   topicId: TTopicId;
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
@@ -80,65 +95,51 @@ export function EditTopicPage(props: TEditTopicPageProps) {
 
   const formSchema = React.useMemo(
     () =>
-      z
-        .object({
-          name: z.string().min(minNameLength).max(maxNameLength),
-          // NOTE: It's impossible to limit minimal length (min) for optional strings?
-          description: z.string().max(maxTextLength).optional(),
-          isPublic: z.boolean().optional(),
-          keywords: z.string().optional(),
-          langCode: z.string().optional(),
-          langName: z.string().optional(),
-          langCustom: z.boolean().optional(),
-          answersCountRandom: z.boolean().optional(),
-          answersCountMin: z.union([z.string().optional(), z.number()]),
-          answersCountMax: z.union([z.string().optional(), z.number()]),
-        })
-        .superRefine((data, ctx) => {
-          const { answersCountRandom, keywords } = data;
-          // Validate keywords format
-          if (keywords && keywords.trim() !== '') {
-            const keywordList = keywords.split(',').map((k) => k.trim());
-            const validKeywords = keywordList.filter(Boolean);
-            if (validKeywords.length === 0 || keywordList.length !== validKeywords.length) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'Keywords must be comma-separated words without empty values',
-                path: ['keywords'],
-              });
-            }
+      formBaseSchema.superRefine((data, ctx) => {
+        const { answersCountRandom, keywords } = data;
+        // Validate keywords format
+        if (keywords && keywords.trim() !== '') {
+          const keywordList = keywords.split(',').map((k) => k.trim());
+          const validKeywords = keywordList.filter(Boolean);
+          if (validKeywords.length === 0 || keywordList.length !== validKeywords.length) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Keywords must be comma-separated words without empty values',
+              path: ['keywords'],
+            });
           }
-          if (answersCountRandom) {
-            const answersCountMin = Number(data.answersCountMin);
-            const answersCountMax = Number(data.answersCountMax);
-            if (!answersCountMin || answersCountMin < 1) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'It should be a positive number.',
-                path: ['answersCountMin'],
-              });
-            }
-            if (!answersCountMax || answersCountMax < 1) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'It should be a positive number.',
-                path: ['answersCountMax'],
-              });
-            }
-            if (answersCountMin > answersCountMax) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'A minimal value should be less than maximal.',
-                path: ['answersCountMin'],
-              });
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'A minimal value should be less than maximal.',
-                path: ['answersCountMax'],
-              });
-            }
+        }
+        if (answersCountRandom) {
+          const answersCountMin = Number(data.answersCountMin);
+          const answersCountMax = Number(data.answersCountMax);
+          if (!answersCountMin || answersCountMin < 1) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'It should be a positive number.',
+              path: ['answersCountMin'],
+            });
           }
-        }),
+          if (!answersCountMax || answersCountMax < 1) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'It should be a positive number.',
+              path: ['answersCountMax'],
+            });
+          }
+          if (answersCountMin > answersCountMax) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'A minimal value should be less than maximal.',
+              path: ['answersCountMin'],
+            });
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'A minimal value should be less than maximal.',
+              path: ['answersCountMax'],
+            });
+          }
+        }
+      }),
     [],
   );
 
@@ -158,6 +159,13 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     }),
     [topic],
   );
+
+  /* // DEBUG
+   * console.log('[EditTopicPage:defaultValues]', {
+   *   defaultValues,
+   *   topic,
+   * });
+   */
 
   // @see https://react-hook-form.com/docs/useform
   const form = useForm<TTopicFormData>({
@@ -217,19 +225,21 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         answersCountMin: formData.answersCountMin,
         answersCountMax: formData.answersCountMax,
         categoryIds: formData.categoryIds,
+        categories: undefined,
       };
       startTransition(async () => {
+        const updateTopicData = getUpdateTopicFromBroaderData(editedTopic);
+        let updatedTopic: TAvailableTopic | undefined;
         try {
-          const updateTopicData = getUpdateTopicFromBroaderData(editedTopic);
           const savePromise = updateTopic(updateTopicData);
           toast.promise(savePromise, {
             loading: t('EditTopicPage.SavingTopicData'),
             success: t('EditTopicPage.SuccessfullySavedTheTopic'),
             error: t('EditTopicPage.CannotSaveTopicData'),
           });
-          const topic = await savePromise;
-          // Convert topic data
-          const cleanedTopic = removeNullUndefinedValues(topic);
+          updatedTopic = await savePromise;
+          // Convert topic data (possible zod error)
+          const cleanedTopic = removeNullUndefinedValues(updatedTopic);
           const convertedTopic = topicFormDataSchema.parse(cleanedTopic);
           // Invalidate all possible topic data...
           const invalidatePrefixes = [
@@ -238,7 +248,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
           ].map(makeQueryKeyPrefix);
           invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
           // Update query data
-          availableTopicQuery.queryClient.setQueryData(availableTopicQuery.queryKey, topic);
+          availableTopicQuery.queryClient.setQueryData(availableTopicQuery.queryKey, updatedTopic);
           // Add the created item to the cached react-query data
           availableTopicsQuery.updateTopic(convertedTopic as TAvailableTopic);
           // Invalidate all other keys...
@@ -253,7 +263,8 @@ export function EditTopicPage(props: TEditTopicPageProps) {
           console.error('[EditTopicPage]', [message, details].join(': '), {
             error,
             topicId: editedTopic.id,
-            // url,
+            updatedTopic,
+            updateTopicData,
             editedTopic,
             formData,
           });
@@ -327,7 +338,6 @@ export function EditTopicPage(props: TEditTopicPageProps) {
       {
         id: 'Back',
         content: 'Back',
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -336,18 +346,15 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         id: 'Reload',
         content: 'Reload',
         title: 'Reload the data from the server',
-        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableTopicQuery.isRefetching,
-        // hidden: !isDirty,
         onClick: handleReload,
       },
       {
         id: 'Reset',
         content: 'Reset',
         title: 'Reset form fields to original values',
-        // variant: 'ghost',
         icon: Icons.Close,
         visibleFor: 'lg',
         hidden: !isDirty,

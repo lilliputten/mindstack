@@ -57,15 +57,6 @@ interface TMemo {
  * texts. We're using the `ManageCategories.Edit` as a default namespace, and
  * the `ManageCategories.EditNew` as another for category creating.
  */
-/*
- * export function useTranslations(
- *   _defaultNamespace: 'EditCategoryForm' | 'EditCategoryFormNew',
- *   newMode?: boolean,
- * ) {
- *   const namespace = !newMode ? 'EditCategoryForm' : 'EditCategoryFormNew';
- *   return useT(namespace);
- * }
- */
 
 const autoCloseTimeout = 2000;
 

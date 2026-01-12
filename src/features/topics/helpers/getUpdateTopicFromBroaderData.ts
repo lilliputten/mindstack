@@ -1,10 +1,10 @@
 import { TAvailableTopic } from '@/features/topics/types';
 
-import { TTopicUpdateInput, UpdateTopicSchema } from '../types/TUpdateTopicData';
+import { TUpdateTopicParams, UpdateTopicSchema } from '../types/TUpdateTopicData';
 
 export function getUpdateTopicFromBroaderData(topic: TAvailableTopic) {
   // Prepare the data...
   const parsedTopic = UpdateTopicSchema.parse(topic);
-  const data: TTopicUpdateInput = parsedTopic;
+  const data: TUpdateTopicParams = parsedTopic;
   return data;
 }

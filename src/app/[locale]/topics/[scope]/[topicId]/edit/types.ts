@@ -17,7 +17,7 @@ const topicFormDataSchemaBase = TopicSchema.pick({
   answersCountMin: true, // number
   answersCountMax: true, // number
 }).extend({
-  categoryIds: z.array(z.string()).optional(),
+  categoryIds: z.array(z.string()), // .optional(),
 });
 export const topicFormDataSchema = makeNullableFieldsUndefined(topicFormDataSchemaBase);
 export type TTopicFormData = z.infer<typeof topicFormDataSchema>;

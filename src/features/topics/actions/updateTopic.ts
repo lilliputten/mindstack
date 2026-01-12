@@ -5,7 +5,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
-import { TAvailableTopic } from '@/features/topics/types';
+import { IncludedCategorySelect, TAvailableTopic } from '@/features/topics/types';
 
 import { TUpdateTopicParams } from '../types/TUpdateTopicData';
 
@@ -25,6 +25,11 @@ export async function updateTopic(topic: TUpdateTopicParams) {
     throw new Error('Not specified topic name');
   }
 
+  const include: Prisma.TopicInclude = {
+    // TODO: See example of constructing `include` data in the `src/features/topics/actions/getAvailableTopicById.ts`
+    categories: { select: IncludedCategorySelect },
+  };
+
   try {
     if (isDev) {
       // DEBUG: Emulate network delay
@@ -42,10 +47,17 @@ export async function updateTopic(topic: TUpdateTopicParams) {
       };
     }
 
-    const updatedTopic = await prisma.topic.update({
+    const result = await prisma.topic.update({
       where,
       data,
+      include,
     });
+
+    const updatedTopic = result as TAvailableTopic;
+
+    if (updatedTopic?.categories?.length) {
+      updatedTopic.categoryIds = updatedTopic.categories.map(({ id }) => id);
+    }
 
     return updatedTopic as TAvailableTopic; // TTopic
   } catch (error) {

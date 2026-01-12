@@ -31,5 +31,5 @@ const OmitAutoFields = {
 };
 export const UpdateTopicSchema = TopicSchema.omit(OmitAutoFields)
   .partial()
-  .extend({ id: z.string() });
+  .extend({ id: z.string(), categoryIds: z.array(z.string()).optional() });
 export type TUpdateTopic = z.infer<typeof UpdateTopicSchema>;
