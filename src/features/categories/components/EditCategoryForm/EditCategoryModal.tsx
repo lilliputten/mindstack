@@ -155,6 +155,7 @@ export function EditCategoryModal(props: TProps) {
       className={cn(
         isDev && '__EditCategoryModal', // DEBUG
         'flex flex-col gap-0 text-theme-foreground',
+        !isMobile && 'max-h-[90%]',
         isCategoryBusy && 'opacity-50',
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}

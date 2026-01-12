@@ -401,6 +401,10 @@
     "IsGenerated": "¿La respuesta fue generada por IA?",
     "IsGeneratedHint": "Si la respuesta ha sido generada automáticamente, entonces podría ser actualizada o eliminada más tarde."
   },
+  "EditCategoryForm": {
+    "CategoryDescriptionHint": "Una descripción de categoría. Este texto puede ser usado por los usuarios para navegar y buscar.",
+    "CategoryNameHint": "Un nombre de categoría. Es bueno si es un valor único."
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Agregar Nueva Pregunta",
     "Back": "Atrás",

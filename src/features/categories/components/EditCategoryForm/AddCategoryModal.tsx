@@ -118,6 +118,7 @@ export function AddCategoryModal(props: TProps) {
       className={cn(
         isDev && '__AddCategoryModal', // DEBUG
         'flex flex-col gap-0 text-theme-foreground',
+        !isMobile && 'max-h-[90%]',
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >

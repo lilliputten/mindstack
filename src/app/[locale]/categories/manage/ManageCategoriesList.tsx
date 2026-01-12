@@ -129,6 +129,15 @@ function CategoriesTableHeader({
         <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
           {t('ManageCategoriesList.CategoryName')}
         </TableHead>
+        {/*
+        <TableHead
+          id="description"
+          className="max-w-48 truncate max-lg:hidden"
+          title={t('ManageCategoriesList.Description')}
+        >
+          {t('ManageCategoriesList.Description')}
+        </TableHead>
+        */}
         <TableHead id="status" className="max-w-32 truncate max-md:hidden" title={t('Status')}>
           {t('Status')}
         </TableHead>
@@ -219,6 +228,14 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           {truncateString(getCategoryName(category, locale, t), 40)}
         </Link>
       </TableCell>
+      {/*
+      <TableCell
+        id="description"
+        className="max-w-48 truncate max-lg:hidden"
+      >
+        {truncateMarkdown(getCategoryDescription(category, locale, t), 60)}
+      </TableCell>
+      */}
       <TableCell id="status" className="max-w-32 truncate max-md:hidden">
         {t(category.status)}
       </TableCell>
@@ -610,7 +627,7 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
       },
       {
         id: 'Reload',
-        content: t('ManageCategoriesList.Reload'),
+        content: t('Reload'),
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isRefetching,

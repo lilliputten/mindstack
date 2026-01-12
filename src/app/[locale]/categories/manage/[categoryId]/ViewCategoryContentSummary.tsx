@@ -11,6 +11,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Badge } from '@/components/ui/Badge';
+import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
@@ -68,6 +69,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
   };
 
   const categoryName = getCategoryName(category, locale, t);
+  const categoryDescription = getCategoryDescription(category, locale, t);
 
   const createdUserQuery = useUserById(category.createdBy || undefined);
   const {
@@ -138,10 +140,15 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
         <h2 className="mb-4 truncate text-xl font-semibold">
           {t('ViewCategoryContentSummary.Description')}
         </h2>
-        <p className="text-truncate opacity-50">
-          {getCategoryDescription(category, locale, t) ||
-            t('ViewCategoryContentSummary.NoDescription')}
-        </p>
+        {categoryDescription ? (
+          <div className="rounded-lg bg-slate-500/10 p-4">
+            <MarkdownText>{categoryDescription}</MarkdownText>
+          </div>
+        ) : (
+          <p className="text-truncate opacity-50">
+            {t('ViewCategoryContentSummary.NoDescription')}
+          </p>
+        )}
       </div>
 
       {/* Keywords Section */}
