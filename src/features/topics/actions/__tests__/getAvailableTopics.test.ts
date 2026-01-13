@@ -15,7 +15,8 @@ type CreatedId =
   | { type: 'topic'; id: string }
   | { type: 'question'; id: string }
   | { type: 'workout'; userId: string; topicId: string }
-  | { type: 'workoutStats'; id: string };
+  | { type: 'workoutStats'; id: string }
+  | { type: 'category'; id: string };
 
 const cleanupDb = async (ids: CreatedId[]) => {
   for (const created of ids.reverse()) {
@@ -29,6 +30,8 @@ const cleanupDb = async (ids: CreatedId[]) => {
       await jestPrisma.question.deleteMany({ where: { id: created.id } });
     } else if (created.type === 'topic') {
       await jestPrisma.topic.deleteMany({ where: { id: created.id } });
+    } else if (created.type === 'category') {
+      await jestPrisma.category.deleteMany({ where: { id: created.id } });
     } else if (created.type === 'user') {
       await jestPrisma.user.deleteMany({ where: { id: created.id } });
     }
@@ -694,7 +697,7 @@ describe('getAvailableTopics', () => {
         });
 
         const allTopicIds = [t1.id, t2.id, t3.id, t4.id];
-        [cat1, cat2, cat3].forEach(({ id }) => createdIds.push({ type: 'topic', id }));
+        [cat1, cat2, cat3].forEach(({ id }) => createdIds.push({ type: 'category', id }));
         allTopicIds.forEach((id) => createdIds.push({ type: 'topic', id }));
 
         mockedGetCurrentUser.mockResolvedValue(undefined);

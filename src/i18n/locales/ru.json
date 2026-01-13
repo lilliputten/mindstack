@@ -251,6 +251,7 @@
     "ResetToDefaults": "Сбросить к значениям по умолчанию"
   },
   "AvailableTopicsFiltersFields": {
+    "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",
     "ChooseSortOrderHint": "Выберите способ сортировки списка тем.",
     "ClearText": "Очистить текст",
     "DisplayTopicsWithActiveWorkoutsHint": "Отображать темы с или без активных тренировок.",
@@ -260,6 +261,7 @@
     "SearchForLanguagePlaceholder": "Поиск языка...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
     "SearchForTextPlaceholder": "Поиск текста...",
+    "SelectCategories": "Выбрать категории",
     "SelectOptionPlaceholder": "Выбрать опцию…",
     "SelectOrderPlaceholder": "Выбрать порядок…",
     "ShowOnlyMyTopicsHint": "Показывать только мои собственные темы."

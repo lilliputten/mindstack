@@ -252,6 +252,7 @@
     "ResetToDefaults": "Restablecer valores predeterminados"
   },
   "AvailableTopicsFiltersFields": {
+    "CategoriesHint": "Selecciona una o más categorías para este tema.",
     "ChooseSortOrderHint": "Elige cómo ordenar la lista de temas.",
     "ClearText": "Borrar texto",
     "DisplayTopicsWithActiveWorkoutsHint": "Mostrar temas con o sin entrenamientos activos.",
@@ -261,6 +262,7 @@
     "SearchForLanguagePlaceholder": "Buscar idioma...",
     "SearchForTextHint": "Busca texto en el nombre, descripción o palabras clave.",
     "SearchForTextPlaceholder": "Buscar texto...",
+    "SelectCategories": "Seleccionar categorías",
     "SelectOptionPlaceholder": "Seleccionar opción…",
     "SelectOrderPlaceholder": "Seleccionar orden…",
     "ShowOnlyMyTopicsHint": "Mostrar solo mis propios temas."

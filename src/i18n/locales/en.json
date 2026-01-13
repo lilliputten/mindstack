@@ -251,6 +251,7 @@
     "ResetToDefaults": "Reset to defaults"
   },
   "AvailableTopicsFiltersFields": {
+    "CategoriesHint": "Select one or more categories for this topic.",
     "ChooseSortOrderHint": "Choose how to sort the topics list.",
     "ClearText": "Clear text",
     "DisplayTopicsWithActiveWorkoutsHint": "Display topics with or without active trainings.",
@@ -260,6 +261,7 @@
     "SearchForLanguagePlaceholder": "Search for language...",
     "SearchForTextHint": "Search for text in name, description or keywords.",
     "SearchForTextPlaceholder": "Search for text...",
+    "SelectCategories": "Select categories",
     "SelectOptionPlaceholder": "Select option…",
     "SelectOrderPlaceholder": "Select order…",
     "ShowOnlyMyTopicsHint": "Show only my own topics."
