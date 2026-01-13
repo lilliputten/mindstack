@@ -26,14 +26,19 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
   const tTexts = useT('AvailableTopicsFilterTexts');
   const activeFilterIds = getActiveFilterIds(filtersData);
   const { categoryNames, isLoading: isCategoryNamesLoading } = useCategoryNames();
+  const categoryIds = filtersData?.categoryIds?.length ? filtersData?.categoryIds : undefined;
   const convertedData = filtersData && {
     ...filtersData,
+    categoryIds,
     categoryNames: isCategoryNamesLoading
       ? '...'
-      : filtersData?.categoryIds?.map((id) => categoryNames?.[id] || '...'),
+      : categoryIds?.map((id) => categoryNames?.[id] || '...'),
   };
   const renderItems = activeFilterIds
     .map((id) => {
+      if (convertedData?.[id] == undefined) {
+        return undefined;
+      }
       const { showOnlyValue, value } = getFiltersDataValueString(id, {
         filtersData: convertedData,
         specific: true,

@@ -1,12 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { ErrorLike } from '@/lib/errors';
 import { deepCompare, getErrorText } from '@/lib/helpers';
+import { updateUrlParamsWithSchema } from '@/lib/helpers/urls';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
 
@@ -48,6 +50,9 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
   const [onDefaults, setOnDefaults] = React.useState(true);
   const [error, setError] = React.useState<ErrorLike>();
   const [filtersData, setFiltersData] = React.useState<TFiltersData | undefined>();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const expandFilters = React.useCallback(() => setExpanded(true), []);
   const hideFilters = React.useCallback(() => setExpanded(false), []);
@@ -102,6 +107,18 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
           if (!memo.inited) {
             memo.inited = true;
             setIsInited(true);
+          } else {
+            // Update URL query parameters to reflect current filters using the shared function
+            const newSearchParams = updateUrlParamsWithSchema(
+              filtersData,
+              filtersDataSchema,
+              searchParams,
+              defaultFiltersData,
+            );
+            // Update URL without page reload
+            const queryString = newSearchParams.toString();
+            const url = window.location.pathname + (queryString ? '?' + queryString : '');
+            router.push(url, { scroll: false });
           }
         } catch (error) {
           const details = getErrorText(error);
@@ -122,7 +139,7 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
         }
       });
     },
-    [memo, applyFilters, form, storeId],
+    [memo, applyFilters, form, storeId, searchParams, router, defaultFiltersData],
   );
   memo.applyFiltersData = applyFiltersData;
 

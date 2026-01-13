@@ -1,12 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { ErrorLike } from '@/lib/errors';
 import { deepCompare, getErrorText } from '@/lib/helpers';
+import { updateUrlParamsWithSchema } from '@/lib/helpers/urls';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
 
@@ -47,6 +49,9 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
   const [onDefaults, setOnDefaults] = React.useState(true);
   const [error, setError] = React.useState<ErrorLike>();
   const [filtersData, setFiltersData] = React.useState<TFiltersData | undefined>();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const expandFilters = React.useCallback(() => setExpanded(true), []);
   const hideFilters = React.useCallback(() => setExpanded(false), []);
@@ -96,6 +101,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           form.reset(filtersData);
           setFiltersData(filtersData);
           setOnDefaults(isDefaults);
+
           if (typeof window !== 'undefined') {
             if (isDefaults) {
               window.localStorage.removeItem(storeId);
@@ -103,9 +109,22 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
               window.localStorage.setItem(storeId, JSON.stringify(filtersData));
             }
           }
+
           if (!memo.inited) {
             memo.inited = true;
             setIsInited(true);
+          } else {
+            // Update URL query parameters to reflect current filters using the shared function
+            const newSearchParams = updateUrlParamsWithSchema(
+              filtersData,
+              filtersDataSchema,
+              searchParams,
+              defaultFiltersData,
+            );
+            // Update URL without page reload
+            const queryString = newSearchParams.toString();
+            const url = window.location.pathname + (queryString ? '?' + queryString : '');
+            router.replace(url, { scroll: false });
           }
         } catch (error) {
           const details = getErrorText(error);
@@ -122,7 +141,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
         }
       });
     },
-    [ignoreOnlyMy, memo, applyFilters, form, storeId],
+    [ignoreOnlyMy, memo, applyFilters, form, storeId, searchParams, router, defaultFiltersData],
   );
   memo.applyFiltersData = applyFiltersData;
 

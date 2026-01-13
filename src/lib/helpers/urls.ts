@@ -142,3 +142,81 @@ export function parseUrlParamsWithSchema<T extends z.ZodRawShape>(
     return {};
   }
 }
+
+/**
+ * Generic function to update URL query parameters based on an object and a Zod schema
+ * @param params - An object containing the parameters to set in the URL
+ * @param schema - The Zod schema to validate the parameters against
+ * @param searchParams - The current URLSearchParams object to update
+ * @param defaultValues - Default values to exclude from URL if they match current param values
+ * @returns A new URLSearchParams object with updated parameters
+ */
+export function updateUrlParamsWithSchema<T extends z.ZodRawShape>(
+  params: z.infer<z.ZodObject<T>>,
+  schema: z.ZodObject<T>,
+  searchParams: URLSearchParams,
+  defaultValues?: Partial<z.infer<z.ZodObject<T>>>,
+): URLSearchParams {
+  // Create a new URLSearchParams object based on the current one
+  const newSearchParams = new URLSearchParams(searchParams.toString());
+
+  // Get the keys defined in the schema
+  const schemaKeys = Object.keys(schema.shape);
+
+  // Process each parameter
+  Object.entries(params).forEach(([key, value]) => {
+    // Only process keys that are part of the schema
+    if (!schemaKeys.includes(key)) {
+      return;
+    }
+
+    // Skip if value equals default value
+    if (
+      defaultValues &&
+      key in defaultValues &&
+      JSON.stringify(value) === JSON.stringify(defaultValues[key as keyof typeof defaultValues])
+    ) {
+      // If the param value matches the default value, remove it from URL
+      newSearchParams.delete(key);
+      return;
+    }
+
+    // For arrays, join with comma
+    if (Array.isArray(value) && value.length > 0) {
+      newSearchParams.set(key, value.join(','));
+      return;
+    } else if (Array.isArray(value) && value.length === 0) {
+      newSearchParams.delete(key);
+      return;
+    }
+
+    // For strings, only include if not empty
+    if (typeof value === 'string' && value.trim() === '') {
+      newSearchParams.delete(key);
+      return;
+    }
+
+    // For nullable values, handle appropriately
+    if (value === null) {
+      newSearchParams.delete(key);
+      return;
+    }
+
+    // For booleans, convert to string representation
+    if (typeof value === 'boolean') {
+      newSearchParams.set(key, String(value));
+      return;
+    }
+
+    // For other types (numbers, enums, etc.), convert to string
+    if (typeof value !== 'object') {
+      newSearchParams.set(key, String(value));
+      return;
+    }
+
+    // For complex objects, delete the key to avoid storing complex objects in URL
+    newSearchParams.delete(key);
+  });
+
+  return newSearchParams;
+}
