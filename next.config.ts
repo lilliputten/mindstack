@@ -110,8 +110,7 @@ const nextConfig: NextConfig = {
   // redirects: async () => localeRewrites.map((item) => ({ permanent: true, ...item })),
   redirects: async () => redirectsList,
   rewrites: async () => rewritesList,
-  /*
-   * // @see https://nextjs.org/docs/app/api-reference/config/next-config-js/rewrites
+  /* // @see https://nextjs.org/docs/app/api-reference/config/next-config-js/rewrites
    * rewrites: async () => {
    *   // Create rewrites for each locale since next-intl handles internationalized routes
    *   // const locales = ['en', 'es', 'ru']; // Add all your supported locales
@@ -134,9 +133,19 @@ const nextConfig: NextConfig = {
       test: /\.md$/,
       use: 'raw-loader',
     });
+
+    // Optimize webpack cache for large strings
+    if (config.cache && typeof config.cache === 'object' && config.cache.type === 'filesystem') {
+      config.cache.buildDependencies = config.cache.buildDependencies || {};
+      config.cache.managedPaths = config.cache.managedPaths || [];
+      config.optimization = config.optimization || {};
+      config.optimization.minimize =
+        config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
+    }
+
     return config;
   },
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md'],
   sassOptions: {
     additionalData: scssVariables,
     silenceDeprecations: ['legacy-js-api'],

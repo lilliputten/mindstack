@@ -9,12 +9,13 @@ import { getDebugT } from './getDebugT';
 type TGetTOptions = { locale?: string; namespace?: string };
 
 export async function getT(opts?: TGetTOptions) {
-  const locale = await getLocale();
+  // Use the provided locale if available, otherwise get it from the request context
+  const locale = opts?.locale ? opts.locale : await getLocale();
   const isDebugLocale = debugTranslations || locale === debugLocale;
   if (isDebugLocale) {
     return getDebugT(opts?.namespace);
   }
-  return await nextIntlGetTranslations(opts);
+  return await nextIntlGetTranslations({ ...opts, locale });
 }
 
 /** Alias for shorthand getT */
