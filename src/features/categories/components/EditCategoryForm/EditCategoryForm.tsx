@@ -333,35 +333,38 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
   const SaveIcon = !isLoading ? Icons.Save : Icons.Spinner;
 
   return (
-    <ScrollArea
-      className={cn(
-        isDev && '__EditCategoryForm_Root', // DEBUG
-        className,
-      )}
-    >
-      <FormProvider {...form}>
-        <form
-          onSubmit={handleSubmit}
-          className={cn(
-            isDev && '__EditCategoryForm_Form', // DEBUG
-            'flex w-full flex-col gap-4',
-            'relative transition',
-            isBusy && 'opacity-50',
-          )}
-        >
-          {isSubmitSuccessful ? (
-            <SuccessSplash
-              title={t('EditCategoryForm.SuccessfullySavedTitle')}
-              className={!isSubmitSuccessful ? 'pointer-events-none opacity-0' : ''}
-            >
-              {t('EditCategoryForm.SuccessfullySavedMessage')}
-              {/* The dialog will be closed automatically. */}
-            </SuccessSplash>
-          ) : (
+    <FormProvider {...form}>
+      <form
+        onSubmit={handleSubmit}
+        className={cn(
+          isDev && '__EditCategoryForm_Form', // DEBUG
+          'flex w-full flex-col gap-6 overflow-hidden py-6',
+          'relative transition',
+          isBusy && 'opacity-50',
+        )}
+      >
+        {isSubmitSuccessful ? (
+          <SuccessSplash title={t('EditCategoryForm.SuccessfullySavedTitle')} className="px-6">
+            {t('EditCategoryForm.SuccessfullySavedMessage')}
+            {/* The dialog will be closed automatically. */}
+          </SuccessSplash>
+        ) : (
+          <ScrollArea
+            className={cn(
+              isDev && '__EditCategoryForm_RootScroll', // DEBUG
+              'flex flex-1 flex-col',
+              className,
+            )}
+            viewportClassName={cn(
+              isDev && '__EditCategoryForm_ScrollViewport',
+              'flex flex-1 flex-col',
+              '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+            )}
+          >
             <div
               className={cn(
                 isDev && '__EditCategoryForm_Fields', // DEBUG
-                'relative flex w-full flex-col gap-4',
+                'relative flex w-full flex-col gap-4 px-6',
               )}
             >
               {/* Image Upload */}
@@ -635,66 +638,66 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 ))}
               </Tabs>
             </div>
+          </ScrollArea>
+        )}
+
+        {/* Actions */}
+        <div
+          className={cn(
+            isDev && '__EditCategoryForm_Actions', // DEBUG
+            'flex w-full gap-4 px-6',
+            isSubmitSuccessful && 'justify-center',
           )}
-
-          {/* Actions */}
-          <div
+        >
+          <Button
+            type="submit"
+            variant={isSubmitEnabled ? 'success' : 'disabled'}
+            disabled={!isSubmitEnabled}
             className={cn(
-              isDev && '__EditCategoryForm_Actions', // DEBUG
-              'mt-4 flex w-full gap-4',
-              isSubmitSuccessful && 'justify-center',
+              isDev && '__EditCategoryForm_SaveButton', // DEBUG
+              'gap-2',
+              isSubmitSuccessful && 'hidden',
             )}
           >
-            <Button
-              type="submit"
-              variant={isSubmitEnabled ? 'success' : 'disabled'}
-              disabled={!isSubmitEnabled}
-              className={cn(
-                isDev && '__EditCategoryForm_SaveButton', // DEBUG
-                'gap-2',
-                isSubmitSuccessful && 'hidden',
-              )}
-            >
-              {isBusy ? (
-                <>
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
-                  <span>{t('EditCategoryForm.SavingText')}</span>
-                </>
-              ) : (
-                <>
-                  <SaveIcon className={cn('h-4 w-4', isBusy && 'animate-spin')} />
-                  <span>{t('EditCategoryForm.SaveText')}</span>
-                </>
-              )}
-            </Button>
-            <Button
-              variant={isSubmitSuccessful ? 'theme' : 'ghost'}
-              onClick={handleCloseForm}
-              className="gap-2"
-            >
-              <span>
-                {isSubmitSuccessful
-                  ? t('EditCategoryForm.CloseText')
-                  : t('EditCategoryForm.CancelText')}
-              </span>
-            </Button>
-          </div>
-
-          {/* LoadingSplash */}
-          <div
-            className={cn(
-              isDev && '__EditCategoryForm_LoadingSplash', // DEBUG
-              'absolute',
-              'inset-0 flex flex-col items-center justify-center gap-4 transition',
-              'my-2 bg-background',
-              'opacity-50',
-              !isBusy && 'pointer-events-none opacity-0',
+            {isBusy ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-theme border-t-transparent" />
+                <span>{t('EditCategoryForm.SavingText')}</span>
+              </>
+            ) : (
+              <>
+                <SaveIcon className={cn('h-4 w-4', isBusy && 'animate-spin')} />
+                <span>{t('EditCategoryForm.SaveText')}</span>
+              </>
             )}
+          </Button>
+          <Button
+            variant={isSubmitSuccessful ? 'theme' : 'ghost'}
+            onClick={handleCloseForm}
+            className="gap-2"
           >
-            <Icons.Spinner className="size-16 animate-spin text-theme" />
-          </div>
-        </form>
-      </FormProvider>
-    </ScrollArea>
+            <span>
+              {isSubmitSuccessful
+                ? t('EditCategoryForm.CloseText')
+                : t('EditCategoryForm.CancelText')}
+            </span>
+          </Button>
+        </div>
+
+        {/* LoadingSplash */}
+        <div
+          className={cn(
+            isDev && '__EditCategoryForm_LoadingSplash', // DEBUG
+            'absolute',
+            'inset-0 flex flex-col items-center justify-center gap-4 transition',
+            'my-2 bg-background',
+            'opacity-50',
+            !isBusy && 'pointer-events-none opacity-0',
+          )}
+        >
+          <Icons.Spinner className="size-16 animate-spin text-theme" />
+        </div>
+      </form>
+    </FormProvider>
   );
 }

@@ -124,7 +124,7 @@ function CategoriesTableHeader({
           className="max-w-6 truncate text-center"
           title={t('ManageCategoriesList.Image')}
         >
-          {t('ManageCategoriesList.Image')}
+          <Icons.ImageIcon className="mx-auto size-5" />
         </TableHead>
         <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
           {t('ManageCategoriesList.CategoryName')}
@@ -400,7 +400,7 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
                 </Button>
               )}
               <Button variant="theme" className="text-truncate flex gap-2">
-                <Link href={`${routePath}/add` as TRoutePath}>
+                <Link href={`${routePath}/add` as TRoutePath} className="flex gap-2">
                   <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
                   <span className="truncate">{t('ManageCategoriesList.AddCategory')}</span>
                 </Link>

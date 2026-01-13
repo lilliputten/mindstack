@@ -104,7 +104,7 @@ export function AddCategoryModal(props: TProps) {
       className={cn(
         isDev && '__AddCategoryModal', // DEBUG
         'flex flex-col gap-0 text-theme-foreground',
-        !isMobile && 'max-h-[90%]',
+        !isMobile && 'max-h-[90vh]',
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
@@ -122,7 +122,7 @@ export function AddCategoryModal(props: TProps) {
       </div>
       <EditCategoryForm
         handleSaveCategory={handleSaveCategory}
-        className="p-8 text-foreground"
+        className="text-foreground"
         handleClose={hideModal}
         isPending={saveCategoryMutation.isPending}
         suggestionMode={suggestionMode}

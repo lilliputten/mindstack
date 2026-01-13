@@ -53,6 +53,7 @@ export const filtersDataDefaults: TFiltersData = {
 };
 
 export const orderByMap: Record<TOrderBySelectOption, TTopicOrderBy> = {
+  // TODO: Sort by updated or created?
   byRecent: [{ updatedAt: 'desc' as const }, { name: 'asc' as const }],
   byOldest: [{ updatedAt: 'asc' as const }, { name: 'asc' as const }],
   byNameAsc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],

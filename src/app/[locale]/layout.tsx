@@ -10,6 +10,7 @@ import { EnvContextRoot } from '@/contexts/EnvContext/EnvContextRoot';
 import '@/styles/globals.scss';
 import '@/styles/root.scss';
 
+import { Viewport } from 'next';
 import { AbstractIntlMessages } from 'next-intl';
 
 import { defaultThemeColor } from '@/config/themeColors';
@@ -43,6 +44,17 @@ type TRootLayoutProps = TAwaitedLocaleProps & {
 export function generateStaticParams() {
   return localesList.map((locale) => ({ locale: locale as TLocale }));
 }
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  /* // NOTE: Attempt to fix stuck an onscreen mobile keyboard
+   * Also see `resize` and `geometrychange` events
+   */
+  interactiveWidget: 'overlays-content',
+};
 
 async function RootLayout(props: TRootLayoutProps) {
   const { children, params: paramsPromise } = props;
