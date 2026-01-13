@@ -93,6 +93,7 @@ export type TUpdateCategoriesParams = z.infer<typeof UpdateCategoriesParamsSchem
 export const GetCategoryByIdParamsSchema = z.object({
   id: z.string().cuid(),
   includeTranslations: z.boolean().optional(),
+  includeTopicsCount: z.boolean().optional(),
 });
 
 export type TGetCategoryByIdParams = z.infer<typeof GetCategoryByIdParamsSchema>;

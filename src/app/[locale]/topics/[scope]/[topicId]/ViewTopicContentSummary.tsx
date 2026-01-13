@@ -15,6 +15,7 @@ import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
+import { SmallUserBlock } from '@/features/users';
 import { useAvailableTopicById, useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -138,11 +139,11 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           <div className="flex flex-wrap gap-1">
             {topic.keywords
               .split(',')
+              .map((s) => s.trim())
               .filter(Boolean)
               .map((keyword, idx) => (
                 <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
-                  {/* <Icons.Tags className="mr-1 size-3 opacity-50" /> */}
-                  {keyword.trim()}
+                  {keyword}
                 </span>
               ))}
           </div>
@@ -180,15 +181,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               <span>{t('ViewTopicContentSummary.YouAreTheAuthor')}</span>
             </>
           ) : (
-            topic.user && (
-              <>
-                <Icons.User className="size-4 text-muted-foreground opacity-50" />
-                <span className="text-muted-foreground">
-                  {t('ViewTopicContentSummary.TopicCreatedBy')}:
-                </span>
-                <span>{topic.user.name || topic.user.email || 'Unknown'}</span>
-              </>
-            )
+            topic.user && <SmallUserBlock user={topic.user} />
           )}
         </div>
       </div>

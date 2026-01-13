@@ -644,6 +644,7 @@
     "GoBack": "Volver",
     "Image": "Imagen",
     "MakingSelectedCategoriesPublic": "Haciendo públicas las categorías seleccionadas...",
+    "ManageTopics": "Administrar temas",
     "MarkSelectedAsPrivate": "Marcar Seleccionados como Privados",
     "MarkSelectedAsPublic": "Marcar Seleccionados como Públicos",
     "NoCategoriesFound": "No se encontraron categorías",
@@ -1171,6 +1172,7 @@
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Información Básica",
+    "Created": "Creado",
     "CreatedAt": "Creado En",
     "CreatedBy": "Creado Por",
     "Description": "Descripción",
@@ -1181,6 +1183,7 @@
     "NoDescription": "No se proporcionó descripción",
     "Status": "Estado",
     "TopicsCount": "Cantidad de Temas",
+    "Updated": "Actualizado",
     "UpdatedAt": "Actualizado En",
     "UpdatedBy": "Actualizado Por"
   },
@@ -1220,6 +1223,7 @@
     "Description": "Descripción",
     "Keywords": "Palabras clave",
     "ManageQuestions": "Gestionar preguntas",
+    "ManageTopics": "Administrar temas",
     "Modified": "Modificado",
     "NoTopicLoaded": "No se cargó ningún tema",
     "Private": "Privado",

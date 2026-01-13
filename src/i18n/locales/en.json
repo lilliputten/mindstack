@@ -645,6 +645,7 @@
     "GoBack": "Go Back",
     "Image": "Image",
     "MakingSelectedCategoriesPublic": "Making selected categories public...",
+    "ManageTopics": "Manage Topics",
     "MarkSelectedAsPrivate": "Mark Selected as Private",
     "MarkSelectedAsPublic": "Mark Selected as Public",
     "NoCategoriesFound": "No categories found",
@@ -1172,6 +1173,7 @@
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Basic Info",
+    "Created": "Created",
     "CreatedAt": "Created At",
     "CreatedBy": "Created By",
     "Description": "Description",
@@ -1182,6 +1184,7 @@
     "NoDescription": "No description provided",
     "Status": "Status",
     "TopicsCount": "Topics Count",
+    "Updated": "Updated",
     "UpdatedAt": "Updated At",
     "UpdatedBy": "Updated By"
   },
@@ -1221,6 +1224,7 @@
     "Description": "Description",
     "Keywords": "Keywords",
     "ManageQuestions": "Manage questions",
+    "ManageTopics": "Manage Topics",
     "Modified": "Modified",
     "NoTopicLoaded": "No topic loaded",
     "Private": "Private",

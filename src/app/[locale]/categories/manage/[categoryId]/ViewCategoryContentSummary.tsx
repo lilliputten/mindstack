@@ -9,11 +9,14 @@ import { CategoryStatusSchema } from '@/generated/prisma';
 import { generateArray, getFormattedRelativeDate } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { TLocale, useT } from '@/i18n';
+import { Link, TLocale, useT } from '@/i18n';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
+import * as Icons from '@/components/shared/Icons';
+import { allTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import {
   getAllCategoryKeywords,
@@ -86,17 +89,25 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
     // isEnabled: isUpdatedUserEnabled,
   } = updatedUserQuery;
 
+  const allKeywords = getAllCategoryKeywords(category);
+
+  const topicsCount = category._count?.topics || 0;
+  console.log('XXX', {
+    topicsCount,
+    category,
+  });
+
   return (
     <div
       className={cn(
         isDev && '__ViewCategoryContentDetails', // DEBUG
-        'w-full p-6',
+        'flex w-full flex-col gap-4 p-6',
         className,
       )}
     >
       {/* Basic Info Section */}
       <div className="mb-6">
-        <h2 className="mb-4 truncate text-xl font-semibold">
+        <h2 className="truncate text-lg font-semibold">
           {t('ViewCategoryContentSummary.BasicInfo')}
         </h2>
 
@@ -126,39 +137,72 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <h3 className="truncate text-sm font-medium opacity-50">
-              {t('ViewCategoryContentSummary.TopicsCount')}
-            </h3>
-            <p className="text-truncate">{category._count?.topics || 0}</p>
-          </div>
+          {/*!!topicsCount && (
+            <div className="flex flex-col gap-2">
+              <h3 className="truncate text-sm font-medium opacity-50">
+                {t('ViewCategoryContentSummary.TopicsCount')}
+              </h3>
+              <p className="text-truncate">{topicsCount}</p>
+            </div>
+          )*/}
         </div>
       </div>
 
       {/* Description Section */}
-      <div className="mb-6">
-        <h2 className="mb-4 truncate text-xl font-semibold">
-          {t('ViewCategoryContentSummary.Description')}
-        </h2>
-        {categoryDescription ? (
-          <div className="rounded-lg bg-slate-500/10 p-4">
-            <MarkdownText>{categoryDescription}</MarkdownText>
+      {categoryDescription && (
+        <div data-testid="__ViewCategoryContentSummary_Description" className="flex flex-col gap-4">
+          <h2 className="truncate text-lg font-semibold">
+            {t('ViewCategoryContentSummary.Description')}
+          </h2>
+          {categoryDescription ? (
+            <div className="rounded-lg bg-slate-500/10 p-4">
+              <MarkdownText>{categoryDescription}</MarkdownText>
+            </div>
+          ) : (
+            <p className="text-truncate opacity-50">
+              {t('ViewCategoryContentSummary.NoDescription')}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Topic Questions */}
+      {!!topicsCount && (
+        <div
+          data-testid="__ViewCategoryContentSummary_Section_Topics"
+          className="flex flex-col gap-4"
+        >
+          <h2 className="truncate text-lg font-semibold">{t('Topics')}</h2>
+          <div className="flex flex-wrap gap-4">
+            {!!topicsCount && (
+              <span className="flex items-center gap-2">
+                <Icons.AllTopics className="size-4 opacity-50" />
+                <span>
+                  {t('ViewCategoryContentSummary.TopicsCount')}: {topicsCount}
+                </span>
+              </span>
+            )}
+            <Button variant="theme">
+              <Link
+                href={`${allTopicsRoute}/?categoryIds=${category.id}` as TRoutePath}
+                className="flex items-center gap-2"
+              >
+                <Icons.Edit className="size-4 opacity-50" />
+                <span>{t('ViewTopicContentSummary.ManageTopics')}</span>
+              </Link>
+            </Button>
           </div>
-        ) : (
-          <p className="text-truncate opacity-50">
-            {t('ViewCategoryContentSummary.NoDescription')}
-          </p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Keywords Section */}
-      {category.translations && category.translations.length > 0 && (
+      {allKeywords.length > 0 && (
         <div className="mb-6">
-          <h2 className="mb-4 truncate text-xl font-semibold">
+          <h2 className="truncate text-lg font-semibold">
             {t('ViewCategoryContentSummary.Keywords')}
           </h2>
           <div className="flex flex-wrap gap-2">
-            {getAllCategoryKeywords(category).map((keyword, idx) => (
+            {allKeywords.map((keyword, idx) => (
               <Badge key={idx} variant="secondary">
                 {keyword.trim()}
               </Badge>
@@ -170,7 +214,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       {/* Image Section */}
       {category.imageUrl && (
         <div className="mb-6">
-          <h2 className="mb-4 truncate text-xl font-semibold">
+          <h2 className="truncate text-lg font-semibold">
             {t('ViewCategoryContentSummary.Image')}
           </h2>
           <div
@@ -184,7 +228,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
               alt={categoryName}
               fill
               className={cn(
-                isDev && '__ViewCategoryContentDetails', // DEBUG
+                isDev && '__ViewCategoryContentDetails_Image', // DEBUG
                 'object-cover',
               )}
             />
@@ -197,7 +241,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
         <div className="flex flex-col gap-2">
           <h3 className="truncate font-medium opacity-50">
-            {t('ViewCategoryContentSummary.CreatedBy')}
+            {t('ViewCategoryContentSummary.Created')}
           </h3>
           <div className="flex flex-wrap items-center gap-2">
             <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
@@ -209,7 +253,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
 
         <div className="flex flex-col gap-2">
           <h3 className="truncate font-medium opacity-50">
-            {t('ViewCategoryContentSummary.UpdatedBy')}
+            {t('ViewCategoryContentSummary.Updated')}
           </h3>
           <div className="flex flex-wrap items-center gap-2">
             <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />

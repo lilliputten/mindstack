@@ -28,7 +28,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
-import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
+import { allTopicsRoute, manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { getCategoryName } from '@/features/categories';
 import { deleteCategories, updateCategory } from '@/features/categories/actions';
@@ -251,6 +251,19 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
       </TableCell>
       <TableCell id="Actions" className="text-right">
         <div className="flex justify-end gap-1">
+          {!!topicsCount && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-9 shrink-0"
+              aria-label={t('ManageCategoriesList.ManageTopics')}
+              title={t('ManageCategoriesList.ManageTopics')}
+            >
+              <Link href={`${allTopicsRoute}/?categoryIds=${category.id}` as TRoutePath}>
+                <Icons.AllTopics className="size-4" />
+              </Link>
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon"

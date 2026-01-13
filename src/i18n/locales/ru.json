@@ -643,6 +643,7 @@
     "GoBack": "Назад",
     "Image": "Изображение",
     "MakingSelectedCategoriesPublic": "Делаем выбранные категории публичными...",
+    "ManageTopics": "Управление темами",
     "MarkSelectedAsPrivate": "Сделать выбранные приватными",
     "MarkSelectedAsPublic": "Сделать выбранные публичными",
     "NoCategoriesFound": "Категории не найдены",
@@ -1170,6 +1171,7 @@
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Основная информация",
+    "Created": "Создано",
     "CreatedAt": "Создано",
     "CreatedBy": "Создано",
     "Description": "Описание",
@@ -1180,6 +1182,7 @@
     "NoDescription": "Описание отсутствует",
     "Status": "Статус",
     "TopicsCount": "Количество тем",
+    "Updated": "Обновлено",
     "UpdatedAt": "Обновлено",
     "UpdatedBy": "Обновлено"
   },
@@ -1219,6 +1222,7 @@
     "Description": "Описание",
     "Keywords": "Ключевые слова",
     "ManageQuestions": "Управление вопросами",
+    "ManageTopics": "Управление темами",
     "Modified": "Изменено",
     "NoTopicLoaded": "Тема не загружена",
     "Private": "Приватный",

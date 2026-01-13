@@ -20,6 +20,9 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
   const { className, isLoading, user, tiny } = props;
   const t = useT();
   const sizeClass = tiny ? 'size-4' : 'size-5';
+  if (!isLoading && !user) {
+    return null;
+  }
   return (
     <div
       className={cn(

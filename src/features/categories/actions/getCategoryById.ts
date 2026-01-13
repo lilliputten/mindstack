@@ -13,7 +13,7 @@ interface TOptions {
 }
 
 export async function getCategoryById(params: TGetCategoryByIdParams & TOptions) {
-  const { id, noDebug, includeTranslations = true } = params;
+  const { id, noDebug, includeTranslations = true, includeTopicsCount = true } = params;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -29,6 +29,10 @@ export async function getCategoryById(params: TGetCategoryByIdParams & TOptions)
 
     if (includeTranslations) {
       include.translations = true;
+    }
+    // Always include translations for the current locale and topics count
+    if (includeTopicsCount) {
+      include._count = { select: { topics: true } };
     }
 
     const category = await prisma.category.findUnique({
