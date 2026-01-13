@@ -234,7 +234,7 @@ model Category {
   createdBy String? @map("created_by") // The creator user id
   updatedBy String? @map("updated_by") // The updater user id
 
-  topics Topic[]
+  topics Topic[] @relation(name: "CategoryToTopic", map: "category_to_topic")
 
   @@index([status])
   @@map("categories")
@@ -246,13 +246,13 @@ model CategoryTranslation {
   locale     String // e.g., 'en', 'es', 'ru'
 
   // name - Required for at least one translation
-  name        String
+  name String
 
   // description - Markdown text
   description String?
 
   // keywords - Comma-separated list
-  keywords    String?
+  keywords String?
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
@@ -279,7 +279,7 @@ model Topic {
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userTopicWorkout   UserTopicWorkout[]
   workoutStats       WorkoutStats[]
-  categories         Category[]
+  categories         Category[]         @relation(name: "CategoryToTopic", map: "category_to_topic")
 
   @@index([userId])
   @@map("topics")
