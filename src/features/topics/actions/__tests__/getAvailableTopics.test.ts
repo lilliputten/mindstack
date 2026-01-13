@@ -644,6 +644,129 @@ describe('getAvailableTopics', () => {
         await cleanupDb(createdIds);
       }
     });
+
+    it('should filter topics by categoryIds', async () => {
+      const dateTag = formatDateTag();
+      const createdIds: CreatedId[] = [];
+      try {
+        const user = await jestPrisma.user.create({
+          data: { email: `user-CATEGORY-FILTER-${dateTag}@test.com` },
+        });
+        createdIds.push({ type: 'user', id: user.id });
+
+        // Create categories
+        const cat1 = await jestPrisma.category.create({
+          data: { status: 'PUBLIC' },
+        });
+        const cat2 = await jestPrisma.category.create({
+          data: { status: 'PUBLIC' },
+        });
+        const cat3 = await jestPrisma.category.create({
+          data: { status: 'PUBLIC' },
+        });
+
+        // Create topics
+        const t1 = await jestPrisma.topic.create({
+          data: { name: 'Topic 1', isPublic: true, userId: user.id },
+        });
+        const t2 = await jestPrisma.topic.create({
+          data: { name: 'Topic 2', isPublic: true, userId: user.id },
+        });
+        const t3 = await jestPrisma.topic.create({
+          data: { name: 'Topic 3', isPublic: true, userId: user.id },
+        });
+        const t4 = await jestPrisma.topic.create({
+          data: { name: 'Topic 4', isPublic: true, userId: user.id },
+        });
+
+        // Connect topics to categories
+        await jestPrisma.category.update({
+          where: { id: cat1.id },
+          data: { topics: { connect: [{ id: t1.id }, { id: t2.id }] } },
+        });
+        await jestPrisma.category.update({
+          where: { id: cat2.id },
+          data: { topics: { connect: [{ id: t2.id }, { id: t3.id }] } },
+        });
+        await jestPrisma.category.update({
+          where: { id: cat3.id },
+          data: { topics: { connect: [{ id: t4.id }] } },
+        });
+
+        const allTopicIds = [t1.id, t2.id, t3.id, t4.id];
+        [cat1, cat2, cat3].forEach(({ id }) => createdIds.push({ type: 'topic', id }));
+        allTopicIds.forEach((id) => createdIds.push({ type: 'topic', id }));
+
+        mockedGetCurrentUser.mockResolvedValue(undefined);
+
+        // Test filtering by category 1 (should return topics 1 and 2)
+        const { items: itemsCat1, totalCount: countCat1 } = await getAvailableTopics({
+          categoryIds: [cat1.id],
+          noDebug: true,
+        });
+        expect(countCat1).toBe(2);
+        expect(itemsCat1).toHaveLength(2);
+        expect(itemsCat1.map((t) => t.id).sort()).toEqual([t1.id, t2.id].sort());
+
+        // Test filtering by category 2 (should return topics 2 and 3)
+        const { items: itemsCat2, totalCount: countCat2 } = await getAvailableTopics({
+          categoryIds: [cat2.id],
+          noDebug: true,
+        });
+        expect(countCat2).toBe(2);
+        expect(itemsCat2).toHaveLength(2);
+        expect(itemsCat2.map((t) => t.id).sort()).toEqual([t2.id, t3.id].sort());
+
+        // Test filtering by category 3 (should return topic 4)
+        const { items: itemsCat3, totalCount: countCat3 } = await getAvailableTopics({
+          categoryIds: [cat3.id],
+          noDebug: true,
+        });
+        expect(countCat3).toBe(1);
+        expect(itemsCat3).toHaveLength(1);
+        expect(itemsCat3.map((t) => t.id)).toEqual([t4.id]);
+
+        // Test filtering by multiple categories (should return topics from both)
+        const { items: itemsMultiple, totalCount: countMultiple } = await getAvailableTopics({
+          categoryIds: [cat1.id, cat3.id],
+          noDebug: true,
+        });
+        expect(countMultiple).toBe(3);
+        expect(itemsMultiple).toHaveLength(3);
+        expect(itemsMultiple.map((t) => t.id).sort()).toEqual([t1.id, t2.id, t4.id].sort());
+      } finally {
+        await cleanupDb(createdIds);
+      }
+    });
+
+    it('should return no topics when filtering by non-existent categoryIds', async () => {
+      const dateTag = formatDateTag();
+      const createdIds: CreatedId[] = [];
+      try {
+        const user = await jestPrisma.user.create({
+          data: { email: `user-NONEXISTENT-CATEGORIES-${dateTag}@test.com` },
+        });
+        createdIds.push({ type: 'user', id: user.id });
+
+        // Create a topic
+        const topic = await jestPrisma.topic.create({
+          data: { name: 'Test Topic', isPublic: true, userId: user.id },
+        });
+        createdIds.push({ type: 'topic', id: topic.id });
+
+        mockedGetCurrentUser.mockResolvedValue(undefined);
+
+        // Test filtering by non-existent category IDs
+        const { items, totalCount } = await getAvailableTopics({
+          categoryIds: ['non-existent-cat-id-1', 'non-existent-cat-id-2'],
+          noDebug: true,
+        });
+        expect(totalCount).toBe(0);
+        expect(items).toHaveLength(0);
+      } finally {
+        await cleanupDb(createdIds);
+      }
+    });
   });
 
   describe('orderBy', () => {

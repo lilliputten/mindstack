@@ -9,6 +9,9 @@ import { TAvailableTopic } from '@/features/topics/types';
 export const zTopicTopicIds = z.array(z.string()).optional();
 export type TTopicTopicIds = z.infer<typeof zTopicTopicIds>;
 
+export const zCategoryIds = z.array(z.string()).optional();
+export type TCategoryIds = z.infer<typeof zCategoryIds>;
+
 export const zTopicOrderBy = z
   .union([TopicOrderByWithRelationInputSchema.array(), TopicOrderByWithRelationInputSchema])
   .optional();
@@ -29,6 +32,8 @@ export const GetAvailableTopicsParamsSchema = TopicIncludeParamsSchema.extend({
   orderBy: zTopicOrderBy,
   /** Include only listed topic ids */
   topicIds: zTopicTopicIds, // z.array(z.string()).optional(),
+  /** Include only topics with these category IDs */
+  categoryIds: zCategoryIds,
   // Search parameters
   /** Search text in name, description, keywords */
   searchText: z.string().optional(),

@@ -25,6 +25,7 @@ export async function getAvailableTopics(
 ): Promise<TGetAvailableTopicsResults> {
   const {
     topicIds,
+    categoryIds,
     skip, // = 0,
     take, // = itemsLimit,
     adminMode,
@@ -109,6 +110,10 @@ export async function getAvailableTopics(
     if (topicIds) {
       // Limit the results by specified ids
       where.id = { in: topicIds };
+    }
+    // Filter by category IDs
+    if (categoryIds && categoryIds.length > 0) {
+      where.categories = { some: { id: { in: categoryIds } } };
     }
     // Search text in name, description, keywords
     if (searchText) {
