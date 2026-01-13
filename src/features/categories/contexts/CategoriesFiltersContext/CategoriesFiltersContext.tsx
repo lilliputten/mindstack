@@ -15,6 +15,7 @@ import {
   CategoriesFiltersProviderProps,
 } from './CategoriesFiltersContextDefinitions';
 import { filtersDataDefaults, filtersDataSchema, TFiltersData } from './CategoriesFiltersTypes';
+import { parseUrlFilters } from './helpers/parseUrlFilters';
 
 const CategoriesFiltersContext = React.createContext<CategoriesFiltersContextData | undefined>(
   undefined,
@@ -125,12 +126,23 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
   );
   memo.applyFiltersData = applyFiltersData;
 
+  // Helper function to parse URL query parameters using the zod schema
+  const parseUrlParams = React.useCallback((): Partial<TFiltersData> => {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+    const urlParams = parseUrlFilters(window.location.search);
+    return urlParams;
+  }, []);
+
   React.useEffect(() => {
     if (memo.inited || memo.initialzing || !isSettingsReady || !memo.defaultFiltersData) {
       return;
     }
     memo.initialzing = true;
     let filtersData: TFiltersData = memo.defaultFiltersData;
+
+    // Override with localStorage values if available
     if (typeof window !== 'undefined' && !memo.restored) {
       const jsonStr = window.localStorage.getItem(storeId);
       if (jsonStr) {
@@ -151,11 +163,21 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
       }
       memo.restored = true;
     }
+
+    // Finally, override with URL parameters if present
+    const urlParams = parseUrlParams();
+    if (Object.keys(urlParams).length > 0) {
+      filtersData = {
+        ...filtersData,
+        ...urlParams,
+      } satisfies TFiltersData;
+    }
+
     memo.applyFiltersData?.(filtersData);
     memo.inited = true;
     setIsInited(true);
     memo.initialzing = false;
-  }, [memo, isSettingsReady, settings, storeId]);
+  }, [memo, isSettingsReady, settings, storeId, parseUrlParams]);
 
   const handleApplyButton = React.useCallback(
     (filtersData: TFiltersData) => {

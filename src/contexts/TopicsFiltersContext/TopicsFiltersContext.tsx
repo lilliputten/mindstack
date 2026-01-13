@@ -10,6 +10,7 @@ import { deepCompare, getErrorText } from '@/lib/helpers';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
 
+import { parseUrlFilters } from './helpers/parseUrlFilters';
 import {
   TopicsFiltersContextData,
   TopicsFiltersProviderProps,
@@ -125,12 +126,26 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
   );
   memo.applyFiltersData = applyFiltersData;
 
+  // Helper function to parse URL query parameters using the zod schema
+  const parseUrlParams = React.useCallback((): Partial<TFiltersData> => {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+    const urlParams = parseUrlFilters(window.location.search);
+    return urlParams;
+  }, []);
+
+  // Initializing
   React.useEffect(() => {
     if (memo.inited || memo.initialzing || !isSettingsReady || !memo.defaultFiltersData) {
       return;
     }
     memo.initialzing = true;
+
+    // Start with default filters
     let filtersData: TFiltersData = memo.defaultFiltersData;
+
+    // Override with localStorage values if available
     if (typeof window !== 'undefined' && !memo.restored) {
       const jsonStr = window.localStorage.getItem(storeId);
       if (jsonStr) {
@@ -151,11 +166,21 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
       }
       memo.restored = true;
     }
+
+    // Finally, override with URL parameters if present
+    const urlParams = parseUrlParams();
+    if (Object.keys(urlParams).length > 0) {
+      filtersData = {
+        ...filtersData,
+        ...urlParams,
+      } satisfies TFiltersData;
+    }
+
     memo.applyFiltersData?.(filtersData);
     memo.inited = true;
     setIsInited(true);
     memo.initialzing = false;
-  }, [memo, isSettingsReady, settings, storeId]);
+  }, [memo, isSettingsReady, settings, storeId, parseUrlParams]);
 
   const handleApplyButton = React.useCallback(
     (filtersData: TFiltersData) => {

@@ -18,6 +18,77 @@ if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = TextEncoder as typeof window.TextEncoder;
 }
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: { [key: string]: string } = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+    get length() {
+      return Object.keys(store).length;
+    },
+    key: (index: number) => {
+      const keys = Object.keys(store);
+      return index < keys.length ? keys[index] : null;
+    },
+  };
+})();
+
+Object.defineProperty(global, 'localStorage', {
+  value: localStorageMock,
+  writable: true,
+});
+
+// Mock sessionStorage
+const sessionStorageMock = (() => {
+  let store: { [key: string]: string } = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+    get length() {
+      return Object.keys(store).length;
+    },
+    key: (index: number) => {
+      const keys = Object.keys(store);
+      return index < keys.length ? keys[index] : null;
+    },
+  };
+})();
+
+Object.defineProperty(global, 'sessionStorage', {
+  value: sessionStorageMock,
+  writable: true,
+});
+
+// Mock location for window if it doesn't exist
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'location', {
+    value: {
+      search: '',
+      href: 'http://localhost:3000/',
+    },
+    writable: true,
+  });
+}
+
 // Mocks...
 
 jest.mock('@/jest/test/bare', () => ({
@@ -69,7 +140,7 @@ jest.mock('@/config/envServer', () => ({
   GOOGLE_CLIENT_ID: 'test_google_id',
   GOOGLE_CLIENT_SECRET: 'test_google_secret',
   YANDEX_CLIENT_ID: 'test_yandex_id',
-  YANDEX_CLIENT_SECRET: 'test_yandex_secret',
+  YANDEX_CLIENT_SECRET: 'test_google_secret',
   EMAIL_FROM_NAME: 'Test Sender',
   EMAIL_FROM: 'test@example.com',
   EMAIL_HOST: 'smtp.example.com',
