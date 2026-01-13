@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import Image from 'next/image';
 import { useFormatter, useLocale } from 'next-intl';
 
@@ -92,131 +92,99 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
   const allKeywords = getAllCategoryKeywords(category);
 
   const topicsCount = category._count?.topics || 0;
-  console.log('XXX', {
-    topicsCount,
-    category,
-  });
 
   return (
     <div
       className={cn(
-        isDev && '__ViewCategoryContentDetails', // DEBUG
-        'flex w-full flex-col gap-4 p-6',
+        isDev && '__ViewCategoryContentSummary', // DEBUG
+        'm-6 flex w-full flex-col gap-4',
         className,
       )}
     >
-      {/* Basic Info Section */}
-      <div className="mb-6">
-        <h2 className="truncate text-lg font-semibold">
-          {t('ViewCategoryContentSummary.BasicInfo')}
-        </h2>
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* // DEBUG?
-          <div className="flex flex-col gap-2">
-            <h3 className="truncate text-sm font-medium opacity-50">
-              {t('ViewCategoryContentSummary.Id')}
-            </h3>
-            <p className="text-truncate">{category.id}</p>
-          </div>
-          */}
-
-          <div className="flex flex-col gap-2">
-            <h3 className="truncate text-sm font-medium opacity-50">
-              {t('ViewCategoryContentSummary.Name')}
-            </h3>
-            <p className="text-truncate">{categoryName}</p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="truncate text-sm font-medium opacity-50">
-              {t('ViewCategoryContentSummary.Status')}
-            </h3>
-            <div className="pt-1">
-              <Badge variant={getStatusBadgeVariant(category.status)}>{t(category.status)}</Badge>
-            </div>
-          </div>
-
-          {/*!!topicsCount && (
-            <div className="flex flex-col gap-2">
-              <h3 className="truncate text-sm font-medium opacity-50">
-                {t('ViewCategoryContentSummary.TopicsCount')}
-              </h3>
-              <p className="text-truncate">{topicsCount}</p>
-            </div>
-          )*/}
-        </div>
-      </div>
+      {/* Title */}
+      <h2 className="text-truncate mb-2 text-2xl">{categoryName}</h2>
 
       {/* Description Section */}
       {categoryDescription && (
         <div data-testid="__ViewCategoryContentSummary_Description" className="flex flex-col gap-4">
-          <h2 className="truncate text-lg font-semibold">
-            {t('ViewCategoryContentSummary.Description')}
-          </h2>
-          {categoryDescription ? (
-            <div className="rounded-lg bg-slate-500/10 p-4">
-              <MarkdownText>{categoryDescription}</MarkdownText>
-            </div>
-          ) : (
-            <p className="text-truncate opacity-50">
-              {t('ViewCategoryContentSummary.NoDescription')}
-            </p>
-          )}
+          <h3 className="text-lg font-semibold">{t('Description')}</h3>
+          <div className="rounded-lg bg-slate-500/10 p-4">
+            <MarkdownText>{categoryDescription}</MarkdownText>
+          </div>
         </div>
       )}
 
-      {/* Topic Questions */}
-      {!!topicsCount && (
+      {/* Category Topics */}
+      <div
+        data-testid="__ViewCategoryContentSummary_Section_Topics"
+        className="flex flex-col gap-4"
+      >
+        <h3 className="text-lg font-semibold">{t('Topics')}</h3>
+        <div className="flex flex-wrap gap-4">
+          {!!topicsCount && (
+            <span className="flex items-center gap-2">
+              <Icons.AllTopics className="size-4 opacity-50" />
+              <span>
+                {t('TopicsCount')}: {topicsCount}
+              </span>
+            </span>
+          )}
+          <Button variant="theme" size="sm">
+            <Link
+              href={`${allTopicsRoute}/?categoryIds=${category.id}` as TRoutePath}
+              className="flex items-center gap-2"
+            >
+              <Icons.Edit className="size-4 opacity-50" />
+              <span>{t('ManageTopics')}</span>
+            </Link>
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Category Properties */}
         <div
-          data-testid="__ViewCategoryContentSummary_Section_Topics"
+          data-testid="__ViewCategoryContentSummary_Section_Properties"
           className="flex flex-col gap-4"
         >
-          <h2 className="truncate text-lg font-semibold">{t('Topics')}</h2>
-          <div className="flex flex-wrap gap-4">
-            {!!topicsCount && (
-              <span className="flex items-center gap-2">
-                <Icons.AllTopics className="size-4 opacity-50" />
-                <span>
-                  {t('ViewCategoryContentSummary.TopicsCount')}: {topicsCount}
-                </span>
-              </span>
-            )}
-            <Button variant="theme">
-              <Link
-                href={`${allTopicsRoute}/?categoryIds=${category.id}` as TRoutePath}
-                className="flex items-center gap-2"
-              >
-                <Icons.Edit className="size-4 opacity-50" />
-                <span>{t('ViewTopicContentSummary.ManageTopics')}</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Keywords Section */}
-      {allKeywords.length > 0 && (
-        <div className="mb-6">
-          <h2 className="truncate text-lg font-semibold">
-            {t('ViewCategoryContentSummary.Keywords')}
-          </h2>
+          <h3 className="text-lg font-semibold">{t('Properties')}</h3>
           <div className="flex flex-wrap gap-2">
-            {allKeywords.map((keyword, idx) => (
-              <Badge key={idx} variant="secondary">
-                {keyword.trim()}
-              </Badge>
-            ))}
+            <Badge
+              variant={getStatusBadgeVariant(category.status)}
+              className="flex gap-2 px-2 py-1"
+              title={t('Status')}
+            >
+              <Icons.Tags className="size-4 opacity-50" />
+              {t(category.status)}
+            </Badge>
           </div>
         </div>
-      )}
+
+        {/* Keywords */}
+        {!!allKeywords.length && (
+          <div
+            data-testid="__ViewCategoryContentSummary_Section_Keywords"
+            className="flex flex-col gap-4"
+          >
+            <h3 className="text-lg font-semibold">{t('Keywords')}</h3>
+            <div className="flex flex-wrap gap-1">
+              {allKeywords.map((keyword, idx) => (
+                <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
+                  {keyword.trim()}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Image Section */}
       {category.imageUrl && (
-        <div className="mb-6">
-          <h2 className="truncate text-lg font-semibold">
-            {t('ViewCategoryContentSummary.Image')}
-          </h2>
+        <div
+          data-testid="__ViewCategoryContentSummary_Section_Image"
+          className="flex flex-col gap-4"
+        >
+          <h3 className="text-lg font-semibold">{t('Image')}</h3>
           <div
             className={cn(
               isDev && '__ViewCategoryContentSummary_ImageWrapper', // DEBUG
@@ -236,29 +204,32 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
         </div>
       )}
 
+      <Separator />
+
       {/* Creator/Updater Info */}
-      <Separator className="my-6" />
-      <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <h3 className="truncate font-medium opacity-50">
-            {t('ViewCategoryContentSummary.Created')}
-          </h3>
-          <div className="flex flex-wrap items-center gap-2">
-            <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
-            <div className="text-truncate opacity-50">
-              {getFormattedRelativeDate(format, category.createdAt)}
+      <div
+        data-testid="__ViewCategoryContentSummary_Section_CreatorUpdater"
+        className="flex flex-col gap-4"
+      >
+        <h3 className="text-lg font-semibold">{t('Timeline')}</h3>
+        <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
+          <div className="flex flex-col gap-2">
+            <h4 className="truncate font-medium opacity-50">{t('Created')}</h4>
+            <div className="flex flex-wrap items-center gap-2">
+              <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
+              <div className="text-truncate opacity-50">
+                {getFormattedRelativeDate(format, category.createdAt)}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-2">
-          <h3 className="truncate font-medium opacity-50">
-            {t('ViewCategoryContentSummary.Updated')}
-          </h3>
-          <div className="flex flex-wrap items-center gap-2">
-            <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
-            <div className="text-truncate opacity-50">
-              {getFormattedRelativeDate(format, category.updatedAt)}
+          <div className="flex flex-col gap-2">
+            <h4 className="truncate font-medium opacity-50">{t('Modified')}</h4>
+            <div className="flex flex-wrap items-center gap-2">
+              <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
+              <div className="text-truncate opacity-50">
+                {getFormattedRelativeDate(format, category.updatedAt)}
+              </div>
             </div>
           </div>
         </div>

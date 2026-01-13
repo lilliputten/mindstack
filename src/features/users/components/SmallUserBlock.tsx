@@ -49,7 +49,6 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
               sizeClass,
               'relative shrink-0 rounded-full bg-theme-700/25',
             )}
-            {...props}
           >
             {true && user.image ? (
               <AvatarImage
