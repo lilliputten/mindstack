@@ -7,15 +7,19 @@ import { isDev } from '@/config';
 
 import { TUser } from '../types';
 
+type TUserSubset = Pick<TUser, 'id' | 'name' | 'image'>;
+
 interface TSmallUserBlockProps {
   className?: string;
   isLoading?: boolean;
-  user?: TUser;
+  user?: TUserSubset;
+  tiny?: boolean;
 }
 
 export function SmallUserBlock(props: TSmallUserBlockProps) {
-  const { className, isLoading, user } = props;
+  const { className, isLoading, user, tiny } = props;
   const t = useT();
+  const sizeClass = tiny ? 'size-4' : 'size-5';
   return (
     <div
       className={cn(
@@ -25,7 +29,12 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
       )}
     >
       {isLoading ? (
-        <Skeleton className="h-8 w-24" />
+        <>
+          <div className={cn(sizeClass, 'size-5 shrink-0 overflow-hidden rounded-full')}>
+            <Skeleton className={cn(sizeClass, 'size-5 rounded-full')} />
+          </div>
+          <Skeleton className="h-4 w-12" />
+        </>
       ) : !user ? (
         <div className="opacity-30">—</div>
       ) : (
@@ -34,8 +43,8 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
             data-testid="__SmallUserBlock_Avatar"
             className={cn(
               isDev && '__SmallUserBlock_Avatar', // DEBUG
-              'relative size-6 rounded-full bg-theme-700/25',
-              // isAdmin && 'border-2 border-solid border-red-400', // Indicate admin role with a border
+              sizeClass,
+              'relative shrink-0 rounded-full bg-theme-700/25',
             )}
             {...props}
           >
@@ -48,7 +57,7 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
             ) : (
               <AvatarFallback>
                 <span className="sr-only">{user.name}</span>
-                <Icons.User className="size-4" />
+                <Icons.User className="size-4 opacity-50" />
               </AvatarFallback>
             )}
           </Avatar>

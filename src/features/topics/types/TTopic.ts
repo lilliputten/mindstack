@@ -43,11 +43,12 @@ export const IncludedUserSelect = {
   id: true as const, // z.string().cuid(),
   name: true as const, // z.string().nullable(),
   email: true as const, // z.string().nullable(),
+  image: true as const, // z.string().nullable(),
+  role: true as const,
+  grade: true as const,
   // emailVerified: true as const, // z.coerce.date().nullable(),
-  // image: true as const, // z.string().nullable(),
   // createdAt: true as const, // z.coerce.date(),
   // updatedAt: true as const, // z.coerce.date(),
-  // role: true as const, // z.string(),
 };
 const _IncludedUserSchema = UserSchema.pick(IncludedUserSelect);
 export type TIncludedUser = z.infer<typeof _IncludedUserSchema>;

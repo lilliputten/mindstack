@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Switch } from '@/components/ui/Switch';
 import {
   Table,
@@ -33,10 +32,12 @@ import { rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
+import { PlainCategoriesListByCategoryIds } from '@/features/categories';
 import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
-import { TTopic, TTopicId } from '@/features/topics/types';
+import { TAvailableTopic, TTopicId } from '@/features/topics/types';
+import { SmallUserBlock } from '@/features/users';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -58,7 +59,7 @@ interface TTopicsTableContentProps extends TManageTopicsListCardProps {
   setSelectedTopics: React.Dispatch<React.SetStateAction<Set<TTopicId>>>;
 }
 
-type TMemo = { allTopics: TTopic[] };
+type TMemo = { allTopics: TAvailableTopic[] };
 
 const useDarkHeader = true;
 
@@ -70,7 +71,7 @@ function TopicsTableHeader({
 }: {
   isAdminMode: boolean;
   selectedTopics: Set<TTopicId>;
-  allTopics: TTopic[];
+  allTopics: TAvailableTopic[];
   toggleAll: () => void;
 }) {
   const t = useT();
@@ -116,8 +117,11 @@ function TopicsTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead id="no" className="truncate text-right max-lg:hidden">
-          {t('ManageTopicsListCard.No')}
+        <TableHead
+          id="no"
+          className={cn('truncate text-right max-lg:hidden', isDev && 'debug-border')}
+        >
+          {t('NN')}
         </TableHead>
         {isDev && (
           <TableHead id="topicId" className="truncate max-xl:hidden">
@@ -126,6 +130,9 @@ function TopicsTableHeader({
         )}
         <TableHead id="name" className="truncate">
           {t('ManageTopicsListCard.TopicName')}
+        </TableHead>
+        <TableHead id="categories" className="truncate max-lg:hidden">
+          {t('ManageTopicsListCard.Categories')}
         </TableHead>
         <TableHead id="questions" className="truncate max-lg:hidden">
           {t('ManageTopicsListCard.Questions')}
@@ -151,7 +158,7 @@ function TopicsTableHeader({
 }
 
 interface TTopicsTableRowProps {
-  topic: TTopic;
+  topic: TAvailableTopic;
   idx: number;
   handleDeleteTopic: TManageTopicsListCardProps['handleDeleteTopic'];
   handleEditTopic: TManageTopicsListCardProps['handleEditTopic'];
@@ -176,15 +183,41 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
     toggleSelected,
     availableTopicsQuery,
   } = props;
-  const { id, name, langCode, langName, keywords, userId, _count, isPublic } = topic;
+  const { id, name, langCode, langName, keywords, userId, _count, isPublic, categories } = topic;
   const t = useT();
 
   const [isPending, startTransition] = React.useTransition();
   const queryClient = useQueryClient();
 
   const updateAndInvalidateTopic = React.useCallback(
-    async (updatedTopic: TTopic) => {
-      await updateTopic(updatedTopic);
+    async (updatedTopic: TAvailableTopic) => {
+      // Extract only the fields needed for updateTopic
+      const {
+        id,
+        name,
+        description,
+        isPublic,
+        keywords,
+        langCode,
+        langName,
+        langCustom,
+        answersCountRandom,
+        answersCountMin,
+        answersCountMax,
+      } = updatedTopic;
+      await updateTopic({
+        id,
+        name,
+        description,
+        isPublic,
+        keywords,
+        langCode,
+        langName,
+        langCustom,
+        answersCountRandom,
+        answersCountMin,
+        answersCountMax,
+      });
       availableTopicsQuery.updateTopic(updatedTopic);
       const invalidatePrefixes = [['available-topic', topic.id], ['available-topics']].map(
         makeQueryKeyPrefix,
@@ -207,17 +240,21 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           console.error('[TopicsTableRow:handleTogglePublic]', message, {
             details,
             error,
-            topicId: topic.id,
+            topicId: id,
           });
           debugger; // eslint-disable-line no-debugger
           toast.error(message);
         }
       });
     },
-    [t, topic, updateAndInvalidateTopic],
+    [topic, updateAndInvalidateTopic, t, id],
   );
+
   const questionsCount = _count?.questions;
   const topicUser = isAdminMode ? cachedUsers[userId] : undefined;
+
+  const categoryIds = categories?.map(({ id }) => id);
+
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
   return (
@@ -265,6 +302,9 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           {truncateString(name, 40)}
         </Link>
       </TableCell>
+      <TableCell id="categories" className="max-w-[8em] truncate max-lg:hidden">
+        <PlainCategoriesListByCategoryIds categoryIds={categoryIds} />
+      </TableCell>
       <TableCell id="questions" className="max-w-[8em] truncate max-lg:hidden">
         <div className="truncate">
           {questionsCount ? (
@@ -276,13 +316,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       </TableCell>
       {isAdminMode && (
         <TableCell id="topicUser" className="max-w-[8em] truncate max-lg:hidden">
-          {topicUser ? (
-            <div className="truncate" title={topicUser?.name || undefined}>
-              {topicUser?.name}
-            </div>
-          ) : (
-            <Skeleton className="h-[2em] w-full rounded-sm" />
-          )}
+          <SmallUserBlock isLoading={!topicUser} user={topicUser} />
         </TableCell>
       )}
       <TableCell id="language" className="max-w-[8em] truncate max-xl:hidden">
