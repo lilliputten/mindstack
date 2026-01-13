@@ -136,7 +136,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                 <form
                   onSubmit={form.handleSubmit(handleApplyButton)}
                   className={cn(
-                    isDev && '__AvailableCategoriesFilters', // DEBUG
+                    isDev && '__AvailableCategoriesFilters_Form', // DEBUG
                     'flex flex-col gap-4',
                     className,
                   )}
