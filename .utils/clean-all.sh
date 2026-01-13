@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Clean all temp files
-# @changed 2026.01.10, 15:17
+# @changed 2026.01.13, 18:45
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -16,6 +16,7 @@ $RMCMD -Rf \
   .next \
   .swc \
   node_modules/.cache \
+  *.tsbuildinfo \
   local.log* \
   *.log \
   log-* \
