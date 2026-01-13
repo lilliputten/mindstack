@@ -13,6 +13,7 @@ import {
   getFiltersDataValueString,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
+import { useCategoryNames } from '@/features/categories';
 
 interface TProps extends TPropsWithClassName {
   filtersData?: TFiltersData;
@@ -24,13 +25,21 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
   // See texts aimed to be translated in the `src/contexts/TopicsFiltersContext/TopicsFiltersTexts.ts`
   const tTexts = useT('AvailableTopicsFilterTexts');
   const activeFilterIds = getActiveFilterIds(filtersData);
+  const { categoryNames, isLoading: isCategoryNamesLoading } = useCategoryNames();
+  const convertedData = filtersData && {
+    ...filtersData,
+    categoryNames: isCategoryNamesLoading
+      ? '...'
+      : filtersData?.categoryIds?.map((id) => categoryNames?.[id] || '...'),
+  };
   const renderItems = activeFilterIds
     .map((id) => {
       const { showOnlyValue, value } = getFiltersDataValueString(id, {
-        filtersData,
+        filtersData: convertedData,
         specific: true,
         t: tTexts,
       });
+      const content = truncateString(value, maxValueLength);
       return (
         <span
           key={id}
@@ -46,11 +55,9 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
           )}
         >
           {!showOnlyValue && (
-            <>
-              <span className="opacity-50">{getFilterFieldName(id, tTexts)}:</span>{' '}
-            </>
+            <span className="mr-1 inline-block opacity-50">{getFilterFieldName(id, tTexts)}:</span>
           )}
-          <span className="">{truncateString(value, maxValueLength)}</span>{' '}
+          <span>{content}</span>{' '}
         </span>
       );
     })

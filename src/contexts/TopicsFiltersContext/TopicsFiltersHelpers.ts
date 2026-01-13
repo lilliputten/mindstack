@@ -36,7 +36,7 @@ export function getFilterFieldName(id: TFiltersDataKey, t?: TTranslator) {
 }
 
 interface TFiltersDataValueStringOptions {
-  filtersData?: TFiltersData;
+  filtersData?: TFiltersData & { categoryNames?: string | string[] };
   specific?: boolean;
   t?: TTranslator;
 }
@@ -93,7 +93,9 @@ export function getFiltersDataValueString(
   opts: TFiltersDataValueStringOptions,
 ) {
   const { filtersData } = opts;
-  const value = filtersData?.[fieldId];
+  const id =
+    fieldId === 'categoryIds' && filtersData?.['categoryNames'] ? 'categoryNames' : fieldId;
+  const value = filtersData?.[id];
   return getFiltersDataRawValueString(fieldId, value, opts);
 }
 
