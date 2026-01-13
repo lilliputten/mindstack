@@ -26,8 +26,10 @@ export const orderBySelectOptions = [
   // Sort options
   'byRecent',
   'byOldest',
-  'byNameAsc',
-  'byNameDesc',
+  /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
+   * 'byNameAsc',
+   * 'byNameDesc',
+   */
 ] as const;
 export const orderBySelectDefault = orderBySelectOptions[0];
 export type TOrderBySelectOption = (typeof orderBySelectOptions)[number];
@@ -69,14 +71,26 @@ export const filtersDataDefaults: TFiltersData = {
    */
 };
 
-// Note: Categories don't have a direct name field, they have translations
-// For name-based sorting, we'll use updatedAt/createdAt as fallback
-// In the future, this could be enhanced to sort by translation name
+/*
+ * // Note: Categories don't have a direct name field, they have translations
+ * // For name-based sorting, we need to handle this at the service level using custom logic
+ * // Prisma doesn't directly support sorting by related record fields in the way needed
+ * // The actual sorting by translation name will be implemented in the service/fetching layer
+ * const translations: Prisma.CategoryTranslationOrderByRelationAggregateInput = {};
+ * const sortByTranslationName: Prisma.CategoryOrderByWithRelationInput = {
+ *   createdAt: 'desc',
+ *   translations,
+ * };
+ */
+
 export const orderByMap: Record<TOrderBySelectOption, TCategoryOrderBy> = {
-  byRecent: { updatedAt: 'desc' },
+  byRecent: { createdAt: 'desc' },
   byOldest: { createdAt: 'asc' },
-  byNameAsc: { updatedAt: 'desc' }, // TODO: Sort by translation name when supported
-  byNameDesc: { updatedAt: 'asc' }, // TODO: Sort by translation name when supported
+  /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
+   * // Placeholder for name-based sorting - actual implementation will be at service level
+   * byNameAsc: { [> translations: { ... }, <] createdAt: 'desc' },
+   * byNameDesc: { [> translations: { ... }, <] createdAt: 'desc' },
+   */
 };
 
 /** Don't omit field label for short info (in the `AvailableCategoriesFiltersInfo`) */

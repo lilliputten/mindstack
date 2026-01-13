@@ -25,8 +25,10 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
   orderBySelect: {
     byRecent: 'OrderBy-Recent',
     byOldest: 'OrderBy-Oldest',
-    byNameAsc: 'OrderBy-Name',
-    byNameDesc: 'OrderBy-NameDescending',
+    /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
+     * byNameAsc: 'OrderBy-Name',
+     * byNameDesc: 'OrderBy-NameDescending',
+     */
   } satisfies Record<TOrderBySelectOption, string>,
 };
 
@@ -37,7 +39,7 @@ export const filterFieldNames: Record<TFiltersDataKey, string> = {
   hasImage: 'Label-HasImage',
   hasTopics: 'Label-HasTopics',
   orderBySelect: 'Label-OrderBy',
-  /* // NOTE: Date filtering is not used yet
+  /* // NOTE: Date-based filtering is not used yet
    * minCreatedAt: 'Label-MinCreatedAt',
    * maxCreatedAt: 'Label-MaxCreatedAt',
    * minUpdatedAt: 'Label-MinUpdatedAt',
