@@ -19,7 +19,8 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { Close } from '@/components/shared/Icons';
+import { CategorySelectField } from '@/components/shared/CategorySelect';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
   getFilterFieldName,
@@ -34,8 +35,6 @@ interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
   ignoreOnlyMy?: boolean;
 }
-
-// TODO: Add 'category' field
 
 function FormSection({ children }: TPropsWithChildren) {
   return (
@@ -64,6 +63,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
   const hasQuestionsKey = React.useId();
   const showOnlyMyTopicsKey = React.useId();
   const orderBySelectKey = React.useId();
+  // const categoryKey = React.useId();
 
   // const trueText = getFilterUnionString('true', t);
   // const falseText = getFilterUnionString('false', t);
@@ -107,7 +107,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                       )}
                       title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
-                      <Close className="size-4" />
+                      <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -146,7 +146,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                       )}
                       title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
-                      <Close className="size-4" />
+                      <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -220,6 +220,16 @@ export function AvailableTopicsFiltersFields(props: TProps) {
         />
       </FormSection>
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          form={form}
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={getFilterFieldName('categoryIds', tTexts)}
+          hint={t('AvailableTopicsFiltersFields.CategoriesHint')}
+          placeholder={t('AvailableTopicsFiltersFields.SelectCategories')}
+        />
         <FormField
           name="hasWorkoutStats"
           control={form.control}
