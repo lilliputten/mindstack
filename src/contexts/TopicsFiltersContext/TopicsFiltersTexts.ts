@@ -39,5 +39,6 @@ export const filterFieldNames: Record<TFiltersDataKey, string> = {
   hasWorkoutStats: 'Label-HasWorkoutStats',
   hasActiveWorkouts: 'Label-HasActiveWorkouts',
   hasQuestions: 'Label-HasQuestions',
+  categoryIds: 'Label-CategoryIds',
   orderBySelect: 'Label-OrderBy',
 };

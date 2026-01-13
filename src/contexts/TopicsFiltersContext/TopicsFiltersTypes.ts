@@ -12,6 +12,7 @@ export const AvailableTopicsFiltersSchema = GetAvailableTopicsParamsSchema.pick(
   hasActiveWorkouts: true as const,
   hasQuestions: true as const,
   searchLang: true as const,
+  categoryIds: true as const, // Adding categoryIds filter
 });
 export type TAvailableTopicsFiltersParams = z.infer<typeof AvailableTopicsFiltersSchema>;
 
@@ -36,6 +37,7 @@ export const filtersDataSchema = z.object({
   hasWorkoutStats: threeStateSchema,
   hasActiveWorkouts: threeStateSchema,
   hasQuestions: threeStateSchema,
+  categoryIds: GetAvailableTopicsParamsSchema.shape.categoryIds, // Adding categoryIds to filters
   orderBySelect: orderBySelectSchema.optional(),
 });
 
@@ -49,6 +51,7 @@ export const filtersDataDefaults: TFiltersData = {
   hasWorkoutStats: null,
   hasActiveWorkouts: null,
   hasQuestions: null,
+  categoryIds: undefined, // Adding categoryIds to defaults
   orderBySelect: orderBySelectDefault,
 };
 

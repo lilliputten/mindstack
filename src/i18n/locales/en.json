@@ -217,6 +217,7 @@
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Ignore",
+    "Label-CategoryIds": "Categories",
     "Label-HasActiveWorkouts": "Active Workouts",
     "Label-HasQuestions": "Questions",
     "Label-HasWorkoutStats": "Statistics",

@@ -217,6 +217,7 @@
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Игнорировать",
+    "Label-CategoryIds": "Категории",
     "Label-HasActiveWorkouts": "Активные тренировки",
     "Label-HasQuestions": "Вопросы",
     "Label-HasWorkoutStats": "Статистика",
@@ -899,7 +900,7 @@
         "Description": "Для серьёзных учеников",
         "Name": "Про",
         "Features": {
-          "Ai": "Генерация вопросов с помощью ИИ",
+          "Ai": "Генерация вопросов с помо��ью ИИ",
           "Analytics": "Подробная аналитика",
           "Generations": "100 ИИ генераций в месяц",
           "Support": "Приоритетная поддержка",

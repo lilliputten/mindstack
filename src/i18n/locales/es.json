@@ -218,6 +218,7 @@
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Ignorar",
+    "Label-CategoryIds": "Categorías",
     "Label-HasActiveWorkouts": "Entrenamientos Activos",
     "Label-HasQuestions": "Preguntas",
     "Label-HasWorkoutStats": "Estadísticas",
