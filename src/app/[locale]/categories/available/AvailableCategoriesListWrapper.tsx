@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'next-auth/react';
 
 import { cn } from '@/lib/utils';
 import { PageError } from '@/components/shared/PageError';

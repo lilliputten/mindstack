@@ -102,6 +102,8 @@ const allRoutes = [
   legalTermsRoute,
 
   // 3. Open routes (availale for guests)
+  rootCategoriesRoute,
+  availableCategoriesRoute,
   availableTopicsRoute,
   settingsRoute,
 

@@ -14,9 +14,7 @@ import {
   TRoutePath,
 } from '@/config';
 import { isDev } from '@/constants';
-import { CategoryHeader } from '@/features/categories/components/CategoryHeader';
-import { CategoryProperties } from '@/features/categories/components/CategoryProperties';
-import { TAvailableCategory } from '@/features/categories/types';
+import { CategoryHeader, CategoryProperties, TAvailableCategory } from '@/features/categories';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
 
 // TODO: Use 'next/navigation'
@@ -96,12 +94,14 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
         className={cn(
           isDev && '__AvailableCategoriesList_CategoryItem_CardContent_Properties', // DEBUG
           'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-center',
+          'text-truncate',
         )}
       >
         <div
           className={cn(
             isDev && '__AvailableCategoriesList_CategoryItem__CategoryProperties', // DEBUG
             'flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
+            'text-truncate',
           )}
         >
           <CategoryProperties category={category} showDates />

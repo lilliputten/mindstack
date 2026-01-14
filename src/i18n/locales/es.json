@@ -162,6 +162,9 @@
   "AppIntro": {
     "BlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>"
   },
+  "AvailableCategories": {
+    "ManageCategory": "Administrar categoría"
+  },
   "AvailableCategoriesFilterTexts": {
     "Ignore": "Ignorar",
     "Label-HasImage": "Tiene Imagens",
@@ -761,6 +764,7 @@
     "Administration": "Administración",
     "AllTopics": "Todos los Temas",
     "Application": "Aplicación",
+    "AvailableCategories": "Categorías",
     "AvailableTopics": "Temas Disponibles",
     "BotControl": "Control del Bot",
     "Charts": "Gráficos",

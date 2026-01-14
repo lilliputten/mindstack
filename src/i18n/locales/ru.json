@@ -161,6 +161,9 @@
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
     "title": "Добро пожаловать!"
   },
+  "AvailableCategories": {
+    "ManageCategory": "Управление категорией"
+  },
   "AvailableCategoriesFilterTexts": {
     "Ignore": "Игнорировать",
     "Label-HasImage": "Есть изображения",
@@ -760,6 +763,7 @@
     "Administration": "Администрирование",
     "AllTopics": "Все темы",
     "Application": "Приложение",
+    "AvailableCategories": "Категории",
     "AvailableTopics": "Доступные темы",
     "BotControl": "Управление ботом",
     "Charts": "Графики",

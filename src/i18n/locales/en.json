@@ -161,6 +161,9 @@
   "AppIntro": {
     "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
   },
+  "AvailableCategories": {
+    "ManageCategory": "Manage Category"
+  },
   "AvailableCategoriesFilterTexts": {
     "Ignore": "Ignore",
     "Label-HasImage": "Has Images",
@@ -762,6 +765,7 @@
     "Administration": "Administration",
     "AllTopics": "All Topics",
     "Application": "Application",
+    "AvailableCategories": "Categories",
     "AvailableTopics": "Available Topics",
     "BotControl": "Bot Control",
     "Charts": "Charts",

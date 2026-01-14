@@ -367,6 +367,7 @@
     ol {
       margin-top: 0.25em;
       margin-bottom: 0.25em;
+      @apply text-truncate;
     }
     h1,
     h2,
