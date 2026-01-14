@@ -29,6 +29,7 @@ import {
   orderBySelectDefault,
   orderBySelectOptions,
   TFiltersData,
+  useCategoriesFiltersContext,
 } from '@/features/categories/contexts/CategoriesFiltersContext';
 
 interface TProps extends TPropsWithClassName {
@@ -50,6 +51,8 @@ function FormSection({ children }: TPropsWithChildren) {
 
 export function AvailableCategoriesFiltersFields(props: TProps) {
   const { className, form } = props;
+  const { onlyPublic } = useCategoriesFiltersContext(); // Get the onlyPublic flag from context
+
   // See texts aimed to be translated in the `src/features/categories/contexts/CategoriesFiltersContext/CategoriesFiltersTexts.ts`
   const tTexts = useT('AvailableCategoriesFilterTexts');
   const t = useT();
@@ -161,45 +164,48 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
-        <FormField
-          name="status"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label className="truncate" htmlFor={statusKey}>
-                {getFilterFieldName('status', tTexts)}
-              </Label>
-              <FormControl>
-                <Select
-                  value={field.value || 'all'}
-                  onValueChange={(value) => {
-                    field.onChange(value === 'all' ? undefined : value);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={t('AvailableCategoriesFiltersFields.SelectStatusPlaceholder')}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">
-                      {t('AvailableCategoriesFiltersFields.AllStatuses')}
-                    </SelectItem>
-                    {statusOptions.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {getFiltersLabelValueString('status', status, tTexts)}
+        {/* Conditionally render the status field based on onlyPublic */}
+        {!onlyPublic && (
+          <FormField
+            name="status"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
+                <Label className="truncate" htmlFor={statusKey}>
+                  {getFilterFieldName('status', tTexts)}
+                </Label>
+                <FormControl>
+                  <Select
+                    value={field.value || 'all'}
+                    onValueChange={(value) => {
+                      field.onChange(value === 'all' ? undefined : value);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={t('AvailableCategoriesFiltersFields.SelectStatusPlaceholder')}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">
+                        {t('AvailableCategoriesFiltersFields.AllStatuses')}
                       </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormHint className="text-truncate">
-                {t('AvailableCategoriesFiltersFields.SelectStatusHint')}
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                      {statusOptions.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {getFiltersLabelValueString('status', status, tTexts)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormHint className="text-truncate">
+                  {t('AvailableCategoriesFiltersFields.SelectStatusHint')}
+                </FormHint>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           name="orderBySelect"
           control={form.control}

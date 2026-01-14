@@ -32,8 +32,11 @@ interface TMemo {
 export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const { showAddModal, deleteCategoryId, editCategoryId, editTopicsCategoryId, from } = props;
-  const routePath = manageCategoriesRoute; // `/categories/${manageScope}`;
+  const routePath = manageCategoriesRoute; // `/categories/manage`;
   memo.routePath = routePath;
+
+  /** Use only public categories */
+  const onlyPublic = false;
 
   // TODO: Filters
   const [filtersParams, setFiltersParams] = React.useState<
@@ -43,6 +46,8 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   const availableCategoriesQuery = useAvailableCategories({
     // TODO: Filters
     enabled: !!filtersParams,
+    // Use only public categories
+    status: onlyPublic ? 'PUBLIC' : undefined,
     ...filtersParams,
   });
   const {
@@ -128,7 +133,12 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
 
   return (
     <>
-      <CategoriesFiltersProvider storeId={`manage-categories-filters`} applyFilters={applyFilters}>
+      <CategoriesFiltersProvider
+        storeId={`manage-categories-filters`}
+        applyFilters={applyFilters}
+        // Use only public categories
+        onlyPublic={onlyPublic}
+      >
         {filtersParams ? (
           <ManageCategoriesList availableCategoriesQuery={availableCategoriesQuery} />
         ) : (

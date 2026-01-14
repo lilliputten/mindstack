@@ -30,6 +30,10 @@ export interface CategoriesFiltersContextData {
   handleApplyButton: (filtersData: TFiltersData) => void;
   handleResetToDefaults: () => void;
   handleClearChanges: () => void;
+
+  // Options
+  /** Use only public categories */
+  onlyPublic?: boolean;
 }
 
 export interface CategoriesFiltersProviderProps {
@@ -38,4 +42,5 @@ export interface CategoriesFiltersProviderProps {
   augmentDefaults?: Partial<TFiltersData>;
   storeId?: string;
   defaultExpanded?: boolean;
+  onlyPublic?: boolean;
 }
