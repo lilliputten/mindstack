@@ -17,6 +17,8 @@ export const legalPrivacyRoute = '/legal/privacy';
 export const legalTermsRoute = '/legal/terms';
 
 // 3. Open routes (availale for guests, see aliases)
+export const rootCategoriesRoute = '/categories';
+export const availableCategoriesRoute = '/categories/available';
 export const availableTopicsRoute = '/topics/available';
 export const settingsRoute = '/settings';
 
@@ -74,6 +76,7 @@ export const staticRedirects: Redirect[] = [
   // 6.3. Redirects
   { source: userStartAliasRoute, destination: myTopicsRoute, permanent: true },
   { source: startAliasRoute, destination: availableTopicsRoute, permanent: true },
+  { source: rootCategoriesRoute, destination: availableCategoriesRoute, permanent: true },
 ] as const;
 
 export const rewritedRoutes = staticRewrites.map(({ destination }) => destination);
