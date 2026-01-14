@@ -47,7 +47,7 @@ export function AvailableCategoriesListPage(props: TProps) {
           variant: 'ghost',
           icon: Icons.Edit,
           visibleFor: 'md',
-          hidden: !user?.id,
+          hidden: user?.role !== 'ADMIN',
           onClick: () => goToTheRoute(manageCategoriesRoute),
         },
         {
@@ -67,7 +67,7 @@ export function AvailableCategoriesListPage(props: TProps) {
   return (
     <>
       <DashboardHeader
-        heading={t('AvailableCategoriesListPage.AvailableCategoriesHeading')}
+        heading={t('Categories')}
         className={cn(
           isDev && '__AvailableCategoriesListPage_DashboardHeader', // DEBUG
           'mx-6',

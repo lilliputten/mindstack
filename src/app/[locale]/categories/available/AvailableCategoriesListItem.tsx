@@ -1,21 +1,21 @@
 import React from 'react';
+import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { Link, usePathname } from '@/i18n/routing';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
-import {
-  availableCategoriesRoute,
-  manageCategoriesRoute,
-  rootCategoriesRoute,
-  TRoutePath,
-} from '@/config';
+import { availableTopicsRoute, manageCategoriesRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { CategoryHeader, CategoryProperties, TAvailableCategory } from '@/features/categories';
-import { useGoToTheRoute, useSessionUser } from '@/hooks';
+import {
+  CategoryHeader,
+  CategoryProperties,
+  getCategoryName,
+  TAvailableCategory,
+} from '@/features/categories';
+import { useGoToTheRoute, useSessionData } from '@/hooks';
 
 // TODO: Use 'next/navigation'
 
@@ -26,110 +26,117 @@ interface TAvailableCategoriesListItemProps {
 }
 
 export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemProps) {
-  // const manageScope = CategoriesManageScopeIds.AVAILABLE_TOPICS;
   const { category, style } = props;
   const t = useT();
-  const {
-    id: categoryId,
-    // userId,
-    // name,
-    // description,
-    // isPublic,
-    // langCode,
-    // langName,
-    // keywords,
-    // createdAt,
-    // updatedAt,
-    // userCategoryWorkout: workouts,
-    // workoutStats,
-    _count,
-  } = category;
 
-  // const topicsCount = _count?.topics;
+  const categoryRoutePath = `${availableTopicsRoute}?categoryIds=${category.id}` as TRoutePath; // `/categories/${category.id}`;
 
-  // const router = useRouter();
-  const pathname = usePathname();
-  const categoriesRoutePath = `${pathname}/${categoryId}`;
-
-  const user = useSessionUser();
+  const { user } = useSessionData();
   const isOwner = category?.createdBy && category?.createdBy === user?.id;
   const isAdminMode = user?.role === 'ADMIN';
   const allowedEdit = isAdminMode || isOwner;
 
-  // const manageCategoriesRoute = isOwner ? manageCategoriesRoute : rootCategoriesRoute;
+  const categoryName = getCategoryName(category);
 
   const goToTheRoute = useGoToTheRoute();
-  // const goBack = useGoBack(`${routePath}/${category.id}`);
 
-  const isCurrentCategoryRoutePath = comparePathsWithoutLocalePrefix(categoriesRoutePath, pathname);
+  const __useLink = true;
 
   let cardContent = (
     <>
-      <CardHeader
-        className={cn(
-          isDev && '__AvailableCategoriesList_CategoryItem_CardHeader', // DEBUG
-          'flex flex-1 flex-row gap-2 pb-4',
-          'max-sm:flex-col-reverse',
-        )}
-      >
-        <CategoryHeader
-          category={category}
-          className="flex-1 max-sm:flex-col-reverse"
-          showProperties={false}
-        />
-      </CardHeader>
-      {/*!!description && ( // NOTE: The description is displaying in the `CategoryHeader` (above)
-        <CardContent
-          className={cn(
-            isDev && '__AvailableCategoriesList_CategoryItem_CardContent_Description', // DEBUG
-            'flex flex-1 flex-col',
-          )}
-        >
-          <div id="description">
-            <MarkdownText omitLinks>{description}</MarkdownText>
-          </div>
-        </CardContent>
-      )*/}
       <CardContent
         className={cn(
-          isDev && '__AvailableCategoriesList_CategoryItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-center',
-          'text-truncate',
+          isDev && '__AvailableCategoriesListItem_Content', // DEBUG
+          'flex flex-1 gap-6 max-sm:flex-col sm:items-center',
+          'p-6',
+          'text-base',
         )}
       >
         <div
           className={cn(
-            isDev && '__AvailableCategoriesList_CategoryItem__CategoryProperties', // DEBUG
-            'flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
-            'text-truncate',
+            isDev && '__AvailableCategoriesListItem_Content_Image', // DEBUG
+            'flex items-start gap-2',
           )}
         >
-          <CategoryProperties category={category} showDates />
+          <div
+            className={cn(
+              isDev && '__AvailableCategoriesListItem_Content_ImageWrapper', // DEBUG
+              'relative size-24 overflow-hidden rounded-lg border',
+              'flex flex-shrink-0 items-center justify-center truncate',
+            )}
+          >
+            {category.imageUrl ? (
+              <Image
+                src={category.imageUrl}
+                className="rounded object-cover"
+                alt={categoryName}
+                fill
+              />
+            ) : (
+              <Icons.Categories className="size-8 opacity-50" />
+            )}
+          </div>
         </div>
         <div
           className={cn(
-            isDev && '__AvailableCategoriesList_CategoryItem__RightActions', // DEBUG
-            'flex flex-wrap items-center gap-2 md:items-end',
+            isDev && '__AvailableCategoriesListItem_Content_MainContent', // DEBUG
+            'flex flex-1 flex-col items-stretch gap-2',
+            // 'max-sm:flex-col-reverse',
           )}
         >
-          {allowedEdit && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => goToTheRoute(`${manageCategoriesRoute}/${categoryId}`)}
-              className="flex gap-2"
-              title={t('AvailableCategories.ManageCategory')}
+          <div
+            className={cn(
+              isDev && '__AvailableCategoriesListItem_Content_Header', // DEBUG
+              'flex flex-1 items-start gap-2',
+              'max-sm:flex-col-reverse',
+            )}
+          >
+            <CategoryHeader
+              category={category}
+              className="flex-1 max-sm:flex-col-reverse"
+              showProperties={false}
+            />
+            <div
+              className={cn(
+                isDev && '__AvailableCategoriesListItem_Content_RightActions', // DEBUG
+                'flex flex-wrap items-center gap-2 md:items-end',
+              )}
             >
-              <Icons.Edit className="size-4" />
-            </Button>
-          )}
+              {allowedEdit && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    goToTheRoute(`${manageCategoriesRoute}/${category.id}`);
+                  }}
+                  className="flex items-center justify-center gap-2"
+                  title={t('AvailableCategories.ManageCategory')}
+                >
+                  <Link href={`${manageCategoriesRoute}/${category.id}` as TRoutePath}>
+                    <Icons.Edit className="size-4" />
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </div>
+          <div
+            className={cn(
+              isDev && '__AvailableCategoriesListItem_Content_CategoryProperties', // DEBUG
+              'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+              'text-xs',
+              'text-truncate',
+            )}
+          >
+            <CategoryProperties category={category} showDates />
+          </div>
         </div>
       </CardContent>
     </>
   );
-  if (!isCurrentCategoryRoutePath) {
+  if (__useLink) {
     cardContent = (
-      <Link className="flex-1 text-xl font-medium" href={categoriesRoutePath as TRoutePath}>
+      <Link className="flex-1 text-xl font-medium" href={categoryRoutePath}>
         {cardContent}
       </Link>
     );
@@ -137,7 +144,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
   return (
     <Card
       className={cn(
-        isDev && '__AvailableCategoriesList_CategoryItem_Card', // DEBUG
+        isDev && '__AvailableCategoriesListItem', // DEBUG
         'relative flex flex-1 flex-col',
         'overflow-visible',
         'cursor-pointer border border-theme-800/10 transition',

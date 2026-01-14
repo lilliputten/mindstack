@@ -33,10 +33,10 @@ export default async function ViewCategoryPageWrapper({ params }: TAwaitedProps)
       )}
       innerClassName={cn(
         isDev && '__ViewCategoryPageWrapper_Inner', // DEBUG
-        'w-full rounded-lg gap-4',
+        'w-full rounded-lg gap-4 py-6',
       )}
       limitWidth
-      vPadded
+      // vPadded
     >
       <ViewCategoryPageHolder categoryId={categoryId} />
     </PageWrapper>

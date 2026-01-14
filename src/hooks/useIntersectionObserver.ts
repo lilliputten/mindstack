@@ -1,14 +1,16 @@
-import { RefObject, useEffect, useState } from 'react';
+'use client';
+
+import React from 'react';
 
 interface Args extends IntersectionObserverInit {
   freezeOnceVisible?: boolean;
 }
 
 function useIntersectionObserver(
-  elementRef: RefObject<Element>,
+  elementRef: React.RefObject<Element>,
   { threshold = 0, root = null, rootMargin = '0%', freezeOnceVisible = false }: Args,
 ): IntersectionObserverEntry | undefined {
-  const [entry, setEntry] = useState<IntersectionObserverEntry>();
+  const [entry, setEntry] = React.useState<IntersectionObserverEntry>();
 
   const frozen = entry?.isIntersecting && freezeOnceVisible;
 
@@ -16,7 +18,7 @@ function useIntersectionObserver(
     setEntry(entry);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const node = elementRef?.current; // DOM Ref
     const hasIOSupport = !!window.IntersectionObserver;
 

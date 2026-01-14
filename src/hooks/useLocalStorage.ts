@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+'use client';
+
+import React from 'react';
 
 const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] => {
-  const [storedValue, setStoredValue] = useState(initialValue);
+  const [storedValue, setStoredValue] = React.useState(initialValue);
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Retrieve from localStorage
     const item = window.localStorage.getItem(key);
     if (item) {

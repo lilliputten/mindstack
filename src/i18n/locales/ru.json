@@ -212,6 +212,9 @@
     "SelectStatusHint": "Фильтровать категории по статусу.",
     "SelectStatusPlaceholder": "Выбрать статус…"
   },
+  "AvailableCategoriesListPage": {
+    "ManageYourCategoriesAction": "Редактировать свои категории"
+  },
   "AvailableTopics": {
     "FinishTraining": "Завершить тренировку",
     "ManageQuestion": "Редактировать вопрос",
@@ -323,6 +326,9 @@
     "Description": "MindStack сочетает в себе мощные функции и интуитивно понятный интерфейс, чтобы сделать тренировку памяти эффективной и приятной. Создавайте свою базу знаний и занимайтесь в любом месте и в любое время.",
     "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
     "Title": "Почему стоит выбрать MindStack"
+  },
+  "CategoryHeader": {
+    "YourCategory": "Ваша категория"
   },
   "CategorySelect": {
     "NoCategoriesFound": "Категории не найдены.",

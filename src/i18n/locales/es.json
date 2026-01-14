@@ -213,6 +213,9 @@
     "SelectStatusHint": "Filtrar categorías por estado.",
     "SelectStatusPlaceholder": "Seleccionar estado…"
   },
+  "AvailableCategoriesListPage": {
+    "ManageYourCategoriesAction": "Administra tus categorías"
+  },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
     "ManageQuestion": "Gestionar Pregunta",
@@ -324,6 +327,9 @@
     "Description": "MindStack combina potentes funciones con una interfaz intuitiva para hacer que el entrenamiento de la memoria sea efectivo y agradable. Construye tu base de conocimientos y practica en cualquier lugar y en cualquier momento.",
     "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
     "Title": "Por qué elegir MindStack"
+  },
+  "CategoryHeader": {
+    "YourCategory": "Tu categoría"
   },
   "CategorySelect": {
     "NoCategoriesFound": "No se encontraron categorías.",
