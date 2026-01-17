@@ -4,7 +4,7 @@ import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { getErrorText } from '@/lib/helpers';
+import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
@@ -66,6 +66,15 @@ export function AddCategoryModal(props: TProps) {
     onSuccess: (updatedCategory) => {
       // Add the created item to the cached react-query data
       availableCategoriesQuery.addNewCategory(updatedCategory, true);
+
+      // Invalidate the most recent suggested category queries when in suggestion mode
+      if (suggestionMode) {
+        const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
+        invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
+          availableCategoriesQuery.queryKey,
+        ]);
+      }
+
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
     },

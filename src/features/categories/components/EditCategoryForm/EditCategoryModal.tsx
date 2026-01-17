@@ -84,6 +84,15 @@ export function EditCategoryModal(props: TProps) {
     onSuccess: (updatedCategory) => {
       // Update the item to the cached react-query data
       availableCategoriesQuery.updateCategory(updatedCategory);
+
+      // Invalidate the most recent suggested category queries when in suggestion mode
+      if (suggestionMode) {
+        const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
+        invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
+          availableCategoriesQuery.queryKey,
+        ]);
+      }
+
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
       // Update/invalidate queries for this category
