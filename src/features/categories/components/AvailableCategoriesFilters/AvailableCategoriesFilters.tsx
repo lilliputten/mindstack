@@ -94,6 +94,22 @@ export function AvailableCategoriesFilters(props: TProps) {
                     {filterCaption}
                   </span>
                   <span className="flex items-center gap-2">
+                    {!onDefaults && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          ev.stopPropagation();
+                          handleResetToDefaults();
+                        }}
+                        className="h-7 w-7 opacity-70 hover:opacity-100"
+                        title={t('ResetToDefaults')}
+                      >
+                        <Icons.X className="size-3.5" />
+                      </Button>
+                    )}
                     <ToggleIcon className="size-4" />
                   </span>
                 </Button>

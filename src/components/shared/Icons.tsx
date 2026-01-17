@@ -104,6 +104,7 @@ export const {
   Star,
   Tags,
   Trash,
+  Undo2,
   User,
   WandSparkles,
   X,
