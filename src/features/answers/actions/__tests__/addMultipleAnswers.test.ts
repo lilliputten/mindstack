@@ -43,34 +43,36 @@ describe('addMultipleAnswers', () => {
 
   it('should create multiple answers for topic owner', async () => {
     const dateTag = formatDateTag();
+    const testName = 'topicOwner';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
       const topic = await jestPrisma.topic.create({
-        data: { name: `Topic-${dateTag}`, userId: user.id },
+        data: { name: `Topic-${uniqueId}`, userId: user.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 
       const question = await jestPrisma.question.create({
-        data: { text: `Question-${dateTag}`, topicId: topic.id },
+        data: { text: `Question-${uniqueId}`, topicId: topic.id },
       });
       createdIds.push({ type: 'question', id: question.id });
 
       mockedGetCurrentUser.mockResolvedValue(user);
 
       const newAnswers = [
-        { text: `Answer1-${dateTag}`, questionId: question.id },
-        { text: `Answer2-${dateTag}`, questionId: question.id },
+        { text: `Answer1-${uniqueId}`, questionId: question.id },
+        { text: `Answer2-${uniqueId}`, questionId: question.id },
       ];
 
       const result = await addMultipleAnswers(newAnswers);
       expect(result).toHaveLength(2);
-      expect(result[0].text).toBe(`Answer1-${dateTag}`);
-      expect(result[1].text).toBe(`Answer2-${dateTag}`);
+      expect(result[0].text).toBe(`Answer1-${uniqueId}`);
+      expect(result[1].text).toBe(`Answer2-${uniqueId}`);
 
       // Clean up created answers
       for (const answer of result) {
@@ -83,32 +85,34 @@ describe('addMultipleAnswers', () => {
 
   it('should create multiple answers for admin user', async () => {
     const dateTag = formatDateTag();
+    const testName = 'adminUser';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-${uniqueId}@test.com`, role: 'USER' },
       });
       const admin = await jestPrisma.user.create({
-        data: { email: `admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: `admin-${uniqueId}@test.com`, role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: admin.id });
 
       const topic = await jestPrisma.topic.create({
-        data: { name: `Topic-${dateTag}`, userId: owner.id },
+        data: { name: `Topic-${uniqueId}`, userId: owner.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 
       const question = await jestPrisma.question.create({
-        data: { text: `Question-${dateTag}`, topicId: topic.id },
+        data: { text: `Question-${uniqueId}`, topicId: topic.id },
       });
       createdIds.push({ type: 'question', id: question.id });
 
       mockedGetCurrentUser.mockResolvedValue(admin as TUser);
 
       const newAnswers = [
-        { text: `Answer1-${dateTag}`, questionId: question.id },
-        { text: `Answer2-${dateTag}`, questionId: question.id },
+        { text: `Answer1-${uniqueId}`, questionId: question.id },
+        { text: `Answer2-${uniqueId}`, questionId: question.id },
       ];
 
       const result = await addMultipleAnswers(newAnswers);
@@ -132,10 +136,12 @@ describe('addMultipleAnswers', () => {
 
   it('should throw error when no answers provided', async () => {
     const dateTag = formatDateTag();
+    const testName = 'noAnswersProvided';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -149,10 +155,12 @@ describe('addMultipleAnswers', () => {
 
   it('should throw error when answer text is missing', async () => {
     const dateTag = formatDateTag();
+    const testName = 'missingAnswerText';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -168,10 +176,12 @@ describe('addMultipleAnswers', () => {
 
   it('should throw error when questionId is missing', async () => {
     const dateTag = formatDateTag();
+    const testName = 'missingQuestionId';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -187,10 +197,12 @@ describe('addMultipleAnswers', () => {
 
   it('should throw error when question is not found', async () => {
     const dateTag = formatDateTag();
+    const testName = 'questionNotFound';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -206,24 +218,26 @@ describe('addMultipleAnswers', () => {
 
   it('should throw error when user is not authorized', async () => {
     const dateTag = formatDateTag();
+    const testName = 'userNotAuthorized';
+    const uniqueId = `${dateTag}-${testName}`;
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-${uniqueId}@test.com`, role: 'USER' },
       });
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `other-${uniqueId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: otherUser.id });
 
       const topic = await jestPrisma.topic.create({
-        data: { name: `Topic-${dateTag}`, userId: owner.id },
+        data: { name: `Topic-${uniqueId}`, userId: owner.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 
       const question = await jestPrisma.question.create({
-        data: { text: `Question-${dateTag}`, topicId: topic.id },
+        data: { text: `Question-${uniqueId}`, topicId: topic.id },
       });
       createdIds.push({ type: 'question', id: question.id });
 
