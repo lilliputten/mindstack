@@ -9,9 +9,10 @@ import { Link } from '@/i18n/routing';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
+import { useSignInModalContext } from '@/components/modals';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
-import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
+import { manageCategoriesRoute, rootAliasRoute, startAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAvailableCategories, useCategoriesFiltersContext } from '@/features/categories';
 import { useGoBack } from '@/hooks';
@@ -29,6 +30,8 @@ export function AvailableCategoriesList(props: TProps) {
   const t = useT();
 
   const { className, availableCategoriesQuery } = props;
+
+  const { showSignInModal } = useSignInModalContext();
 
   const {
     data: sessionData,
@@ -85,8 +88,7 @@ export function AvailableCategoriesList(props: TProps) {
         <PageEmpty
           className="mx-6"
           title={t('NoCategoriesAvailable')}
-          description={t('AvailableCategoriesList.ChangeFiltersText')}
-          // TODO: Add a button to open the filters pane (via context?)
+          description={t('AvailableCategoriesList.NoCategoriesExplanation')}
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
@@ -106,7 +108,7 @@ export function AvailableCategoriesList(props: TProps) {
                   className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
                 >
                   <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
-                  <span>{t('AvailableCategoriesList.ManageOrCreateYourOwnCategories')}</span>
+                  <span>{t('AvailableCategoriesList.ManageCategories')}</span>
                 </Link>
               )}
             </>
@@ -144,7 +146,7 @@ export function AvailableCategoriesList(props: TProps) {
       {allCategories.map((category, index) => (
         <AvailableCategoriesListItem key={category.id} index={index} category={category} />
       ))}
-      {!!user?.id && (
+      {user?.id ? (
         <div className="flex items-center justify-center">
           <Link
             href={'/categories/available/suggest' as TRoutePath}
@@ -153,6 +155,30 @@ export function AvailableCategoriesList(props: TProps) {
             <Icons.Plus className="size-5" />
             {t('AvailableCategoriesList.SuggestNewCategory')}
           </Link>
+        </div>
+      ) : (
+        <div
+          className={cn(
+            isDev && '__AvailableCategoriesList_Info', // DEBUG
+            'flex items-center gap-2 rounded-md border border-theme/10 p-2',
+          )}
+        >
+          <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+          <p className="text-content flex-1 text-sm">
+            {t.rich('AvailableCategoriesList.UnauthorizedUserSuggestionMessage', {
+              SigninLink: (chunks) => (
+                <Link
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    showSignInModal();
+                  }}
+                  href={startAliasRoute}
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </p>
         </div>
       )}
     </ScrollAreaInfinite>

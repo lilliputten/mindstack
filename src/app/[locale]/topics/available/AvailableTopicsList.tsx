@@ -80,7 +80,6 @@ export function AvailableTopicsList(props: TProps) {
           className="mx-6"
           title={t('NoTopicsAvailable')}
           description={t('AvailableTopicsList.ChangeFiltersText')}
-          // TODO: Add a button to open the filters pane (via context?)
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">

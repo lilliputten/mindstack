@@ -19,7 +19,7 @@ interface TNavLocaleSwitcherProps extends TPropsWithClassName {
 
 export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
   const { onPrimary, onSidebar, className } = props;
-  const t = useT('NavLocaleSwitcher');
+  const t = useT();
 
   const locale = useLocale();
 
@@ -37,12 +37,12 @@ export function NavLocaleSwitcher(props: TNavLocaleSwitcherProps) {
             'truncate',
             className,
           )}
-          title={t('label')}
+          title={t('NavLocaleSwitcher.label')}
           data-current-locale={locale}
         >
           <span>{localeSymbols[locale]}</span>
           <span className="truncate">{localeNames[locale]}</span>
-          <span className="sr-only">{t('label')}</span>
+          <span className="sr-only">{t('NavLocaleSwitcher.label')}</span>
         </Button>
       </DropdownMenuTrigger>
       <NavLocaleSwitcherBlock align="start" onPrimary={onPrimary} onSidebar={onSidebar} />

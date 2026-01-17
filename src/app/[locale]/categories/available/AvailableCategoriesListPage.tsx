@@ -31,11 +31,13 @@ export function AvailableCategoriesListPage(props: TProps) {
     isFetched,
     isRefetching,
     refetch,
-    // isLoading,
+    isLoading,
     // isError,
     // error,
     // hasCategories,
   } = availableCategoriesQuery;
+
+  const isBusy = isLoading || isRefetching;
 
   const actions = React.useMemo<TActionMenuItem[]>(
     () =>
@@ -87,12 +89,16 @@ export function AvailableCategoriesListPage(props: TProps) {
         className={cn(
           isDev && '__AvailableCategoriesListPage_Filters', // DEBUG
           'mx-6',
+          'transition',
+          isBusy && 'opacity-50',
         )}
       />
       <AvailableCategoriesList
         className={cn(
           isDev && '__AvailableCategoriesListPage_Content', // DEBUG
           'relative flex flex-1 flex-col overflow-hidden',
+          'transition',
+          isBusy && 'opacity-50',
         )}
         availableCategoriesQuery={availableCategoriesQuery}
       />

@@ -45,6 +45,7 @@
   "Name": "Name",
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "No answers have been created yet",
+  "NoCategoriesAvailable": "No Categories Available",
   "NoTopics": "No topics",
   "NoTopicsAvailable": "No topics available",
   "Ok": "Ok",
@@ -130,7 +131,9 @@
     "ForbiddenSuggestionTitle": "The limit of offers for new categories has been reached",
     "SuggestDialogTitle": "Suggest New Category",
     "ToastLoading": "Creating a new category...",
-    "ToastSuccess": "Successfully created new category \"{name}\""
+    "ToastSuccess": "Successfully created new category \"{name}\"",
+    "UnauthorizedUserMessage": "Only authorized users can add categories.",
+    "UnauthorizedUserTitle": "Unauthorized User"
   },
   "AddQuestionForm": {
     "AddButtonText": "Add",
@@ -221,8 +224,11 @@
     "SelectStatusPlaceholder": "Select status…"
   },
   "AvailableCategoriesList": {
+    "ManageCategories": "Manage Categories",
     "ManageYourCategoriesAction": "Manage Your Categories",
-    "SuggestNewCategory": "Suggest New Category"
+    "NoCategoriesExplanation": "There are no available categories. Change the filter settings.",
+    "SuggestNewCategory": "Suggest New Category",
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorized users</SigninLink> can suggest new categories."
   },
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
@@ -779,6 +785,7 @@
     "AvailableCategories": "Categories",
     "AvailableTopics": "Available Topics",
     "BotControl": "Bot Control",
+    "Categories": "Categories",
     "Charts": "Charts",
     "Documentation": "Documentation",
     "Information": "Information",
@@ -793,8 +800,7 @@
     "WelcomePage": "Welcome Page"
   },
   "NavLocaleSwitcher": {
-    "label": "Change language",
-    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
+    "label": "Change language"
   },
   "NavModeToggle": {
     "dark": "Dark",

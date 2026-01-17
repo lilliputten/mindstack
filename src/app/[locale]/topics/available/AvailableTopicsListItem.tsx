@@ -102,7 +102,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-center',
+          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-end',
         )}
       >
         <div

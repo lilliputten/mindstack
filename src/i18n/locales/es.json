@@ -45,6 +45,7 @@
   "Name": "Nombre",
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
+  "NoCategoriesAvailable": "No hay categorías disponibles",
   "NoTopics": "Sin temas",
   "NoTopicsAvailable": "No hay temas disponibles",
   "Ok": "De acuerdo",
@@ -129,7 +130,9 @@
     "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
     "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "ToastLoading": "Creando una nueva categoría...",
-    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
+    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente",
+    "UnauthorizedUserMessage": "Sólo los usuarios autorizados pueden agregar categorías.",
+    "UnauthorizedUserTitle": "Usuario no autorizado"
   },
   "AddQuestionForm": {
     "AddButtonText": "Agregar",
@@ -220,8 +223,11 @@
     "SelectStatusPlaceholder": "Seleccionar estado…"
   },
   "AvailableCategoriesList": {
+    "ManageCategories": "Administrar categorías",
     "ManageYourCategoriesAction": "Administra tus categorías",
-    "SuggestNewCategory": "Sugerir nueva categoría"
+    "NoCategoriesExplanation": "No hay categorías disponibles. \nCambie la configuración del filtro.",
+    "SuggestNewCategory": "Sugerir nueva categoría",
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Usuarios autorizados</SigninLink> pueden sugerir nuevas categorías."
   },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
@@ -773,6 +779,7 @@
     "AvailableCategories": "Categorías",
     "AvailableTopics": "Temas Disponibles",
     "BotControl": "Control del Bot",
+    "Categories": "Categorías",
     "Charts": "Gráficos",
     "Documentation": "Documentación",
     "Information": "Información",
@@ -787,8 +794,7 @@
     "WelcomePage": "¡Bienvenido!"
   },
   "NavLocaleSwitcher": {
-    "label": "Cambiar idioma",
-    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detectar}}"
+    "label": "Cambiar idioma"
   },
   "NavModeToggle": {
     "dark": "Oscuro",
@@ -1183,7 +1189,7 @@
   },
   "ViewAvailableTopicContent": {
     "NoActiveTrainingText": "No tienes entrenamiento activo ni registros históricos para mostrar. \nEmpieza a entrenar ahora.",
-    "TrainingNotStarted": "El entrenamiento no ha comenzado."
+    "TrainingNotStarted": "El entrenamiento no ha comenzado"
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Información Básica",

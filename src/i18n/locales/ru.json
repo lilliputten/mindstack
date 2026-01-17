@@ -44,6 +44,7 @@
   "Name": "Название",
   "No": "Нет",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
+  "NoCategoriesAvailable": "Нет доступных категорий",
   "NoTopics": "Нет тем",
   "NoTopicsAvailable": "Нет доступных тем",
   "Ok": "Хорошо",
@@ -125,7 +126,9 @@
     "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
     "SuggestDialogTitle": "Предложить новую категорию",
     "ToastLoading": "Создание новой категории...",
-    "ToastSuccess": "Новая категория \"{name}\" успешно создана"
+    "ToastSuccess": "Новая категория \"{name}\" успешно создана",
+    "UnauthorizedUserMessage": "Только авторизованные пользователи могут добавлять категории.",
+    "UnauthorizedUserTitle": "Неавторизованный пользователь"
   },
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
@@ -220,8 +223,11 @@
     "SelectStatusPlaceholder": "Выбрать статус…"
   },
   "AvailableCategoriesList": {
+    "ManageCategories": "Управление категориями",
     "ManageYourCategoriesAction": "Редактировать свои категории",
-    "SuggestNewCategory": "Предложить новую категорию"
+    "NoCategoriesExplanation": "Нет доступных категорий. \nИзмените настройки фильтра.",
+    "SuggestNewCategory": "Предложить новую категорию",
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут предлагать новые категории."
   },
   "AvailableTopics": {
     "FinishTraining": "Завершить тренировку",
@@ -774,6 +780,7 @@
     "AvailableCategories": "Категории",
     "AvailableTopics": "Доступные темы",
     "BotControl": "Управление ботом",
+    "Categories": "Категории",
     "Charts": "Графики",
     "Documentation": "Документация",
     "Information": "Информация",
@@ -788,8 +795,7 @@
     "WelcomePage": "Приветствие"
   },
   "NavLocaleSwitcher": {
-    "label": "Сменить язык",
-    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} other {Автоматически}}"
+    "label": "Сменить язык"
   },
   "NavModeToggle": {
     "dark": "Темная",
@@ -1184,7 +1190,7 @@
   },
   "ViewAvailableTopicContent": {
     "NoActiveTrainingText": "У вас нет ни активного обучения, ни записей истории для отображения. \nНачните обучение прямо сейчас.",
-    "TrainingNotStarted": "Обучение не началось"
+    "TrainingNotStarted": "Обучение ещё не было начато"
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Основная информация",

@@ -32,11 +32,13 @@ export function AvailableTopicsListPage(props: TProps) {
     isFetched,
     isRefetching,
     refetch,
-    // isLoading,
+    isLoading,
     // isError,
     // error,
     // hasTopics,
   } = availableTopicsQuery;
+
+  const isBusy = isRefetching || isLoading;
 
   const actions = React.useMemo<TActionMenuItem[]>(
     () =>
@@ -79,12 +81,16 @@ export function AvailableTopicsListPage(props: TProps) {
         className={cn(
           isDev && '__AvailableTopicsListPage_Filters', // DEBUG
           'mx-6',
+          'transition',
+          isBusy && 'opacity-50',
         )}
       />
       <AvailableTopicsList
         className={cn(
           isDev && '__AvailableTopicsListPage_Content', // DEBUG
           'relative flex flex-1 flex-col overflow-hidden',
+          'transition',
+          isBusy && 'opacity-50',
         )}
         manageScope={manageScope}
         availableTopicsQuery={availableTopicsQuery}

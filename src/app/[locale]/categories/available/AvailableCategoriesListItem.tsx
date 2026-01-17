@@ -88,7 +88,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
             className={cn(
               isDev && '__AvailableCategoriesListItem_Content_Header', // DEBUG
               'flex flex-1 items-start gap-2',
-              'max-sm:flex-col-reverse',
+              // 'max-sm:flex-col-reverse',
             )}
           >
             <CategoryHeader

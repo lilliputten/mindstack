@@ -1,7 +1,12 @@
 import { MainNavItem } from '@/lib/types/site/NavItem';
 import * as Icons from '@/components/shared/Icons';
 
-import { availableTopicsRoute, myTopicsRoute, welcomeAliasRoute } from './routesConfig';
+import {
+  availableTopicsRoute,
+  myTopicsRoute,
+  rootCategoriesRoute,
+  welcomeAliasRoute,
+} from './routesConfig';
 
 export type SiteMenu = {
   mainNav: MainNavItem[];
@@ -17,10 +22,14 @@ export const siteMenu: SiteMenu = {
       userRequiredOnly: true,
     },
     {
+      titleId: 'Categories',
+      icon: Icons.Categories,
+      href: rootCategoriesRoute,
+    },
+    {
       titleId: 'AvailableTopics',
       icon: Icons.BookOpenCheck,
       href: availableTopicsRoute,
-      // userRequiredOnly: true,
     },
     {
       titleId: 'Welcome',

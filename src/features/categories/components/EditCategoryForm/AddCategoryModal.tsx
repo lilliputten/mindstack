@@ -17,7 +17,6 @@ import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
-import { WaitingSplash } from '@/components/ui/WaitingSplash';
 import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute } from '@/config';
