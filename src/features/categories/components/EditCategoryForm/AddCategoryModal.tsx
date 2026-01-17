@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import {
@@ -16,6 +17,7 @@ import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { WaitingSplash } from '@/components/ui/WaitingSplash';
 import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute } from '@/config';
@@ -47,6 +49,12 @@ export function AddCategoryModal(props: TProps) {
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
+  const { data: sessionData, status: sessionStatus } = useSession();
+  const isUserLoading = sessionStatus === 'loading';
+  const user = sessionData?.user;
+  const isUser = !!user?.id;
+  // const isAdmin = user?.role === 'ADMIN';
+
   const [saved, setSaved] = React.useState(false);
 
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
@@ -57,7 +65,7 @@ export function AddCategoryModal(props: TProps) {
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
   const mostRecentSuggestedCategoryQuery = useMostRecentSuggestedCategory({
-    enabled: suggestionMode && !saved,
+    enabled: isUser && suggestionMode && !saved,
   });
   const { data: recentCategory } = mostRecentSuggestedCategoryQuery;
 
@@ -146,9 +154,21 @@ export function AddCategoryModal(props: TProps) {
     [saved, hasRecentSuggestion, recentCategory],
   );
 
+  const extraActions = React.useMemo(
+    () => (
+      <Button onClick={hideModal} className="flex gap-2">
+        <Icons.X className="size-4" />
+        <span>{t('Cancel')}</span>
+      </Button>
+    ),
+    [hideModal, t],
+  );
+
   if (!shouldBeVisible) {
     return null;
   }
+
+  const isLoading = isUserLoading;
 
   return (
     <Modal
@@ -161,7 +181,18 @@ export function AddCategoryModal(props: TProps) {
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
-      {nextSuggestionDelay ? (
+      {!isLoading && !isUser ? (
+        <PageError
+          className={cn(
+            isDev && '__AddCategoryModal_UserError', // DEBUG
+            'mt-4',
+          )}
+          title={t('AddCategoryModal.UnauthorizedUserTitle')}
+          explanation={t('AddCategoryModal.UnauthorizedUserMessage')}
+          extraActions={extraActions}
+          border={false}
+        />
+      ) : nextSuggestionDelay ? (
         <PageError
           className={cn(
             isDev && '__AddCategoryModal_SuggestionError', // DEBUG
@@ -171,14 +202,8 @@ export function AddCategoryModal(props: TProps) {
           explanation={t('AddCategoryModal.ForbiddenSuggestionMessage', {
             time: translatedPeriod(nextSuggestionDelay, t),
           })}
-          extraActions={
-            <Button onClick={hideModal} className="flex gap-2">
-              <Icons.X className="size-4" />
-              <span>{t('Cancel')}</span>
-            </Button>
-          }
+          extraActions={extraActions}
           border={false}
-          // reset={retry}
         />
       ) : (
         <>
@@ -194,13 +219,24 @@ export function AddCategoryModal(props: TProps) {
               {dialogTitle}
             </DialogDescription>
           </div>
-          <EditCategoryForm
-            handleSaveCategory={handleSaveCategory}
-            className="text-foreground"
-            handleClose={hideModal}
-            isPending={saveCategoryMutation.isPending}
-            suggestionMode={suggestionMode}
-          />
+          {isLoading ? (
+            <div
+              className={cn(
+                isDev && '__AddCategoryModal_SpinnerWrapper', // DEBUG
+                'mx-auto p-8',
+              )}
+            >
+              <Icons.Spinner className={cn('size-8 animate-spin')} />
+            </div>
+          ) : (
+            <EditCategoryForm
+              handleSaveCategory={handleSaveCategory}
+              className="text-foreground"
+              handleClose={hideModal}
+              isPending={saveCategoryMutation.isPending}
+              suggestionMode={suggestionMode}
+            />
+          )}
         </>
       )}
     </Modal>

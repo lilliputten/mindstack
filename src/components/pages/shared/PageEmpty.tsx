@@ -65,6 +65,7 @@ export function PageEmpty(props: TPageEmptyProps) {
         !border && 'border-none',
         className,
       )}
+      containerClassName="overflow-hidden"
       framed={framed}
     >
       <EmptyPlaceholder.Icon

@@ -14,9 +14,10 @@ export function EmptyPlaceholder({
   padded = true,
   framed = true,
   className,
+  containerClassName,
   children,
   ...props
-}: EmptyPlaceholderProps) {
+}: EmptyPlaceholderProps & { containerClassName?: string }) {
   return (
     <div
       className={cn(
@@ -33,8 +34,8 @@ export function EmptyPlaceholder({
         className={cn(
           isDev && '__EmptyPlaceholder_Container', // DEBUG
           'overflow_hidden w-full',
-          // 'flex max-w-[420px] flex-col items-center text-center',
           'flex flex-col items-center gap-4 text-center',
+          containerClassName,
         )}
       >
         {children}

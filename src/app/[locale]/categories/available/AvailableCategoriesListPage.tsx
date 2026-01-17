@@ -46,6 +46,7 @@ export function AvailableCategoriesListPage(props: TProps) {
           variant: 'ghost',
           icon: Icons.Plus,
           visibleFor: 'lg',
+          hidden: !user?.id,
           onClick: () => goToTheRoute(`${availableCategoriesRoute}/suggest`),
         },
         {

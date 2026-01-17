@@ -30,7 +30,6 @@ export function AvailableCategoriesList(props: TProps) {
 
   const { className, availableCategoriesQuery } = props;
 
-  // User: is it necessary here?
   const {
     data: sessionData,
     // status: sessionStatus,
@@ -145,15 +144,17 @@ export function AvailableCategoriesList(props: TProps) {
       {allCategories.map((category, index) => (
         <AvailableCategoriesListItem key={category.id} index={index} category={category} />
       ))}
-      <div className="flex items-center justify-center">
-        <Link
-          href={'/categories/available/suggest' as TRoutePath}
-          className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
-        >
-          <Icons.Plus className="size-5" />
-          {t('AvailableCategoriesList.SuggestNewCategory')}
-        </Link>
-      </div>
+      {!!user?.id && (
+        <div className="flex items-center justify-center">
+          <Link
+            href={'/categories/available/suggest' as TRoutePath}
+            className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+          >
+            <Icons.Plus className="size-5" />
+            {t('AvailableCategoriesList.SuggestNewCategory')}
+          </Link>
+        </div>
+      )}
     </ScrollAreaInfinite>
   );
 }

@@ -103,6 +103,7 @@ export function PageError(props: TErrorProps) {
         !border && 'border-none',
         className,
       )}
+      containerClassName="overflow-hidden"
     >
       <ErrorPlaceHolder.Icon
         className={cn(
