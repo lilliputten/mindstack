@@ -4,14 +4,8 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { PageError } from '@/components/shared/PageError';
+import { availableCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
-// import { CategoriesManageScopeIds, TCategoriesManageScopeId } from '@/contexts/CategoriesContext';
-// import {
-//   CategoriesFiltersProvider,
-//   convertAvailableFiltersToParams,
-//   TApplyFiltersData,
-//   TAvailableCategoriesFiltersParams,
-// } from '@/contexts/CategoriesFiltersContext';
 import {
   CategoriesFiltersProvider,
   convertAvailableFiltersToParams,
@@ -20,22 +14,30 @@ import {
   TFiltersData,
   useAvailableCategories,
 } from '@/features/categories';
+import { useGoToTheRoute } from '@/hooks';
 
 import { AvailableCategoriesListPage } from './AvailableCategoriesListPage';
 
-/** Used for tests below */
-// const now = new Date();
+interface TAvailableCategoriesListWrapperProps {
+  showSuggestModal?: boolean;
+  params?: { locale: string };
+}
 
-export function AvailableCategoriesListWrapper() {
-  // const manageScope: TCategoriesManageScopeId = CategoriesManageScopeIds.AVAILABLE_TOPICS;
+export function AvailableCategoriesListWrapper(props: TAvailableCategoriesListWrapperProps) {
+  const { showSuggestModal } = props;
+  const routePath = availableCategoriesRoute;
+  const goToTheRoute = useGoToTheRoute();
 
-  /* // User: is it necessary here?
-   * const {
-   *   data: sessionData,
-   *   // status: sessionStatus,
-   * } = useSession();
-   * const user = sessionData?.user;
-   */
+  // Suggest Category Modal
+  const openSuggestCategoryModal = React.useCallback(() => {
+    const url = `${routePath}/suggest`;
+    goToTheRoute(url);
+  }, [routePath, goToTheRoute]);
+  React.useEffect(() => {
+    if (showSuggestModal) {
+      openSuggestCategoryModal();
+    }
+  }, [showSuggestModal, openSuggestCategoryModal]);
 
   /** Use only public categories */
   const onlyPublic = true;
@@ -80,15 +82,6 @@ export function AvailableCategoriesListWrapper() {
     // hasCategories,
     // isFetched,
   } = availableCategoriesQuery;
-
-  /* // DEBUG: Show current query key
-   * React.useEffect(() => {
-   *   const debugKey = queryKey.map(String).map(decodeURIComponent).join(', ').replace(/&/g, ' ');
-   *   console.log('[AvailableCategoriesListWrapper:DEBUG]', debugKey, {
-   *     queryKey,
-   *   });
-   * }, [queryKey]);
-   */
 
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {

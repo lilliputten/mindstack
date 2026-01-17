@@ -4,16 +4,22 @@ import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TAwaitedProps = TAwaitedLocaleProps;
 
-type TLayoutProps = TAwaitedProps & {
+type TAvailableCategoriesLayoutProps = TAwaitedProps & {
   children: React.ReactNode;
+  suggestCategoryModal: React.ReactNode; // slot from @suggestCategoryModal
 };
 
-export default async function AvailableCategoriesLayout(props: TLayoutProps) {
-  const { children, params } = props;
+export default async function AvailableCategoriesLayout(props: TAvailableCategoriesLayoutProps) {
+  const { children, suggestCategoryModal, params } = props;
   const { locale } = await params;
 
   // Enable static rendering
   setRequestLocale(locale);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {suggestCategoryModal}
+    </>
+  );
 }

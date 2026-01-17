@@ -121,9 +121,11 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "Cannot save category",
     "CantSaveCategory": "Cannot save category",
-    "DialogDescription": "Add Category Dialog",
+    "DialogDescription": "Add Category",
     "DialogTitle": "Add New Category",
     "ModalTitle": "Add Category",
+    "SuggestDialogDescription": "Suggest Category",
+    "SuggestDialogTitle": "Suggest New Category",
     "ToastLoading": "Creating a new category...",
     "ToastSuccess": "Successfully created new category \"{name}\""
   },
@@ -213,8 +215,9 @@
     "SelectStatusHint": "Filter categories by status.",
     "SelectStatusPlaceholder": "Select status…"
   },
-  "AvailableCategoriesListPage": {
-    "ManageYourCategoriesAction": "Manage Your Categories"
+  "AvailableCategoriesList": {
+    "ManageYourCategoriesAction": "Manage Your Categories",
+    "SuggestNewCategory": "Suggest New Category"
   },
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
@@ -472,6 +475,7 @@
     "SubmitFormError": "Failed to submit form data",
     "SuccessfullySavedMessage": "The category has been successfully saved. You can now close this dialog.",
     "SuccessfullySavedTitle": "Successfully saved!",
+    "SuggestNewCategory": "Suggest New Category",
     "SuggestedOption": "Suggested",
     "UploadImageError": "Failed to upload image"
   },
@@ -479,13 +483,11 @@
     "CannotSaveCategory": "Cannot save category",
     "DataSaveError": "Cannot save category data",
     "DataSaved": "Successfully saved category \"{name}\"",
+    "DialogDescription": "Edit Category",
+    "DialogTitle": "Edit Category",
+    "ErrorLoadingCategoriesData": "Error loading category data",
     "ModalTitle": "Edit Category",
-    "SavingData": "Saving category data...",
-    "ManageCategoriesList": {
-      "DialogDescription": "Edit Category Dialog",
-      "DialogTitle": "Edit Category",
-      "ErrorLoadingCategoriesData": "Error loading category data"
-    }
+    "SavingData": "Saving category data..."
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Add New Question",

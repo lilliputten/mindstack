@@ -122,9 +122,11 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "No se puede guardar la categoría",
     "CantSaveCategory": "No se puede guardar la categoría",
-    "DialogDescription": "Agregar Diálogo de Categoría",
+    "DialogDescription": "Agregar categoría",
     "DialogTitle": "Agregar Nueva Categoría",
     "ModalTitle": "Agregar Categoría",
+    "SuggestDialogDescription": "Sugerir categoría",
+    "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "ToastLoading": "Creando una nueva categoría...",
     "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
   },
@@ -216,8 +218,9 @@
     "SelectStatusHint": "Filtrar categorías por estado.",
     "SelectStatusPlaceholder": "Seleccionar estado…"
   },
-  "AvailableCategoriesListPage": {
-    "ManageYourCategoriesAction": "Administra tus categorías"
+  "AvailableCategoriesList": {
+    "ManageYourCategoriesAction": "Administra tus categorías",
+    "SuggestNewCategory": "Sugerir nueva categoría"
   },
   "AvailableTopics": {
     "FinishTraining": "Finalizar Entrenamiento",
@@ -478,13 +481,11 @@
     "CannotSaveCategory": "No se puede guardar la categoría",
     "DataSaveError": "No se pueden guardar los datos de la categoría",
     "DataSaved": "Categoría \"{name}\" guardada exitosamente",
+    "DialogDescription": "Editar categoría",
+    "DialogTitle": "Editar Categoría",
+    "ErrorLoadingCategoriesData": "Error al cargar los datos de la categoría",
     "ModalTitle": "Editar Categoría",
-    "SavingData": "Guardando datos de categoría...",
-    "ManageCategoriesList": {
-      "DialogDescription": "Editar Diálogo de Categoría",
-      "DialogTitle": "Editar Categoría",
-      "ErrorLoadingCategoriesData": "Error al cargar los datos de la categoría"
-    }
+    "SavingData": "Guardando datos de categoría..."
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Agregar Nueva Pregunta",

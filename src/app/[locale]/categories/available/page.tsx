@@ -7,9 +7,11 @@ import { isDev } from '@/config';
 
 import { AvailableCategoriesListWrapper } from './AvailableCategoriesListWrapper';
 
-type TAwaitedProps = TAwaitedLocaleProps;
+interface TAvailableCategoriesPageProps extends TAwaitedLocaleProps {
+  showSuggestModal?: boolean;
+}
 
-export async function generateMetadata({ params }: TAwaitedProps) {
+export async function generateMetadata({ params }: TAvailableCategoriesPageProps) {
   const { locale } = await params;
   const t = await getT({ locale });
   return constructMetadata({
@@ -18,7 +20,10 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
-export default async function AvailableCategoriesPageHolder() {
+export default async function AvailableCategoriesPageHolder(props: TAvailableCategoriesPageProps) {
+  const { showSuggestModal } = props;
+  const params = await props.params;
+
   return (
     <PageWrapper
       className={cn(
@@ -30,7 +35,7 @@ export default async function AvailableCategoriesPageHolder() {
       )}
       limitWidth
     >
-      <AvailableCategoriesListWrapper />
+      <AvailableCategoriesListWrapper showSuggestModal={showSuggestModal} params={params} />
     </PageWrapper>
   );
 }

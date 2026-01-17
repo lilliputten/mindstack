@@ -8,7 +8,7 @@ import { Link } from '@/i18n/routing';
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
-import { TRoutePath } from '@/config';
+import { isDev, TRoutePath } from '@/config';
 
 export interface TActionItem extends Omit<ButtonProps, 'content'> {
   id: string;
@@ -51,7 +51,7 @@ export function ActionButton(props: TActionItem) {
           {...restIconProps}
         />
       )}
-      {textContent && !isIcon && <span className="truncate">{textContent}</span>}
+      {textContent && !isIcon && <span className="max-w-40 truncate">{textContent}</span>}
     </>
   );
   const variant = isDisabled ? 'ghost' : buttonVariant;
@@ -70,7 +70,10 @@ export function ActionButton(props: TActionItem) {
   return (
     <Button
       id={id}
-      className={className}
+      className={cn(
+        isDev && '__ActionButton', // DEBUG
+        className,
+      )}
       onClick={onClick}
       disabled={isDisabled}
       variant={variant}

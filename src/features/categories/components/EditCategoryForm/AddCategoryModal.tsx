@@ -22,15 +22,17 @@ import { EditCategoryForm } from './EditCategoryForm';
 interface TProps {
   /** Is it a suggestion? Then offer a limited editing mode */
   suggestionMode?: boolean;
+  /** Route path for navigation (defaults to manageCategoriesRoute) */
+  routePath?: string;
 }
 
 export function AddCategoryModal(props: TProps) {
   const {
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode = false,
+    /** Route path for navigation */
+    routePath = manageCategoriesRoute,
   } = props;
-
-  const routePath = manageCategoriesRoute; // `/categories/manage`;
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
@@ -44,7 +46,10 @@ export function AddCategoryModal(props: TProps) {
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  useModalTitle(t('AddCategoryModal.ModalTitle'), shouldBeVisible);
+  const modalTitle = suggestionMode
+    ? t('AddCategoryModal.SuggestDialogTitle')
+    : t('AddCategoryModal.ModalTitle');
+  useModalTitle(modalTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const goBack = useGoBack(routePath);
@@ -115,9 +120,15 @@ export function AddCategoryModal(props: TProps) {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('AddCategoryModal.DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">
+          {suggestionMode
+            ? t('AddCategoryModal.SuggestDialogTitle')
+            : t('AddCategoryModal.DialogTitle')}
+        </DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('AddCategoryModal.DialogDescription')}
+          {suggestionMode
+            ? t('AddCategoryModal.SuggestDialogDescription')
+            : t('AddCategoryModal.DialogDescription')}
         </DialogDescription>
       </div>
       <EditCategoryForm

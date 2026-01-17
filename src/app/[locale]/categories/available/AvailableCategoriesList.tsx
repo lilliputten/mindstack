@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSession } from 'next-auth/react';
 
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
@@ -10,7 +11,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
-import { manageCategoriesRoute, rootAliasRoute } from '@/config';
+import { manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAvailableCategories, useCategoriesFiltersContext } from '@/features/categories';
 import { useGoBack } from '@/hooks';
@@ -28,6 +29,14 @@ export function AvailableCategoriesList(props: TProps) {
   const t = useT();
 
   const { className, availableCategoriesQuery } = props;
+
+  // User: is it necessary here?
+  const {
+    data: sessionData,
+    // status: sessionStatus,
+  } = useSession();
+  const user = sessionData?.user;
+  const isAdmin = user?.role === 'ADMIN';
 
   const goBack = useGoBack(rootAliasRoute);
 
@@ -91,13 +100,16 @@ export function AvailableCategoriesList(props: TProps) {
                   {t('ChangeFilters')}
                 </Button>
               )}
-              <Link
-                href={manageCategoriesRoute}
-                className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
-              >
-                <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
-                <span>{t('AvailableCategoriesList.ManageOrCreateYourOwnCategories')}</span>
-              </Link>
+              {/* NOTE: Allow management only for admins */}
+              {isAdmin && (
+                <Link
+                  href={manageCategoriesRoute}
+                  className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+                >
+                  <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
+                  <span>{t('AvailableCategoriesList.ManageOrCreateYourOwnCategories')}</span>
+                </Link>
+              )}
             </>
           }
         />
@@ -133,6 +145,15 @@ export function AvailableCategoriesList(props: TProps) {
       {allCategories.map((category, index) => (
         <AvailableCategoriesListItem key={category.id} index={index} category={category} />
       ))}
+      <div className="flex items-center justify-center">
+        <Link
+          href={'/categories/available/suggest' as TRoutePath}
+          className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+        >
+          <Icons.Plus className="size-5" />
+          {t('AvailableCategoriesList.SuggestNewCategory')}
+        </Link>
+      </div>
     </ScrollAreaInfinite>
   );
 }

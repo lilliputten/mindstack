@@ -117,9 +117,11 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "CantSaveCategory": "Невозможно сохранить категорию",
-    "DialogDescription": "Добавить диалог категории",
+    "DialogDescription": "Добавить категорию",
     "DialogTitle": "Добавить новую категорию",
     "ModalTitle": "Добавить категорию",
+    "SuggestDialogDescription": "Предложить категорию",
+    "SuggestDialogTitle": "Предложить новую категорию",
     "ToastLoading": "Создание новой категории...",
     "ToastSuccess": "Новая категория \"{name}\" успешно создана"
   },
@@ -215,8 +217,9 @@
     "SelectStatusHint": "Фильтровать категории по статусу.",
     "SelectStatusPlaceholder": "Выбрать статус…"
   },
-  "AvailableCategoriesListPage": {
-    "ManageYourCategoriesAction": "Редактировать свои категории"
+  "AvailableCategoriesList": {
+    "ManageYourCategoriesAction": "Редактировать свои категории",
+    "SuggestNewCategory": "Предложить новую категорию"
   },
   "AvailableTopics": {
     "FinishTraining": "Завершить тренировку",
@@ -470,20 +473,19 @@
     "SubmitFormError": "Не удалось отправить данные формы",
     "SuccessfullySavedMessage": "Категория была успешно сохранена. Теперь вы можете закрыть этот диалог.",
     "SuccessfullySavedTitle": "Успешно сохранено!",
-    "SuggestedOption": "Предложенный",
+    "SuggestNewCategory": "Предложить новую категорию",
+    "SuggestedOption": "Предложенная",
     "UploadImageError": "Не удалось загрузить изображение"
   },
   "EditCategoryModal": {
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "DataSaveError": "Невозможно сохранить данные категории",
     "DataSaved": "Категория \"{name}\" успешно сохранена",
+    "DialogDescription": "Изменить категорию",
+    "DialogTitle": "Редактировать категорию",
+    "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории",
     "ModalTitle": "Редактировать категорию",
-    "SavingData": "Сохранение данных категории...",
-    "ManageCategoriesList": {
-      "DialogDescription": "Редактировать диалог категории",
-      "DialogTitle": "Редактировать категорию",
-      "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории"
-    }
+    "SavingData": "Сохранение данных категории..."
   },
   "EditQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",
