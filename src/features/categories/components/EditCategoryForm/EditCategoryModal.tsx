@@ -66,7 +66,9 @@ export function EditCategoryModal(props: TProps) {
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  useModalTitle(t('EditCategoryModal.ModalTitle'), shouldBeVisible);
+  const dialogTitle = t('EditCategoryModal.DialogTitle');
+
+  useModalTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const goBack = useGoBack(routePath);
@@ -157,11 +159,9 @@ export function EditCategoryModal(props: TProps) {
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">
-          {t('EditCategoryModal.ManageCategoriesList.DialogTitle')}
-        </DialogTitle>
+        <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('EditCategoryModal.ManageCategoriesList.DialogDescription')}
+          {dialogTitle}
         </DialogDescription>
       </div>
       {categoryError ? (
@@ -169,7 +169,7 @@ export function EditCategoryModal(props: TProps) {
           className={cn(
             isDev && '__EditCategoryModal_error', // DEBUG
           )}
-          title={t('EditCategoryModal.ManageCategoriesList.ErrorLoadingCategoriesData')}
+          title={t('EditCategoryModal.ErrorLoadingCategoriesData')}
           error={categoryError}
           reset={categoryRefetch}
         />

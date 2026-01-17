@@ -117,10 +117,7 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "CantSaveCategory": "Невозможно сохранить категорию",
-    "DialogDescription": "Добавить категорию",
     "DialogTitle": "Добавить новую категорию",
-    "ModalTitle": "Добавить категорию",
-    "SuggestDialogDescription": "Предложить категорию",
     "SuggestDialogTitle": "Предложить новую категорию",
     "ToastLoading": "Создание новой категории...",
     "ToastSuccess": "Новая категория \"{name}\" успешно создана"
@@ -481,10 +478,8 @@
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "DataSaveError": "Невозможно сохранить данные категории",
     "DataSaved": "Категория \"{name}\" успешно сохранена",
-    "DialogDescription": "Изменить категорию",
     "DialogTitle": "Редактировать категорию",
     "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории",
-    "ModalTitle": "Редактировать категорию",
     "SavingData": "Сохранение данных категории..."
   },
   "EditQuestionCard": {

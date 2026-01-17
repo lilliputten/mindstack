@@ -4,18 +4,29 @@ import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
+import {
+  ensureDate,
+  getErrorText,
+  invalidateKeysByPrefixes,
+  makeQueryKeyPrefix,
+  translatedPeriod,
+} from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
+import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { PageError } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { createCategory } from '@/features/categories/actions';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
+import { useMostRecentSuggestedCategory } from '@/features/categories/query-hooks/useMostRecentSuggestedCategory';
 import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories/types';
 import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
 
+import { allowSuggestCategoriesIn } from '../../constants';
 import { getCategoryName } from '../../helpers';
 import { EditCategoryForm } from './EditCategoryForm';
 
@@ -43,13 +54,18 @@ export function AddCategoryModal(props: TProps) {
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
+  const mostRecentSuggestedCategoryQuery = useMostRecentSuggestedCategory({
+    enabled: suggestionMode,
+  });
+  const { data: recentCategory } = mostRecentSuggestedCategoryQuery;
+
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  const modalTitle = suggestionMode
+  const dialogTitle = suggestionMode
     ? t('AddCategoryModal.SuggestDialogTitle')
-    : t('AddCategoryModal.ModalTitle');
-  useModalTitle(modalTitle, shouldBeVisible);
+    : t('AddCategoryModal.DialogTitle');
+  useModalTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const goBack = useGoBack(routePath);
@@ -107,6 +123,24 @@ export function AddCategoryModal(props: TProps) {
     [saveCategoryMutation, t],
   );
 
+  const hasRecentSuggestion = React.useMemo(() => {
+    if (!suggestionMode || !recentCategory) {
+      return false;
+    }
+    const now = Date.now();
+    const categoryCreatedAt = new Date(recentCategory.createdAt!).getTime();
+    const timeSinceLastSuggestion = now - categoryCreatedAt;
+    return timeSinceLastSuggestion < allowSuggestCategoriesIn;
+  }, [suggestionMode, recentCategory]);
+
+  const nextSuggestionDelay = React.useMemo(
+    () =>
+      hasRecentSuggestion && recentCategory
+        ? Date.now() - ensureDate(recentCategory.createdAt).getTime()
+        : undefined,
+    [hasRecentSuggestion, recentCategory],
+  );
+
   if (!shouldBeVisible) {
     return null;
   }
@@ -122,31 +156,48 @@ export function AddCategoryModal(props: TProps) {
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
-      <div
-        className={cn(
-          isDev && '__AddCategoryModal_Header', // DEBUG
-          !isMobile && 'max-h-[90vh]',
-          'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
-        )}
-      >
-        <DialogTitle className="DialogTitle">
-          {suggestionMode
-            ? t('AddCategoryModal.SuggestDialogTitle')
-            : t('AddCategoryModal.DialogTitle')}
-        </DialogTitle>
-        <DialogDescription aria-hidden="true" hidden>
-          {suggestionMode
-            ? t('AddCategoryModal.SuggestDialogDescription')
-            : t('AddCategoryModal.DialogDescription')}
-        </DialogDescription>
-      </div>
-      <EditCategoryForm
-        handleSaveCategory={handleSaveCategory}
-        className="text-foreground"
-        handleClose={hideModal}
-        isPending={saveCategoryMutation.isPending}
-        suggestionMode={suggestionMode}
-      />
+      {nextSuggestionDelay ? (
+        <PageError
+          className={cn(
+            isDev && '__AddCategoryModal_SuggestionError', // DEBUG
+            'mt-4',
+          )}
+          title={t('AddCategoryModal.ForbiddenSuggestionTitle')}
+          explanation={t('AddCategoryModal.ForbiddenSuggestionMessage', {
+            time: translatedPeriod(nextSuggestionDelay, t),
+          })}
+          extraActions={
+            <Button onClick={hideModal} className="flex gap-2">
+              <Icons.X className="size-4" />
+              <span>{t('Cancel')}</span>
+            </Button>
+          }
+          border={false}
+          // reset={hideModal}
+        />
+      ) : (
+        <>
+          <div
+            className={cn(
+              isDev && '__AddCategoryModal_Header', // DEBUG
+              !isMobile && 'max-h-[90vh]',
+              'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
+            )}
+          >
+            <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
+            <DialogDescription aria-hidden="true" hidden>
+              {dialogTitle}
+            </DialogDescription>
+          </div>
+          <EditCategoryForm
+            handleSaveCategory={handleSaveCategory}
+            className="text-foreground"
+            handleClose={hideModal}
+            isPending={saveCategoryMutation.isPending}
+            suggestionMode={suggestionMode}
+          />
+        </>
+      )}
     </Modal>
   );
 }

@@ -121,10 +121,9 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "Cannot save category",
     "CantSaveCategory": "Cannot save category",
-    "DialogDescription": "Add Category",
     "DialogTitle": "Add New Category",
-    "ModalTitle": "Add Category",
-    "SuggestDialogDescription": "Suggest Category",
+    "ForbiddenSuggestionMessage": "To maintain quality, we limit how often you can suggest new categories. Please try again in {time}.",
+    "ForbiddenSuggestionTitle": "Suggestion Limit Reached",
     "SuggestDialogTitle": "Suggest New Category",
     "ToastLoading": "Creating a new category...",
     "ToastSuccess": "Successfully created new category \"{name}\""
@@ -483,10 +482,8 @@
     "CannotSaveCategory": "Cannot save category",
     "DataSaveError": "Cannot save category data",
     "DataSaved": "Successfully saved category \"{name}\"",
-    "DialogDescription": "Edit Category",
     "DialogTitle": "Edit Category",
     "ErrorLoadingCategoriesData": "Error loading category data",
-    "ModalTitle": "Edit Category",
     "SavingData": "Saving category data..."
   },
   "EditQuestionCard": {
@@ -1292,6 +1289,13 @@
     "TheAnswerIsCorrect": "The answer is correct",
     "TheAnswerIsIncorrect": "The answer is incorrect",
     "WorkoutHasBeenFinished": "The workout has been (suddenly) finished."
+  },
+  "duration": {
+    "days": " days",
+    "hours": " hours",
+    "milliseconds": " milliseconds",
+    "minutes": " minutes",
+    "seconds": " seconds"
   },
   "WorkoutStats": {
     "Accuracy": "Accuracy",

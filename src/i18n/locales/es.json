@@ -122,10 +122,7 @@
   "AddCategoryModal": {
     "CannotSaveCategory": "No se puede guardar la categoría",
     "CantSaveCategory": "No se puede guardar la categoría",
-    "DialogDescription": "Agregar categoría",
     "DialogTitle": "Agregar Nueva Categoría",
-    "ModalTitle": "Agregar Categoría",
-    "SuggestDialogDescription": "Sugerir categoría",
     "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "ToastLoading": "Creando una nueva categoría...",
     "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
@@ -481,10 +478,8 @@
     "CannotSaveCategory": "No se puede guardar la categoría",
     "DataSaveError": "No se pueden guardar los datos de la categoría",
     "DataSaved": "Categoría \"{name}\" guardada exitosamente",
-    "DialogDescription": "Editar categoría",
     "DialogTitle": "Editar Categoría",
     "ErrorLoadingCategoriesData": "Error al cargar los datos de la categoría",
-    "ModalTitle": "Editar Categoría",
     "SavingData": "Guardando datos de categoría..."
   },
   "EditQuestionCard": {

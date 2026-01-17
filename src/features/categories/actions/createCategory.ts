@@ -3,9 +3,10 @@
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
-import { getErrorText } from '@/lib/helpers';
+import { getErrorText, translatedPeriod } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
+import { allowSuggestCategoriesIn } from '@/features/categories/constants';
 
 import { defaultCategoryStatus, TCreateCategoryParams } from '../types/Categories';
 
@@ -23,6 +24,28 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
 
   if (!userId) {
     throw new Error('User must be authenticated to create a category');
+  }
+
+  // Check rate limiting for suggested categories
+  if (status === 'SUGGESTED') {
+    const recentSuggestedCategory = await prisma.category.findFirst({
+      where: {
+        createdBy: userId,
+        status: 'SUGGESTED',
+        createdAt: {
+          gte: new Date(Date.now() - allowSuggestCategoriesIn),
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (recentSuggestedCategory) {
+      throw new Error(
+        `You can only suggest one category every ${translatedPeriod(allowSuggestCategoriesIn)}. Please wait before suggesting another category.`,
+      );
+    }
   }
 
   let data: TArgType['data'] | undefined;

@@ -10,6 +10,8 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import prettierConfig from 'eslint-config-prettier';
 import { readGitignoreFiles } from 'eslint-gitignore';
+import pluginJson from 'eslint-plugin-json';
+import pluginJsonc from 'eslint-plugin-jsonc';
 import prettierPlugin from 'eslint-plugin-prettier';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
@@ -210,6 +212,38 @@ export default [
       ...pluginYml.configs.recommended.rules,
       '@typescript-eslint/no-unused-expressions': 'off',
       'no-unused-expressions': 'off',
+    },
+  },
+
+  // JSONC files - commented json (@see https://www.npmjs.com/package/eslint-plugin-jsonc)
+  {
+    files: ['**/*.jsonc'],
+    plugins: {
+      jsonc: pluginJsonc,
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...pluginJsonc.configs['recommended-with-jsonc'].rules,
+      'prettier/prettier': 'warn',
+      // Disable JavaScript/TypeScript specific rules that don't apply to JSON
+      '@typescript-eslint/no-unused-expressions': 'off',
+      'no-constant-binary-expression': 'off',
+    },
+  },
+
+  // JSON files (@see https://www.npmjs.com/package/eslint-plugin-json)
+  {
+    files: ['**/*.json'],
+    plugins: {
+      json: pluginJson,
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...pluginJson.configs['recommended-legacy'].rules,
+      'prettier/prettier': 'warn',
+      // Disable JavaScript/TypeScript specific rules that don't apply to JSON
+      '@typescript-eslint/no-unused-expressions': 'off',
+      'no-constant-binary-expression': 'off',
     },
   },
 
