@@ -35,7 +35,7 @@ describe('parseUrlFilters Function for Categories', () => {
   });
 
   it('should handle completely invalid values', () => {
-    const result = parseUrlFilters('?orderBySelect=invalid_order_by');
+    const result = parseUrlFilters('?orderBySelect=invalid_order_by', { noDebug: true });
 
     // This should return an empty object since 'invalid_order_by' is not a valid option for orderBySelect
     expect(result).toEqual({});

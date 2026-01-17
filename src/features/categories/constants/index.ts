@@ -1,5 +1,7 @@
 // Category image constants
 
+import { minuteMs } from '@/constants';
+
 /** Category image optimization settings */
 export const categoryImageConfig = {
   /** Maximum category image size (in pixels) */
@@ -21,3 +23,6 @@ export const categoryImageAllowedTypes = [
 export type TCategoryImageAllowedTypes = (typeof categoryImageAllowedTypes)[number];
 
 export const categoryImageAllowedTypesString = 'JPEG, PNG, WebP, GIF';
+
+/** Allow to suggest categories once in a period */
+export const allowSuggestCategoriesIn = 30 * minuteMs;

@@ -1,11 +1,18 @@
 import { filtersDataSchema, TFiltersData } from '../CategoriesFiltersTypes';
 
+interface TOptions {
+  noDebug?: boolean;
+}
+
 /**
  * Parses URL query parameters using the filters data schema
  * @param searchParamsString - The URL search parameters string (e.g., "?searchLang=en&categoryIds=cat1,cat2")
  * @returns Partial<TFiltersData> with parsed parameters or empty object if parsing fails
  */
-export function parseUrlFilters(searchParamsString: string): Partial<TFiltersData> {
+export function parseUrlFilters(
+  searchParamsString: string,
+  opts?: TOptions,
+): Partial<TFiltersData> {
   try {
     // Create URLSearchParams from the search string
     const searchParams = new URLSearchParams(searchParamsString);
@@ -30,10 +37,12 @@ export function parseUrlFilters(searchParamsString: string): Partial<TFiltersDat
     const parsedParams = filtersDataSchema.partial().parse(paramsObj);
     return parsedParams as Partial<TFiltersData>;
   } catch (error) {
-    // If there's an error parsing, log it but return an empty object
-    // This prevents crashes if invalid parameters are passed in the URL
-    // eslint-disable-next-line no-console
-    console.warn('Invalid URL parameters for categories filters', error);
+    if (!opts?.noDebug) {
+      // If there's an error parsing, log it but return an empty object
+      // This prevents crashes if invalid parameters are passed in the URL
+      // eslint-disable-next-line no-console
+      console.warn('Invalid URL parameters for categories filters', error);
+    }
     return {};
   }
 }
