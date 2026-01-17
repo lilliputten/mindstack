@@ -25,6 +25,8 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
   orderBySelect: {
     byRecent: 'OrderBy-Recent',
     byOldest: 'OrderBy-Oldest',
+    morePopular: 'OrderBy-MorePopular',
+    lessPopular: 'OrderBy-LessPopular',
     /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
      * byNameAsc: 'OrderBy-Name',
      * byNameDesc: 'OrderBy-NameDescending',

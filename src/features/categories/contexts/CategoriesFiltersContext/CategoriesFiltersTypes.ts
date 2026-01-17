@@ -24,6 +24,8 @@ export const maxSearchTextLength = isDev ? 10 : 50;
 
 export const orderBySelectOptions = [
   // Sort options
+  'morePopular',
+  'lessPopular',
   'byRecent',
   'byOldest',
   /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
@@ -83,13 +85,15 @@ export const filtersDataDefaults: TFiltersData = {
  * };
  */
 
-export const orderByMap: Record<TOrderBySelectOption, TCategoryOrderBy> = {
-  byRecent: { createdAt: 'desc' },
-  byOldest: { createdAt: 'asc' },
+export const orderByMap: Record<TOrderBySelectOption, TCategoryOrderBy[]> = {
+  morePopular: [{ topics: { _count: 'desc' } }, { createdAt: 'desc' }],
+  lessPopular: [{ topics: { _count: 'asc' } }, { createdAt: 'desc' }],
+  byRecent: [{ createdAt: 'desc' }],
+  byOldest: [{ createdAt: 'asc' }],
   /* // NOTE: Don't use sort by name, as the `name` fields are a field of many-to-many relation
    * // Placeholder for name-based sorting - actual implementation will be at service level
-   * byNameAsc: { [> translations: { ... }, <] createdAt: 'desc' },
-   * byNameDesc: { [> translations: { ... }, <] createdAt: 'desc' },
+   * byNameAsc: [{ [> translations: { ... }, <] }, { createdAt: 'desc' }],
+   * byNameDesc: [{ [> translations: { ... }, <] }, { createdAt: 'desc' }],
    */
 };
 

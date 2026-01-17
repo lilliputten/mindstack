@@ -240,6 +240,8 @@
     "No": "No",
     "NoActiveFilters": "No Active Filters",
     "OnlyMyTopics": "Only My Topics",
+    "OrderBy-LessPopular": "Less Popular",
+    "OrderBy-MorePopular": "More Popular",
     "OrderBy-Name": "By Name",
     "OrderBy-NameDescending": "By Name (descending)",
     "OrderBy-Oldest": "Oldest",

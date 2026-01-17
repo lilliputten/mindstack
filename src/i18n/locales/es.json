@@ -176,6 +176,8 @@
     "Label-Status": "Estado",
     "No": "No",
     "NoActiveFilters": "No hay filtros activos",
+    "OrderBy-LessPopular": "Menos Popular",
+    "OrderBy-MorePopular": "Más Popular",
     "OrderBy-Name": "Por Nombre",
     "OrderBy-NameDescending": "Por Nombre (descendente)",
     "OrderBy-Oldest": "Más Antiguo",

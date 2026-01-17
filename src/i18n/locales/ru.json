@@ -175,6 +175,8 @@
     "Label-Status": "Статус",
     "No": "Нет",
     "NoActiveFilters": "Нет активных фильтров",
+    "OrderBy-LessPopular": "Менее популярные",
+    "OrderBy-MorePopular": "Более популярные",
     "OrderBy-Name": "По названию",
     "OrderBy-NameDescending": "По названию (по убыванию)",
     "OrderBy-Oldest": "По самым старым",
