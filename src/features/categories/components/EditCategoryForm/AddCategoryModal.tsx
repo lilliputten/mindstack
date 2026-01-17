@@ -47,6 +47,8 @@ export function AddCategoryModal(props: TProps) {
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
+  const [saved, setSaved] = React.useState(false);
+
   /** We're using the `ManageCategories.Edit` as a default namespace, and the
    * `ManageCategories.EditNew` as another for category creating
    */
@@ -55,7 +57,7 @@ export function AddCategoryModal(props: TProps) {
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
   const mostRecentSuggestedCategoryQuery = useMostRecentSuggestedCategory({
-    enabled: suggestionMode,
+    enabled: suggestionMode && !saved,
   });
   const { data: recentCategory } = mostRecentSuggestedCategoryQuery;
 
@@ -93,6 +95,8 @@ export function AddCategoryModal(props: TProps) {
 
       // Invalidate all other keys...
       availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
+
+      setSaved(true);
     },
     onError: (error, newCategory) => {
       const message = t('AddCategoryModal.CantSaveCategory');
@@ -136,10 +140,10 @@ export function AddCategoryModal(props: TProps) {
   // const nextSuggestionDelay = 5 * 60 * 1000; // DEBUG
   const nextSuggestionDelay = React.useMemo(
     () =>
-      hasRecentSuggestion && recentCategory
+      !saved && hasRecentSuggestion && recentCategory
         ? Date.now() - ensureDate(recentCategory.createdAt).getTime()
         : undefined,
-    [hasRecentSuggestion, recentCategory],
+    [saved, hasRecentSuggestion, recentCategory],
   );
 
   if (!shouldBeVisible) {

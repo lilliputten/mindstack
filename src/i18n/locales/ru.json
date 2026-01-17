@@ -1,6 +1,7 @@
 {
   "AIPoweredLearning": "Обучение с поддержкой ИИ",
   "ActiveRecallPractice": "Практика активного вспоминания",
+  "AddTopic": "Добавить тему",
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
@@ -9,6 +10,7 @@
   "Authors": "Авторы",
   "Availability": "Доступность",
   "Back": "Назад",
+  "Cancel": "Отмена",
   "Categories": "Категории",
   "Category": "Категория",
   "ChangeFilters": "Изменить фильтры",
@@ -29,6 +31,7 @@
   "FinishedAt": "Завершено в",
   "GenerationMode": "Режим генерации",
   "GoBack": "Назад",
+  "GoHome": "На главную",
   "HIDDEN": "Скрытый",
   "Hide": "Скрыть",
   "Image": "Изображение",
@@ -46,13 +49,6 @@
   "Ok": "Хорошо",
   "PUBLIC": "Общий",
   "PageNotFound": "Страница не найдена",
-  "duration": {
-    "milliseconds": "мс",
-    "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}",
-    "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
-    "hours": "{count, plural, =1 {час} few {часа} other {часов}}",
-    "days": "{count, plural, =1 {день} few {дня} other {дней}}"
-  },
   "Private": "Приватный",
   "Properties": "Характеристики",
   "Public": "Публичный",
@@ -125,11 +121,11 @@
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "CantSaveCategory": "Невозможно сохранить категорию",
     "DialogTitle": "Добавить новую категорию",
+    "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку позже. Период ожидания: {time}.",
+    "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
     "SuggestDialogTitle": "Предложить новую категорию",
     "ToastLoading": "Создание новой категории...",
-    "ToastSuccess": "Новая категория \"{name}\" успешно создана",
-    "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
-    "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку через {time}."
+    "ToastSuccess": "Новая категория \"{name}\" успешно создана"
   },
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
@@ -478,7 +474,7 @@
     "StatusLabel": "Статус",
     "SubmitFormError": "Не удалось отправить данные формы",
     "SuccessfullySavedMessage": "Категория была успешно сохранена. Теперь вы можете закрыть этот диалог.",
-    "SuccessfullySavedTitle": "Успешно сохранено!",
+    "SuccessfullySavedTitle": "Сохранено!",
     "SuggestNewCategory": "Предложить новую категорию",
     "SuggestedOption": "Предложенная",
     "UploadImageError": "Не удалось загрузить изображение"
@@ -1375,7 +1371,11 @@
     "PaymentStartingError": "Ошибка начала платежа",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
   },
-  "Cancel": "Отмена",
-  "AddTopic": "Добавить тему",
-  "GoHome": "На главную"
+  "duration": {
+    "days": "{count, plural, =1 {день} few {дня} other {дней}}",
+    "hours": "{count, plural, =1 {час} few {часа} other {часов}}",
+    "milliseconds": "мс",
+    "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
+    "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}"
+  }
 }

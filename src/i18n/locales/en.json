@@ -1,6 +1,7 @@
 {
   "AIPoweredLearning": "AI-Powered Learning",
   "ActiveRecallPractice": "Active Recall Practice",
+  "AddTopic": "Add Topic",
   "AllowedToGenerate": "Allowed to generate",
   "Answer": "Answer",
   "Answers": "Answers",
@@ -12,6 +13,7 @@
   "Cancel": "Cancel",
   "Categories": "Categories",
   "Category": "Category",
+  "ChangeFilters": "Change Filters",
   "ClearChanges": "Clear Changes",
   "ClearText": "Clear text",
   "Close": "Close",
@@ -30,6 +32,7 @@
   "FinishedAt": "Finished at",
   "GenerationMode": "Generation mode",
   "GoBack": "Go Back",
+  "GoHome": "Go home",
   "HIDDEN": "Hidden",
   "Hide": "Hide",
   "Image": "Image",
@@ -48,13 +51,6 @@
   "PUBLIC": "Public",
   "PageNotFound": "Page not found",
   "PleaseTryAgainOrContact": "Please try again or contact",
-  "duration": {
-    "milliseconds": "ms",
-    "seconds": "{count, plural, =1 {second} other {seconds}}",
-    "minutes": "{count, plural, =1 {minute} other {minutes}}",
-    "hours": "{count, plural, =1 {hour} other {hours}}",
-    "days": "{count, plural, =1 {day} other {days}}"
-  },
   "Private": "Private",
   "Properties": "Properties",
   "Public": "Public",
@@ -86,6 +82,7 @@
   "Total": "Total",
   "Training": "Training",
   "TrainingStatus": "Training status",
+  "TryAgain": "Try again",
   "UpdatedDate": "Updated date",
   "UsedGenerations": "Used generations",
   "UserAvatarImage": "User avatar image",
@@ -183,12 +180,12 @@
     "Label-Status": "Status",
     "No": "No",
     "NoActiveFilters": "No Active Filters",
+    "OrderBy-LessPopular": "Less Popular",
+    "OrderBy-MorePopular": "More Popular",
     "OrderBy-Name": "By Name",
     "OrderBy-NameDescending": "By Name (descending)",
     "OrderBy-Oldest": "Oldest",
     "OrderBy-Recent": "Recent",
-    "OrderBy-MorePopular": "More Popular",
-    "OrderBy-LessPopular": "Less Popular",
     "Status-Hidden": "Hidden",
     "Status-Public": "Public",
     "Status-Suggested": "Suggested",
@@ -1382,8 +1379,11 @@
     "PaymentStartingError": "Payment starting error",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
   },
-  "ChangeFilters": "Change Filters",
-  "AddTopic": "Add Topic",
-  "GoHome": "Go home",
-  "TryAgain": "Try again"
+  "duration": {
+    "days": "{count, plural, =1 {day} other {days}}",
+    "hours": "{count, plural, =1 {hour} other {hours}}",
+    "milliseconds": "ms",
+    "minutes": "{count, plural, =1 {minute} other {minutes}}",
+    "seconds": "{count, plural, =1 {second} other {seconds}}"
+  }
 }

@@ -1,6 +1,7 @@
 {
   "AIPoweredLearning": "Aprendizaje impulsado por IA",
   "ActiveRecallPractice": "Práctica de recuperación activa",
+  "AddTopic": "Agregar Tema",
   "AllowedToGenerate": "Permitido generar",
   "Answer": "Respuesta",
   "Answers": "Respuestas",
@@ -31,6 +32,7 @@
   "FinishedAt": "Terminado en",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
+  "GoHome": "Ir a casa",
   "HIDDEN": "Oculto",
   "Hide": "Esconder",
   "Image": "Imagen",
@@ -49,13 +51,6 @@
   "PUBLIC": "Público",
   "PageNotFound": "Página no encontrada",
   "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
-  "duration": {
-    "milliseconds": "ms",
-    "seconds": "{count, plural, =1 {segundo} other {segundos}}",
-    "minutes": "{count, plural, =1 {minuto} other {minutos}}",
-    "hours": "{count, plural, =1 {hora} other {horas}}",
-    "days": "{count, plural, =1 {día} other {días}}"
-  },
   "Private": "Privado",
   "Properties": "Propiedades",
   "Public": "Público",
@@ -130,11 +125,11 @@
     "CannotSaveCategory": "No se puede guardar la categoría",
     "CantSaveCategory": "No se puede guardar la categoría",
     "DialogTitle": "Agregar Nueva Categoría",
+    "ForbiddenSuggestionMessage": "Para mantener la calidad, limitamos la frecuencia con la que puedes sugerir nuevas categorías. \nInténtelo de nuevo dentro de {time}.",
+    "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
     "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "ToastLoading": "Creando una nueva categoría...",
-    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente",
-    "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
-    "ForbiddenSuggestionMessage": "Para mantener la calidad, limitamos la frecuencia con la que puedes sugerir nuevas categorías. \nInténtelo de nuevo dentro de {time}."
+    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
   },
   "AddQuestionForm": {
     "AddButtonText": "Agregar",
@@ -1378,6 +1373,11 @@
     "PaymentStartingError": "Error al iniciar el pago",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
   },
-  "AddTopic": "Agregar Tema",
-  "GoHome": "Ir a casa"
+  "duration": {
+    "days": "{count, plural, =1 {día} other {días}}",
+    "hours": "{count, plural, =1 {hora} other {horas}}",
+    "milliseconds": "ms",
+    "minutes": "{count, plural, =1 {minuto} other {minutos}}",
+    "seconds": "{count, plural, =1 {segundo} other {segundos}}"
+  }
 }
