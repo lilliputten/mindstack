@@ -11,8 +11,6 @@ import { isDev } from '@/constants';
 import { getCategoryDescription, getCategoryName } from '@/features/categories/helpers';
 import { TAvailableCategory } from '@/features/categories/types';
 
-// TODO: Use 'next/navigation'
-
 import { CategoryProperties } from './CategoryProperties';
 
 interface TCategoryHeaderOptions {

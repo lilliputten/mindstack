@@ -32,6 +32,11 @@ export const {
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL,
   VERCEL_URL,
+  // Vercel blob storage
+  // VERCEL_BLOB_READ_WRITE_TOKEN,
+  VERCEL_BLOB_HOST,
+  // Currencies API
+  EXCHANGERATE_API_KEY,
   // Yookassa
   YOOKASSA_SHOP_ID,
   YOOKASSA_SECRET_KEY,

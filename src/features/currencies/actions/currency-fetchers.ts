@@ -1,7 +1,8 @@
+import { EXCHANGERATE_API_KEY } from '@/config/envServer';
 import { getErrorText } from '@/lib/helpers';
 import { secondMs } from '@/constants';
 
-const timeoutDuration = secondMs * 30;
+const timeoutDuration = secondMs * 10;
 
 type TExchangerateApiCurrencyId = 'RUB' | 'EUR';
 
@@ -12,7 +13,8 @@ type TExchangerateApiCurrencyId = 'RUB' | 'EUR';
 export async function fetchExchangerateApiRatio(
   apiCurrencyId: TExchangerateApiCurrencyId,
 ): Promise<number> {
-  const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrencyId}`;
+  // const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrencyId}`;
+  const apiUrl = `https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/latest/${apiCurrencyId}`;
   let res: Response | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any | undefined;
@@ -23,6 +25,8 @@ export async function fetchExchangerateApiRatio(
       signal: AbortSignal.timeout(timeoutDuration), // Automatically aborts after duration
     });
     /* // Sample result
+     * curl -i -m 5 https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/latest/RUB
+     * curl -i -m 5 https://api.exchangerate-api.com/v4/latest/RUB
      * {
      *   "provider": "https://www.exchangerate-api.com",
      *   "WARNING_UPGRADE_TO_V6": "https://www.exchangerate-api.com/docs/free",
@@ -38,7 +42,9 @@ export async function fetchExchangerateApiRatio(
      *   }
      * }
      */
-    if (!res.ok) throw new Error('The exchangerate-api endpoint is unavailable');
+    if (!res.ok) {
+      throw new Error('The exchangerate-api endpoint is unavailable');
+    }
     data = await res.json();
     value = data?.rates?.USD;
     if (!value || isNaN(value)) {

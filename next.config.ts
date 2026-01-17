@@ -1,6 +1,11 @@
 import type { NextConfig } from 'next';
+import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+// NOTE: Always import both client and server environments to ensure if they're ok
+import { isDev } from './src/config/env';
+import { VERCEL_BLOB_HOST } from './src/config/envServer';
+import { staticRedirects, staticRewrites } from './src/config/routesConfig';
 import {
   defaultThemeColor,
   primaryColor,
@@ -9,22 +14,7 @@ import {
   secondaryForegroundColor,
   themeColorData,
 } from './src/config/themeColors';
-
-// Import environments to ensure if they're ok
-import './src/config/envServer';
-import './src/config/env';
-
-import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
-
-import { staticRedirects, staticRewrites } from './src/config/routesConfig';
 import { defaultLocale, localesList } from './src/i18n/types';
-
-const isDev = process.env.NODE_ENV === 'development';
-
-/** Host name for blob storage server
- * @see https://vercel.com/docs/vercel-blob
- */
-const vercelBlobHost = 'dtd6kgwmdtb71uj7.public.blob.vercel-storage.com';
 
 /* // Show loaded environment variables
  * declare global {
@@ -151,12 +141,12 @@ const nextConfig: NextConfig = {
     silenceDeprecations: ['legacy-js-api'],
   },
   images: {
-    domains: [vercelBlobHost], // Vercel Blob Storage
+    domains: [VERCEL_BLOB_HOST], // Vercel Blob Storage
     // If you have other image domains, add them here as well
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: vercelBlobHost,
+        hostname: VERCEL_BLOB_HOST,
       },
     ],
   },

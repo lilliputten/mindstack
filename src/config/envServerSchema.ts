@@ -12,6 +12,13 @@ export const envServerSchema = z.object({
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
 
+  // Vercel blob storage
+  // VERCEL_BLOB_READ_WRITE_TOKEN: z.string().min(1),
+  VERCEL_BLOB_HOST: z.string().min(1),
+
+  // Currencies API
+  EXCHANGERATE_API_KEY: z.string().min(1),
+
   // Yookassa
   YOOKASSA_SHOP_ID: z.string().min(1),
   YOOKASSA_SECRET_KEY: z.string().min(1),
