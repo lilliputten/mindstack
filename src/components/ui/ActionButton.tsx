@@ -51,7 +51,7 @@ export function ActionButton(props: TActionItem) {
           {...restIconProps}
         />
       )}
-      {textContent && !isIcon && <span className="max-w-40 truncate">{textContent}</span>}
+      {textContent && !isIcon && <span className="max-w-50 truncate">{textContent}</span>}
     </>
   );
   const variant = isDisabled ? 'ghost' : buttonVariant;

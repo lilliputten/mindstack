@@ -46,6 +46,13 @@
   "Ok": "Хорошо",
   "PUBLIC": "Общий",
   "PageNotFound": "Страница не найдена",
+  "duration": {
+    "milliseconds": "мс",
+    "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}",
+    "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
+    "hours": "{count, plural, =1 {час} few {часа} other {часов}}",
+    "days": "{count, plural, =1 {день} few {дня} other {дней}}"
+  },
   "Private": "Приватный",
   "Properties": "Характеристики",
   "Public": "Публичный",
@@ -120,7 +127,9 @@
     "DialogTitle": "Добавить новую категорию",
     "SuggestDialogTitle": "Предложить новую категорию",
     "ToastLoading": "Создание новой категории...",
-    "ToastSuccess": "Новая категория \"{name}\" успешно создана"
+    "ToastSuccess": "Новая категория \"{name}\" успешно создана",
+    "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
+    "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку через {time}."
   },
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
@@ -178,10 +187,10 @@
     "OrderBy-MorePopular": "Более популярные",
     "OrderBy-Name": "По названию",
     "OrderBy-NameDescending": "По названию (по убыванию)",
-    "OrderBy-Oldest": "По самым старым",
+    "OrderBy-Oldest": "По более старым",
     "OrderBy-Recent": "По недавним",
-    "Status-Hidden": "Скрытый",
-    "Status-Public": "Публичный",
+    "Status-Hidden": "Скрытые",
+    "Status-Public": "Публичные",
     "Status-Suggested": "Предложенный",
     "WithImage": "С изображениями",
     "WithTopics": "С темами",
@@ -716,7 +725,6 @@
   },
   "ManageTopicsListCard": {
     "AddNewTopic": "Добавить новую тему",
-    "AddTopic": "Добавить тему",
     "Author": "Автор",
     "Back": "Назад",
     "CannotDeleteSelectedTopics": "Не удаётся удалить выбранные темы",
@@ -724,7 +732,6 @@
     "CannotResetPublicStatusForSelectedTopics": "Не удаётся сбросить публичный статус выбранных тем",
     "CannotUpdateTopicPublicStatus": "Не удаётся обновить публичный статус темы",
     "Categories": "Категории",
-    "ChangeFilters": "Изменить фильтры",
     "ConfirmDeleteTopics": "Подтвердить удаление тем",
     "ConfirmDeleteTopicsMessage": "Подтверждаете удаление {count, plural, =0 {ни одной темы} =1 {# выбранной темы} few {# выбранных тем} other {# выбранных тем}}?",
     "Delete": "Удалить",
@@ -734,7 +741,6 @@
     "Edit": "Редактировать",
     "EditQuestions": "Редактировать вопросы",
     "ErrorLoadingTopicsData": "Ошибка загрузки данных доступных тем",
-    "GoBack": "Назад",
     "Keywords": "Ключевые слова",
     "Language": "Язык",
     "MakingSelectedTopicsPublic": "Делаем выбранные темы публичными...",
@@ -1368,5 +1374,8 @@
     "PaymentProcessingFailure": "Ошибка обработки оплаты",
     "PaymentStartingError": "Ошибка начала платежа",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
-  }
+  },
+  "Cancel": "Отмена",
+  "AddTopic": "Добавить тему",
+  "GoHome": "На главную"
 }

@@ -48,6 +48,13 @@
   "PUBLIC": "Public",
   "PageNotFound": "Page not found",
   "PleaseTryAgainOrContact": "Please try again or contact",
+  "duration": {
+    "milliseconds": "ms",
+    "seconds": "{count, plural, =1 {second} other {seconds}}",
+    "minutes": "{count, plural, =1 {minute} other {minutes}}",
+    "hours": "{count, plural, =1 {hour} other {hours}}",
+    "days": "{count, plural, =1 {day} other {days}}"
+  },
   "Private": "Private",
   "Properties": "Properties",
   "Public": "Public",
@@ -123,7 +130,7 @@
     "CantSaveCategory": "Cannot save category",
     "DialogTitle": "Add New Category",
     "ForbiddenSuggestionMessage": "To maintain quality, we limit how often you can suggest new categories. Please try again in {time}.",
-    "ForbiddenSuggestionTitle": "Suggestion Limit Reached",
+    "ForbiddenSuggestionTitle": "The limit of offers for new categories has been reached",
     "SuggestDialogTitle": "Suggest New Category",
     "ToastLoading": "Creating a new category...",
     "ToastSuccess": "Successfully created new category \"{name}\""
@@ -180,6 +187,8 @@
     "OrderBy-NameDescending": "By Name (descending)",
     "OrderBy-Oldest": "Oldest",
     "OrderBy-Recent": "Recent",
+    "OrderBy-MorePopular": "More Popular",
+    "OrderBy-LessPopular": "Less Popular",
     "Status-Hidden": "Hidden",
     "Status-Public": "Public",
     "Status-Suggested": "Suggested",
@@ -720,7 +729,6 @@
   },
   "ManageTopicsListCard": {
     "AddNewTopic": "Add New Topic",
-    "AddTopic": "Add Topic",
     "Author": "Author",
     "Back": "Back",
     "CannotDeleteSelectedTopics": "Cannot delete selected topics",
@@ -728,7 +736,6 @@
     "CannotResetPublicStatusForSelectedTopics": "Cannot reset public status for selected topics",
     "CannotUpdateTopicPublicStatus": "Cannot update topic public status",
     "Categories": "Categories",
-    "ChangeFilters": "Change Filters",
     "ConfirmDeleteTopics": "Confirm delete topics",
     "ConfirmDeleteTopicsMessage": "Do you confirm deleting {count, plural, =0 {no topics} =1 {# selected topic} other {# selected topics}}?",
     "Delete": "Delete",
@@ -738,7 +745,6 @@
     "Edit": "Edit",
     "EditQuestions": "Edit Questions",
     "ErrorLoadingTopicsData": "Error loading available topics data",
-    "GoBack": "Go Back",
     "Keywords": "Keywords",
     "Language": "Language",
     "MakingSelectedTopicsPublic": "Making selected topics public...",
@@ -1290,13 +1296,6 @@
     "TheAnswerIsIncorrect": "The answer is incorrect",
     "WorkoutHasBeenFinished": "The workout has been (suddenly) finished."
   },
-  "duration": {
-    "days": " days",
-    "hours": " hours",
-    "milliseconds": " milliseconds",
-    "minutes": " minutes",
-    "seconds": " seconds"
-  },
   "WorkoutStats": {
     "Accuracy": "Accuracy",
     "AccuracyExpert": "Accuracy Expert",
@@ -1382,5 +1381,9 @@
     "PaymentProcessingFailure": "Payment processing failure",
     "PaymentStartingError": "Payment starting error",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
-  }
+  },
+  "ChangeFilters": "Change Filters",
+  "AddTopic": "Add Topic",
+  "GoHome": "Go home",
+  "TryAgain": "Try again"
 }

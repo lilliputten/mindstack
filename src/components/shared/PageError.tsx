@@ -7,6 +7,7 @@ import { ErrorLike } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { ErrorPlaceHolder } from '@/components/shared/ErrorPlaceHolder';
 import * as Icons from '@/components/shared/Icons';
@@ -53,6 +54,8 @@ export function PageError(props: TErrorProps) {
     noActions,
   } = props;
   const router = useRouter();
+
+  const t = useT();
 
   let titleText = title;
   let errText = getErrorText(error);
@@ -135,24 +138,28 @@ export function PageError(props: TErrorProps) {
             'mt-4 flex w-full flex-wrap justify-center gap-4',
           )}
         >
-          <Button variant="theme" onClick={goBack} className="text-truncate flex gap-2">
+          <Button
+            variant="theme"
+            onClick={goBack}
+            className="text-overflow flex items-center gap-2"
+          >
             <Icons.ArrowLeft className="size-4" />
-            <span className="truncate">Go back</span>
+            <span className="truncate">{t('GoBack')}</span>
           </Button>
-          <Button variant="theme" onClick={goHome} className="flex gap-2">
+          <Button variant="theme" onClick={goHome} className="text-overflowflex items-center gap-2">
             <Icons.Home className="size-4" />
-            Go home
+            <span className="truncate">{t('GoHome')}</span>
           </Button>
           {/*
         <Link href={rootAliasRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
-          <span>Go home</span>
+           <span className="truncate">{t('GoHome')}</span>
         </Link>
         */}
           {!!reset && (
-            <Button onClick={reset} className="flex gap-2">
+            <Button onClick={reset} className="text-overflowflex items-center gap-2">
               <Icons.Refresh className="size-4" />
-              <span>Try again</span>
+              <span className="truncate">{t('TryAgain')}</span>
             </Button>
           )}
           {extraActions}

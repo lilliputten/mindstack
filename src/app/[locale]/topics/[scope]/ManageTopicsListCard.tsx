@@ -481,17 +481,17 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageTopicsListCard.GoBack')}
+                {t('GoBack')}
               </Button>
               {!isFiltersExpanded && (
                 <Button variant="outline" onClick={expandFilters} className="flex gap-2">
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  {t('ManageTopicsListCard.ChangeFilters')}
+                  {t('ChangeFilters')}
                 </Button>
               )}
               <Button onClick={handleAddTopic} className="flex gap-2">
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageTopicsListCard.AddTopic')}
+                {t('AddTopic')}
               </Button>
             </>
           }

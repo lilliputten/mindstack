@@ -133,6 +133,7 @@ export function AddCategoryModal(props: TProps) {
     return timeSinceLastSuggestion < allowSuggestCategoriesIn;
   }, [suggestionMode, recentCategory]);
 
+  // const nextSuggestionDelay = 5 * 60 * 1000; // DEBUG
   const nextSuggestionDelay = React.useMemo(
     () =>
       hasRecentSuggestion && recentCategory
@@ -173,7 +174,7 @@ export function AddCategoryModal(props: TProps) {
             </Button>
           }
           border={false}
-          // reset={hideModal}
+          // reset={retry}
         />
       ) : (
         <>

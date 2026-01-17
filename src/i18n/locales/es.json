@@ -49,6 +49,13 @@
   "PUBLIC": "Público",
   "PageNotFound": "Página no encontrada",
   "PleaseTryAgainOrContact": "Por favor, inténtelo de nuevo o contacte",
+  "duration": {
+    "milliseconds": "ms",
+    "seconds": "{count, plural, =1 {segundo} other {segundos}}",
+    "minutes": "{count, plural, =1 {minuto} other {minutos}}",
+    "hours": "{count, plural, =1 {hora} other {horas}}",
+    "days": "{count, plural, =1 {día} other {días}}"
+  },
   "Private": "Privado",
   "Properties": "Propiedades",
   "Public": "Público",
@@ -125,7 +132,9 @@
     "DialogTitle": "Agregar Nueva Categoría",
     "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "ToastLoading": "Creando una nueva categoría...",
-    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente"
+    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente",
+    "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
+    "ForbiddenSuggestionMessage": "Para mantener la calidad, limitamos la frecuencia con la que puedes sugerir nuevas categorías. \nInténtelo de nuevo dentro de {time}."
   },
   "AddQuestionForm": {
     "AddButtonText": "Agregar",
@@ -716,7 +725,6 @@
   },
   "ManageTopicsListCard": {
     "AddNewTopic": "Agregar Nuevo Tema",
-    "AddTopic": "Agregar Tema",
     "Author": "Autor",
     "Back": "Atrás",
     "CannotDeleteSelectedTopics": "No se pueden eliminar los temas seleccionados",
@@ -724,7 +732,6 @@
     "CannotResetPublicStatusForSelectedTopics": "No se puede restablecer el estado público de los temas seleccionados",
     "CannotUpdateTopicPublicStatus": "No se puede actualizar el estado público del tema",
     "Categories": "Categorías",
-    "ChangeFilters": "Cambiar Filtros",
     "ConfirmDeleteTopics": "Confirmar eliminación de temas",
     "ConfirmDeleteTopicsMessage": "¿Confirmas eliminar {count, plural, =0 {ningún tema} =1 {# tema seleccionado} other {# temas seleccionados}}?",
     "Delete": "Eliminar",
@@ -734,7 +741,6 @@
     "Edit": "Editar",
     "EditQuestions": "Editar Preguntas",
     "ErrorLoadingTopicsData": "Error al cargar los datos de temas disponibles",
-    "GoBack": "Volver",
     "Keywords": "Palabras clave",
     "Language": "Idioma",
     "MakingSelectedTopicsPublic": "Haciendo públicos los temas seleccionados...",
@@ -1371,5 +1377,7 @@
     "PaymentProcessingFailure": "Error al procesar el pago",
     "PaymentStartingError": "Error al iniciar el pago",
     "UnauthorizedPaymentError": "No se pueden procesar pagos para usuarios no autorizados"
-  }
+  },
+  "AddTopic": "Agregar Tema",
+  "GoHome": "Ir a casa"
 }
