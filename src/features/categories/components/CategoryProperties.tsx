@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useLocale } from 'next-intl';
 
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import * as Icons from '@/components/shared/Icons';
-import { getAllCategoryKeywords } from '@/features/categories/helpers';
+import { getCategoryKeywords } from '@/features/categories/helpers';
 import { TAvailableCategory } from '@/features/categories/types';
 import { SmallUserBlock, useUserById } from '@/features/users';
 
@@ -23,12 +23,14 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
   const format = useFormatter();
   const { _count, createdAt, updatedAt, createdBy } = category;
 
+  const locale = useLocale() as TLocale;
+
   const topicsCount = _count?.topics;
   const userQuery = useUserById(createdBy || undefined);
   const { user } = userQuery;
 
   // Get keywords from all translations
-  const keywords = getAllCategoryKeywords(category);
+  const keywords = getCategoryKeywords(category, locale);
   const keywordsContent = keywords.map((kw, idx) => (
     <span key={`${idx}-${kw}`} className="truncate rounded-sm border bg-theme-700/10 px-1">
       {kw}

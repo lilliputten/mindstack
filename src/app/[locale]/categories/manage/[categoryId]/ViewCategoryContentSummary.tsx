@@ -19,8 +19,8 @@ import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import {
-  getAllCategoryKeywords,
   getCategoryDescription,
+  getCategoryKeywords,
   getCategoryName,
 } from '@/features/categories/helpers';
 import { useAvailableCategoryById } from '@/features/categories/query-hooks';
@@ -89,7 +89,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
     // isEnabled: isUpdatedUserEnabled,
   } = updatedUserQuery;
 
-  const allKeywords = getAllCategoryKeywords(category);
+  const keywords = getCategoryKeywords(category, locale);
 
   const topicsCount = category._count?.topics || 0;
 
@@ -161,14 +161,14 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
         </div>
 
         {/* Keywords */}
-        {!!allKeywords.length && (
+        {!!keywords.length && (
           <div
             data-testid="__ViewCategoryContentSummary_Section_Keywords"
             className="flex flex-col gap-4"
           >
             <h3 className="text-lg font-semibold">{t('Keywords')}</h3>
             <div className="flex flex-wrap gap-1">
-              {allKeywords.map((keyword, idx) => (
+              {keywords.map((keyword, idx) => (
                 <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
                   {keyword.trim()}
                 </span>
