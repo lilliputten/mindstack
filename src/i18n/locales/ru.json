@@ -589,7 +589,7 @@
     "Title": "Мощные функции для тренировки памяти"
   },
   "GenerateAnswersForm": {
-    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
     "AnswersCountLabelPrefix": "Количество ответов:",
     "DebugDataHint": "Включить использование фиктивных данных вместо реальных вызовов API.",
     "ExtraInstructionsHint": "Дополнительный контекст или инструкции для ИИ (необязательно).",
@@ -597,7 +597,7 @@
     "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации ответов...",
     "GenerateButtonText": "Генерировать",
     "GeneratingButtonText": "Генерация",
-    "GenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
+    "GenerationTypeHint": "Выберите тип ответов, которые будут генерироваться на каждый вопрос: простые и четкие ответы, проверяющие базовое понимание, или сложные, требующие детальных знаний и анализа.",
     "GenerationTypeLabel": "Тип генерации",
     "GenerationTypePlaceholder": "Выберите тип генерации",
     "UseDebugDataLabel": "Использовать отладочные данные?"
@@ -615,7 +615,7 @@
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены"
   },
   "GenerateQuestionsForm": {
-    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
     "AnswersCountLabelPrefix": "Количество ответов:",
     "AnswersGenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
     "AnswersGenerationTypeLabel": "Тип генерации ответов",
@@ -626,10 +626,10 @@
     "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации вопросов...",
     "GenerateButtonText": "Генерировать",
     "GeneratingButtonText": "Генерация",
-    "GenerationTypeHint": "Выберите тип вопросов для генерации.",
+    "GenerationTypeHint": "Выберите тип вопросов, которые нужно сгенерировать: простые и ясные вопросы, проверяющие базовое понимание, или сложные, требующие детальных знаний и анализа.",
     "GenerationTypeLabel": "Тип генерации",
     "GenerationTypePlaceholder": "Выберите тип генерации",
-    "QuestionsCountHint": "Диапазон вопросов для генерации (минимум - максимум).",
+    "QuestionsCountHint": "Количество вопросов для генерации (минимум-максимум).",
     "QuestionsCountLabelPrefix": "Количество вопросов:",
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
@@ -1348,6 +1348,7 @@
     "StudyStreak": "Серия обучения",
     "StudyStreaksAndConsistencyMetrics": "Серии обучения и метрики последовательности",
     "SummaryOfCompletedCountTemplate": "Сводка {count, plural, =1 {вашей # завершенной тренировки} other {ваших # завершенных тренировок}}",
+    "ThereIsOnlyOneHistoryRecordNow": "Сейчас есть только одна запись в истории.",
     "ThisWillBeYourFirst": "Это будет ваша первая тренировка по этой теме!",
     "Time": "Время",
     "TimeElapsed": "Прошло времени",
@@ -1358,6 +1359,9 @@
     "TrainingIsCompleted": "Тренировка завершена",
     "TrainingReadyToStart": "Тренировка создана",
     "WhatYoullSeeAfter": "Что вы увидите после первой тренировки",
+    "YourLearningProgress": "Ваш прогресс в обучении с течением времени",
+    "YourLearningProgressOverTime": "Ваш прогресс в обучении с течением времени",
+    "YourProgress": "Ваш прогресс",
     "lastResults": "последних результатов из общего количества",
     "signIn": "войти",
     "toViewYourStatistics": "чтобы посмотреть свою статистику."

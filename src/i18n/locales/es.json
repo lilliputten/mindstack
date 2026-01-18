@@ -588,7 +588,7 @@
     "Title": "Potentes características para el entrenamiento de la memoria"
   },
   "GenerateAnswersForm": {
-    "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
+    "AnswersCountHint": "Recuento de respuestas a generar para cada pregunta (mínimo - máximo).",
     "AnswersCountLabelPrefix": "Cantidad de respuestas:",
     "DebugDataHint": "Habilitar para usar datos falsos en lugar de hacer llamadas API reales.",
     "ExtraInstructionsHint": "Contexto o instrucciones adicionales opcionales para la IA.",
@@ -596,7 +596,7 @@
     "ExtraInstructionsPlaceholder": "Instrucciones adicionales para la generación de respuestas...",
     "GenerateButtonText": "Generar",
     "GeneratingButtonText": "Generando",
-    "GenerationTypeHint": "Elige el tipo de respuestas a generar para cada pregunta.",
+    "GenerationTypeHint": "Elija el tipo de respuestas que desea generar para cada pregunta: respuestas simples y claras que ponen a prueba la comprensión básica, o respuestas complejas que requieren conocimiento y análisis detallados.",
     "GenerationTypeLabel": "Tipo de generación",
     "GenerationTypePlaceholder": "Seleccionar tipo de generación",
     "UseDebugDataLabel": "¿Usar datos de depuración?"
@@ -614,7 +614,7 @@
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA"
   },
   "GenerateQuestionsForm": {
-    "AnswersCountHint": "Rango de respuestas a generar para cada pregunta (mínimo - máximo).",
+    "AnswersCountHint": "Recuento de respuestas a generar para cada pregunta (mínimo - máximo).",
     "AnswersCountLabelPrefix": "Cantidad de respuestas:",
     "AnswersGenerationTypeHint": "Elige el tipo de respuestas a generar para cada pregunta.",
     "AnswersGenerationTypeLabel": "Tipo de Generación de Respuestas",
@@ -625,10 +625,10 @@
     "ExtraInstructionsPlaceholder": "Instrucciones adicionales para la generación de preguntas...",
     "GenerateButtonText": "Generar",
     "GeneratingButtonText": "Generando",
-    "GenerationTypeHint": "Elige el tipo de preguntas a generar.",
+    "GenerationTypeHint": "Elija el tipo de preguntas a generar: preguntas simples y claras que ponen a prueba la comprensión básica, o preguntas complejas que requieren conocimiento y análisis detallados.",
     "GenerationTypeLabel": "Tipo de generación",
     "GenerationTypePlaceholder": "Seleccionar tipo de generación",
-    "QuestionsCountHint": "Rango de preguntas a generar (mínimo - máximo).",
+    "QuestionsCountHint": "Conteo de preguntas a generar (mínimo - máximo).",
     "QuestionsCountLabelPrefix": "Cantidad de preguntas:",
     "UseDebugDataLabel": "¿Usar datos de depuración?"
   },
@@ -1347,6 +1347,7 @@
     "StudyStreak": "Racha de Estudio",
     "StudyStreaksAndConsistencyMetrics": "Rachas de estudio y métricas de consistencia",
     "SummaryOfCompletedCountTemplate": "Resumen de {count, plural, =1 {tu # entrenamiento completado} other {tus # entrenamientos completados}}",
+    "ThereIsOnlyOneHistoryRecordNow": "Solo hay un registro de historial ahora.",
     "ThisWillBeYourFirst": "¡Este será tu primer entrenamiento para este tema!",
     "Time": "Tiempo",
     "TimeElapsed": "Tiempo Transcurrido",

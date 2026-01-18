@@ -339,7 +339,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   </p>
                 ) : totalWorkouts === 1 ? (
                   <p className="text-sm text-muted-foreground">
-                    There is only one history record now.
+                    {t('WorkoutStats.ThereIsOnlyOneHistoryRecordNow')}
                   </p>
                 ) : null}
               </div>

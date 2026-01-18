@@ -594,7 +594,7 @@
     "Title": "Powerful Features for Memory Training"
   },
   "GenerateAnswersForm": {
-    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
     "DebugDataHint": "Enable to use fake local data instead of making actual API calls.",
     "ExtraInstructionsHint": "Optional additional context or instructions for the AI.",
@@ -602,7 +602,7 @@
     "ExtraInstructionsPlaceholder": "Additional instructions for answers generation...",
     "GenerateButtonText": "Generate",
     "GeneratingButtonText": "Generating",
-    "GenerationTypeHint": "Choose the type of answers to generate for each question.",
+    "GenerationTypeHint": "Choose the type of answers to generate for each question: simple, clear answers that test basic understanding, or complex ones that require detailed knowledge and analysis.",
     "GenerationTypeLabel": "Generation Type",
     "GenerationTypePlaceholder": "Select generation type",
     "UseDebugDataLabel": "Use debug data?"
@@ -620,7 +620,7 @@
     "ToastSuccessData": "Successfully retrieved AI generated data"
   },
   "GenerateQuestionsForm": {
-    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
     "AnswersGenerationTypeHint": "Choose the type of answers to generate for each question.",
     "AnswersGenerationTypeLabel": "Answers Generation Type",
@@ -631,10 +631,10 @@
     "ExtraInstructionsPlaceholder": "Additional instructions for questions generation...",
     "GenerateButtonText": "Generate",
     "GeneratingButtonText": "Generating",
-    "GenerationTypeHint": "Choose the type of questions to generate.",
+    "GenerationTypeHint": "Choose the type of questions to generate: simple, clear questions that test basic understanding, or complex ones that require detailed knowledge and analysis.",
     "GenerationTypeLabel": "Generation Type",
     "GenerationTypePlaceholder": "Select generation type",
-    "QuestionsCountHint": "Range of questions to generate (minimum - maximum).",
+    "QuestionsCountHint": "Count of questions to generate (minimum - maximum).",
     "QuestionsCountLabelPrefix": "Questions Count:",
     "UseDebugDataLabel": "Use debug data?"
   },
@@ -1353,6 +1353,7 @@
     "StudyStreak": "Study Streak",
     "StudyStreaksAndConsistencyMetrics": "Study streaks and consistency metrics",
     "SummaryOfCompletedCountTemplate": "Summary of your {count, plural, =1 {# completed workout} other {# completed workouts}}",
+    "ThereIsOnlyOneHistoryRecordNow": "There is only one history record now.",
     "ThisWillBeYourFirst": "This will be your first workout for this topic!",
     "Time": "Time",
     "TimeElapsed": "Time Elapsed",
