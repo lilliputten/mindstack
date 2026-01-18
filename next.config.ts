@@ -2,6 +2,8 @@ import type { NextConfig } from 'next';
 import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+import { blobBodySizeLimitMb } from '@/constants';
+
 // NOTE: Always import both client and server environments to ensure if they're ok
 import { isDev } from './src/config/env';
 import { VERCEL_BLOB_HOST } from './src/config/envServer';
@@ -149,6 +151,11 @@ const nextConfig: NextConfig = {
         hostname: VERCEL_BLOB_HOST,
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: `${blobBodySizeLimitMb}mb`,
+    },
   },
   compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
   reactStrictMode: true,
