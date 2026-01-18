@@ -88,7 +88,7 @@ function CategoriesTableHeader({
         <TableHead
           id="select"
           className={cn(
-            'w-[3em] cursor-pointer text-center transition',
+            'cursor-pointer text-center transition',
             'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
           )}
           onClick={toggleAll}
@@ -111,19 +111,15 @@ function CategoriesTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead id="no" className="max-w-16 truncate text-right max-lg:hidden" title={t('NN')}>
+        <TableHead id="no" className="truncate text-right max-lg:hidden" title={t('NN')}>
           {t('NN')}
         </TableHead>
-        {__showId && isDev && (
+        {/*__showId && isDev && (
           <TableHead id="categoryId" className="truncate max-xl:hidden" title="ID">
             ID
           </TableHead>
-        )}
-        <TableHead
-          id="image"
-          className="max-w-6 text-center"
-          title={t('ManageCategoriesList.Image')}
-        >
+          )*/}
+        <TableHead id="image" className="text-center" title={t('ManageCategoriesList.Image')}>
           <Icons.ImageIcon className="mx-auto size-5" />
         </TableHead>
         <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
@@ -138,19 +134,19 @@ function CategoriesTableHeader({
           {t('ManageCategoriesList.Description')}
         </TableHead>
         */}
-        <TableHead id="status" className="max-w-32 truncate max-md:hidden" title={t('Status')}>
+        <TableHead id="status" className="truncate max-md:hidden" title={t('Status')}>
           {t('Status')}
         </TableHead>
         <TableHead
           id="createdAt"
-          className="max-w-32 truncate max-md:hidden"
+          className="truncate max-md:hidden"
           title={t('ManageCategoriesList.CreatedAt')}
         >
           {t('ManageCategoriesList.CreatedAt')}
         </TableHead>
         <TableHead
           id="topicsCount"
-          className="max-w-6 truncate max-lg:hidden"
+          className="truncate max-lg:hidden"
           title={t('ManageCategoriesList.TopicsCount')}
         >
           {t('ManageCategoriesList.TopicsCount')}
@@ -190,7 +186,7 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
       <TableCell
         id="select"
         className={cn(
-          'w-[3em] cursor-pointer text-center transition',
+          'cursor-pointer text-center transition',
           'hover:[&>button]:ring-2 hover:[&>button]:ring-theme-500/50',
         )}
         onClick={() => toggleSelected(category.id)}
@@ -202,25 +198,25 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           aria-label={t('ManageCategoriesList.SelectCategory')}
         />
       </TableCell>
-      <TableCell id="no" className="max-w-6 truncate text-right opacity-50 max-lg:hidden">
+      <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {__showId && isDev && (
+      {/*__showId && isDev && (
         <TableCell id="categoryId" className="max-w-6 truncate max-xl:hidden" title={category.id}>
           <div className="truncate opacity-50">
             <span className="mr-[2px] opacity-30">#</span>
             {category.id}
           </div>
         </TableCell>
-      )}
-      <TableCell id="image" className="max-w-6 text-center">
+        )*/}
+      <TableCell id="image" className="text-center">
         {category.imageUrl ? (
           <Icons.ImageIcon className="mx-auto size-5 text-green-600" />
         ) : (
           <span className="opacity-30">—</span>
         )}
       </TableCell>
-      <TableCell id="name" className="max-w-24 truncate">
+      <TableCell id="name" className="truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
           href={`${routePath}/${category.id}` as TRoutePath}
@@ -236,13 +232,13 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
         {truncateMarkdown(getCategoryDescription(category, locale, t), 60)}
       </TableCell>
       */}
-      <TableCell id="status" className="max-w-32 truncate max-md:hidden">
+      <TableCell id="status" className="truncate max-md:hidden">
         {t(category.status)}
       </TableCell>
-      <TableCell id="createdAt" className="max-w-32 truncate max-md:hidden">
+      <TableCell id="createdAt" className="truncate max-md:hidden">
         {getFormattedRelativeDate(format, category.createdAt)}
       </TableCell>
-      <TableCell id="topicsCount" className="max-w-6 max-lg:hidden">
+      <TableCell id="topicsCount" className="max-lg:hidden">
         {topicsCount ? (
           <span className="font-medium">{topicsCount}</span>
         ) : (
@@ -448,7 +444,17 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
         'relative w-full flex flex-col gap-4',
       )}
     >
-      <Table>
+      <Table className="w-full table-fixed">
+        <colgroup>
+          <col id="select" className="w-10" />
+          <col id="no" className="w-14 max-lg:hidden" />
+          <col id="image" className="w-12" />
+          <col id="name" />
+          <col id="status" className="w-[15%] max-md:hidden" />
+          <col id="createdAt" className="w-[15%] max-md:hidden" />
+          <col id="topicsCount" className="w-[15%] max-lg:hidden" />
+          <col id="Actions" className="w-24" />
+        </colgroup>
         <CategoriesTableHeader
           selectedCategories={selectedCategories}
           allCategories={allCategories}

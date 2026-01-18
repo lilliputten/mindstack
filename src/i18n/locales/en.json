@@ -154,9 +154,12 @@
   "AddTopicForm": {
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
+    "CategoriesHint": "Select one or a few categories for the topic. You can edit this parameter later.",
+    "CategoriesLabel": "Categories",
     "IsPublicHint": "Public topics can be viewed and used by other users.",
     "IsPublicLabel": "Is the topic public?",
     "NamePlaceholder": "Name",
+    "SelectCategoriesPlaceholder": "Select categories",
     "TopicName": "Topic Name"
   },
   "AddTopicModal": {

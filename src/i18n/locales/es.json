@@ -153,9 +153,12 @@
   "AddTopicForm": {
     "AddButtonText": "Agregar",
     "AddingButtonText": "Agregando",
+    "CategoriesHint": "Seleccione una o algunas categorías para el tema. \nPuede editar este parámetro más tarde.",
+    "CategoriesLabel": "Categorías",
     "IsPublicHint": "Los temas públicos pueden ser vistos y utilizados por otros usuarios.",
     "IsPublicLabel": "¿Es público el tema?",
     "NamePlaceholder": "Nombre",
+    "SelectCategoriesPlaceholder": "Seleccionar categorías",
     "TopicName": "Nombre del Tema"
   },
   "AddTopicModal": {

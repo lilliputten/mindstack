@@ -41,4 +41,6 @@ export const nulledSettings = settingsSchemaKeys.reduce<Record<string, null>>((o
 
 export type TSettings = z.infer<typeof settingsSchema>;
 
-export const defaultSettings: TSettings = {};
+export const defaultSettings: TSettings = {
+  jumpToNewEntities: true,
+};

@@ -43,11 +43,12 @@ const allUsedKeys: TAllUsedKeys = {};
 type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' | 'take'> & {
   traceId?: string;
   enabled?: boolean;
+  all?: boolean;
 };
 
 /** Hook to fetch available categories with pagination support */
 export function useAvailableCategories(props: TUseAvailableCategoriesProps = {}) {
-  const { traceId, enabled = true, ...queryProps } = props;
+  const { all, traceId, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
 
   /* Use partrial query url as a part of the query key */
@@ -63,7 +64,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     return composeUrlQuery(urlParams);
   }, [queryProps]);
   const queryKey = React.useMemo<QueryKey>(
-    () => ['available-categories', queryUrlHash],
+    () => ['available-categories', all ? 'all' : 'incremental', queryUrlHash],
     [queryUrlHash],
   );
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
@@ -91,17 +92,29 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     queryFn: async (params) => {
       const { pageParam = 0 } = params;
       try {
+        console.log('[useAvailableCategories:queryFn] before', traceId, {
+          params,
+        });
+        if (traceId === 'CategorySelect') {
+          // debugger;
+        }
         const result = await getAvailableCategories({
           ...queryProps,
           skip: pageParam as number,
-          take: itemsLimit,
+          take: all ? undefined : itemsLimit,
         });
+        console.log('[useAvailableCategories:queryFn] done', {
+          result,
+        });
+        if (traceId === 'CategorySelect') {
+          // debugger;
+        }
         return result;
       } catch (error) {
         const details = getErrorText(error);
         const message = 'Cannot load categories data';
         // eslint-disable-next-line no-console
-        console.error('[useAvailableCategories:queryFn]', message, {
+        console.error('[useAvailableCategories:queryFn]', message, traceId, {
           traceId,
           details,
           error,

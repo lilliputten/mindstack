@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
+import { CategorySelectField } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
@@ -32,6 +33,7 @@ export interface TAddTopicFormProps {
 export interface TFormData {
   name: TTopic['name'];
   isPublic: TTopic['isPublic'];
+  categoryIds: string[];
 }
 
 export function AddTopicForm(props: TAddTopicFormProps) {
@@ -43,6 +45,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
       z.object({
         name: z.string().min(minNameLength).max(maxNameLength),
         isPublic: z.boolean(),
+        categoryIds: z.array(z.string()),
       }),
     [],
   );
@@ -51,6 +54,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
     return {
       name: '',
       isPublic: false,
+      categoryIds: [],
     };
   }, []);
 
@@ -86,8 +90,8 @@ export function AddTopicForm(props: TAddTopicFormProps) {
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
   const onSubmit = handleSubmit((formData) => {
-    const { name, isPublic } = formData;
-    const newTopic: TNewTopic = { name, isPublic };
+    const { name, isPublic, categoryIds } = formData;
+    const newTopic: TNewTopic = { name, isPublic, categoryIds };
     return handleAddTopic(newTopic)
       .then(() => {
         // reset();
@@ -126,7 +130,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
         onSubmit={onSubmit}
         className={cn(
           isDev && '__AddTopicForm', // DEBUG
-          'flex w-full flex-col gap-4',
+          'flex w-full flex-col gap-6',
           className,
         )}
       >
@@ -151,6 +155,14 @@ export function AddTopicForm(props: TAddTopicFormProps) {
               <FormMessage />
             </FormItem>
           )}
+        />
+        <CategorySelectField
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={t('AddTopicForm.CategoriesLabel')}
+          hint={t('AddTopicForm.CategoriesHint')}
+          placeholder={t('AddTopicForm.SelectCategoriesPlaceholder')}
         />
         <FormField
           name="isPublic"

@@ -42,7 +42,9 @@ export function CategorySelect({
 
   const [open, setOpen] = React.useState(false);
 
-  const { publicCategories, isLoading: isCategoriesLoading } = useAllPublicCategories();
+  const { publicCategories, isLoading: isCategoriesLoading } = useAllPublicCategories({
+    traceId: 'CategorySelect',
+  });
 
   const handleCategoryToggle = React.useCallback(
     (categoryId: string) => {
@@ -53,6 +55,11 @@ export function CategorySelect({
     },
     [onSelectedCategoryIdsChange, selectedCategoryIds],
   );
+
+  console.log('[CategorySelect:DEBUG]', {
+    publicCategories,
+    isCategoriesLoading,
+  });
 
   const categoryNames = React.useMemo(() => {
     return publicCategories.reduce(

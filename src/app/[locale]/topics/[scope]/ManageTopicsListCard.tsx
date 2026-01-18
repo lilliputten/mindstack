@@ -123,18 +123,18 @@ function TopicsTableHeader({
         >
           {t('NN')}
         </TableHead>
-        {isDev && (
+        {/*isDev && (
           <TableHead id="topicId" className="truncate max-xl:hidden">
             ID
           </TableHead>
-        )}
+          )*/}
         <TableHead id="name" className="truncate">
           {t('ManageTopicsListCard.TopicName')}
         </TableHead>
-        <TableHead id="categories" className="truncate max-lg:hidden">
+        <TableHead id="categories" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Categories')}
         </TableHead>
-        <TableHead id="questions" className="truncate max-lg:hidden">
+        <TableHead id="questions" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Questions')}
         </TableHead>
         {isAdminMode && (
@@ -148,7 +148,7 @@ function TopicsTableHeader({
         <TableHead id="keywords" className="truncate max-xl:hidden">
           {t('ManageTopicsListCard.Keywords')}
         </TableHead>
-        <TableHead id="isPublic" className="truncate max-lg:hidden">
+        <TableHead id="isPublic" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Public')}
         </TableHead>
         <TableHead id="Actions"></TableHead>
@@ -286,15 +286,15 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {isDev && (
-        <TableCell id="topicId" className="max-w-6 truncate max-xl:hidden" title={id}>
+      {/*isDev && (
+        <TableCell id="topicId" className="truncate max-xl:hidden" title={id}>
           <div className="truncate opacity-50">
             <span className="mr-[2px] opacity-30">#</span>
             {id}
           </div>
         </TableCell>
-      )}
-      <TableCell id="name" className="max-w-24 truncate">
+        )*/}
+      <TableCell id="name" className="truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
           href={`${routePath}/${id}` as TRoutePath}
@@ -302,10 +302,10 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           {truncateString(name, 40)}
         </Link>
       </TableCell>
-      <TableCell id="categories" className="max-w-[8em] truncate max-lg:hidden">
+      <TableCell id="categories" className="truncate max-md:hidden">
         <PlainCategoriesListByCategoryIds categoryIds={categoryIds} />
       </TableCell>
-      <TableCell id="questions" className="max-w-[8em] truncate max-lg:hidden">
+      <TableCell id="questions" className="truncate max-md:hidden">
         <div className="truncate">
           {questionsCount ? (
             <span className="font-medium">{questionsCount}</span>
@@ -315,27 +315,27 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
         </div>
       </TableCell>
       {isAdminMode && (
-        <TableCell id="topicUser" className="max-w-[8em] truncate max-lg:hidden">
+        <TableCell id="topicUser" className="truncate max-lg:hidden">
           <SmallUserBlock isLoading={!topicUser} user={topicUser} />
         </TableCell>
       )}
-      <TableCell id="language" className="max-w-[8em] truncate max-xl:hidden">
+      <TableCell id="language" className="truncate max-xl:hidden">
         <div className="truncate">
           {[langName, langCode && `(${langCode})`].filter(Boolean).join(' ')}
         </div>
       </TableCell>
-      <TableCell id="keywords" className="max-w-[8em] truncate max-xl:hidden">
+      <TableCell id="keywords" className="truncate max-xl:hidden">
         <div className="truncate">{keywords}</div>
       </TableCell>
-      <TableCell id="isPublic" className="w-[8em] max-lg:hidden">
+      <TableCell id="isPublic" className="max-md:hidden">
         <Switch
           checked={isPublic || false}
           onCheckedChange={handleTogglePublic}
           disabled={isPending}
         />
       </TableCell>
-      <TableCell id="Actions" className="text-right">
-        <div className="flex justify-end gap-1">
+      <TableCell id="Actions" className="truncate text-right">
+        <div className="flex justify-end gap-1 truncate">
           <Button
             variant="ghost"
             size="icon"
@@ -523,7 +523,19 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
         'relative w-full flex flex-col gap-4',
       )}
     >
-      <Table>
+      <Table className="w-full table-fixed">
+        <colgroup>
+          <col id="select" className="w-10" />
+          <col id="no" className="w-14 max-lg:hidden" />
+          <col id="name" className="" />
+          <col id="categories" className="w-[12%] max-md:hidden" />
+          <col id="questions" className="w-16 max-md:hidden" />
+          {isAdminMode && <col id="topicUser" className="w-[8%] max-lg:hidden" />}
+          <col id="language" className="w-[8%] max-xl:hidden" />
+          <col id="keywords" className="w-[8%] max-xl:hidden" />
+          <col id="isPublic" className="w-24 max-md:hidden" />
+          <col id="Actions" />
+        </colgroup>
         <TopicsTableHeader
           isAdminMode={isAdminMode}
           selectedTopics={selectedTopics}

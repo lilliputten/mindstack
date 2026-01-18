@@ -31,6 +31,11 @@ interface TEditTopicFormFieldsProps {
   selectLanguage: (ev: React.MouseEvent) => void;
 }
 
+/**
+ * A reusable section component for organizing form content in a responsive layout.
+ *
+ * @param children - The content to be rendered within the section
+ */
 function FormSection({ children }: TPropsWithChildren) {
   return (
     <div
@@ -68,6 +73,17 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
   return (
     <div className={cn('flex w-full flex-col gap-6 px-6 py-2 md:flex-row', className)}>
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          form={form}
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={t('EditTopicFormFields.Categories')}
+          hint={t('EditTopicFormFields.CategoriesHint')}
+          placeholder={t('EditTopicFormFields.SelectCategories')}
+        />
+        {/* name */}
         <FormField
           name="name"
           control={form.control}
@@ -117,6 +133,8 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
             </FormItem>
           )}
         />
+      </FormSection>
+      <FormSection>
         {/* keywords */}
         <FormField
           name="keywords"
@@ -138,19 +156,6 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
-      </FormSection>
-      <FormSection>
-        {/* Categories
-         */}
-        <CategorySelectField
-          form={form}
-          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
-          control={form.control}
-          name="categoryIds"
-          label={t('EditTopicFormFields.Categories')}
-          hint={t('EditTopicFormFields.CategoriesHint')}
-          placeholder={t('EditTopicFormFields.SelectCategories')}
         />
         {/* isPublic */}
         <FormField

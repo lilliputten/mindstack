@@ -154,11 +154,24 @@ export async function getAvailableCategories(
     throw error;
   }
 
+  console.log('[getAvailableCategories] before', {
+    findManyArgs,
+  });
+  // debugger;
+
   try {
     const [items, totalCount] = await prisma.$transaction([
       prisma.category.findMany(findManyArgs),
       prisma.category.count({ where }),
     ]);
+
+    console.log('[getAvailableCategories] after', {
+      items,
+      totalCount,
+      findManyArgs,
+    });
+    // debugger;
+
     return { items, totalCount } as TGetAvailableCategoriesResults;
   } catch (error) {
     if (!noDebug) {
