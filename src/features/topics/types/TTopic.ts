@@ -116,4 +116,7 @@ export type TAvailableTopic = TTopic & {
  */
 
 export type TOptionalTopic = Partial<TTopic>;
-export type TNewTopic = Partial<Topic> & Pick<Topic, 'name'>; // TTopicWithoutIds; // { name: TTopic['name']; parentId: TTopic['parentId'] };
+export type TNewTopic = Partial<Topic> &
+  Pick<Topic, 'name'> & {
+    categoryIds?: string[]; // Array of category IDs to link to the topic
+  };

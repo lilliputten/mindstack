@@ -1,14 +1,22 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
 
-export async function addNewTopic(newTopic: TNewTopic) {
+interface TOptions {
+  noDebug?: boolean;
+}
+
+export async function addNewTopic(params: TNewTopic & TOptions) {
+  const { noDebug, ...newTopic } = params;
   const user = await getCurrentUser();
   const userId = user?.id;
   try {
+    const { categoryIds, ...topicData } = newTopic;
     if (isDev) {
       // DEBUG: Emulate network delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -25,17 +33,28 @@ export async function addNewTopic(newTopic: TNewTopic) {
      *   throw new Error('The specified user does not exist.');
      * }
      */
-    const data = { ...newTopic, userId };
+    const data: Prisma.TopicCreateArgs['data'] = { ...topicData, userId };
+
+    // Link categories if provided using Prisma's nested write
+    if (categoryIds?.length) {
+      data.categories = {
+        connect: categoryIds.map((id) => ({ id })),
+      };
+    }
+
     const addedTopic = await prisma.topic.create({
       data,
     });
+
     return addedTopic as TTopic;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[addNewTopic] catch', {
-      error,
-    });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[addNewTopic] catch', {
+        error,
+      });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }
