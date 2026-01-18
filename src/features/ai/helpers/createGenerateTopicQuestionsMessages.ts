@@ -19,6 +19,8 @@ export function createGenerateTopicQuestionsMessages(
     topicDescription,
     // topicKeywords,
     existedQuestions,
+    langName,
+    langCode,
   } = params;
 
   // const hasExistedQuestions = !!existedQuestions?.length;
@@ -41,18 +43,29 @@ export function createGenerateTopicQuestionsMessages(
     `- "isCorrect" as a boolean indicating if it is the correct answer.`,
   ].join('\n');
 
-  const systemMessage: TPlainMessage = {
-    role: 'system',
-    content: `You are an expert educational content creator. Generate high-quality questions for a learning topic.
+  const langText = [
+    // Compose complex language string (`{NAME} ({CODE})` or `{NAME}` or `{CODE}`
+    langName,
+    langName && langCode ? '(' + langCode.toLocaleUpperCase() + ')' : langCode?.toLocaleUpperCase(),
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const requirements = [
+    langText && `All texts (except code examples) must be generated in ${langText} language.`,
+    generationTypeInstructions[questionsGenerationType],
+    `Questions should be clear, educational, and relevant to the topic.`,
+    `Return ONLY a valid JSON object with a "questions" field containing a list of question objects and "questionsCount" with a number of totally generated questions.`,
+    `Each question should be a complete, well-formed question.`,
+    `For each question, generate answers in an "answers" field, as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number generated answers.`,
+    getAnswersGenerationQuery(answersGenerationType),
+  ].filter(Boolean);
+  const requirementsText = requirements.map((s) => '- ' + s).join('\n');
+
+  const systemMessageContent = `You are an expert educational content creator. Generate high-quality questions for a learning topic.
 
 Requirements:
-- ${generationTypeInstructions[questionsGenerationType]}
-- Questions should be clear, educational, and relevant to the topic.
-- Avoid duplicating existing questions (listed below).
-- Return ONLY a valid JSON object with a "questions" field containing a list of question objects and "questionsCount" with a number of totally generated questions.
-- Each question should be a complete, well-formed question.
-- For each question, generate answers in an "answers" field, as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number generated answers.
-- ${getAnswersGenerationQuery(answersGenerationType)}
+${requirementsText}
 
 Each answer object must have:
 
@@ -69,21 +82,26 @@ Example format:
     },
   ]
 }
-`,
+`;
+  const userMessageContent = [
+    `Topic: ${topicText}`,
+    topicDescription && `Topic description: ${topicDescription}`,
+    `Generate ${questionsCountMin}-${questionsCountMax} questions for this topic, with ${answersCountMin}-${answersCountMax} answers per each question.`,
+    extraText && `Additional instructions: ${extraText}`,
+    existedQuestionsText && `Avoid duplicating existing questions:`,
+    existedQuestionsText,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+
+  const systemMessage: TPlainMessage = {
+    role: 'system',
+    content: systemMessageContent,
   };
 
   const userMessage: TPlainMessage = {
     role: 'user',
-    content: [
-      `Topic: ${topicText}`,
-      topicDescription && `Topic description: ${topicDescription}`,
-      `Generate ${questionsCountMin}-${questionsCountMax} questions for this topic, with ${answersCountMin}-${answersCountMax} answers per each question.`,
-      extraText && `Additional instructions: ${extraText}`,
-      existedQuestionsText && `Existing questions to avoid duplicating:`,
-      existedQuestionsText,
-    ]
-      .filter(Boolean)
-      .join('\n\n'),
+    content: userMessageContent,
   };
 
   return [systemMessage, userMessage];

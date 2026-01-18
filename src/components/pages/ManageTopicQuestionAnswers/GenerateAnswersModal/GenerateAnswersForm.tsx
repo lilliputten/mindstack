@@ -28,7 +28,7 @@ import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { maxAnswersToGeneration } from '@/features/ai-generations/constants';
 import {
   answersGenerationTypes,
-  answersGenerationTypeTexts,
+  answersGenerationTypeTextIds,
   generateQuestionAnswersParamsSchema,
 } from '@/features/ai/types/GenerateAnswersTypes';
 import { TQuestionId } from '@/features/questions/types';
@@ -171,7 +171,7 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
                   <SelectContent>
                     {answersGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {answersGenerationTypeTexts[type]}
+                        {t(answersGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>

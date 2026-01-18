@@ -34,6 +34,8 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     answersCountMax,
     // createdAt,
     answersGenerationType,
+    langName,
+    langCode,
   } = params;
   // const topicDescriptionStr = topicDescription?.trim();
   // const topicKeywordsStr = topicKeywords?.trim();
@@ -43,12 +45,25 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
   const existedAnswersText = existedAnswers
     ?.map(({ text }) => '- ' + truncateMarkdown(text, 200))
     .join('\n');
+
+  const langText = [
+    // Compose complex language string (`{NAME} ({CODE})` or `{NAME}` or `{CODE}`
+    langName,
+    langName && langCode ? '(' + langCode.toLocaleUpperCase() + ')' : langCode?.toLocaleUpperCase(),
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const answerFieldsText = [
-    `- "text" with the answer text in plain text or strict markdown markup (in the same language as the question),`,
-    `- "explanation" the reason why this answer is correct or incorrect,`,
-    `- "isCorrect" as a boolean indicating if it is the correct answer.`,
-  ].join('\n');
-  return [
+    `"text" with the answer text in plain text or strict markdown markup.`,
+    `"explanation" the reason why this answer is correct or incorrect.`,
+    `"isCorrect" as a boolean indicating if it is the correct answer.`,
+  ]
+    .filter(Boolean)
+    .map((s) => '- ' + s)
+    .join('\n');
+
+  const userMessageContent = [
     `Generate a list of between ${answersCountMin} and ${answersCountMax} answers to the following question`,
     existedAnswersText &&
       `These answers should exclude previously generated responses (listed below).`,
@@ -56,6 +71,10 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     getAnswersGenerationQuery(answersGenerationType),
 
     `Provide the result as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number of totally generated answers.`,
+
+    langText
+      ? `All texts (except code examples) must be generated in ${langText} language.`
+      : `The language of the answers must be derived from the language of the question (or the topic).`,
 
     `Each answer object must have:`,
     answerFieldsText,
@@ -69,20 +88,13 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     `Do not include any other text.`,
     `Make sure that the JSON is formed correctly.`,
 
-    // 'Please provide a JSON response with an "answers" key containing an array of answer objects.',
-    // 'Each answer object should have "text" with answer text (in markdown format) and "isCorrect" boolean properties indicating whether it is a correct answer or not.',
-    // `Generate a list of ${answersCountMin} to ${answersCountMax} responses.`,
-    // `The topic title is: ${topicText}`,
-    // topicDescriptionStr && `The topic description is: ${topicDescriptionStr}`,
-    // topicKeywordsStr && `The topic keywords are: ${topicKeywordsStr}`,
-    // 'The question:',
-    // questionText,
-
-    existedAnswersText && `Excluded answers:`,
+    existedAnswersText && `Avoid duplicating existing answers:`,
     existedAnswersText,
   ]
     .filter(Boolean)
     .join('\n\n');
+
+  return userMessageContent;
 }
 
 export function createGenerateQuestionAnswersMessages(params: TGenerateQuestionAnswersParams) {

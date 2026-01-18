@@ -31,12 +31,12 @@ import {
 } from '@/features/ai-generations/constants';
 import {
   answersGenerationTypes,
-  answersGenerationTypeTexts,
+  answersGenerationTypeTextIds,
 } from '@/features/ai/types/GenerateAnswersTypes';
 import {
   generateTopicQuestionsParamsSchema,
   questionsGenerationTypes,
-  questionsGenerationTypeTexts,
+  questionsGenerationTypeTextIds,
 } from '@/features/ai/types/GenerateQuestionsTypes';
 import { TTopicId } from '@/features/topics/types';
 
@@ -172,7 +172,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   <SelectContent>
                     {questionsGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {questionsGenerationTypeTexts[type]}
+                        {t(questionsGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -222,7 +222,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   <SelectContent>
                     {answersGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {answersGenerationTypeTexts[type]}
+                        {t(answersGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>

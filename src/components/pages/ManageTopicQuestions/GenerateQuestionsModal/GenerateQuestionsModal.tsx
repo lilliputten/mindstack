@@ -96,7 +96,8 @@ export function GenerateQuestionsModal() {
 
   const questions = topic?.questions;
 
-  useModalTitle(t('GenerateQuestionsModal.ModalTitle'), shouldBeVisible);
+  const dialogTitle = t('GenerateQuestionsModal.DialogTitle');
+  useModalTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const generateQuestionsMutation = useMutation({
@@ -109,6 +110,8 @@ export function GenerateQuestionsModal() {
         topicText,
         topicDescription,
         topicKeywords,
+        langName: topic?.langName || undefined,
+        langCode: topic?.langCode || undefined,
         existedQuestions: questions?.map(({ text }) => ({ text })),
       };
       const { debugData } = formData;
@@ -301,9 +304,9 @@ export function GenerateQuestionsModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('GenerateQuestionsModal.DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('GenerateQuestionsModal.DialogDescription')}
+          {dialogTitle}
         </DialogDescription>
       </div>
       <div

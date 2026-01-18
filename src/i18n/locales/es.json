@@ -166,6 +166,11 @@
     "ToastLoading": "Creando nuevo tema...",
     "ToastSuccess": "Se creó exitosamente el nuevo tema \"{name}\""
   },
+  "AnswersGenerationTypeTexts": {
+    "CORRECT": "Solo respuestas correctas",
+    "RANDOM": "Varias respuestas con al menos una correcta.",
+    "WRONG": "Sólo respuestas incorrectas"
+  },
   "AppIntro": {
     "BlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>"
   },
@@ -633,9 +638,7 @@
     "UseDebugDataLabel": "¿Usar datos de depuración?"
   },
   "GenerateQuestionsModal": {
-    "DialogDescription": "Generar Diálogo de Preguntas",
     "DialogTitle": "Generar Preguntas",
-    "ModalTitle": "Generar Preguntas",
     "NoTopicIdDefined": "No se ha definido ningún ID de tema",
     "ToastErrorData": "No se pueden recuperar los datos generados por IA",
     "ToastErrorQuestions": "No se pueden agregar preguntas",
@@ -1033,6 +1036,11 @@
     "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",
     "SignInModalIntroForBasic": "Para activar una suscripción básica, simplemente inicie sesión en el sistema."
   },
+  "QuestionsGenerationTypes": {
+    "BASIC": "Preguntas simples",
+    "DETAILED": "Preguntas detalladas",
+    "MIXED": "Preguntas mixtas"
+  },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Código del idioma",
     "LanguageName": "Nombre del idioma",
@@ -1096,6 +1104,7 @@
   "SiteMenu": {
     "AllTopics": "Todos los Temas",
     "AvailableTopics": "Temas Disponibles",
+    "Categories": "Categorías",
     "Data": "Datos",
     "Info": "Información",
     "MyTopics": "Mis Temas",

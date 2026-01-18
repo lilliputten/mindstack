@@ -121,15 +121,18 @@ export function GenerateAnswersModal() {
   // const generateAnswersMutation = useMutation<TGeneratedAnswers, Error, TFormData>({
   const generateAnswersMutation = useMutation({
     mutationFn: async (formData: TFormData) => {
+      const topic = question?.topic;
       const questionText = question?.text || '';
-      const topicText = question?.topic?.name || '';
-      const topicDescription = question?.topic?.description || '';
-      const topicKeywords = question?.topic?.keywords || '';
+      const topicText = topic?.name || '';
+      const topicDescription = topic?.description || '';
+      const topicKeywords = topic?.keywords || '';
       const params: TGenerateQuestionAnswersParams = {
         ...formData,
         topicText,
         topicDescription,
         topicKeywords,
+        langName: topic?.langName || undefined,
+        langCode: topic?.langCode || undefined,
         questionText,
         existedAnswers: answers?.map(({ isCorrect, explanation, text }) => ({
           isCorrect,
@@ -140,7 +143,6 @@ export function GenerateAnswersModal() {
       const { debugData } = formData;
 
       /* // DEBUG
-       * const topic = question?.topic;
        * console.log('[GenerateAnswersModal:generateAnswersMutation] Start', {
        *   debugData,
        *   formData,
@@ -150,6 +152,7 @@ export function GenerateAnswersModal() {
        *   answers,
        * });
        */
+
       const messages = createGenerateQuestionAnswersMessages(params);
       /* // DEBUG
        * const __debugMessagesStr = messages.map(({ content }) => content).join('\n\n');
@@ -344,7 +347,6 @@ export function GenerateAnswersModal() {
           <ScrollArea
             className={cn(
               isDev && '__GenerateAnswersModal_Scroll', // DEBUG
-              // 'flex flex-1 flex-col',
             )}
           >
             <GenerateAnswersForm

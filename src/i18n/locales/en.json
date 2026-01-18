@@ -167,6 +167,11 @@
     "ToastLoading": "Creating new topic...",
     "ToastSuccess": "Successfully created new topic \"{name}\""
   },
+  "AnswersGenerationTypeTexts": {
+    "CORRECT": "Only correct answers",
+    "RANDOM": "Multiple answers with at least one correct",
+    "WRONG": "Only wrong answers"
+  },
   "AppIntro": {
     "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
   },
@@ -639,9 +644,7 @@
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateQuestionsModal": {
-    "DialogDescription": "Generate Questions Dialog",
     "DialogTitle": "Generate Questions",
-    "ModalTitle": "Generate Questions",
     "NoTopicIdDefined": "No topic ID defined",
     "ToastErrorData": "Can not retrieve AI generated data",
     "ToastErrorQuestions": "Cannot add questions",
@@ -1039,6 +1042,11 @@
     "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",
     "SignInModalIntroForBasic": "To activate a basic subscription, simply sign-in to the system."
   },
+  "QuestionsGenerationTypes": {
+    "BASIC": "Simple Questions",
+    "DETAILED": "Detailed Questions",
+    "MIXED": "Mixed Questions"
+  },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Language code",
     "LanguageName": "Language name",
@@ -1102,6 +1110,7 @@
   "SiteMenu": {
     "AllTopics": "All Topics",
     "AvailableTopics": "Available Topics",
+    "Categories": "Categories",
     "Data": "Data",
     "Info": "Information",
     "MyTopics": "My Topics",

@@ -3,11 +3,6 @@ import z from 'zod';
 import { AnswerSchema } from '@/generated/prisma';
 
 const generatedAnswerSchema = AnswerSchema.pick({ text: true, explanation: true, isCorrect: true });
-// const generatedAnswerSchema = z.object({
-//   text: z.string().optional(),
-//   explanation: z.string().optional(),
-//   isCorrect: z.boolean().optional(),
-// });
 export type TGeneratedAnswer = z.infer<typeof generatedAnswerSchema>;
 export const generatedAnswersSchema = z.object({
   answers: z.array(generatedAnswerSchema),
@@ -28,10 +23,10 @@ export const answersGenerationTypeQueries = {
   WRONG: 'Provide only wrong answers.',
   RANDOM: 'Provide multiple incorrect answers and at least one correct answer.',
 };
-export const answersGenerationTypeTexts = {
-  CORRECT: 'Only correct answers',
-  WRONG: 'Only wrong answers',
-  RANDOM: 'Multiple answers with at least one correct',
+export const answersGenerationTypeTextIds = {
+  CORRECT: 'AnswersGenerationTypeTexts.CORRECT', // 'Only correct answers',
+  WRONG: 'AnswersGenerationTypeTexts.WRONG', // 'Only wrong answers',
+  RANDOM: 'AnswersGenerationTypeTexts.RANDOM', // 'Multiple answers with at least one correct',
 };
 const answersGenerationTypesSchema = z.enum(answersGenerationTypes);
 export type TAnswerGenerationType = z.infer<typeof answersGenerationTypesSchema>;
@@ -49,5 +44,7 @@ export const generateQuestionAnswersParamsSchema = z.object({
   answersCountMin: z.coerce.number(),
   answersCountMax: z.coerce.number(),
   debugData: z.boolean().optional(),
+  langName: z.string().optional(),
+  langCode: z.string().optional(),
 });
 export type TGenerateQuestionAnswersParams = z.infer<typeof generateQuestionAnswersParamsSchema>;

@@ -162,6 +162,11 @@
     "ToastLoading": "Создание новой темы...",
     "ToastSuccess": "Новая тема \"{name}\" успешно создана"
   },
+  "AnswersGenerationTypeTexts": {
+    "CORRECT": "Только правильные ответы",
+    "RANDOM": "Несколько ответов, хотя бы один правильный",
+    "WRONG": "Только неправильные ответы"
+  },
   "AppIntro": {
     "BlockContent": "<p>Это небольшое приложение для тренировки памяти. \nОзнакомьтесь с кратким <AboutLink>справочником по приложению</AboutLink>.</p>"
   },
@@ -634,9 +639,7 @@
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {
-    "DialogDescription": "Генерировать диалог вопросов",
-    "DialogTitle": "Генерировать вопросы",
-    "ModalTitle": "Генерировать вопросы",
+    "DialogTitle": "Генерация вопросов",
     "NoTopicIdDefined": "Идентификатор темы не определен",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastErrorQuestions": "Невозможно добавить вопросы",
@@ -1034,6 +1037,11 @@
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
     "SignInModalIntroForBasic": "Для подключения базовой подписки просто авторизуйтесь в системе."
   },
+  "QuestionsGenerationTypes": {
+    "BASIC": "Простые вопросы",
+    "DETAILED": "Подробные вопросы",
+    "MIXED": "Смешанные вопросы"
+  },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Код языка",
     "LanguageName": "Название языка",
@@ -1097,6 +1105,7 @@
   "SiteMenu": {
     "AllTopics": "Все темы",
     "AvailableTopics": "Доступные темы",
+    "Categories": "Категории",
     "Data": "Данные",
     "Info": "Информация",
     "MyTopics": "Мои темы",
