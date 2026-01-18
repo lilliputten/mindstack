@@ -405,10 +405,13 @@
   },
   "DeleteCategoryModal": {
     "CannotDeleteCategory": "Cannot delete category",
+    "CategoryDeleted": "Category deleted",
     "CategoryDeletedContent": "The category has been successfully deleted. The dialog will be closed automatically.",
     "CategoryDeletedTitle": "The category has been deleted",
     "ConfirmDeleteContent": "Are you sure to delete category \"{categoryName}\"?",
-    "ConfirmDialogTitle": "Delete Category?",
+    "DeletingCategory": "Deleting category",
+    "DialogTitle": "Delete Category?",
+    "ErrorDeletingCategory": "Error deleting category",
     "NotFoundCategoryTitle": "Can not find category to delete"
   },
   "DeleteQuestionModal": {

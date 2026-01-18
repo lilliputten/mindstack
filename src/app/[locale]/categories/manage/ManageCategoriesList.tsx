@@ -121,7 +121,7 @@ function CategoriesTableHeader({
         )}
         <TableHead
           id="image"
-          className="max-w-6 truncate text-center"
+          className="max-w-6 text-center"
           title={t('ManageCategoriesList.Image')}
         >
           <Icons.ImageIcon className="mx-auto size-5" />

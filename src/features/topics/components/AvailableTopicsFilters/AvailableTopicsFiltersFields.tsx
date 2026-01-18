@@ -78,6 +78,16 @@ export function AvailableTopicsFiltersFields(props: TProps) {
       )}
     >
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          form={form}
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={getFilterFieldName('categoryIds', tTexts)}
+          hint={t('AvailableTopicsFiltersFields.CategoriesHint')}
+          placeholder={t('AvailableTopicsFiltersFields.SelectCategories')}
+        />
         <FormField
           name="searchText"
           control={form.control}
@@ -184,6 +194,8 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             )}
           />
         )}
+      </FormSection>
+      <FormSection>
         <FormField
           name="orderBySelect"
           control={form.control}
@@ -217,18 +229,6 @@ export function AvailableTopicsFiltersFields(props: TProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
-      </FormSection>
-      <FormSection>
-        {/* Categories */}
-        <CategorySelectField
-          form={form}
-          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
-          control={form.control}
-          name="categoryIds"
-          label={getFilterFieldName('categoryIds', tTexts)}
-          hint={t('AvailableTopicsFiltersFields.CategoriesHint')}
-          placeholder={t('AvailableTopicsFiltersFields.SelectCategories')}
         />
         <FormField
           name="hasWorkoutStats"

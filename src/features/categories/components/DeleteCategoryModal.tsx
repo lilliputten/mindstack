@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageError } from '@/components/shared';
@@ -30,6 +31,8 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
   const routePath = manageCategoriesRoute; // `/categories/manage`;
   const t = useT();
 
+  const locale = useLocale() as TLocale;
+
   const shouldBeVisible = true; // pathname.endsWith(urlPostfix);
 
   const [isVisible, setVisible] = React.useState(true);
@@ -50,7 +53,9 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
     error,
   } = availableCategoryQuery;
 
-  const categoryName = deletingCategory ? getCategoryName(deletingCategory) : 'Unknown category';
+  const categoryName = deletingCategory
+    ? getCategoryName(deletingCategory, locale, t)
+    : 'Unknown category';
 
   const isCategoryReady = isFetched && !isLoading && !isRefetching;
 
@@ -64,7 +69,9 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
   if (!categoryId) {
     throw new Error('No category id passed for deletion');
   }
-  useModalTitle(t('DeleteCategoryModal.ModalTitle'));
+
+  const dialogTitle = t('DeleteCategoryModal.DialogTitle');
+  useModalTitle(dialogTitle);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const deleteCategoryMutation = useMutation<TAvailableCategory, Error, TCategory>({
@@ -107,7 +114,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
     toast.promise(promise, {
       loading: t('DeleteCategoryModal.DeletingCategory', { categoryName }),
       success: t('DeleteCategoryModal.CategoryDeleted', { categoryName }),
-      error: t('DeleteCategoryModal.ErrorDeletingCatgory', { categoryName }),
+      error: t('DeleteCategoryModal.ErrorDeletingCategory', { categoryName }),
     });
     return promise;
   }, [categoryName, deleteCategoryMutation, deletingCategory, t]);
@@ -125,7 +132,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
       className={cn(
         isDev && '__DeleteCategoryModal', // DEBUG
       )}
-      dialogTitle={t('DeleteCategoryModal.ConfirmDialogTitle')}
+      dialogTitle={dialogTitle}
       confirmButtonVariant="destructive"
       confirmButtonText={t('Delete')}
       confirmButtonBusyText={t('Deleting')}

@@ -6,13 +6,13 @@ import {
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   allTopicsRoute,
+  availableCategoriesRoute,
   availableTopicsRoute,
   docsAliasRoute,
   manageCategoriesRoute,
   myTopicsRoute,
   pricingAliasRoute,
   rootAliasRoute,
-  rootCategoriesRoute,
   settingsRoute,
   welcomeAliasRoute,
 } from './routesConfig';
@@ -25,7 +25,7 @@ export const dashboardLinks: SidebarNavItem[] = [
   {
     titleId: 'Application',
     items: [
-      { href: rootCategoriesRoute, icon: Icons.Categories, titleId: 'AvailableCategories' },
+      { href: availableCategoriesRoute, icon: Icons.Categories, titleId: 'AvailableCategories' },
       { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'AvailableTopics' },
     ],
   },

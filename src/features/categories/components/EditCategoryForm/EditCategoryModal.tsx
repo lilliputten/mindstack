@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { PageError } from '@/components/shared';
@@ -60,6 +61,8 @@ export function EditCategoryModal(props: TProps) {
    * `ManageCategories.EditNew` as another for category creating
    */
   const t = useT();
+
+  const locale = useLocale() as TLocale;
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryModal' });
 
@@ -128,12 +131,12 @@ export function EditCategoryModal(props: TProps) {
       toast.promise(promise, {
         loading: t('EditCategoryModal.SavingData'),
         success: (category) =>
-          t('EditCategoryModal.DataSaved', { name: getCategoryName(category) }),
+          t('EditCategoryModal.DataSaved', { name: getCategoryName(category, locale, t) }),
         error: t('EditCategoryModal.DataSaveError'),
       });
       return promise;
     },
-    [saveCategoryMutation, t],
+    [locale, saveCategoryMutation, t],
   );
 
   if (!shouldBeVisible) {

@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
+import { useLocale } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -29,6 +30,8 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
   const { category, style } = props;
   const t = useT();
 
+  const locale = useLocale() as TLocale;
+
   const categoryRoutePath = `${availableTopicsRoute}?categoryIds=${category.id}` as TRoutePath; // `/categories/${category.id}`;
 
   const { user } = useSessionData();
@@ -36,7 +39,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
   const isAdminMode = user?.role === 'ADMIN';
   const allowedEdit = isAdminMode || isOwner;
 
-  const categoryName = getCategoryName(category);
+  const categoryName = getCategoryName(category, locale, t);
 
   const goToTheRoute = useGoToTheRoute();
 
@@ -47,7 +50,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
       <CardContent
         className={cn(
           isDev && '__AvailableCategoriesListItem_Content', // DEBUG
-          'flex flex-1 gap-6 max-sm:flex-col sm:items-center',
+          'flex flex-1 gap-6 max-xs:flex-col xs:items-center',
           'p-6',
           'text-base',
         )}
@@ -81,25 +84,25 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
           className={cn(
             isDev && '__AvailableCategoriesListItem_Content_MainContent', // DEBUG
             'flex flex-1 flex-col items-stretch gap-2',
-            // 'max-sm:flex-col-reverse',
+            // 'max-xs:flex-col-reverse',
           )}
         >
           <div
             className={cn(
               isDev && '__AvailableCategoriesListItem_Content_Header', // DEBUG
               'flex flex-1 items-start gap-2',
-              // 'max-sm:flex-col-reverse',
+              // 'max-xs:flex-col-reverse',
             )}
           >
             <CategoryHeader
               category={category}
-              className="flex-1 max-sm:flex-col-reverse"
+              className="flex-1 max-xs:flex-col-reverse"
               showProperties={false}
             />
             <div
               className={cn(
                 isDev && '__AvailableCategoriesListItem_Content_RightActions', // DEBUG
-                'flex flex-wrap items-center gap-2 md:items-end',
+                'flex flex-wrap items-center gap-2 xs:items-end',
               )}
             >
               {allowedEdit && (

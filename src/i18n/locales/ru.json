@@ -400,10 +400,13 @@
   },
   "DeleteCategoryModal": {
     "CannotDeleteCategory": "Невозможно удалить категорию",
+    "CategoryDeleted": "Категория удалена",
     "CategoryDeletedContent": "Категория была успешно удалена. Диалоговое окно будет закрыто автоматически.",
     "CategoryDeletedTitle": "Категория была удалена",
     "ConfirmDeleteContent": "Вы уверены, что хотите удалить категорию \"{categoryName}\"?",
-    "ConfirmDialogTitle": "Удалить категорию?",
+    "DeletingCategory": "Удаление категории",
+    "DialogTitle": "Удалить категорию?",
+    "ErrorDeletingCategory": "Ошибка удаления категории",
     "NotFoundCategoryTitle": "Не удается найти категорию для удаления"
   },
   "DeleteQuestionModal": {

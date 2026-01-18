@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
+import { useLocale } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { TLocale, useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
 import { MarkdownText } from '@/components/ui/MarkdownText';
@@ -87,8 +89,12 @@ export function CategoryHeader(props: TCategoryHeaderProps & TCategoryHeaderOpti
     withLink,
   } = props;
 
-  const categoryName = getCategoryName(category);
-  const categoryDescription = getCategoryDescription(category);
+  const t = useT();
+
+  const locale = useLocale() as TLocale;
+
+  const categoryName = getCategoryName(category, locale, t);
+  const categoryDescription = getCategoryDescription(category, locale, t);
 
   const categoryRoutePath = `${availableTopicsRoute}?categoryIds=${category.id}`; // `/categories/${category.id}`;
   const pathname = usePathname();

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
@@ -13,7 +14,7 @@ import {
   translatedPeriod,
 } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
@@ -60,6 +61,8 @@ export function AddCategoryModal(props: TProps) {
    * `ManageCategories.EditNew` as another for category creating
    */
   const t = useT();
+
+  const locale = useLocale() as TLocale;
 
   const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
@@ -126,12 +129,12 @@ export function AddCategoryModal(props: TProps) {
       toast.promise(promise, {
         loading: t('AddCategoryModal.ToastLoading'),
         success: (category) =>
-          t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category) }),
+          t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category, locale, t) }),
         error: t('AddCategoryModal.CannotSaveCategory'),
       });
       return promise;
     },
-    [saveCategoryMutation, t],
+    [locale, saveCategoryMutation, t],
   );
 
   const hasRecentSuggestion = React.useMemo(() => {

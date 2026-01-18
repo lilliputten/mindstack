@@ -400,10 +400,13 @@
   },
   "DeleteCategoryModal": {
     "CannotDeleteCategory": "No se puede eliminar la categoría",
+    "CategoryDeleted": "Categoría eliminada",
     "CategoryDeletedContent": "La categoría ha sido eliminada exitosamente. El diálogo se cerrará automáticamente.",
     "CategoryDeletedTitle": "La categoría ha sido eliminada",
     "ConfirmDeleteContent": "¿Está seguro de eliminar la categoría \"{categoryName}\"?",
-    "ConfirmDialogTitle": "¿Eliminar Categoría?",
+    "DeletingCategory": "Eliminando categoría",
+    "DialogTitle": "¿Eliminar Categoría?",
+    "ErrorDeletingCategory": "Error al eliminar categoría",
     "NotFoundCategoryTitle": "No se puede encontrar la categoría para eliminar"
   },
   "DeleteQuestionModal": {
