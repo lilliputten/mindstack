@@ -35,7 +35,7 @@ import { uploadCategoryImage } from '@/features/categories/actions/uploadCategor
 import {
   categoryImageAllowedTypes,
   categoryImageAllowedTypesString,
-  categoryImageConfig,
+  categoryImageSize,
   categoryImageSizeLimit,
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
@@ -420,8 +420,8 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                         )}
                         <div className="flex flex-1 flex-col gap-2">
                           <FormHint>
-                            {t('EditCategoryForm.MaximumSize')}: {categoryImageConfig.size}x
-                            {categoryImageConfig.size}px
+                            {t('EditCategoryForm.MaximumSize')}: {categoryImageSize}x
+                            {categoryImageSize}px
                           </FormHint>
                           <FormMessage />
                         </div>

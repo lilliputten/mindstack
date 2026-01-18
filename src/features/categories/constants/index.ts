@@ -2,16 +2,18 @@
 
 import { minuteMs } from '@/constants';
 
-/** Category image optimization settings */
-export const categoryImageConfig = {
-  /** Maximum category image size (in pixels) */
-  size: 300,
-  /** Quality setting for image optimization (0-100) */
-  quality: 80,
-} as const;
+/** Maximum category image size (in pixels) */
+export const categoryImageSize = 300;
+
+/** Quality setting for image optimization (0-100) */
+export const categoryImageQuality = 80;
 
 /** Category image file size limit in bytes */
-export const categoryImageSizeLimit = 500 * 1024; // 500KB
+export const categoryImageSizeLimit = 1 * 1024 * 1024; // 2MB -- it'll be downscaled on the server
+
+// NOTE: There is a NVercel Blob default limit to 1MB
+// Uncaught Exception: Error: Body exceeded 1 MB limit.
+// To configure the body size limit for Server Actions, see: https://nextjs.org/docs/app/api-reference/next-config-js/serverActions#bodysizelimit
 
 /** Allowed MIME types for category images */
 export const categoryImageAllowedTypes = [

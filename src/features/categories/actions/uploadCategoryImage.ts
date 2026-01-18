@@ -8,7 +8,8 @@ import { getCurrentUser } from '@/lib/session';
 
 import {
   categoryImageAllowedTypes,
-  categoryImageConfig,
+  categoryImageQuality,
+  categoryImageSize,
   categoryImageSizeLimit,
 } from '../constants';
 
@@ -54,12 +55,12 @@ export async function uploadCategoryImage(formData: FormData) {
     // Optimize image with sharp
     const optimizedBuffer = await sharp(buffer)
       .resize({
-        width: categoryImageConfig.size,
-        height: categoryImageConfig.size,
+        width: categoryImageSize,
+        height: categoryImageSize,
         fit: 'inside',
         withoutEnlargement: true,
       })
-      .jpeg({ quality: categoryImageConfig.quality })
+      .jpeg({ quality: categoryImageQuality })
       .toBuffer();
 
     // Upload to Vercel Blob
