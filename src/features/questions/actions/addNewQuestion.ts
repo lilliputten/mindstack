@@ -1,8 +1,11 @@
 'use server';
 
 import { prisma } from '@/lib/db';
+import { ContentLimitError } from '@/lib/errors/ContentLimitError';
+import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { TNewQuestion } from '@/features/questions/types';
+import { checkQuestionsLimit } from '@/features/users/services/checkContentLimits';
 
 import { TQuestion } from '../types';
 
@@ -11,20 +14,31 @@ import { TQuestion } from '../types';
 /* TODO: Use the same parameters for "include" data, as in `getAvailableQuestionById`, see `IncludedTopicSelect` */
 
 export async function addNewQuestion(newQuestion: TNewQuestion) {
+  const user = await getCurrentUser();
+  const userId = user?.id;
+
   try {
     if (isDev) {
       // DEBUG: Emulate network delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    /* // TODO: Check user rights to modify topic?
-     * const user = await getCurrentUser();
-     * const userId = user?.id;
-     * if (!userId) {
-     *   throw new Error('Got undefined user');
-     * }
-     */
+
+    if (!userId) {
+      throw new ContentLimitError('UNAUTHORIZED', 'User not authenticated');
+    }
+
     if (!newQuestion.text) {
       throw new Error('Not specified question name');
+    }
+
+    // Check questions limit before creating
+    const questionsLimit = await checkQuestionsLimit();
+    if (!questionsLimit.canCreate) {
+      throw new ContentLimitError(
+        'QUESTIONS_LIMIT_REACHED',
+        questionsLimit.reasonCode,
+        user?.grade,
+      );
     }
     const result = await prisma.$transaction(async (tx) => {
       const { answers, ...questionFields } = newQuestion;

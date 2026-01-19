@@ -65,7 +65,24 @@ function usePlansData({
   billingPeriod: TBillingPeriod | undefined;
 }) {
   const t = useT();
-  const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
+  const {
+    BASIC_USER_GENERATIONS,
+    PRO_USER_MONTHLY_GENERATIONS,
+    BASIC_TOPICS_LIMIT,
+    BASIC_QUESTIONS_LIMIT,
+    BASIC_ANSWERS_LIMIT,
+    PRO_TOPICS_LIMIT,
+    PRO_QUESTIONS_LIMIT,
+    PRO_ANSWERS_LIMIT,
+    // PREMIUM_TOPICS_LIMIT,
+    // PREMIUM_QUESTIONS_LIMIT,
+    // PREMIUM_ANSWERS_LIMIT,
+  } = useEnvConext();
+
+  const formatLimit = React.useCallback(
+    (limit?: number) => (limit === -1 ? t('Unlimited') : limit?.toString() || '0'),
+    [t],
+  );
   const proSubscriptionType: TPaidableSubscriptionType = `PRO-${billingPeriod === 'yearly' ? 'YEAR' : 'MONTH'}`;
   const proPricesQuery = useAllSubscriptionPrices({
     isReady,
@@ -105,7 +122,9 @@ function usePlansData({
       prices: 'Free',
       subscription: 'BASIC',
       features: [
-        t('Pricing.Plans.Basic.Features.Topics'),
+        `Create up to ${formatLimit(BASIC_TOPICS_LIMIT)} topics`,
+        `Up to ${formatLimit(BASIC_QUESTIONS_LIMIT)} questions per topic`,
+        `Up to ${formatLimit(BASIC_ANSWERS_LIMIT)} answers per question`,
         t('Pricing.Plans.Basic.Features.Workouts'),
         t('Pricing.Plans.Basic.Features.Progress'),
         t('Pricing.Plans.Basic.Features.Community'),
@@ -125,9 +144,11 @@ function usePlansData({
       prices: proPricesQuery.prices,
       subscription: proSubscriptionType,
       features: [
-        t('Pricing.Plans.Pro.Features.Unlimited'),
+        `Create up to ${formatLimit(PRO_TOPICS_LIMIT)} topics`,
+        `Up to ${formatLimit(PRO_QUESTIONS_LIMIT)} questions per topic`,
+        `Up to ${formatLimit(PRO_ANSWERS_LIMIT)} answers per question`,
         t('Pricing.Plans.Pro.Features.Ai'),
-        tFuture('Pricing.Plans.Pro.Features.Analytics'),
+        tFuture('Pricing.Plans.Features.AdvancedAnalytics'),
         tFuture('Pricing.Plans.Pro.Features.Support'),
         t('Pricing.Plans.Pro.Features.Generations'),
       ],
@@ -147,6 +168,7 @@ function usePlansData({
       subscription: premiumSubscriptionType,
       features: [
         t('Pricing.Plans.Premium.Features.Everything'),
+        t('Pricing.Plans.Premium.Features.UnlimitedDataCreation'),
         t('Pricing.Plans.Premium.Features.UnlimitedGenerations'),
         tFuture('Pricing.Plans.Premium.Features.Priority'),
         tFuture('Pricing.Plans.Premium.Features.Advanced'),
@@ -166,8 +188,15 @@ function usePlansData({
       PREMIUM,
     ];
   }, [
+    BASIC_ANSWERS_LIMIT,
+    BASIC_QUESTIONS_LIMIT,
+    BASIC_TOPICS_LIMIT,
     BASIC_USER_GENERATIONS,
+    PRO_ANSWERS_LIMIT,
+    PRO_QUESTIONS_LIMIT,
+    PRO_TOPICS_LIMIT,
     PRO_USER_MONTHLY_GENERATIONS,
+    formatLimit,
     premiumPricesQuery.prices,
     premiumSubscriptionType,
     proPricesQuery.prices,
@@ -227,7 +256,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
         'py-6',
       )}
     >
-      <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid gap-2 md:grid-cols-3">
         {mainPlans.map((plan) => {
           const { subscription, prices } = plan;
           const isPrices = prices && typeof prices === 'object';
@@ -241,79 +270,90 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                 : undefined;
 
           return (
-            <Card
+            <div
               key={String(plan.grade)}
               className={cn(
-                'relative flex flex-col justify-between p-6',
-                'overflow-visible',
-                'bg-theme/10',
-                plan.popular && 'ring-2 ring-theme',
+                isDev && '__PricingPlansSection_CardWrapper', // DEBUG
+                'relative flex items-stretch justify-stretch pt-6',
+                'overflow-hidden',
+                'w-full',
               )}
             >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="truncate rounded-full bg-theme px-6 py-2 text-xs font-medium text-white">
-                    {t('Pricing.MostPopular')}
-                  </span>
-                </div>
-              )}
-              <div>
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-theme">{plan.name}</h3>
-                  <p className="text-sm text-muted-foreground">{plan.description}</p>
-                  <div className="mt-4">
-                    <div className="flex flex-wrap items-baseline gap-1">
-                      {!prices ? (
-                        <Skeleton className="inline h-9 w-40 max-w-full rounded" />
-                      ) : prices === 'Free' ? (
-                        <span className="text-3xl font-bold">{t('Pricing.Free')}</span>
-                      ) : prices === 'Contact' ? (
-                        <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
-                      ) : (
-                        <>
-                          <span className="flex flex-wrap items-center text-3xl font-bold">
-                            <CurrencySign className="text-3xl" />
-                            <span>{stringifyPrice(priceValue)}</span>
-                          </span>
-                          {tgPriceValue && (
-                            <div className="flex flex-wrap items-center gap-1 text-sm">
-                              <span>{t('or')}</span>
-                              <span>{stringifyPrice(tgPriceValue)}</span>
-                              <TgStarSign className="size-4 text-base" />
-                            </div>
-                          )}
-                          <span className="text-sm">
-                            /{' '}
-                            {billingPeriod === 'yearly'
-                              ? t('Pricing.billedAnnually')
-                              : t('Pricing.billedMonthly')}
-                          </span>
-                        </>
-                      )}
+              <Card
+                className={cn(
+                  'relative flex flex-col justify-between p-6',
+                  'overflow-visible',
+                  'w-full',
+                  // 'overflow-x-hidden',
+                  'bg-theme/10',
+                  plan.popular && 'ring-2 ring-theme',
+                )}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="truncate rounded-full bg-theme px-6 py-2 text-xs font-medium text-white">
+                      {t('Pricing.MostPopular')}
+                    </span>
+                  </div>
+                )}
+                <div className="w-full overflow-hidden">
+                  <div className="mb-6">
+                    <h3 className="truncate text-xl font-bold text-theme">{plan.name}</h3>
+                    <p className="truncate text-sm text-muted-foreground">{plan.description}</p>
+                    <div className="mt-4">
+                      <div className="flex flex-wrap items-baseline gap-1">
+                        {!prices ? (
+                          <Skeleton className="inline h-9 w-40 max-w-full rounded" />
+                        ) : prices === 'Free' ? (
+                          <span className="truncate text-3xl font-bold">{t('Pricing.Free')}</span>
+                        ) : prices === 'Contact' ? (
+                          <span className="text-3xl font-bold">{t('Pricing.ContactUs')}</span>
+                        ) : (
+                          <>
+                            <span className="flex flex-wrap items-center text-3xl font-bold">
+                              <CurrencySign className="text-3xl" />
+                              <span>{stringifyPrice(priceValue)}</span>
+                            </span>
+                            {tgPriceValue && (
+                              <div className="flex flex-wrap items-center gap-1 text-sm">
+                                <span>{t('or')}</span>
+                                <span>{stringifyPrice(tgPriceValue)}</span>
+                                <TgStarSign className="size-4 text-base" />
+                              </div>
+                            )}
+                            <span className="text-sm">
+                              /{' '}
+                              {billingPeriod === 'yearly'
+                                ? t('Pricing.billedAnnually')
+                                : t('Pricing.billedMonthly')}
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
+                  <hr className="my-4 bg-theme-800/5" />
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-3 text-sm">
+                        <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
+                        <span className="text-truncate">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <hr className="my-4 bg-theme-800/5" />
-                <ul className="space-y-3">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-3 text-sm">
-                      <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {subscriptionType && (
-                <Button
-                  variant={plan.buttonVariant}
-                  className="mt-8 w-full"
-                  size="lg"
-                  onClick={() => startSubscription({ subscriptionType, priceValue })}
-                >
-                  {plan.buttonText}
-                </Button>
-              )}
-            </Card>
+                {subscriptionType && (
+                  <Button
+                    variant={plan.buttonVariant}
+                    className="mt-8 w-full overflow-hidden"
+                    size="lg"
+                    onClick={() => startSubscription({ subscriptionType, priceValue })}
+                  >
+                    <span className="truncate">{plan.buttonText}</span>
+                  </Button>
+                )}
+              </Card>
+            </div>
           );
         })}
       </div>

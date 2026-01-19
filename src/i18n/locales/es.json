@@ -928,7 +928,8 @@
           "Everything": "Todo lo de Pro",
           "Export": "Funcionalidad de exportar/importar",
           "Priority": "Soporte de máxima prioridad",
-          "UnlimitedGenerations": "Generaciones de IA ilimitadas"
+          "UnlimitedGenerations": "Generaciones de IA ilimitadas",
+          "UnlimitedDataCreation": "Creación ilimitada de temas, preguntas y respuestas."
         }
       },
       "Pro": {
@@ -1401,5 +1402,6 @@
     "milliseconds": "ms",
     "minutes": "{count, plural, =1 {minuto} other {minutos}}",
     "seconds": "{count, plural, =1 {segundo} other {segundos}}"
-  }
+  },
+  "Unlimited": "Ilimitado"
 }

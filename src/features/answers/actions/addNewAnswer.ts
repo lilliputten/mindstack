@@ -1,9 +1,11 @@
 'use server';
 
 import { prisma } from '@/lib/db';
+import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { TNewAnswer } from '@/features/answers/types';
+import { checkAnswersLimit } from '@/features/users/services/checkContentLimits';
 
 import { TAnswer } from '../types';
 
@@ -39,6 +41,12 @@ export async function addNewAnswer(newAnswer: TNewAnswer) {
     // Check if the current user is allowed to delete the topic?
     if (userId !== topic?.userId && user.role !== 'ADMIN') {
       throw new Error('Current user is not allowed to delete the question');
+    }
+
+    // Check answers limit before creating
+    const answersLimit = await checkAnswersLimit();
+    if (!answersLimit.canCreate) {
+      throw new ContentLimitError('ANSWERS_LIMIT_REACHED', answersLimit.reasonCode, user?.grade);
     }
 
     const data = { ...newAnswer };

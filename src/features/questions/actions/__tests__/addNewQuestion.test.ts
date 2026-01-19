@@ -1,10 +1,34 @@
-import { describe, expect, it } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+
+// Types are now declared in src/@types/global.d.ts
 
 import { jestPrisma } from '@/lib/db/jestPrisma';
+import { getCurrentUser } from '@/lib/session';
 
 import { addNewQuestion } from '../addNewQuestion';
 
+jest.mock('@/lib/session');
+
+// Get mocks after they're set up
+const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
+
 describe('addNewQuestion', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedGetCurrentUser.mockResolvedValue({
+      id: 'test-user-id',
+      name: 'Test User',
+      email: 'test@example.com',
+      emailVerified: null,
+      image: null,
+      role: 'ADMIN',
+      grade: 'PREMIUM',
+      subscriptionPeriod: null,
+      subscriptionStartedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  });
   it('should add question ID to empty questionsOrder', async () => {
     const createdIds: string[] = [];
 
@@ -181,9 +205,9 @@ describe('addNewQuestion', () => {
       });
 
       expect(workouts).toHaveLength(2);
-      workouts.forEach((workout) => {
+      for (const workout of workouts) {
         expect(workout.questionsOrder).toBe(newQuestion.id);
-      });
+      }
     } finally {
       for (const id of createdIds.reverse()) {
         const [type, ...parts] = id.split(':');

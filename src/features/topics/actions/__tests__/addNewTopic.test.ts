@@ -1,11 +1,14 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
+// Types are now declared in src/@types/global.d.ts
+
 import { jestPrisma } from '@/lib/db/jestPrisma';
 import { getCurrentUser } from '@/lib/session';
 import { TNewTopic } from '@/features/topics/types';
-import { TUser } from '@/features/users/types/TUser';
 
 import { addNewTopic } from '../addNewTopic';
+
+jest.mock('@/lib/session');
 
 const mockedGetCurrentUser = getCurrentUser as jest.MockedFunction<typeof getCurrentUser>;
 
@@ -27,6 +30,22 @@ const cleanupDb = async (ids: CreatedId[]) => {
 };
 
 describe('addNewTopic', () => {
+  beforeEach(() => {
+    mockedGetCurrentUser.mockResolvedValue({
+      id: 'test-user-id',
+      name: 'Test User',
+      email: 'test@example.com',
+      emailVerified: null,
+      image: null,
+      role: 'USER',
+      grade: 'PREMIUM',
+      subscriptionPeriod: null,
+      subscriptionStartedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  });
+
   afterEach(() => {
     mockedGetCurrentUser.mockReset();
   });
@@ -42,7 +61,17 @@ describe('addNewTopic', () => {
       });
       createdIds.push({ type: 'user', id: user.id });
 
-      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+      mockedGetCurrentUser.mockResolvedValue({
+        ...user,
+        role: 'ADMIN',
+        grade: 'PREMIUM',
+        emailVerified: null,
+        image: null,
+        subscriptionPeriod: null,
+        subscriptionStartedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
       const newTopic: TNewTopic = {
         name: `Test Topic ${testId}`,
@@ -103,7 +132,17 @@ describe('addNewTopic', () => {
       createdIds.push({ type: 'category', id: category1.id });
       createdIds.push({ type: 'category', id: category2.id });
 
-      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+      mockedGetCurrentUser.mockResolvedValue({
+        ...user,
+        role: 'ADMIN',
+        grade: 'PREMIUM',
+        emailVerified: null,
+        image: null,
+        subscriptionPeriod: null,
+        subscriptionStartedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
       const newTopic: TNewTopic = {
         name: `Test Topic with Categories ${testId}`,
@@ -144,7 +183,17 @@ describe('addNewTopic', () => {
       });
       createdIds.push({ type: 'user', id: user.id });
 
-      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+      mockedGetCurrentUser.mockResolvedValue({
+        ...user,
+        role: 'ADMIN',
+        grade: 'PREMIUM',
+        emailVerified: null,
+        image: null,
+        subscriptionPeriod: null,
+        subscriptionStartedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
       const newTopic: TNewTopic = {
         name: `Test Topic without Categories ${testId}`,
@@ -181,7 +230,17 @@ describe('addNewTopic', () => {
       });
       createdIds.push({ type: 'user', id: user.id });
 
-      mockedGetCurrentUser.mockResolvedValue(user as TUser);
+      mockedGetCurrentUser.mockResolvedValue({
+        ...user,
+        role: 'ADMIN',
+        grade: 'PREMIUM',
+        emailVerified: null,
+        image: null,
+        subscriptionPeriod: null,
+        subscriptionStartedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
       const newTopic: TNewTopic = {
         name: `Test Topic without CategoryIds ${testId}`,
@@ -213,6 +272,8 @@ describe('addNewTopic', () => {
       name: 'Test Topic',
     };
 
-    await expect(addNewTopic({ ...newTopic, noDebug: true })).rejects.toThrow('Got undefined user');
+    await expect(addNewTopic({ ...newTopic, noDebug: true })).rejects.toThrow(
+      'User not authenticated',
+    );
   });
 });

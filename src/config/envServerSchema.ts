@@ -56,6 +56,17 @@ export const envServerSchema = z.object({
   BASIC_USER_GENERATIONS: z.coerce.number(),
   PRO_USER_MONTHLY_GENERATIONS: z.coerce.number(),
 
+  // Content limits
+  BASIC_TOPICS_LIMIT: z.coerce.number().optional(),
+  BASIC_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  BASIC_ANSWERS_LIMIT: z.coerce.number().optional(),
+  PRO_TOPICS_LIMIT: z.coerce.number().optional(),
+  PRO_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  PRO_ANSWERS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_TOPICS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_ANSWERS_LIMIT: z.coerce.number().optional(),
+
   // // Prisma
   DATABASE_URL: z.string().min(1),
   // CONFIG_ID: z.coerce.number().optional(), // Default config slot

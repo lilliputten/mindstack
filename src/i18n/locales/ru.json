@@ -929,7 +929,8 @@
           "Everything": "Всё из Про",
           "Export": "Функции экспорта/импорта",
           "Priority": "Поддержка высшего приоритета",
-          "UnlimitedGenerations": "Неограниченные ИИ генерации"
+          "UnlimitedGenerations": "Неограниченные ИИ генерации",
+          "UnlimitedDataCreation": "Неограниченное создание тем, вопросов и ответов"
         }
       },
       "Pro": {
@@ -1402,5 +1403,6 @@
     "milliseconds": "мс",
     "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
     "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}"
-  }
+  },
+  "Unlimited": "Не ограничено"
 }
