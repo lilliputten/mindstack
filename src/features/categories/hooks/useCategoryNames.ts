@@ -11,7 +11,10 @@ import { useAvailableCategories } from '../query-hooks';
 export function useCategoryNames() {
   const t = useT();
   const locale = useLocale() as TLocale;
-  const availableCategoriesQuery = useAvailableCategories();
+  const availableCategoriesQuery = useAvailableCategories({
+    traceId: 'useCategoryNames',
+    all: true,
+  });
   const { allCategories } = availableCategoriesQuery;
   const categoryNames = React.useMemo(() => {
     return allCategories.reduce(

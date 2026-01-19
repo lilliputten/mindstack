@@ -52,8 +52,10 @@ export function AvailableCategoriesListWrapper(props: TAvailableCategoriesListWr
   );
 
   const availableCategoriesQuery = useAvailableCategories({
+    traceId: 'AvailableCategoriesListWrapper',
     enabled: !!filtersParams,
     status: onlyPublic ? 'PUBLIC' : undefined,
+    // all: true, // Using InfiniteScroller
     ...filtersParams,
     // includeWorkout: true,
     // // DEBUG: Sort examples

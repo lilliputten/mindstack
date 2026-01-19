@@ -56,11 +56,6 @@ export function CategorySelect({
     [onSelectedCategoryIdsChange, selectedCategoryIds],
   );
 
-  console.log('[CategorySelect:DEBUG]', {
-    publicCategories,
-    isCategoriesLoading,
-  });
-
   const categoryNames = React.useMemo(() => {
     return publicCategories.reduce(
       (names, category) => {

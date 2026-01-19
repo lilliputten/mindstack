@@ -8,7 +8,7 @@ import { useAvailableCategories } from '@/features/categories/query-hooks/useAva
 
 export function useAllPublicCategories({ traceId }: { traceId?: string } = {}) {
   const categoriesQuery = useAvailableCategories({
-    traceId,
+    traceId: traceId || 'useAllPublicCategories',
     status: CategoryStatusSchema.enum.PUBLIC,
     includeTranslations: true,
     all: true,

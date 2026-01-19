@@ -18,7 +18,9 @@ export function PlainCategoriesListByCategoryIds(props: TProps) {
   const locale = useLocale() as TLocale;
   const t = useT();
   const availableCategoriesQuery = useAvailableCategories({
+    traceId: 'PlainCategoriesListByCategoryIds',
     includeTranslations: true,
+    all: true,
   });
   const {
     allCategories,

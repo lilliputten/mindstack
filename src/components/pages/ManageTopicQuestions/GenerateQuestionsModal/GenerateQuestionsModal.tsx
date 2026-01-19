@@ -137,7 +137,7 @@ export function GenerateQuestionsModal() {
         debugData: debugData ? debugDataId : undefined,
       });
       /* // DEBUG
-       * const content = __queryData?.content;
+       * const __content = queryData?.content;
        * console.log('[GenerateQuestionsModal:generateQuestionsMutation] Generated query data', {
        *   __content,
        *   queryData,

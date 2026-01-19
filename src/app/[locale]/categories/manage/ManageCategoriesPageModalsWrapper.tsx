@@ -44,10 +44,11 @@ export function ManageCategoriesPageModalsWrapper(props: TCategoriesListProps) {
   >();
 
   const availableCategoriesQuery = useAvailableCategories({
-    // TODO: Filters
+    traceId: 'ManageCategoriesPageModalsWrapper',
     enabled: !!filtersParams,
     // Use only public categories
     status: onlyPublic ? 'PUBLIC' : undefined,
+    // all: true, // Using InfiniteScroller
     ...filtersParams,
   });
   const {

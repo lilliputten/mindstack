@@ -52,7 +52,9 @@ export function createGenerateTopicQuestionsMessages(
     .join(' ');
 
   const requirements = [
-    langText && `All texts (except code examples) must be generated in ${langText} language.`,
+    langText
+      ? `All texts (except code examples) must be generated in ${langText} language.`
+      : `The language of the questions and answers must be derived from the language of the topic.`,
     generationTypeInstructions[questionsGenerationType],
     `Questions should be clear, educational, and relevant to the topic.`,
     `Return ONLY a valid JSON object with a "questions" field containing a list of question objects and "questionsCount" with a number of totally generated questions.`,
@@ -77,22 +79,35 @@ Example format:
   "questions": [
     {
       "text": "What is the main concept of...?",
-      "answersCount": 1
-      "answers": ["text": "Answer text...", "explanation": "Explanation text", "isCorrect": false],
-    },
+      "answersCount": 1,
+      "answers": ["text": "Answer text...", "explanation": "Explanation text", "isCorrect": false]
+    }
   ]
 }
 `;
+  const questionsCountText =
+    questionsCountMin !== questionsCountMax
+      ? `${questionsCountMin}-${questionsCountMax} questions`
+      : `${questionsCountMin} question${questionsCountMin !== 1 ? 's' : ''}`;
+  const answersCountText =
+    answersCountMin !== answersCountMax
+      ? `${answersCountMin}-${answersCountMax} answers`
+      : `${answersCountMin} answer${answersCountMin !== 1 ? 's' : ''}`;
   const userMessageContent = [
     `Topic: ${topicText}`,
     topicDescription && `Topic description: ${topicDescription}`,
-    `Generate ${questionsCountMin}-${questionsCountMax} questions for this topic, with ${answersCountMin}-${answersCountMax} answers per each question.`,
+    `Generate ${questionsCountText} for this topic, with ${answersCountText} per each question.`,
     extraText && `Additional instructions: ${extraText}`,
     existedQuestionsText && `Avoid duplicating existing questions:`,
     existedQuestionsText,
   ]
     .filter(Boolean)
     .join('\n\n');
+
+  console.log('[createGenerateTopicQuestionsMessages]', {
+    systemMessageContent,
+    userMessageContent,
+  });
 
   const systemMessage: TPlainMessage = {
     role: 'system',

@@ -193,7 +193,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           </Button>
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="size-4" />
-            <span>Cancel</span>
+            <span>{t('Cancel')}</span>
           </Button>
         </div>
       </form>

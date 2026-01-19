@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
@@ -14,7 +14,6 @@ import { PageError } from '@/components/shared';
 import { manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { updateCategory } from '@/features/categories/actions';
-import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
 
@@ -64,7 +63,9 @@ export function EditCategoryModal(props: TProps) {
 
   const locale = useLocale() as TLocale;
 
-  const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryModal' });
+  const queryClient = useQueryClient();
+
+  // const availableCategoriesQuery = useAvailableCategories({ traceId: 'EditCategoryModal' });
 
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
@@ -86,28 +87,28 @@ export function EditCategoryModal(props: TProps) {
   // const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
   const saveCategoryMutation = useMutation({
     mutationFn,
-    onSuccess: (updatedCategory) => {
-      // Update the item to the cached react-query data
-      availableCategoriesQuery.updateCategory(updatedCategory);
-
+    onSuccess: (_updatedCategory) => {
+      /* // Update the item to the cached react-query data
+       * availableCategoriesQuery.updateCategory(updatedCategory);
+       */
       // Invalidate the most recent suggested category queries when in suggestion mode
       if (suggestionMode) {
         const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
-        invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
-          availableCategoriesQuery.queryKey,
+        invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
+          // availableCategoriesQuery.queryKey,
         ]);
       }
-
-      // Invalidate all other keys...
-      availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
+      /* // Invalidate all other keys...
+       * availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
+       */
       // Update/invalidate queries for this category
       const invalidatePrefixes = [
         // Keys to invalidate...
         ['available-category', categoryId],
         ['available-categories'],
       ].map(makeQueryKeyPrefix);
-      invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
-        availableCategoriesQuery.queryKey,
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
+        // availableCategoriesQuery.queryKey,
       ]);
     },
     onError: (error, updatedCategory) => {

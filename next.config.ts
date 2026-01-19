@@ -143,7 +143,9 @@ const nextConfig: NextConfig = {
     silenceDeprecations: ['legacy-js-api'],
   },
   images: {
-    domains: [VERCEL_BLOB_HOST], // Vercel Blob Storage
+    /* // It's deprecated
+     * domains: [VERCEL_BLOB_HOST], // Vercel Blob Storage
+     */
     // If you have other image domains, add them here as well
     remotePatterns: [
       {

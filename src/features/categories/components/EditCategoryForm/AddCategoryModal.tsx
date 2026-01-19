@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
@@ -23,7 +23,6 @@ import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { createCategory } from '@/features/categories/actions';
-import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { useMostRecentSuggestedCategory } from '@/features/categories/query-hooks/useMostRecentSuggestedCategory';
 import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories/types';
 import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
@@ -64,7 +63,9 @@ export function AddCategoryModal(props: TProps) {
 
   const locale = useLocale() as TLocale;
 
-  const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
+  const queryClient = useQueryClient();
+
+  // const availableCategoriesQuery = useAvailableCategories({ traceId: 'AddCategoryModal' });
 
   const mostRecentSuggestedCategoryQuery = useMostRecentSuggestedCategory({
     enabled: isUser && suggestionMode && !saved,
@@ -91,21 +92,20 @@ export function AddCategoryModal(props: TProps) {
 
   const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn,
-    onSuccess: (updatedCategory) => {
-      // Add the created item to the cached react-query data
-      availableCategoriesQuery.addNewCategory(updatedCategory, true);
-
+    onSuccess: (_updatedCategory) => {
+      /* // Add the created item to the cached react-query data
+       * availableCategoriesQuery.addNewCategory(updatedCategory, true);
+       */
       // Invalidate the most recent suggested category queries when in suggestion mode
       if (suggestionMode) {
         const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
-        invalidateKeysByPrefixes(availableCategoriesQuery.queryClient, invalidatePrefixes, [
-          availableCategoriesQuery.queryKey,
+        invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
+          // availableCategoriesQuery.queryKey,
         ]);
       }
-
-      // Invalidate all other keys...
-      availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
-
+      /* // Invalidate all other keys...
+       * availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
+       */
       setSaved(true);
     },
     onError: (error, newCategory) => {

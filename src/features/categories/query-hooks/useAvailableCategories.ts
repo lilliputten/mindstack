@@ -65,7 +65,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
   }, [queryProps]);
   const queryKey = React.useMemo<QueryKey>(
     () => ['available-categories', all ? 'all' : 'incremental', queryUrlHash],
-    [queryUrlHash],
+    [all, queryUrlHash],
   );
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
 
@@ -92,23 +92,11 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     queryFn: async (params) => {
       const { pageParam = 0 } = params;
       try {
-        console.log('[useAvailableCategories:queryFn] before', traceId, {
-          params,
-        });
-        if (traceId === 'CategorySelect') {
-          // debugger;
-        }
         const result = await getAvailableCategories({
           ...queryProps,
           skip: pageParam as number,
           take: all ? undefined : itemsLimit,
         });
-        console.log('[useAvailableCategories:queryFn] done', {
-          result,
-        });
-        if (traceId === 'CategorySelect') {
-          // debugger;
-        }
         return result;
       } catch (error) {
         const details = getErrorText(error);

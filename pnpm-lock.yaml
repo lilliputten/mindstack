@@ -324,6 +324,9 @@ importers:
       babel-jest:
         specifier: ^30.0.5
         version: 30.0.5(@babel/core@7.28.3)
+      best-effort-json-parser:
+        specifier: ^1.2.1
+        version: 1.2.1
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
@@ -4069,6 +4072,9 @@ packages:
   baseline-browser-mapping@2.9.7:
     resolution: {integrity: sha512-k9xFKplee6KIio3IDbwj+uaCLpqzOwakOgmqzPezM0sFJlFKcg30vk2wOiAJtkTSfx0SSQDSe8q+mWA/fSH5Zg==}
     hasBin: true
+
+  best-effort-json-parser@1.2.1:
+    resolution: {integrity: sha512-UICSLibQdzS1f+PBsi3u2YE3SsdXcWicHUg3IMvfuaePS2AYnZJdJeKhGv5OM8/mqJwPt79aDrEJ1oa84tELvw==}
 
   better-ajv-errors@1.2.0:
     resolution: {integrity: sha512-UW+IsFycygIo7bclP9h5ugkNH8EjCSgqyFB/yQ4Hqqa1OEYDtb0uFIkYE0b6+CjkgJYVM5UKI/pJPxjYe9EZlA==}
@@ -12525,6 +12531,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   baseline-browser-mapping@2.9.7: {}
+
+  best-effort-json-parser@1.2.1: {}
 
   better-ajv-errors@1.2.0(ajv@8.17.1):
     dependencies:
