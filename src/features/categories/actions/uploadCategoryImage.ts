@@ -9,8 +9,8 @@ import { getCurrentUser } from '@/lib/session';
 import {
   categoryImageAllowedTypes,
   categoryImageQuality,
-  categoryImageSize,
-  categoryImageSizeLimit,
+  categoryImageSizeBytesLimit,
+  categoryImageSizePixels,
 } from '../constants';
 
 export type TUploadCategoryImageResult = Awaited<ReturnType<typeof uploadCategoryImage>>;
@@ -36,8 +36,8 @@ export async function uploadCategoryImage(formData: FormData) {
     }
 
     // Validate file size
-    if (file.size > categoryImageSizeLimit) {
-      const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
+    if (file.size > categoryImageSizeBytesLimit) {
+      const formattedSizeLimit = nFormatter(categoryImageSizeBytesLimit);
       throw new Error(`Image size must be less than ${formattedSizeLimit}B`);
     }
 
@@ -55,8 +55,8 @@ export async function uploadCategoryImage(formData: FormData) {
     // Optimize image with sharp
     const optimizedBuffer = await sharp(buffer)
       .resize({
-        width: categoryImageSize,
-        height: categoryImageSize,
+        width: categoryImageSizePixels,
+        height: categoryImageSizePixels,
         fit: 'inside',
         withoutEnlargement: true,
       })

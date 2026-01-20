@@ -35,8 +35,8 @@ import { uploadCategoryImage } from '@/features/categories/actions/uploadCategor
 import {
   categoryImageAllowedTypes,
   categoryImageAllowedTypesString,
-  categoryImageSize,
-  categoryImageSizeLimit,
+  categoryImageSizeBytesLimit,
+  categoryImageSizePixels,
   TCategoryImageAllowedTypes,
 } from '@/features/categories/constants';
 import {
@@ -170,8 +170,8 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       }
       const errors = [];
       // Validate file size
-      if (file.size > categoryImageSizeLimit) {
-        const formattedSizeLimit = nFormatter(categoryImageSizeLimit);
+      if (file.size > categoryImageSizeBytesLimit) {
+        const formattedSizeLimit = nFormatter(categoryImageSizeBytesLimit, true);
         errors.push(t('EditCategoryForm.ImageSizeError', { size: formattedSizeLimit }));
       }
       // Validate file type
@@ -374,54 +374,59 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                 render={() => (
                   <FormItem
                     className={cn(
-                      isDev && '__EditCategoryForm_imageUrl', // DEBUG
+                      isDev && '__EditCategoryForm_Image', // DEBUG
                       'flex w-full flex-col gap-4',
                     )}
                   >
                     <Label>{t('EditCategoryForm.ImageLabel')}</Label>
                     <FormControl>
                       <div className="flex items-center gap-4">
-                        {imagePreviewUrl ? (
-                          <div
-                            className={cn(
-                              isDev && '__EditCategoryForm_imageUrl_Preview', // DEBUG
-                              'relative h-24 w-24 overflow-hidden rounded-lg border',
-                            )}
-                          >
-                            <Image
-                              src={imagePreviewUrl}
-                              alt="Category image"
-                              fill
-                              className="object-cover"
-                            />
-                            <button
-                              type="button"
-                              onClick={handleRemoveImage}
-                              className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-                            >
-                              <Icons.X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        ) : (
-                          <label
-                            className={cn(
-                              isDev && '__EditCategoryForm_imageUrl_Info', // DEBUG
-                              'flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-muted',
-                            )}
-                          >
-                            <input
-                              type="file"
-                              accept={categoryImageAllowedTypes.join(',')}
-                              onChange={handleImageChange}
-                              className="hidden"
-                            />
-                            <Icons.ImageIcon className="h-8 w-8 text-muted-foreground" />
-                          </label>
-                        )}
+                        <Label
+                          className={cn(
+                            isDev && '__EditCategoryForm_ImagePreview', // DEBUG
+                            'relative flex size-32 cursor-pointer items-center justify-center overflow-hidden rounded-lg border',
+                          )}
+                          title={t('EditCategoryForm.SelectImage')}
+                        >
+                          <input
+                            type="file"
+                            accept={categoryImageAllowedTypes.join(',')}
+                            onChange={handleImageChange}
+                            className="hidden"
+                          />
+                          {imagePreviewUrl ? (
+                            <>
+                              <Image
+                                src={imagePreviewUrl}
+                                alt="Category image"
+                                fill
+                                className="object-cover"
+                              />
+                              <Button
+                                type="button"
+                                onClick={(ev) => {
+                                  ev.preventDefault();
+                                  handleRemoveImage();
+                                }}
+                                size="iconSm"
+                                className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                                title={t('EditCategoryForm.RemoveImage')}
+                              >
+                                <Icons.X className="h-3 w-3" />
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Icons.ImageIcon className="m-auto size-8 text-muted-foreground" />
+                            </>
+                          )}
+                        </Label>
                         <div className="flex flex-1 flex-col gap-2">
                           <FormHint>
-                            {t('EditCategoryForm.MaximumSize')}: {categoryImageSize}x
-                            {categoryImageSize}px
+                            {t('EditCategoryForm.ImageHintText', {
+                              sizePixels: categoryImageSizePixels,
+                              sizeBytesLimit: nFormatter(categoryImageSizeBytesLimit, true),
+                            })}
                           </FormHint>
                           <FormMessage />
                         </div>

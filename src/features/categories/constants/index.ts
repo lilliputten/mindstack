@@ -2,14 +2,14 @@ import { blobBodySizeLimitMb, minuteMs } from '@/constants';
 
 // Category image constants
 
-/** Maximum category image size (in pixels) */
-export const categoryImageSize = 300;
+/** Maximum category image size (in pixels, it'll be downscaled on the server) */
+export const categoryImageSizePixels = 300;
 
 /** Quality setting for image optimization (0-100) */
 export const categoryImageQuality = 80;
 
 /** Category image file size limit in bytes */
-export const categoryImageSizeLimit = blobBodySizeLimitMb * 1024 * 1024; // 2MB -- it'll be downscaled on the server
+export const categoryImageSizeBytesLimit = blobBodySizeLimitMb * 1024 * 1024; // Physical image file size limit
 
 // NOTE: There is a NVercel Blob default limit to 1MB
 // Uncaught Exception: Error: Body exceeded 1 MB limit.
