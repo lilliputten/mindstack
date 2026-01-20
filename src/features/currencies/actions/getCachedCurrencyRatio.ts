@@ -32,13 +32,13 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
     });
 
     if (currencyRecord) {
-      // Check if we should return the cached ratio
-      const isUpdatedRecently = nowTime - currencyRecord.updatedAt.getTime() < updateTimeout;
+      const { updatedAt, updatingSince, ratio } = currencyRecord;
+      // Check if we can return the cached ratio
+      const isUpdatedRecently = nowTime - updatedAt.getTime() < updateTimeout;
       const isUpdatingRecently =
-        currencyRecord.updatingSince &&
-        nowTime - currencyRecord.updatingSince.getTime() < updatingTimeout;
-      if (isUpdatedRecently || isUpdatingRecently) {
-        return currencyRecord.ratio;
+        updatingSince && nowTime - updatingSince.getTime() < updatingTimeout;
+      if ((isUpdatedRecently || isUpdatingRecently) && ratio) {
+        return ratio;
       }
     }
 
@@ -90,7 +90,7 @@ export async function getCurrencyRatio(currencyType: TCurrencyType) {
         create: {
           type: currencyType,
           ratio: initialRatios[currencyType],
-          updatedAt: new Date(),
+          updatedAt: epochStartDate,
           updatingSince: null,
         },
       });
