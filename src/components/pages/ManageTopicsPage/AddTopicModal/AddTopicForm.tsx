@@ -91,9 +91,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
 
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
-  const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>(
-    'TOPICS_LIMIT_REACHED',
-  );
+  const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
 
   const onSubmit = handleSubmit((formData) => {
     const { name, isPublic, categoryIds } = formData;

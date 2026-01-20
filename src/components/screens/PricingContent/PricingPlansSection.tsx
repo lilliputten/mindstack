@@ -122,9 +122,11 @@ function usePlansData({
       prices: 'Free',
       subscription: 'BASIC',
       features: [
-        `Create up to ${formatLimit(BASIC_TOPICS_LIMIT)} topics`,
-        `Up to ${formatLimit(BASIC_QUESTIONS_LIMIT)} questions per topic`,
-        `Up to ${formatLimit(BASIC_ANSWERS_LIMIT)} answers per question`,
+        t('Pricing.Plans.Basic.Features.TopicsLimit', { limit: formatLimit(BASIC_TOPICS_LIMIT) }),
+        t('Pricing.Plans.Basic.Features.QuestionsLimit', {
+          limit: formatLimit(BASIC_QUESTIONS_LIMIT),
+        }),
+        t('Pricing.Plans.Basic.Features.AnswersLimit', { limit: formatLimit(BASIC_ANSWERS_LIMIT) }),
         t('Pricing.Plans.Basic.Features.Workouts'),
         t('Pricing.Plans.Basic.Features.Progress'),
         t('Pricing.Plans.Basic.Features.Community'),
@@ -144,9 +146,9 @@ function usePlansData({
       prices: proPricesQuery.prices,
       subscription: proSubscriptionType,
       features: [
-        `Create up to ${formatLimit(PRO_TOPICS_LIMIT)} topics`,
-        `Up to ${formatLimit(PRO_QUESTIONS_LIMIT)} questions per topic`,
-        `Up to ${formatLimit(PRO_ANSWERS_LIMIT)} answers per question`,
+        t('Pricing.Plans.Pro.Features.TopicsLimit', { limit: formatLimit(PRO_TOPICS_LIMIT) }),
+        t('Pricing.Plans.Pro.Features.QuestionsLimit', { limit: formatLimit(PRO_QUESTIONS_LIMIT) }),
+        t('Pricing.Plans.Pro.Features.AnswersLimit', { limit: formatLimit(PRO_ANSWERS_LIMIT) }),
         t('Pricing.Plans.Pro.Features.Ai'),
         tFuture('Pricing.Plans.Features.AdvancedAnalytics'),
         tFuture('Pricing.Plans.Pro.Features.Support'),

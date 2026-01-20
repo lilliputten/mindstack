@@ -930,10 +930,13 @@
         "Description": "Para individuos",
         "Name": "Básico",
         "Features": {
+          "AnswersLimit": "Hasta {limit} respuestas por pregunta",
           "Community": "Acceso a temas de la comunidad",
           "Generations": "10 generaciones de IA en total",
           "Progress": "Seguimiento del progreso",
+          "QuestionsLimit": "Hasta {limit} preguntas por tema",
           "Topics": "Crear hasta 5 temas",
+          "TopicsLimit": "Crear hasta {limit} temas",
           "Workouts": "Sesiones de entrenamiento básicas"
         }
       },
@@ -957,8 +960,11 @@
         "Features": {
           "Ai": "Generación de preguntas con IA",
           "Analytics": "Análisis detallados",
+          "AnswersLimit": "Hasta {limit} respuestas por pregunta",
           "Generations": "100 generaciones de IA por mes",
+          "QuestionsLimit": "Hasta {limit} preguntas por tema",
           "Support": "Soporte prioritario",
+          "TopicsLimit": "Crear hasta {limit} temas",
           "Unlimited": "Temas y preguntas ilimitados"
         }
       },

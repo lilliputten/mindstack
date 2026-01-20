@@ -912,7 +912,7 @@
     "Comparison": {
       "AiGenerations": "AI Generations",
       "Analytics": "Detailed Analytics",
-      "CommunityAccess": "Community Access",
+      "CommunityAccess": "Public Data Access",
       "EnterpriseSecurity": "Enterprise Security",
       "ExportImport": "Export/Import",
       "PrioritySupport": "Priority Support",
@@ -936,10 +936,13 @@
         "Description": "For individuals",
         "Name": "Basic",
         "Features": {
-          "Community": "Community topics access",
+          "AnswersLimit": "Up to {limit} answers per question",
+          "Community": "Public topics access",
           "Generations": "10 AI generations total",
           "Progress": "Progress tracking",
+          "QuestionsLimit": "Up to {limit} questions per topic",
           "Topics": "Create up to 5 topics",
+          "TopicsLimit": "Create up to {limit} topics",
           "Workouts": "Basic training sessions"
         }
       },
@@ -963,8 +966,11 @@
         "Features": {
           "Ai": "AI-powered question generation",
           "Analytics": "Detailed analytics",
+          "AnswersLimit": "Up to {limit} answers per question",
           "Generations": "100 AI generations per month",
+          "QuestionsLimit": "Up to {limit} questions per topic",
           "Support": "Priority support",
+          "TopicsLimit": "Create up to {limit} topics",
           "Unlimited": "Unlimited topics and questions"
         }
       },

@@ -5,7 +5,7 @@ import { debugObj } from '@/lib/debug';
 import { AIGenerationError } from '@/lib/errors/AIGenerationError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
-import { appId, versionInfo } from '@/config';
+import { versionInfo } from '@/config';
 import { checkAllowedAIGenerations, saveAIGeneration } from '@/features/ai-generations/actions';
 import { sendLoggingMessage } from '@/features/bot/actions';
 
@@ -43,8 +43,9 @@ export async function sendUserAIRequest(
     versionInfo,
     messages,
     opts,
+    user,
   });
-  await sendLoggingMessage(`[${appId}:sendUserAIRequest]\n${debugStr}`);
+  await sendLoggingMessage(`[mindstack:sendUserAIRequest]\n${debugStr}`);
 
   const startTime = new Date();
 

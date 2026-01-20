@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { debugObj } from '@/lib/debug';
 import { getErrorText, translatedPeriod } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
-import { appId, versionInfo } from '@/config';
+import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
 import { sendLoggingMessage } from '@/features/bot/actions/sendLoggingMessage';
 import { allowSuggestCategoriesIn } from '@/features/categories/constants';
@@ -84,7 +84,7 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
         creator,
         versionInfo,
       });
-      await sendLoggingMessage(`[${appId}:createCategory]\n${debugStr}`);
+      await sendLoggingMessage(`[mindstack:createCategory]\n${debugStr}`);
     }
 
     return category;

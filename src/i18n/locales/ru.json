@@ -226,7 +226,7 @@
     "DisplayCategoriesWithImageHint": "Отображать категории с изображениями или без.",
     "DisplayCategoriesWithTopicsHint": "Отображать категории с тамами или без.",
     "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
-    "SearchForLanguagePlaceholder": "Поиск языка...",
+    "SearchForLanguagePlaceholder": "Поиск по языку...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
     "SearchForTextPlaceholder": "Поиск текста...",
     "SelectOptionPlaceholder": "Выбрать опцию…",
@@ -290,7 +290,7 @@
     "DisplayTopicsWithQuestionsHint": "Отображать темы с вопросами или без.",
     "DisplayTopicsWithStatsHint": "Отображать темы с или без собранных данных статистики прогресса.",
     "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
-    "SearchForLanguagePlaceholder": "Поиск языка...",
+    "SearchForLanguagePlaceholder": "Поиск по языку...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
     "SearchForTextPlaceholder": "Поиск текста...",
     "SelectCategories": "Выбрать категории",
@@ -907,7 +907,7 @@
     "Comparison": {
       "AiGenerations": "ИИ генерации",
       "Analytics": "Подробная аналитика",
-      "CommunityAccess": "Доступ к сообществу",
+      "CommunityAccess": "Доступ к побличным данным",
       "EnterpriseSecurity": "Корпоративная безопасность",
       "ExportImport": "Экспорт/Импорт",
       "PrioritySupport": "Приоритетная поддержка",
@@ -931,10 +931,13 @@
         "Description": "Для частных лиц",
         "Name": "Базовый",
         "Features": {
-          "Community": "Доступ к темам сообщества",
+          "AnswersLimit": "До {limit} ответов на вопрос",
+          "Community": "Доступ к публичным темам",
           "Generations": "10 ИИ генераций всего",
           "Progress": "Отслеживание прогресса",
+          "QuestionsLimit": "До {limit} вопросов на тему",
           "Topics": "Создание до 5 тем",
+          "TopicsLimit": "Создание до {limit} тем",
           "Workouts": "Базовые тренировки"
         }
       },
@@ -956,11 +959,14 @@
         "Description": "Для серьёзных учеников",
         "Name": "Про",
         "Features": {
-          "Ai": "Генерация вопросов с помо��ью ИИ",
+          "Ai": "Генерация вопросов с помощью ИИ",
           "Analytics": "Подробная аналитика",
+          "AnswersLimit": "До {limit} ответов на вопрос",
           "Generations": "100 ИИ генераций в месяц",
+          "QuestionsLimit": "До {limit} вопросов на тему",
           "Support": "Приоритетная поддержка",
-          "Unlimited": "Неограниченные темы и во��росы"
+          "TopicsLimit": "Создание до {limit} тем",
+          "Unlimited": "Неограниченные темы и вопросы"
         }
       },
       "Unlimited": {
@@ -986,7 +992,7 @@
     "CannotCancelNotPendingPayment": "Невозможно отменить платеж, который не находится в ожидании",
     "ContactTechSupport": "Пожалуйста, свяжитесь с <Link>технической поддержкой</Link>.",
     "ErrorCancelingPayment": "Ошибка при отмене платежа",
-    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас воз��икнут проблемы.",
+    "FailedPaymentExplanation": "Вероятно, произошла ошибка при обработке платежа. \nПовторите попытку или обратитесь в <Link>техническую поддержку</Link>, если у вас возникнут проблемы.",
     "InvalidPaymentProvider": "Неизвестный поставщик платежей ({provider})",
     "PaymentNotFound": "Платеж не найден",
     "SubscriptionTypesMismatch": "Несоответствие типов подписки",
