@@ -7,7 +7,10 @@ import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
-import { checkTopicsLimit } from '@/features/users/services/checkContentLimits';
+import {
+  checkTopicsLimit,
+  TContentLimitStatus,
+} from '@/features/users/services/checkContentLimits';
 
 interface TOptions {
   noDebug?: boolean;
@@ -17,6 +20,7 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
   const { noDebug, ...newTopic } = params;
   const user = await getCurrentUser();
   const userId = user?.id;
+  let topicsLimit: TContentLimitStatus | undefined;
   try {
     const { categoryIds, ...topicData } = newTopic;
     if (isDev) {
@@ -31,7 +35,7 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
     }
 
     // Check topics limit before creating
-    const topicsLimit = await checkTopicsLimit();
+    topicsLimit = await checkTopicsLimit();
     if (!topicsLimit.canCreate) {
       throw new ContentLimitError('TOPICS_LIMIT_REACHED', topicsLimit.reasonCode, user?.grade);
     }
@@ -61,6 +65,9 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
       // eslint-disable-next-line no-console
       console.error('[addNewTopic] catch', {
         error,
+        topicsLimit,
+        user,
+        params,
       });
       debugger; // eslint-disable-line no-debugger
     }

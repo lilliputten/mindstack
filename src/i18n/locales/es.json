@@ -28,6 +28,7 @@
   "Description": "Descripción",
   "Edit": "Editar",
   "Expected": "Esperado",
+  "ExtraLimitsErrorText": "<PricesLink>Consulta</PricesLink> las condiciones de tu plan tarifario.",
   "Finish": "Finalizar",
   "FinishedAt": "Terminado en",
   "GenerationMode": "Modo de generación",
@@ -83,6 +84,8 @@
   "Total": "Total",
   "Training": "Entrenamiento",
   "TrainingStatus": "Estado del entrenamiento",
+  "UnknownError": "Error Desconocido",
+  "Unlimited": "Ilimitado",
   "UpdatedDate": "Fecha actualizada",
   "UsedGenerations": "Generaciones usadas",
   "UserAvatarImage": "Imagen de avatar de usuario",
@@ -153,6 +156,7 @@
   "AddTopicForm": {
     "AddButtonText": "Agregar",
     "AddingButtonText": "Agregando",
+    "CannotCreateTopic": "Error de creación del tema",
     "CategoriesHint": "Seleccione una o algunas categorías para el tema. \nPuede editar este parámetro más tarde.",
     "CategoriesLabel": "Categorías",
     "IsPublicHint": "Los temas públicos pueden ser vistos y utilizados por otros usuarios.",
@@ -653,6 +657,14 @@
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA",
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
+  "LimitsError": {
+    "ANSWERS_LIMIT_REACHED": "Ha alcanzado el número máximo de respuestas para su plan actual",
+    "GUEST_USERS_NOT_ALLOWED": "Los usuarios invitados no pueden crear contenido",
+    "QUESTIONS_LIMIT_REACHED": "Ha alcanzado el número máximo de preguntas para su plan actual",
+    "TOPICS_LIMIT_REACHED": "Ha alcanzado el número máximo de temas para su plan actual",
+    "UNAUTHORIZED": "Por favor inicie sesión para crear contenido",
+    "UNKNOWN_ERROR": "Límite de creación de contenido alcanzado"
+  },
   "ManageCategoriesList": {
     "AddCategory": "Agregar Categoría",
     "AddNewCategory": "Agregar Nueva Categoría",
@@ -928,8 +940,8 @@
           "Everything": "Todo lo de Pro",
           "Export": "Funcionalidad de exportar/importar",
           "Priority": "Soporte de máxima prioridad",
-          "UnlimitedGenerations": "Generaciones de IA ilimitadas",
-          "UnlimitedDataCreation": "Creación ilimitada de temas, preguntas y respuestas."
+          "UnlimitedDataCreation": "Creación ilimitada de temas, preguntas y respuestas.",
+          "UnlimitedGenerations": "Generaciones de IA ilimitadas"
         }
       },
       "Pro": {
@@ -1402,6 +1414,5 @@
     "milliseconds": "ms",
     "minutes": "{count, plural, =1 {minuto} other {minutos}}",
     "seconds": "{count, plural, =1 {segundo} other {segundos}}"
-  },
-  "Unlimited": "Ilimitado"
+  }
 }

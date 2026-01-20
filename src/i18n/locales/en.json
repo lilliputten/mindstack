@@ -28,6 +28,7 @@
   "Description": "Description",
   "Edit": "Edit",
   "Expected": "Expected",
+  "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan caonditions.",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
   "GenerationMode": "Generation mode",
@@ -84,6 +85,8 @@
   "Training": "Training",
   "TrainingStatus": "Training status",
   "TryAgain": "Try again",
+  "UnknownError": "Unknown Error",
+  "Unlimited": "Unlimited",
   "UpdatedDate": "Updated date",
   "UsedGenerations": "Used generations",
   "UserAvatarImage": "User avatar image",
@@ -154,6 +157,7 @@
   "AddTopicForm": {
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
+    "CannotCreateTopic": "Topic Creation Error",
     "CategoriesHint": "Select one or a few categories for the topic. You can edit this parameter later.",
     "CategoriesLabel": "Categories",
     "IsPublicHint": "Public topics can be viewed and used by other users.",
@@ -659,6 +663,14 @@
     "ToastSuccessData": "Successfully retrieved AI generated data",
     "ToastSuccessQuestions": "Successfully added new questions"
   },
+  "LimitsError": {
+    "ANSWERS_LIMIT_REACHED": "You have reached the maximum number of answers for your current plan",
+    "GUEST_USERS_NOT_ALLOWED": "Guest users cannot create content",
+    "QUESTIONS_LIMIT_REACHED": "You have reached the maximum number of questions for your current plan",
+    "TOPICS_LIMIT_REACHED": "You have reached the maximum number of topics for your current plan",
+    "UNAUTHORIZED": "Please sign in to create content",
+    "UNKNOWN_ERROR": "Content creation limit reached"
+  },
   "ManageCategoriesList": {
     "AddCategory": "Add Category",
     "AddNewCategory": "Add New Category",
@@ -934,8 +946,8 @@
           "Everything": "Everything in Pro",
           "Export": "Export/import functionality",
           "Priority": "Highest priority support",
-          "UnlimitedGenerations": "Unlimited AI generations",
-          "UnlimitedDataCreation": "Unlimited сreation of topics, questions and answers"
+          "UnlimitedDataCreation": "Unlimited сreation of topics, questions and answers",
+          "UnlimitedGenerations": "Unlimited AI generations"
         }
       },
       "Pro": {
@@ -1408,6 +1420,5 @@
     "milliseconds": "ms",
     "minutes": "{count, plural, =1 {minute} other {minutes}}",
     "seconds": "{count, plural, =1 {second} other {seconds}}"
-  },
-  "Unlimited": "Unlimited"
+  }
 }

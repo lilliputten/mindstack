@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { Link, TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -16,6 +17,7 @@ import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
 import { CategorySelectField } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
+import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic } from '@/features/topics/types';
 
@@ -89,21 +91,39 @@ export function AddTopicForm(props: TAddTopicFormProps) {
 
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
+  const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>(
+    'TOPICS_LIMIT_REACHED',
+  );
+
   const onSubmit = handleSubmit((formData) => {
     const { name, isPublic, categoryIds } = formData;
     const newTopic: TNewTopic = { name, isPublic, categoryIds };
     return handleAddTopic(newTopic)
       .then(() => {
+        // NOTE: The form is processing in the `AddTopicModal`, see `addTopicMutation` hook
         // reset();
         // if (handleClose) {
         //   handleClose();
         // }
+        setLimitsError(undefined);
       })
       .catch((error) => {
-        const message = getErrorText(error) || 'An unknown error has occurred.';
+        const message = t('AddTopicForm.CannotCreateTopic');
+        const details = getErrorText(error);
+        // Check for ContentLimitError: TOPICS_LIMIT_REACHED and display a message
+        let isLimitsError = false;
+        if (error instanceof ContentLimitError || error.name === 'ContentLimitError') {
+          isLimitsError = true;
+          setLimitsError(error.message);
+        } else {
+          setLimitsError(undefined);
+        }
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[AddTopicForm:onSubmit]', message, {
+        console.error('[AddTopicForm:onSubmit]', comboMsg, {
+          isLimitsError,
           error,
+          newTopic,
         });
         debugger; // eslint-disable-line no-debugger
       });
@@ -134,6 +154,27 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           className,
         )}
       >
+        {limitsError && (
+          <div
+            data-error-id={limitsError}
+            className={cn(
+              isDev && '__EditCategoryForm_Error', // DEBUG
+              'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
+            )}
+          >
+            <Icons.CircleAlert className="size-6 flex-shrink-0 text-red-500" />
+            <p className="text-content text-truncate flex-1 text-sm text-red-500">
+              <span className="font-bold">{t('AddTopicForm.CannotCreateTopic')}</span>
+              {': '}
+              <span>{getLocalizedLimitError(limitsError, t)}</span>
+              {'. '}
+              {t.rich('ExtraLimitsErrorText', {
+                PricesLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
+              })}
+            </p>
+          </div>
+        )}
+
         <FormField
           name="name"
           control={form.control}

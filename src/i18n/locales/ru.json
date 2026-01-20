@@ -27,6 +27,7 @@
   "Deleting": "Удаление",
   "Description": "Описание",
   "Edit": "Редактировать",
+  "ExtraLimitsErrorText": "<PricesLink>Проверьте</PricesLink> условия вашего тарифного плана.",
   "Finish": "Завершить",
   "FinishedAt": "Завершено в",
   "GenerationMode": "Режим генерации",
@@ -81,6 +82,8 @@
   "Total": "Всего",
   "Training": "Тренировка",
   "TrainingStatus": "Статус тренировки",
+  "UnknownError": "Неизвестная ошибка",
+  "Unlimited": "Не ограничено",
   "UpdatedDate": "Дата обновления",
   "UsedGenerations": "Использованные генерации",
   "UserAvatarImage": "Изображение аватара пользователя",
@@ -149,6 +152,7 @@
   "AddTopicForm": {
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
+    "CannotCreateTopic": "Ошибка создания темы",
     "CategoriesHint": "Выберите одну или несколько категорий для темы. Вы можете изменить этот параметр позже.",
     "CategoriesLabel": "Категории",
     "IsPublicHint": "Публичные темы могут просматриваться и использоваться другими пользователями.",
@@ -654,6 +658,14 @@
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
   },
+  "LimitsError": {
+    "ANSWERS_LIMIT_REACHED": "Вы достигли максимального количества ответов для вашего текущего плана",
+    "GUEST_USERS_NOT_ALLOWED": "Гостевым пользователям нельзя создавать контент",
+    "QUESTIONS_LIMIT_REACHED": "Вы достигли максимального количества вопросов для вашего текущего плана",
+    "TOPICS_LIMIT_REACHED": "Вы достигли максимального количества тем для вашего текущего плана",
+    "UNAUTHORIZED": "Пожалуйста, войдите, чтобы создавать контент",
+    "UNKNOWN_ERROR": "Достигнут лимит на создание контента"
+  },
   "ManageCategoriesList": {
     "AddCategory": "Добавить категорию",
     "AddNewCategory": "Добавить новую категорию",
@@ -929,8 +941,8 @@
           "Everything": "Всё из Про",
           "Export": "Функции экспорта/импорта",
           "Priority": "Поддержка высшего приоритета",
-          "UnlimitedGenerations": "Неограниченные ИИ генерации",
-          "UnlimitedDataCreation": "Неограниченное создание тем, вопросов и ответов"
+          "UnlimitedDataCreation": "Неограниченное создание тем, вопросов и ответов",
+          "UnlimitedGenerations": "Неограниченные ИИ генерации"
         }
       },
       "Pro": {
@@ -1403,6 +1415,5 @@
     "milliseconds": "мс",
     "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
     "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}"
-  },
-  "Unlimited": "Не ограничено"
+  }
 }
