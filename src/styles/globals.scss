@@ -355,6 +355,14 @@
     cursor: default;
   }
 
+  .single-child {
+    // Forcibely hide all children nodes except the first one.
+    // May help to solve multipe simultaneous parallel slots problem.
+    & > *:not(:first-child) {
+      display: none;
+    }
+  }
+
   .text-content {
     h1,
     h2,
