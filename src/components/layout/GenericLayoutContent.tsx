@@ -82,7 +82,15 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
         )}
       >
         {!hideSidebar && <DashboardSidebar links={filteredLinks} />}
-        {children}
+        <div
+          className={cn(
+            isDev && '__GenericLayout_ContentContainer', // DEBUG
+            'relative flex size-full flex-1',
+            'single-child',
+          )}
+        >
+          {children}
+        </div>
       </div>
       <AcceptCookiesPopup />
       <NavFooter />
