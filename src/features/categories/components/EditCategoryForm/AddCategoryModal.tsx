@@ -90,10 +90,9 @@ export function AddCategoryModal(props: TProps) {
 
   const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn,
-    onSuccess: (_updatedCategory) => {
-      /* // UNUSED: Add the created item to the cached react-query data
-       * availableCategoriesQuery.addNewCategory(updatedCategory, true);
-       */
+    onSuccess: (_savedCategory) => {
+      setSaved(true);
+
       // Invalidate the most recent suggested category queries when in suggestion mode
       if (suggestionMode) {
         const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
@@ -101,10 +100,6 @@ export function AddCategoryModal(props: TProps) {
           // availableCategoriesQuery.queryKey,
         ]);
       }
-      /* // UNUSED: Invalidate all other keys...
-       * availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
-       */
-      setSaved(true);
     },
     onError: (error, newCategory) => {
       const message = t('AddCategoryModal.CantSaveCategory');
@@ -122,18 +117,9 @@ export function AddCategoryModal(props: TProps) {
   });
 
   const handleSaveCategory = React.useCallback(
-    (updatedCategory: TCreateCategoryParams) => {
-      return saveCategoryMutation.mutateAsync(updatedCategory);
-      /* // Toasts are displaying in `EditCategoryForm`
-       * const promise = saveCategoryMutation.mutateAsync(updatedCategory);
-       * toast.promise(promise, {
-       *   loading: t('AddCategoryModal.ToastLoading'),
-       *   success: (category) =>
-       *     t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category, locale, t) }),
-       *   error: t('AddCategoryModal.CannotSaveCategory'),
-       * });
-       * return promise;
-       */
+    (savedCategory: TCreateCategoryParams) => {
+      // Toasts are displaying in `EditCategoryForm`
+      return saveCategoryMutation.mutateAsync(savedCategory);
     },
     [saveCategoryMutation],
   );
@@ -156,18 +142,6 @@ export function AddCategoryModal(props: TProps) {
         : undefined,
     [saved, hasRecentSuggestion, recentCategory],
   );
-
-  /* // Hide button is the same is the default 'Back'
-   * const extraActions = React.useMemo(
-   *   () => (
-   *     <Button onClick={hideModal} className="flex gap-2">
-   *       <Icons.X className="size-4" />
-   *       <span>{t('Cancel')}</span>
-   *     </Button>
-   *   ),
-   *   [hideModal, t],
-   * );
-   */
 
   if (!shouldBeVisible) {
     return null;

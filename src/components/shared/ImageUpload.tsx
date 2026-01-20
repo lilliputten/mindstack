@@ -70,6 +70,7 @@ export function ImageUpload(props: TProps) {
         'relative flex size-32 cursor-pointer items-center justify-center overflow-hidden rounded-lg border',
         'transition',
         'bg-theme/10 hover:border-theme hover:bg-theme/30',
+        'font-normal',
         isDragOver && 'border-theme bg-theme/30',
         className,
       )}
