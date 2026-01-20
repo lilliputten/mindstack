@@ -4,6 +4,7 @@ import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
+import { generateTestEmail } from '@/jest/test/testUtils';
 
 import { defaultCategoryStatus, TCreateCategoryParams } from '../../types/Categories';
 import { createCategory } from '../createCategory';
@@ -39,7 +40,7 @@ describe('createCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `cc-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('cc-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -99,7 +100,7 @@ describe('createCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `cc-default-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('cc-default-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -179,7 +180,7 @@ describe('createCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `cc-hidden-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('cc-hidden-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -220,7 +221,7 @@ describe('createCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `cc-suggested-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('cc-suggested-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -261,7 +262,7 @@ describe('createCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `cc-minimal-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('cc-minimal-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 

@@ -4,6 +4,7 @@ import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
+import { generateTestEmail } from '@/jest/test/testUtils';
 
 import { defaultCategoryStatus } from '../../types/Categories';
 import { deleteCategory } from '../deleteCategory';
@@ -39,7 +40,7 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `dc-user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('dc-user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -99,12 +100,12 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `dc-admin-owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('dc-admin-owner'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
 
       const admin = await jestPrisma.user.create({
-        data: { email: `dc-admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: generateTestEmail('dc-admin'), role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: admin.id });
 
@@ -157,7 +158,7 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -202,7 +203,7 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -223,12 +224,12 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('owner'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
 
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('other'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: otherUser.id });
 
@@ -279,7 +280,7 @@ describe('deleteCategory', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 

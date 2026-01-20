@@ -4,6 +4,7 @@ import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
+import { generateTestEmail } from '@/jest/test/testUtils';
 
 import { deleteAnswers } from '../deleteAnswers';
 
@@ -39,7 +40,7 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -82,10 +83,10 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('owner'), role: 'USER' },
       });
       const admin = await jestPrisma.user.create({
-        data: { email: `admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: generateTestEmail('admin'), role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: admin.id });
@@ -124,11 +125,10 @@ describe('deleteAnswers', () => {
   });
 
   it('should throw error when some answers are not found', async () => {
-    const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -147,10 +147,10 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-del-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('owner-del'), role: 'USER' },
       });
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-del-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('other-del'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: otherUser.id });
@@ -185,7 +185,7 @@ describe('deleteAnswers', () => {
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-empty-${dateTag}@test.com`, role: 'USER' },
+        data: { email: generateTestEmail('user-empty'), role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
