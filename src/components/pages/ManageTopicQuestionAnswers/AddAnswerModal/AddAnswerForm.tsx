@@ -132,11 +132,11 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
           className,
         )}
       >
-        {limitsError && (
+        {limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
-              isDev && '__EditCategoryForm_LimitsError', // DEBUG
+              isDev && '__AddAnswerForm_LimitsError', // DEBUG
               'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
             )}
           >
@@ -151,65 +151,70 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
               })}
             </p>
           </div>
+        ) : (
+          <>
+            <FormField
+              name="text"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={textKey}>
+                    {t('AddAnswerForm.AnswerText')}
+                  </Label>
+                  <FormControl>
+                    <Textarea
+                      id={textKey}
+                      className="flex-1"
+                      placeholder={t('AddAnswerForm.AnswerTextPlaceholder')}
+                      rows={5}
+                      {...field}
+                      onChange={(ev) => field.onChange(ev)}
+                    />
+                  </FormControl>
+                  <FormHint>
+                    {t('AddAnswerForm.AnswerTextHint')} <MarkdownHint />
+                  </FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="isCorrect"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={isCorrectKey}>
+                    {t('AddAnswerForm.IsCorrectLabel')}
+                  </Label>
+                  <FormControl>
+                    <Switch
+                      id={isCorrectKey}
+                      checked={!!field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:bg-green-500"
+                    />
+                  </FormControl>
+                  <FormHint>{t('AddAnswerForm.IsCorrectHint')}</FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col justify-between"></div>
+          </>
         )}
-
-        <FormField
-          name="text"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={textKey}>
-                {t('AddAnswerForm.AnswerText')}
-              </Label>
-              <FormControl>
-                <Textarea
-                  id={textKey}
-                  className="flex-1"
-                  placeholder={t('AddAnswerForm.AnswerTextPlaceholder')}
-                  rows={5}
-                  {...field}
-                  onChange={(ev) => field.onChange(ev)}
-                />
-              </FormControl>
-              <FormHint>
-                {t('AddAnswerForm.AnswerTextHint')} <MarkdownHint />
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="isCorrect"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={isCorrectKey}>
-                {t('AddAnswerForm.IsCorrectLabel')}
-              </Label>
-              <FormControl>
-                <Switch
-                  id={isCorrectKey}
-                  checked={!!field.value}
-                  onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-green-500"
-                />
-              </FormControl>
-              <FormHint>{t('AddAnswerForm.IsCorrectHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-col justify-between"></div>
         {/* Actions */}
         <div className="flex w-full gap-4">
-          <Button
-            type="submit"
-            variant={isSubmitEnabled ? 'success' : 'disabled'}
-            disabled={!isSubmitEnabled}
-            className="gap-2"
-          >
-            <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
-          </Button>
+          {!limitsError && (
+            <Button
+              type="submit"
+              variant={isSubmitEnabled ? 'success' : 'disabled'}
+              disabled={!isSubmitEnabled}
+              className="gap-2"
+            >
+              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+              <span>{buttonText}</span>
+            </Button>
+          )}
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
             <span>{t('Cancel')}</span>

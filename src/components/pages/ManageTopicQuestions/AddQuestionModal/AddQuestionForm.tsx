@@ -127,11 +127,11 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
           className,
         )}
       >
-        {limitsError && (
+        {limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
-              isDev && '__EditCategoryForm_LimitsError', // DEBUG
+              isDev && '__AddQuestionForm_LimitsError', // DEBUG
               'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
             )}
           >
@@ -146,45 +146,50 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
               })}
             </p>
           </div>
+        ) : (
+          <>
+            <FormField
+              name="text"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={textKey}>
+                    {t('AddQuestionForm.QuestionText')}
+                  </Label>
+                  <FormControl>
+                    <Textarea
+                      id={textKey}
+                      className="flex-1"
+                      placeholder={t('AddQuestionForm.QuestionTextPlaceholder')}
+                      rows={5}
+                      {...field}
+                      onChange={(ev) => field.onChange(ev)}
+                    />
+                  </FormControl>
+                  <FormHint>
+                    {t('AddQuestionForm.QuestionTextHint')}
+                    <MarkdownHint />
+                  </FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col justify-between"></div>
+          </>
         )}
-
-        <FormField
-          name="text"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={textKey}>
-                {t('AddQuestionForm.QuestionText')}
-              </Label>
-              <FormControl>
-                <Textarea
-                  id={textKey}
-                  className="flex-1"
-                  placeholder={t('AddQuestionForm.QuestionTextPlaceholder')}
-                  rows={5}
-                  {...field}
-                  onChange={(ev) => field.onChange(ev)}
-                />
-              </FormControl>
-              <FormHint>
-                {t('AddQuestionForm.QuestionTextHint')}
-                <MarkdownHint />
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-col justify-between"></div>
         {/* Actions */}
         <div className="flex w-full gap-4">
-          <Button
-            type="submit"
-            variant={isSubmitEnabled ? 'success' : 'disabled'}
-            disabled={!isSubmitEnabled}
-            className="gap-2"
-          >
-            <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
-          </Button>
+          {!limitsError && (
+            <Button
+              type="submit"
+              variant={isSubmitEnabled ? 'success' : 'disabled'}
+              disabled={!isSubmitEnabled}
+              className="gap-2"
+            >
+              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+              <span>{buttonText}</span>
+            </Button>
+          )}
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="size-4" />
             <span>{t('Cancel')}</span>

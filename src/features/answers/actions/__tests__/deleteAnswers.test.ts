@@ -181,7 +181,6 @@ describe('deleteAnswers', () => {
   });
 
   it('should handle empty array', async () => {
-    const dateTag = formatDateTag();
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({

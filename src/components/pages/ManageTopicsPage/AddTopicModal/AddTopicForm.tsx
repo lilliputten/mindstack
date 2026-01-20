@@ -154,11 +154,11 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           className,
         )}
       >
-        {limitsError && (
+        {limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
-              isDev && '__EditCategoryForm_LimitsError', // DEBUG
+              isDev && '__AddTopicForm_LimitsError', // DEBUG
               'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
             )}
           >
@@ -173,65 +173,75 @@ export function AddTopicForm(props: TAddTopicFormProps) {
               })}
             </p>
           </div>
+        ) : (
+          <>
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={nameKey}>
+                    {t('AddTopicForm.TopicName')}
+                  </Label>
+                  <FormControl>
+                    <Input
+                      id={nameKey}
+                      type="text"
+                      className="flex-1"
+                      placeholder={t('AddTopicForm.NamePlaceholder')}
+                      {...field}
+                      onChange={(ev) => field.onChange(ev)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <CategorySelectField
+              // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+              control={form.control}
+              name="categoryIds"
+              label={t('AddTopicForm.CategoriesLabel')}
+              hint={t('AddTopicForm.CategoriesHint')}
+              placeholder={t('AddTopicForm.SelectCategoriesPlaceholder')}
+            />
+            <FormField
+              name="isPublic"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={isPublicKey}>
+                    {t('AddTopicForm.IsPublicLabel')}
+                  </Label>
+                  <FormControl>
+                    <Switch
+                      id={isPublicKey}
+                      checked={!!field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormHint>{t('AddTopicForm.IsPublicHint')}</FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col justify-between"></div>
+          </>
         )}
 
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={nameKey}>
-                {t('AddTopicForm.TopicName')}
-              </Label>
-              <FormControl>
-                <Input
-                  id={nameKey}
-                  type="text"
-                  className="flex-1"
-                  placeholder={t('AddTopicForm.NamePlaceholder')}
-                  {...field}
-                  onChange={(ev) => field.onChange(ev)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <CategorySelectField
-          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
-          control={form.control}
-          name="categoryIds"
-          label={t('AddTopicForm.CategoriesLabel')}
-          hint={t('AddTopicForm.CategoriesHint')}
-          placeholder={t('AddTopicForm.SelectCategoriesPlaceholder')}
-        />
-        <FormField
-          name="isPublic"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={isPublicKey}>
-                {t('AddTopicForm.IsPublicLabel')}
-              </Label>
-              <FormControl>
-                <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-              <FormHint>{t('AddTopicForm.IsPublicHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-col justify-between"></div>
         {/* Actions */}
         <div className="flex w-full gap-4">
-          <Button
-            type="submit"
-            variant={isSubmitEnabled ? 'success' : 'disabled'}
-            disabled={!isSubmitEnabled}
-            className="gap-2"
-          >
-            <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
-          </Button>
+          {!limitsError && (
+            <Button
+              type="submit"
+              variant={isSubmitEnabled ? 'success' : 'disabled'}
+              disabled={!isSubmitEnabled}
+              className="gap-2"
+            >
+              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+              <span>{buttonText}</span>
+            </Button>
+          )}
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="size-4" />
             <span>{t('Cancel')}</span>

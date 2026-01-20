@@ -723,7 +723,7 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
           {...props}
           className={cn(
             isDev && '__ManageCategoriesList_CardContent', // DEBUG
-            'flex flex-col flex-wrap items-start',
+            'flex flex-col flex-wrap items-stretch',
             'overflow-hidden rounded-md transition',
             isDataLoading && 'opacity-50',
           )}
