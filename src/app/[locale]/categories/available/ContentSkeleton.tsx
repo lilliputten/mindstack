@@ -5,9 +5,10 @@ import { isDev } from '@/constants';
 
 interface TProps {
   className?: string;
+  items?: number;
 }
 
-export function ContentListSkeleton({ className, items = 10 }: TProps & { items?: number }) {
+export function ContentListSkeleton({ className, items = 10 }: TProps) {
   return (
     <div
       className={cn(
@@ -26,7 +27,8 @@ export function ContentListSkeleton({ className, items = 10 }: TProps & { items?
   );
 }
 
-export function ContentSkeleton({ className }: TProps) {
+export function ContentSkeleton(props: TProps) {
+  const { className, items } = props;
   return (
     <div
       className={cn(
@@ -39,7 +41,7 @@ export function ContentSkeleton({ className }: TProps) {
       {false && isDev && <p className="opacity-50">AvailableCategoriesPage_ContentSkeleton</p>}
       <Skeleton className="h-8 w-full rounded" />
       <Skeleton className="h-10 w-full rounded" />
-      <ContentListSkeleton />
+      <ContentListSkeleton items={items} />
     </div>
   );
 }

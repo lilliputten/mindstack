@@ -40,7 +40,7 @@ import { useGoBack } from '@/hooks';
 
 import { ContentSkeletonTable } from './ContentSkeleton';
 
-const __showId = false;
+// const __showId = false;
 
 const sessionSaveScrollHash = getRandomHashString();
 
@@ -373,13 +373,13 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
     return (
       <ScrollArea
         className={cn(
-          isDev && '__ManageCategoriesList_CategoriesTableContent_Scroll', // DEBUG
+          isDev && '__ManageCategoriesList_CategoriesTableContent_Scroll_Empty', // DEBUG
           'flex flex-1 flex-col overflow-hidden',
           'mx-6',
           className,
         )}
         viewportClassName={cn(
-          isDev && '__ManageCategoriesList_CategoriesTableContent_ScrollViewport', // DEBUG
+          isDev && '__ManageCategoriesList_CategoriesTableContent_Scroll_Empty_Viewport', // DEBUG
           'flex flex-1 flex-col',
           '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1',
         )}

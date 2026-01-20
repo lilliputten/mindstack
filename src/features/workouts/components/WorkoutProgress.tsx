@@ -32,7 +32,7 @@ export function WorkoutProgress() {
     return generateArray(currentStep).map((idx) => {
       let className =
         !selectedAnswerId && idx === currentStep - 1
-          ? 'bg-theme-500/30 animate-pulse'
+          ? 'bg-theme-500/50 animate-pulse'
           : resultsUpacked[idx]
             ? 'bg-green-500/50'
             : 'bg-red-500/50';
