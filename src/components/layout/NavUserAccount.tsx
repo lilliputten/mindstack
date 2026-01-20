@@ -44,7 +44,7 @@ export function NavUserAccount(props: TNavUserAccountProps) {
             'text-theme-foreground/80',
             'opacity-100',
             'hover:opacity-80',
-            'truncate',
+            // 'truncate',
           )}
         >
           <UserAvatar

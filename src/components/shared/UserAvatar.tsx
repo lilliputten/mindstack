@@ -44,16 +44,14 @@ export function UserAvatar({ user, className, ...props }: UserAvatarProps) {
       </Avatar>
       {/* Indicate admin with a marker */}
       {isAdmin && (
-        <>
-          <span
-            className={cn(
-              isDev && '__UserAvatar_AdminIcon', // DEBUG
-              'absolute size-2 rounded-full bg-red-500',
-              'border-1 border-theme-500/80',
-              'right-0 top-0',
-            )}
-          />
-        </>
+        <span
+          className={cn(
+            isDev && '__UserAvatar_AdminIcon', // DEBUG
+            'absolute size-2 rounded-full bg-red-500',
+            'border-1 border-theme-500/80',
+            'right-0 top-0',
+          )}
+        />
       )}
     </div>
   );

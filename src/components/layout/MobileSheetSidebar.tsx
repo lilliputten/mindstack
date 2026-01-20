@@ -123,6 +123,12 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
               'h-full overflow-y-auto',
               // 'bg-theme/10',
             )}
+            viewportClassName={cn(
+              isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea_Viewport',
+              // 'flex flex-1 flex-col',
+              // 'bg-decorative-gradient',
+              '[&>div]:flex [&>div]:flex-col [&>div]:flex-1',
+            )}
           >
             {/* MobileSheetSidebar */}
             {children}

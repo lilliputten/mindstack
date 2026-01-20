@@ -83,7 +83,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       <div
         className={cn(
           isDev && '__NavUserBlock_User', // DEBUG
-          'flex items-center justify-center gap-4',
+          'flex max-w-full items-center justify-center gap-4 truncate',
           !onSidebar && 'px-2 py-1',
         )}
       >
@@ -93,7 +93,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             className={cn(
               isDev && '__NavUserBlock_UserAvatar', // DEBUG
               className,
-              'rounded-full bg-theme-700/25',
+              'shrink-0 truncate rounded-full bg-theme-700/25',
               // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
               onSidebar && 'flex',
             )}
@@ -102,20 +102,18 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         <div
           className={cn(
             isDev && '__NavUserBlock_UserName', // DEBUG
-            'flex flex-col space-y-1 leading-none',
+            'flex flex-col space-y-1 truncate leading-none',
             onSidebar && 'text-white',
           )}
         >
           <p
-            className={cn('flex items-center gap-2 font-medium')}
+            className={cn('font-mediu truncatem flex items-center gap-2')}
             title={isAdmin ? 'Is Administrator' : undefined}
           >
-            {user.name || 'anonymous'}
-            {isAdmin && <Icons.ShieldAlert className="size-4 opacity-50" />}
+            <span className="truncate">{user.name || 'anonymous'}</span>
+            {isAdmin && <Icons.ShieldAlert className="size-4 shrink-0 opacity-50" />}
           </p>
-          {user.email && (
-            <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
-          )}
+          {user.email && <p className="truncate text-sm text-muted-foreground">{user.email}</p>}
         </div>
       </div>
       <DropdownMenuSeparator className="w-full" />
@@ -138,21 +136,21 @@ export function NavUserBlock(props: TNavUserBlockProps) {
               className="disabled flex items-center space-x-2.5"
             >
               <Icons.LayoutDashboard className="size-4" />
-              <p className="text-sm">{t('NavUserAccount.Dashboard')}</p>
+              <span className="truncate text-sm">{t('NavUserAccount.Dashboard')}</span>
             </Link>
           </MenuItem>
 
           <MenuItem asChild>
             <Link href={settingsRoute} className="flex items-center space-x-2.5">
               <Icons.Settings className="size-4" />
-              <p className="text-sm">{t('NavUserAccount.Settings')}</p>
+              <span className="truncate text-sm">{t('NavUserAccount.Settings')}</span>
             </Link>
           </MenuItem>
 
           <MenuItem asChild onSelect={showDeleteAccountModal}>
             <div className="flex items-center space-x-2.5">
               <Icons.Trash className="size-4" />
-              <p className="text-sm">{t('NavUserAccount.DeleteAccount')}</p>
+              <span className="truncate text-sm">{t('NavUserAccount.DeleteAccount')}</span>
             </div>
           </MenuItem>
 
@@ -162,7 +160,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       <div
         className={cn(
           isDev && '__NavUserBlock_UserButtons', // DEBUG
-          'flex flex-wrap gap-2',
+          'flex max-w-full flex-wrap gap-2',
         )}
       >
         {/* Sign Out button */}
@@ -175,9 +173,9 @@ export function NavUserBlock(props: TNavUserBlockProps) {
           )}
           onSelect={handleSignOut}
         >
-          <div className="flex items-center space-x-2.5">
+          <div className="flex items-center space-x-2.5 truncate">
             <Icons.LogOut className="size-4" />
-            <p className="text-sm">{t('NavUserAccount.SignOut')}</p>
+            <span className="truncate text-sm">{t('NavUserAccount.SignOut')}</span>
           </div>
         </MenuItem>
         {/* Delete Account button */}
@@ -186,13 +184,13 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             data-testid="__NavAuthButton_DeleteAccountButton"
             className={cn(
               isDev && '__NavAuthButton_DeleteAccountButton', // DEBUG
-              'cursor-pointer',
+              'cursor-pointer truncate',
             )}
             onSelect={showDeleteAccountModal}
           >
             <div className="flex items-center space-x-2.5">
               <Icons.Trash className="size-4" />
-              <p className="text-sm">{t('NavUserAccount.DeleteAccount')}</p>
+              <span className="truncate text-sm">{t('NavUserAccount.DeleteAccount')}</span>
             </div>
           </MenuItem>
         )}
