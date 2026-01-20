@@ -20,6 +20,7 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
   const { noDebug, ...newTopic } = params;
   const user = await getCurrentUser();
   const userId = user?.id;
+  const isAdmin = user?.role === 'ADMIN';
   let topicsLimit: TContentLimitStatus | undefined;
   try {
     const { categoryIds, ...topicData } = newTopic;
@@ -36,7 +37,7 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
 
     // Check topics limit before creating
     topicsLimit = await checkTopicsLimit();
-    if (!topicsLimit.canCreate) {
+    if (!topicsLimit.canCreate && !isAdmin) {
       throw new ContentLimitError('TOPICS_LIMIT_REACHED', topicsLimit.reasonCode, user?.grade);
     }
 

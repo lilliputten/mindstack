@@ -77,13 +77,15 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
     } satisfies TArgType);
 
     // Send logging message
-    const creator = category.createdBy && (await getUserById(category.createdBy));
-    const debugStr = debugObj({
-      category,
-      creator,
-      versionInfo,
-    });
-    await sendLoggingMessage(`[${appId}:createCategory]\n${debugStr}`);
+    if (!noDebug) {
+      const creator = category.createdBy && (await getUserById(category.createdBy));
+      const debugStr = debugObj({
+        category,
+        creator,
+        versionInfo,
+      });
+      await sendLoggingMessage(`[${appId}:createCategory]\n${debugStr}`);
+    }
 
     return category;
   } catch (error) {

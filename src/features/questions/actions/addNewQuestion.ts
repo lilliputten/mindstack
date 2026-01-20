@@ -16,6 +16,7 @@ import { TQuestion } from '../types';
 export async function addNewQuestion(newQuestion: TNewQuestion) {
   const user = await getCurrentUser();
   const userId = user?.id;
+  const isAdmin = user?.role === 'ADMIN';
 
   try {
     if (isDev) {
@@ -33,12 +34,23 @@ export async function addNewQuestion(newQuestion: TNewQuestion) {
 
     // Check questions limit before creating
     const questionsLimit = await checkQuestionsLimit();
-    if (!questionsLimit.canCreate) {
+    if (!questionsLimit.canCreate && !isAdmin) {
       throw new ContentLimitError(
         'QUESTIONS_LIMIT_REACHED',
         questionsLimit.reasonCode,
         user?.grade,
       );
+    }
+
+    const topic = await prisma.topic.findUnique({
+      where: { id: newQuestion.topicId },
+    });
+    if (!topic) {
+      throw new Error('Not found owner topic for adding question');
+    }
+    // Check if the current user is allowed to add the question?
+    if (userId !== topic?.userId && !isAdmin) {
+      throw new Error('Current user is not allowed to add the answer');
     }
     const result = await prisma.$transaction(async (tx) => {
       const { answers, ...questionFields } = newQuestion;
