@@ -30,13 +30,17 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
   const convertedData = filtersData && {
     ...filtersData,
     categoryIds,
-    categoryNames: isCategoryNamesLoading
-      ? '...'
-      : categoryIds?.map((id) => categoryNames?.[id] || '...'),
+    categoryNames: !isCategoryNamesLoading
+      ? categoryIds?.map((id) => categoryNames?.[id]).filter(Boolean)
+      : undefined,
   };
   const renderItems = activeFilterIds
     .map((id) => {
-      if (convertedData?.[id] == undefined) {
+      const val = convertedData?.[id];
+      if (val == undefined || (Array.isArray(val) && !val.length)) {
+        return undefined;
+      }
+      if (id === 'categoryIds' && !convertedData?.categoryNames?.length) {
         return undefined;
       }
       const { showOnlyValue, value } = getFiltersDataValueString(id, {

@@ -55,7 +55,7 @@ export function AvailableCategoriesFilters(props: TProps) {
 
   const filterCaption = React.useMemo(() => {
     if (!hasFilters) {
-      return t('AvailableCategoriesFilters.NoFiltersApplied');
+      return t('NoFiltersApplied');
     }
     return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
   }, [hasFilters, filtersInfo, t]);
@@ -181,7 +181,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       type="submit"
                       variant="theme"
                       disabled={!isSubmitEnabled}
-                      className="text-truncate flex items-center justify-start gap-2"
+                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Check className="size-4 opacity-50" />
                       <span className="truncate">{t('Apply')}</span>
@@ -191,7 +191,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       variant="outline"
                       onClick={handleResetToDefaults}
                       disabled={onDefaults}
-                      className="text-truncate flex items-center justify-start gap-2"
+                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       <span className="truncate">{t('ResetToDefaults')}</span>
@@ -201,7 +201,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       variant="outline"
                       onClick={handleClearChanges}
                       disabled={!form.formState.isDirty}
-                      className="text-truncate flex items-center justify-start gap-2"
+                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       <span className="truncate">{t('ClearChanges')}</span>
@@ -210,7 +210,7 @@ export function AvailableCategoriesFilters(props: TProps) {
                       type="button"
                       variant="ghost"
                       onClick={hideFilters}
-                      className="text-truncate flex items-center justify-start gap-2 md:ml-auto"
+                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
                       <span className="truncate">{t('Hide')}</span>

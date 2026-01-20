@@ -5,7 +5,7 @@
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
-  "Apply": "Применять",
+  "Apply": "Применить",
   "Author": "Автор",
   "Authors": "Авторы",
   "Availability": "Доступность",
@@ -46,6 +46,7 @@
   "No": "Нет",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
   "NoCategoriesAvailable": "Нет доступных категорий",
+  "NoFiltersApplied": "Фильтры не применены",
   "NoTopics": "Нет тем",
   "NoTopicsAvailable": "Нет доступных тем",
   "Ok": "Хорошо",
@@ -217,9 +218,7 @@
     "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
     "Displaying": "Отображается",
     "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
-    "Hide": "Скрыть",
-    "NoFiltersApplied": "Фильтры не применены",
-    "ResetToDefaults": "Сбросить к значениям по умолчанию"
+    "Hide": "Скрыть"
   },
   "AvailableCategoriesFiltersFields": {
     "AllStatuses": "Все статусы",
@@ -280,14 +279,9 @@
     "Yes": "Да"
   },
   "AvailableTopicsFilters": {
-    "Apply": "Применить",
-    "ClearChanges": "Очистить изменения",
     "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
     "Displaying": "Показывается",
-    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
-    "Hide": "Скрыть",
-    "NoFiltersApplied": "Фильтры не применены",
-    "ResetToDefaults": "Сбросить к значениям по умолчанию"
+    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения"
   },
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",

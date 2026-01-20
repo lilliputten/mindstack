@@ -47,6 +47,7 @@
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "No answers have been created yet",
   "NoCategoriesAvailable": "No Categories Available",
+  "NoFiltersApplied": "No filters applied",
   "NoTopics": "No topics",
   "NoTopicsAvailable": "No topics available",
   "Ok": "Ok",
@@ -218,9 +219,7 @@
     "ClickToHideSettings": "Click to hide settings",
     "Displaying": "Displaying",
     "ExpandToChangeDisplaySettings": "Expand to change display settings",
-    "Hide": "Hide",
-    "NoFiltersApplied": "No filters applied",
-    "ResetToDefaults": "Reset to defaults"
+    "Hide": "Hide"
   },
   "AvailableCategoriesFiltersFields": {
     "AllStatuses": "All Statuses",
@@ -283,14 +282,9 @@
     "Yes": "Yes"
   },
   "AvailableTopicsFilters": {
-    "Apply": "Apply",
-    "ClearChanges": "Clear changes",
     "ClickToHideSettings": "Click to hide settings",
     "Displaying": "Displaying",
-    "ExpandToChangeDisplaySettings": "Expand to change display settings",
-    "Hide": "Hide",
-    "NoFiltersApplied": "No filters applied",
-    "ResetToDefaults": "Reset to defaults"
+    "ExpandToChangeDisplaySettings": "Expand to change display settings"
   },
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Select one or more categories for this topic.",

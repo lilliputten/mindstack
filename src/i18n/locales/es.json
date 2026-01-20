@@ -14,7 +14,7 @@
   "Categories": "Categorías",
   "Category": "Categoría",
   "ChangeFilters": "Cambiar Filtros",
-  "ClearChanges": "Borrar cambios",
+  "ClearChanges": "Limpiar cambios",
   "ClearText": "Borrar texto",
   "Close": "Cerrar",
   "Continue": "Continuar",
@@ -35,7 +35,7 @@
   "GoBack": "Volver",
   "GoHome": "Ir a casa",
   "HIDDEN": "Oculto",
-  "Hide": "Esconder",
+  "Hide": "Ocultar",
   "Image": "Imagen",
   "Keywords": "Palabras Clave",
   "Language": "Idioma",
@@ -47,6 +47,7 @@
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
   "NoCategoriesAvailable": "No hay categorías disponibles",
+  "NoFiltersApplied": "No hay filtros aplicados",
   "NoTopics": "Sin temas",
   "NoTopicsAvailable": "No hay temas disponibles",
   "Ok": "De acuerdo",
@@ -217,9 +218,7 @@
     "ClickToHideSettings": "Haz clic para ocultar la configuración",
     "Displaying": "Mostrando",
     "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización",
-    "Hide": "Ocultar",
-    "NoFiltersApplied": "No hay filtros aplicados",
-    "ResetToDefaults": "Restablecer valores predeterminados"
+    "Hide": "Ocultar"
   },
   "AvailableCategoriesFiltersFields": {
     "AllStatuses": "Todos los estados",
@@ -280,14 +279,9 @@
     "Yes": "Sí"
   },
   "AvailableTopicsFilters": {
-    "Apply": "Aplicar",
-    "ClearChanges": "Limpiar cambios",
     "ClickToHideSettings": "Haz clic para ocultar la configuración",
     "Displaying": "Mostrando",
-    "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización",
-    "Hide": "Ocultar",
-    "NoFiltersApplied": "No hay filtros aplicados",
-    "ResetToDefaults": "Restablecer valores predeterminados"
+    "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización"
   },
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Selecciona una o más categorías para este tema.",
