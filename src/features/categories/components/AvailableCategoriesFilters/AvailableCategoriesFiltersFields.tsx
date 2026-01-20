@@ -59,7 +59,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
 
   // Used keys
   const searchTextKey = React.useId();
-  const searchLangKey = React.useId();
+  // const searchLangKey = React.useId();
   const statusKey = React.useId();
   const hasImageKey = React.useId();
   const hasTopicsKey = React.useId();
@@ -119,6 +119,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
+        {/*
         <FormField
           name="searchLang"
           control={form.control}
@@ -164,6 +165,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
+        */}
         {/* Conditionally render the status field based on onlyPublic */}
         {!onlyPublic && (
           <FormField

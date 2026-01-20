@@ -1229,7 +1229,7 @@
   },
   "ViewAvailableTopicContent": {
     "NoActiveTrainingText": "У вас нет ни активного обучения, ни записей истории для отображения. \nНачните обучение прямо сейчас.",
-    "TrainingNotStarted": "Обучение ещё не было начато"
+    "TrainingNotStarted": "Тренировка не начата"
   },
   "ViewCategoryContentSummary": {
     "BasicInfo": "Основная информация",

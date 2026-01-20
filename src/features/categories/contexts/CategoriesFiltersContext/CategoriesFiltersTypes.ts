@@ -9,7 +9,7 @@ import { GetAvailableCategoriesParamsSchema } from '@/features/categories/types/
 export const AvailableCategoriesFiltersSchema = GetAvailableCategoriesParamsSchema.pick({
   orderBy: true as const,
   searchText: true as const,
-  searchLang: true as const,
+  // searchLang: true as const,
   status: true as const,
   hasImage: true as const,
   hasTopics: true as const,
@@ -42,7 +42,7 @@ export type TCategoryOrderBy = z.infer<typeof CategoryOrderByWithRelationInputSc
 
 export const filtersDataSchema = z.object({
   searchText: z.string().max(maxSearchTextLength).optional(),
-  searchLang: z.string().max(maxSearchTextLength).optional(),
+  // searchLang: z.string().max(maxSearchTextLength).optional(),
   status: z.enum(['PUBLIC', 'SUGGESTED', 'HIDDEN']).optional(),
   hasImage: threeStateSchema,
   hasTopics: threeStateSchema,
@@ -60,7 +60,7 @@ export type TFiltersDataKey = keyof TFiltersData;
 
 export const filtersDataDefaults: TFiltersData = {
   searchText: '',
-  searchLang: '',
+  // searchLang: '',
   status: undefined,
   hasImage: null,
   hasTopics: null,

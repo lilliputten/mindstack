@@ -72,7 +72,7 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
     }
     return {
       ...filtersData,
-      searchLang: settings.langCode,
+      // searchLang: settings.langCode,
     } satisfies TFiltersData;
   }, [settings, augmentDefaults, isSettingsReady]);
   memo.defaultFiltersData = defaultFiltersData;
@@ -201,7 +201,7 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
       const trimmedFiltersData: TFiltersData = {
         ...filtersData,
         searchText: filtersData.searchText?.trim() || '',
-        searchLang: filtersData.searchLang?.trim() || '',
+        // searchLang: filtersData.searchLang?.trim() || '',
       };
       memo.applyFiltersData?.(trimmedFiltersData);
       setExpanded(false);
