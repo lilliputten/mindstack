@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale } from 'next-intl';
 import { useForm, UseFormReturn } from 'react-hook-form';
@@ -27,7 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
-import { SuccessSplash } from '@/components/shared';
+import { ImageUpload, SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { deleteCategoryImage } from '@/features/categories/actions/deleteCategoryImage';
@@ -52,11 +51,6 @@ interface TMemo {
   imageFile?: File | null;
   imagePreviewUrl?: string;
 }
-
-/** Custom function to translate double-translated edit/editNew modal form
- * texts. We're using the `ManageCategories.Edit` as a default namespace, and
- * the `ManageCategories.EditNew` as another for category creating.
- */
 
 const autoCloseTimeout = 2000;
 
@@ -162,9 +156,8 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
   const imagePreviewUrl = form.watch('imageUrl');
   memo.imagePreviewUrl = imagePreviewUrl;
 
-  const handleImageChange = useCallback(
-    (ev: React.ChangeEvent<HTMLInputElement>) => {
-      const file = ev.target.files?.[0];
+  const handleFileSelection = useCallback(
+    (file: File) => {
       if (!file) {
         return;
       }
@@ -198,6 +191,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     },
     [memo, form, t],
   );
+
   const handleRemoveImage = useCallback(() => {
     form.clearErrors('imageUrl');
     if (memo.imagePreviewUrl) {
@@ -262,7 +256,13 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         imageUrl: !imageCleared ? initialCategory?.imageUrl : undefined,
       };
       if (memo.imageFile) {
-        newImageUrl = await uploadImageFileToVercel(memo.imageFile);
+        const imageUploadPromise = uploadImageFileToVercel(memo.imageFile);
+        toast.promise(imageUploadPromise, {
+          loading: t('EditCategoryForm.ImageUploading'),
+          success: t('EditCategoryForm.ImageUploadedSuccessfully'),
+          error: t('EditCategoryForm.ImageUploadingError'),
+        });
+        newImageUrl = await imageUploadPromise;
         if (newImageUrl) {
           updatedCategory.imageUrl = newImageUrl;
         }
@@ -271,7 +271,13 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
         if (isDev) {
           await new Promise((r) => setTimeout(r, 2000)); // DEBUG
         }
-        const result = await handleSaveCategory(updatedCategory as TAvailableCategory);
+        const savePromise = handleSaveCategory(updatedCategory as TAvailableCategory);
+        const result = await savePromise;
+        toast.promise(savePromise, {
+          loading: t('EditCategoryForm.CategorySaving'),
+          success: t('EditCategoryForm.CategorySavedSuccessfully'),
+          error: t('EditCategoryForm.CategorySavingError'),
+        });
         if (autoClose && handleClose) {
           setTimeout(() => {
             // Hide modal (go back)
@@ -381,46 +387,15 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                     <Label>{t('EditCategoryForm.ImageLabel')}</Label>
                     <FormControl>
                       <div className="flex items-center gap-4">
-                        <Label
+                        <ImageUpload
                           className={cn(
-                            isDev && '__EditCategoryForm_ImagePreview', // DEBUG
-                            'relative flex size-32 cursor-pointer items-center justify-center overflow-hidden rounded-lg border',
+                            isDev && '__EditCategoryForm_Image', // DEBUG
+                            'size-32',
                           )}
-                          title={t('EditCategoryForm.SelectImage')}
-                        >
-                          <input
-                            type="file"
-                            accept={categoryImageAllowedTypes.join(',')}
-                            onChange={handleImageChange}
-                            className="hidden"
-                          />
-                          {imagePreviewUrl ? (
-                            <>
-                              <Image
-                                src={imagePreviewUrl}
-                                alt="Category image"
-                                fill
-                                className="object-cover"
-                              />
-                              <Button
-                                type="button"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                  handleRemoveImage();
-                                }}
-                                size="iconSm"
-                                className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-                                title={t('EditCategoryForm.RemoveImage')}
-                              >
-                                <Icons.X className="h-3 w-3" />
-                              </Button>
-                            </>
-                          ) : (
-                            <>
-                              <Icons.ImageIcon className="m-auto size-8 text-muted-foreground" />
-                            </>
-                          )}
-                        </Label>
+                          handleFileSelection={handleFileSelection}
+                          handleRemoveImage={handleRemoveImage}
+                          imagePreviewUrl={imagePreviewUrl}
+                        />
                         <div className="flex flex-1 flex-col gap-2">
                           <FormHint>
                             {t('EditCategoryForm.ImageHintText', {

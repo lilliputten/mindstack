@@ -105,6 +105,7 @@ export const {
   Tags,
   Trash,
   Undo2,
+  Upload,
   User,
   WandSparkles,
   X,

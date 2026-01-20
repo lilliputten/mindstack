@@ -1,11 +1,13 @@
 {
   "AIPoweredLearning": "Обучение с поддержкой ИИ",
+  "AccessDeniedError": "Доступ запрещен",
   "ActiveRecallPractice": "Практика активного вспоминания",
   "AddTopic": "Добавить тему",
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
   "Apply": "Применить",
+  "AuthenticationError": "Ошибка аутентификации",
   "Author": "Автор",
   "Authors": "Авторы",
   "Availability": "Доступность",
@@ -124,14 +126,11 @@
     "ToastSuccess": "Успешно создан новый ответ."
   },
   "AddCategoryModal": {
-    "CannotSaveCategory": "Невозможно сохранить категорию",
     "CantSaveCategory": "Невозможно сохранить категорию",
     "DialogTitle": "Добавить новую категорию",
     "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку позже. Период ожидания: {time}.",
     "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
     "SuggestDialogTitle": "Предложить новую категорию",
-    "ToastLoading": "Создание новой категории...",
-    "ToastSuccess": "Новая категория \"{name}\" успешно создана",
     "UnauthorizedUserMessage": "Только авторизованные пользователи могут добавлять категории.",
     "UnauthorizedUserTitle": "Неавторизованный пользователь"
   },
@@ -471,24 +470,28 @@
     "CategoryDescriptionHint": "Описание категории. Этот текст может использоваться пользователями для навигации и поиска.",
     "CategoryNameHint": "Название категории. Желательно, чтобы это было уникальное значение.",
     "CategoryPropertiesInstruction": "Пожалуйста, введите свойства категории (название, описание, ключевые слова) для всех или только одного из языков приложения.",
+    "CategorySavedSuccessfully": "Данные категории успешно сохранены",
+    "CategorySaving": "Сохранение данных категории...",
+    "CategorySavingError": "Невозможно сохранить данные категории",
     "CloseText": "Закрыть",
     "DescriptionWithLocale": "Описание ({locale})",
-    "EnterCategoryDescriptionPlaceholder": "Введите описание категории на {locale}",
-    "EnterCategoryNamePlaceholder": "Введите название категории на {locale}",
+    "EnterCategoryDescriptionPlaceholder": "Введите описание категории",
+    "EnterCategoryNamePlaceholder": "Введите название категории",
     "EnterKeywordsPlaceholder": "Введите ключевые слова, разделенные запятыми, на {locale}",
     "HiddenOption": "Скрытая",
-    "ImageHintText": "Максимальный размер изображения: {sizePixels}x{sizePixels} пикселей. \nПри загрузке будет уменьшено до этого размера. \nМаксимально допустимый размер файла: {sizeBytesLimit}B.",
+    "ImageHintText": "Выберите иллюстрацию для категории. Максимальный размер изображения: {sizePixels}x{sizePixels} пикселей. \nПри загрузке будет уменьшено до этого размера. \nМаксимально допустимый размер файла: {sizeBytesLimit}B.",
     "ImageLabel": "Изображение",
     "ImageSizeError": "Размер изображения должен быть меньше {size}Б",
+    "ImageUploadedSuccessfully": "Изображение загружено",
+    "ImageUploading": "Изображение загружается",
+    "ImageUploadingError": "Ошибка загрузки изображения",
     "InvalidImageTypeError": "Недопустимый тип изображения. Разрешенные типы: {allowedTypes}",
     "KeywordsHintText": "Введите ключевые слова, разделенные запятыми. Пример: слово1, слово2, слово3",
     "KeywordsWithLocale": "Ключевые слова ({locale})",
     "NameWithLocale": "Название ({locale})",
     "PublicOption": "Публичная",
-    "RemoveImage": "Удалить изображение",
     "SaveText": "Сохранить",
     "SavingText": "Сохранение...",
-    "SelectImage": "Выбрать изображение",
     "SelectStatusPlaceholder": "Выберите статус",
     "StatusLabel": "Статус",
     "SubmitFormError": "Не удалось отправить данные формы",
@@ -655,6 +658,11 @@
     "ToastLoadingQuestions": "Добавление новых вопросов...",
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
+  },
+  "ImageUpload": {
+    "CategoryImagePreview": "Предварительный просмотр изображения",
+    "RemoveImage": "Удалить изображение",
+    "SelectImage": "Выбрать изображение"
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "Вы достигли максимального количества ответов для вашего текущего плана",
@@ -1181,6 +1189,11 @@
     "Description": "Разблокируйте все функции и получите неограниченный доступ к нашей службе поддержки.",
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
+  },
+  "UploadCategoryImage": {
+    "ImageSizeLimitError": "Размер изображения должен быть меньше {sizeLimit}",
+    "InvalidImageTypeError": "Недопустимый тип изображения. Допустимые типы: {allowedTypes}",
+    "NoImageFileProvidedError": "Файл изображения не загружен"
   },
   "UseAvailableAnswers": {
     "CannotLoadAnswersData": "Не удается загрузить данные ответов"

@@ -1,11 +1,13 @@
 {
   "AIPoweredLearning": "AI-Powered Learning",
+  "AccessDeniedError": "Access denied",
   "ActiveRecallPractice": "Active Recall Practice",
   "AddTopic": "Add Topic",
   "AllowedToGenerate": "Allowed to generate",
   "Answer": "Answer",
   "Answers": "Answers",
   "Apply": "Apply",
+  "AuthenticationError": "Authentication error",
   "Author": "Author",
   "Authors": "Authors",
   "Availability": "Availability",
@@ -129,14 +131,11 @@
     "ToastSuccess": "Successfully created new answer."
   },
   "AddCategoryModal": {
-    "CannotSaveCategory": "Cannot save category",
     "CantSaveCategory": "Cannot save category",
     "DialogTitle": "Add New Category",
     "ForbiddenSuggestionMessage": "To maintain quality, we limit how often you can suggest new categories. Please try again in {time}.",
     "ForbiddenSuggestionTitle": "The limit of offers for new categories has been reached",
     "SuggestDialogTitle": "Suggest New Category",
-    "ToastLoading": "Creating a new category...",
-    "ToastSuccess": "Successfully created new category \"{name}\"",
     "UnauthorizedUserMessage": "Only authorized users can add categories.",
     "UnauthorizedUserTitle": "Unauthorized User"
   },
@@ -476,24 +475,28 @@
     "CategoryDescriptionHint": "A category description. This text can be used by users for navigation and search.",
     "CategoryNameHint": "A category name. It's good if it's a unique value.",
     "CategoryPropertiesInstruction": "Please enter the properties of the category (name, description, keywords) for all or only one of the application languages.",
+    "CategorySavedSuccessfully": "Successfully saved category data",
+    "CategorySaving": "Saving category data...",
+    "CategorySavingError": "Cannot save category data",
     "CloseText": "Close",
     "DescriptionWithLocale": "Description ({locale})",
-    "EnterCategoryDescriptionPlaceholder": "Enter category description in {locale}",
-    "EnterCategoryNamePlaceholder": "Enter category name in {locale}",
+    "EnterCategoryDescriptionPlaceholder": "Enter category description",
+    "EnterCategoryNamePlaceholder": "Enter category name",
     "EnterKeywordsPlaceholder": "Enter keywords separated by commas in {locale}",
     "HiddenOption": "Hidden",
-    "ImageHintText": "Maximum image size: {sizePixels}x{sizePixels}px. It'll be downscaled to this size on upload. Maximum file size allowed: {sizeBytesLimit}B.",
+    "ImageHintText": "Select an illustration for the category. Maximum image size: {sizePixels}x{sizePixels}px. It'll be downscaled to this size on upload. Maximum file size allowed: {sizeBytesLimit}B.",
     "ImageLabel": "Image",
     "ImageSizeError": "Image size must be less than {size}B",
+    "ImageUploadedSuccessfully": "Preview image uploaded",
+    "ImageUploading": "Preview image is uploading",
+    "ImageUploadingError": "Preview image uploading error",
     "InvalidImageTypeError": "Invalid image type. Allowed types: {allowedTypes}",
     "KeywordsHintText": "Enter keywords separated by commas. Example: keyword1, keyword2, keyword3",
     "KeywordsWithLocale": "Keywords ({locale})",
     "NameWithLocale": "Name ({locale})",
     "PublicOption": "Public",
-    "RemoveImage": "Remove Image",
     "SaveText": "Save",
     "SavingText": "Saving...",
-    "SelectImage": "Select Image",
     "SelectStatusPlaceholder": "Select status",
     "StatusLabel": "Status",
     "SubmitFormError": "Failed to submit form data",
@@ -660,6 +663,11 @@
     "ToastLoadingQuestions": "Adding new questions...",
     "ToastSuccessData": "Successfully retrieved AI generated data",
     "ToastSuccessQuestions": "Successfully added new questions"
+  },
+  "ImageUpload": {
+    "CategoryImagePreview": "Image Preview",
+    "RemoveImage": "Remove Image",
+    "SelectImage": "Select Image"
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "You have reached the maximum number of answers for your current plan",
@@ -1186,6 +1194,11 @@
     "Description": "Unlock all features and get unlimited access to our support team.",
     "Title": "Upgrade to Pro",
     "Upgrade": "Upgrade"
+  },
+  "UploadCategoryImage": {
+    "ImageSizeLimitError": "Image size must be less than {sizeLimit}",
+    "InvalidImageTypeError": "Invalid image type. Allowed types: {allowedTypes}",
+    "NoImageFileProvidedError": "No image file provided"
   },
   "UseAvailableAnswers": {
     "CannotLoadAnswersData": "Cannot load answers data"

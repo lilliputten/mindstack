@@ -3,7 +3,6 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
@@ -14,13 +13,12 @@ import {
   translatedPeriod,
 } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { TLocale, useT } from '@/i18n';
-import { Button } from '@/components/ui/Button';
+import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { manageCategoriesRoute } from '@/config';
+import { availableCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { createCategory } from '@/features/categories/actions';
 import { useMostRecentSuggestedCategory } from '@/features/categories/query-hooks/useMostRecentSuggestedCategory';
@@ -28,7 +26,6 @@ import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories
 import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
 
 import { allowSuggestCategoriesIn } from '../../constants';
-import { getCategoryName } from '../../helpers';
 import { EditCategoryForm } from './EditCategoryForm';
 
 interface TProps {
@@ -43,8 +40,9 @@ export function AddCategoryModal(props: TProps) {
     /** Is it a suggestion? Then offer a limited editing mode */
     suggestionMode = false,
     /** Route path for navigation */
-    routePath = manageCategoriesRoute,
+    routePath = availableCategoriesRoute,
   } = props;
+
   const [isVisible, setVisible] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
@@ -61,7 +59,7 @@ export function AddCategoryModal(props: TProps) {
    */
   const t = useT();
 
-  const locale = useLocale() as TLocale;
+  // const locale = useLocale() as TLocale;
 
   const queryClient = useQueryClient();
 
@@ -93,7 +91,7 @@ export function AddCategoryModal(props: TProps) {
   const saveCategoryMutation = useMutation<TAvailableCategory, Error, TCreateCategoryParams>({
     mutationFn,
     onSuccess: (_updatedCategory) => {
-      /* // Add the created item to the cached react-query data
+      /* // UNUSED: Add the created item to the cached react-query data
        * availableCategoriesQuery.addNewCategory(updatedCategory, true);
        */
       // Invalidate the most recent suggested category queries when in suggestion mode
@@ -103,7 +101,7 @@ export function AddCategoryModal(props: TProps) {
           // availableCategoriesQuery.queryKey,
         ]);
       }
-      /* // Invalidate all other keys...
+      /* // UNUSED: Invalidate all other keys...
        * availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
        */
       setSaved(true);
@@ -125,16 +123,19 @@ export function AddCategoryModal(props: TProps) {
 
   const handleSaveCategory = React.useCallback(
     (updatedCategory: TCreateCategoryParams) => {
-      const promise = saveCategoryMutation.mutateAsync(updatedCategory);
-      toast.promise(promise, {
-        loading: t('AddCategoryModal.ToastLoading'),
-        success: (category) =>
-          t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category, locale, t) }),
-        error: t('AddCategoryModal.CannotSaveCategory'),
-      });
-      return promise;
+      return saveCategoryMutation.mutateAsync(updatedCategory);
+      /* // Toasts are displaying in `EditCategoryForm`
+       * const promise = saveCategoryMutation.mutateAsync(updatedCategory);
+       * toast.promise(promise, {
+       *   loading: t('AddCategoryModal.ToastLoading'),
+       *   success: (category) =>
+       *     t('AddCategoryModal.ToastSuccess', { name: getCategoryName(category, locale, t) }),
+       *   error: t('AddCategoryModal.CannotSaveCategory'),
+       * });
+       * return promise;
+       */
     },
-    [locale, saveCategoryMutation, t],
+    [saveCategoryMutation],
   );
 
   const hasRecentSuggestion = React.useMemo(() => {
@@ -156,15 +157,17 @@ export function AddCategoryModal(props: TProps) {
     [saved, hasRecentSuggestion, recentCategory],
   );
 
-  const extraActions = React.useMemo(
-    () => (
-      <Button onClick={hideModal} className="flex gap-2">
-        <Icons.X className="size-4" />
-        <span>{t('Cancel')}</span>
-      </Button>
-    ),
-    [hideModal, t],
-  );
+  /* // Hide button is the same is the default 'Back'
+   * const extraActions = React.useMemo(
+   *   () => (
+   *     <Button onClick={hideModal} className="flex gap-2">
+   *       <Icons.X className="size-4" />
+   *       <span>{t('Cancel')}</span>
+   *     </Button>
+   *   ),
+   *   [hideModal, t],
+   * );
+   */
 
   if (!shouldBeVisible) {
     return null;
@@ -174,10 +177,12 @@ export function AddCategoryModal(props: TProps) {
 
   return (
     <Modal
+      data-suggestion-mode={suggestionMode}
       isVisible={isVisible}
       hideModal={hideModal}
       className={cn(
         isDev && '__AddCategoryModal', // DEBUG
+        `__suggestionMode_${String(suggestionMode)}`,
         'flex flex-col gap-0 text-theme-foreground',
         !isMobile && 'max-h-[90vh]',
         saveCategoryMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
@@ -191,7 +196,7 @@ export function AddCategoryModal(props: TProps) {
           )}
           title={t('AddCategoryModal.UnauthorizedUserTitle')}
           explanation={t('AddCategoryModal.UnauthorizedUserMessage')}
-          extraActions={extraActions}
+          // extraActions={extraActions}
           border={false}
         />
       ) : nextSuggestionDelay ? (
@@ -204,7 +209,7 @@ export function AddCategoryModal(props: TProps) {
           explanation={t('AddCategoryModal.ForbiddenSuggestionMessage', {
             time: translatedPeriod(nextSuggestionDelay, t),
           })}
-          extraActions={extraActions}
+          // extraActions={extraActions}
           border={false}
         />
       ) : (

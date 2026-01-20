@@ -16,7 +16,7 @@ export default function SuggestCategoryModalDefault() {
      * const prevChunk = pathname.substring(0, pathname.length - checkSuggest.length);
      * if (prevChunk.endsWith(manageCategoriesRoute)) {}
      */
-    return <AddCategoryModal />;
+    return <AddCategoryModal suggestionMode />;
   }
 
   return null;

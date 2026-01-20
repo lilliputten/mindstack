@@ -1,11 +1,13 @@
 {
   "AIPoweredLearning": "Aprendizaje impulsado por IA",
+  "AccessDeniedError": "Acceso denegado",
   "ActiveRecallPractice": "Práctica de recuperación activa",
   "AddTopic": "Agregar Tema",
   "AllowedToGenerate": "Permitido generar",
   "Answer": "Respuesta",
   "Answers": "Respuestas",
   "Apply": "Aplicar",
+  "AuthenticationError": "Error de autenticación",
   "Author": "Autor",
   "Authors": "Autores",
   "Availability": "Disponibilidad",
@@ -128,14 +130,11 @@
     "ToastSuccess": "Nueva respuesta creada correctamente."
   },
   "AddCategoryModal": {
-    "CannotSaveCategory": "No se puede guardar la categoría",
     "CantSaveCategory": "No se puede guardar la categoría",
     "DialogTitle": "Agregar Nueva Categoría",
     "ForbiddenSuggestionMessage": "Para mantener la calidad, limitamos la frecuencia con la que puedes sugerir nuevas categorías. \nInténtelo de nuevo dentro de {time}.",
     "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
     "SuggestDialogTitle": "Sugerir Nueva Categoría",
-    "ToastLoading": "Creando una nueva categoría...",
-    "ToastSuccess": "Nueva categoría \"{name}\" creada exitosamente",
     "UnauthorizedUserMessage": "Sólo los usuarios autorizados pueden agregar categorías.",
     "UnauthorizedUserTitle": "Usuario no autorizado"
   },
@@ -471,24 +470,28 @@
     "CategoryDescriptionHint": "Una descripción de categoría. Este texto puede ser usado por los usuarios para navegar y buscar.",
     "CategoryNameHint": "Un nombre de categoría. Es bueno si es un valor único.",
     "CategoryPropertiesInstruction": "Por favor ingresa las propiedades de la categoría (nombre, descripción, palabras clave) para todos o solo uno de los idiomas de la aplicación.",
+    "CategorySavedSuccessfully": "Datos de categoría guardados correctamente",
+    "CategorySaving": "Guardando datos de categoría...",
+    "CategorySavingError": "No se pueden guardar los datos de la categoría",
     "CloseText": "Cerrar",
     "DescriptionWithLocale": "Descripción ({locale})",
-    "EnterCategoryDescriptionPlaceholder": "Ingresa la descripción de la categoría en {locale}",
-    "EnterCategoryNamePlaceholder": "Ingresa el nombre de la categoría en {locale}",
+    "EnterCategoryDescriptionPlaceholder": "Ingresa la descripción de la categoría",
+    "EnterCategoryNamePlaceholder": "Ingresa el nombre de la categoría",
     "EnterKeywordsPlaceholder": "Ingresa palabras clave separadas por comas en {locale}",
     "HiddenOption": "Oculto",
-    "ImageHintText": "Tamaño máximo de imagen: {sizePixels}x{sizePixels}px. \nSe reducirá a este tamaño al cargarlo. \nTamaño máximo de archivo permitido: {sizeBytesLimit}B.",
+    "ImageHintText": "Seleccione una ilustración para la categoría. \nTamaño máximo de imagen: {sizePixels}x{sizePixels}px. \nSe reducirá a este tamaño al cargarlo. \nTamaño máximo de archivo permitido: {sizeBytesLimit}B.",
     "ImageLabel": "Imagen",
     "ImageSizeError": "El tamaño de la imagen debe ser menor a {size}B",
+    "ImageUploadedSuccessfully": "Imagen de vista previa cargada",
+    "ImageUploading": "Se está cargando la imagen de vista previa",
+    "ImageUploadingError": "Error al cargar la imagen de vista previa",
     "InvalidImageTypeError": "Tipo de imagen inválido. Tipos permitidos: {allowedTypes}",
     "KeywordsHintText": "Ingresa palabras clave separadas por comas. Ejemplo: palabra1, palabra2, palabra3",
     "KeywordsWithLocale": "Palabras clave ({locale})",
     "NameWithLocale": "Nombre ({locale})",
     "PublicOption": "Público",
-    "RemoveImage": "Quitar imagen",
     "SaveText": "Guardar",
     "SavingText": "Guardando...",
-    "SelectImage": "Seleccionar imagen",
     "SelectStatusPlaceholder": "Seleccionar estado",
     "StatusLabel": "Estado",
     "SubmitFormError": "Error al enviar los datos del formulario",
@@ -654,6 +657,11 @@
     "ToastLoadingQuestions": "Agregando nuevas preguntas...",
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA",
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
+  },
+  "ImageUpload": {
+    "CategoryImagePreview": "Vista previa de imagen",
+    "RemoveImage": "Quitar imagen",
+    "SelectImage": "Seleccionar imagen"
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "Ha alcanzado el número máximo de respuestas para su plan actual",
@@ -1180,6 +1188,11 @@
     "Description": "Desbloquea todas las funciones y obtén acceso ilimitado a nuestro equipo de soporte.",
     "Title": "Actualizar a Pro",
     "Upgrade": "Actualizar"
+  },
+  "UploadCategoryImage": {
+    "ImageSizeLimitError": "El tamaño de la imagen debe ser inferior a {sizeLimit}",
+    "InvalidImageTypeError": "Tipo de imagen no válido. Tipos permitidos: {allowedTypes}",
+    "NoImageFileProvidedError": "No se proporcionó archivo de imagen"
   },
   "UseAvailableAnswers": {
     "CannotLoadAnswersData": "No se pueden cargar los datos de las respuestas"

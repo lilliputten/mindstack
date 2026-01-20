@@ -5,9 +5,11 @@ import sharp from 'sharp';
 
 import { getErrorText, nFormatter } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 
 import {
   categoryImageAllowedTypes,
+  categoryImageAllowedTypesString,
   categoryImageQuality,
   categoryImageSizeBytesLimit,
   categoryImageSizePixels,
@@ -17,35 +19,39 @@ export type TUploadCategoryImageResult = Awaited<ReturnType<typeof uploadCategor
 
 export async function uploadCategoryImage(formData: FormData) {
   try {
+    const t = await getT();
     const user = await getCurrentUser();
     const userId = user?.id;
-    const isAdmin = user?.role === 'ADMIN';
+    // const isAdmin = user?.role === 'ADMIN';
 
+    // Allow images upload only for athorized users
     if (!userId) {
-      throw new Error('Authentication error');
-    }
-
-    if (!isAdmin) {
-      throw new Error('Access denied');
+      throw new Error(t('AuthenticationError'));
     }
 
     const file = formData.get('image') as File;
 
     if (!file) {
-      throw new Error('No image file provided');
+      throw new Error(t('UploadCategoryImage.NoImageFileProvidedError'));
     }
 
     // Validate file size
     if (file.size > categoryImageSizeBytesLimit) {
       const formattedSizeLimit = nFormatter(categoryImageSizeBytesLimit);
-      throw new Error(`Image size must be less than ${formattedSizeLimit}B`);
+      throw new Error(
+        t('UploadCategoryImage.ImageSizeLimitError', { sizeLimit: `${formattedSizeLimit}B` }),
+      );
     }
 
     // Validate file type
     if (
       !categoryImageAllowedTypes.includes(file.type as (typeof categoryImageAllowedTypes)[number])
     ) {
-      throw new Error('Invalid image type. Allowed types: JPEG, PNG, WebP, GIF');
+      throw new Error(
+        t('UploadCategoryImage.InvalidImageTypeError', {
+          allowedTypes: categoryImageAllowedTypesString,
+        }),
+      );
     }
 
     // Convert file to buffer

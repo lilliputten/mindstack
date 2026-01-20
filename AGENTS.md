@@ -1,12 +1,21 @@
 Common rules:
 
+- Answer in English, create all texts and comments in English.
 - Never use `any` type.
 - Create intermidiate indices for newly created modules (with re-exports, in form of `export * from './MODULE'`).
-- Always check for typescript and eslint errors. Run eslint only for updated files.
+- Always check for typescript (via tsc) and eslint errors. Run eslint only for updated files.
 - Always run created tests.
-- Use only English language, create all texts and comments in English. Communicate in English too.
 - Carefully update original modules content: don't just ovverride the old contents.
-- For powershell use `;` command separator instead of `&&`.
+
+Console tools:
+
+- The project uses `pnpm` package manager.
+- Use `;` command separator instead of `&&` for powershell terminal.
+
+For translations:
+
+- Don't duplicate namespace objects: merge data into existed ones. (Check `AvailableCategoriesListPage`.)
+- Check json files validity.
 
 For UI (`.tsx`) react components:
 

@@ -17,7 +17,7 @@ export default function AddCategoryModalDefault() {
     const prevChunk = pathname.substring(0, pathname.length - checkAdd.length);
     // Check if the previous path ends with `manageCategoriesRoute` ('/categories/manage')
     if (prevChunk.endsWith(manageCategoriesRoute)) {
-      return <AddCategoryModal />;
+      return <AddCategoryModal routePath={manageCategoriesRoute} />;
     }
   }
 

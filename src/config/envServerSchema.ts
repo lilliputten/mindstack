@@ -13,7 +13,7 @@ export const envServerSchema = z.object({
   VERCEL_URL: z.string().optional(),
 
   // Vercel blob storage
-  // VERCEL_BLOB_READ_WRITE_TOKEN: z.string().min(1),
+  BLOB_READ_WRITE_TOKEN: z.string().min(1),
   VERCEL_BLOB_HOST: z.string().min(1),
 
   // Currencies API
