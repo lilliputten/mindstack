@@ -28,7 +28,7 @@
   "Description": "Description",
   "Edit": "Edit",
   "Expected": "Expected",
-  "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan caonditions.",
+  "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan conditions.",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
   "GenerationMode": "Generation mode",
@@ -115,6 +115,7 @@
     "AnswerText": "Answer Text",
     "AnswerTextHint": "You'll be able to edit it later, as well as other answer poroperties.",
     "AnswerTextPlaceholder": "Text",
+    "CannotCreateAnswer": "Answer Creation Error",
     "IsCorrectHint": "Each question should have one or a few correct answers.",
     "IsCorrectLabel": "Is the answer correct?"
   },
@@ -142,6 +143,7 @@
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
     "CancelButtonText": "Cancel",
+    "CannotCreateQuestion": "Question Creation Error",
     "QuestionText": "Question Text",
     "QuestionTextHint": "You'll be able to edit it later, as well as other question poroperties.",
     "QuestionTextPlaceholder": "Text"

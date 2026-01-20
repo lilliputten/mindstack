@@ -114,6 +114,7 @@
     "AnswerText": "Texto de la Respuesta",
     "AnswerTextHint": "Podrás editarlo más tarde, así como otras propiedades de la respuesta.",
     "AnswerTextPlaceholder": "Texto",
+    "CannotCreateAnswer": "Error de creación de respuesta",
     "IsCorrectHint": "Cada pregunta debe tener una o algunas respuestas correctas.",
     "IsCorrectLabel": "¿Es correcta la respuesta?"
   },
@@ -141,6 +142,7 @@
     "AddButtonText": "Agregar",
     "AddingButtonText": "Agregando",
     "CancelButtonText": "Cancelar",
+    "CannotCreateQuestion": "Error al crear la pregunta",
     "QuestionText": "Texto de la Pregunta",
     "QuestionTextHint": "Podrás editarlo más tarde, así como otras propiedades de la pregunta.",
     "QuestionTextPlaceholder": "Texto"

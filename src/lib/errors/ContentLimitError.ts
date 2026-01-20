@@ -13,7 +13,7 @@ export class ContentLimitError extends Error {
   public readonly userGrade?: string;
 
   constructor(code: TContentLimitErrorCode, message?: string, userGrade?: string) {
-    super(message || code); // || getDefaultMessage(code));
+    super(message || code);
     this.name = 'ContentLimitError';
     this.code = code;
     this.userGrade = userGrade;
@@ -24,20 +24,6 @@ export class ContentLimitError extends Error {
     }
   }
 }
-
-/* // UNUSED: getDefaultMessage
- * function getDefaultMessage(code: TContentLimitErrorCode): string {
- *   const messages: Record<TContentLimitErrorCode, string> = {
- *     UNAUTHORIZED: 'User not authenticated',
- *     GUEST_USERS_NOT_ALLOWED: 'Guest users are not allowed to create content',
- *     TOPICS_LIMIT_REACHED: 'Topic limit reached',
- *     QUESTIONS_LIMIT_REACHED: 'Question limit reached',
- *     ANSWERS_LIMIT_REACHED: 'Answer limit reached',
- *     UNKNOWN_ERROR: 'Unknown content limit error',
- *   };
- *   return messages[code];
- * }
- */
 
 export function getLocalizedLimitError(errorCode?: TContentLimitErrorCode, t?: TTranslator) {
   const defaultResult: string = 'UnknownError';

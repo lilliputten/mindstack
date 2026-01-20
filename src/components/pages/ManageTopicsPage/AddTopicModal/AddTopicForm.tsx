@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { Link, TLocale, useT } from '@/i18n';
+import { Link, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -158,7 +158,7 @@ export function AddTopicForm(props: TAddTopicFormProps) {
           <div
             data-error-id={limitsError}
             className={cn(
-              isDev && '__EditCategoryForm_Error', // DEBUG
+              isDev && '__EditCategoryForm_LimitsError', // DEBUG
               'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
             )}
           >
