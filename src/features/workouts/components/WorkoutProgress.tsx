@@ -21,7 +21,7 @@ export function WorkoutProgress() {
   const stepProgressSize = totalSteps ? 100 / totalSteps : 0;
   const progress = progressStep * stepProgressSize;
   const questionResults = workout?.questionResults;
-  const resultsUpacked = React.useMemo<TReactPrimitive[]>(
+  const resultsUnpacked = React.useMemo<TReactPrimitive[]>(
     () => (questionResults && JSON.parse(questionResults)) || [],
     [questionResults],
   );
@@ -32,8 +32,9 @@ export function WorkoutProgress() {
     return generateArray(currentStep).map((idx) => {
       let className =
         !selectedAnswerId && idx === currentStep - 1
-          ? 'bg-theme-500/50 animate-pulse'
-          : resultsUpacked[idx]
+          ? // Show pulsing item for the current (unanswered) step
+            'bg-theme-500/50 animate-pulse'
+          : resultsUnpacked[idx]
             ? 'bg-green-500/50'
             : 'bg-red-500/50';
       if (idx) {
@@ -41,7 +42,20 @@ export function WorkoutProgress() {
       }
       return className;
     });
-  }, [currentStep, resultsUpacked, selectedAnswerId]);
+  }, [currentStep, resultsUnpacked, selectedAnswerId]);
+
+  console.log('[WorkoutProgress:DEBUG]', {
+    indicatorClassNames,
+    selectedAnswerId,
+    resultsUnpacked,
+    questionResults,
+    progress,
+    values,
+    workout,
+    pending,
+    questionIds,
+    workoutContext,
+  });
 
   if (pending) {
     return (

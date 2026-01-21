@@ -29,11 +29,27 @@ export function WorkoutQuestionBlock() {
     questionOrderedIds,
     saveResultAndGoNext,
     saveResult,
-    saveAnswer,
+    // saveAnswer,
     finishWorkout,
     goNextQuestion,
     goPrevQuestion,
+    pending: isWorkoutPending,
   } = useWorkoutContext();
+
+  React.useEffect(() => {
+    console.log('[WorkoutQuestionBlock:Effect:DEBUG]', {
+      isWorkoutPending,
+      topicId,
+      workout,
+      questionOrderedIds,
+    });
+  }, [
+    ///
+    isWorkoutPending,
+    topicId,
+    workout,
+    questionOrderedIds,
+  ]);
 
   const totalSteps = questionOrderedIds.length;
   const stepIndex = workout?.stepIndex || 0;
@@ -52,21 +68,40 @@ export function WorkoutQuestionBlock() {
     }, 10);
   }, [finishWorkout, goToTheRoute, workoutRoutePath]);
 
+  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST]'), []);
+  // prettier-ignore
+  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:finishWorkout]', finishWorkout), [finishWorkout]);
+  // prettier-ignore
+  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:goToTheRoute]', goToTheRoute), [goToTheRoute]);
+  // prettier-ignore
+  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:workoutRoutePath]', workoutRoutePath), [workoutRoutePath]);
+
+  // Effect:Exceed
   React.useEffect(() => {
-    if (isExceed && !memo.isGoingOut) {
+    console.log('[WorkoutQuestionBlock:Effect:Exceed]', {
+      isWorkoutPending,
+      memo,
+      handleFinishWorkout,
+      isExceed,
+      currentStep,
+      totalSteps,
+    });
+    if (isExceed && !memo.isGoingOut && !isWorkoutPending) {
       const error = new Error(
         `The step index (${currentStep}) exceeds the total steps count (${totalSteps})`,
       );
       // eslint-disable-next-line no-console
-      console.warn('[WorkoutQuestionBlock]', error, {
+      console.warn('[WorkoutQuestionBlock:Effect:Exceed]', error, {
         totalSteps,
         currentStep,
       });
-      // debugger;
-      handleFinishWorkout();
-      memo.isGoingOut = true;
+      debugger;
+      // handleFinishWorkout();
+      // setTimeout(() => {
+      //   memo.isGoingOut = true;
+      // }, 15000);
     }
-  }, [memo, handleFinishWorkout, isExceed, currentStep, totalSteps]);
+  }, [isWorkoutPending, memo, handleFinishWorkout, isExceed, currentStep, totalSteps]);
 
   const availableQuestionQuery = useAvailableQuestionById({ id: questionId });
   const {
@@ -111,10 +146,28 @@ export function WorkoutQuestionBlock() {
   }, [goPrevQuestion]);
 
   const onAnswerSelect = React.useCallback(
-    (answerId: string) => {
+    async (answerId: string) => {
       const answer = answers.find(({ id }) => id === answerId);
+      console.log('[WorkoutQuestionBlock:onAnswerSelect] start', {
+        answer,
+        answerId,
+      });
       if (answer) {
         const { isCorrect } = answer;
+        console.log('[WorkoutQuestionBlock:onAnswerSelect] found', {
+          isCorrect,
+          answer,
+          answerId,
+        });
+        debugger;
+        // Update workout with result and move to next question
+        // await saveAnswer(answerId);
+        await saveResult(isCorrect, answerId);
+        /* // UNUSED: Auto-advance after delay
+         * if (isCorrect) {
+         *   memo.nextPageTimerHandler = setTimeout(goToTheNextQuestion, 2000);
+         * }
+         */
         /* // UNUSED: Show explanation toast (it's displayed in the selected answer block)
          * if (explanation) {
          *   const markdownContent = (
@@ -133,17 +186,9 @@ export function WorkoutQuestionBlock() {
          *   toast.info(content);
          * }
          */
-        // Update workout with result and move to next question
-        saveAnswer(answerId);
-        saveResult(isCorrect);
-        /* // UNUSED: Auto-advance after delay
-         * if (isCorrect) {
-         *   memo.nextPageTimerHandler = setTimeout(goToTheNextQuestion, 2000);
-         * }
-         */
       }
     },
-    [answers, saveResult, saveAnswer],
+    [answers, saveResult],
   );
 
   const onSkip = React.useCallback(() => {

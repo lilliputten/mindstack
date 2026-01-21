@@ -65,11 +65,26 @@ interface TMemo {
   isStarting?: boolean;
   // Init timeout handler, if not resolved (true)
   // initTimeoutHandler?: ReturnType<typeof setTimeout> | true;
+  workoutContext?: ReturnType<typeof useWorkoutContext>;
 }
 
 export function WorkoutTopicGo() {
   const memo = React.useMemo<TMemo>(() => ({}), []);
-  const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
+  const workoutContext = useWorkoutContext();
+  const {
+    ///
+    pending: isWorkoutPending,
+    topicId,
+    workout,
+    startWorkout,
+    // isPending,
+    // isFetched,
+    // isLoading,
+  } = workoutContext;
+  memo.workoutContext = workoutContext;
+  // const isWorkoutReady =
+  //   !workoutContext.isPending && !workoutContext.isLoading && workoutContext.isFetched;
+  // const isWorkoutPending = !isWorkoutReady;
 
   const t = useT();
 
@@ -135,11 +150,21 @@ export function WorkoutTopicGo() {
     // isLoading: isQuestionLoading,
   } = availableQuestionQuery;
 
-  // Effect: Start workout if no active one (and hasn't been any activity yet)
+  // Effect:Start workout if no active one (and hasn't been any activity yet)
   React.useEffect(() => {
+    console.log('[WorkoutTopicGo:Effect:Start]', {
+      memo,
+      hasActiveWorkout,
+      isWorkoutPending,
+    });
     if (!memo.isStarting && !memo.hasWorkoutUpdated && !hasActiveWorkout && !isWorkoutPending) {
       // eslint-disable-next-line no-console
-      console.warn('[WorkoutTopicGo] No active training: startaing it now!');
+      console.warn('[WorkoutTopicGo:Effect:Start] No active training: startaing it now!', {
+        memo,
+        hasActiveWorkout,
+        isWorkoutPending,
+      });
+      debugger;
       memo.isStarting = true;
       setIsStarting(true);
       startWorkout()

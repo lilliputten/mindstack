@@ -70,6 +70,18 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
     router.push(workoutRoutePath);
   };
 
+  // Effect:DEBUG
+  React.useEffect(() => {
+    console.log('[AvailableTopicsListItem:Effect:DEBUG]', {
+      workout,
+      topic,
+    });
+  }, [
+    ///
+    workout,
+    topic,
+  ]);
+
   let cardContent = (
     <>
       <CardHeader
