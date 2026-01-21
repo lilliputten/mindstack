@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
 import { safeJsonParse } from '@/lib/helpers/json';
+import { useT } from '@/i18n';
 import { defaultStaleTime } from '@/constants';
 import { TTopicId } from '@/features/topics/types';
 import { TUserId } from '@/features/users/types';
@@ -13,7 +14,6 @@ import { createWorkoutStats } from '@/features/workouts/actions/createWorkoutSta
 import { getWorkout } from '@/features/workouts/actions/getWorkout';
 import { updateWorkout } from '@/features/workouts/actions/updateWorkout';
 import { TWorkoutData } from '@/features/workouts/types';
-import { useT } from '@/i18n';
 
 import { useAvailableTopicById } from './useAvailableTopicById';
 import { useQuestionIdsForTopicId } from './useQuestionIdsForTopicId';

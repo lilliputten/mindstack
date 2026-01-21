@@ -4,6 +4,7 @@ import React from 'react';
 
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
@@ -16,7 +17,6 @@ import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { ViewAvailableTopicContent } from './ViewAvailableTopicContent';
 

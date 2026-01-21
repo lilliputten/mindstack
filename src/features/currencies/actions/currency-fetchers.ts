@@ -1,7 +1,8 @@
+import { EXCHANGERATE_API_KEY } from '@/config/envServer';
 import { getErrorText } from '@/lib/helpers';
 import { secondMs } from '@/constants';
 
-const timeoutDuration = secondMs * 30;
+const timeoutDuration = secondMs * 10;
 
 type TExchangerateApiCurrencyId = 'RUB' | 'EUR';
 
@@ -12,7 +13,8 @@ type TExchangerateApiCurrencyId = 'RUB' | 'EUR';
 export async function fetchExchangerateApiRatio(
   apiCurrencyId: TExchangerateApiCurrencyId,
 ): Promise<number> {
-  const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrencyId}`;
+  // const apiUrl = `https://api.exchangerate-api.com/v4/latest/${apiCurrencyId}`;
+  const apiUrl = `https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/latest/${apiCurrencyId}`;
   let res: Response | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any | undefined;
@@ -23,6 +25,26 @@ export async function fetchExchangerateApiRatio(
       signal: AbortSignal.timeout(timeoutDuration), // Automatically aborts after duration
     });
     /* // Sample result
+     * API v.6:
+     * curl -i -m 5 https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/latest/RUB
+     * {
+     *   "result": "success",
+     *   "documentation": "https://www.exchangerate-api.com/docs",
+     *   "terms_of_use": "https://www.exchangerate-api.com/terms",
+     *   "time_last_update_unix": 1768867201,
+     *   "time_last_update_utc": "Tue, 20 Jan 2026 00:00:01 +0000",
+     *   "time_next_update_unix": 1768953601,
+     *   "time_next_update_utc": "Wed, 21 Jan 2026 00:00:01 +0000",
+     *   "base_code": "RUB",
+     *   "conversion_rates": {
+     *     "RUB": 1,
+     *     ...
+     *     "USD": 0.01286,
+     *     ...
+     *   }
+     * }
+     * API v.4:
+     * curl -i -m 5 https://api.exchangerate-api.com/v4/latest/RUB
      * {
      *   "provider": "https://www.exchangerate-api.com",
      *   "WARNING_UPGRADE_TO_V6": "https://www.exchangerate-api.com/docs/free",
@@ -38,15 +60,22 @@ export async function fetchExchangerateApiRatio(
      *   }
      * }
      */
-    if (!res.ok) throw new Error('The exchangerate-api endpoint is unavailable');
+    if (!res.ok) {
+      throw new Error('The exchangerate-api endpoint is unavailable');
+    }
     data = await res.json();
-    value = data?.rates?.USD;
+    /* Available properties depending on the API version:
+     * v6: conversion_rates
+     * v4: rates
+     */
+    const rates = data?.conversion_rates || data?.rates;
+    value = rates?.USD;
     if (!value || isNaN(value)) {
-      throw new Error(`RUB ratio is not a number: ${value}`);
+      throw new Error(`Currency ratio (for ${apiCurrencyId}) is not a valid number: ${value}`);
     }
     return Number(value);
   } catch (error) {
-    const message = 'RUB ratio fetch failed';
+    const message = `Currency ratio (for ${apiCurrencyId}) fetch failed`;
     const details = getErrorText(error);
     const errStr = [message, details].join(': ');
     // eslint-disable-next-line no-console

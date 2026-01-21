@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 
-import { TTopic } from '../types';
+import { TAvailableTopic, TTopic } from '../types';
 
 export async function getThisUserTopics() {
   const user = await getCurrentUser();
@@ -34,7 +34,15 @@ export async function getThisUserTopics() {
       where,
       include,
     });
-    return topics;
+
+    const items = (topics as TAvailableTopic[]).map((topic) => {
+      if (topic?.categories?.length) {
+        topic.categoryIds = topic.categories.map(({ id }) => id);
+      }
+      return topic;
+    });
+
+    return items;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('[getThisUserTopics] catch', {

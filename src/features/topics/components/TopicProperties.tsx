@@ -4,9 +4,11 @@ import React from 'react';
 import { useFormatter } from 'next-intl';
 
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
-import * as Icons from '@/components/shared/Icons';
-import { TAvailableTopic } from '@/features/topics/types';
 import { useT } from '@/i18n';
+import * as Icons from '@/components/shared/Icons';
+import { PlainCategoriesListByCategoryIds } from '@/features/categories';
+import { TAvailableTopic } from '@/features/topics/types';
+import { SmallUserBlock, useUserById } from '@/features/users';
 
 interface TTopicPropertiesOptions {
   showDates?: boolean;
@@ -35,15 +37,18 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     langCode,
     langName,
     updatedAt,
-    user,
+    userId,
   } = topic;
+  const categoryIds = topic.categoryIds || topic.categories?.map(({ id }) => id);
+  const userQuery = useUserById(userId);
+  const { user } = userQuery;
   const questionsCount = _count?.questions;
   const keywordsList = keywords
     ?.split(',')
     .map((s) => s.trim())
     .filter(Boolean);
   const keywordsContent = keywordsList?.map((kw, idx) => (
-    <span key={`${idx}-${kw}`} className="rounded-sm bg-theme-700/10 px-1">
+    <span key={`${idx}-${kw}`} className="rounded-sm border bg-theme-700/10 px-1">
       {kw}
     </span>
   ));
@@ -55,7 +60,6 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
       </span>
     ),
   ].filter(Boolean);
-  const userName = user && (user.name || user.email);
   const createdDateStr = getFormattedRelativeDate(format, createdAt);
   const updatedDateStr = getFormattedRelativeDate(format, updatedAt);
   const areDifferentDates =
@@ -64,7 +68,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     <>
       <span id="questions" className="flex items-center gap-1" title={t('QuestionsCount')}>
         <Icons.Questions className="mr-1 size-4 opacity-50" />{' '}
-        {questionsCount ? questionsCount : 'No questions'}
+        {questionsCount ? questionsCount : t('NoQuestions')}
       </span>
       {!!(langName || langCode) && (
         <span id="language" className="flex items-center gap-1" title={t('TopicLanguage')}>
@@ -76,9 +80,15 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
           <Icons.Tags className="mr-1 size-4 opacity-50" /> {keywordsContent}
         </span>
       )}
-      {!!(user && userName) && (
+      {!!categoryIds?.length && (
+        <span id="categories" className="flex flex-wrap items-center gap-1" title={t('Categories')}>
+          <Icons.Categories className="mr-1 size-4 opacity-50" />
+          <PlainCategoriesListByCategoryIds categoryIds={categoryIds} />
+        </span>
+      )}
+      {!!userId && (
         <span id="user-author" className="flex items-center gap-1" title={t('Author')}>
-          <Icons.CircleUserRound className="mr-1 size-4 opacity-50" /> {userName}
+          <SmallUserBlock isLoading={!user} user={user} tiny />
         </span>
       )}
       {showDates && (

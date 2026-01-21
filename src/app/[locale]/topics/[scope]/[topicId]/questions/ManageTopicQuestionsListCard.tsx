@@ -7,6 +7,8 @@ import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
@@ -34,8 +36,6 @@ import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/Qu
 import { TQuestion, TQuestionData, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();

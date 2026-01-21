@@ -3,11 +3,11 @@ import { setRequestLocale } from 'next-intl/server';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { WelcomeScreen } from '@/components/screens/WelcomeScreen';
 import { isDev } from '@/constants';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;

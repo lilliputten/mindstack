@@ -7,12 +7,12 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { getRandomHashString } from '@/lib/helpers';
 import { isLoggedUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT, TAwaitedLocaleProps } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev } from '@/config';
 import { calculatePricingForUser } from '@/features/payments/actions';
 import { TPaidableSubscriptionType } from '@/features/subscriptions';
-import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChoosePage } from './PricingChoosePage';
 

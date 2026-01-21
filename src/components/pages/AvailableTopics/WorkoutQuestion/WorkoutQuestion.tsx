@@ -2,6 +2,7 @@ import React from 'react';
 
 import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -9,7 +10,6 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TAvailableAnswer } from '@/features/answers/types';
-import { useT } from '@/i18n';
 
 interface WorkoutQuestionProps {
   questionText: string;

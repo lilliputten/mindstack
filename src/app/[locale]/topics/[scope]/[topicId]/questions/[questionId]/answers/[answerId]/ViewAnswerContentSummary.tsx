@@ -6,6 +6,8 @@ import { useFormatter } from 'next-intl';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
@@ -19,8 +21,6 @@ import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useUserById } from '@/features/users/query-hooks';
 import { useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TViewAnswerContentSummaryProps {

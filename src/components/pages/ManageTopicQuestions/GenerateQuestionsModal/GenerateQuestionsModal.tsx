@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { getErrorText } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { ScrollArea } from '@/components/ui/ScrollArea';
@@ -35,7 +36,6 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { GenerateQuestionsForm, TFormData } from './GenerateQuestionsForm';
@@ -96,7 +96,8 @@ export function GenerateQuestionsModal() {
 
   const questions = topic?.questions;
 
-  useModalTitle(t('GenerateQuestionsModal.ModalTitle'), shouldBeVisible);
+  const dialogTitle = t('GenerateQuestionsModal.DialogTitle');
+  useModalTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const generateQuestionsMutation = useMutation({
@@ -109,6 +110,8 @@ export function GenerateQuestionsModal() {
         topicText,
         topicDescription,
         topicKeywords,
+        langName: topic?.langName || undefined,
+        langCode: topic?.langCode || undefined,
         existedQuestions: questions?.map(({ text }) => ({ text })),
       };
       const { debugData } = formData;
@@ -134,7 +137,7 @@ export function GenerateQuestionsModal() {
         debugData: debugData ? debugDataId : undefined,
       });
       /* // DEBUG
-       * const content = __queryData?.content;
+       * const __content = queryData?.content;
        * console.log('[GenerateQuestionsModal:generateQuestionsMutation] Generated query data', {
        *   __content,
        *   queryData,
@@ -301,9 +304,9 @@ export function GenerateQuestionsModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('GenerateQuestionsModal.DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('GenerateQuestionsModal.DialogDescription')}
+          {dialogTitle}
         </DialogDescription>
       </div>
       <div

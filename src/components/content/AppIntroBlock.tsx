@@ -3,12 +3,12 @@
 import { generateArray } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { aboutAliasRoute, availableTopicsRoute, myTopicsRoute, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { getUserStatusText } from '@/features/users/helpers/getUserStatusText';
 import { useSessionData } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 import { Skeleton } from '../ui/Skeleton';
 

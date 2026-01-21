@@ -9,9 +9,11 @@ export const config = {
     // Enable a redirect to a matching locale at the root
     '/',
 
-    // Set a cookie to remember the previous locale for
-    // all requests that have a locale prefix
-    '/(en|ru)/:path*',
+    /* // UNUSED: Locales are passed in `routing`, via `createMiddleware`.
+     * // Set a cookie to remember the previous locale for
+     * // all requests that have a locale prefix
+     * '/(en|es|ru)/:path*',
+     */
 
     // Enable redirects that add missing locales but exclude system paths
     '/((?!api|_next|_vercel|favicon|.well-known|static|.*\\..*).*)',

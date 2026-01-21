@@ -3,7 +3,9 @@
 import React from 'react';
 
 import { TMediaWidth } from '@/lib/types/ui/TMediaWidth';
+import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { ActionButton, TActionItem } from '@/components/ui/ActionButton';
 import { Button } from '@/components/ui/Button';
 import {
@@ -14,7 +16,6 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { Skeleton } from '../ui/Skeleton';
 
@@ -73,9 +74,9 @@ export function DashboardActions(props: DashboardActionsProps) {
           className,
         )}
       >
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-24" />
-        <Skeleton className="h-10 w-10" />
+        {generateArray(3).map((n) => (
+          <Skeleton key={n} className="h-10 w-24" />
+        ))}
       </div>
     );
   }

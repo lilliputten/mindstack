@@ -8,7 +8,6 @@ import { makeNullableFieldsOptional } from '@/lib/helpers/zod';
 import { TopicIncludeParamsSchema } from '@/lib/zod-schemas';
 import { updateTopic } from '@/features/topics/actions';
 import { getAvailableTopicById } from '@/features/topics/actions/getAvailableTopicById';
-import { TTopic } from '@/features/topics/types';
 
 const updateTopicSchema = makeNullableFieldsOptional(TopicSchema).omit({
   createdAt: true,
@@ -95,7 +94,7 @@ export async function PUT(
     const body = await request.json();
     const topicData = updateTopicSchema.parse({ ...body, id: topicId });
 
-    const updatedTopic = await updateTopic(topicData as TTopic);
+    const updatedTopic = await updateTopic(topicData);
 
     const response: TApiResponse<typeof updatedTopic> = {
       data: updatedTopic,

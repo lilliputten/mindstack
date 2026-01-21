@@ -10,12 +10,14 @@ import { EnvContextRoot } from '@/contexts/EnvContext/EnvContextRoot';
 import '@/styles/globals.scss';
 import '@/styles/root.scss';
 
+import { Viewport } from 'next';
 import { AbstractIntlMessages } from 'next-intl';
 
 import { defaultThemeColor } from '@/config/themeColors';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 import { Toaster } from '@/components/ui/Toaster';
 import { GenericLayout } from '@/components/layout/GenericLayout';
 import { SignInModalProvider } from '@/components/modals';
@@ -26,7 +28,6 @@ import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
 import { getSettings } from '@/features/settings/actions';
-import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
@@ -43,6 +44,17 @@ type TRootLayoutProps = TAwaitedLocaleProps & {
 export function generateStaticParams() {
   return localesList.map((locale) => ({ locale: locale as TLocale }));
 }
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  /* // NOTE: Attempt to fix stuck an onscreen mobile keyboard
+   * Also see `resize` and `geometrychange` events
+   */
+  interactiveWidget: 'overlays-content',
+};
 
 async function RootLayout(props: TRootLayoutProps) {
   const { children, params: paramsPromise } = props;

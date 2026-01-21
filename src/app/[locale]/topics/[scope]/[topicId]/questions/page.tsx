@@ -1,12 +1,12 @@
 import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TQuestionId } from '@/features/questions/types';
-import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 import { ManageTopicQuestionsPageModalsWrapper } from './ManageTopicQuestionsPageModalsWrapper';
 

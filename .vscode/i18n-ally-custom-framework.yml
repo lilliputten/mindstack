@@ -1,0 +1,19 @@
+# .vscode/i18n-ally-custom-framework.yml
+functions:
+  # Alternative for useTranslations (client-side hook)
+  - name: 'useT'
+    description: 'Custom useTranslations alias'
+    params:
+      - name: 'namespace'
+        objectPattern: ['ns', 'namespace'] # Matches useT('common') or useT({ns: 'common'})
+    source: 't' # Expects returned object with t() method
+    sourceType: 'idAccess'
+
+  # Alternative for getTranslations (server-side)
+  - name: 'getT'
+    description: 'Custom getTranslations alias'
+    params:
+      - name: 'namespace'
+        objectPattern: ['ns', 'namespace']
+    source: 't'
+    sourceType: 'idAccess'

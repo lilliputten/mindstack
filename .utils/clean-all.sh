@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Clean all temp files
-# @changed 2025.07.19, 23:10
+# @changed 2026.01.13, 18:45
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -16,6 +16,7 @@ $RMCMD -Rf \
   .next \
   .swc \
   node_modules/.cache \
+  *.tsbuildinfo \
   local.log* \
   *.log \
   log-* \
@@ -36,6 +37,7 @@ $FINDCMD . \
   -not \( -name 'publish*' -prune \) \
   -not \( -name 'node_modules' -prune \) \
   -not \( -name '__tests__' -prune \) \
+  -not \( -name '__mocks__' -prune \) \
   -not \( -name '__snapshots__' -prune \) \
   \
   \( \

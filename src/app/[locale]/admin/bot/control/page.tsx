@@ -3,9 +3,9 @@ import { redirect } from 'next/navigation';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { isAdminUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT, TAwaitedLocaleProps } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, welcomeAliasRoute } from '@/config';
-import { getT, TAwaitedLocaleProps } from '@/i18n';
 
 import { BotControlPage } from './BotControlPage';
 

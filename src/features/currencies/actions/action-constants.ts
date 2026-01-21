@@ -6,7 +6,7 @@ import { TCurrencyType } from '../types/shared-types';
  * The base unit is USD. All other consider as derived and calculated from the base using ratios.
  */
 
-/** Default ratios, as on 2025.12
+/** Default ratios, as on 2025.12, MUST BE UPDATED ASAP
  *
  * RUB: 0.0128
  * EUR: 1.18
@@ -24,9 +24,11 @@ export const initialRatios: Record<TCurrencyType, number> = {
   TGSTAR: 0.015,
 };
 
-/** Update ratios once per 4 hours */
-export const updateTimeout = hourMs * 4;
-/** Time to allow currency fetching process */
+/** Update ratios once per this amount of time */
+export const updateTimeout = hourMs * 8;
+/** Time to allow currency fetching process, consider the currency to be
+ * updating right now, if the update process has started within this period ago
+ */
 export const updatingTimeout = minuteMs * 5;
-/** Caching time for next cache */
+/** Caching time for next check, to store the result in the nextjs cache */
 export const revalidateTimeout = hourMs;

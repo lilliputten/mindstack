@@ -1,14 +1,22 @@
 {
   "AIPoweredLearning": "Обучение с поддержкой ИИ",
+  "AccessDeniedError": "Доступ запрещен",
   "ActiveRecallPractice": "Практика активного вспоминания",
+  "AddTopic": "Добавить тему",
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
+  "Apply": "Применить",
+  "AuthenticationError": "Ошибка аутентификации",
   "Author": "Автор",
   "Authors": "Авторы",
   "Availability": "Доступность",
   "Back": "Назад",
+  "Cancel": "Отмена",
+  "Categories": "Категории",
+  "Category": "Категория",
   "ChangeFilters": "Изменить фильтры",
+  "ClearChanges": "Сбросить изменения",
   "ClearText": "Очистить текст",
   "Close": "Закрыть",
   "Continue": "Продолжить",
@@ -18,23 +26,37 @@
   "CurrentProgress": "Текущий прогресс",
   "CurrentSessionRatio": "Текущее соотношение сессии",
   "Delete": "Удалить",
+  "Deleting": "Удаление",
   "Description": "Описание",
   "Edit": "Редактировать",
+  "ExtraLimitsErrorText": "<PricesLink>Проверьте</PricesLink> условия вашего тарифного плана.",
   "Finish": "Завершить",
   "FinishedAt": "Завершено в",
   "GenerationMode": "Режим генерации",
   "GoBack": "Назад",
+  "GoHome": "На главную",
+  "HIDDEN": "Скрыто",
+  "Hide": "Скрыть",
+  "Image": "Изображение",
   "Keywords": "Ключевые слова",
   "Language": "Язык",
   "LegalOwnerName": "Михеев И.А.",
+  "ManageTopics": "Управление темами",
   "Modified": "Изменено",
+  "NN": "№",
   "Name": "Название",
   "No": "Нет",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
+  "NoCategoriesAvailable": "Нет доступных категорий",
+  "NoFiltersApplied": "Фильтры не применены",
+  "NoTopics": "Нет тем",
   "NoTopicsAvailable": "Нет доступных тем",
+  "Ok": "Хорошо",
+  "PUBLIC": "Общее",
   "PageNotFound": "Страница не найдена",
-  "Private": "Приватный",
-  "Public": "Публичный",
+  "Private": "Приватно",
+  "Properties": "Характеристики",
+  "Public": "Публично",
   "Question": "Вопрос",
   "Questions": "Вопросы",
   "QuestionsCount": "Количество вопросов",
@@ -43,6 +65,8 @@
   "Reload": "Перезагрузить",
   "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
+  "ResetToDefaults": "Настройки по умолчанию",
+  "SUGGESTED": "Предложенный",
   "Save": "Сохранить",
   "SelectAnswer": "Выбрать ответ",
   "SelectDeselectAll": "Выбрать/отменить всё",
@@ -51,16 +75,21 @@
   "SpacedRepetition": "Разнесённое повторение",
   "Start": "Начать",
   "StartedAt": "Начато в",
+  "Status": "Статус",
   "Timeline": "Хронология",
   "Topic": "Тема",
   "TopicLanguage": "Язык темы",
   "TopicName": "Название темы",
   "Topics": "Темы",
+  "TopicsCount": "Количество тем",
   "Total": "Всего",
   "Training": "Тренировка",
   "TrainingStatus": "Статус тренировки",
+  "UnknownError": "Неизвестная ошибка",
+  "Unlimited": "Не ограничено",
   "UpdatedDate": "Дата обновления",
   "UsedGenerations": "Использованные генерации",
+  "UserAvatarImage": "Изображение аватара пользователя",
   "UserGrade": "Уровень пользователя",
   "UserNotLoggedIn": "Пользователь не авторизован",
   "UserRole": "Роль пользователя",
@@ -84,6 +113,7 @@
     "AnswerText": "Текст ответа",
     "AnswerTextHint": "Вы сможете редактировать его позже, а также другие свойства ответа.",
     "AnswerTextPlaceholder": "Текст",
+    "CannotCreateAnswer": "Ошибка создания ответа",
     "IsCorrectHint": "Каждый вопрос должен иметь один или несколько правильных ответов.",
     "IsCorrectLabel": "Правильный ли ответ?"
   },
@@ -95,10 +125,20 @@
     "ToastLoading": "Создание нового ответа...",
     "ToastSuccess": "Успешно создан новый ответ."
   },
+  "AddCategoryModal": {
+    "CantSaveCategory": "Невозможно сохранить категорию",
+    "DialogTitle": "Добавить новую категорию",
+    "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку позже. Период ожидания: {time}.",
+    "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
+    "SuggestDialogTitle": "Предложить новую категорию",
+    "UnauthorizedUserMessage": "Только авторизованные пользователи могут добавлять категории.",
+    "UnauthorizedUserTitle": "Неавторизованный пользователь"
+  },
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
     "CancelButtonText": "Отмена",
+    "CannotCreateQuestion": "Ошибка создания вопроса",
     "QuestionText": "Текст вопроса",
     "QuestionTextHint": "Вы сможете редактировать его позже, а также другие свойства вопроса.",
     "QuestionTextPlaceholder": "Текст"
@@ -114,9 +154,13 @@
   "AddTopicForm": {
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
+    "CannotCreateTopic": "Ошибка создания темы",
+    "CategoriesHint": "Выберите одну или несколько категорий для темы. Вы можете изменить этот параметр позже.",
+    "CategoriesLabel": "Категории",
     "IsPublicHint": "Публичные темы могут просматриваться и использоваться другими пользователями.",
     "IsPublicLabel": "Публичная ли тема?",
     "NamePlaceholder": "Название",
+    "SelectCategoriesPlaceholder": "Выберите категории",
     "TopicName": "Название темы"
   },
   "AddTopicModal": {
@@ -127,6 +171,11 @@
     "ToastLoading": "Создание новой темы...",
     "ToastSuccess": "Новая тема \"{name}\" успешно создана"
   },
+  "AnswersGenerationTypeTexts": {
+    "CORRECT": "Только правильные ответы",
+    "RANDOM": "Несколько ответов, хотя бы один правильный",
+    "WRONG": "Только неправильные ответы"
+  },
   "AppIntro": {
     "BlockContent": "<p>Это небольшое приложение для тренировки памяти. \nОзнакомьтесь с кратким <AboutLink>справочником по приложению</AboutLink>.</p>"
   },
@@ -134,10 +183,68 @@
     "content": "<p>Это небольшое приложение-викторина для работы с карточками для запоминания и повторения информации. Взгляните на небольшую <AboutLink>инструкцию</AboutLink>.\n</p>",
     "title": "Добро пожаловать!"
   },
+  "AvailableCategories": {
+    "ManageCategory": "Управление категорией"
+  },
+  "AvailableCategoriesFilterTexts": {
+    "Ignore": "Игнорировать",
+    "Label-HasImage": "Есть изображения",
+    "Label-HasTopics": "Есть темы",
+    "Label-OrderBy": "Сортировать",
+    "Label-SearchLang": "Язык",
+    "Label-SearchText": "Поиск по",
+    "Label-Status": "Статус",
+    "No": "Нет",
+    "NoActiveFilters": "Нет активных фильтров",
+    "OrderBy-LessPopular": "Менее популярные",
+    "OrderBy-MorePopular": "Более популярные",
+    "OrderBy-Name": "По названию",
+    "OrderBy-NameDescending": "По названию (по убыванию)",
+    "OrderBy-Oldest": "По более старым",
+    "OrderBy-Recent": "По недавним",
+    "Status-Hidden": "Скрытые",
+    "Status-Public": "Публичные",
+    "Status-Suggested": "Предложенный",
+    "WithImage": "С изображениями",
+    "WithTopics": "С темами",
+    "WithoutImage": "Без изображений",
+    "WithoutTopics": "Без тем",
+    "Yes": "Да"
+  },
+  "AvailableCategoriesFilters": {
+    "Apply": "Применить",
+    "ClearChanges": "Очистить изменения",
+    "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
+    "Displaying": "Отображается",
+    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
+    "Hide": "Скрыть"
+  },
+  "AvailableCategoriesFiltersFields": {
+    "AllStatuses": "Все статусы",
+    "ChooseSortOrderHint": "Выберите способ сортировки списка категорий.",
+    "ClearText": "Очистить текст",
+    "DisplayCategoriesWithImageHint": "Отображать категории с изображениями или без.",
+    "DisplayCategoriesWithTopicsHint": "Отображать категории с тамами или без.",
+    "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
+    "SearchForLanguagePlaceholder": "Поиск по языку...",
+    "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
+    "SearchForTextPlaceholder": "Поиск текста...",
+    "SelectOptionPlaceholder": "Выбрать опцию…",
+    "SelectOrderPlaceholder": "Выбрать порядок…",
+    "SelectStatusHint": "Фильтровать категории по статусу.",
+    "SelectStatusPlaceholder": "Выбрать статус…"
+  },
+  "AvailableCategoriesList": {
+    "ManageCategories": "Управление категориями",
+    "ManageYourCategoriesAction": "Редактировать свои категории",
+    "NoCategoriesExplanation": "Нет доступных категорий. \nИзмените настройки фильтра.",
+    "SuggestNewCategory": "Предложить новую категорию",
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут предлагать новые категории."
+  },
   "AvailableTopics": {
     "FinishTraining": "Завершить тренировку",
-    "ManageQuestion": "Управление вопросом",
-    "ManageTopic": "Управление темой",
+    "ManageQuestion": "Редактировать вопрос",
+    "ManageTopic": "Редактировать тему",
     "NoActiveTrainingFound": "Активная тренировка не найдена.",
     "RestartTraining": "Перезапустить тренировку",
     "ResumeTraining": "Продолжить тренировку",
@@ -147,6 +254,7 @@
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Игнорировать",
+    "Label-CategoryIds": "Категории",
     "Label-HasActiveWorkouts": "Активные тренировки",
     "Label-HasQuestions": "Вопросы",
     "Label-HasWorkoutStats": "Статистика",
@@ -170,25 +278,22 @@
     "Yes": "Да"
   },
   "AvailableTopicsFilters": {
-    "Apply": "Применить",
-    "ClearChanges": "Очистить изменения",
     "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
     "Displaying": "Показывается",
-    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
-    "Hide": "Скрыть",
-    "NoFiltersApplied": "Фильтры не применены",
-    "ResetToDefaults": "Сбросить к значениям по умолчанию"
+    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения"
   },
   "AvailableTopicsFiltersFields": {
+    "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",
     "ChooseSortOrderHint": "Выберите способ сортировки списка тем.",
     "ClearText": "Очистить текст",
-    "DisplayTopicsWithActiveWorkoutsHint": "Отображать темы с или без активных тренировок.",
-    "DisplayTopicsWithQuestionsHint": "Отображать темы с или без созданных вопросов.",
+    "DisplayTopicsWithActiveWorkoutsHint": "Отображать темы с активными тренировками или без.",
+    "DisplayTopicsWithQuestionsHint": "Отображать темы с вопросами или без.",
     "DisplayTopicsWithStatsHint": "Отображать темы с или без собранных данных статистики прогресса.",
     "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
-    "SearchForLanguagePlaceholder": "Поиск языка...",
+    "SearchForLanguagePlaceholder": "Поиск по языку...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
     "SearchForTextPlaceholder": "Поиск текста...",
+    "SelectCategories": "Выбрать категории",
     "SelectOptionPlaceholder": "Выбрать опцию…",
     "SelectOrderPlaceholder": "Выбрать порядок…",
     "ShowOnlyMyTopicsHint": "Показывать только мои собственные темы."
@@ -243,6 +348,15 @@
     "SpacedRepetitionDescription": "Встроенные алгоритмы интервального повторения помогают лучше запоминать информацию, оптимизируя интервалы повторения на основе вашего прогресса.",
     "Title": "Почему стоит выбрать MindStack"
   },
+  "CategoryHeader": {
+    "YourCategory": "Ваша категория"
+  },
+  "CategorySelect": {
+    "NoCategoriesFound": "Категории не найдены.",
+    "RemoveCategory": "Удалить категорию \"{name}\"",
+    "SearchCategoriesPlaceholder": "Поиск категорий...",
+    "SelectCategories": "Выбрать категории"
+  },
   "CheckStripePayment": {
     "PaymentError": "Ошибка проверки платежа stripe",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
@@ -285,6 +399,17 @@
     "ToastError": "Невозможно удалить ответ.",
     "ToastLoading": "Удаление ответа...",
     "ToastSuccess": "Ответ успешно удален."
+  },
+  "DeleteCategoryModal": {
+    "CannotDeleteCategory": "Невозможно удалить категорию",
+    "CategoryDeleted": "Категория удалена",
+    "CategoryDeletedContent": "Категория была успешно удалена. Диалоговое окно будет закрыто автоматически.",
+    "CategoryDeletedTitle": "Категория была удалена",
+    "ConfirmDeleteContent": "Вы уверены, что хотите удалить категорию \"{categoryName}\"?",
+    "DeletingCategory": "Удаление категории",
+    "DialogTitle": "Удалить категорию?",
+    "ErrorDeletingCategory": "Ошибка удаления категории",
+    "NotFoundCategoryTitle": "Не удается найти категорию для удаления"
   },
   "DeleteQuestionModal": {
     "CancelButtonText": "Отмена",
@@ -339,6 +464,51 @@
     "IsGenerated": "Ответ сгенерирован ИИ?",
     "IsGeneratedHint": "Если ответ был сгенерирован автоматически, то он может быть обновлён или удалён позже."
   },
+  "EditCategoryForm": {
+    "AllNamesEmptyError": "Хотя бы одно поле имени должно быть заполнено во всех переводах",
+    "CancelText": "Отмена",
+    "CategoryDescriptionHint": "Описание категории. Этот текст может использоваться пользователями для навигации и поиска.",
+    "CategoryNameHint": "Название категории. Желательно, чтобы это было уникальное значение.",
+    "CategoryPropertiesInstruction": "Пожалуйста, введите свойства категории (название, описание, ключевые слова) для всех или только одного из языков приложения.",
+    "CategorySavedSuccessfully": "Данные категории успешно сохранены",
+    "CategorySaving": "Сохранение данных категории...",
+    "CategorySavingError": "Невозможно сохранить данные категории",
+    "CloseText": "Закрыть",
+    "DescriptionWithLocale": "Описание ({locale})",
+    "EnterCategoryDescriptionPlaceholder": "Введите описание категории",
+    "EnterCategoryNamePlaceholder": "Введите название категории",
+    "EnterKeywordsPlaceholder": "Введите ключевые слова, разделенные запятыми, на {locale}",
+    "HiddenOption": "Скрытая",
+    "ImageHintText": "Выберите иллюстрацию для категории. Максимальный размер изображения: {sizePixels}x{sizePixels} пикселей. \nПри загрузке будет уменьшено до этого размера. \nМаксимально допустимый размер файла: {sizeBytesLimit}B.",
+    "ImageLabel": "Изображение",
+    "ImageSizeError": "Размер изображения должен быть меньше {size}Б",
+    "ImageUploadedSuccessfully": "Изображение загружено",
+    "ImageUploading": "Изображение загружается",
+    "ImageUploadingError": "Ошибка загрузки изображения",
+    "InvalidImageTypeError": "Недопустимый тип изображения. Разрешенные типы: {allowedTypes}",
+    "KeywordsHintText": "Введите ключевые слова, разделенные запятыми. Пример: слово1, слово2, слово3",
+    "KeywordsWithLocale": "Ключевые слова ({locale})",
+    "NameWithLocale": "Название ({locale})",
+    "PublicOption": "Публичная",
+    "SaveText": "Сохранить",
+    "SavingText": "Сохранение...",
+    "SelectStatusPlaceholder": "Выберите статус",
+    "StatusLabel": "Статус",
+    "SubmitFormError": "Не удалось отправить данные формы",
+    "SuccessfullySavedMessage": "Категория была успешно сохранена. Теперь вы можете закрыть этот диалог.",
+    "SuccessfullySavedTitle": "Сохранено!",
+    "SuggestNewCategory": "Предложить новую категорию",
+    "SuggestedOption": "Предложенная",
+    "UploadImageError": "Не удалось загрузить изображение"
+  },
+  "EditCategoryModal": {
+    "CannotSaveCategory": "Невозможно сохранить категорию",
+    "DataSaveError": "Невозможно сохранить данные категории",
+    "DataSaved": "Категория \"{name}\" успешно сохранена",
+    "DialogTitle": "Редактировать категорию",
+    "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории",
+    "SavingData": "Сохранение данных категории..."
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",
     "Back": "Назад",
@@ -372,16 +542,20 @@
     "UseRandomQuestionsCountHint": "Разрешить генерацию случайного количества ответов для вопросов (если это не переопределено в настройках вопроса)."
   },
   "EditTopicFormFields": {
+    "Categories": "Категории",
+    "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",
     "IsPublic": "Публичная ли тема?",
     "IsPublicHint": "Если тема публичная, она доступна всем пользователям, а не только вам.",
     "Keywords": "Ключевые слова",
     "KeywordsHint": "Необязательный список ключевых слов, разделённых запятыми. Может использоваться для генерации вопросов и ответов, а также для навигации и поиска пользователями.",
+    "KeywordsPlaceholder": "Ключевые слова",
     "MaximalQuestionsCount": "Максимальное количество вопросов",
     "MinimalQuestionsCount": "Минимальное количество вопросов",
     "Name": "Название",
-    "QuestionDescription": "Описание вопроса",
-    "QuestionDescriptionHint": "Описание темы. Этот текст может использоваться как для генерации вопросов и ответов самой системой, так и пользователями для навигации и поиска.",
+    "SelectCategories": "Выбрать категории",
     "SelectLanguage": "Выбрать язык",
+    "TopicDescription": "Описание темы",
+    "TopicDescriptionHint": "Описание темы. Этот текст может использоваться как для генерации вопросов и ответов самой системой, так и пользователями для навигации и поиска.",
     "TopicDescriptionPlaceholder": "Описание темы",
     "TopicLanguage": "Язык темы",
     "TopicLanguageHint": "Необязательный предопределённый или пользовательский язык для темы.",
@@ -393,6 +567,10 @@
   },
   "EditTopicPage": {
     "CannotSaveTopicData": "Невозможно сохранить данные темы.",
+    "DeleteTopic": "Удалить тему",
+    "Heading": "Редактировать свойства темы",
+    "ReloadDataFromServer": "Перезагрузить данные с сервера",
+    "ResetFormFieldsToOriginalValues": "Сбросить поля формы к исходным значениям",
     "SavingTopicData": "Сохранение данных темы...",
     "SuccessfullySavedTheTopic": "Тема успешно сохранена"
   },
@@ -427,7 +605,7 @@
     "Title": "Мощные функции для тренировки памяти"
   },
   "GenerateAnswersForm": {
-    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
     "AnswersCountLabelPrefix": "Количество ответов:",
     "DebugDataHint": "Включить использование фиктивных данных вместо реальных вызовов API.",
     "ExtraInstructionsHint": "Дополнительный контекст или инструкции для ИИ (необязательно).",
@@ -435,7 +613,7 @@
     "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации ответов...",
     "GenerateButtonText": "Генерировать",
     "GeneratingButtonText": "Генерация",
-    "GenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
+    "GenerationTypeHint": "Выберите тип ответов, которые будут генерироваться на каждый вопрос: простые и четкие ответы, проверяющие базовое понимание, или сложные, требующие детальных знаний и анализа.",
     "GenerationTypeLabel": "Тип генерации",
     "GenerationTypePlaceholder": "Выберите тип генерации",
     "UseDebugDataLabel": "Использовать отладочные данные?"
@@ -453,7 +631,7 @@
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены"
   },
   "GenerateQuestionsForm": {
-    "AnswersCountHint": "Диапазон ответов для генерации для каждого вопроса (минимум - максимум).",
+    "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
     "AnswersCountLabelPrefix": "Количество ответов:",
     "AnswersGenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
     "AnswersGenerationTypeLabel": "Тип генерации ответов",
@@ -464,17 +642,15 @@
     "ExtraInstructionsPlaceholder": "Дополнительные инструкции для генерации вопросов...",
     "GenerateButtonText": "Генерировать",
     "GeneratingButtonText": "Генерация",
-    "GenerationTypeHint": "Выберите тип вопросов для генерации.",
+    "GenerationTypeHint": "Выберите тип вопросов, которые нужно сгенерировать: простые и ясные вопросы, проверяющие базовое понимание, или сложные, требующие детальных знаний и анализа.",
     "GenerationTypeLabel": "Тип генерации",
     "GenerationTypePlaceholder": "Выберите тип генерации",
-    "QuestionsCountHint": "Диапазон вопросов для генерации (минимум - максимум).",
+    "QuestionsCountHint": "Количество вопросов для генерации (минимум-максимум).",
     "QuestionsCountLabelPrefix": "Количество вопросов:",
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {
-    "DialogDescription": "Генерировать диалог вопросов",
-    "DialogTitle": "Генерировать вопросы",
-    "ModalTitle": "Генерировать вопросы",
+    "DialogTitle": "Генерация вопросов",
     "NoTopicIdDefined": "Идентификатор темы не определен",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastErrorQuestions": "Невозможно добавить вопросы",
@@ -482,6 +658,58 @@
     "ToastLoadingQuestions": "Добавление новых вопросов...",
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
+  },
+  "ImageUpload": {
+    "CategoryImagePreview": "Предварительный просмотр изображения",
+    "RemoveImage": "Удалить изображение",
+    "SelectImage": "Выбрать изображение"
+  },
+  "LimitsError": {
+    "ANSWERS_LIMIT_REACHED": "Вы достигли максимального количества ответов для вашего текущего плана",
+    "GUEST_USERS_NOT_ALLOWED": "Гостевым пользователям нельзя создавать контент",
+    "QUESTIONS_LIMIT_REACHED": "Вы достигли максимального количества вопросов для вашего текущего плана",
+    "TOPICS_LIMIT_REACHED": "Вы достигли максимального количества тем для вашего текущего плана",
+    "UNAUTHORIZED": "Пожалуйста, войдите, чтобы создавать контент",
+    "UNKNOWN_ERROR": "Достигнут лимит на создание контента"
+  },
+  "ManageCategoriesList": {
+    "AddCategory": "Добавить категорию",
+    "AddNewCategory": "Добавить новую категорию",
+    "BasicInfo": "Основная информация",
+    "CannotDeleteSelectedCategories": "Невозможно удалить выбранные категории",
+    "CannotMakeSelectedCategoriesPublic": "Невозможно сделать выбранные категории публичными",
+    "CannotResetPublicStatusForSelectedCategories": "Невозможно сбросить публичный статус выбранных категорий",
+    "CategoryName": "Название категории",
+    "ChangeFilters": "Изменить фильтры",
+    "ConfirmDeleteCategoriesMessageWithPluralCount": "Подтверждаете удаление {count, plural, =0 {ни одной категории} =1 {# выбранной категории} few {# выбранных категорий} other {# выбранных категорий}}?",
+    "CreatedAt": "Создано",
+    "CreatedBy": "Создано",
+    "Delete": "Удалить",
+    "DeleteSelected": "Удалить выбранные",
+    "DeletingSelectedCategories": "Удаление выбранных категорий...",
+    "Description": "Описание",
+    "DialogTitle": "Удалить выбранные категории?",
+    "Edit": "Редактировать",
+    "ErrorLoadingCategoriesData": "Ошибка загрузки данных категорий",
+    "GoBack": "Назад",
+    "Image": "Изображение",
+    "MakingSelectedCategoriesPublic": "Делаем выбранные категории публичными...",
+    "ManageTopics": "Управление темами",
+    "MarkSelectedAsPrivate": "Сделать выбранные приватными",
+    "MarkSelectedAsPublic": "Сделать выбранные публичными",
+    "NoCategoriesFound": "Категории не найдены",
+    "NoCategoriesFoundDescription": "Категории не найдены. Вы можете создать новую категорию или изменить фильтры.",
+    "Num": "Номер",
+    "Reload": "Перезагрузить",
+    "ResettingPublicStatusForSelectedCategories": "Сброс публичного статуса выбранных категорий...",
+    "SelectCategory": "Выбрать категорию",
+    "SelectDeselectAll": "Выбрать/отменить всё",
+    "SuccessfullyDeletedSelectedCategories": "Выбранные категории успешно удалены",
+    "SuccessfullyMadeSelectedCategoriesPublic": "Выбранные категории успешно сделаны публичными",
+    "SuccessfullyResetPublicStatusForSelectedCategories": "Публичный статус выбранных категорий успешно сброшен",
+    "TopicsCount": "Количество тем",
+    "UpdatedAt": "Обновлено",
+    "UpdatedBy": "Обновлено"
   },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Добавить новый ответ",
@@ -526,14 +754,13 @@
   },
   "ManageTopicsListCard": {
     "AddNewTopic": "Добавить новую тему",
-    "AddTopic": "Добавить тему",
     "Author": "Автор",
     "Back": "Назад",
     "CannotDeleteSelectedTopics": "Не удаётся удалить выбранные темы",
     "CannotMakeSelectedTopicsPublic": "Не удаётся сделать выбранные темы публичными",
     "CannotResetPublicStatusForSelectedTopics": "Не удаётся сбросить публичный статус выбранных тем",
     "CannotUpdateTopicPublicStatus": "Не удаётся обновить публичный статус темы",
-    "ChangeFilters": "Изменить фильтры",
+    "Categories": "Категории",
     "ConfirmDeleteTopics": "Подтвердить удаление тем",
     "ConfirmDeleteTopicsMessage": "Подтверждаете удаление {count, plural, =0 {ни одной темы} =1 {# выбранной темы} few {# выбранных тем} other {# выбранных тем}}?",
     "Delete": "Удалить",
@@ -543,7 +770,6 @@
     "Edit": "Редактировать",
     "EditQuestions": "Редактировать вопросы",
     "ErrorLoadingTopicsData": "Ошибка загрузки данных доступных тем",
-    "GoBack": "Назад",
     "Keywords": "Ключевые слова",
     "Language": "Язык",
     "MakingSelectedTopicsPublic": "Делаем выбранные темы публичными...",
@@ -552,7 +778,7 @@
     "No": "Номер",
     "NoTopicsFound": "Темы не найдены",
     "NoTopicsFoundDescription": "Измените фильтры, чтобы разрешить отображение тем (если они есть), или создайте свои собственные.",
-    "Public": "Публичный",
+    "Public": "Публичная",
     "Questions": "Вопросы",
     "Reload": "Перезагрузить",
     "ResettingPublicStatusForSelectedTopics": "Сброс публичного статуса выбранных тем...",
@@ -578,11 +804,14 @@
     "Administration": "Администрирование",
     "AllTopics": "Все темы",
     "Application": "Приложение",
+    "AvailableCategories": "Категории",
     "AvailableTopics": "Доступные темы",
     "BotControl": "Управление ботом",
+    "Categories": "Категории",
     "Charts": "Графики",
     "Documentation": "Документация",
     "Information": "Информация",
+    "ManageCategories": "Управление категориями",
     "MyData": "Мои данные",
     "MyTopics": "Мои темы",
     "Options": "Опции",
@@ -593,8 +822,7 @@
     "WelcomePage": "Приветствие"
   },
   "NavLocaleSwitcher": {
-    "label": "Сменить язык",
-    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} other {Автоматически}}"
+    "label": "Сменить язык"
   },
   "NavModeToggle": {
     "dark": "Темная",
@@ -622,6 +850,7 @@
     "Answers": "Ответы",
     "AvailableTopicsDescription": "Темы, доступные для использования",
     "AvailableTopicsTitle": "Доступные темы",
+    "CategoriesTitle": "Категории",
     "ContactsPageTitle": "Контакты проекта",
     "CookiesPageTitle": "Политика использования файлов cookie",
     "DocsTitle": "Документация",
@@ -630,6 +859,7 @@
     "EditTopicPropertiesTitle": "Редактировать свойства темы",
     "InfoTitle": "Информация",
     "ManageAnswerTitle": "Управление ответом",
+    "ManageCategoriesListTitle": "Управление категориями",
     "ManageQuestionTitle": "Управление вопросом",
     "ManageTopicQuestionAnswersDescription": "Ответы для выбранного вопроса",
     "ManageTopicQuestionAnswersTitle": "Управление ответами",
@@ -656,6 +886,7 @@
     "TestQueryTitle": "Тестовый текстовый запрос AI",
     "TrainingTopicReviewTitle": "Обзор темы обучения",
     "ViewAvailableTopicTitle": "Посмотреть доступную тему",
+    "ViewCategoryTitle": "Просмотр категорию",
     "WelcomeTitle": "Добро пожаловать!",
     "WorkoutTopicGoTitle": "Обучение теме"
   },
@@ -676,7 +907,7 @@
     "Comparison": {
       "AiGenerations": "ИИ генерации",
       "Analytics": "Подробная аналитика",
-      "CommunityAccess": "Доступ к сообществу",
+      "CommunityAccess": "Доступ к побличным данным",
       "EnterpriseSecurity": "Корпоративная безопасность",
       "ExportImport": "Экспорт/Импорт",
       "PrioritySupport": "Приоритетная поддержка",
@@ -700,10 +931,13 @@
         "Description": "Для частных лиц",
         "Name": "Базовый",
         "Features": {
-          "Community": "Доступ к темам сообщества",
+          "AnswersLimit": "До {limit} ответов на вопрос",
+          "Community": "Доступ к публичным темам",
           "Generations": "10 ИИ генераций всего",
           "Progress": "Отслеживание прогресса",
+          "QuestionsLimit": "До {limit} вопросов на тему",
           "Topics": "Создание до 5 тем",
+          "TopicsLimit": "Создание до {limit} тем",
           "Workouts": "Базовые тренировки"
         }
       },
@@ -716,6 +950,7 @@
           "Everything": "Всё из Про",
           "Export": "Функции экспорта/импорта",
           "Priority": "Поддержка высшего приоритета",
+          "UnlimitedDataCreation": "Неограниченное создание тем, вопросов и ответов",
           "UnlimitedGenerations": "Неограниченные ИИ генерации"
         }
       },
@@ -726,8 +961,11 @@
         "Features": {
           "Ai": "Генерация вопросов с помощью ИИ",
           "Analytics": "Подробная аналитика",
+          "AnswersLimit": "До {limit} ответов на вопрос",
           "Generations": "100 ИИ генераций в месяц",
+          "QuestionsLimit": "До {limit} вопросов на тему",
           "Support": "Приоритетная поддержка",
+          "TopicsLimit": "Создание до {limit} тем",
           "Unlimited": "Неограниченные темы и вопросы"
         }
       },
@@ -830,6 +1068,11 @@
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
     "SignInModalIntroForBasic": "Для подключения базовой подписки просто авторизуйтесь в системе."
   },
+  "QuestionsGenerationTypes": {
+    "BASIC": "Простые вопросы",
+    "DETAILED": "Подробные вопросы",
+    "MIXED": "Смешанные вопросы"
+  },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Код языка",
     "LanguageName": "Название языка",
@@ -862,7 +1105,7 @@
   "SettingsFormFields": {
     "AutoOption": "Авто",
     "JumpToNewEntitiesHint": "Переключаться на формы редактирования для только что созданных объектов (например, тем, вопросов, ответов) после создания.",
-    "JumpToNewEntitiesLabel": "Переходить к новым созданным сущностям?",
+    "JumpToNewEntitiesLabel": "Переходить к новым созданным объектам?",
     "LocaleHint": "Выберите язык приложения.",
     "LocaleLabel": "Язык приложения",
     "LocalePlaceholder": "Выберите язык…",
@@ -893,6 +1136,7 @@
   "SiteMenu": {
     "AllTopics": "Все темы",
     "AvailableTopics": "Доступные темы",
+    "Categories": "Категории",
     "Data": "Данные",
     "Info": "Информация",
     "MyTopics": "Мои темы",
@@ -952,6 +1196,11 @@
     "Title": "Перейти на Pro",
     "Upgrade": "Перейти"
   },
+  "UploadCategoryImage": {
+    "ImageSizeLimitError": "Размер изображения должен быть меньше {sizeLimit}",
+    "InvalidImageTypeError": "Недопустимый тип изображения. Допустимые типы: {allowedTypes}",
+    "NoImageFileProvidedError": "Файл изображения не загружен"
+  },
   "UseAvailableAnswers": {
     "CannotLoadAnswersData": "Не удается загрузить данные ответов"
   },
@@ -986,7 +1235,25 @@
   },
   "ViewAvailableTopicContent": {
     "NoActiveTrainingText": "У вас нет ни активного обучения, ни записей истории для отображения. \nНачните обучение прямо сейчас.",
-    "TrainingNotStarted": "Обучение не началось"
+    "TrainingNotStarted": "Тренировка не начата"
+  },
+  "ViewCategoryContentSummary": {
+    "BasicInfo": "Основная информация",
+    "Created": "Создано",
+    "CreatedAt": "Создано",
+    "CreatedBy": "Создано",
+    "Id": "ID",
+    "Name": "Название",
+    "NoDescription": "Описание отсутствует",
+    "Status": "Статус",
+    "Updated": "Обновлено",
+    "UpdatedAt": "Обновлено",
+    "UpdatedBy": "Обновлено"
+  },
+  "ViewCategoryPage": {
+    "CannotUpdateCategoryData": "Невозможно обновить данные категории",
+    "NoCategoryFound": "Категория не найдена",
+    "ViewCategory": "Просмотр категории"
   },
   "ViewQuestionCard": {
     "AddNewQuestion": "Добавить новый вопрос",
@@ -1021,9 +1288,9 @@
     "ManageQuestions": "Управление вопросами",
     "Modified": "Изменено",
     "NoTopicLoaded": "Тема не загружена",
-    "Private": "Приватный",
+    "Private": "Приватная",
     "Properties": "Свойства",
-    "Public": "Публичный",
+    "Public": "Публичная",
     "QuestionsCount": "Количество вопросов",
     "RandomAnswers": "Случайные ответы",
     "Timeline": "Хронология",
@@ -1126,6 +1393,7 @@
     "StudyStreak": "Серия обучения",
     "StudyStreaksAndConsistencyMetrics": "Серии обучения и метрики последовательности",
     "SummaryOfCompletedCountTemplate": "Сводка {count, plural, =1 {вашей # завершенной тренировки} other {ваших # завершенных тренировок}}",
+    "ThereIsOnlyOneHistoryRecordNow": "Сейчас есть только одна запись в истории.",
     "ThisWillBeYourFirst": "Это будет ваша первая тренировка по этой теме!",
     "Time": "Время",
     "TimeElapsed": "Прошло времени",
@@ -1136,6 +1404,9 @@
     "TrainingIsCompleted": "Тренировка завершена",
     "TrainingReadyToStart": "Тренировка создана",
     "WhatYoullSeeAfter": "Что вы увидите после первой тренировки",
+    "YourLearningProgress": "Ваш прогресс в обучении с течением времени",
+    "YourLearningProgressOverTime": "Ваш прогресс в обучении с течением времени",
+    "YourProgress": "Ваш прогресс",
     "lastResults": "последних результатов из общего количества",
     "signIn": "войти",
     "toViewYourStatistics": "чтобы посмотреть свою статистику."
@@ -1154,5 +1425,12 @@
     "PaymentProcessingFailure": "Ошибка обработки оплаты",
     "PaymentStartingError": "Ошибка начала платежа",
     "UnauthorizedPaymentError": "Невозможно обработать платежи для неавторизованных пользователей"
+  },
+  "duration": {
+    "days": "{count, plural, =1 {день} few {дня} other {дней}}",
+    "hours": "{count, plural, =1 {час} few {часа} other {часов}}",
+    "milliseconds": "мс",
+    "minutes": "{count, plural, =1 {минута} few {минуты} other {минут}}",
+    "seconds": "{count, plural, =1 {секунда} few {секунды} other {секунд}}"
   }
 }

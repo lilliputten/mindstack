@@ -13,9 +13,12 @@ export interface TConfirmFormProps {
   handleConfirm: () => unknown;
   handleClose?: () => void;
   className?: string;
+  actionsClassName?: string;
   isPending?: boolean;
+  isDone?: boolean;
   children?: TReactNode;
   confirmButtonVariant?: React.ComponentProps<typeof Button>['variant'];
+  cancelButtonVariant?: React.ComponentProps<typeof Button>['variant'];
   confirmButtonText?: string;
   confirmButtonBusyText?: string;
   confirmButtonIcon?: TGenericIcon;
@@ -26,10 +29,13 @@ export function ConfirmForm(props: TConfirmFormProps) {
   const {
     children,
     className,
+    actionsClassName,
     handleConfirm,
     handleClose,
     isPending,
-    confirmButtonVariant,
+    isDone,
+    confirmButtonVariant = 'theme',
+    cancelButtonVariant = 'ghost',
     confirmButtonText = 'Ok',
     confirmButtonBusyText,
     confirmButtonIcon = Icons.Check,
@@ -56,22 +62,28 @@ export function ConfirmForm(props: TConfirmFormProps) {
       )}
     >
       {children}
-      {/* // UNUSED: Delimiter
-      <div className="flex flex-col justify-between"></div>
-      */}
       {/* Actions */}
-      <div className="flex w-full gap-4">
-        <Button
-          type="submit"
-          variant={confirmButtonVariant}
-          className="gap-2"
-          onClick={handleConfirm}
-        >
-          <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
-        </Button>
-        <Button variant="ghost" onClick={onClose} className="gap-2">
+      <div
+        className={cn(
+          isDev && '__ConfirmForm_Actions', // DEBUG
+          'flex w-full flex-wrap gap-4',
+          actionsClassName,
+        )}
+      >
+        {!isDone && (
+          <Button
+            type="submit"
+            variant={confirmButtonVariant}
+            className="text-truncate gap-2"
+            onClick={handleConfirm}
+          >
+            <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+            <span className="truncate">{buttonText}</span>
+          </Button>
+        )}
+        <Button variant={cancelButtonVariant} onClick={onClose} className="text-truncate gap-2">
           <Icons.Close className="size-4" />
-          <span>{cancelButtonText}</span>
+          <span className="truncate">{cancelButtonText}</span>
         </Button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
 import { isAdminUser, isLoggedUser } from '@/lib/session';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { welcomeAliasRoute } from '@/config';
 import {
   TopicsManageScopeIds,
@@ -9,7 +10,6 @@ import {
   topicsRoutes,
   TTopicsManageScopeId,
 } from '@/contexts/TopicsContext';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 import { ManageTopicsStoreProvider } from '@/stores/ManageTopicsStoreProvider';
 
 type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId }>;
@@ -63,14 +63,6 @@ export default async function ManageTopicsLayout(props: TManageTopicsLayoutProps
 
   // Enable static rendering
   setRequestLocale(locale);
-
-  /*// UNUSED: Fetching the topics is proceeding on the client side, see `ManageTopicsListWrapper`. TODO: In the future the `TopicsContext` must be compeltely replcaed by react query-provided data
-   * // const topicsPromise = isAdminMode ? getAllUsersTopics() : getThisUserTopics();
-   * // const topics: TTopic[] = (await topicsPromise) || [];
-   * const topicsPromise = getAvailableTopics({ adminMode: isAdminMode });
-   * const topicResults = await topicsPromise;
-   * const topics = topicResults.topics;
-   */
 
   // TODO: Remove when done migrating to useAvailableTopicsByScope
   return (

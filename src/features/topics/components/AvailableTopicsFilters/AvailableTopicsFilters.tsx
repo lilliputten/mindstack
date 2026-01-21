@@ -4,6 +4,7 @@ import React from 'react';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { FormProvider } from '@/components/ui/Form';
@@ -12,7 +13,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
-import { useT } from '@/i18n';
 
 import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
 import { AvailableTopicsFiltersInfo } from './AvailableTopicsFiltersInfo';
@@ -52,7 +52,7 @@ export function AvailableTopicsFilters(props: TProps) {
 
   const filterCaption = React.useMemo(() => {
     if (!hasFilters) {
-      return t('AvailableTopicsFilters.NoFiltersApplied');
+      return t('NoFiltersApplied');
     }
     return <span className="flex items-center gap-2 truncate">{filtersInfo}</span>;
   }, [hasFilters, filtersInfo, t]);
@@ -91,6 +91,22 @@ export function AvailableTopicsFilters(props: TProps) {
                     {filterCaption}
                   </span>
                   <span className="flex items-center gap-2">
+                    {!onDefaults && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          ev.stopPropagation();
+                          handleResetToDefaults();
+                        }}
+                        className="h-7 w-7 opacity-70 hover:opacity-100"
+                        title={t('ResetToDefaults')}
+                      >
+                        <Icons.X className="size-3.5" />
+                      </Button>
+                    )}
                     <ToggleIcon className="size-4" />
                   </span>
                 </Button>
@@ -133,7 +149,7 @@ export function AvailableTopicsFilters(props: TProps) {
                 <form
                   onSubmit={form.handleSubmit(handleApplyButton)}
                   className={cn(
-                    isDev && '__AvailableTopicsFilters', // DEBUG
+                    isDev && '__AvailableTopicsFilters_Form', // DEBUG
                     'flex flex-col gap-4',
                     className,
                   )}
@@ -162,39 +178,39 @@ export function AvailableTopicsFilters(props: TProps) {
                       type="submit"
                       variant="theme"
                       disabled={!isSubmitEnabled}
-                      className="flex items-center justify-start gap-2"
+                      className="flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Check className="size-4 opacity-50" />
-                      {t('AvailableTopicsFilters.Apply')}
+                      <span className="truncate">{t('Apply')}</span>
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
                       onClick={handleResetToDefaults}
                       disabled={onDefaults}
-                      className="flex items-center justify-start gap-2"
+                      className="flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      {t('AvailableTopicsFilters.ResetToDefaults')}
+                      <span className="truncate">{t('ResetToDefaults')}</span>
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
                       onClick={handleClearChanges}
                       disabled={!form.formState.isDirty}
-                      className="flex items-center justify-start gap-2"
+                      className="flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
-                      {t('AvailableTopicsFilters.ClearChanges')}
+                      <span className="truncate">{t('ClearChanges')}</span>
                     </Button>
                     <Button
                       type="button"
                       variant="ghost"
                       onClick={hideFilters}
-                      className="flex items-center justify-start gap-2 md:ml-auto"
+                      className="flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
-                      {t('AvailableTopicsFilters.Hide')}
+                      <span className="truncate">{t('Hide')}</span>
                     </Button>
                   </div>
                 </form>

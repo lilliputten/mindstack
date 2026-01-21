@@ -5,11 +5,11 @@ import React from 'react';
 import { getRandomHashString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { InfoVisualBlock } from '@/components/blocks/InfoVisualBlock';
 import { AppIntroBlock } from '@/components/content/AppIntroBlock';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 const saveScrollHash = getRandomHashString();
 

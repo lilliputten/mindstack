@@ -1,0 +1,24 @@
+{
+  "content": "{\n  \"questionsCount\": 1,\n  \"questions\": [\n    {\n      {\n        \"text\": \"Какие события принято считать началом первой русской революции?\",\n        \"answersCount\": 2\n        \"answers\": [\n          {\n            \"text\": \"Апрельские дни 1905 года\",\n            \"explanation\": \"Апрельские дни 1905 года считаются началом первой русской революции, так как именно тогда начались массовые протесты и забастовки рабочих.\",\n            \"isCorrect\": true\n          },\n          {\n            \"text\": \"Февральская революция 1917 года\",\n            \"explanation\": \"Февральская революция произошла позже, в 1917 году, и является началом второй русской революции.\",\n            \"isCorrect\": false\n          }\n        ]\n      }\n    ]\n  ]\n}",
+  "additional_kwargs": {},
+  "response_metadata": {
+    "tokenUsage": {
+      "input_tokens": 339,
+      "output_tokens": 174,
+      "total_tokens": 513
+    },
+    "finish_reason": "stop",
+    "xHeaders": {
+      "xRequestID": "43ea5beb-cf2f-4794-acf7-0f2eb9d3c9a7",
+      "xSessionID": "7d202ccc-a980-4784-8163-64a1d4df5e60"
+    }
+  },
+  "id": "43ea5beb-cf2f-4794-acf7-0f2eb9d3c9a7",
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 339,
+    "output_tokens": 174,
+    "total_tokens": 513
+  }
+}

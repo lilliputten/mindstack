@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithChildren, TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -18,7 +19,8 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { Close } from '@/components/shared/Icons';
+import { CategorySelectField } from '@/components/shared/CategorySelect';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
   getFilterFieldName,
@@ -28,14 +30,11 @@ import {
   orderBySelectOptions,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
-import { useT } from '@/i18n';
 
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
   ignoreOnlyMy?: boolean;
 }
-
-// TODO: Add 'category' field
 
 function FormSection({ children }: TPropsWithChildren) {
   return (
@@ -64,6 +63,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
   const hasQuestionsKey = React.useId();
   const showOnlyMyTopicsKey = React.useId();
   const orderBySelectKey = React.useId();
+  // const categoryKey = React.useId();
 
   // const trueText = getFilterUnionString('true', t);
   // const falseText = getFilterUnionString('false', t);
@@ -78,6 +78,16 @@ export function AvailableTopicsFiltersFields(props: TProps) {
       )}
     >
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          form={form}
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={getFilterFieldName('categoryIds', tTexts)}
+          hint={t('AvailableTopicsFiltersFields.CategoriesHint')}
+          placeholder={t('AvailableTopicsFiltersFields.SelectCategories')}
+        />
         <FormField
           name="searchText"
           control={form.control}
@@ -107,7 +117,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                       )}
                       title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
-                      <Close className="size-4" />
+                      <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -146,7 +156,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                       )}
                       title={t('AvailableTopicsFiltersFields.ClearText')}
                     >
-                      <Close className="size-4" />
+                      <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -184,6 +194,8 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             )}
           />
         )}
+      </FormSection>
+      <FormSection>
         <FormField
           name="orderBySelect"
           control={form.control}
@@ -218,8 +230,6 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
-      </FormSection>
-      <FormSection>
         <FormField
           name="hasWorkoutStats"
           control={form.control}

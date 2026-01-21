@@ -12,6 +12,7 @@ export const AvailableTopicsFiltersSchema = GetAvailableTopicsParamsSchema.pick(
   hasActiveWorkouts: true as const,
   hasQuestions: true as const,
   searchLang: true as const,
+  categoryIds: true as const, // Adding categoryIds filter
 });
 export type TAvailableTopicsFiltersParams = z.infer<typeof AvailableTopicsFiltersSchema>;
 
@@ -36,6 +37,7 @@ export const filtersDataSchema = z.object({
   hasWorkoutStats: threeStateSchema,
   hasActiveWorkouts: threeStateSchema,
   hasQuestions: threeStateSchema,
+  categoryIds: GetAvailableTopicsParamsSchema.shape.categoryIds, // Adding categoryIds to filters
   orderBySelect: orderBySelectSchema.optional(),
 });
 
@@ -49,14 +51,16 @@ export const filtersDataDefaults: TFiltersData = {
   hasWorkoutStats: null,
   hasActiveWorkouts: null,
   hasQuestions: null,
+  categoryIds: undefined, // Adding categoryIds to defaults
   orderBySelect: orderBySelectDefault,
 };
 
 export const orderByMap: Record<TOrderBySelectOption, TTopicOrderBy> = {
+  // TODO: Sort by updated or created?
   byRecent: [{ updatedAt: 'desc' as const }, { name: 'asc' as const }],
   byOldest: [{ updatedAt: 'asc' as const }, { name: 'asc' as const }],
-  byNameAsc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],
-  byNameDesc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],
+  byNameAsc: [{ name: 'desc' as const }, { updatedAt: 'desc' as const }],
+  byNameDesc: [{ name: 'asc' as const }, { updatedAt: 'desc' as const }],
 };
 
 /** Don't omit filed label for short info (in the `AvailableTopicsFiltersInfo`) */

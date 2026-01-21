@@ -5,6 +5,7 @@ export * from './errors';
 export * from './json';
 export * from './localStorage';
 export * from './markdown';
+export * from './numbers';
 export * from './objects';
 export * from './react-query';
 export * from './requests';

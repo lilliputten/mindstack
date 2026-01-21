@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -30,15 +31,14 @@ import {
 } from '@/features/ai-generations/constants';
 import {
   answersGenerationTypes,
-  answersGenerationTypeTexts,
+  answersGenerationTypeTextIds,
 } from '@/features/ai/types/GenerateAnswersTypes';
 import {
   generateTopicQuestionsParamsSchema,
   questionsGenerationTypes,
-  questionsGenerationTypeTexts,
+  questionsGenerationTypeTextIds,
 } from '@/features/ai/types/GenerateQuestionsTypes';
 import { TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 const formSchema = generateTopicQuestionsParamsSchema.pick({
   debugData: true,
@@ -172,7 +172,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   <SelectContent>
                     {questionsGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {questionsGenerationTypeTexts[type]}
+                        {t(questionsGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -222,7 +222,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   <SelectContent>
                     {answersGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {answersGenerationTypeTexts[type]}
+                        {t(answersGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>

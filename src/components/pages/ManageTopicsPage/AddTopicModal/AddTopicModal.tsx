@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
+import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { isDev } from '@/constants';
@@ -21,7 +22,6 @@ import {
   useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';
@@ -73,15 +73,17 @@ export function AddTopicModal() {
       }
     },
     onError: (error, newTopic) => {
-      const details = error instanceof APIError ? error.details : null;
       const message = t('AddTopicModal.ToastError');
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
-      console.error('[AddTopicModal:addTopicMutation]', message, {
+      console.error('[AddTopicModal:addTopicMutation]', comboMsg, {
         error,
         details,
         newTopic,
       });
-      debugger; // eslint-disable-line no-debugger
+      // NOTE: Error is processing in `AddTopicForm`
+      // debugger; // eslint-disable-line no-debugger
     },
   });
 

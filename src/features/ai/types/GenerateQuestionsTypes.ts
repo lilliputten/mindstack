@@ -15,6 +15,7 @@ export const generatedQuestionsSchema = z.object({
 });
 export type TGeneratedQuestions = z.infer<typeof generatedQuestionsSchema>;
 
+/** Type of question to generate, see promit instructions in the `generationTypeInstructions`, composed in `createGenerateTopicQuestionsMessages` */
 export const questionsGenerationTypes = [
   // All possible question types to generation
   'BASIC',
@@ -23,10 +24,10 @@ export const questionsGenerationTypes = [
 ] as const;
 export type TQuestionsGenerationType = (typeof questionsGenerationTypes)[number];
 
-export const questionsGenerationTypeTexts: Record<TQuestionsGenerationType, string> = {
-  BASIC: 'Basic Questions',
-  DETAILED: 'Detailed Questions',
-  MIXED: 'Mixed Questions',
+export const questionsGenerationTypeTextIds: Record<TQuestionsGenerationType, string> = {
+  BASIC: 'QuestionsGenerationTypes.BASIC', // 'Basic Questions',
+  DETAILED: 'QuestionsGenerationTypes.DETAILED', // 'Detailed Questions',
+  MIXED: 'QuestionsGenerationTypes.MIXED', // 'Mixed Questions',
 };
 
 export const generateTopicQuestionsParamsSchema = z.object({
@@ -42,6 +43,8 @@ export const generateTopicQuestionsParamsSchema = z.object({
   topicDescription: z.string().optional(),
   topicKeywords: z.string().optional(),
   existedQuestions: z.array(existedQuestionSchema).optional(),
+  langName: z.string().optional(),
+  langCode: z.string().optional(),
 });
 
 export type TGenerateTopicQuestionsParams = z.infer<typeof generateTopicQuestionsParamsSchema>;

@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -13,10 +14,10 @@ import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
+import { CategorySelectField } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { TTopicFormData } from './types';
 
@@ -30,6 +31,11 @@ interface TEditTopicFormFieldsProps {
   selectLanguage: (ev: React.MouseEvent) => void;
 }
 
+/**
+ * A reusable section component for organizing form content in a responsive layout.
+ *
+ * @param children - The content to be rendered within the section
+ */
 function FormSection({ children }: TPropsWithChildren) {
   return (
     <div
@@ -67,12 +73,25 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
   return (
     <div className={cn('flex w-full flex-col gap-6 px-6 py-2 md:flex-row', className)}>
       <FormSection>
+        {/* Categories */}
+        <CategorySelectField
+          form={form}
+          // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
+          control={form.control}
+          name="categoryIds"
+          label={t('EditTopicFormFields.Categories')}
+          hint={t('EditTopicFormFields.CategoriesHint')}
+          placeholder={t('EditTopicFormFields.SelectCategories')}
+        />
+        {/* name */}
         <FormField
           name="name"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={nameKey}>{t('EditTopicFormFields.TopicName')}</Label>
+              <Label className="truncate" htmlFor={nameKey}>
+                {t('EditTopicFormFields.TopicName')}
+              </Label>
               <FormControl>
                 <Input
                   id={nameKey}
@@ -82,7 +101,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.TopicNameHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('EditTopicFormFields.TopicNameHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -93,7 +114,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={descriptionKey}>{t('EditTopicFormFields.QuestionDescription')}</Label>
+              <Label className="truncate" htmlFor={descriptionKey}>
+                {t('EditTopicFormFields.TopicDescription')}
+              </Label>
               <FormControl>
                 <Textarea
                   id={descriptionKey}
@@ -103,46 +126,50 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint>
-                {t('EditTopicFormFields.QuestionDescriptionHint')} <MarkdownHint />
+              <FormHint className="text-truncate">
+                {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
               </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* keywords */}
-        <FormField
-          name="keywords"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={keywordsKey}>{t('EditTopicFormFields.Keywords')}</Label>
-              <FormControl>
-                <Input
-                  id={keywordsKey}
-                  type="text"
-                  placeholder={t('EditTopicFormFields.Keywords')}
-                  {...field}
-                />
-              </FormControl>
-              <FormHint>{t('EditTopicFormFields.KeywordsHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
         />
       </FormSection>
       <FormSection>
+        {/* keywords */}
+        <FormField
+          name="keywords"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="truncate" htmlFor={keywordsKey}>
+                {t('EditTopicFormFields.Keywords')}
+              </Label>
+              <FormControl>
+                <Input
+                  id={keywordsKey}
+                  type="text"
+                  placeholder={t('EditTopicFormFields.KeywordsPlaceholder')}
+                  {...field}
+                />
+              </FormControl>
+              <FormHint className="text-truncate">{t('EditTopicFormFields.KeywordsHint')}</FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         {/* isPublic */}
         <FormField
           name="isPublic"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={isPublicKey}>{t('EditTopicFormFields.IsPublic')}</Label>
+              <Label className="truncate" htmlFor={isPublicKey}>
+                {t('EditTopicFormFields.IsPublic')}
+              </Label>
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.IsPublicHint')}</FormHint>
+              <FormHint className="text-truncate">{t('EditTopicFormFields.IsPublicHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -159,7 +186,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
             ]);
             return (
               <FormItem className="flex w-full flex-col gap-4">
-                <Label htmlFor={langCodeKey}>{t('EditTopicFormFields.TopicLanguage')}</Label>
+                <Label className="truncate" htmlFor={langCodeKey}>
+                  {t('EditTopicFormFields.TopicLanguage')}
+                </Label>
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
@@ -181,7 +210,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   )}
                   {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
                 </Button>
-                <FormHint>{t('EditTopicFormFields.TopicLanguageHint')}</FormHint>
+                <FormHint className="text-truncate">
+                  {t('EditTopicFormFields.TopicLanguageHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -193,7 +224,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
-              <Label htmlFor={answersCountRandomKey}>
+              <Label className="truncate" htmlFor={answersCountRandomKey}>
                 {t('EditTopicFormFields.UseRandomQuestionsCount')}
               </Label>
               <FormControl>
@@ -209,7 +240,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   }}
                 />
               </FormControl>
-              <FormHint>{t('EditTopicFormFields.UseRandomQuestionsCountHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('EditTopicFormFields.UseRandomQuestionsCountHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -222,7 +255,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMinKey}>
+                  <Label className="truncate" htmlFor={answersCountMinKey}>
                     {t('EditTopicFormFields.MinimalQuestionsCount')}
                   </Label>
                   <FormControl>
@@ -243,7 +276,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-4">
-                  <Label htmlFor={answersCountMaxKey}>
+                  <Label className="truncate" htmlFor={answersCountMaxKey}>
                     {t('EditTopicFormFields.MaximalQuestionsCount')}
                   </Label>
                   <FormControl>

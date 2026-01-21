@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -27,11 +28,10 @@ import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { maxAnswersToGeneration } from '@/features/ai-generations/constants';
 import {
   answersGenerationTypes,
-  answersGenerationTypeTexts,
+  answersGenerationTypeTextIds,
   generateQuestionAnswersParamsSchema,
 } from '@/features/ai/types/GenerateAnswersTypes';
 import { TQuestionId } from '@/features/questions/types';
-import { useT } from '@/i18n';
 
 const formSchema = generateQuestionAnswersParamsSchema.pick({
   debugData: true,
@@ -171,7 +171,7 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
                   <SelectContent>
                     {answersGenerationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {answersGenerationTypeTexts[type]}
+                        {t(answersGenerationTypeTextIds[type])}
                       </SelectItem>
                     ))}
                   </SelectContent>

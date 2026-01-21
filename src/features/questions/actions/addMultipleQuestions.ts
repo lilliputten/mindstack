@@ -1,8 +1,10 @@
 'use server';
 
 import { prisma } from '@/lib/db';
+import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { checkQuestionsLimit } from '@/features/users/services/checkContentLimits';
 
 import { TAvailableQuestion, TNewQuestion } from '../types';
 
@@ -59,6 +61,19 @@ export async function addMultipleQuestions(
   }
 
   try {
+    // Check questions limit before creating
+    if (newQuestions.length > 1) {
+      // For bulk operations, check if user has enough remaining quota
+      const questionsLimit = await checkQuestionsLimit();
+      if (!questionsLimit.isUnlimited && questionsLimit.remaining < newQuestions.length) {
+        throw new ContentLimitError(
+          'QUESTIONS_LIMIT_REACHED',
+          `Cannot add ${newQuestions.length} questions. Only ${questionsLimit.remaining} remaining.`,
+          user.grade,
+        );
+      }
+    }
+
     // Verify user has access to the topic
     const topicId = newQuestions[0].topicId;
     const topic = await prisma.topic.findFirst({

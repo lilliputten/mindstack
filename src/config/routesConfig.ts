@@ -17,6 +17,8 @@ export const legalPrivacyRoute = '/legal/privacy';
 export const legalTermsRoute = '/legal/terms';
 
 // 3. Open routes (availale for guests, see aliases)
+export const rootCategoriesRoute = '/categories';
+export const availableCategoriesRoute = '/categories/available';
 export const availableTopicsRoute = '/topics/available';
 export const settingsRoute = '/settings';
 
@@ -24,6 +26,7 @@ export const settingsRoute = '/settings';
 export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
 export const adminBotControlRoute = '/admin/bot/control';
 export const adminRoute = '/admin';
+export const manageCategoriesRoute = '/categories/manage';
 export const allTopicsRoute = '/topics/all';
 export const authErrorRoute = '/auth/error';
 export const myTopicsRoute = '/topics/my';
@@ -73,6 +76,7 @@ export const staticRedirects: Redirect[] = [
   // 6.3. Redirects
   { source: userStartAliasRoute, destination: myTopicsRoute, permanent: true },
   { source: startAliasRoute, destination: availableTopicsRoute, permanent: true },
+  { source: rootCategoriesRoute, destination: availableCategoriesRoute, permanent: true },
 ] as const;
 
 export const rewritedRoutes = staticRewrites.map(({ destination }) => destination);
@@ -98,6 +102,8 @@ const allRoutes = [
   legalTermsRoute,
 
   // 3. Open routes (availale for guests)
+  rootCategoriesRoute,
+  availableCategoriesRoute,
   availableTopicsRoute,
   settingsRoute,
 
@@ -105,6 +111,7 @@ const allRoutes = [
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   adminRoute,
+  manageCategoriesRoute,
   allTopicsRoute,
   myTopicsRoute,
 

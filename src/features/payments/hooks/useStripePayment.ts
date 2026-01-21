@@ -5,8 +5,8 @@ import { Stripe } from '@stripe/stripe-js';
 
 import { InternalError } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
-import { TPaidableSubscriptionType } from '@/features/subscriptions';
 import { useT } from '@/i18n';
+import { TPaidableSubscriptionType } from '@/features/subscriptions';
 
 import { addUserPayment, startStripeSessionCheckout } from '../actions';
 

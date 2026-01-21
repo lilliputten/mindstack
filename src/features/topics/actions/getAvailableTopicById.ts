@@ -7,7 +7,12 @@ import { getCurrentUser } from '@/lib/session';
 import { TGetAvailableTopicByIdParams } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-import { IncludedUserSelect, IncludedUserTopicWorkoutSelect, TAvailableTopic } from '../types';
+import {
+  IncludedCategorySelect,
+  IncludedUserSelect,
+  IncludedUserTopicWorkoutSelect,
+  TAvailableTopic,
+} from '../types';
 
 interface TOptions {
   noDebug?: boolean;
@@ -18,6 +23,7 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
     id,
     // TopicIncludeParamsSchema:
     includeUser = false,
+    includeCategories = true,
     includeWorkout = false,
     includeQuestionsCount = true,
     includeQuestions = false,
@@ -43,6 +49,9 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
     if (includeUser && userId) {
       include.user = { select: IncludedUserSelect };
     }
+    if (includeCategories) {
+      include.categories = { select: IncludedCategorySelect };
+    }
     if (includeQuestions) {
       include.questions = true;
     }
@@ -52,6 +61,7 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
         select: IncludedUserTopicWorkoutSelect,
       };
     }
+
     const topicWithWorkouts = await prisma.topic.findUnique({
       where,
       include,
@@ -69,7 +79,11 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
      * } satisfies TAvailableTopic;
      */
 
-    const topic = topicWithWorkouts satisfies TAvailableTopic;
+    const topic: TAvailableTopic = topicWithWorkouts;
+
+    if (topic?.categories?.length) {
+      topic.categoryIds = topic.categories.map(({ id }) => id);
+    }
 
     // Check if the current user is allowed to see the topic?
     if (!topic.isPublic && userId !== topic?.userId && user?.role !== 'ADMIN') {

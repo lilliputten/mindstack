@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
 import { jestPrisma } from '@/lib/db/jestPrisma';
-import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
 import { TUser } from '@/features/users/types/TUser';
 
@@ -27,19 +26,20 @@ describe('deleteTopics', () => {
   });
 
   it('should delete multiple topics for owner', async () => {
-    const dateTag = formatDateTag();
+    const timestamp = Date.now().toString();
+    const testId = `dto-${timestamp}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${testId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
       const topic1 = await jestPrisma.topic.create({
-        data: { name: `Topic1-${dateTag}`, userId: user.id },
+        data: { name: `Topic1-${testId}`, userId: user.id },
       });
       const topic2 = await jestPrisma.topic.create({
-        data: { name: `Topic2-${dateTag}`, userId: user.id },
+        data: { name: `Topic2-${testId}`, userId: user.id },
       });
       createdIds.push({ type: 'topic', id: topic1.id });
       createdIds.push({ type: 'topic', id: topic2.id });
@@ -60,23 +60,24 @@ describe('deleteTopics', () => {
   });
 
   it('should delete multiple topics for admin user', async () => {
-    const dateTag = formatDateTag();
+    const timestamp = Date.now().toString();
+    const testId = `dta-${timestamp}`;
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-${testId}@test.com`, role: 'USER' },
       });
       const admin = await jestPrisma.user.create({
-        data: { email: `admin-${dateTag}@test.com`, role: 'ADMIN' },
+        data: { email: `admin-${testId}@test.com`, role: 'ADMIN' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: admin.id });
 
       const topic1 = await jestPrisma.topic.create({
-        data: { name: `Topic1-${dateTag}`, userId: owner.id },
+        data: { name: `Topic1-${testId}`, userId: owner.id },
       });
       const topic2 = await jestPrisma.topic.create({
-        data: { name: `Topic2-${dateTag}`, userId: owner.id },
+        data: { name: `Topic2-${testId}`, userId: owner.id },
       });
       createdIds.push({ type: 'topic', id: topic1.id });
       createdIds.push({ type: 'topic', id: topic2.id });
@@ -96,11 +97,12 @@ describe('deleteTopics', () => {
   });
 
   it('should throw error when some topics are not found', async () => {
-    const dateTag = formatDateTag();
+    const timestamp = Date.now().toString();
+    const testId = `dtnf-${timestamp}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${testId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 
@@ -115,20 +117,21 @@ describe('deleteTopics', () => {
   });
 
   it('should throw error when user is not authorized to delete topics', async () => {
-    const dateTag = formatDateTag();
+    const timestamp = Date.now().toString();
+    const testId = `dtauth-${timestamp}`;
     const createdIds: CreatedId[] = [];
     try {
       const owner = await jestPrisma.user.create({
-        data: { email: `owner-auth-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `owner-auth-${testId}@test.com`, role: 'USER' },
       });
       const otherUser = await jestPrisma.user.create({
-        data: { email: `other-auth-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `other-auth-${testId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: owner.id });
       createdIds.push({ type: 'user', id: otherUser.id });
 
       const topic = await jestPrisma.topic.create({
-        data: { name: `Topic-${dateTag}`, userId: owner.id },
+        data: { name: `Topic-${testId}`, userId: owner.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 
@@ -143,11 +146,12 @@ describe('deleteTopics', () => {
   });
 
   it('should handle empty array', async () => {
-    const dateTag = formatDateTag();
+    const timestamp = Date.now().toString();
+    const testId = `dtea-${timestamp}`;
     const createdIds: CreatedId[] = [];
     try {
       const user = await jestPrisma.user.create({
-        data: { email: `user-${dateTag}@test.com`, role: 'USER' },
+        data: { email: `user-${testId}@test.com`, role: 'USER' },
       });
       createdIds.push({ type: 'user', id: user.id });
 

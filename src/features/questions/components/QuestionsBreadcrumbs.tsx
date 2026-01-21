@@ -6,6 +6,7 @@ import { generateArray, truncateMarkdown } from '@/lib/helpers';
 import { filterOutEmpties } from '@/lib/helpers/arrays';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import {
   Breadcrumbs,
@@ -17,7 +18,6 @@ import { topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
 import { TQuestion } from '@/features/questions/types';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TTopic } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 interface TBreadcrumbsProps {
   scope: TTopicsManageScopeId;

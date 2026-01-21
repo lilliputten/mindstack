@@ -4,11 +4,11 @@ import React from 'react';
 
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n/routing';
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
-import { TRoutePath } from '@/config';
-import { Link } from '@/i18n/routing';
+import { isDev, TRoutePath } from '@/config';
 
 export interface TActionItem extends Omit<ButtonProps, 'content'> {
   id: string;
@@ -51,17 +51,17 @@ export function ActionButton(props: TActionItem) {
           {...restIconProps}
         />
       )}
-      {textContent && !isIcon && <span className="flex flex-1 truncate">{textContent}</span>}
+      {textContent && !isIcon && <span className="max-w-50 truncate">{textContent}</span>}
     </>
   );
   const variant = isDisabled ? 'ghost' : buttonVariant;
-  const className = cn('flex gap-2', buttonClassName);
+  const className = cn('flex justify-start items-center gap-2 truncate', buttonClassName);
   if (href) {
     return (
       <Link
         id={id}
         href={href as TRoutePath}
-        className={cn(buttonVariants({ variant, ...restButtonProps }), className)}
+        className={cn(buttonVariants({ variant, ...restButtonProps }), 'truncate', className)}
       >
         {buttonContent}
       </Link>
@@ -70,7 +70,10 @@ export function ActionButton(props: TActionItem) {
   return (
     <Button
       id={id}
-      className={className}
+      className={cn(
+        isDev && '__ActionButton', // DEBUG
+        className,
+      )}
       onClick={onClick}
       disabled={isDisabled}
       variant={variant}

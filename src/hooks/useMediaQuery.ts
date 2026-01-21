@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 import { TDevice } from '@/lib/types/ui/TDevice';

@@ -4,8 +4,8 @@ import { getLocale } from 'next-intl/server';
 
 import { BOT_TOKEN } from '@/config/envServer';
 import { fetchJson } from '@/lib/helpers/requests';
-import { getBotCommands } from '@/features/bot/helpers/getBotCommands';
 import { TLocale } from '@/i18n/types';
+import { getBotCommands } from '@/features/bot/helpers/getBotCommands';
 
 import { getErrorText } from '../helpers';
 

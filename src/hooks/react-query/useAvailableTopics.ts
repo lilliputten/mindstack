@@ -9,7 +9,8 @@ import {
   UseInfiniteQueryResult,
   useQueryClient,
 } from '@tanstack/react-query';
-import { toast } from 'sonner';
+
+// import { toast } from 'sonner';
 
 import { TAllUsedKeys, TAvailableTopicsResultsQueryData } from '@/lib/types/react-query';
 import { getErrorText } from '@/lib/helpers';
@@ -23,6 +24,7 @@ import {
 } from '@/lib/helpers/react-query';
 import { composeUrlQuery } from '@/lib/helpers/urls';
 import { TGetAvailableTopicsParams, TGetAvailableTopicsResults } from '@/lib/zod-schemas';
+import { useT } from '@/i18n';
 import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import {
   defaultTopicsManageScope,
@@ -31,7 +33,6 @@ import {
 } from '@/contexts/TopicsContext';
 import { getAvailableTopics } from '@/features/topics/actions';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { useSessionUser } from '../useSessionUser';
 
@@ -43,6 +44,7 @@ const staleTime = defaultStaleTime;
 
 type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'> & {
   traceId?: string;
+  enabled?: boolean;
 };
 
 /** Collection of the all used query keys (mb, already invalidated).
@@ -139,9 +141,8 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
           pageParam,
           // url,
         });
-        // eslint-disable-next-line no-debugger
-        debugger;
-        toast.error(message);
+        debugger; // eslint-disable-line no-debugger
+        // toast.error(message);
         throw error;
       }
     },

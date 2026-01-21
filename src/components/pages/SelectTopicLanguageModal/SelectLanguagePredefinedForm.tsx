@@ -8,6 +8,7 @@ import * as z from 'zod';
 
 import { TLanguageId } from '@/lib/types/language';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import {
@@ -20,7 +21,6 @@ import {
 import * as Icons from '@/components/shared/Icons';
 import { predefinedLanguages } from '@/constants/languages';
 import { TTopicLanguageData } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { minIdLength } from './constants';
 

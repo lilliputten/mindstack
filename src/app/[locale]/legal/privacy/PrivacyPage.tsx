@@ -4,12 +4,12 @@ import { NEXT_PUBLIC_URL } from '@/config/envServer';
 import { constructMetadata } from '@/lib/constructMetadata';
 import { formatDate, getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { getT } from '@/i18n';
+import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ContentFooter, MaxWidthWrapper } from '@/components/shared';
 import { contactEmail, effectivePrivacyDate, isDev } from '@/config';
-import { getT } from '@/i18n';
-import { defaultLocale, strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 
 // export const dynamic = 'force-static';
 

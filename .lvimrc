@@ -9,7 +9,6 @@ let g:coc_npm_command = 'pnpm'
 
 set shellslash " Use forward slashes
 
-" Disable tsserver diagnostics for TypeScript files
 let g:coc_user_config = {
   \ 'tsserver.enable': v:true,
   \ 'eslint.enable': v:true,

@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   cn(
     'inline-flex',
     'items-center',
@@ -27,14 +27,12 @@ const buttonVariants = cva(
         default: 'bg-theme text-theme-foreground hover:bg-theme/90',
         primary: 'bg-primary text-primary-foreground hover:bg-primary-600',
         theme: 'bg-theme text-theme-foreground hover:bg-theme-600',
+        temeInverted: 'bg-white text-theme-600 hover:bg-theme-200 hover:text-theme-700',
         destructive: 'bg-destructive hover:opacity-90 text-destructive-foreground',
         success: 'bg-success hover:opacity-90 text-success-foreground',
         outline: 'border border-input hover:bg-theme/20', // hover:text-accent-foreground',
-        // outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-        // outlineBackground: 'border bg-background text-foreground border-input hover:bg-theme hover:text-theme-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
         ghost: 'hover:bg-theme/20 active:bg-theme active:text-theme-foreground',
-        // ghostTheme: 'hover:bg-theme/20 active:bg-theme active:text-theme-foreground',
         ghostForm: cn(
           'border',
           'border-input',
@@ -84,7 +82,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, rounded, ...props }, ref) => {
     return (
       <button
@@ -98,5 +96,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export type TButtonVariants = React.ComponentProps<typeof Button>['variant'];
-
-export { Button, buttonVariants };

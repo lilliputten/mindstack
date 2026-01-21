@@ -10,11 +10,11 @@ import { dashboardLinks } from '@/config/dashboard';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { TLocale } from '@/i18n/types';
 import { NavBar } from '@/components/layout/NavBar';
 import { NavFooter } from '@/components/layout/NavFooter';
 import { routesWithoutSidebar } from '@/config';
 import { isDev } from '@/constants';
-import { TLocale } from '@/i18n/types';
 
 import { AcceptCookiesPopup } from './AcceptCookiesPopup';
 import { DashboardSidebar } from './DashboardSidebar';
@@ -82,7 +82,15 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
         )}
       >
         {!hideSidebar && <DashboardSidebar links={filteredLinks} />}
-        {children}
+        <div
+          className={cn(
+            isDev && '__GenericLayout_ContentContainer', // DEBUG
+            'relative flex size-full flex-1',
+            'single-child',
+          )}
+        >
+          {children}
+        </div>
       </div>
       <AcceptCookiesPopup />
       <NavFooter />

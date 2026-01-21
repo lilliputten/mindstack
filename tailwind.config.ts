@@ -28,6 +28,11 @@ export default {
   prefix: '',
   theme: {
     extend: {
+      screens: {
+        // '3xl': '1280px', // Adds a 3xl breakpoint
+        xs: '480px',
+        xxs: '320px',
+      },
       colors: {
         background: 'rgb(var(--backgroundColorRGB) / <alpha-value>)',
         foreground: 'var(--foregroundColor)',

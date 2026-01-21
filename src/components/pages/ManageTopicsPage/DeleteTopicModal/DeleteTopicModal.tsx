@@ -5,11 +5,11 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
+import { useT } from '@/i18n';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteTopic } from '@/features/topics/actions/deleteTopic';
 import { TAvailableTopic, TTopic, TTopicId } from '@/features/topics/types';
 import { useAvailableTopicsByScope, useGoBack, useModalTitle } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TDeleteTopicModalProps {

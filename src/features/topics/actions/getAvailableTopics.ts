@@ -8,7 +8,13 @@ import { getCurrentUser } from '@/lib/session';
 import { TGetAvailableTopicsParams, TGetAvailableTopicsResults } from '@/lib/zod-schemas';
 import { isDev } from '@/constants';
 
-import { IncludedStatsSelect, IncludedUserSelect, IncludedUserTopicWorkoutSelect } from '../types';
+import {
+  IncludedCategorySelect,
+  IncludedStatsSelect,
+  IncludedUserSelect,
+  IncludedUserTopicWorkoutSelect,
+  TAvailableTopic,
+} from '../types';
 
 interface TOptions {
   noDebug?: boolean;
@@ -19,6 +25,7 @@ export async function getAvailableTopics(
 ): Promise<TGetAvailableTopicsResults> {
   const {
     topicIds,
+    categoryIds,
     skip, // = 0,
     take, // = itemsLimit,
     adminMode,
@@ -26,6 +33,7 @@ export async function getAvailableTopics(
     orderBy = { updatedAt: 'desc' },
     // TopicIncludeParamsSchema
     includeUser = false,
+    includeCategories = true,
     includeWorkout = false,
     includeStats = false,
     includeQuestionsCount = true,
@@ -73,6 +81,9 @@ export async function getAvailableTopics(
       return { items: [], totalCount: 0 };
     }
     // Create the "include" data...
+    if (includeCategories) {
+      include.categories = { select: IncludedCategorySelect };
+    }
     if (includeUser) {
       include.user = { select: IncludedUserSelect };
     }
@@ -99,6 +110,10 @@ export async function getAvailableTopics(
     if (topicIds) {
       // Limit the results by specified ids
       where.id = { in: topicIds };
+    }
+    // Filter by category IDs
+    if (categoryIds && categoryIds.length > 0) {
+      where.categories = { some: { id: { in: categoryIds } } };
     }
     // Search text in name, description, keywords
     if (searchText) {
@@ -189,10 +204,18 @@ export async function getAvailableTopics(
 
   // Retrieve data...
   try {
-    const [items, totalCount] = await prisma.$transaction([
+    const [topics, totalCount] = await prisma.$transaction([
       prisma.topic.findMany(findManyArgs),
       prisma.topic.count({ where }),
     ]);
+
+    const items = (topics as TAvailableTopic[]).map((topic) => {
+      if (topic?.categories?.length) {
+        topic.categoryIds = topic.categories.map(({ id }) => id);
+      }
+      return topic;
+    });
+
     return { items, totalCount } satisfies TGetAvailableTopicsResults;
   } catch (error) {
     if (!noDebug) {

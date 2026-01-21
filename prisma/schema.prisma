@@ -208,6 +208,58 @@ model AIGeneration {
   @@map("ai_generations")
 }
 
+enum CategoryStatus {
+  PUBLIC
+  SUGGESTED
+  HIDDEN
+}
+
+model Category {
+  id String @id @default(cuid())
+
+  status CategoryStatus @default(PUBLIC)
+
+  // Translated fields: name, description, keywords
+  // - name - Required for at least one translation
+  // - description - Markdown text
+  // - keywords - Comma-separated list
+  translations CategoryTranslation[]
+
+  imageUrl String? @map("image_url") // Stores Vercel Blob public URL
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Categories are not tied to the users, but we want to keep information about creators and updaters
+  createdBy String? @map("created_by") // The creator user id
+  updatedBy String? @map("updated_by") // The updater user id
+
+  topics Topic[] @relation(name: "CategoryToTopic", map: "category_to_topic")
+
+  @@index([status])
+  @@map("categories")
+}
+
+// Category records' translations: name, description, keywords
+model CategoryTranslation {
+  categoryId String
+  locale     String // e.g., 'en', 'es', 'ru'
+
+  // name - Required for at least one translation
+  name String
+
+  // description - Markdown text
+  description String?
+
+  // keywords - Comma-separated list
+  keywords String?
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, locale]) // Ensures one translation per locale per category
+  @@map("category_translations")
+}
+
 model Topic {
   id                 String             @id @default(cuid())
   name               String
@@ -227,6 +279,7 @@ model Topic {
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userTopicWorkout   UserTopicWorkout[]
   workoutStats       WorkoutStats[]
+  categories         Category[]         @relation(name: "CategoryToTopic", map: "category_to_topic")
 
   @@index([userId])
   @@map("topics")

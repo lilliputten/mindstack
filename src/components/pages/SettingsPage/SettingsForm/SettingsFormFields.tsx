@@ -17,6 +17,7 @@ import {
 } from '@/config/themes';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { localeNames, localesList, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -32,7 +33,6 @@ import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TSettings } from '@/features/settings/types';
-import { localeNames, localesList, useT } from '@/i18n';
 
 import { TSettingsFormData } from './types';
 

@@ -2,9 +2,9 @@
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { AppIntroBlock } from '@/components/content/AppIntroBlock';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 export function SmallWelcomeText(props: TPropsWithClassName) {
   const { className } = props;

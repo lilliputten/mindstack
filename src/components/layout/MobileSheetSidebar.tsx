@@ -7,6 +7,9 @@ import { DialogTitle } from '@radix-ui/react-dialog';
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
 import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/Badge';
 import { DialogDescription } from '@/components/ui/Dialog';
 import { ScrollArea } from '@/components/ui/ScrollArea';
@@ -19,9 +22,6 @@ import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
-import { useT } from '@/i18n';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { Link } from '@/i18n/routing';
 
 import { showProjectsSelector, showUpgradeCard } from './DasboardConstants';
 import { NavBarBrand } from './NavBarBrand';
@@ -122,6 +122,12 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
               isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea', // DEBUG
               'h-full overflow-y-auto',
               // 'bg-theme/10',
+            )}
+            viewportClassName={cn(
+              isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea_Viewport',
+              // 'flex flex-1 flex-col',
+              // 'bg-decorative-gradient',
+              '[&>div]:flex [&>div]:flex-col [&>div]:flex-1',
             )}
           >
             {/* MobileSheetSidebar */}

@@ -2,6 +2,9 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
+import { Link, usePathname } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
@@ -12,9 +15,6 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
-import { useT } from '@/i18n';
-import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
-import { Link, usePathname } from '@/i18n/routing';
 
 // TODO: Use 'next/navigation'
 
@@ -102,7 +102,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-center',
+          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-end',
         )}
       >
         <div

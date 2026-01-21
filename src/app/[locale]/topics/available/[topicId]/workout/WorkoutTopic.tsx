@@ -5,6 +5,7 @@ import React from 'react';
 import { truncateMarkdown } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -19,7 +20,6 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute, useSessionData } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { ContentSkeleton } from './ContentSkeleton';
 

@@ -11,12 +11,12 @@ NextJS Memory Training App
 
 ![Application](public/static/opengraph-image.jpg 'Application')
 
-- Project info: v.0.0.4 / 2026.01.07 23:08:05 +0300
+- Project info: v.0.0.4 / 2026.01.20 23:23:42 +0300
 
 ## Resources
 
 - Application: https://mindstack.lilliputten.com/
-- Vercel deployment: https://mind-stack-trainer.vercel.app/
+- Vercel deployed app: https://mind-stack-trainer.vercel.app/
 - Repository: https://github.com/lilliputten/mindstack/
 - Project reference: https://lilliputten.com/projects/2025/mindstack/
 

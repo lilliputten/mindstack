@@ -6,6 +6,8 @@ import { UserGradeType } from '@/generated/prisma';
 
 import { pricingAliasRoute, userStartAliasRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
@@ -15,8 +17,6 @@ import {
   parsePaidableSubscriptionType,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 interface PricingChooseSuccessContentProps {
   subscriptionType: TPaidableSubscriptionType;

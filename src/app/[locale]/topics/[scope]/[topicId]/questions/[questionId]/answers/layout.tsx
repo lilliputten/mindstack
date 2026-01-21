@@ -2,10 +2,10 @@ import { redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
 import { isLoggedUser } from '@/lib/session';
+import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageError } from '@/components/shared/PageError';
 import { welcomeAliasRoute } from '@/config';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { TAwaitedLocaleProps } from '@/i18n/types';
 
 type TAwaitedProps = TAwaitedLocaleProps<{
   scope: TTopicsManageScopeId;

@@ -1,7 +1,7 @@
+import { getT } from '@/i18n';
 import { TCommandContext } from '@/features/bot/core/botTypes';
 import { getBot } from '@/features/bot/core/getBot';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
-import { getT } from '@/i18n';
 
 const bot = getBot();
 

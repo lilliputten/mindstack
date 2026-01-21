@@ -1,3 +1,4 @@
+import { Control } from 'react-hook-form';
 import z from 'zod';
 
 import { TopicSchema } from '@/generated/prisma';
@@ -15,6 +16,10 @@ const topicFormDataSchemaBase = TopicSchema.pick({
   answersCountRandom: true, // boolean
   answersCountMin: true, // number
   answersCountMax: true, // number
+}).extend({
+  categoryIds: z.array(z.string()), // .optional(),
 });
 export const topicFormDataSchema = makeNullableFieldsUndefined(topicFormDataSchemaBase);
 export type TTopicFormData = z.infer<typeof topicFormDataSchema>;
+
+export type TTopicFormDataForControl = Control<TTopicFormData>;

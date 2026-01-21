@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { Link, TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
@@ -14,7 +15,6 @@ import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/cu
 import { TGradeComparisonResult } from '@/features/payments/helpers';
 import { useStripePayment, useYookassaPayment } from '@/features/payments/hooks';
 import { parsePaidableSubscriptionType, TPaidableSubscriptionType } from '@/features/subscriptions';
-import { Link, TLocale, useT } from '@/i18n';
 
 import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard';
 

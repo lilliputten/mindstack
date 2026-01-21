@@ -6,10 +6,10 @@ import { Payment } from '@a2seven/yoo-checkout';
 import { Defer } from '@/lib/types/ts';
 import { InternalError } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
+import { useT } from '@/i18n';
 import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
 import { TPaidableSubscriptionType } from '@/features/subscriptions';
-import { useT } from '@/i18n';
 
 import {
   addUserPayment,

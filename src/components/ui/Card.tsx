@@ -10,12 +10,8 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
       className={cn(
         isDev && '__Card', // DEBUG
         'overflow-hidden rounded-lg border text-card-foreground shadow-sm',
-        // 'bg-card',
         'bg-background/50',
-        // 'bg-decorative-gradient',
         'decorative-card',
-        // 'inset-shadow-sm inset-shadow-indigo-500',
-        // 'bg-welcome-radial-gradient',
         className,
       )}
       {...props}
@@ -28,7 +24,11 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('__CardHeader flex flex-col space-y-1.5 p-6', className)}
+      className={cn(
+        isDev && '__CardHeader', // DEBUG
+        'flex flex-col space-y-1.5 p-6',
+        className,
+      )}
       {...props}
     />
   ),
@@ -39,7 +39,11 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('__CardTitle text-lg font-semibold leading-none tracking-tight', className)}
+      className={cn(
+        isDev && '__CardTitle', // DEBUG
+        'text-lg font-semibold leading-none tracking-tight',
+        className,
+      )}
       {...props}
     />
   ),
@@ -52,7 +56,11 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('__CardDescription text-sm text-muted-foreground', className)}
+    className={cn(
+      isDev && '__CardDescription', //DEBUG
+      'text-sm text-muted-foreground',
+      className,
+    )}
     {...props}
   />
 ));

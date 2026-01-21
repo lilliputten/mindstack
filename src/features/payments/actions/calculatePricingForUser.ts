@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server';
 import { UserGradeType, UserSubscriptionPeriodType } from '@/generated/prisma';
 
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 import { proSubscirptionMonthlyBasePrice } from '@/constants';
 import { gradeComparison } from '@/features/payments/helpers';
 import {
@@ -17,7 +18,6 @@ import {
   getAllPricesForSubscriptionTypeAndBasePrice,
   getAllSubscriptionPrices,
 } from '@/features/subscriptions/actions/getAllSubscriptionPrices';
-import { getT } from '@/i18n';
 
 export interface TPricingCalculationResult {
   prices: Awaited<ReturnType<typeof getAllSubscriptionPrices>>;

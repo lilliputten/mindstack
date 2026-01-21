@@ -4,13 +4,13 @@ import React from 'react';
 
 import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/constants';
 import { TAnswerId } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableAnswerById, useAvailableQuestionById, useAvailableTopicById } from '@/hooks';
-import { useT } from '@/i18n';
 
 import { ViewAnswerCard } from './ViewAnswerCard';
 

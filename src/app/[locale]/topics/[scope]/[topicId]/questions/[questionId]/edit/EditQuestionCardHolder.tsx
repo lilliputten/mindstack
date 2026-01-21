@@ -4,6 +4,7 @@ import React from 'react';
 
 import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { topicQuestionDeletedEventId } from '@/components/pages/ManageTopicQuestions/DeleteQuestionModal';
 import * as Icons from '@/components/shared/Icons';
@@ -17,7 +18,6 @@ import {
   useAvailableTopicById,
   useGoBack,
 } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { EditQuestionCard } from './EditQuestionCard';

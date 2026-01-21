@@ -21,6 +21,7 @@ import { ErrorLike } from '@/lib/errors';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
+import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 import { buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
@@ -33,7 +34,6 @@ import {
   parsePaidableSubscriptionType,
   TPaidableSubscriptionType,
 } from '@/features/subscriptions';
-import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 
 import { PricingChooseSuccessContent } from './PricingChooseSuccessContent';
 

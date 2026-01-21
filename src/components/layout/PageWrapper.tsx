@@ -90,7 +90,7 @@ export function PageWrapper(props: TPageWrapperProps) {
       data-page-id={id}
       className={cn(
         isDev && '__PageWrapper', // DEBUG
-        'flex flex-1 flex-col items-center overflow-hidden',
+        'single-child flex flex-1 flex-col items-center overflow-hidden',
         (padded || xPadded) && 'mx-6',
         (padded || vPadded) && 'my-6',
         className,

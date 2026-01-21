@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } from '@/lib/errors';
+import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { Link, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Label } from '@/components/ui/Label';
@@ -13,10 +16,10 @@ import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
 import * as Icons from '@/components/shared/Icons';
+import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TNewQuestion, TQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { maxTextLength, minTextLength } from '../constants';
 
@@ -69,10 +72,35 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
 
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
+  const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
+
   const onSubmit = handleSubmit((formData) => {
     const { text } = formData;
     const newQuestion: TNewQuestion = { text, topicId, isGenerated: false };
-    handleAddQuestion(newQuestion);
+    return handleAddQuestion(newQuestion)
+      .then(() => {
+        setLimitsError(undefined);
+      })
+      .catch((error) => {
+        const message = t('AddQuestionForm.CannotCreateQuestion');
+        const details = getErrorText(error);
+        // Check for ContentLimitError: QUESTIONS_LIMIT_REACHED and display a message
+        let isLimitsError = false;
+        if (error instanceof ContentLimitError || error.name === 'ContentLimitError') {
+          isLimitsError = true;
+          setLimitsError(error.message);
+        } else {
+          setLimitsError(undefined);
+        }
+        const comboMsg = [message, details].filter(Boolean).join(': ');
+        // eslint-disable-next-line no-console
+        console.error('[AddQuestionForm:onSubmit]', comboMsg, {
+          isLimitsError,
+          error,
+          newQuestion,
+        });
+        debugger; // eslint-disable-line no-debugger
+      });
   });
 
   const onClose = (ev: React.MouseEvent) => {
@@ -99,43 +127,69 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
           className,
         )}
       >
-        <FormField
-          name="text"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={textKey}>
-                {t('AddQuestionForm.QuestionText')}
-              </Label>
-              <FormControl>
-                <Textarea
-                  id={textKey}
-                  className="flex-1"
-                  placeholder={t('AddQuestionForm.QuestionTextPlaceholder')}
-                  rows={5}
-                  {...field}
-                  onChange={(ev) => field.onChange(ev)}
-                />
-              </FormControl>
-              <FormHint>
-                {t('AddQuestionForm.QuestionTextHint')}
-                <MarkdownHint />
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-col justify-between"></div>
+        {limitsError ? (
+          <div
+            data-error-id={limitsError}
+            className={cn(
+              isDev && '__AddQuestionForm_LimitsError', // DEBUG
+              'flex items-center gap-2 rounded-md border border-red-500/30 p-2',
+            )}
+          >
+            <Icons.CircleAlert className="size-6 flex-shrink-0 text-red-500" />
+            <p className="text-content text-truncate flex-1 text-sm text-red-500">
+              <span className="font-bold">{t('AddQuestionForm.CannotCreateQuestion')}</span>
+              {': '}
+              <span>{getLocalizedLimitError(limitsError, t)}</span>
+              {'. '}
+              {t.rich('ExtraLimitsErrorText', {
+                PricesLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
+              })}
+            </p>
+          </div>
+        ) : (
+          <>
+            <FormField
+              name="text"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-4">
+                  <Label className="m-0" htmlFor={textKey}>
+                    {t('AddQuestionForm.QuestionText')}
+                  </Label>
+                  <FormControl>
+                    <Textarea
+                      id={textKey}
+                      className="flex-1"
+                      placeholder={t('AddQuestionForm.QuestionTextPlaceholder')}
+                      rows={5}
+                      {...field}
+                      onChange={(ev) => field.onChange(ev)}
+                    />
+                  </FormControl>
+                  <FormHint>
+                    {t('AddQuestionForm.QuestionTextHint')}
+                    <MarkdownHint />
+                  </FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col justify-between"></div>
+          </>
+        )}
         {/* Actions */}
         <div className="flex w-full gap-4">
-          <Button
-            type="submit"
-            variant={isSubmitEnabled ? 'success' : 'disabled'}
-            disabled={!isSubmitEnabled}
-            className="gap-2"
-          >
-            <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
-          </Button>
+          {!limitsError && (
+            <Button
+              type="submit"
+              variant={isSubmitEnabled ? 'success' : 'disabled'}
+              disabled={!isSubmitEnabled}
+              className="gap-2"
+            >
+              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+              <span>{buttonText}</span>
+            </Button>
+          )}
           <Button variant="ghost" onClick={onClose} className="gap-2">
             <Icons.Close className="size-4" />
             <span>{t('Cancel')}</span>

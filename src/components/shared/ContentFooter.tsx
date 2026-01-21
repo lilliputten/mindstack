@@ -4,6 +4,8 @@ import React from 'react';
 import PublicLink from 'next/link';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link as LocalLink } from '@/i18n/routing';
 import { ExternalLink, Github } from '@/components/shared/Icons';
 import {
   authorSite,
@@ -17,8 +19,6 @@ import {
   siteTitle,
   termsAliasRoute,
 } from '@/config';
-import { useT } from '@/i18n';
-import { Link as LocalLink } from '@/i18n/routing';
 
 export function ContentFooter() {
   const t = useT();

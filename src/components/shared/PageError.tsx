@@ -7,6 +7,7 @@ import { ErrorLike } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { ErrorPlaceHolder } from '@/components/shared/ErrorPlaceHolder';
 import * as Icons from '@/components/shared/Icons';
@@ -28,6 +29,7 @@ interface TErrorProps {
   iconClassName?: string;
   padded?: boolean;
   border?: boolean;
+  noActions?: boolean;
 }
 
 // NOTE: Only plain string should be passed from the server components
@@ -49,8 +51,11 @@ export function PageError(props: TErrorProps) {
     ExtraActions,
     padded = true,
     border = true,
+    noActions,
   } = props;
   const router = useRouter();
+
+  const t = useT();
 
   let titleText = title;
   let errText = getErrorText(error);
@@ -94,10 +99,11 @@ export function PageError(props: TErrorProps) {
       className={cn(
         isDev && '__PageError', // DEBUG
         'overflow-auto',
-        padded && 'm-6',
+        padded && 'p-6',
         !border && 'border-none',
         className,
       )}
+      containerClassName="overflow-hidden"
     >
       <ErrorPlaceHolder.Icon
         className={cn(
@@ -107,48 +113,60 @@ export function PageError(props: TErrorProps) {
         )}
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
-      {titleText && <ErrorPlaceHolder.Title>{titleText}</ErrorPlaceHolder.Title>}
-      {errText && <ErrorPlaceHolder.Description>{errText}</ErrorPlaceHolder.Description>}
+      {titleText && (
+        <ErrorPlaceHolder.Title className="text-truncate">{titleText}</ErrorPlaceHolder.Title>
+      )}
+      {errText && (
+        <ErrorPlaceHolder.Description className="text-truncate">
+          {errText}
+        </ErrorPlaceHolder.Description>
+      )}
       {explanation && (
         <div
           className={cn(
             isDev && '__PageError_Explanation', // DEBUG
-            'text-content text-center text-sm font-normal leading-6',
+            'text-content text-truncate text-center text-sm font-normal leading-6',
             explanationClassName,
           )}
         >
           {explanation}
         </div>
       )}
-      <div
-        className={cn(
-          isDev && '__PageError_Actions', // DEBUG
-          'mt-4 flex w-full flex-wrap justify-center gap-4',
-        )}
-      >
-        <Button variant="theme" onClick={goBack} className="flex gap-2">
-          <Icons.ArrowLeft className="size-4" />
-          <span>Go back</span>
-        </Button>
-        <Button variant="theme" onClick={goHome} className="flex gap-2">
-          <Icons.Home className="size-4" />
-          Go home
-        </Button>
-        {/*
+      {!noActions && (
+        <div
+          className={cn(
+            isDev && '__PageError_Actions', // DEBUG
+            'mt-4 flex w-full flex-wrap justify-center gap-4',
+          )}
+        >
+          <Button
+            variant="theme"
+            onClick={goBack}
+            className="text-overflow flex items-center gap-2"
+          >
+            <Icons.ArrowLeft className="size-4" />
+            <span className="truncate">{t('GoBack')}</span>
+          </Button>
+          <Button variant="theme" onClick={goHome} className="text-overflowflex items-center gap-2">
+            <Icons.Home className="size-4" />
+            <span className="truncate">{t('GoHome')}</span>
+          </Button>
+          {/*
         <Link href={rootAliasRoute} className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}>
           <Icons.Home className="size-4" />
-          <span>Go home</span>
+           <span className="truncate">{t('GoHome')}</span>
         </Link>
         */}
-        {!!reset && (
-          <Button onClick={reset} className="flex gap-2">
-            <Icons.Refresh className="size-4" />
-            <span>Try again</span>
-          </Button>
-        )}
-        {extraActions}
-        {ExtraActions && <ExtraActions />}
-      </div>
+          {!!reset && (
+            <Button onClick={reset} className="text-overflowflex items-center gap-2">
+              <Icons.Refresh className="size-4" />
+              <span className="truncate">{t('TryAgain')}</span>
+            </Button>
+          )}
+          {extraActions}
+          {ExtraActions && <ExtraActions />}
+        </div>
+      )}
     </ErrorPlaceHolder>
   );
 }

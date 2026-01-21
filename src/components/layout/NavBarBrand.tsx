@@ -8,11 +8,11 @@ import { siteTitle } from '@/config/env';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n/routing';
+import { TLocale } from '@/i18n/types';
 import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
 import { rootAliasRoute, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
-import { Link } from '@/i18n/routing';
-import { TLocale } from '@/i18n/types';
 
 interface NavBarBrandProps {
   isUser?: boolean;

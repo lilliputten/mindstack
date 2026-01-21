@@ -1,8 +1,8 @@
 import { CommandGroup } from '@grammyjs/commands';
 
+import { getT } from '@/i18n';
 import { BotContext, TCallbackContext, TCommandContext } from '@/features/bot/core/botTypes';
 import { botCommands, getBot } from '@/features/bot/core/getBot';
-import { getT } from '@/i18n';
 
 const bot = getBot();
 

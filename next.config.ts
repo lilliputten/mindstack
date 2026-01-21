@@ -1,6 +1,13 @@
 import type { NextConfig } from 'next';
+import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+import { blobBodySizeLimitMb } from '@/constants';
+
+// NOTE: Always import both client and server environments to ensure if they're ok
+import { isDev } from './src/config/env';
+import { VERCEL_BLOB_HOST } from './src/config/envServer';
+import { staticRedirects, staticRewrites } from './src/config/routesConfig';
 import {
   defaultThemeColor,
   primaryColor,
@@ -9,17 +16,7 @@ import {
   secondaryForegroundColor,
   themeColorData,
 } from './src/config/themeColors';
-
-// Import environments to ensure if they're ok
-import './src/config/envServer';
-import './src/config/env';
-
-import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
-
-import { staticRedirects, staticRewrites } from './src/config/routesConfig';
 import { defaultLocale, localesList } from './src/i18n/types';
-
-const isDev = process.env.NODE_ENV === 'development';
 
 /* // Show loaded environment variables
  * declare global {
@@ -105,8 +102,7 @@ const nextConfig: NextConfig = {
   // redirects: async () => localeRewrites.map((item) => ({ permanent: true, ...item })),
   redirects: async () => redirectsList,
   rewrites: async () => rewritesList,
-  /*
-   * // @see https://nextjs.org/docs/app/api-reference/config/next-config-js/rewrites
+  /* // @see https://nextjs.org/docs/app/api-reference/config/next-config-js/rewrites
    * rewrites: async () => {
    *   // Create rewrites for each locale since next-intl handles internationalized routes
    *   // const locales = ['en', 'es', 'ru']; // Add all your supported locales
@@ -129,12 +125,39 @@ const nextConfig: NextConfig = {
       test: /\.md$/,
       use: 'raw-loader',
     });
+
+    // Optimize webpack cache for large strings
+    if (config.cache && typeof config.cache === 'object' && config.cache.type === 'filesystem') {
+      config.cache.buildDependencies = config.cache.buildDependencies || {};
+      config.cache.managedPaths = config.cache.managedPaths || [];
+      config.optimization = config.optimization || {};
+      config.optimization.minimize =
+        config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
+    }
+
     return config;
   },
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md'],
   sassOptions: {
     additionalData: scssVariables,
     silenceDeprecations: ['legacy-js-api'],
+  },
+  images: {
+    /* // It's deprecated
+     * domains: [VERCEL_BLOB_HOST], // Vercel Blob Storage
+     */
+    // If you have other image domains, add them here as well
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: VERCEL_BLOB_HOST,
+      },
+    ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: `${blobBodySizeLimitMb}mb`,
+    },
   },
   compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
   reactStrictMode: true,

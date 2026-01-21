@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { isDev } from '@/config';
 import { useT } from '@/i18n';
+import { isDev } from '@/config';
 
 import { FeatureCard } from './shared';
 

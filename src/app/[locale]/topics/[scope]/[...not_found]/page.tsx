@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 export const dynamic = 'force-dynamic';
 

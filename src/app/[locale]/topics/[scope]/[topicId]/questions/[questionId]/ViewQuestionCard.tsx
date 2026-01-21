@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { Card } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
@@ -14,7 +15,6 @@ import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/Qu
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
-import { useT } from '@/i18n';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewQuestionContentSummary } from './ViewQuestionContentSummary';

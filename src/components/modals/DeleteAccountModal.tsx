@@ -5,13 +5,13 @@ import { toast } from 'sonner';
 
 import { clearLocalStorage, deleteAllCookies, getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { isDev } from '@/config';
 import { deleteUser } from '@/features/users/actions';
-import { useT } from '@/i18n';
 
 function DeleteAccountModal({
   isVisible,

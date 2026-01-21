@@ -6,12 +6,13 @@ import { APIError } from '@/lib/types/api';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { TCachedUsers, useCachedUsersForTopics } from '@/hooks/topics/useCachedUsersForTopics';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Switch } from '@/components/ui/Switch';
 import {
   Table,
@@ -31,12 +32,13 @@ import { rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
+import { PlainCategoriesListByCategoryIds } from '@/features/categories';
+import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';
-import { TTopic, TTopicId } from '@/features/topics/types';
+import { TAvailableTopic, TTopicId } from '@/features/topics/types';
+import { SmallUserBlock } from '@/features/users';
 import { useAvailableTopicsByScope, useGoBack } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ContentSkeletonTable } from './ContentSkeleton';
@@ -57,7 +59,7 @@ interface TTopicsTableContentProps extends TManageTopicsListCardProps {
   setSelectedTopics: React.Dispatch<React.SetStateAction<Set<TTopicId>>>;
 }
 
-type TMemo = { allTopics: TTopic[] };
+type TMemo = { allTopics: TAvailableTopic[] };
 
 const useDarkHeader = true;
 
@@ -69,7 +71,7 @@ function TopicsTableHeader({
 }: {
   isAdminMode: boolean;
   selectedTopics: Set<TTopicId>;
-  allTopics: TTopic[];
+  allTopics: TAvailableTopic[];
   toggleAll: () => void;
 }) {
   const t = useT();
@@ -115,18 +117,24 @@ function TopicsTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead id="no" className="truncate text-right max-lg:hidden">
-          {t('ManageTopicsListCard.No')}
+        <TableHead
+          id="no"
+          className={cn('truncate text-right max-lg:hidden', isDev && 'debug-border')}
+        >
+          {t('NN')}
         </TableHead>
-        {isDev && (
+        {/*isDev && (
           <TableHead id="topicId" className="truncate max-xl:hidden">
             ID
           </TableHead>
-        )}
+          )*/}
         <TableHead id="name" className="truncate">
           {t('ManageTopicsListCard.TopicName')}
         </TableHead>
-        <TableHead id="questions" className="truncate max-lg:hidden">
+        <TableHead id="categories" className="truncate max-md:hidden">
+          {t('ManageTopicsListCard.Categories')}
+        </TableHead>
+        <TableHead id="questions" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Questions')}
         </TableHead>
         {isAdminMode && (
@@ -140,7 +148,7 @@ function TopicsTableHeader({
         <TableHead id="keywords" className="truncate max-xl:hidden">
           {t('ManageTopicsListCard.Keywords')}
         </TableHead>
-        <TableHead id="isPublic" className="truncate max-lg:hidden">
+        <TableHead id="isPublic" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Public')}
         </TableHead>
         <TableHead id="Actions"></TableHead>
@@ -150,7 +158,7 @@ function TopicsTableHeader({
 }
 
 interface TTopicsTableRowProps {
-  topic: TTopic;
+  topic: TAvailableTopic;
   idx: number;
   handleDeleteTopic: TManageTopicsListCardProps['handleDeleteTopic'];
   handleEditTopic: TManageTopicsListCardProps['handleEditTopic'];
@@ -175,15 +183,41 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
     toggleSelected,
     availableTopicsQuery,
   } = props;
-  const { id, name, langCode, langName, keywords, userId, _count, isPublic } = topic;
+  const { id, name, langCode, langName, keywords, userId, _count, isPublic, categories } = topic;
   const t = useT();
 
   const [isPending, startTransition] = React.useTransition();
   const queryClient = useQueryClient();
 
   const updateAndInvalidateTopic = React.useCallback(
-    async (updatedTopic: TTopic) => {
-      await updateTopic(updatedTopic);
+    async (updatedTopic: TAvailableTopic) => {
+      // Extract only the fields needed for updateTopic
+      const {
+        id,
+        name,
+        description,
+        isPublic,
+        keywords,
+        langCode,
+        langName,
+        langCustom,
+        answersCountRandom,
+        answersCountMin,
+        answersCountMax,
+      } = updatedTopic;
+      await updateTopic({
+        id,
+        name,
+        description,
+        isPublic,
+        keywords,
+        langCode,
+        langName,
+        langCustom,
+        answersCountRandom,
+        answersCountMin,
+        answersCountMax,
+      });
       availableTopicsQuery.updateTopic(updatedTopic);
       const invalidatePrefixes = [['available-topic', topic.id], ['available-topics']].map(
         makeQueryKeyPrefix,
@@ -206,17 +240,21 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           console.error('[TopicsTableRow:handleTogglePublic]', message, {
             details,
             error,
-            topicId: topic.id,
+            topicId: id,
           });
           debugger; // eslint-disable-line no-debugger
           toast.error(message);
         }
       });
     },
-    [t, topic, updateAndInvalidateTopic],
+    [topic, updateAndInvalidateTopic, t, id],
   );
+
   const questionsCount = _count?.questions;
   const topicUser = isAdminMode ? cachedUsers[userId] : undefined;
+
+  const categoryIds = categories?.map(({ id }) => id);
+
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
   return (
@@ -248,15 +286,15 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {isDev && (
-        <TableCell id="topicId" className="max-w-6 truncate max-xl:hidden" title={id}>
+      {/*isDev && (
+        <TableCell id="topicId" className="truncate max-xl:hidden" title={id}>
           <div className="truncate opacity-50">
             <span className="mr-[2px] opacity-30">#</span>
             {id}
           </div>
         </TableCell>
-      )}
-      <TableCell id="name" className="max-w-24 truncate">
+        )*/}
+      <TableCell id="name" className="truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
           href={`${routePath}/${id}` as TRoutePath}
@@ -264,7 +302,10 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           {truncateString(name, 40)}
         </Link>
       </TableCell>
-      <TableCell id="questions" className="max-w-[8em] truncate max-lg:hidden">
+      <TableCell id="categories" className="truncate max-md:hidden">
+        <PlainCategoriesListByCategoryIds categoryIds={categoryIds} />
+      </TableCell>
+      <TableCell id="questions" className="truncate max-md:hidden">
         <div className="truncate">
           {questionsCount ? (
             <span className="font-medium">{questionsCount}</span>
@@ -274,33 +315,27 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
         </div>
       </TableCell>
       {isAdminMode && (
-        <TableCell id="topicUser" className="max-w-[8em] truncate max-lg:hidden">
-          {topicUser ? (
-            <div className="truncate" title={topicUser?.name || undefined}>
-              {topicUser?.name}
-            </div>
-          ) : (
-            <Skeleton className="h-[2em] w-full rounded-sm" />
-          )}
+        <TableCell id="topicUser" className="truncate max-lg:hidden">
+          <SmallUserBlock isLoading={!topicUser} user={topicUser} />
         </TableCell>
       )}
-      <TableCell id="language" className="max-w-[8em] truncate max-xl:hidden">
+      <TableCell id="language" className="truncate max-xl:hidden">
         <div className="truncate">
           {[langName, langCode && `(${langCode})`].filter(Boolean).join(' ')}
         </div>
       </TableCell>
-      <TableCell id="keywords" className="max-w-[8em] truncate max-xl:hidden">
+      <TableCell id="keywords" className="truncate max-xl:hidden">
         <div className="truncate">{keywords}</div>
       </TableCell>
-      <TableCell id="isPublic" className="w-[8em] max-lg:hidden">
+      <TableCell id="isPublic" className="max-md:hidden">
         <Switch
           checked={isPublic || false}
           onCheckedChange={handleTogglePublic}
           disabled={isPending}
         />
       </TableCell>
-      <TableCell id="Actions" className="text-right">
-        <div className="flex justify-end gap-1">
+      <TableCell id="Actions" className="truncate text-right">
+        <div className="flex justify-end gap-1 truncate">
           <Button
             variant="ghost"
             size="icon"
@@ -446,17 +481,17 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageTopicsListCard.GoBack')}
+                {t('GoBack')}
               </Button>
               {!isFiltersExpanded && (
                 <Button variant="outline" onClick={expandFilters} className="flex gap-2">
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  {t('ManageTopicsListCard.ChangeFilters')}
+                  {t('ChangeFilters')}
                 </Button>
               )}
               <Button onClick={handleAddTopic} className="flex gap-2">
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                {t('ManageTopicsListCard.AddTopic')}
+                {t('AddTopic')}
               </Button>
             </>
           }
@@ -488,7 +523,19 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
         'relative w-full flex flex-col gap-4',
       )}
     >
-      <Table>
+      <Table className="w-full table-fixed">
+        <colgroup>
+          <col id="select" className="w-10" />
+          <col id="no" className="w-14 max-lg:hidden" />
+          <col id="name" className="" />
+          <col id="categories" className="w-[12%] max-md:hidden" />
+          <col id="questions" className="w-16 max-md:hidden" />
+          {isAdminMode && <col id="topicUser" className="w-[8%] max-lg:hidden" />}
+          <col id="language" className="w-[8%] max-xl:hidden" />
+          <col id="keywords" className="w-[8%] max-xl:hidden" />
+          <col id="isPublic" className="w-24 max-md:hidden" />
+          <col id="Actions" />
+        </colgroup>
         <TopicsTableHeader
           isAdminMode={isAdminMode}
           selectedTopics={selectedTopics}
@@ -592,7 +639,11 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const makeSelectedPublicMutation = useMutation({
     mutationFn: async (topicIds: TTopicId[]) => {
       const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
-      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: true })));
+      await Promise.all(
+        topics.map((topic) =>
+          updateTopic(getUpdateTopicFromBroaderData({ ...topic, isPublic: true })),
+        ),
+      );
       return topics;
     },
     onSuccess: (topics) => {
@@ -617,7 +668,11 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
   const resetSelectedPublicMutation = useMutation({
     mutationFn: async (topicIds: TTopicId[]) => {
       const topics = availableTopicsQuery.allTopics.filter((topic) => topicIds.includes(topic.id));
-      await Promise.all(topics.map((topic) => updateTopic({ ...topic, isPublic: false })));
+      await Promise.all(
+        topics.map((topic) =>
+          updateTopic(getUpdateTopicFromBroaderData({ ...topic, isPublic: false })),
+        ),
+      );
       return topics;
     },
     onSuccess: (topics) => {

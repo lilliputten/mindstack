@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import { pricingAliasRoute, userStartAliasRoute } from '@/config/routesConfig';
+import { pricingAliasRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 
 export function PricingChooseCancelContent() {
   const t = useT();

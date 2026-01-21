@@ -12,6 +12,13 @@ export const envServerSchema = z.object({
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
 
+  // Vercel blob storage
+  BLOB_READ_WRITE_TOKEN: z.string().min(1),
+  VERCEL_BLOB_HOST: z.string().min(1),
+
+  // Currencies API
+  EXCHANGERATE_API_KEY: z.string().min(1),
+
   // Yookassa
   YOOKASSA_SHOP_ID: z.string().min(1),
   YOOKASSA_SECRET_KEY: z.string().min(1),
@@ -48,6 +55,17 @@ export const envServerSchema = z.object({
   // Generation limits
   BASIC_USER_GENERATIONS: z.coerce.number(),
   PRO_USER_MONTHLY_GENERATIONS: z.coerce.number(),
+
+  // Content limits
+  BASIC_TOPICS_LIMIT: z.coerce.number().optional(),
+  BASIC_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  BASIC_ANSWERS_LIMIT: z.coerce.number().optional(),
+  PRO_TOPICS_LIMIT: z.coerce.number().optional(),
+  PRO_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  PRO_ANSWERS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_TOPICS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_QUESTIONS_LIMIT: z.coerce.number().optional(),
+  PREMIUM_ANSWERS_LIMIT: z.coerce.number().optional(),
 
   // // Prisma
   DATABASE_URL: z.string().min(1),

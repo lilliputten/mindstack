@@ -3,10 +3,10 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { cookiesAliasRoute } from '@/config';
 import { isDev } from '@/constants';
-import { useT } from '@/i18n';
 
 export function AcceptCookiesPopup() {
   const t = useT();

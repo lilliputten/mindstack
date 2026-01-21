@@ -32,6 +32,11 @@ export const {
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL,
   VERCEL_URL,
+  // Vercel blob storage
+  BLOB_READ_WRITE_TOKEN,
+  VERCEL_BLOB_HOST,
+  // Currencies API
+  EXCHANGERATE_API_KEY,
   // Yookassa
   YOOKASSA_SHOP_ID,
   YOOKASSA_SECRET_KEY,
@@ -79,6 +84,19 @@ export const {
 export const EMAIL_USE_SSL = ensureBoolean(process.env.EMAIL_USE_SSL);
 export const SET_FIRST_USER_ADMIN = ensureBoolean(process.env.SET_FIRST_USER_ADMIN);
 export const USE_ALLOWED_USERS = ensureBoolean(process.env.USE_ALLOWED_USERS);
+
+// Content limits - can be configured via environment variables
+export const BASIC_TOPICS_LIMIT = envServer.BASIC_TOPICS_LIMIT || 5;
+export const BASIC_QUESTIONS_LIMIT = envServer.BASIC_QUESTIONS_LIMIT || 20;
+export const BASIC_ANSWERS_LIMIT = envServer.BASIC_ANSWERS_LIMIT || 10;
+
+export const PRO_TOPICS_LIMIT = envServer.PRO_TOPICS_LIMIT || 20;
+export const PRO_QUESTIONS_LIMIT = envServer.PRO_QUESTIONS_LIMIT || 50;
+export const PRO_ANSWERS_LIMIT = envServer.PRO_ANSWERS_LIMIT || 20;
+
+export const PREMIUM_TOPICS_LIMIT = envServer.PREMIUM_TOPICS_LIMIT || -1;
+export const PREMIUM_QUESTIONS_LIMIT = envServer.PREMIUM_QUESTIONS_LIMIT || -1;
+export const PREMIUM_ANSWERS_LIMIT = envServer.PREMIUM_ANSWERS_LIMIT || -1;
 
 export const isVercel = !!envServer.VERCEL_URL;
 export const isVercelPreview = isVercel && VERCEL_ENV === 'preview';

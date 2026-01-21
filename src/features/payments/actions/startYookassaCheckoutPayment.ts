@@ -10,12 +10,12 @@ import { useFakePrices, WEBHOOK_HOST } from '@/config/envServer';
 import { CustomAPIError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { getT } from '@/i18n';
 import { pricingChooseRoute } from '@/config';
 import { stringifyPrice } from '@/features/currencies';
 import { TCurrencyType } from '@/features/currencies/types';
 import { calculatePricingForUser } from '@/features/payments/actions/calculatePricingForUser';
 import { TSubscriptionType } from '@/features/subscriptions';
-import { getT } from '@/i18n';
 
 import { getYookassaCheckoutObject } from './helpers';
 

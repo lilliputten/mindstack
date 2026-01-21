@@ -8,6 +8,8 @@ import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
 import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
@@ -42,8 +44,6 @@ import {
   useGoToTheRoute,
   useSessionUser,
 } from '@/hooks';
-import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();

@@ -1,7 +1,7 @@
+import { TLocale } from '@/i18n/types';
 import { TCommandContext } from '@/features/bot/core/botTypes';
 import { getBotCommands } from '@/features/bot/helpers/getBotCommands';
 import { getContextLocale } from '@/features/bot/helpers/getContextLocale';
-import { TLocale } from '@/i18n/types';
 
 export async function helpCommand(ctx: TCommandContext) {
   const locale = getContextLocale(ctx);

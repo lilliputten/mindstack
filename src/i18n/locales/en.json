@@ -1,14 +1,22 @@
 {
   "AIPoweredLearning": "AI-Powered Learning",
+  "AccessDeniedError": "Access denied",
   "ActiveRecallPractice": "Active Recall Practice",
+  "AddTopic": "Add Topic",
   "AllowedToGenerate": "Allowed to generate",
   "Answer": "Answer",
   "Answers": "Answers",
+  "Apply": "Apply",
+  "AuthenticationError": "Authentication error",
   "Author": "Author",
   "Authors": "Authors",
   "Availability": "Availability",
   "Back": "Back",
   "Cancel": "Cancel",
+  "Categories": "Categories",
+  "Category": "Category",
+  "ChangeFilters": "Change Filters",
+  "ClearChanges": "Clear Changes",
   "ClearText": "Clear text",
   "Close": "Close",
   "Continue": "Continue",
@@ -18,24 +26,38 @@
   "CurrentProgress": "Current progress",
   "CurrentSessionRatio": "Current session ratio",
   "Delete": "Delete",
+  "Deleting": "Deleting",
   "Description": "Description",
   "Edit": "Edit",
   "Expected": "Expected",
+  "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan conditions.",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
   "GenerationMode": "Generation mode",
   "GoBack": "Go Back",
+  "GoHome": "Go home",
+  "HIDDEN": "Hidden",
+  "Hide": "Hide",
+  "Image": "Image",
   "Keywords": "Keywords",
   "Language": "Language",
   "LegalOwnerName": "Igor A. Lilliputten",
+  "ManageTopics": "Manage Topics",
   "Modified": "Modified",
+  "NN": "№",
   "Name": "Name",
   "No": "No",
   "NoAnswersHaveBeenCreatedYet": "No answers have been created yet",
+  "NoCategoriesAvailable": "No Categories Available",
+  "NoFiltersApplied": "No filters applied",
+  "NoTopics": "No topics",
   "NoTopicsAvailable": "No topics available",
+  "Ok": "Ok",
+  "PUBLIC": "Public",
   "PageNotFound": "Page not found",
   "PleaseTryAgainOrContact": "Please try again or contact",
   "Private": "Private",
+  "Properties": "Properties",
   "Public": "Public",
   "Question": "Question",
   "Questions": "Questions",
@@ -45,6 +67,8 @@
   "Reload": "Reload",
   "Reset": "Reset",
   "ResetChanges": "Reset Changes",
+  "ResetToDefaults": "Reset To Defaults",
+  "SUGGESTED": "Suggested",
   "Save": "Save",
   "SelectAnswer": "Select answer",
   "SelectDeselectAll": "Select/deselect all",
@@ -53,16 +77,22 @@
   "SpacedRepetition": "Spaced Repetition",
   "Start": "Start",
   "StartedAt": "Started at",
+  "Status": "Status",
   "Timeline": "Timeline",
   "Topic": "Topic",
   "TopicLanguage": "Topic language",
   "TopicName": "Topic Name",
   "Topics": "Topics",
+  "TopicsCount": "Topics Count",
   "Total": "Total",
   "Training": "Training",
   "TrainingStatus": "Training status",
+  "TryAgain": "Try again",
+  "UnknownError": "Unknown Error",
+  "Unlimited": "Unlimited",
   "UpdatedDate": "Updated date",
   "UsedGenerations": "Used generations",
+  "UserAvatarImage": "User avatar image",
   "UserGrade": "User grade",
   "UserNotLoggedIn": "User is not logged in",
   "UserRole": "User role",
@@ -88,6 +118,7 @@
     "AnswerText": "Answer Text",
     "AnswerTextHint": "You'll be able to edit it later, as well as other answer poroperties.",
     "AnswerTextPlaceholder": "Text",
+    "CannotCreateAnswer": "Answer Creation Error",
     "IsCorrectHint": "Each question should have one or a few correct answers.",
     "IsCorrectLabel": "Is the answer correct?"
   },
@@ -99,10 +130,20 @@
     "ToastLoading": "Creating a new answer...",
     "ToastSuccess": "Successfully created new answer."
   },
+  "AddCategoryModal": {
+    "CantSaveCategory": "Cannot save category",
+    "DialogTitle": "Add New Category",
+    "ForbiddenSuggestionMessage": "To maintain quality, we limit how often you can suggest new categories. Please try again in {time}.",
+    "ForbiddenSuggestionTitle": "The limit of offers for new categories has been reached",
+    "SuggestDialogTitle": "Suggest New Category",
+    "UnauthorizedUserMessage": "Only authorized users can add categories.",
+    "UnauthorizedUserTitle": "Unauthorized User"
+  },
   "AddQuestionForm": {
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
     "CancelButtonText": "Cancel",
+    "CannotCreateQuestion": "Question Creation Error",
     "QuestionText": "Question Text",
     "QuestionTextHint": "You'll be able to edit it later, as well as other question poroperties.",
     "QuestionTextPlaceholder": "Text"
@@ -118,9 +159,13 @@
   "AddTopicForm": {
     "AddButtonText": "Add",
     "AddingButtonText": "Adding",
+    "CannotCreateTopic": "Topic Creation Error",
+    "CategoriesHint": "Select one or a few categories for the topic. You can edit this parameter later.",
+    "CategoriesLabel": "Categories",
     "IsPublicHint": "Public topics can be viewed and used by other users.",
     "IsPublicLabel": "Is the topic public?",
     "NamePlaceholder": "Name",
+    "SelectCategoriesPlaceholder": "Select categories",
     "TopicName": "Topic Name"
   },
   "AddTopicModal": {
@@ -131,8 +176,71 @@
     "ToastLoading": "Creating new topic...",
     "ToastSuccess": "Successfully created new topic \"{name}\""
   },
+  "AnswersGenerationTypeTexts": {
+    "CORRECT": "Only correct answers",
+    "RANDOM": "Multiple answers with at least one correct",
+    "WRONG": "Only wrong answers"
+  },
   "AppIntro": {
     "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
+  },
+  "AvailableCategories": {
+    "ManageCategory": "Manage Category"
+  },
+  "AvailableCategoriesFilterTexts": {
+    "Ignore": "Ignore",
+    "Label-HasImage": "Has Images",
+    "Label-HasTopics": "Has Topics",
+    "Label-OrderBy": "Order by",
+    "Label-SearchLang": "Language",
+    "Label-SearchText": "Search for",
+    "Label-Status": "Status",
+    "No": "No",
+    "NoActiveFilters": "No Active Filters",
+    "OrderBy-LessPopular": "Less Popular",
+    "OrderBy-MorePopular": "More Popular",
+    "OrderBy-Name": "By Name",
+    "OrderBy-NameDescending": "By Name (descending)",
+    "OrderBy-Oldest": "Oldest",
+    "OrderBy-Recent": "Recent",
+    "Status-Hidden": "Hidden",
+    "Status-Public": "Public",
+    "Status-Suggested": "Suggested",
+    "WithImage": "With Images",
+    "WithTopics": "With Topics",
+    "WithoutImage": "Without Images",
+    "WithoutTopics": "Without Topics",
+    "Yes": "Yes"
+  },
+  "AvailableCategoriesFilters": {
+    "Apply": "Apply",
+    "ClearChanges": "Clear changes",
+    "ClickToHideSettings": "Click to hide settings",
+    "Displaying": "Displaying",
+    "ExpandToChangeDisplaySettings": "Expand to change display settings",
+    "Hide": "Hide"
+  },
+  "AvailableCategoriesFiltersFields": {
+    "AllStatuses": "All Statuses",
+    "ChooseSortOrderHint": "Choose how to sort the categories list.",
+    "ClearText": "Clear text",
+    "DisplayCategoriesWithImageHint": "Display categories with or without images.",
+    "DisplayCategoriesWithTopicsHint": "Display categories with or without topics.",
+    "SearchForLanguageHint": "Search for language code or name (eg: <code>en</code> or <code>Engl</code>).",
+    "SearchForLanguagePlaceholder": "Search for language...",
+    "SearchForTextHint": "Search for text in name, description or keywords.",
+    "SearchForTextPlaceholder": "Search for text...",
+    "SelectOptionPlaceholder": "Select option…",
+    "SelectOrderPlaceholder": "Select order…",
+    "SelectStatusHint": "Filter categories by status.",
+    "SelectStatusPlaceholder": "Select status…"
+  },
+  "AvailableCategoriesList": {
+    "ManageCategories": "Manage Categories",
+    "ManageYourCategoriesAction": "Manage Your Categories",
+    "NoCategoriesExplanation": "There are no available categories. Change the filter settings.",
+    "SuggestNewCategory": "Suggest New Category",
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorized users</SigninLink> can suggest new categories."
   },
   "AvailableTopics": {
     "FinishTraining": "Finish Training",
@@ -147,6 +255,7 @@
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Ignore",
+    "Label-CategoryIds": "Categories",
     "Label-HasActiveWorkouts": "Active Workouts",
     "Label-HasQuestions": "Questions",
     "Label-HasWorkoutStats": "Statistics",
@@ -157,9 +266,11 @@
     "No": "No",
     "NoActiveFilters": "No Active Filters",
     "OnlyMyTopics": "Only My Topics",
+    "OrderBy-LessPopular": "Less Popular",
+    "OrderBy-MorePopular": "More Popular",
     "OrderBy-Name": "By Name",
     "OrderBy-NameDescending": "By Name (descending)",
-    "OrderBy-Oldest": "OrderBy-Oldest",
+    "OrderBy-Oldest": "Oldest",
     "OrderBy-Recent": "Recent",
     "WithActiveWorkouts": "With Active Workouts",
     "WithQuestions": "With Questions",
@@ -170,16 +281,12 @@
     "Yes": "Yes"
   },
   "AvailableTopicsFilters": {
-    "Apply": "Apply",
-    "ClearChanges": "Clear changes",
     "ClickToHideSettings": "Click to hide settings",
     "Displaying": "Displaying",
-    "ExpandToChangeDisplaySettings": "Expand to change display settings",
-    "Hide": "Hide",
-    "NoFiltersApplied": "No filters applied",
-    "ResetToDefaults": "Reset to defaults"
+    "ExpandToChangeDisplaySettings": "Expand to change display settings"
   },
   "AvailableTopicsFiltersFields": {
+    "CategoriesHint": "Select one or more categories for this topic.",
     "ChooseSortOrderHint": "Choose how to sort the topics list.",
     "ClearText": "Clear text",
     "DisplayTopicsWithActiveWorkoutsHint": "Display topics with or without active trainings.",
@@ -189,6 +296,7 @@
     "SearchForLanguagePlaceholder": "Search for language...",
     "SearchForTextHint": "Search for text in name, description or keywords.",
     "SearchForTextPlaceholder": "Search for text...",
+    "SelectCategories": "Select categories",
     "SelectOptionPlaceholder": "Select option…",
     "SelectOrderPlaceholder": "Select order…",
     "ShowOnlyMyTopicsHint": "Show only my own topics."
@@ -245,6 +353,15 @@
     "SpacedRepetitionDescription": "Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance.",
     "Title": "Why Choose MindStack"
   },
+  "CategoryHeader": {
+    "YourCategory": "Your Category"
+  },
+  "CategorySelect": {
+    "NoCategoriesFound": "No categories found.",
+    "RemoveCategory": "Remove category \"{name}\"",
+    "SearchCategoriesPlaceholder": "Search categories...",
+    "SelectCategories": "Select categories"
+  },
   "CheckStripePayment": {
     "PaymentError": "Error checking stripe payment",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
@@ -287,6 +404,17 @@
     "ToastError": "Can not delete the answer.",
     "ToastLoading": "Deleting the answer...",
     "ToastSuccess": "Successfully deleted the answer."
+  },
+  "DeleteCategoryModal": {
+    "CannotDeleteCategory": "Cannot delete category",
+    "CategoryDeleted": "Category deleted",
+    "CategoryDeletedContent": "The category has been successfully deleted. The dialog will be closed automatically.",
+    "CategoryDeletedTitle": "The category has been deleted",
+    "ConfirmDeleteContent": "Are you sure to delete category \"{categoryName}\"?",
+    "DeletingCategory": "Deleting category",
+    "DialogTitle": "Delete Category?",
+    "ErrorDeletingCategory": "Error deleting category",
+    "NotFoundCategoryTitle": "Can not find category to delete"
   },
   "DeleteQuestionModal": {
     "CancelButtonText": "Cancel",
@@ -341,6 +469,51 @@
     "IsGenerated": "Is the answer generated by AI?",
     "IsGeneratedHint": "If the answer has been generated automatically, then it could be updated or removed later."
   },
+  "EditCategoryForm": {
+    "AllNamesEmptyError": "At least one name field must be filled across all translations",
+    "CancelText": "Cancel",
+    "CategoryDescriptionHint": "A category description. This text can be used by users for navigation and search.",
+    "CategoryNameHint": "A category name. It's good if it's a unique value.",
+    "CategoryPropertiesInstruction": "Please enter the properties of the category (name, description, keywords) for all or only one of the application languages.",
+    "CategorySavedSuccessfully": "Successfully saved category data",
+    "CategorySaving": "Saving category data...",
+    "CategorySavingError": "Cannot save category data",
+    "CloseText": "Close",
+    "DescriptionWithLocale": "Description ({locale})",
+    "EnterCategoryDescriptionPlaceholder": "Enter category description",
+    "EnterCategoryNamePlaceholder": "Enter category name",
+    "EnterKeywordsPlaceholder": "Enter keywords separated by commas in {locale}",
+    "HiddenOption": "Hidden",
+    "ImageHintText": "Select an illustration for the category. Maximum image size: {sizePixels}x{sizePixels}px. It'll be downscaled to this size on upload. Maximum file size allowed: {sizeBytesLimit}B.",
+    "ImageLabel": "Image",
+    "ImageSizeError": "Image size must be less than {size}B",
+    "ImageUploadedSuccessfully": "Preview image uploaded",
+    "ImageUploading": "Preview image is uploading",
+    "ImageUploadingError": "Preview image uploading error",
+    "InvalidImageTypeError": "Invalid image type. Allowed types: {allowedTypes}",
+    "KeywordsHintText": "Enter keywords separated by commas. Example: keyword1, keyword2, keyword3",
+    "KeywordsWithLocale": "Keywords ({locale})",
+    "NameWithLocale": "Name ({locale})",
+    "PublicOption": "Public",
+    "SaveText": "Save",
+    "SavingText": "Saving...",
+    "SelectStatusPlaceholder": "Select status",
+    "StatusLabel": "Status",
+    "SubmitFormError": "Failed to submit form data",
+    "SuccessfullySavedMessage": "The category has been successfully saved. You can now close this dialog.",
+    "SuccessfullySavedTitle": "Successfully saved!",
+    "SuggestNewCategory": "Suggest New Category",
+    "SuggestedOption": "Suggested",
+    "UploadImageError": "Failed to upload image"
+  },
+  "EditCategoryModal": {
+    "CannotSaveCategory": "Cannot save category",
+    "DataSaveError": "Cannot save category data",
+    "DataSaved": "Successfully saved category \"{name}\"",
+    "DialogTitle": "Edit Category",
+    "ErrorLoadingCategoriesData": "Error loading category data",
+    "SavingData": "Saving category data..."
+  },
   "EditQuestionCard": {
     "AddNewQuestion": "Add New Question",
     "Back": "Back",
@@ -374,16 +547,20 @@
     "UseRandomQuestionsCountHint": "Allow to generate random number of answers for questions (if it's not overidden in the question settings)."
   },
   "EditTopicFormFields": {
+    "Categories": "Categories",
+    "CategoriesHint": "Select one or more categories for this topic.",
     "IsPublic": "Is the topic public?",
     "IsPublicHint": "If the topic is public it's available for all the users, not only for you.",
     "Keywords": "Keywords",
     "KeywordsHint": "Optional list of keywords separated by commas. It can be used to generate questions and answers, as well as to navigate and search for users.",
+    "KeywordsPlaceholder": "Keywords",
     "MaximalQuestionsCount": "Maximal questions count",
     "MinimalQuestionsCount": "Minimal questions count",
     "Name": "Name",
-    "QuestionDescription": "Question Description",
-    "QuestionDescriptionHint": "A topic description. This text can be used both to generate questions and answers by the system itself, and by users for navigation and search.",
+    "SelectCategories": "Select categories",
     "SelectLanguage": "Select language",
+    "TopicDescription": "Topic Description",
+    "TopicDescriptionHint": "A topic description. This text can be used both to generate questions and answers by the system itself, and by users for navigation and search.",
     "TopicDescriptionPlaceholder": "Topic Description",
     "TopicLanguage": "Topic Language",
     "TopicLanguageHint": "An optional predefined or custom language for the topic.",
@@ -395,6 +572,10 @@
   },
   "EditTopicPage": {
     "CannotSaveTopicData": "Cannot save topic data.",
+    "DeleteTopic": "Delete topic",
+    "Heading": "Edit Topic Properties",
+    "ReloadDataFromServer": "Reload the data from the server",
+    "ResetFormFieldsToOriginalValues": "Reset form fields to original values",
     "SavingTopicData": "Saving topic data...",
     "SuccessfullySavedTheTopic": "Successfully saved the topic"
   },
@@ -429,7 +610,7 @@
     "Title": "Powerful Features for Memory Training"
   },
   "GenerateAnswersForm": {
-    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
     "DebugDataHint": "Enable to use fake local data instead of making actual API calls.",
     "ExtraInstructionsHint": "Optional additional context or instructions for the AI.",
@@ -437,7 +618,7 @@
     "ExtraInstructionsPlaceholder": "Additional instructions for answers generation...",
     "GenerateButtonText": "Generate",
     "GeneratingButtonText": "Generating",
-    "GenerationTypeHint": "Choose the type of answers to generate for each question.",
+    "GenerationTypeHint": "Choose the type of answers to generate for each question: simple, clear answers that test basic understanding, or complex ones that require detailed knowledge and analysis.",
     "GenerationTypeLabel": "Generation Type",
     "GenerationTypePlaceholder": "Select generation type",
     "UseDebugDataLabel": "Use debug data?"
@@ -455,7 +636,7 @@
     "ToastSuccessData": "Successfully retrieved AI generated data"
   },
   "GenerateQuestionsForm": {
-    "AnswersCountHint": "Range of answers to generate for each question (minimum - maximum).",
+    "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
     "AnswersGenerationTypeHint": "Choose the type of answers to generate for each question.",
     "AnswersGenerationTypeLabel": "Answers Generation Type",
@@ -466,17 +647,15 @@
     "ExtraInstructionsPlaceholder": "Additional instructions for questions generation...",
     "GenerateButtonText": "Generate",
     "GeneratingButtonText": "Generating",
-    "GenerationTypeHint": "Choose the type of questions to generate.",
+    "GenerationTypeHint": "Choose the type of questions to generate: simple, clear questions that test basic understanding, or complex ones that require detailed knowledge and analysis.",
     "GenerationTypeLabel": "Generation Type",
     "GenerationTypePlaceholder": "Select generation type",
-    "QuestionsCountHint": "Range of questions to generate (minimum - maximum).",
+    "QuestionsCountHint": "Count of questions to generate (minimum - maximum).",
     "QuestionsCountLabelPrefix": "Questions Count:",
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateQuestionsModal": {
-    "DialogDescription": "Generate Questions Dialog",
     "DialogTitle": "Generate Questions",
-    "ModalTitle": "Generate Questions",
     "NoTopicIdDefined": "No topic ID defined",
     "ToastErrorData": "Can not retrieve AI generated data",
     "ToastErrorQuestions": "Cannot add questions",
@@ -484,6 +663,58 @@
     "ToastLoadingQuestions": "Adding new questions...",
     "ToastSuccessData": "Successfully retrieved AI generated data",
     "ToastSuccessQuestions": "Successfully added new questions"
+  },
+  "ImageUpload": {
+    "CategoryImagePreview": "Image Preview",
+    "RemoveImage": "Remove Image",
+    "SelectImage": "Select Image"
+  },
+  "LimitsError": {
+    "ANSWERS_LIMIT_REACHED": "You have reached the maximum number of answers for your current plan",
+    "GUEST_USERS_NOT_ALLOWED": "Guest users cannot create content",
+    "QUESTIONS_LIMIT_REACHED": "You have reached the maximum number of questions for your current plan",
+    "TOPICS_LIMIT_REACHED": "You have reached the maximum number of topics for your current plan",
+    "UNAUTHORIZED": "Please sign in to create content",
+    "UNKNOWN_ERROR": "Content creation limit reached"
+  },
+  "ManageCategoriesList": {
+    "AddCategory": "Add Category",
+    "AddNewCategory": "Add New Category",
+    "BasicInfo": "Basic Info",
+    "CannotDeleteSelectedCategories": "Cannot delete selected categories",
+    "CannotMakeSelectedCategoriesPublic": "Cannot make selected categories public",
+    "CannotResetPublicStatusForSelectedCategories": "Cannot reset public status for selected categories",
+    "CategoryName": "Category Name",
+    "ChangeFilters": "Change Filters",
+    "ConfirmDeleteCategoriesMessageWithPluralCount": "Do you confirm deleting {count, plural, =0 {no categories} =1 {# selected category} other {# selected categories}}?",
+    "CreatedAt": "Created At",
+    "CreatedBy": "Created By",
+    "Delete": "Delete",
+    "DeleteSelected": "Delete Selected",
+    "DeletingSelectedCategories": "Deleting selected categories...",
+    "Description": "Description",
+    "DialogTitle": "Delete Selected Categories?",
+    "Edit": "Edit",
+    "ErrorLoadingCategoriesData": "Error loading categories data",
+    "GoBack": "Go Back",
+    "Image": "Image",
+    "MakingSelectedCategoriesPublic": "Making selected categories public...",
+    "ManageTopics": "Manage Topics",
+    "MarkSelectedAsPrivate": "Mark Selected as Private",
+    "MarkSelectedAsPublic": "Mark Selected as Public",
+    "NoCategoriesFound": "No categories found",
+    "NoCategoriesFoundDescription": "No categories have been found. You can create a new category or adjust your filters.",
+    "Num": "Number",
+    "Reload": "Reload",
+    "ResettingPublicStatusForSelectedCategories": "Resetting public status for selected categories...",
+    "SelectCategory": "Select category",
+    "SelectDeselectAll": "Select/deselect all",
+    "SuccessfullyDeletedSelectedCategories": "Successfully deleted selected categories",
+    "SuccessfullyMadeSelectedCategoriesPublic": "Successfully made selected categories public",
+    "SuccessfullyResetPublicStatusForSelectedCategories": "Successfully reset public status for selected categories",
+    "TopicsCount": "Topics Count",
+    "UpdatedAt": "Updated At",
+    "UpdatedBy": "Updated By"
   },
   "ManageTopicQuestionAnswersListCard": {
     "AddNewAnswer": "Add New Answer",
@@ -528,14 +759,13 @@
   },
   "ManageTopicsListCard": {
     "AddNewTopic": "Add New Topic",
-    "AddTopic": "Add Topic",
     "Author": "Author",
     "Back": "Back",
     "CannotDeleteSelectedTopics": "Cannot delete selected topics",
     "CannotMakeSelectedTopicsPublic": "Cannot make selected topics public",
     "CannotResetPublicStatusForSelectedTopics": "Cannot reset public status for selected topics",
     "CannotUpdateTopicPublicStatus": "Cannot update topic public status",
-    "ChangeFilters": "Change Filters",
+    "Categories": "Categories",
     "ConfirmDeleteTopics": "Confirm delete topics",
     "ConfirmDeleteTopicsMessage": "Do you confirm deleting {count, plural, =0 {no topics} =1 {# selected topic} other {# selected topics}}?",
     "Delete": "Delete",
@@ -545,7 +775,6 @@
     "Edit": "Edit",
     "EditQuestions": "Edit Questions",
     "ErrorLoadingTopicsData": "Error loading available topics data",
-    "GoBack": "Go Back",
     "Keywords": "Keywords",
     "Language": "Language",
     "MakingSelectedTopicsPublic": "Making selected topics public...",
@@ -580,11 +809,14 @@
     "Administration": "Administration",
     "AllTopics": "All Topics",
     "Application": "Application",
+    "AvailableCategories": "Categories",
     "AvailableTopics": "Available Topics",
     "BotControl": "Bot Control",
+    "Categories": "Categories",
     "Charts": "Charts",
     "Documentation": "Documentation",
     "Information": "Information",
+    "ManageCategories": "Manage Categories",
     "MyData": "My Data",
     "MyTopics": "My Topics",
     "Options": "Options",
@@ -595,8 +827,7 @@
     "WelcomePage": "Welcome Page"
   },
   "NavLocaleSwitcher": {
-    "label": "Change language",
-    "locale": "{locale, select, ru {🇷🇺 Русский} en {🇺🇸 English} xx {🇺🇸 Debug} other {Auto-detect}}"
+    "label": "Change language"
   },
   "NavModeToggle": {
     "dark": "Dark",
@@ -624,6 +855,7 @@
     "Answers": "Answers",
     "AvailableTopicsDescription": "Topics available to use",
     "AvailableTopicsTitle": "Available Topics",
+    "CategoriesTitle": "Categories",
     "ContactsPageTitle": "Project Contacts",
     "CookiesPageTitle": "Cookie Policy",
     "DocsTitle": "Documentation",
@@ -632,6 +864,7 @@
     "EditTopicPropertiesTitle": "Edit Topic Properties",
     "InfoTitle": "Info",
     "ManageAnswerTitle": "Manage Answer",
+    "ManageCategoriesListTitle": "Manage Categories",
     "ManageQuestionTitle": "Manage Question",
     "ManageTopicQuestionAnswersDescription": "Answers for the chosen question",
     "ManageTopicQuestionAnswersTitle": "Manage Answers",
@@ -658,6 +891,7 @@
     "TestQueryTitle": "Test AI Text Query",
     "TrainingTopicReviewTitle": "Training Topic Review",
     "ViewAvailableTopicTitle": "View Available Topic",
+    "ViewCategoryTitle": "View Category",
     "WelcomeTitle": "Welcome!",
     "WorkoutTopicGoTitle": "Training the Topic"
   },
@@ -678,7 +912,7 @@
     "Comparison": {
       "AiGenerations": "AI Generations",
       "Analytics": "Detailed Analytics",
-      "CommunityAccess": "Community Access",
+      "CommunityAccess": "Public Data Access",
       "EnterpriseSecurity": "Enterprise Security",
       "ExportImport": "Export/Import",
       "PrioritySupport": "Priority Support",
@@ -702,10 +936,13 @@
         "Description": "For individuals",
         "Name": "Basic",
         "Features": {
-          "Community": "Community topics access",
+          "AnswersLimit": "Up to {limit} answers per question",
+          "Community": "Public topics access",
           "Generations": "10 AI generations total",
           "Progress": "Progress tracking",
+          "QuestionsLimit": "Up to {limit} questions per topic",
           "Topics": "Create up to 5 topics",
+          "TopicsLimit": "Create up to {limit} topics",
           "Workouts": "Basic training sessions"
         }
       },
@@ -718,6 +955,7 @@
           "Everything": "Everything in Pro",
           "Export": "Export/import functionality",
           "Priority": "Highest priority support",
+          "UnlimitedDataCreation": "Unlimited сreation of topics, questions and answers",
           "UnlimitedGenerations": "Unlimited AI generations"
         }
       },
@@ -728,8 +966,11 @@
         "Features": {
           "Ai": "AI-powered question generation",
           "Analytics": "Detailed analytics",
+          "AnswersLimit": "Up to {limit} answers per question",
           "Generations": "100 AI generations per month",
+          "QuestionsLimit": "Up to {limit} questions per topic",
           "Support": "Priority support",
+          "TopicsLimit": "Create up to {limit} topics",
           "Unlimited": "Unlimited topics and questions"
         }
       },
@@ -832,6 +1073,11 @@
     "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",
     "SignInModalIntroForBasic": "To activate a basic subscription, simply sign-in to the system."
   },
+  "QuestionsGenerationTypes": {
+    "BASIC": "Simple Questions",
+    "DETAILED": "Detailed Questions",
+    "MIXED": "Mixed Questions"
+  },
   "SelectLanguageCustomForm": {
     "LanguageCode": "Language code",
     "LanguageName": "Language name",
@@ -895,6 +1141,7 @@
   "SiteMenu": {
     "AllTopics": "All Topics",
     "AvailableTopics": "Available Topics",
+    "Categories": "Categories",
     "Data": "Data",
     "Info": "Information",
     "MyTopics": "My Topics",
@@ -954,6 +1201,11 @@
     "Title": "Upgrade to Pro",
     "Upgrade": "Upgrade"
   },
+  "UploadCategoryImage": {
+    "ImageSizeLimitError": "Image size must be less than {sizeLimit}",
+    "InvalidImageTypeError": "Invalid image type. Allowed types: {allowedTypes}",
+    "NoImageFileProvidedError": "No image file provided"
+  },
   "UseAvailableAnswers": {
     "CannotLoadAnswersData": "Cannot load answers data"
   },
@@ -989,6 +1241,24 @@
   "ViewAvailableTopicContent": {
     "NoActiveTrainingText": "You have no active training nor history records to display. Start training now.",
     "TrainingNotStarted": "The training has not been started"
+  },
+  "ViewCategoryContentSummary": {
+    "BasicInfo": "Basic Info",
+    "Created": "Created",
+    "CreatedAt": "Created At",
+    "CreatedBy": "Created By",
+    "Id": "ID",
+    "Name": "Name",
+    "NoDescription": "No description provided",
+    "Status": "Status",
+    "Updated": "Updated",
+    "UpdatedAt": "Updated At",
+    "UpdatedBy": "Updated By"
+  },
+  "ViewCategoryPage": {
+    "CannotUpdateCategoryData": "Can't update category data",
+    "NoCategoryFound": "No Category Found",
+    "ViewCategory": "View Category"
   },
   "ViewQuestionCard": {
     "AddNewQuestion": "Add New Question",
@@ -1128,6 +1398,7 @@
     "StudyStreak": "Study Streak",
     "StudyStreaksAndConsistencyMetrics": "Study streaks and consistency metrics",
     "SummaryOfCompletedCountTemplate": "Summary of your {count, plural, =1 {# completed workout} other {# completed workouts}}",
+    "ThereIsOnlyOneHistoryRecordNow": "There is only one history record now.",
     "ThisWillBeYourFirst": "This will be your first workout for this topic!",
     "Time": "Time",
     "TimeElapsed": "Time Elapsed",
@@ -1159,5 +1430,12 @@
     "PaymentProcessingFailure": "Payment processing failure",
     "PaymentStartingError": "Payment starting error",
     "UnauthorizedPaymentError": "Cannot proceed payments for unauthorized users"
+  },
+  "duration": {
+    "days": "{count, plural, =1 {day} other {days}}",
+    "hours": "{count, plural, =1 {hour} other {hours}}",
+    "milliseconds": "ms",
+    "minutes": "{count, plural, =1 {minute} other {minutes}}",
+    "seconds": "{count, plural, =1 {second} other {seconds}}"
   }
 }

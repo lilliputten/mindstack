@@ -7,11 +7,11 @@ import * as z from 'zod';
 
 import { TLanguage, TLanguageId } from '@/lib/types/language';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import * as Icons from '@/components/shared/Icons';
 import { TTopicLanguageData } from '@/features/topics/types';
-import { useT } from '@/i18n';
 
 import { maxIdLength, maxNameLength, minIdLength, minNameLength } from './constants';
 

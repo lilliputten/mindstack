@@ -22,6 +22,8 @@ importOrder:
   - '^@/lib/types/(.*)$'
   - '^@/config/(.*)$'
   - '^@/lib/(.*)$'
+  - '^@/i18n(.*)$'
+  - '^@/auth(.*)$'
   - '^@/hooks/(.*)$'
   - '^@/components/ui/(.*)$'
   - '^@/components/(.*)$'
@@ -39,3 +41,4 @@ importOrderParserPlugins:
 plugins:
   - '@ianvs/prettier-plugin-sort-imports'
   - prettier-plugin-tailwindcss
+tailwindConfig: './tailwind.config.ts'

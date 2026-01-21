@@ -32,13 +32,19 @@ type AddUserPaymentData = {
   price: number;
 };
 
-export async function addUserPayment(data: AddUserPaymentData) {
-  try {
-    const user = await getCurrentUser();
-    if (!user?.id) {
-      throw new Error('Authentication required');
-    }
+interface TOptions {
+  noDebug?: boolean;
+}
 
+export async function addUserPayment(params: AddUserPaymentData & TOptions) {
+  const { noDebug, ...data } = params;
+
+  const user = await getCurrentUser();
+  if (!user?.id) {
+    throw new Error('Authentication required');
+  }
+
+  try {
     const validatedData = addUserPaymentSchema.parse({
       ...data,
       status: data.status || 'PENDING',
@@ -54,14 +60,15 @@ export async function addUserPayment(data: AddUserPaymentData) {
     return payment;
   } catch (error) {
     const message = 'Error parsing user payment data';
-    const details = getErrorText(error);
-    const comboMsg = [message, details].filter(Boolean).join(': ');
-
-    // eslint-disable-next-line no-console
-    console.error('[addUserPayment]', comboMsg, {
-      error,
-      data,
-    });
+    if (!noDebug) {
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
+      // eslint-disable-next-line no-console
+      console.error('[addUserPayment]', comboMsg, {
+        error,
+        data,
+      });
+    }
     debugger; // eslint-disable-line no-debugger
     throw new Error(message);
   }

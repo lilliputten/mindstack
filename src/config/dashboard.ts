@@ -6,8 +6,10 @@ import {
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   allTopicsRoute,
+  availableCategoriesRoute,
   availableTopicsRoute,
   docsAliasRoute,
+  manageCategoriesRoute,
   myTopicsRoute,
   pricingAliasRoute,
   rootAliasRoute,
@@ -23,6 +25,7 @@ export const dashboardLinks: SidebarNavItem[] = [
   {
     titleId: 'Application',
     items: [
+      { href: availableCategoriesRoute, icon: Icons.Categories, titleId: 'AvailableCategories' },
       { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'AvailableTopics' },
     ],
   },
@@ -30,9 +33,10 @@ export const dashboardLinks: SidebarNavItem[] = [
     titleId: 'MyData',
     authorizedOnly: true,
     items: [
+      { href: manageCategoriesRoute, icon: Icons.Layers, titleId: 'ManageCategories', authorizedOnly: 'ADMIN' },
       { href: myTopicsRoute, icon: Icons.Topics, titleId: 'MyTopics' },
       { href: allTopicsRoute, icon: Icons.AllTopics, titleId: 'AllTopics', authorizedOnly: 'ADMIN' },
-      // Add other data links?
+      // Add other data management links?
     ],
   },
   {

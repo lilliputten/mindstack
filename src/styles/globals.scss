@@ -240,8 +240,9 @@
   // Radix popper overrides...
   [data-radix-popper-content-wrapper] {
     // min-width: auto !important;
-    min-width: var(--radix-popper-anchor-width);
+    min-width: var(--radix-popper-anchor-width) !important;
     max-width: var(--radix-popper-available-width);
+    // max-width: var(--radix-popper-anchor-width);
   }
 }
 
@@ -354,6 +355,14 @@
     cursor: default;
   }
 
+  .single-child {
+    // Forcibely hide all children nodes except the first one.
+    // May help to solve multipe simultaneous parallel slots problem.
+    & > *:not(:first-child) {
+      display: none;
+    }
+  }
+
   .text-content {
     h1,
     h2,
@@ -366,6 +375,7 @@
     ol {
       margin-top: 0.25em;
       margin-bottom: 0.25em;
+      @apply text-truncate;
     }
     h1,
     h2,

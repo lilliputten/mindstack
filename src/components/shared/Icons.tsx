@@ -1,6 +1,16 @@
-// NOTE: See stock icons at: https://lucide.dev/icons/
+/* NOTE: See stock icons at: https://lucide.dev/icons/
 
-// Data definitions: node_modules/lucide-react/dist/lucide-react.d.ts
+Import as:
+
+```
+import * as Icons from '@/components/shared/Icons';
+```
+
+Data definitions at:
+
+node_modules/lucide-react/dist/lucide-react.d.ts
+
+*/
 
 import React from 'react';
 import * as icons from 'lucide-react';
@@ -28,6 +38,7 @@ export const {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  CircleAlert,
   CircleCheck,
   CircleDollarSign,
   CircleUserRound,
@@ -50,9 +61,11 @@ export const {
   Hash,
   Heart,
   Home,
+  ImageIcon,
   Info,
   Languages,
   Laptop,
+  Layers,
   LayoutDashboard,
   Library,
   Lightbulb,
@@ -65,6 +78,7 @@ export const {
   Minus,
   MonitorPlay,
   Moon,
+  MoreHorizontal,
   Package,
   PanelLeft,
   PanelLeftClose,
@@ -90,8 +104,11 @@ export const {
   Star,
   Tags,
   Trash,
+  Undo2,
+  Upload,
   User,
   WandSparkles,
+  X,
   XIcon,
 } = icons;
 
@@ -119,6 +136,7 @@ export const Spinner = icons.Loader2;
 export const Sun = icons.SunMedium;
 export const Topics = icons.Library;
 export const Warning = icons.AlertTriangle;
+export const Categories = icons.Layers;
 
 // Custom icons...
 export const Github: IconType = ({ ...props }: IconProps) => (
