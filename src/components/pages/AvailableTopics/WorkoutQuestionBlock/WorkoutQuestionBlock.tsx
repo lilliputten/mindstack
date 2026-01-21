@@ -8,10 +8,9 @@ import { useT } from '@/i18n';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { WorkoutQuestion } from '@/components/pages/AvailableTopics/WorkoutQuestion/WorkoutQuestion';
 import { PageError } from '@/components/shared/PageError';
-import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
-import { useAvailableAnswers, useGoToTheRoute } from '@/hooks';
+import { useAvailableAnswers } from '@/hooks';
 
 import { WorkoutQuestionBlockSkeleton } from './WorkoutQuestionBlockSkeleton';
 
@@ -24,32 +23,16 @@ export function WorkoutQuestionBlock() {
   const t = useT();
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const {
-    topicId,
+    // topicId,
     workout,
     questionOrderedIds,
     saveResultAndGoNext,
     saveResult,
-    // saveAnswer,
     finishWorkout,
     goNextQuestion,
     goPrevQuestion,
     pending: isWorkoutPending,
   } = useWorkoutContext();
-
-  React.useEffect(() => {
-    console.log('[WorkoutQuestionBlock:Effect:DEBUG]', {
-      isWorkoutPending,
-      topicId,
-      workout,
-      questionOrderedIds,
-    });
-  }, [
-    ///
-    isWorkoutPending,
-    topicId,
-    workout,
-    questionOrderedIds,
-  ]);
 
   const totalSteps = questionOrderedIds.length;
   const stepIndex = workout?.stepIndex || 0;
@@ -57,35 +40,18 @@ export function WorkoutQuestionBlock() {
   const questionId = questionOrderedIds[stepIndex];
   const isExceed = currentStep > totalSteps;
 
-  const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
-
-  const goToTheRoute = useGoToTheRoute();
+  // const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
+  // const goToTheRoute = useGoToTheRoute();
 
   const handleFinishWorkout = React.useCallback(() => {
     finishWorkout();
-    setTimeout(() => {
-      goToTheRoute(workoutRoutePath);
-    }, 10);
-  }, [finishWorkout, goToTheRoute, workoutRoutePath]);
-
-  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST]'), []);
-  // prettier-ignore
-  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:finishWorkout]', finishWorkout), [finishWorkout]);
-  // prettier-ignore
-  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:goToTheRoute]', goToTheRoute), [goToTheRoute]);
-  // prettier-ignore
-  React.useEffect(() => console.log('[WorkoutQuestionBlock:TEST:workoutRoutePath]', workoutRoutePath), [workoutRoutePath]);
+    // setTimeout(() => {
+    //   goToTheRoute(workoutRoutePath);
+    // }, 10);
+  }, [finishWorkout]);
 
   // Effect:Exceed
   React.useEffect(() => {
-    console.log('[WorkoutQuestionBlock:Effect:Exceed]', {
-      isWorkoutPending,
-      memo,
-      handleFinishWorkout,
-      isExceed,
-      currentStep,
-      totalSteps,
-    });
     if (isExceed && !memo.isGoingOut && !isWorkoutPending) {
       const error = new Error(
         `The step index (${currentStep}) exceeds the total steps count (${totalSteps})`,
@@ -95,11 +61,10 @@ export function WorkoutQuestionBlock() {
         totalSteps,
         currentStep,
       });
-      debugger;
-      // handleFinishWorkout();
-      // setTimeout(() => {
-      //   memo.isGoingOut = true;
-      // }, 15000);
+      handleFinishWorkout();
+      setTimeout(() => {
+        memo.isGoingOut = true;
+      }, 1000);
     }
   }, [isWorkoutPending, memo, handleFinishWorkout, isExceed, currentStep, totalSteps]);
 
@@ -148,42 +113,13 @@ export function WorkoutQuestionBlock() {
   const onAnswerSelect = React.useCallback(
     async (answerId: string) => {
       const answer = answers.find(({ id }) => id === answerId);
-      console.log('[WorkoutQuestionBlock:onAnswerSelect] start', {
-        answer,
-        answerId,
-      });
       if (answer) {
         const { isCorrect } = answer;
-        console.log('[WorkoutQuestionBlock:onAnswerSelect] found', {
-          isCorrect,
-          answer,
-          answerId,
-        });
-        debugger;
         // Update workout with result and move to next question
-        // await saveAnswer(answerId);
         await saveResult(isCorrect, answerId);
-        /* // UNUSED: Auto-advance after delay
+        /* // UNUSED: Auto-advance after delay (?)
          * if (isCorrect) {
          *   memo.nextPageTimerHandler = setTimeout(goToTheNextQuestion, 2000);
-         * }
-         */
-        /* // UNUSED: Show explanation toast (it's displayed in the selected answer block)
-         * if (explanation) {
-         *   const markdownContent = (
-         *     <MarkdownText className="text-sm" omitLinks>
-         *       {explanation}
-         *     </MarkdownText>
-         *   );
-         *   const content = (
-         *     <div className="flex flex-col gap-2">
-         *       <p className="font-bold uppercase">
-         *         {isCorrect ? 'The answer is correct:' : 'The answer is incorrect:'}
-         *       </p>
-         *       {markdownContent}
-         *     </div>
-         *   );
-         *   toast.info(content);
          * }
          */
       }

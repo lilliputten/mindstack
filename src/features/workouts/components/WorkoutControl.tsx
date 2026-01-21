@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link } from '@/i18n/routing';
-import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
@@ -21,10 +20,11 @@ import { WorkoutStateDetails } from './WorkoutStateDetails';
 interface TWorkoutControlProps {
   className?: string;
   omitNoWorkoutMessage?: boolean;
+  handleStart?: () => void;
 }
 
 export function WorkoutControl(props: TWorkoutControlProps) {
-  const { className, omitNoWorkoutMessage } = props;
+  const { className, omitNoWorkoutMessage, handleStart } = props;
   const t = useT();
 
   const workoutContext = useWorkoutContext();
@@ -36,36 +36,26 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     finishWorkout,
     questionIds,
   } = workoutContext;
+  const isWorkoutFinished = workout?.finished;
+  const isWorkoutStarted = workout?.started;
   // const isWorkoutInProgress = workout?.started && !workout?.finished;
   const questionsCount = questionIds?.length || 0;
   const allowedTraining = !!questionsCount;
 
   const goToTheRoute = useGoToTheRoute();
   const pathname = usePathname();
-  const workoutRoute = `${availableTopicsRoute}/${topicId}/workout`;
+  const workoutRoute = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
   const isOnWorkoutRoute = comparePathsWithoutLocalePrefix(workoutRoute, pathname);
+  const workoutGoRoute = `${availableTopicsRoute}/${topicId}/workout/go` as TRoutePath;
+  // const isOnWorkoutGoRoute = comparePathsWithoutLocalePrefix(workoutGoRoute, pathname);
 
-  const workoutStatsHistoryQuery = useWorkoutStatsHistory(topicId);
-  const {
-    data: historicalData,
-    isLoading: isHistoricalLoading,
-    isFetched: isHistoricalFetched,
-    // error: historicalError,
-  } = workoutStatsHistoryQuery;
-  const isHistoricalPending = isHistoricalLoading || !isHistoricalFetched;
-  const hasHistoricalData = !!historicalData;
-
-  const handleGoWorkout = () => {
-    // console.log('[WorkoutControl:handleResumeWorkout]');
-    goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
-  };
-
-  /* const handleStartWorkout = () => {
-   *   // console.log('[WorkoutControl:handleStartWorkout]');
-   *   startWorkout();
-   *   setTimeout(handleGoWorkout, 10);
-   * };
-   */
+  const handleGoWorkout = React.useCallback(() => {
+    if (handleStart) {
+      handleStart();
+    } else {
+      goToTheRoute(workoutGoRoute);
+    }
+  }, [goToTheRoute, handleStart, workoutGoRoute]);
 
   if (isWorkoutPending) {
     return (
@@ -102,28 +92,47 @@ export function WorkoutControl(props: TWorkoutControlProps) {
         <WorkoutStateDetails workout={workout} />
       </p>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={handleGoWorkout} variant="theme" className="flex gap-2">
-          <Icons.Activity className="size-4 opacity-50" />
+        <Button onClick={handleGoWorkout} variant="theme" className={cn('flex gap-2')}>
+          <Icons.Rocket className="size-4 opacity-50" />
           <span>
-            {workout.finished
+            {isWorkoutFinished
               ? t('AvailableTopics.RestartTraining')
-              : workout.started
+              : isWorkoutStarted
                 ? t('AvailableTopics.ResumeTraining')
                 : t('AvailableTopics.StartTraining')}
           </span>
         </Button>
-        {!isOnWorkoutRoute &&
-          ((hasHistoricalData && !isHistoricalPending) || workout.started ? (
+        {/*!isOnWorkoutGoRoute && (
+          <Button variant="theme">
+            <Link href={workoutGoRoute} className="flex items-center gap-2">
+              <Icons.LineChart className="size-4 opacity-50" />
+              <span>{t('AvailableTopics.TrainingDetails')}</span>
+            </Link>
+          </Button>
+        )*/}
+        {!isOnWorkoutRoute && (
+          <Button variant="theme">
+            <Link
+              href={workoutRoute}
+              className={cn('flex items-center gap-2', isWorkoutFinished && 'animate-pulse')}
+            >
+              <Icons.Info className="size-4 opacity-50" />
+              <span>{t('AvailableTopics.TrainingInfo')}</span>
+            </Link>
+          </Button>
+        )}
+        {/*!isOnWorkoutRoute &&
+          ((hasHistoricalData && !isHistoricalPending) || isWorkoutStarted ? (
             <Button variant="theme">
-              <Link href={workoutRoute as TRoutePath} className="flex items-center gap-2">
-                <Icons.LineChart className="size-4 opacity-50" />
-                <span>{t('AvailableTopics.TrainingDetails')}</span>
+              <Link href={workoutRoute} className="flex items-center gap-2">
+                <Icons.Info className="size-4 opacity-50" />
+                <span>{t('AvailableTopics.TrainingInfo')}</span>
               </Link>
             </Button>
           ) : isHistoricalPending ? (
             <Skeleton className="h-10 w-40" />
-          ) : null)}
-        {workout.started && !workout.finished && (
+            ) : null)*/}
+        {isWorkoutStarted && !isWorkoutFinished && (
           <Button onClick={finishWorkout} variant="theme" className="flex gap-2">
             <Icons.Flag className="size-4 opacity-50" />
             <span>{t('AvailableTopics.FinishTraining')}</span>

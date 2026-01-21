@@ -9,5 +9,6 @@ export * from './ImageUpload';
 export * from './MaxWidthWrapper';
 export * from './PageError';
 export * from './ScrollableLayout';
+export * from './ShowTimeSince';
 export * from './SuccessSplash';
 export * from './UserAvatar';

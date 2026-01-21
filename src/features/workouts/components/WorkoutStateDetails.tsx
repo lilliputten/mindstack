@@ -1,53 +1,60 @@
 'use client';
 
 import React from 'react';
-import { useFormatter } from 'next-intl';
 
-import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { useT } from '@/i18n';
+import { ShowTimeSince } from '@/components/shared';
 import { TWorkoutData } from '@/features/workouts/types';
 
 export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
-  const format = useFormatter();
   const t = useT();
 
   if (!workout) {
     return <>{t('WorkoutStats.NoWorkoutCreated')}</>;
   }
+
   if (!workout.started || !workout.startedAt) {
     if (workout.finished && workout.finishedAt) {
       return (
         <>
-          {t('WorkoutStats.TrainingIsCompleted')}{' '}
-          {getFormattedRelativeDate(format, workout.finishedAt)} in{' '}
-          {formatSecondsDuration(workout.currentTime || 0)} with a ratio of{' '}
-          {workout.currentRatio || 0}%{' '}
+          {t.rich('WorkoutStats.TrainingCompletedDetails', {
+            FinishedTime: () => <ShowTimeSince date={workout.finishedAt || undefined} />,
+            DurationTime: () => (
+              <ShowTimeSince date={(workout.currentTime || 0) * 1000} timeout={0} />
+            ),
+            ratioPercent: workout.currentRatio || 0,
+          })}{' '}
           <span className="opacity-50">
-            ({workout.correctAnswers || 0} correct of {workout.questionsCount || 0} total answers)
+            (
+            {t('WorkoutStats.ratioDetails', {
+              correctAnswers: workout.correctAnswers || 0,
+              totalAnswers: workout.questionsCount || 0,
+            })}
+            )
           </span>
-          .
         </>
       );
     }
     return <>{t('WorkoutStats.TrainingHasntStarted')}</>;
   }
+
   if (workout.stepIndex) {
     return (
       <>
-        {t('WorkoutStats.TrainingInProgress')}
-        {': '}
-        {t('WorkoutStats.ProgressInfo', {
+        {t.rich('WorkoutStats.ProgressInfo', {
           stepNo: workout.stepIndex + 1,
           stepsCount: workout.questionsCount || 0,
-          startedAt: getFormattedRelativeDate(format, workout.startedAt),
+          StartedAt: () => <ShowTimeSince date={workout.startedAt || undefined} />,
         })}
       </>
     );
   }
+
   return (
     <>
-      {t('WorkoutStats.TrainingReadyToStart')} {getFormattedRelativeDate(format, workout.startedAt)}{' '}
-      and now is ready to start
+      {t.rich('WorkoutStats.TrainingCreatedAndReadyToStart', {
+        CreatedAt: () => <ShowTimeSince date={workout.startedAt || undefined} />,
+      })}
     </>
   );
 }

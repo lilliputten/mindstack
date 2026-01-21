@@ -20,6 +20,7 @@ export const legalTermsRoute = '/legal/terms';
 export const rootCategoriesRoute = '/categories';
 export const availableCategoriesRoute = '/categories/available';
 export const availableTopicsRoute = '/topics/available';
+export const recentTrainingsRoute = '/trainings/recent'
 export const settingsRoute = '/settings';
 
 // 4. User-only allowed routes
@@ -36,6 +37,7 @@ export const pricingChooseRoute = '/pricing/choose';
 
 // 6. Alias routes
 export const rootAliasRoute = '/';
+export const rootTrainingsRoute = '/trainings'; // -> recentTrainingsRoute
 
 // 6.1. Public content routes (without sidebar)
 export const aboutAliasRoute = '/about';
@@ -77,6 +79,7 @@ export const staticRedirects: Redirect[] = [
   { source: userStartAliasRoute, destination: myTopicsRoute, permanent: true },
   { source: startAliasRoute, destination: availableTopicsRoute, permanent: true },
   { source: rootCategoriesRoute, destination: availableCategoriesRoute, permanent: true },
+  { source: rootTrainingsRoute, destination: recentTrainingsRoute, permanent: true },
 ] as const;
 
 export const rewritedRoutes = staticRewrites.map(({ destination }) => destination);
@@ -103,7 +106,9 @@ const allRoutes = [
 
   // 3. Open routes (availale for guests)
   rootCategoriesRoute,
+  rootTrainingsRoute,
   availableCategoriesRoute,
+  recentTrainingsRoute,
   availableTopicsRoute,
   settingsRoute,
 

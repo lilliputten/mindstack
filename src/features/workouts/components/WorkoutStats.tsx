@@ -21,11 +21,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/Table';
+import { ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useSessionData } from '@/hooks';
+
+import { WorkoutStatsSkeleton } from './WorkoutStatsSkeleton';
 
 interface TWorkoutStatsProps {
   className?: string;
@@ -39,6 +42,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const t = useT();
 
   const { user, loading: isUserLoading } = useSessionData();
+  const hasUser = !!user?.id;
 
   const workoutContext = useWorkoutContext();
   const { workout, questionIds, pending: isWorkoutPending, topicId } = workoutContext;
@@ -99,25 +103,16 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   const recentWorkouts = historicalStats.recentWorkouts;
   const hasMoreWorkouts = totalWorkouts !== recentWorkouts.length;
 
-  if (isWorkoutPending || isHistoricalLoading) {
+  const isBusy = isWorkoutPending || isHistoricalLoading;
+
+  if (isBusy) {
     return (
-      <div
+      <WorkoutStatsSkeleton
         className={cn(
           isDev && '__WorkoutStats_Skeleton', // DEBUG
-          'space-y-4',
           className,
         )}
-      >
-        {isDev && (
-          <p className="opacity-50">
-            __WorkoutStats_Skeleton {isWorkoutPending && 'isWorkoutPending'}{' '}
-            {isHistoricalLoading && 'isHistoricalLoading'}
-          </p>
-        )}
-        <Skeleton className="h-32 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-48 w-full" />
-      </div>
+      />
     );
   }
 
@@ -216,15 +211,6 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             <Icons.Activity className="size-4 text-theme" />
             {t('WorkoutStats.RecentTraining')}
           </CardTitle>
-          {/*
-          <CardDescription>
-            {isWorkoutInProgress
-              ? 'Training in progress'
-              : isWorkoutCompleted
-                ? 'Training completed'
-                : 'No active training'}
-          </CardDescription>
-          */}
         </CardHeader>
         <CardContent className="space-y-4">
           {isWorkoutInProgress && (
@@ -295,7 +281,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm text-muted-foreground">{t('WorkoutStats.TotalTime')}</p>
                   <p className="text-2xl font-bold">
-                    {formatSecondsDuration(workout.currentTime || 0)}
+                    <ShowTimeSince date={(workout.currentTime || 0) * 1000} timeout={0} />
                   </p>
                 </div>
               </div>
@@ -303,8 +289,9 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex items-center gap-2">
                   <Icons.CircleCheck className="size-4 text-green-500" />
                   <span className="text-sm text-muted-foreground">
-                    {t('WorkoutStats.Completed')}{' '}
-                    {getFormattedRelativeDate(format, workout.finishedAt || new Date())}
+                    {t.rich('WorkoutStats.CompletedDetails', {
+                      FinishedTime: () => <ShowTimeSince date={workout.finishedAt || undefined} />,
+                    })}
                   </span>
                 </div>
               )}
@@ -351,25 +338,30 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   };
 
   const renderHistoricalStats = () => {
-    if (!full) return null;
+    if (!full || !hasUser) return null;
 
-    // Show empty state when no historical data
-    if (totalWorkouts === 0) {
-      return (
-        <Card
-          className={cn(
-            isDev && '__WorkoutStats_HistoricalStats_NoTotal', // DEBUG
-          )}
-        >
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icons.LineChart className="size-4 text-theme" />
-              {t('WorkoutStats.HistoricalPerformance')}
-            </CardTitle>
-            <CardDescription>{t('WorkoutStats.YourLearningProgressOverTime')}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="__py-8 text-center">
+    return (
+      <Card
+        className={cn(
+          isDev && '__WorkoutStats_HistoricalStats', // DEBUG
+        )}
+      >
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Icons.LineChart className="size-4 text-theme" />
+            {t('WorkoutStats.HistoricalPerformance')}
+          </CardTitle>
+          <CardDescription>{t('WorkoutStats.YourLearningProgress')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {!totalWorkouts ? (
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_HistoricalStats_NoStats', // DEBUG
+                'text-center',
+              )}
+            >
+              {/* Show empty state if no historical data */}
               <Icons.Activity className="mx-auto mb-4 size-8 text-theme" />
               <h3 className="mb-2 text-lg font-semibold">
                 {t('WorkoutStats.NoTrainingHistoryYet')}
@@ -387,51 +379,34 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 </ul>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      );
-    }
-
-    return (
-      <Card
-        className={cn(
-          isDev && '__WorkoutStats__HistoricalStats_WithTotal', // DEBUG
-        )}
-      >
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Icons.LineChart className="size-4 text-theme" />
-            {t('WorkoutStats.HistoricalPerformance')}
-          </CardTitle>
-          <CardDescription>{t('WorkoutStats.YourLearningProgress')}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Key Metrics */}
-          <div
-            className={cn(
-              isDev && '__WorkoutStats_KeyMetrics', // DEBUG
-              'flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-4',
-            )}
-          >
-            <div className="space-y-1 text-center">
-              <p className="text-2xl font-bold">{totalWorkouts}</p>
-              <p className="text-sm text-muted-foreground">{t('WorkoutStats.TotalTrainings')}</p>
+          ) : (
+            <div
+              className={cn(
+                isDev && '__WorkoutStats_HistoricalStats_KeyMetrics', // DEBUG
+                'flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-4',
+              )}
+            >
+              {/* Key Metrics */}
+              <div className="space-y-1 text-center">
+                <p className="text-2xl font-bold">{totalWorkouts}</p>
+                <p className="text-sm text-muted-foreground">{t('WorkoutStats.TotalTrainings')}</p>
+              </div>
+              <div className="space-y-1 text-center">
+                <p className="text-2xl font-bold">{historicalStats.averageAccuracy}%</p>
+                <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgAccuracy')}</p>
+              </div>
+              <div className="space-y-1 text-center">
+                <p className="text-2xl font-bold">
+                  {formatSecondsDuration(historicalStats.averageTime)}
+                </p>
+                <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgTime')}</p>
+              </div>
+              <div className="space-y-1 text-center">
+                <p className="text-2xl font-bold">{historicalStats.streak}</p>
+                <p className="text-sm text-muted-foreground">{t('WorkoutStats.DayStreak')}</p>
+              </div>
             </div>
-            <div className="space-y-1 text-center">
-              <p className="text-2xl font-bold">{historicalStats.averageAccuracy}%</p>
-              <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgAccuracy')}</p>
-            </div>
-            <div className="space-y-1 text-center">
-              <p className="text-2xl font-bold">
-                {formatSecondsDuration(historicalStats.averageTime)}
-              </p>
-              <p className="text-sm text-muted-foreground">{t('WorkoutStats.AvgTime')}</p>
-            </div>
-            <div className="space-y-1 text-center">
-              <p className="text-2xl font-bold">{historicalStats.streak}</p>
-              <p className="text-sm text-muted-foreground">{t('WorkoutStats.DayStreak')}</p>
-            </div>
-          </div>
+          )}
 
           {/* Performance Badges */}
           <div

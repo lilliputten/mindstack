@@ -250,7 +250,8 @@
     "ResumeTraining": "Продолжить тренировку",
     "StartNewTraining": "Начать новую тренировку",
     "StartTraining": "Начать тренировку",
-    "TrainingDetails": "Детали тренировки"
+    "TrainingDetails": "Детали тренировки",
+    "TrainingInfo": "Показать информацию о тренировке"
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Игнорировать",
@@ -1353,7 +1354,7 @@
     "AvgTimePerQuestion": "Ср. время/вопрос",
     "BestAccuracy": "Лучшая точность",
     "CompleteFirstWorkoutToStartTracking": "Пройдите первую тренировку, чтобы начать отслеживать свой прогресс и увидеть подробную аналитику.",
-    "Completed": "Завершено",
+    "CompletedDetails": "Завершено <FinishedTime></FinishedTime> назад",
     "CompletionTimeIsGettingFaster": "Ваше время выполнения уменьшается! Продолжайте в том же духе.",
     "ConsistencyChampion": "Чемпион последовательности",
     "ConsistentPerformance": "Последовательная производительность",
@@ -1364,7 +1365,7 @@
     "Displaying": "Отображается",
     "FailedToLoadHistoricalData": "Ошибка загрузки исторических данных",
     "FinalAccuracy": "Итоговая точность",
-    "GuestUsersCannotSeeHistory": "Гостевые пользователи не могут видеть свою историю тренировок",
+    "GuestUsersCannotSeeHistory": "Неавторизованные пользователи не могут видеть свою историю тренировок",
     "HistoricalPerformance": "Историческая производительность",
     "ImprovingSpeed": "Улучшение скорости",
     "KeepItUp": "Продолжайте!",
@@ -1381,7 +1382,7 @@
     "PleaseSignIn": "Вам нужно",
     "PleaseTryAgainLater": "Пожалуйста, попробуйте позже.",
     "Progress": "Прогресс",
-    "ProgressInfo": "{stepNo} из {stepsCount}, начато {startedAt}",
+    "ProgressInfo": "Ваша тренировка в процессе: {stepNo} из {stepsCount}, начата <StartedAt></StartedAt>",
     "Questions": "Вопросы",
     "ReadyForNextWorkout": "Готов к следующей тренировке",
     "RecentPerformance": "Недавние результаты",
@@ -1399,21 +1400,21 @@
     "TimeElapsed": "Прошло времени",
     "TotalTime": "Общее время",
     "TotalTrainings": "Всего тренировок",
+    "TrainingCompletedDetails": "Тренировка завершилась <FinishedTime></FinishedTime> назад за <DurationTime></DurationTime> с коэффициентом {ratioPercent}%",
+    "TrainingCreatedAndReadyToStart": "Тренировка создана",
     "TrainingHasntStarted": "Тренировка еще не началась",
-    "TrainingInProgress": "Ваша тренировка в процессе",
-    "TrainingIsCompleted": "Тренировка завершена",
-    "TrainingReadyToStart": "Тренировка создана",
     "WhatYoullSeeAfter": "Что вы увидите после первой тренировки",
     "YourLearningProgress": "Ваш прогресс в обучении с течением времени",
     "YourLearningProgressOverTime": "Ваш прогресс в обучении с течением времени",
     "YourProgress": "Ваш прогресс",
     "lastResults": "последних результатов из общего количества",
+    "ratioDetails": "правильных ответов: {correctAnswers} из {totalAnswers}",
     "signIn": "войти",
     "toViewYourStatistics": "чтобы посмотреть свою статистику."
   },
   "WorkoutTopic": {
     "Training": "Тренировка",
-    "TrainingAlreadyCompleted": "Тренировка уже завершена.",
+    "TrainingAlreadyCompleted": "Тренировка завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
   },
   "YookassaPayment": {

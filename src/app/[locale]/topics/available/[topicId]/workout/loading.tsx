@@ -1,5 +1,5 @@
-import { ContentSkeleton } from './ContentSkeleton';
+import { PageSkeleton } from './ContentSkeleton';
 
 export default function AvailableTopicsListLoading() {
-  return <ContentSkeleton className="p-6" />;
+  return <PageSkeleton />;
 }

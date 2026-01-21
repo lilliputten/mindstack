@@ -6,7 +6,6 @@ import { truncateMarkdown } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
@@ -35,8 +34,8 @@ export function WorkoutTopic(props: TPropsWithClassName) {
     // topic,
     // userId,
     workout,
-    // pending,
-    // startWorkout,
+    // pending: isWorkoutPending,
+    startWorkout,
     questionIds,
     // topic,
   } = workoutContext;
@@ -67,6 +66,12 @@ export function WorkoutTopic(props: TPropsWithClassName) {
   const handleResumeWorkout = React.useCallback(() => {
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
   }, [goToTheRoute, topicId]);
+
+  const handleStart = React.useCallback(() => {
+    startWorkout().then(() => {
+      handleResumeWorkout();
+    });
+  }, [startWorkout, handleResumeWorkout]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -128,53 +133,32 @@ export function WorkoutTopic(props: TPropsWithClassName) {
 
   const content =
     isTopicPending || !topic ? (
-      <ContentSkeleton omitHeader />
+      <ContentSkeleton />
     ) : (
-      <Card
+      <ScrollArea
         className={cn(
-          isDev && '__WorkoutTopic_Card', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden py-6',
+          isDev && '__WorkoutTopic_Scroll', // DEBUG
           className,
         )}
+        viewportClassName={cn(
+          isDev && '__WorkoutTopic_ScrollViewport', // DEBUG
+          'flex flex-col flex-1',
+          'px-6 [&>div]:!flex [&>div]:flex-col [&>div]:gap-6 [&>div]:flex-1',
+        )}
       >
-        <ScrollArea
+        <TopicHeader
+          scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
+          topic={topic}
           className={cn(
-            isDev && '__WorkoutTopic_Scroll', // DEBUG
+            isDev && '__WorkoutTopic_TopicHeader', // DEBUG
+            'flex-1 items-start max-sm:flex-col-reverse',
           )}
-          viewportClassName={cn(
-            isDev && '__WorkoutTopic_ScrollViewport', // DEBUG
-            'flex flex-col flex-1',
-            'px-6 [&>div]:!flex [&>div]:flex-col [&>div]:gap-6 [&>div]:flex-1',
-          )}
-        >
-          <CardHeader
-            className={cn(
-              isDev && '__WorkoutTopic_CardHeader', // DEBUG
-              'item-start flex flex-col gap-6 p-0',
-            )}
-          >
-            <TopicHeader
-              scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
-              topic={topic}
-              className={cn(
-                isDev && '__WorkoutTopic_TopicHeader', // DEBUG
-                'flex-1 items-start max-sm:flex-col-reverse',
-              )}
-              showName={false}
-              showDescription
-            />
-          </CardHeader>
-          <CardContent
-            className={cn(
-              isDev && '__WorkoutTopic_Content', // DEBUG
-              'relative flex flex-1 flex-col gap-4 overflow-hidden px-0 pb-0',
-            )}
-          >
-            <WorkoutStats full />
-            <WorkoutControl omitNoWorkoutMessage />
-          </CardContent>
-        </ScrollArea>
-      </Card>
+          showName={false}
+          showDescription
+        />
+        <WorkoutStats full />
+        <WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />
+      </ScrollArea>
     );
 
   return (

@@ -87,6 +87,7 @@ export const {
   Pencil,
   Play,
   Plus,
+  Rocket,
   Rows3,
   Save,
   Search,

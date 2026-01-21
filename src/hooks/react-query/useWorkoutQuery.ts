@@ -171,44 +171,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
   const workout = isOffline || !query.data ? localWorkout : query.data;
   memo.workout = workout;
 
-  // console.log('[useWorkoutQuery:DEBUG:XXX]', {
-  //   // query,
-  //   isTopicReady,
-  //   isWorkoutReady,
-  //   isWorkoutPending,
-  //   localInitialized,
-  // });
-
-  // Effect:DEBUG
-  React.useEffect(() => {
-    console.log('[useWorkoutQuery:Effect:DEBUG]', {
-      workout,
-      isOffline,
-      enabled,
-      preparing,
-      questionIds,
-      isQuestionIdsPending,
-      questionIdsQuery,
-      topic,
-      isWorkoutPending,
-      isTopicLoading,
-      isTopicFetched,
-    });
-  }, [
-    ///
-    workout,
-    isOffline,
-    enabled,
-    preparing,
-    topic,
-    questionIds,
-    isQuestionIdsPending,
-    questionIdsQuery,
-    isWorkoutPending,
-    isTopicLoading,
-    isTopicFetched,
-  ]);
-
   const questionOrderedIds = React.useMemo(
     () => (workout?.questionsOrder ? workout?.questionsOrder.split(' ') : []),
     [workout?.questionsOrder],
@@ -225,12 +187,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
         return;
       }
       const updatedData = memo.workout ? { ...memo.workout, ...data } : (data as TWorkoutData);
-      console.log('[useWorkoutQuery:updateWorkoutData] start', {
-        updatedData,
-        memo,
-        data,
-      });
-      debugger;
       // Always save to IndexedDB
       await saveWorkoutToDB(topicId, updatedData);
       setLocalWorkout(updatedData);
@@ -248,16 +204,13 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
             queryClient.setQueryData(queryKey, serverData);
           }
         } catch (error) {
+          const message = 'Failed to update workout on server';
           // eslint-disable-next-line no-console
-          console.error(
-            '[useWorkoutQuery:updateWorkoutData]',
-            'Failed to update workout on server',
-            {
-              error,
-              topicId,
-              data,
-            },
-          );
+          console.error('[useWorkoutQuery:updateWorkoutData]', message, {
+            error,
+            topicId,
+            data,
+          });
           debugger; // eslint-disable-line no-debugger
           toast.error(t('Workout.FailedToSaveWorkout'));
         }
@@ -284,23 +237,11 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       startedAt: now,
       finishedAt: now,
     };
-    console.log('[useWorkoutQuery:createNewWorkoutData]', {
-      questionsOrder,
-      questionIds,
-      now,
-      newWorkout,
-      memo,
-    });
-    // debugger;
     return newWorkout;
   }, [memo]);
 
   const createWorkout = React.useCallback(() => {
     const newWorkout = createNewWorkoutData();
-    /* console.log('[useWorkoutQuery:createWorkout]', {
-     *   newWorkout,
-     * });
-     */
     return updateWorkoutData(newWorkout);
   }, [createNewWorkoutData, updateWorkoutData]);
 
@@ -320,10 +261,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       currentTime: 0, // Current time remained to thefinish, in seconds (if finished)
       correctAnswers: 0, // Current correct answers count (if finished)
     };
-    console.log('[useWorkoutQuery:startWorkout]', {
-      updatedWorkout,
-    });
-    // debugger;
     return updateWorkoutData(updatedWorkout);
   }, [createNewWorkoutData, memo.workout, updateWorkoutData]);
 
@@ -381,10 +318,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       currentTime,
       currentRatio,
     };
-    /* console.log('[useWorkoutQuery:finishWorkout]', {
-     *   updateData,
-     * });
-     */
 
     return updateWorkoutData(updateData);
   }, [memo, questionIds, updateWorkoutData, topicId, userId, queryClient]);
@@ -396,10 +329,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       stepIndex: newStepIndex,
       selectedAnswerId: '',
     };
-    /* console.log('[useWorkoutQuery:goPrevQuestion]', {
-     *   updateData,
-     * });
-     */
     return updateWorkoutData(updateData);
   }, [memo, updateWorkoutData]);
 
@@ -414,10 +343,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       stepIndex: stepIndex + 1,
       selectedAnswerId: '',
     };
-    /* console.log('[useWorkoutQuery:goNextQuestion]', {
-     *   updateData,
-     * });
-     */
     return updateWorkoutData(updateData);
   }, [memo, questionIds, finishWorkout, updateWorkoutData]);
 
@@ -438,37 +363,27 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       if (selectedAnswerId) {
         updateData.selectedAnswerId = selectedAnswerId;
       }
-      console.log('[useWorkoutQuery:saveResult]', {
-        updateData,
-      });
-      debugger;
       return updateWorkoutData(updateData);
     },
     [memo, updateWorkoutData],
   );
 
-  const saveAnswer = React.useCallback(
-    (selectedAnswerId?: string) => {
-      const updateData: Partial<TWorkoutData> = {
-        selectedAnswerId: selectedAnswerId || '',
-      };
-      console.log('[useWorkoutQuery:saveAnswer]', {
-        updateData,
-      });
-      // debugger;
-      return updateWorkoutData(updateData);
-    },
-    [updateWorkoutData],
-  );
+  /* // UNUSED
+   * const saveAnswer = React.useCallback(
+   *   (selectedAnswerId?: string) => {
+   *     const updateData: Partial<TWorkoutData> = {
+   *       selectedAnswerId: selectedAnswerId || '',
+   *     };
+   *     return updateWorkoutData(updateData);
+   *   },
+   *   [updateWorkoutData],
+   * );
+   */
 
   const saveResultAndGoNext = React.useCallback(
-    (result: boolean | undefined) => {
-      /* console.log('[useWorkoutQuery:saveResultAndGoNext]', {
-       *   result,
-       * });
-       */
-      saveResult(result);
-      goNextQuestion();
+    async (result: boolean | undefined) => {
+      await saveResult(result);
+      await goNextQuestion();
     },
     [saveResult, goNextQuestion],
   );
@@ -491,7 +406,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       goPrevQuestion,
       goNextQuestion,
       saveResult,
-      saveAnswer,
       saveResultAndGoNext,
       updateWorkoutData,
       ...query,
@@ -512,7 +426,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       goPrevQuestion,
       goNextQuestion,
       saveResult,
-      saveAnswer,
       saveResultAndGoNext,
       updateWorkoutData,
       query,

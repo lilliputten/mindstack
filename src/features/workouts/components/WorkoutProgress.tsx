@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Progress } from '@/components/ui/Progress';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { ShowTimeSince } from '@/components/shared';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 
@@ -14,6 +15,7 @@ export function WorkoutProgress() {
   const workoutContext = useWorkoutContext();
   const { workout, pending, questionIds } = workoutContext;
   const totalSteps = questionIds?.length || 0;
+  const startedAt = workout?.startedAt;
   const stepIndex = workout?.stepIndex || 0;
   const currentStep = stepIndex + 1;
   const selectedAnswerId = workout?.selectedAnswerId;
@@ -44,19 +46,6 @@ export function WorkoutProgress() {
     });
   }, [currentStep, resultsUnpacked, selectedAnswerId]);
 
-  console.log('[WorkoutProgress:DEBUG]', {
-    indicatorClassNames,
-    selectedAnswerId,
-    resultsUnpacked,
-    questionResults,
-    progress,
-    values,
-    workout,
-    pending,
-    questionIds,
-    workoutContext,
-  });
-
   if (pending) {
     return (
       <div
@@ -72,11 +61,17 @@ export function WorkoutProgress() {
   }
 
   return (
-    <div data-testid="__WorkoutProgress" className="space-y-2">
+    <div
+      data-testid="__WorkoutProgress"
+      className={cn(
+        isDev && '__WorkoutProgress', // DEBUG
+        'space-y-2',
+      )}
+    >
       <div
         className={cn(
-          isDev && '__WorkoutProgress', // DEBUG
-          'flex justify-between text-sm text-muted-foreground',
+          isDev && '__WorkoutProgress_Info', // DEBUG
+          'flex justify-between gap-4 text-sm text-muted-foreground',
         )}
       >
         <span>
@@ -85,7 +80,21 @@ export function WorkoutProgress() {
             totalSteps: totalSteps || 0,
           })}
         </span>
-        <span>{Math.round(progress)}%</span>
+        <span
+          className={cn(
+            isDev && '__WorkoutProgress_Info_Right', // DEBUG
+            'flex gap-4',
+          )}
+        >
+          <ShowTimeSince
+            className={cn(
+              isDev && '__WorkoutProgress_Info_Time', // DEBUG
+              'opacity-50',
+            )}
+            date={startedAt || undefined}
+          />
+          <span>{Math.round(progress)}%</span>
+        </span>
       </div>
       <Progress
         value={progress}

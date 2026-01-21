@@ -250,7 +250,8 @@
     "ResumeTraining": "Reanudar Entrenamiento",
     "StartNewTraining": "Iniciar Nuevo Entrenamiento",
     "StartTraining": "Iniciar Entrenamiento",
-    "TrainingDetails": "Detalles del Entrenamiento"
+    "TrainingDetails": "Detalles del Entrenamiento",
+    "TrainingInfo": "Mostrar información de formación"
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Ignorar",
@@ -1352,7 +1353,7 @@
     "AvgTimePerQuestion": "Tiempo Prom/Pregunta",
     "BestAccuracy": "Mejor Precisión",
     "CompleteFirstWorkoutToStartTracking": "Completa tu primer entrenamiento para comenzar a hacer seguimiento de tu progreso y ver análisis detallados.",
-    "Completed": "Completado",
+    "CompletedDetails": "Completado hace <FinishedTime></FinishedTime>",
     "CompletionTimeIsGettingFaster": "¡Tu tiempo de completar está disminuyendo! Sigue con el buen trabajo.",
     "ConsistencyChampion": "Campeón de Consistencia",
     "ConsistentPerformance": "Rendimiento Consistente",
@@ -1380,7 +1381,7 @@
     "PleaseSignIn": "Tienes que",
     "PleaseTryAgainLater": "Por favor, inténtalo de nuevo más tarde.",
     "Progress": "Progreso",
-    "ProgressInfo": "{stepNo} de {stepsCount}, iniciado el {startedAt}",
+    "ProgressInfo": "Su entrenamiento está en progreso: {stepNo} de {stepsCount}, iniciado <StartedAt></StartedAt>",
     "Questions": "Preguntas",
     "ReadyForNextWorkout": "Listo para tu próximo entrenamiento",
     "RecentPerformance": "Rendimiento Reciente",
@@ -1398,21 +1399,21 @@
     "TimeElapsed": "Tiempo Transcurrido",
     "TotalTime": "Tiempo Total",
     "TotalTrainings": "Entrenamientos Totales",
+    "TrainingCompletedDetails": "El entrenamiento se completó hace <FinishedTime></FinishedTime> en <DurationTime></DurationTime> con una proporción de {ratioPercent}%",
+    "TrainingCreatedAndReadyToStart": "El entrenamiento ha sido creado",
     "TrainingHasntStarted": "El entrenamiento aún no ha comenzado",
-    "TrainingInProgress": "Tu entrenamiento está en progreso",
-    "TrainingIsCompleted": "El entrenamiento está completado",
-    "TrainingReadyToStart": "El entrenamiento ha sido creado",
     "WhatYoullSeeAfter": "Lo que verás después de tu primer entrenamiento",
     "YourLearningProgress": "Tu progreso de aprendizaje a lo largo del tiempo",
     "YourLearningProgressOverTime": "Tu progreso de aprendizaje a lo largo del tiempo",
     "YourProgress": "Tu Progreso",
     "lastResults": "últimos resultados de un total de",
+    "ratioDetails": "{correctAnswers} correctas del total de {totalAnswers} respuestas",
     "signIn": "iniciar sesión",
     "toViewYourStatistics": "para ver tus estadísticas."
   },
   "WorkoutTopic": {
     "Training": "Entrenamiento",
-    "TrainingAlreadyCompleted": "El entrenamiento ya está completado.",
+    "TrainingAlreadyCompleted": "La formación está completa.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
   },
   "YookassaPayment": {

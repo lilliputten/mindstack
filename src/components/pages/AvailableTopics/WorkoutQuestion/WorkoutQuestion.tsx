@@ -76,7 +76,7 @@ export function WorkoutQuestion({
             onClick={() => !selectedAnswer && onAnswerSelect(answer.id)}
             disabled={!!selectedAnswer}
             className={cn(
-              isDev && '__WorkoutQuestion_Answer',
+              isDev && '__WorkoutQuestion_Answer', // DEBUG
               'flex w-full items-center justify-between gap-4 rounded-lg border p-4 text-left transition',
               'hover:bg-theme-500/15 hover:text-accent-foreground',
               selectedAnswer && 'pointer-events-none',
@@ -121,7 +121,13 @@ export function WorkoutQuestion({
 
   const questionContent = React.useMemo(
     () => (
-      <div data-testid="__WorkoutQuestion_Content" className="flex flex-col gap-4">
+      <div
+        data-testid="__WorkoutQuestion_Content"
+        className={cn(
+          isDev && '__WorkoutQuestion_Content', // DEBUG
+          'flex flex-col gap-4',
+        )}
+      >
         <MarkdownText className="text-lg">{questionText}</MarkdownText>
         {/* Answers */}
         <div
@@ -141,13 +147,18 @@ export function WorkoutQuestion({
 
   const actionsContent = React.useMemo(
     () => (
-      <div className="flex justify-center gap-2">
+      <div
+        className={cn(
+          isDev && '__WorkoutQuestion_Actions', // DEBUG
+          'flex justify-center gap-2',
+        )}
+      >
         {/* Back Button */}
         {currentStep > 1 && (
           <Button
             data-testid="__WorkoutQuestion_Skip_Button"
             className={cn('gap-2')}
-            variant="ghost"
+            variant="outline"
             onClick={goPrevQuestion}
           >
             <Icons.ArrowLeft className="size-5 opacity-50" />
@@ -159,7 +170,7 @@ export function WorkoutQuestion({
             <Button
               data-testid="__WorkoutQuestion_Skip_Button"
               className={cn(selectedAnswer?.isCorrect && 'animate-pulse', 'gap-2')}
-              variant="theme"
+              variant={selectedAnswer ? 'theme' : 'outline'}
               onClick={onContinue}
             >
               <Icons.ArrowRight className="size-5 opacity-50" />
@@ -172,7 +183,7 @@ export function WorkoutQuestion({
                 <Button
                   data-testid="__WorkoutQuestion_Skip_Button"
                   className="gap-2"
-                  variant="ghost"
+                  variant="outline"
                   onClick={onSkip}
                 >
                   <Icons.ArrowRight className="size-5 opacity-50" />
@@ -186,10 +197,10 @@ export function WorkoutQuestion({
           data-testid="__WorkoutQuestion_Finish_Button"
           className={cn(
             'gap-2',
-            isFinished && selectedAnswer?.isCorrect && 'animate-pulse',
+            isFinished && 'animate-pulse',
             // selectedAnswer && 'disabled',
           )}
-          variant={isFinished && selectedAnswer ? 'theme' : 'ghost'}
+          variant={isFinished && selectedAnswer ? 'theme' : 'outline'}
           onClick={onFinish}
         >
           <Icons.Flag className="size-5 opacity-50" />

@@ -251,7 +251,8 @@
     "ResumeTraining": "Resume Training",
     "StartNewTraining": "Start New Training",
     "StartTraining": "Start Training",
-    "TrainingDetails": "Training Details"
+    "TrainingDetails": "Training Details",
+    "TrainingInfo": "Show Trainig Info"
   },
   "AvailableTopicsFilterTexts": {
     "Ignore": "Ignore",
@@ -1358,7 +1359,7 @@
     "AvgTimePerQuestion": "Avg Time/Question",
     "BestAccuracy": "Best Accuracy",
     "CompleteFirstWorkoutToStartTracking": "Complete your first workout to start tracking your progress and see detailed analytics.",
-    "Completed": "Completed",
+    "CompletedDetails": "Completed <FinishedTime></FinishedTime> ago",
     "CompletionTimeIsGettingFaster": "Your completion time is getting faster! Keep up the great work.",
     "ConsistencyChampion": "Consistency Champion",
     "ConsistentPerformance": "Consistent Performance",
@@ -1386,7 +1387,7 @@
     "PleaseSignIn": "You have to",
     "PleaseTryAgainLater": "Please try again later.",
     "Progress": "Progress",
-    "ProgressInfo": "{stepNo} of {stepsCount}, started on {startedAt}",
+    "ProgressInfo": "Your workout is in progress: {stepNo} of {stepsCount}, started <StartedAt></StartedAt>",
     "Questions": "Questions",
     "ReadyForNextWorkout": "Ready for your next workout",
     "RecentPerformance": "Recent Performance",
@@ -1404,21 +1405,21 @@
     "TimeElapsed": "Time Elapsed",
     "TotalTime": "Total Time",
     "TotalTrainings": "Total Trainings",
+    "TrainingCompletedDetails": "The workout has completed <FinishedTime></FinishedTime> ago in <DurationTime></DurationTime> with a ratio of {ratioPercent}%",
+    "TrainingCreatedAndReadyToStart": "The workout has been created <CreatedAt></CreatedAt> and now is ready to start",
     "TrainingHasntStarted": "Training hasn't been started yet",
-    "TrainingInProgress": "Your workout is in progress",
-    "TrainingIsCompleted": "The workout is completed",
-    "TrainingReadyToStart": "The workout has been created",
     "WhatYoullSeeAfter": "What you'll see after your first workout",
     "YourLearningProgress": "Your learning progress over time",
     "YourLearningProgressOverTime": "Your learning progress over time",
     "YourProgress": "Your Progress",
     "lastResults": "last results out of total",
+    "ratioDetails": "{correctAnswers} correct of {totalAnswers} total answers",
     "signIn": "sign in",
     "toViewYourStatistics": "to view your statistics."
   },
   "WorkoutTopic": {
     "Training": "Training",
-    "TrainingAlreadyCompleted": "The training is already completed.",
+    "TrainingAlreadyCompleted": "The training is completed.",
     "TrainingIsStarting": "The training is starting..."
   },
   "YookassaPayment": {
