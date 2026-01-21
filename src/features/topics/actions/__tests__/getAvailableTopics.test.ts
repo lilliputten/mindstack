@@ -243,10 +243,17 @@ describe('getAvailableTopics', () => {
         data: { userId: user1.id, topicId: t1.id },
       });
       [w1].forEach(({ userId, topicId }) => createdIds.push({ type: 'workout', userId, topicId }));
-      mockedGetCurrentUser.mockResolvedValue(undefined);
+      mockedGetCurrentUser.mockResolvedValue(user1 as TUser);
       const { items } = await getAvailableTopics({ includeWorkout: true, noDebug: true });
       expect(items[0].userTopicWorkout).toBeDefined();
       expect(items[0].userTopicWorkout).not.toBeFalsy();
+      // Verify that only the current user's workouts are returned
+      if (items[0].userTopicWorkout) {
+        expect(items[0].userTopicWorkout.length).toBeGreaterThan(0);
+        items[0].userTopicWorkout.forEach((workout) => {
+          expect(workout.userId).toBe(user1.id);
+        });
+      }
     } finally {
       await cleanupDb(createdIds);
     }

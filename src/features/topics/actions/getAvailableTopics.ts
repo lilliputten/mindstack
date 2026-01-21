@@ -59,6 +59,7 @@ export async function getAvailableTopics(
   }
   const user: ExtendedUser | undefined = await getCurrentUser();
   const userId = user?.id;
+  const isUser = !!userId;
   const isAdmin = user?.role === 'ADMIN';
 
   // Data to pass to prisma
@@ -90,8 +91,16 @@ export async function getAvailableTopics(
     if (includeQuestions) {
       include.questions = true;
     }
-    if (includeWorkout) {
-      include.userTopicWorkout = { select: IncludedUserTopicWorkoutSelect };
+    if (includeWorkout && isUser) {
+      // Only include user's workouts if not admin
+      if (isAdmin) {
+        include.userTopicWorkout = { select: IncludedUserTopicWorkoutSelect };
+      } else {
+        include.userTopicWorkout = {
+          where: { userId },
+          select: IncludedUserTopicWorkoutSelect,
+        };
+      }
     }
     if (includeStats) {
       include.workoutStats = { select: IncludedStatsSelect };
@@ -142,9 +151,17 @@ export async function getAvailableTopics(
     // Filter by active workouts
     if (hasActiveWorkouts !== undefined) {
       if (hasActiveWorkouts) {
-        where.userTopicWorkout = { some: { started: true, finished: false } };
+        if (isAdmin) {
+          where.userTopicWorkout = { some: { started: true, finished: false } };
+        } else {
+          where.userTopicWorkout = { some: { userId, started: true, finished: false } };
+        }
       } else {
-        where.userTopicWorkout = { none: { started: true, finished: false } };
+        if (isAdmin) {
+          where.userTopicWorkout = { none: { started: true, finished: false } };
+        } else {
+          where.userTopicWorkout = { none: { userId, started: true, finished: false } };
+        }
       }
     }
     // Filter by questions existence
