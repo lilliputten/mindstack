@@ -20,7 +20,7 @@ export const legalTermsRoute = '/legal/terms';
 export const rootCategoriesRoute = '/categories';
 export const availableCategoriesRoute = '/categories/available';
 export const availableTopicsRoute = '/topics/available';
-export const recentTrainingsRoute = '/trainings/recent'
+export const recentTrainingsRoute = '/trainings/recent';
 export const settingsRoute = '/settings';
 
 // 4. User-only allowed routes
