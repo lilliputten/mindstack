@@ -9,6 +9,9 @@ export const fieldUnionStrings = {
 };
 
 export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<string, string>>> = {
+  adminMode: {
+    true: 'AdminMode',
+  },
   hasWorkoutStats: {
     true: 'WithStats',
     false: 'WithoutStats',

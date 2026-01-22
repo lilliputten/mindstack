@@ -16,6 +16,7 @@ import {
 
 interface TWorkoutsFiltersContextValue {
   form: ReturnType<typeof useForm<TFiltersData>>;
+  filtersParams: TAvailableWorkoutsFiltersParams;
   filtersData: TFiltersData;
   onDefaults: boolean;
   isSubmitEnabled: boolean;
@@ -52,9 +53,11 @@ interface TWorkoutsFiltersContextProviderProps extends TPropsWithChildren {
 export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextProviderProps) {
   const { children, storageKey = 'workouts-filters', onFiltersChanged } = props;
 
-  const [isExpanded, setIsExpanded] = React.useState(false);
+  const [isExpanded, setExpanded] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  const [filtersParams, setFiltersParams] = React.useState<TAvailableWorkoutsFiltersParams>({});
 
   const [storedFilters, setStoredFilters] = useLocalStorage<TFiltersData>(
     storageKey,
@@ -106,7 +109,10 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       try {
         setStoredFilters(data);
         form.reset(data);
-        onFiltersChanged?.(getFiltersParams());
+        const filtersParams = getFiltersParams();
+        setFiltersParams(filtersParams);
+        onFiltersChanged?.(filtersParams);
+        setExpanded(false);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
         setError(errorMessage);
@@ -120,6 +126,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
   const handleResetToDefaults = React.useCallback(() => {
     form.reset(filtersDataDefaults);
     setStoredFilters(filtersDataDefaults);
+    setFiltersParams({});
     onFiltersChanged?.({});
   }, [form, onFiltersChanged, setStoredFilters]);
 
@@ -128,11 +135,11 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
   }, [form, storedFilters]);
 
   const toggleFilters = React.useCallback(() => {
-    setIsExpanded((prev) => !prev);
+    setExpanded((prev) => !prev);
   }, []);
 
   const hideFilters = React.useCallback(() => {
-    setIsExpanded(false);
+    setExpanded(false);
   }, []);
 
   React.useEffect(() => {
@@ -141,13 +148,14 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
 
   const expandFilters = React.useCallback(() => {
     if (!isExpanded) {
-      setIsExpanded(true);
+      setExpanded(true);
     }
   }, [isExpanded]);
 
-  const value: TWorkoutsFiltersContextValue = React.useMemo(
+  const value = React.useMemo<TWorkoutsFiltersContextValue>(
     () => ({
       form,
+      filtersParams,
       filtersData,
       onDefaults,
       isSubmitEnabled,
@@ -165,6 +173,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
     }),
     [
       form,
+      filtersParams,
       filtersData,
       onDefaults,
       isSubmitEnabled,

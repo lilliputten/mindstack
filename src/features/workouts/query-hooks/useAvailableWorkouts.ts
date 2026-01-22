@@ -92,8 +92,9 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
       } catch (error) {
         const details = getErrorText(error);
         const message = 'Cannot load workouts data';
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[useAvailableWorkouts:queryFn]', message, traceId, {
+        console.error('[useAvailableWorkouts:queryFn]', traceId, comboMsg, {
           traceId,
           details,
           error,

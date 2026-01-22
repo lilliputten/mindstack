@@ -4,6 +4,7 @@ import { ExtendedUser } from '@/@types/next-auth';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
+import { ServerAuthError } from '@/lib/errors';
 import { getCurrentUser } from '@/lib/session';
 
 import { TGetAvailableWorkoutsParams, TGetAvailableWorkoutsResults } from '../types';
@@ -66,10 +67,10 @@ export async function getAvailableWorkouts(
   try {
     // Authorization checks
     if (!user) {
-      throw new Error('Unauthorized: Only authenticated users can access workouts');
+      throw new ServerAuthError('UNATHORIZED');
     }
     if (adminMode && !isAdmin) {
-      throw new Error('Admin mode is allowed only for administrators');
+      throw new ServerAuthError('ADMIN_REQUIRED');
     }
 
     // Include relations

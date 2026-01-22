@@ -3,6 +3,7 @@ import { GenericIDError } from './GenericIDError';
 export const ServerAuthErrorTexts = {
   SUCCESS: 'No problems detected',
   UNATHORIZED: 'Authorized user is required',
+  ADMIN_REQUIRED: 'Administrator is required',
   UNKNOWN_ERROR_OCCURRED: 'An error occurred while checking user generations',
 } as const;
 

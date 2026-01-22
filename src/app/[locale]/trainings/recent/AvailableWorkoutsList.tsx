@@ -84,7 +84,7 @@ export function AvailableWorkoutsList(props: TProps) {
           isDev && '__AvailableWorkoutsListPage_Error', // DEBUG
           'my-0',
         )}
-        error={error || 'Error loading available workouts data'}
+        error={error || t('AvailableWorkouts.ErrorLoadingWorkoutsData')}
         reset={refetch}
       />
     );

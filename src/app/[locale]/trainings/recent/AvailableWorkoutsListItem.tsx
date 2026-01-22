@@ -200,7 +200,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
           >
             <Icons.Eye className="size-4" />
-            {t('ViewTrainig')}
+            {t('ViewTraining')}
           </Link>
 
           <Link

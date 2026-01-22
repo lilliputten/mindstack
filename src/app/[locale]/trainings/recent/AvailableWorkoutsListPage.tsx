@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'next-auth/react';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -13,40 +12,23 @@ import { isDev } from '@/constants';
 import { AvailableWorkoutsFilters } from '@/features/workouts/components';
 import { useWorkoutsFiltersContext } from '@/features/workouts/contexts';
 import { useAvailableWorkouts } from '@/features/workouts/query-hooks';
+import { useSessionData } from '@/hooks';
 
 import { AvailableWorkoutsList } from './AvailableWorkoutsList';
 
 export function AvailableWorkoutsListPage() {
   const t = useT();
 
-  const { data: sessionData } = useSession();
-  const user = sessionData?.user;
+  const { user, loading: isUserLoading } = useSessionData();
   const isAdmin = user?.role === 'ADMIN';
 
-  const { filtersData } = useWorkoutsFiltersContext();
-
-  // Use separate state for query parameters to avoid refetching on every field change
-  const [queryParams, setQueryParams] = React.useState<Record<string, unknown> | undefined>();
-
-  // Initialize query params only once when filters are first available
-  React.useEffect(() => {
-    if (filtersData && !queryParams) {
-      const params = {
-        ...filtersData,
-        hasWorkoutStats:
-          filtersData.hasWorkoutStats === null ? undefined : filtersData.hasWorkoutStats,
-        hasActiveWorkouts:
-          filtersData.hasActiveWorkouts === null ? undefined : filtersData.hasActiveWorkouts,
-      };
-      setQueryParams(params);
-    }
-  }, [filtersData, queryParams]);
+  const { filtersParams, isReady } = useWorkoutsFiltersContext();
 
   const availableWorkoutsQuery = useAvailableWorkouts({
     traceId: 'AvailableWorkoutsListPage',
-    enabled: !!queryParams,
+    enabled: isReady && isUserLoading,
     includeStats: true,
-    ...queryParams,
+    ...filtersParams,
   });
 
   const {
@@ -75,7 +57,7 @@ export function AvailableWorkoutsListPage() {
       [
         {
           id: 'ManageYourTopicsAction',
-          content: t('AvailableTopicsList.ManageTopics'),
+          content: t('ManageTopics'),
           variant: 'ghost',
           icon: Icons.Edit,
           visibleFor: 'xl',

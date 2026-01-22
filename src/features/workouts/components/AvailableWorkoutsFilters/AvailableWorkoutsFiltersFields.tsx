@@ -54,8 +54,8 @@ function FormSection({ children }: { children: React.ReactNode }) {
 export function AvailableWorkoutsFiltersFields(props: TProps) {
   const { className, form } = props;
 
-  const t = useT('AvailableWorkoutsFilterTexts');
-  const tCommon = useT();
+  const tTexts = useT('AvailableWorkoutsFilterTexts');
+  const t = useT();
 
   const { data: sessionData } = useSession();
   const user = sessionData?.user;
@@ -92,9 +92,9 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
             // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
             control={form.control}
             name="categoryIds"
-            label={getFilterFieldName('categoryIds', t)}
-            hint={t('AvailableWorkoutsFiltersFields.CategoriesHint')}
-            placeholder={t('AvailableWorkoutsFiltersFields.SelectCategories')}
+            label={getFilterFieldName('categoryIds', tTexts)}
+            hint={t('AvailableWorkoutsFilters.CategoriesHint')}
+            placeholder={t('AvailableWorkoutsFilters.SelectCategories')}
           />
         </div>
         {/* Search Text */}
@@ -104,13 +104,13 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
               <Label className="truncate" htmlFor={searchTextKey}>
-                {getFilterFieldName('searchText', t)}
+                {getFilterFieldName('searchText', tTexts)}
               </Label>
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input
                     id={searchTextKey}
-                    placeholder={tCommon('AvailableWorkoutsFiltersFields.SearchForTextPlaceholder')}
+                    placeholder={t('AvailableWorkoutsFilters.SearchForTextPlaceholder')}
                     {...field}
                     value={field.value || ''}
                     className={cn('pr-11')}
@@ -127,14 +127,16 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                         'rounded-sm',
                         'opacity-30 transition hover:opacity-50',
                       )}
-                      title={tCommon('AvailableWorkoutsFiltersFields.ClearText')}
+                      title={t('AvailableWorkoutsFilters.ClearText')}
                     >
                       <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
               </FormControl>
-              <FormHint className="text-truncate">{t('SearchTextHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t('AvailableWorkoutsFilters.SearchTextHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -146,13 +148,13 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
               <Label className="truncate" htmlFor={searchLangKey}>
-                {getFilterFieldName('searchLang', t)}
+                {getFilterFieldName('searchLang', tTexts)}
               </Label>
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input
                     id={searchLangKey}
-                    placeholder={tCommon('AvailableWorkoutsFiltersFields.SearchLangPlaceholder')}
+                    placeholder={t('AvailableWorkoutsFilters.SearchLangPlaceholder')}
                     {...field}
                     value={field.value || ''}
                     className={cn('pr-11')}
@@ -168,14 +170,18 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                         'rounded-sm',
                         'opacity-30 transition hover:opacity-50',
                       )}
-                      title={tCommon('AvailableWorkoutsFiltersFields.ClearText')}
+                      title={t('AvailableWorkoutsFilters.ClearText')}
                     >
                       <Icons.Close className="size-4" />
                     </Button>
                   )}
                 </div>
               </FormControl>
-              <FormHint className="text-truncate">{t('SearchLangHint')}</FormHint>
+              <FormHint className="text-truncate">
+                {t.rich('AvailableWorkoutsFilters.SearchLangHint', {
+                  code: (chunks) => <code>{chunks}</code>,
+                })}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -192,19 +198,19 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
               )}
             >
               <Label className="truncate" htmlFor={orderBySelectKey}>
-                {getFilterFieldName('orderBySelect', t)}
+                {getFilterFieldName('orderBySelect', tTexts)}
               </Label>
               <FormControl>
                 <Select value={field.value || ''} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue
-                      placeholder={t('AvailableWorkoutsFiltersFields.SelectOrderPlaceholder')}
+                      placeholder={t('AvailableWorkoutsFilters.SelectOrderPlaceholder')}
                     />
                   </SelectTrigger>
                   <SelectContent>
                     {orderBySelectOptions.map((value) => (
                       <SelectItem key={value} value={value}>
-                        {getFiltersLabelValueString('orderBySelect', value, t)}
+                        {getFiltersLabelValueString('orderBySelect', value, tTexts)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -225,7 +231,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
               <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
                 <div className="flex items-center justify-between">
                   <Label className="truncate" htmlFor={adminModeKey}>
-                    {getFilterFieldName('adminMode', t)}
+                    {getFilterFieldName('adminMode', tTexts)}
                   </Label>
                   <FormControl>
                     <Switch
@@ -235,7 +241,9 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     />
                   </FormControl>
                 </div>
-                <FormHint className="text-truncate">{t('AdminModeHint')}</FormHint>
+                <FormHint className="text-truncate">
+                  {t('AvailableWorkoutsFilters.AdminModeHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             )}
@@ -252,7 +260,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                 className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
               >
                 <Label className="truncate" htmlFor={hasWorkoutStatsKey}>
-                  {getFilterFieldName('hasWorkoutStats', t)}
+                  {getFilterFieldName('hasWorkoutStats', tTexts)}
                 </Label>
                 <FormControl>
                   <Select
@@ -264,7 +272,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   >
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={t('AvailableWorkoutsFiltersFields.SelectOptionPlaceholder')}
+                        placeholder={t('AvailableWorkoutsFilters.SelectOptionPlaceholder')}
                       />
                     </SelectTrigger>
                     <SelectContent>
@@ -280,7 +288,9 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">{t('HasWorkoutStatsHint')}</FormHint>
+                <FormHint className="text-truncate">
+                  {t('AvailableWorkoutsFilters.HasWorkoutStatsHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -297,7 +307,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                 className={cn('flex w-full flex-col gap-2', field.value === null && 'opacity-50')}
               >
                 <Label className="truncate" htmlFor={hasActiveWorkoutsKey}>
-                  {getFilterFieldName('hasActiveWorkouts', t)}
+                  {getFilterFieldName('hasActiveWorkouts', tTexts)}
                 </Label>
                 <FormControl>
                   <Select
@@ -309,7 +319,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   >
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={t('AvailableWorkoutsFiltersFields.SelectOptionPlaceholder')}
+                        placeholder={t('AvailableWorkoutsFilters.SelectOptionPlaceholder')}
                       />
                     </SelectTrigger>
                     <SelectContent>
@@ -325,7 +335,9 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">{t('HasActiveWorkoutsHint')}</FormHint>
+                <FormHint className="text-truncate">
+                  {t('AvailableWorkoutsFilters.HasActiveWorkoutsHint')}
+                </FormHint>
                 <FormMessage />
               </FormItem>
             );
@@ -343,7 +355,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   className={cn('flex w-full flex-col gap-1', !field.value && 'opacity-50')}
                 >
                   <Label className="truncate text-xs" htmlFor={minStartedKey}>
-                    {t('AvailableWorkoutsFiltersFields.StartedFrom')}
+                    {t('AvailableWorkoutsFilters.StartedFrom')}
                   </Label>
                   <FormControl>
                     <Input
@@ -351,6 +363,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className={cn(!field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -365,7 +378,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   className={cn('flex w-full flex-col gap-1', !field.value && 'opacity-50')}
                 >
                   <Label className="truncate text-xs" htmlFor={maxStartedKey}>
-                    {t('AvailableWorkoutsFiltersFields.StartedTo')}
+                    {t('AvailableWorkoutsFilters.StartedTo')}
                   </Label>
                   <FormControl>
                     <Input
@@ -373,6 +386,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className={cn(!field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -391,7 +405,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   className={cn('flex w-full flex-col gap-1', !field.value && 'opacity-50')}
                 >
                   <Label className="truncate text-xs" htmlFor={minFinishedKey}>
-                    {t('AvailableWorkoutsFiltersFields.FinishedFrom')}
+                    {t('AvailableWorkoutsFilters.FinishedFrom')}
                   </Label>
                   <FormControl>
                     <Input
@@ -399,6 +413,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className={cn(!field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -413,7 +428,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                   className={cn('flex w-full flex-col gap-1', !field.value && 'opacity-50')}
                 >
                   <Label className="truncate text-xs" htmlFor={maxFinishedKey}>
-                    {t('AvailableWorkoutsFiltersFields.FinishedTo')}
+                    {t('AvailableWorkoutsFilters.FinishedTo')}
                   </Label>
                   <FormControl>
                     <Input
@@ -421,6 +436,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className={cn(!field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
