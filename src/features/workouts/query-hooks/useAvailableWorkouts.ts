@@ -157,6 +157,7 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
   return React.useMemo(() => {
     return {
       ...query,
+      // isEnabled: enabled,
       queryClient,
       queryKey,
       allUsedKeys,

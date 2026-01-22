@@ -819,7 +819,8 @@
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
-    "WelcomePage": "¡Bienvenido!"
+    "WelcomePage": "¡Bienvenido!",
+    "RecentTrainings": "Entrenamientos"
   },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma"

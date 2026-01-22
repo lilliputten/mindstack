@@ -12,6 +12,7 @@ import {
   manageCategoriesRoute,
   myTopicsRoute,
   pricingAliasRoute,
+  recentTrainingsRoute,
   rootAliasRoute,
   settingsRoute,
   welcomeAliasRoute,
@@ -27,6 +28,7 @@ export const dashboardLinks: SidebarNavItem[] = [
     items: [
       { href: availableCategoriesRoute, icon: Icons.Categories, titleId: 'AvailableCategories' },
       { href: availableTopicsRoute, icon: Icons.BookOpenCheck, titleId: 'AvailableTopics' },
+      { href: recentTrainingsRoute, icon: Icons.Rocket, titleId: 'RecentTrainings' },
     ],
   },
   {

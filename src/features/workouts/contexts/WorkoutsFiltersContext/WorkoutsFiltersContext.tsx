@@ -21,12 +21,14 @@ interface TWorkoutsFiltersContextValue {
   isSubmitEnabled: boolean;
   isExpanded: boolean;
   isReady: boolean;
+  isInited: boolean;
   error: string | null;
   handleApplyButton: (data: TFiltersData) => Promise<void>;
   handleResetToDefaults: () => void;
   handleClearChanges: () => void;
   toggleFilters: () => void;
   hideFilters: () => void;
+  expandFilters: () => void;
   getFiltersParams: () => TAvailableWorkoutsFiltersParams;
 }
 
@@ -137,6 +139,12 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
     setIsReady(true);
   }, []);
 
+  const expandFilters = React.useCallback(() => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+  }, [isExpanded]);
+
   const value: TWorkoutsFiltersContextValue = React.useMemo(
     () => ({
       form,
@@ -145,12 +153,14 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       isSubmitEnabled,
       isExpanded,
       isReady,
+      isInited: isReady,
       error,
       handleApplyButton,
       handleResetToDefaults,
       handleClearChanges,
       toggleFilters,
       hideFilters,
+      expandFilters,
       getFiltersParams,
     }),
     [
@@ -166,6 +176,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       handleClearChanges,
       toggleFilters,
       hideFilters,
+      expandFilters,
       getFiltersParams,
     ],
   );

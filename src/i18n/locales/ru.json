@@ -820,7 +820,8 @@
     "Settings": "Настройки",
     "Support": "Поддержка",
     "TestAiTextQuery": "Тест ИИ",
-    "WelcomePage": "Приветствие"
+    "WelcomePage": "Приветствие",
+    "RecentTrainings": "Тренировки"
   },
   "NavLocaleSwitcher": {
     "label": "Сменить язык"

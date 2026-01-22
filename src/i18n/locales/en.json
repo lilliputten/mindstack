@@ -825,7 +825,8 @@
     "Settings": "Settings",
     "Support": "Support",
     "TestAiTextQuery": "Test AI Text Query",
-    "WelcomePage": "Welcome Page"
+    "WelcomePage": "Welcome Page",
+    "RecentTrainings": "Trainings"
   },
   "NavLocaleSwitcher": {
     "label": "Change language"
