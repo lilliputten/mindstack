@@ -12,7 +12,6 @@ import {
   getFilterFieldName,
   getFiltersDataValueString,
   TFiltersData,
-  TFiltersDataKey,
 } from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersHelpers';
 
 interface TProps extends TPropsWithClassName {

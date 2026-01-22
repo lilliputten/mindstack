@@ -307,6 +307,36 @@
     "AvailableTopicsHeading": "Temas Disponibles",
     "ManageYourTopicsAction": "Gestionar Tus Temas"
   },
+  "AvailableWorkoutsFilterTexts": {
+    "Ignore": "Ignorar",
+    "Label-AdminMode": "Modo Administrador",
+    "Label-Categories": "Categorías",
+    "Label-HasActiveWorkouts": "Entrenamientos Activos",
+    "Label-HasWorkoutStats": "Estadísticas",
+    "Label-LangCode": "Código de Idioma",
+    "Label-LangName": "Nombre de Idioma",
+    "Label-MaxFinished": "Máximo Finalizado",
+    "Label-MaxStarted": "Máximo Iniciado",
+    "Label-MinFinished": "Mínimo Finalizado",
+    "Label-MinStarted": "Mínimo Iniciado",
+    "Label-OrderBy": "Ordenar Por",
+    "Label-SearchLang": "Buscar Idioma",
+    "Label-SearchText": "Buscar Texto",
+    "No": "No",
+    "OrderBy-FinishedOldest": "Finalizado (Más antiguo)",
+    "OrderBy-FinishedRecent": "Finalizado (Reciente)",
+    "OrderBy-NameAsc": "Por Nombre (A-Z)",
+    "OrderBy-NameDesc": "Por Nombre (Z-A)",
+    "OrderBy-Oldest": "Más Antiguo",
+    "OrderBy-Recent": "Reciente",
+    "OrderBy-StartedOldest": "Iniciado (Más antiguo)",
+    "OrderBy-StartedRecent": "Iniciado (Reciente)",
+    "WithActive": "Con Entrenamientos Activos",
+    "WithStats": "Con Estadísticas",
+    "WithoutActive": "Sin Entrenamientos Activos",
+    "WithoutStats": "Sin Estadísticas",
+    "Yes": "Sí"
+  },
   "Bot": {
     "LanguageChangedFor": "El idioma ha sido cambiado a",
     "SelectLanguage": "Seleccionar Idioma",
@@ -816,11 +846,11 @@
     "MyTopics": "Mis Temas",
     "Options": "Opciones",
     "Pricing": "Precios",
+    "RecentTrainings": "Entrenamientos",
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
-    "WelcomePage": "¡Bienvenido!",
-    "RecentTrainings": "Entrenamientos"
+    "WelcomePage": "¡Bienvenido!"
   },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma"

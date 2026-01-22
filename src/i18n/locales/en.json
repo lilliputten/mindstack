@@ -312,6 +312,36 @@
     "AvailableTopicsHeading": "Available Topics",
     "ManageYourTopicsAction": "Manage Your Topics"
   },
+  "AvailableWorkoutsFilterTexts": {
+    "Ignore": "Ignore",
+    "Label-AdminMode": "Admin Mode",
+    "Label-Categories": "Categories",
+    "Label-HasActiveWorkouts": "Active Workouts",
+    "Label-HasWorkoutStats": "Statistics",
+    "Label-LangCode": "Language Code",
+    "Label-LangName": "Language Name",
+    "Label-MaxFinished": "Max Finished",
+    "Label-MaxStarted": "Max Started",
+    "Label-MinFinished": "Min Finished",
+    "Label-MinStarted": "Min Started",
+    "Label-OrderBy": "Order By",
+    "Label-SearchLang": "Search Language",
+    "Label-SearchText": "Search Text",
+    "No": "No",
+    "OrderBy-FinishedOldest": "Finished (Oldest)",
+    "OrderBy-FinishedRecent": "Finished (Recent)",
+    "OrderBy-NameAsc": "By Name (A-Z)",
+    "OrderBy-NameDesc": "By Name (Z-A)",
+    "OrderBy-Oldest": "Oldest",
+    "OrderBy-Recent": "Recent",
+    "OrderBy-StartedOldest": "Started (Oldest)",
+    "OrderBy-StartedRecent": "Started (Recent)",
+    "WithActive": "With Active Workouts",
+    "WithStats": "With Statistics",
+    "WithoutActive": "Without Active Workouts",
+    "WithoutStats": "Without Statistics",
+    "Yes": "Yes"
+  },
   "Bot": {
     "LanguageChangedFor": "Language has been changed for",
     "SelectLanguage": "Select Language",
@@ -822,11 +852,11 @@
     "MyTopics": "My Topics",
     "Options": "Options",
     "Pricing": "Pricing",
+    "RecentTrainings": "Trainings",
     "Settings": "Settings",
     "Support": "Support",
     "TestAiTextQuery": "Test AI Text Query",
-    "WelcomePage": "Welcome Page",
-    "RecentTrainings": "Trainings"
+    "WelcomePage": "Welcome Page"
   },
   "NavLocaleSwitcher": {
     "label": "Change language"
