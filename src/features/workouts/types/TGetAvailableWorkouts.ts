@@ -11,7 +11,7 @@ type TGetResultsInfiniteQueryData<T> = {
 
 export type TUserTopicWorkout = ExtendNullWithUndefined<UserTopicWorkout> & {
   topic?: Topic;
-  stats?: WorkoutStats[];
+  workoutStats?: WorkoutStats[];
   categories?: Category[];
 };
 export type TUserTopicWorkoutReal = ReplaceNullWithUndefined<TUserTopicWorkout>;

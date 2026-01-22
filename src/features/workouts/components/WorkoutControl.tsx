@@ -86,13 +86,19 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     );
   }
 
+  const isWorkoutActive = isWorkoutStarted && !isWorkoutFinished;
+
   return (
     <div className={cn(isDev && '__WorkoutControl', 'flex flex-col gap-4', className)}>
       <p className="text-sm text-muted-foreground">
         <WorkoutStateDetails workout={workout} />
       </p>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={handleGoWorkout} variant="theme" className={cn('flex gap-2')}>
+        <Button
+          onClick={handleGoWorkout}
+          variant={!isOnWorkoutRoute && isWorkoutFinished ? 'outline' : 'theme'}
+          className={cn('flex gap-2')}
+        >
           <Icons.Rocket className="size-4 opacity-50" />
           <span>
             {isWorkoutFinished
@@ -114,7 +120,10 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           <Button variant="theme">
             <Link
               href={workoutRoute}
-              className={cn('flex items-center gap-2', isWorkoutFinished && 'animate-pulse')}
+              className={cn(
+                'flex items-center gap-2',
+                // isWorkoutFinished && 'animate-pulse',
+              )}
             >
               <Icons.Info className="size-4 opacity-50" />
               <span>{t('AvailableTopics.TrainingInfo')}</span>
@@ -132,7 +141,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           ) : isHistoricalPending ? (
             <Skeleton className="h-10 w-40" />
             ) : null)*/}
-        {isWorkoutStarted && !isWorkoutFinished && (
+        {isWorkoutActive && (
           <Button onClick={finishWorkout} variant="theme" className="flex gap-2">
             <Icons.Flag className="size-4 opacity-50" />
             <span>{t('AvailableTopics.FinishTraining')}</span>

@@ -5,14 +5,15 @@ import React from 'react';
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Button } from '@/components/ui/Button';
+import { Link } from '@/i18n/routing';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { useSignInModalContext } from '@/components/modals';
 import { PageEmpty } from '@/components/pages/shared';
 import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { startAliasRoute } from '@/config';
+import { availableTopicsRoute, startAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutsFiltersContext } from '@/features/workouts/contexts';
 import { useAvailableWorkouts } from '@/features/workouts/query-hooks';
@@ -33,10 +34,12 @@ const saveScrollKey = 'AvailableWorkoutsList';
 const sessionSaveScrollHash = getRandomHashString();
 
 export function AvailableWorkoutsList(props: TProps) {
-  const t = useT();
-  const { showSignInModal } = useSignInModalContext();
-
   const { className, user, availableWorkoutsQuery } = props;
+  const isUser = !!user?.id;
+
+  const t = useT();
+
+  const { showSignInModal } = useSignInModalContext();
 
   const {
     // isInited: isFiltersInited,
@@ -45,29 +48,30 @@ export function AvailableWorkoutsList(props: TProps) {
   } = useWorkoutsFiltersContext();
 
   const {
-    queryUrlHash,
+    // isRefetching,
+    // queryClient,
+    // queryKey,
     allWorkouts,
+    error,
     fetchNextPage,
     hasNextPage,
     hasWorkouts,
+    isError,
     isFetched,
     isFetchingNextPage,
     isLoading,
-    isRefetching,
-    // queryClient,
-    // queryKey,
-    isError,
+    queryUrlHash,
     refetch,
-    error,
   } = availableWorkoutsQuery;
 
-  const isBusy = isLoading || isRefetching;
+  const isBusy = isLoading; // || isRefetching;
 
   const goBack = useGoBack(startAliasRoute);
 
-  const saveScrollHash = [sessionSaveScrollHash, getAbcHashString(queryUrlHash)]
-    .filter(Boolean)
-    .join('-');
+  const saveScrollHash = React.useMemo(
+    () => [sessionSaveScrollHash, getAbcHashString(queryUrlHash)].filter(Boolean).join('-'),
+    [queryUrlHash],
+  );
 
   if (!isFetched || /* !isFiltersInited || */ isBusy) {
     return <ContentListSkeleton className="px-6" />;
@@ -103,7 +107,7 @@ export function AvailableWorkoutsList(props: TProps) {
         <PageEmpty
           className="mx-6"
           title={t('NoWorkoutsAvailable')}
-          description={t('AvailableWorkoutsListPage.NoWorkoutsExplanation')}
+          description={t('AvailableWorkouts.NoWorkoutsExplanation')}
           buttons={
             <>
               <Button variant="ghost" onClick={goBack} className="flex gap-2">
@@ -155,16 +159,19 @@ export function AvailableWorkoutsList(props: TProps) {
         />
       ))}
 
-      {user?.id && (
+      {isUser && (
         <div className="flex items-center justify-center">
-          <Button variant="outline" className="flex gap-2">
+          <Link
+            href={availableTopicsRoute}
+            className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
+          >
             <Icons.Plus className="size-5" />
-            {t('AvailableWorkoutsListPage.BrowseMoreTopics')}
-          </Button>
+            {t('AvailableWorkouts.BrowseMoreTopics')}
+          </Link>
         </div>
       )}
 
-      {!user?.id && (
+      {!isUser && (
         <div
           className={cn(
             isDev && '__AvailableWorkoutsList_Info', // DEBUG
@@ -173,7 +180,7 @@ export function AvailableWorkoutsList(props: TProps) {
         >
           <Icons.Info className="size-6 flex-shrink-0 text-theme" />
           <p className="text-content flex-1 text-sm">
-            {t.rich('AvailableWorkoutsListPage.UnauthorizedUserSuggestionMessage', {
+            {t.rich('AvailableWorkouts.UnauthorizedUserSuggestionMessage', {
               SigninLink: (chunks) => (
                 <Button
                   variant="link"

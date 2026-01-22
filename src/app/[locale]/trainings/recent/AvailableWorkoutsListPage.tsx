@@ -3,9 +3,12 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 
-import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
+import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import * as Icons from '@/components/shared/Icons';
+import { allTopicsRoute, myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { AvailableWorkoutsFilters } from '@/features/workouts/components';
 import { useWorkoutsFiltersContext } from '@/features/workouts/contexts';
@@ -13,39 +16,19 @@ import { useAvailableWorkouts } from '@/features/workouts/query-hooks';
 
 import { AvailableWorkoutsList } from './AvailableWorkoutsList';
 
-type TProps = TPropsWithClassName;
-
-export function AvailableWorkoutsListPage(props: TProps) {
+export function AvailableWorkoutsListPage() {
   const t = useT();
-  const { className } = props;
 
   const { data: sessionData } = useSession();
   const user = sessionData?.user;
-  // const isAdmin = user?.role === 'ADMIN';
-
-  // const goBack = useGoBack(startAliasRoute);
-  //
-  // const {
-  //   isInited: isFiltersInited,
-  //   isExpanded: isFiltersExpanded,
-  //   expandFilters,
-  // } = useWorkoutsFiltersContext();
+  const isAdmin = user?.role === 'ADMIN';
 
   const { filtersData } = useWorkoutsFiltersContext();
-
-  // const filtersParams = React.useMemo(() => getFiltersParams(), [getFiltersParams]);
-
-  // const [filtersParams, setFiltersParams] = React.useState<Record<string, unknown> | undefined>();
-  // // Effect: Update filters
-  // React.useEffect(() => {
-  //   // Update query when filters change in context
-  //   const params = getFiltersParams();
-  //   setFiltersParams(params);
-  // }, [getFiltersParams]);
 
   const availableWorkoutsQuery = useAvailableWorkouts({
     traceId: 'AvailableWorkoutsListPage',
     enabled: !!filtersData,
+    includeStats: true,
     ...filtersData,
   });
 
@@ -60,7 +43,7 @@ export function AvailableWorkoutsListPage(props: TProps) {
     // queryClient,
     // queryKey,
     // queryUrlHash,
-    // refetch,
+    refetch,
     isFetched,
     isLoading,
     isRefetching,
@@ -68,30 +51,44 @@ export function AvailableWorkoutsListPage(props: TProps) {
 
   const isBusy = !isFetched || isLoading || isRefetching;
 
-  // const saveScrollHash = React.useMemo(
-  //   () => sessionSaveScrollHash + getAbcHashString(queryUrlHash),
-  //   [queryUrlHash],
-  // );
+  const manageTopicsRoute = isAdmin ? allTopicsRoute : myTopicsRoute;
 
-  // if (isError) {
-  //   return (
-  //     <PageError
-  //       className={cn(
-  //         isDev && '__AvailableWorkoutsListPage_Error', // DEBUG
-  //         'my-0',
-  //       )}
-  //       error={error || 'Error loading available workouts data'}
-  //       reset={refetch}
-  //     />
-  //   );
-  // }
-
-  // if (!isFetched || !isFiltersInited) {
-  //   return <ContentListSkeleton className="px-6" />;
-  // }
-
+  const actions = React.useMemo<TActionMenuItem[]>(
+    () =>
+      [
+        {
+          id: 'ManageYourTopicsAction',
+          content: t('AvailableTopicsList.ManageTopics'),
+          variant: 'ghost',
+          icon: Icons.Edit,
+          visibleFor: 'xl',
+          hidden: !user?.id,
+          href: manageTopicsRoute,
+        },
+        {
+          id: 'reload',
+          content: t('Reload'),
+          variant: 'ghost',
+          icon: Icons.Refresh,
+          pending: isRefetching,
+          visibleFor: 'md',
+          disabled: !isFetched,
+          onClick: refetch,
+        },
+      ] satisfies TActionMenuItem[],
+    [t, user?.id, manageTopicsRoute, isRefetching, isFetched, refetch],
+  );
   return (
     <>
+      <DashboardHeader
+        heading={t('Trainings')}
+        className={cn(
+          isDev && '__AvailableWorkoutsListPage_DashboardHeader', // DEBUG
+          'mx-6',
+        )}
+        // breadcrumbs={breadcrumbs}
+        actions={actions}
+      />
       <AvailableWorkoutsFilters
         className={cn(
           isDev && '__AvailableWorkoutsListPage_Filters', // DEBUG
@@ -100,9 +97,12 @@ export function AvailableWorkoutsListPage(props: TProps) {
           isBusy && 'opacity-50',
         )}
       />
-
       <AvailableWorkoutsList
-        className={className}
+        className={cn(
+          isDev && '__AvailableWorkoutsListPage_List', // DEBUG
+          'transition',
+          isBusy && 'opacity-50',
+        )}
         user={user}
         availableWorkoutsQuery={availableWorkoutsQuery}
       />
