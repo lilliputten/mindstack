@@ -1,13 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  InfiniteData,
-  QueryKey,
-  useInfiniteQuery,
-  // UseInfiniteQueryResult,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { TAllUsedKeys } from '@/lib/types/react-query';
 import { composeUrlQuery, getErrorText } from '@/lib/helpers';
@@ -22,10 +16,16 @@ import {
 import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import { getAvailableWorkouts } from '@/features/workouts/actions/getAvailableWorkouts';
 import {
+  convertWorkoutsToUserTopicWorkouts,
+  getAllWorkoutsFromDB,
+  guestUserId,
+} from '@/features/workouts/lib/indexedDB';
+import {
   TAvailableWorkoutsResultsQueryData,
   TGetAvailableWorkoutsParams,
   TUserTopicWorkout,
 } from '@/features/workouts/types';
+import { useSessionData } from '@/hooks';
 
 const itemsLimit = defaultItemsLimit;
 const staleTime = defaultStaleTime;
@@ -41,6 +41,11 @@ type TUseAvailableWorkoutsProps = Omit<TGetAvailableWorkoutsParams, 'skip' | 'ta
 
 export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
   const { all, traceId, enabled = true, ...queryProps } = props;
+
+  const { authenticated: isAuthenticated, loading: isUserLoading } = useSessionData();
+
+  const isLocal = !isUserLoading && !isAuthenticated;
+
   const queryClient = useQueryClient();
 
   /* Use partial query url as part of the query key */
@@ -57,28 +62,41 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
   }, [queryProps]);
 
   const queryKey = React.useMemo<QueryKey>(
-    () => ['available-workouts', all ? 'all' : 'incremental', queryUrlHash],
-    [all, queryUrlHash],
+    () => ['available-workouts', all ? 'all' : 'incremental', queryUrlHash, isLocal],
+    [all, queryUrlHash, isLocal],
   );
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
 
-  const query = useInfiniteQuery<
-    TAvailableWorkoutsResultsQueryData,
-    Error,
-    InfiniteData<TAvailableWorkoutsResultsQueryData>,
-    QueryKey,
-    number // Cursor type (from `skip` api parameter)
-  >({
-    enabled,
-    queryKey,
-    staleTime,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) => {
-      const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
-      return loadedCount < lastPage.totalCount ? loadedCount : undefined;
-    },
-    queryFn: async (params) => {
+  const isEnabled = enabled && !isUserLoading;
+
+  const queryFn = React.useCallback(
+    async (params: { pageParam?: number }) => {
       const { pageParam = 0 } = params;
+      // If not authenticated, fall back to IndexedDB
+      if (isLocal) {
+        try {
+          const allWorkouts = await getAllWorkoutsFromDB();
+          const convertedWorkouts = convertWorkoutsToUserTopicWorkouts(allWorkouts, guestUserId);
+          return {
+            items: convertedWorkouts,
+            totalCount: convertedWorkouts.length,
+            hasNextPage: false,
+          };
+        } catch (error) {
+          const message = 'Cannot load workouts from IndexedDB';
+          // eslint-disable-next-line no-console
+          console.error('[useAvailableWorkouts:queryFn]', message, {
+            error,
+            pageParam,
+          });
+          return {
+            items: [],
+            totalCount: 0,
+            hasNextPage: false,
+          };
+        }
+      }
+      // Regular API call for authenticated users
       try {
         const result = await getAvailableWorkouts({
           ...queryProps,
@@ -103,6 +121,25 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
         throw error;
       }
     },
+    [isLocal, queryProps, all, traceId],
+  );
+
+  const query = useInfiniteQuery<
+    TAvailableWorkoutsResultsQueryData,
+    Error,
+    InfiniteData<TAvailableWorkoutsResultsQueryData>,
+    QueryKey,
+    number // Cursor type (from `skip` api parameter)
+  >({
+    enabled: isEnabled,
+    queryKey,
+    staleTime,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
+      return loadedCount < lastPage.totalCount ? loadedCount : undefined;
+    },
+    queryFn,
   });
 
   // Create workout items with synthetic IDs for React Query helpers
@@ -158,6 +195,7 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
   return React.useMemo(() => {
     return {
       ...query,
+      isLocal,
       // isEnabled: enabled,
       queryClient,
       queryKey,
@@ -173,6 +211,7 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
     };
   }, [
     query,
+    isLocal,
     queryClient,
     queryKey,
     allWorkouts,

@@ -7,12 +7,14 @@ import { useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
+import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TAvailableTopic } from '@/features/topics/types';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
+import { useGoToTheRoute } from '@/hooks';
 
 interface TViewAvailableTopicContentProps {
   topic: TAvailableTopic;
@@ -22,12 +24,14 @@ interface TViewAvailableTopicContentProps {
 export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
   const { topic, className } = props;
+  const topicId = topic.id;
 
   const t = useT();
 
   const workoutContext = useWorkoutContext();
   const {
     workout,
+    startWorkout,
     // questionIds,
   } = workoutContext;
   // const isWorkoutInProgress = workout?.started && !workout?.finished;
@@ -35,11 +39,20 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
   // const allowedTraining = !!questionsCount;
   const nothingToDisplay = !workout;
 
+  const goToTheRoute = useGoToTheRoute();
+
+  const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
+  const workoutRouteGoPath = `${workoutRoutePath}/go` as TRoutePath;
+
+  const handleStart = React.useCallback(() => {
+    startWorkout().then(() => goToTheRoute(workoutRouteGoPath));
+  }, [startWorkout, goToTheRoute, workoutRouteGoPath]);
+
   return (
     <ScrollArea
       className={cn(
         isDev && '__ViewAvailableTopicContent_Scroll', // DEBUG
-        'my-6 flex-1',
+        'flex-1',
         className,
       )}
       viewportClassName={cn(
@@ -83,12 +96,12 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
           title={t('ViewAvailableTopicContent.TrainingNotStarted')}
           description={t('ViewAvailableTopicContent.NoActiveTrainingText')}
           framed={false}
-          buttons={<WorkoutControl omitNoWorkoutMessage />}
+          buttons={<WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />}
         />
       ) : (
         <>
           <WorkoutStats />
-          <WorkoutControl omitNoWorkoutMessage />
+          <WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />
         </>
       )}
     </ScrollArea>

@@ -3,12 +3,15 @@
  */
 
 import { TWorkoutData } from '../types';
+import { TUserTopicWorkout } from '../types/TGetAvailableWorkouts';
 
 export const WORKOUTS_DB_NAME = 'mindstack-workouts';
 export const WORKOUTS_STORE_NAME = 'workouts';
 export const WORKOUTS_DB_VERSION = 1;
 
 let dbInstance: IDBDatabase | null = null;
+
+export const guestUserId = 'guest';
 
 /**
  * Get or create the IndexedDB database instance
@@ -156,34 +159,6 @@ export async function deleteWorkoutFromDB(topicId: string): Promise<void> {
   });
 }
 
-/* // UNUSED
- * export async function saveOrDeleteWorkoutInDB(topicId?: TTopicId, workout?: TWorkoutData | null) {
- *   if (!topicId) {
- *     return;
- *   }
- *   try {
- *     console.log('[indexedDB:saveOrDeleteWorkoutInDB]', {
- *       workout,
- *       topicId,
- *     });
- *     if (workout) {
- *       await saveWorkoutToDB(topicId, workout);
- *     } else {
- *       await deleteWorkoutFromDB(topicId);
- *     }
- *   } catch (error) {
- *     const message = 'Failed to save workout to IndexedDB';
- *     // eslint-disable-next-line no-console
- *     console.error('[indexedDB:saveOrDeleteWorkoutInDB]', message, {
- *       error,
- *       topicId,
- *       workout,
- *     });
- *     debugger; // eslint-disable-line no-debugger
- *   }
- * }
- */
-
 /**
  * Get all workout topic IDs from IndexedDB
  */
@@ -275,4 +250,42 @@ export async function clearAllWorkoutsFromDB(): Promise<void> {
     });
     debugger; // eslint-disable-line no-debugger
   }
+}
+
+/**
+ * Convert TWorkoutData from IndexedDB to TUserTopicWorkout format
+ * This adds the missing required fields (userId, topicId, createdAt, updatedAt)
+ * that are not stored in IndexedDB but are required by the API response format
+ */
+export function convertWorkoutToUserTopicWorkout(
+  workoutData: TWorkoutData,
+  topicId: string,
+  userId: string = guestUserId,
+): TUserTopicWorkout {
+  const now = new Date();
+  return {
+    ...workoutData,
+    userId,
+    topicId,
+    createdAt: now,
+    updatedAt: now,
+    // Optional nested properties (can be added later if needed)
+    topic: undefined,
+    workoutStats: undefined,
+    categories: undefined,
+  };
+}
+
+/**
+ * Convert multiple TWorkoutData items from IndexedDB to TUserTopicWorkout format
+ */
+export function convertWorkoutsToUserTopicWorkouts(
+  workoutsData: TWorkoutData[],
+  userId: string = guestUserId,
+): TUserTopicWorkout[] {
+  return workoutsData.map((workout) => {
+    // The topicId is stored in IndexedDB even though TWorkoutData type doesn't include it
+    const topicId = (workout as TWorkoutData & { topicId?: string }).topicId || 'unknown';
+    return convertWorkoutToUserTopicWorkout(workout, topicId, userId);
+  });
 }

@@ -18,5 +18,6 @@ export function useSessionData() {
   const { data, status } = session;
   const user: TUser | undefined = session.data?.user;
   const loading = status === 'loading';
-  return { data, status, loading, user };
+  const authenticated = status === 'authenticated';
+  return { data, status, loading, authenticated, user };
 }

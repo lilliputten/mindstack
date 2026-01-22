@@ -323,8 +323,9 @@
     "BrowseMoreTopics": "Просмотреть больше тем",
     "Completed": "Завершено",
     "ErrorLoadingWorkoutsData": "Ошибка загрузки данных о тренировках",
-    "NoWorkoutsExplanation": "Нет доступных тренировок. Измените настройки фильтров.",
+    "NoWorkoutsExplanation": "Нет доступных тренировок. \nПопробуйте изменить настройки фильтров.",
     "NotStarted": "Не начато",
+    "SelectTopicToStartTraining": "Выберите тему, чтобы начать тренировку",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут просматривать тренировки."
   },
   "AvailableWorkoutsFilterTexts": {
@@ -965,7 +966,7 @@
     "StartBotTitle": "Запустить бота",
     "TermsPageTitle": "Условия использования",
     "TestQueryTitle": "Тестовый текстовый запрос AI",
-    "TrainingTopicReviewTitle": "Обзор темы обучения",
+    "TrainingTopicReviewTitle": "Обзор тренировки",
     "ViewAvailableTopicTitle": "Посмотреть доступную тему",
     "ViewCategoryTitle": "Просмотр категорию",
     "WelcomeTitle": "Добро пожаловать!",
@@ -1454,6 +1455,7 @@
     "NoTrainingHistory": "История тренировок еще не собрана",
     "NoTrainingHistoryYet": "Пока Нет Истории Тренировок",
     "NoWorkoutCreated": "Тренировка не создана",
+    "NoWorkoutDataFound": "Данные о тренировке не найдены",
     "NoWorkoutHistoryAvailable": "История тренировок недоступна",
     "OnAStreak": "На серии в",
     "OnAStreakTemplate": "Вы находитесь на {streak}-дневной серии",

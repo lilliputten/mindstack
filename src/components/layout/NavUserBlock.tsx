@@ -19,6 +19,7 @@ import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';
+import { clearAllWorkoutsFromDB } from '@/features/workouts/lib';
 
 import { SidebarMenuItem, SidebarWrapper } from './SidebarComponents';
 
@@ -52,6 +53,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
       // Clear react-query and local caches
       queryClient.clear();
       clearLocalStorage({ except: ['cookies-accepted'] });
+      clearAllWorkoutsFromDB();
       if (typeof document !== 'undefined') {
         deleteAllCookies();
       }

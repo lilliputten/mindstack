@@ -328,8 +328,9 @@
     "BrowseMoreTopics": "Browse More Topics",
     "Completed": "Completed",
     "ErrorLoadingWorkoutsData": "Error loading available workouts data",
-    "NoWorkoutsExplanation": "There are no available workouts. Change the filter settings.",
+    "NoWorkoutsExplanation": "There are no available workouts. Try to change the filters settings.",
     "NotStarted": "Not Started",
+    "SelectTopicToStartTraining": "Choose a topic to start learning",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorized users</SigninLink> can browse workouts."
   },
   "AvailableWorkoutsFilterTexts": {
@@ -1459,6 +1460,7 @@
     "NoTrainingHistory": "No training history has been collected yet",
     "NoTrainingHistoryYet": "No Training History Yet",
     "NoWorkoutCreated": "No workout created",
+    "NoWorkoutDataFound": "No workout data found",
     "NoWorkoutHistoryAvailable": "No workout history available",
     "OnAStreak": "On a",
     "OnAStreakTemplate": "You're on a {streak}-day streak",

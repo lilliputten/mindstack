@@ -38,7 +38,7 @@ export function ContentSkeleton({ className, omitHeader, answersCount = 3 }: TPr
         className,
       )}
       innerClassName={cn(
-        isDev && '__WorkoutTopicGoWrapper_Inner', // DEBUG
+        isDev && '__WorkoutTopicGo_ContentSkeleton_Inner', // DEBUG
         'w-full gap-4 py-6',
       )}
       limitWidth

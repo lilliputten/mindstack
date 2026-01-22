@@ -323,8 +323,9 @@
     "BrowseMoreTopics": "Explorar más temas",
     "Completed": "Completado",
     "ErrorLoadingWorkoutsData": "Error al cargar los datos de entrenamientos disponibles",
-    "NoWorkoutsExplanation": "No hay entrenamientos disponibles. Cambie la configuración del filtro.",
+    "NoWorkoutsExplanation": "No hay entrenamientos disponibles. \nIntente cambiar la configuración de los filtros.",
     "NotStarted": "No iniciado",
+    "SelectTopicToStartTraining": "Elige un tema para empezar a aprender",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Los usuarios autorizados</SigninLink> pueden explorar entrenamientos."
   },
   "AvailableWorkoutsFilterTexts": {
@@ -1453,6 +1454,7 @@
     "NoTrainingHistory": "Aún no se ha recopilado historial de entrenamiento",
     "NoTrainingHistoryYet": "Aún No Hay Historial de Entrenamiento",
     "NoWorkoutCreated": "No se creó entrenamiento",
+    "NoWorkoutDataFound": "No se encontraron datos de entrenamiento",
     "NoWorkoutHistoryAvailable": "No hay historial de entrenamiento disponible",
     "OnAStreak": "En una racha de",
     "OnAStreakTemplate": "Estás en una racha de {streak} días",

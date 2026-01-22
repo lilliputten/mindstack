@@ -7,7 +7,6 @@ import { getErrorText } from '@/lib/helpers';
 import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Link } from '@/i18n/routing';
 import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -21,9 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/Table';
-import { ShowTimeSince } from '@/components/shared';
+import { PageError, ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useSessionData } from '@/hooks';
@@ -57,6 +55,17 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   } = workoutStatsHistoryQuery;
 
   const historicalErrorText = historicalError && getErrorText(historicalError);
+  const errorText = historicalErrorText
+    ? [
+        t('WorkoutStats.FailedToLoadHistoricalData'),
+        historicalErrorText && `(${historicalErrorText})`,
+        t('WorkoutStats.PleaseTryAgainLater'),
+      ]
+        .filter(Boolean)
+        .join(' ')
+    : !workout
+      ? t('WorkoutStats.NoWorkoutDataFound')
+      : undefined;
 
   const questionsCount = questionIds?.length || 0;
   const isWorkoutInProgress = workout?.started && !workout?.finished;
@@ -105,62 +114,12 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
 
   const isBusy = isWorkoutPending || isHistoricalLoading;
 
-  if (isBusy) {
-    return (
-      <WorkoutStatsSkeleton
-        className={cn(
-          isDev && '__WorkoutStats_Skeleton', // DEBUG
-          className,
-        )}
-      />
-    );
-  }
-
-  if (!workout && !full) {
-    return null;
-  }
-
-  if (historicalErrorText) {
-    // TODO: Display statistics based on the recent local data?
-    return (
-      <div
-        className={cn(
-          isDev && '__WorkoutStats_Error', // DEBUG
-          'space-y-4',
-          className,
-        )}
-      >
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <Icons.Warning className="mx-auto mb-2 size-8 text-orange-500 opacity-50" />
-              <p className="text-content text-sm text-muted-foreground">
-                {historicalErrorText === t('WorkoutStats.AuthenticationRequired') ? (
-                  <>
-                    {t('WorkoutStats.PleaseSignIn')}{' '}
-                    <Link href={welcomeAliasRoute}>{t('WorkoutStats.signIn')}</Link>{' '}
-                    {t('WorkoutStats.toViewYourStatistics')}
-                  </>
-                ) : (
-                  <>
-                    {t('WorkoutStats.FailedToLoadHistoricalData')} ({historicalErrorText}).{' '}
-                    {t('WorkoutStats.PleaseTryAgainLater')}
-                  </>
-                )}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const renderCurrentWorkoutStats = () => {
+  const renderCurrentWorkoutStats = React.useMemo(() => {
     if (!workout) {
       // Show historical summary when no current workout but there's history
       if (totalWorkouts > 0) {
         return (
-          <Card>
+          <Card key="renderCurrentWorkoutStats-NoWorkout" id="renderCurrentWorkoutStats-NoWorkout">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Icons.Activity className="size-4 text-theme" />
@@ -200,6 +159,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
 
     return (
       <Card
+        key="renderCurrentWorkoutStats-NoWorkout-Full"
+        id="renderCurrentWorkoutStats-NoWorkout-Full"
         className={cn(
           isDev && '__WorkoutStats_Card', // DEBUG
           'space-y-4',
@@ -335,13 +296,34 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         </CardContent>
       </Card>
     );
-  };
+  }, [
+    averageTimePerQuestion,
+    className,
+    currentAccuracy,
+    currentProgress,
+    hideTimes,
+    historicalStats.averageTime,
+    historicalStats.bestAccuracy,
+    historicalStats.streak,
+    isUserLoading,
+    isWorkoutCompleted,
+    isWorkoutInProgress,
+    isWorkoutPending,
+    questionsCount,
+    t,
+    timeElapsed,
+    totalWorkouts,
+    user,
+    workout,
+  ]);
 
-  const renderHistoricalStats = () => {
+  const renderHistoricalStats = React.useMemo(() => {
     if (!full || !hasUser) return null;
 
     return (
       <Card
+        key="renderHistoricalStats"
+        id="renderHistoricalStats"
         className={cn(
           isDev && '__WorkoutStats_HistoricalStats', // DEBUG
         )}
@@ -574,15 +556,28 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         </CardContent>
       </Card>
     );
-  };
+  }, [
+    format,
+    full,
+    hasMoreWorkouts,
+    hasUser,
+    historicalStats.averageAccuracy,
+    historicalStats.averageTime,
+    historicalStats.consistencyScore,
+    historicalStats.speedTrend,
+    historicalStats.streak,
+    recentWorkouts,
+    t,
+    totalWorkouts,
+  ]);
 
-  const renderQuickStats = () => {
+  const renderQuickStats = React.useMemo(() => {
     if (full) return null;
 
     // Show empty state for quick stats when no workout data
     if (!workout && totalWorkouts === 0) {
       return (
-        <Card>
+        <Card key="renderQuickStats-NoWorkout" id="renderQuickStats-NoWorkout">
           <CardContent className="pt-6">
             <div className="py-4 text-center">
               <Icons.Activity className="mx-auto mb-2 size-8 text-muted-foreground opacity-50" />
@@ -594,7 +589,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     }
 
     return (
-      <Card>
+      <Card key="renderQuickStats-Full" id="renderQuickStats-Full">
         <CardContent className="pt-6">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -619,7 +614,58 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         </CardContent>
       </Card>
     );
-  };
+  }, [
+    currentAccuracy,
+    full,
+    isWorkoutInProgress,
+    questionsCount,
+    t,
+    timeElapsed,
+    totalWorkouts,
+    workout,
+  ]);
+
+  if (isBusy) {
+    return (
+      <WorkoutStatsSkeleton
+        className={cn(
+          isDev && '__WorkoutStats_Skeleton', // DEBUG
+          className,
+        )}
+      />
+    );
+  }
+
+  if (!workout && !full) {
+    return null;
+  }
+
+  if (errorText) {
+    return (
+      <PageError
+        className={cn(
+          isDev && '__WorkoutStats_HistoricalError', // DEBUG
+          'overflow-visible',
+        )}
+        // error={error || 'Error loading available categories data'}
+        explanationClassName="text-content text-truncate"
+        error={errorText}
+        // reset={refetch}
+        // extraActions={extraActions}
+      />
+    );
+  }
+
+  const renderItems = [
+    // Items to render
+    renderCurrentWorkoutStats,
+    renderQuickStats,
+    renderHistoricalStats,
+  ].filter(Boolean);
+
+  if (!renderItems.length) {
+    return <div>XXX</div>;
+  }
 
   return (
     <div
@@ -629,9 +675,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
         className,
       )}
     >
-      {renderCurrentWorkoutStats()}
-      {renderQuickStats()}
-      {renderHistoricalStats()}
+      {renderItems}
     </div>
   );
 }

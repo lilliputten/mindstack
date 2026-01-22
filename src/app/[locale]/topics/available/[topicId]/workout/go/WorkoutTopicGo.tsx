@@ -64,7 +64,7 @@ interface TMemo {
   isStarting?: boolean;
   // Init timeout handler, if not resolved (true)
   // initTimeoutHandler?: ReturnType<typeof setTimeout> | true;
-  workoutContext?: ReturnType<typeof useWorkoutContext>;
+  // workoutContext?: ReturnType<typeof useWorkoutContext>;
 }
 
 export function WorkoutTopicGo() {
@@ -80,7 +80,7 @@ export function WorkoutTopicGo() {
     // isFetched,
     // isLoading,
   } = workoutContext;
-  memo.workoutContext = workoutContext;
+  // memo.workoutContext = workoutContext;
   // const isWorkoutReady =
   //   !workoutContext.isPending && !workoutContext.isLoading && workoutContext.isFetched;
   // const isWorkoutPending = !isWorkoutReady;
@@ -257,64 +257,42 @@ export function WorkoutTopicGo() {
     },
   });
 
-  /*
-      <Card
-        className={cn(
-          isDev && '__WorkoutTopicGo', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden',
-        )}
-      >
-          <CardHeader
-            className={cn(
-              isDev && '__WorkoutTopicGo_Header', // DEBUG
-              'item-start flex flex-col gap-4',
-            )}
-          >
-          </CardHeader>
-          <CardContent
-            className={cn(
-              isDev && '__WorkoutTopicGo_Content', // DEBUG
-              'relative flex flex-1 flex-col overflow-hidden px-0',
-            )}
-          >
-          </CardContent>
-      </Card>
-  */
-  const content =
-    isTopicPending || !topic || isWorkoutPending || !workout ? (
-      <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
-    ) : isStarting ? (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
-        <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
-        <p>{t('WorkoutTopic.TrainingIsStarting')}</p>
-      </div>
-    ) : isWorkoutFinished ? (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
-        <Icons.Activity className="mx-auto size-8 text-theme" />
-        <p className="text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
-        <WorkoutControl className="items-center p-6" handleStart={handleStart} />
-      </div>
-    ) : (
-      <ScrollArea
-        className={cn(
-          isDev && '__WorkoutTopicGo_Scroll', // DEBUG
-        )}
-        viewportClassName={cn(
-          isDev && '__WorkoutTopicGo_ScrollViewport', // DEBUG
-          '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
-        )}
-      >
-        <TopicHeader
-          scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
-          topic={topic}
-          className="flex-1 px-6 max-sm:flex-col-reverse"
-          showName={false}
-          showDescription
-        />
-        {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
-        <WorkoutTopicGoContent topic={topic} />
-      </ScrollArea>
-    );
+  const isWaiting = isTopicPending || !topic || isWorkoutPending || !workout;
+
+  const content = isWaiting ? (
+    <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+  ) : isStarting ? (
+    <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+      <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
+      <p>{t('WorkoutTopic.TrainingIsStarting')}</p>
+    </div>
+  ) : isWorkoutFinished ? (
+    <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+      <Icons.Activity className="mx-auto size-8 text-theme" />
+      <p className="text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
+      <WorkoutControl className="items-center p-6" handleStart={handleStart} />
+    </div>
+  ) : (
+    <ScrollArea
+      className={cn(
+        isDev && '__WorkoutTopicGo_Scroll', // DEBUG
+      )}
+      viewportClassName={cn(
+        isDev && '__WorkoutTopicGo_ScrollViewport', // DEBUG
+        '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
+      )}
+    >
+      <TopicHeader
+        scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
+        topic={topic}
+        className="flex-1 px-6 max-sm:flex-col-reverse"
+        showName={false}
+        showDescription
+      />
+      {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
+      <WorkoutTopicGoContent topic={topic} />
+    </ScrollArea>
+  );
 
   return (
     <>

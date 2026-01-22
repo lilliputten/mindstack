@@ -19,14 +19,17 @@ import { AvailableWorkoutsList } from './AvailableWorkoutsList';
 export function AvailableWorkoutsListPage() {
   const t = useT();
 
-  const { user, loading: isUserLoading } = useSessionData();
+  const {
+    user,
+    // loading: isUserLoading,
+  } = useSessionData();
   const isAdmin = user?.role === 'ADMIN';
 
   const { filtersParams, isReady } = useWorkoutsFiltersContext();
 
   const availableWorkoutsQuery = useAvailableWorkouts({
     traceId: 'AvailableWorkoutsListPage',
-    enabled: isReady && isUserLoading,
+    enabled: isReady,
     includeStats: true,
     ...filtersParams,
   });
@@ -46,9 +49,10 @@ export function AvailableWorkoutsListPage() {
     isFetched,
     isLoading,
     isRefetching,
+    isLocal,
   } = availableWorkoutsQuery;
 
-  const isBusy = !isFetched || isLoading || isRefetching;
+  const isBusy = !(isFetched || isLocal) || isLoading || isRefetching;
 
   const manageTopicsRoute = isAdmin ? allTopicsRoute : myTopicsRoute;
 

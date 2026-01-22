@@ -7,20 +7,19 @@ import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TUserTopicWorkout } from '@/features/workouts/types';
-import { useSessionData } from '@/hooks';
+import { useAvailableTopicById, useSessionData } from '@/hooks';
 
 interface TAvailableWorkoutsListItemProps {
   index: number;
   className?: string;
   workout: TUserTopicWorkout;
 }
-
-const showDescription = false;
 
 export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps) {
   const { workout, className } = props;
@@ -32,7 +31,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
   const {
     userId,
     topicId,
-    topic,
+    // topic,
     started,
     finished,
     startedAt,
@@ -55,14 +54,24 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
   const workoutStatsCount = workoutStats?.length || 0;
   const hasWorkoutStats = !!workoutStatsCount;
 
+  const availableTopicQuery = useAvailableTopicById({
+    id: topicId,
+    // availableTopicsQueryKey,
+    // // ...availableTopicsQueryProps,
+    // includeWorkout: availableTopicsQueryProps.includeWorkout,
+    // includeUser: availableTopicsQueryProps.includeUser,
+    // includeQuestionsCount: availableTopicsQueryProps.includeQuestionsCount,
+  });
+  const {
+    // ...
+    topic,
+    isFetched: isTopicFetched,
+    isLoading: isTopicLoading,
+  } = availableTopicQuery;
+  const isTopicReady = isTopicFetched && !isTopicLoading;
+  const isTopicBusy = !isTopicReady;
+
   // Calculate workout stats from history
-  /* // UNUSED: Total values
-   * const totalQuestions =
-   *   workoutStats?.reduce((acc: number, stat) => acc + (stat.totalQuestions || 0), 0) || 0;
-   * const correctAnswers =
-   *   workoutStats?.reduce((acc: number, stat) => acc + (stat.correctAnswers || 0), 0) || 0;
-   * const successRate = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
-   */
   const totalTimeSeconds =
     workoutStats?.reduce((acc: number, stat) => acc + (stat.timeSeconds || 0), 0) || 0;
   const totalRatio = workoutStats?.reduce((acc: number, stat) => acc + (stat.ratio || 0), 0) || 0;
@@ -70,10 +79,12 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
 
   // Workout detail items
   const detailItems = [
-    (topic?.langName || topic?.langCode) && (
+    (isTopicBusy || topic?.langName || topic?.langCode) && (
       <span key="language" className="flex items-center gap-1">
         <Icons.Languages className="size-4 opacity-50" />
-        <span className="truncate">{topic.langName || topic.langCode}</span>
+        <span className="truncate">
+          {isTopicBusy ? <Skeleton className="h-4 w-12" /> : topic?.langName || topic?.langCode}
+        </span>
       </span>
     ),
   ].filter(Boolean);
@@ -91,7 +102,11 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
           <div className="flex flex-1 flex-col gap-2">
             <CardTitle className="text-base sm:text-lg">
               <Link href={topicRoute} className="hover:underline">
-                {topic?.name || t('UnknownTopic')}
+                {isTopicBusy ? (
+                  <Skeleton className="h-7 w-1/2" />
+                ) : (
+                  topic?.name || t('UnknownTopic')
+                )}
               </Link>
             </CardTitle>
           </div>
@@ -116,11 +131,6 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4 p-4 pt-2">
-        {/* Brief topic info */}
-        {showDescription && topic?.description && (
-          <p className="line-clamp-2 text-sm opacity-50">{topic.description}</p>
-        )}
-
         {/* Workout details */}
         {!!detailItems.length && (
           <div

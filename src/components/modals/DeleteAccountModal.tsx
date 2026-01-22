@@ -12,6 +12,7 @@ import { Modal } from '@/components/ui/Modal';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { isDev } from '@/config';
 import { deleteUser } from '@/features/users/actions';
+import { clearAllWorkoutsFromDB } from '@/features/workouts/lib';
 
 function DeleteAccountModal({
   isVisible,
@@ -40,6 +41,7 @@ function DeleteAccountModal({
     // Clear react-query and local caches
     queryClient.clear();
     clearLocalStorage({ except: ['cookies-accepted'] });
+    clearAllWorkoutsFromDB();
     if (typeof document !== 'undefined') {
       deleteAllCookies();
     }

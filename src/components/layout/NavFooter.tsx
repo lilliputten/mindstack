@@ -9,7 +9,7 @@ export function NavFooter() {
   React.useEffect(() => {
     // NOTE: Show app info
     // eslint-disable-next-line no-console
-    console.log('[NavFooter]', siteTitle, versionInfo);
+    console.log(siteTitle, versionInfo);
   }, []);
   return (
     <div

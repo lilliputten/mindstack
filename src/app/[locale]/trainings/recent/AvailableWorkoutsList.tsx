@@ -58,6 +58,7 @@ export function AvailableWorkoutsList(props: TProps) {
     hasWorkouts,
     isError,
     isFetched,
+    isLocal,
     isFetchingNextPage,
     isLoading,
     queryUrlHash,
@@ -73,7 +74,7 @@ export function AvailableWorkoutsList(props: TProps) {
     [queryUrlHash],
   );
 
-  if (!isFetched || /* !isFiltersInited || */ isBusy) {
+  if (!(isFetched || isLocal) || /* !isFiltersInited || */ isBusy) {
     return <ContentListSkeleton className="px-6" />;
   }
 
@@ -114,6 +115,15 @@ export function AvailableWorkoutsList(props: TProps) {
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
                 {t('GoBack')}
               </Button>
+              <Link
+                href={availableTopicsRoute}
+                className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+              >
+                <Icons.Topics className="size-4" />
+                <span className="truncate">
+                  {t('AvailableWorkouts.SelectTopicToStartTraining')}
+                </span>
+              </Link>
               {!isFiltersExpanded && (
                 <Button variant="outline" onClick={expandFilters} className="flex gap-2">
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
