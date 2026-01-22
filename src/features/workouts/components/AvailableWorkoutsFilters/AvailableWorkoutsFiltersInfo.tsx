@@ -2,28 +2,82 @@
 
 import React from 'react';
 
+import { truncateString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { TFiltersData } from '@/features/workouts/contexts/WorkoutsFiltersContext';
-import { getFiltersLabelValueString } from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersHelpers';
+import { isDev } from '@/config';
+import {
+  getActiveFilterIds,
+  getFilterFieldName,
+  getFiltersDataValueString,
+  TFiltersData,
+  TFiltersDataKey,
+} from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersHelpers';
 
 interface TProps extends TPropsWithClassName {
   filtersData: TFiltersData;
+  maxValueLength?: number;
 }
 
 export function AvailableWorkoutsFiltersInfo(props: TProps) {
-  const { className, filtersData } = props;
-  const t = useT('AvailableWorkoutsFilterTexts');
+  const { className, filtersData, maxValueLength = 30 } = props;
 
-  const filtersString = React.useMemo(
-    () => getFiltersLabelValueString(filtersData, t),
-    [filtersData, t],
-  );
+  const tTexts = useT('AvailableWorkoutsFilterTexts');
+  // const t = useT();
 
-  if (!filtersString) {
+  const activeFilterIds = getActiveFilterIds(filtersData);
+
+  if (activeFilterIds.length === 0) {
     return null;
   }
 
-  return <span className={cn('text-sm text-muted-foreground', className)}>{filtersString}</span>;
+  const renderItems = activeFilterIds
+    .map((id) => {
+      const val = filtersData[id];
+      if (id === 'adminMode' && !val) {
+        return;
+      }
+      const { showOnlyValue, value } = getFiltersDataValueString(id, {
+        filtersData,
+        specific: true,
+        t: tTexts,
+      });
+      return (
+        <span
+          key={id}
+          data-id={id}
+          className={cn(
+            isDev && '__AvailableWorkoutsFiltersInfo_Item',
+            'flex items-center gap-1',
+            '[&:not(:last-child)]:after:inline-block',
+            '[&:not(:last-child)]:after:ps-1',
+            '[&:not(:last-child)]:after:content-["|"]',
+            '[&:not(:last-child)]:after:opacity-15',
+          )}
+        >
+          {!showOnlyValue && (
+            <>
+              <span className="opacity-50">{getFilterFieldName(id, tTexts)}:</span>{' '}
+            </>
+          )}
+          <span>{truncateString(value, maxValueLength)}</span>
+        </span>
+      );
+    })
+    .filter(Boolean);
+
+  const hasFilters = !!renderItems.length;
+
+  return (
+    <div
+      className={cn(
+        isDev && '__AvailableWorkoutsFiltersInfo', // DEBUG
+        // 'flex flex-wrap gap-2 text-sm text-muted-foreground',
+        className,
+      )}
+    >
+      {hasFilters ? renderItems : tTexts('NoActiveFilters')}
+    </div>
+  );
 }

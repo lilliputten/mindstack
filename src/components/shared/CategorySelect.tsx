@@ -221,6 +221,7 @@ export function CategorySelect({
 }
 
 interface CategorySelectFieldProps {
+  // form: UseFormReturn;
   control: Control<{ categoryIds: string[] }>;
   name: 'categoryIds';
   label: string;

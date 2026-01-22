@@ -97,6 +97,17 @@ export function getFiltersDataValueString(
   return getFiltersDataRawValueString(fieldId, value, opts);
 }
 
+/**
+ * Extracts the IDs of all active filters from the provided filters data.
+ *
+ * A filter is considered active if:
+ * - Its value is not null or undefined
+ * - For string values, the string is not empty or whitespace-only
+ * - For boolean values, the value is true
+ *
+ * @param filtersData - The filters data object containing filter values
+ * @returns An array of active filter IDs, or empty array if no filters are active
+ */
 export function getActiveFilterIds(filtersData?: TFiltersData) {
   if (!filtersData) {
     return [];

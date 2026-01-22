@@ -80,7 +80,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
       <FormSection>
         {/* Categories */}
         <CategorySelectField
-          form={form}
+          // form={form}
           // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
           control={form.control}
           name="categoryIds"

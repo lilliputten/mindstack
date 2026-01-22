@@ -89,8 +89,8 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
 
     return {
       searchText: searchText || undefined,
-      hasWorkoutStats,
-      hasActiveWorkouts,
+      hasWorkoutStats: hasWorkoutStats || undefined,
+      hasActiveWorkouts: hasActiveWorkouts || undefined,
       langCode: langCode || undefined,
       langName: langName || undefined,
       searchLang: searchLang || undefined,

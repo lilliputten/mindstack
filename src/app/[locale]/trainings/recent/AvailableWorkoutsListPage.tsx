@@ -25,11 +25,28 @@ export function AvailableWorkoutsListPage() {
 
   const { filtersData } = useWorkoutsFiltersContext();
 
+  // Use separate state for query parameters to avoid refetching on every field change
+  const [queryParams, setQueryParams] = React.useState<Record<string, unknown> | undefined>();
+
+  // Initialize query params only once when filters are first available
+  React.useEffect(() => {
+    if (filtersData && !queryParams) {
+      const params = {
+        ...filtersData,
+        hasWorkoutStats:
+          filtersData.hasWorkoutStats === null ? undefined : filtersData.hasWorkoutStats,
+        hasActiveWorkouts:
+          filtersData.hasActiveWorkouts === null ? undefined : filtersData.hasActiveWorkouts,
+      };
+      setQueryParams(params);
+    }
+  }, [filtersData, queryParams]);
+
   const availableWorkoutsQuery = useAvailableWorkouts({
     traceId: 'AvailableWorkoutsListPage',
-    enabled: !!filtersData,
+    enabled: !!queryParams,
     includeStats: true,
-    ...filtersData,
+    ...queryParams,
   });
 
   const {

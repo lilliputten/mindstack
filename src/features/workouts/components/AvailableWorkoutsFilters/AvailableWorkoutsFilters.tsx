@@ -148,7 +148,6 @@ export function AvailableWorkoutsFilters(props: TProps) {
             >
               <FormProvider {...form}>
                 <form
-                  onSubmit={form.handleSubmit(handleApplyButton)}
                   className={cn(
                     isDev && '__AvailableWorkoutsFilters_Form',
                     'flex flex-col gap-4',
@@ -176,9 +175,10 @@ export function AvailableWorkoutsFilters(props: TProps) {
                     )}
                   >
                     <Button
-                      type="submit"
+                      type="button"
                       variant="theme"
                       disabled={!isSubmitEnabled}
+                      onClick={form.handleSubmit(handleApplyButton)}
                       className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Check className="size-4 opacity-50" />

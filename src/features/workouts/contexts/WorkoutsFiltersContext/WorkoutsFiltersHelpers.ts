@@ -1,61 +1,141 @@
-import { dontUseOnlyValueFor, TFiltersData, TFiltersDataKey } from './WorkoutsFiltersTypes';
+import z from 'zod';
 
-export const getFilterFieldName = (field: TFiltersDataKey, t: (key: string) => string) => {
-  const fieldNames: Record<TFiltersDataKey, string> = {
-    adminMode: t('AdminMode'),
-    orderBy: t('SortBy'),
-    searchText: t('SearchText'),
-    hasWorkoutStats: t('HasWorkoutStats'),
-    hasActiveWorkouts: t('HasActiveWorkouts'),
-    langCode: t('LangCode'),
-    langName: t('LangName'),
-    searchLang: t('SearchLang'),
-    minStarted: t('MinStarted'),
-    maxStarted: t('MaxStarted'),
-    minFinished: t('MinFinished'),
-    maxFinished: t('MaxFinished'),
-    categoryIds: t('Categories'),
-  };
-  return fieldNames[field];
-};
+import { getBaseField } from '@/lib/helpers/zod';
+import { TTranslator } from '@/i18n';
 
-export const getActiveFilterIds = (filtersData: TFiltersData) => {
-  const activeFilters: TFiltersDataKey[] = [];
+import {
+  fieldUnionStrings,
+  filterFieldNames,
+  specifcFieldUnionStrings,
+} from './WorkoutsFiltersTexts';
+import {
+  dontUseOnlyValueFor,
+  filtersDataSchema,
+  TFiltersData,
+  TFiltersDataKey,
+} from './WorkoutsFiltersTypes';
 
-  (Object.keys(filtersData) as TFiltersDataKey[]).forEach((key) => {
-    const value = filtersData[key];
-    if (value !== undefined && value !== null && value !== '') {
-      activeFilters.push(key);
-    }
-  });
+export type { TFiltersData, TFiltersDataKey };
 
-  return activeFilters;
-};
-
-export const getFiltersLabelValueString = (
-  filtersData: TFiltersData,
-  t: (key: string) => string,
-): string => {
-  const activeFilters = getActiveFilterIds(filtersData);
-
-  if (activeFilters.length === 0) {
-    return '';
+export function getFilterUnionString(value: unknown, t?: TTranslator) {
+  const key = value ? (String(value) as keyof typeof fieldUnionStrings) : 'null';
+  const str = fieldUnionStrings[key] || fieldUnionStrings.null;
+  if (t && str) {
+    return t(str);
   }
+  return str;
+}
 
-  return activeFilters
-    .map((field) => {
-      const value = filtersData[field];
-      const fieldName = getFilterFieldName(field, t);
+export function getFilterFieldName(id: TFiltersDataKey, t?: TTranslator) {
+  const key = id ? (String(id) as keyof typeof filterFieldNames) : '';
+  const str = key ? filterFieldNames[key] : id;
+  if (t && str) {
+    return t(str);
+  }
+  return str;
+}
 
-      if (dontUseOnlyValueFor.includes(field)) {
-        return `${fieldName}`;
+interface TFiltersDataValueStringOptions {
+  filtersData?: TFiltersData;
+  specific?: boolean;
+  t?: TTranslator;
+}
+
+export function getFiltersDataRawValueString(
+  fieldId: TFiltersDataKey,
+  value: unknown,
+  opts: TFiltersDataValueStringOptions,
+) {
+  const { specific, t } = opts;
+  const origValue = String(value);
+  const shape = filtersDataSchema.shape;
+  const field = shape[fieldId];
+  const baseField = getBaseField(field);
+  const isBoolean = baseField instanceof z.ZodBoolean;
+  const isUnion = baseField instanceof z.ZodUnion;
+  const isEnum = baseField instanceof z.ZodEnum;
+  let strValue = origValue;
+  let showOnlyValue = false;
+  if (isBoolean || isUnion || isEnum) {
+    let unionValue: string | undefined;
+    if (specific) {
+      const specificData = specifcFieldUnionStrings[fieldId];
+      unionValue = specificData && (specificData[strValue] || specificData[origValue]);
+      if (unionValue) {
+        if (t && unionValue) {
+          unionValue = t(unionValue);
+        }
+        if (!dontUseOnlyValueFor.includes(fieldId)) {
+          showOnlyValue = true;
+        }
       }
+    }
+    if (!unionValue) {
+      unionValue = getFilterUnionString(strValue, t);
+    }
+    if (unionValue) {
+      strValue = unionValue;
+    }
+  }
+  return { showOnlyValue, value: strValue };
+}
 
-      if (typeof value === 'boolean') {
-        return value ? fieldName : `${fieldName}: no`;
+export function getFiltersLabelValueString(
+  fieldId: TFiltersDataKey,
+  value: unknown,
+  t?: TTranslator,
+) {
+  return getFiltersDataRawValueString(fieldId, value, { specific: true, t }).value;
+}
+
+export function getFiltersDataValueString(
+  fieldId: TFiltersDataKey,
+  opts: TFiltersDataValueStringOptions,
+) {
+  const { filtersData } = opts;
+  const value = filtersData?.[fieldId];
+  return getFiltersDataRawValueString(fieldId, value, opts);
+}
+
+/**
+ * Extracts the IDs of all active filters from the provided filters data.
+ *
+ * A filter is considered active if:
+ * - Its value is not null or undefined
+ * - For string values, the string is not empty or whitespace-only
+ * - For boolean values, the value is true
+ *
+ * @param filtersData - The filters data object containing filter values
+ * @returns An array of active filter IDs, or empty array if no filters are active
+ */
+export function getActiveFilterIds(filtersData?: TFiltersData) {
+  if (!filtersData) {
+    return [];
+  }
+  const activeItems = Object.entries(filtersData)
+    .map(([id, value]) => {
+      const fieldId = id as TFiltersDataKey;
+      if (value == null) {
+        return null;
       }
-
-      return `${fieldName}: ${value}`;
+      if (typeof value === 'string' && !value.trim()) {
+        return null;
+      }
+      /* // NOTE: Date filtering is not used yet
+       * if (value instanceof Date) {
+       *   // Dates are considered active if they exist
+       *   return id;
+       * }
+       */
+      const shape = filtersDataSchema.shape;
+      const field = shape[fieldId];
+      const baseField = getBaseField(field);
+      const isBoolean = baseField instanceof z.ZodBoolean;
+      if (isBoolean && !value) {
+        return null;
+      }
+      return id;
     })
-    .join(', ');
-};
+    .filter(Boolean) as TFiltersDataKey[];
+  return activeItems;
+}
