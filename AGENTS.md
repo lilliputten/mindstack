@@ -4,6 +4,7 @@ Common rules:
 - Never use `any` type.
 - Create intermidiate indices for newly created modules (with re-exports, in form of `export * from './MODULE'`).
 - Always check for typescript (via tsc) and eslint errors. Run eslint only for updated files.
+- Never run tsc for specific files. Run only ` npx tsc --noEmit` for the whole project.
 - Always run created tests.
 - Carefully update original modules content: don't just ovverride the old contents.
 - Don't use dynamic imports (`await import`), if it isn't necessary.

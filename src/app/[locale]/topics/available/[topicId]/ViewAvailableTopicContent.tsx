@@ -92,7 +92,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
       {nothingToDisplay ? (
         <PageEmpty
           className="size-full flex-1"
-          icon={Icons.Activity}
+          icon={Icons.Rocket}
           title={t('ViewAvailableTopicContent.TrainingNotStarted')}
           description={t('ViewAvailableTopicContent.NoActiveTrainingText')}
           framed={false}

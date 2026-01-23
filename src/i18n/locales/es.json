@@ -389,6 +389,11 @@
   "AvailableWorkoutsFiltersFields": {
     "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "La búsqueda de datos de temas para entrenamientos guardados localmente (para usuarios no autorizados) no está implementada. \nInicie sesión para realizar una búsqueda completa."
   },
+  "AvailableWorkoutsListItem": {
+    "CurrentRatio": "Clasificación",
+    "ProgressInfo": "Pregunta {stepNo} de {stepsCount}",
+    "TrainingDuration": "Duración"
+  },
   "Bot": {
     "LanguageChangedFor": "El idioma ha sido cambiado a",
     "SelectLanguage": "Seleccionar Idioma",
@@ -1224,6 +1229,7 @@
     "Data": "Datos",
     "Info": "Información",
     "MyTopics": "Mis Temas",
+    "Trainings": "Entrenamientos",
     "Welcome": "Bienvenido"
   },
   "StripePayment": {
@@ -1443,6 +1449,7 @@
     "ConsistentPerformance": "Rendimiento Consistente",
     "CorrectAnswers": "Respuestas Correctas",
     "CurrentAccuracy": "Precisión Actual",
+    "CurrentRatio": "Relación actual",
     "Date": "Fecha",
     "DayStreak": "Racha de Días",
     "Displaying": "Mostrando",
@@ -1458,6 +1465,7 @@
     "NoTrainingHistoryYet": "Aún No Hay Historial de Entrenamiento",
     "NoWorkoutCreated": "No se creó entrenamiento",
     "NoWorkoutDataFound": "No se encontraron datos de entrenamiento",
+    "NoWorkoutDescription": "Puedes comenzar un nuevo entrenamiento o intentar encontrar las opciones correctas en la lista general.",
     "NoWorkoutHistoryAvailable": "No hay historial de entrenamiento disponible",
     "OnAStreak": "En una racha de",
     "OnAStreakTemplate": "Estás en una racha de {streak} días",
@@ -1486,7 +1494,9 @@
     "TotalTrainings": "Entrenamientos Totales",
     "TrainingCompletedDetails": "El entrenamiento se completó hace <FinishedTime></FinishedTime> en <DurationTime></DurationTime> con una proporción de {ratioPercent}%",
     "TrainingCreatedAndReadyToStart": "El entrenamiento ha sido creado",
+    "TrainingDuration": "Duración del entrenamiento",
     "TrainingHasntStarted": "El entrenamiento aún no ha comenzado",
+    "TrainingNotStarted": "El entrenamiento no ha comenzado",
     "WhatYoullSeeAfter": "Lo que verás después de tu primer entrenamiento",
     "YourLearningProgress": "Tu progreso de aprendizaje a lo largo del tiempo",
     "YourLearningProgressOverTime": "Tu progreso de aprendizaje a lo largo del tiempo",
@@ -1500,6 +1510,10 @@
     "Training": "Entrenamiento",
     "TrainingAlreadyCompleted": "La formación está completa.",
     "TrainingIsStarting": "El entrenamiento está comenzando..."
+  },
+  "WorkoutTopicGo": {
+    "NoTopicFound": "No se encontró ningún tema",
+    "NoWorkoutFound": "No se encontró ningún entrenamiento"
   },
   "YookassaPayment": {
     "DowngradeRequestsThroughSupport": "Las solicitudes de degradación deben procesarse a través del soporte",

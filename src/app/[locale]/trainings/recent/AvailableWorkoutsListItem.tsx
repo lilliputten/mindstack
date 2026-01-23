@@ -41,9 +41,12 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     // stats: workoutStats,
   } = workout;
 
-  console.log('[AvailableWorkoutsListItem]', {
-    workout,
-  });
+  if (isDev) {
+    // eslint-disable-next-line no-console
+    console.debug('[AvailableWorkoutsListItem]', {
+      workout,
+    });
+  }
 
   const isOwner = userId === user?.id;
   const isActive = started && !finished;
@@ -81,6 +84,36 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
         </span>
       </span>
     ),
+    isActive && startedAt && (
+      <div className="flex items-center gap-1">
+        <Icons.Clock className="size-4 opacity-50" />
+        <span>
+          {t('AvailableWorkoutsListItem.TrainingDuration')}:{' '}
+          <ShowTimeSince date={startedAt} timeout={0} />
+        </span>
+      </div>
+    ),
+    isActive && workout.stepIndex !== undefined && workout.questionsCount && (
+      <div className="flex items-center gap-1">
+        <Icons.Footprints className="size-4 opacity-50" />
+        <span>
+          {t('AvailableWorkoutsListItem.ProgressInfo', {
+            stepNo: (workout.stepIndex || 0) + 1,
+            stepsCount: workout.questionsCount,
+          })}
+        </span>
+      </div>
+    ),
+    /* // NOTE: It required to calculate a ratio from `questionResults`: currentTime and currentRatio update only on finishWorkout
+    isActive && workout.currentRatio != undefined && (
+      <div className="flex items-center gap-1">
+        <Icons.ChartNoAxesGantt className="size-4 opacity-50" />
+        <span>
+          {t('AvailableWorkoutsListItem.CurrentRatio')}: {workout.currentRatio}%
+        </span>
+      </div>
+    ),
+    */
   ].filter(Boolean);
 
   return (
@@ -133,39 +166,6 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
           )}
         >
           {!!detailItems.length && detailItems}
-
-          {isActive && startedAt && (
-            <>
-              <div className="flex items-center gap-1">
-                <Icons.Clock className="size-4 opacity-50" />
-                <span>
-                  {t('WorkoutStats.TrainingDuration')}:{' '}
-                  <ShowTimeSince date={startedAt} timeout={0} />
-                </span>
-              </div>
-
-              {workout.stepIndex !== undefined && workout.questionsCount && (
-                <div className="flex items-center gap-1">
-                  <Icons.ListTodo className="size-4 opacity-50" />
-                  <span>
-                    {t('WorkoutStats.ProgressInfo', {
-                      stepNo: (workout.stepIndex || 0) + 1,
-                      stepsCount: workout.questionsCount,
-                    })}
-                  </span>
-                </div>
-              )}
-
-              {workout.currentRatio && (
-                <div className="flex items-center gap-1">
-                  <Icons.BarChart2 className="size-4 opacity-50" />
-                  <span>
-                    {t('WorkoutStats.CurrentRatio')}: {workout.currentRatio}%
-                  </span>
-                </div>
-              )}
-            </>
-          )}
         </div>
 
         {/* Workout summary stats */}

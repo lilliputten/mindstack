@@ -4,8 +4,9 @@ import * as Icons from '@/components/shared/Icons';
 import {
   availableTopicsRoute,
   myTopicsRoute,
+  recentTrainingsRoute,
   rootCategoriesRoute,
-  welcomeAliasRoute,
+  // welcomeAliasRoute,
 } from './routesConfig';
 
 export type SiteMenu = {
@@ -32,9 +33,16 @@ export const siteMenu: SiteMenu = {
       href: availableTopicsRoute,
     },
     {
+      titleId: 'Trainings',
+      icon: Icons.Rocket,
+      href: recentTrainingsRoute,
+    },
+    /* // UNUSED
+    {
       titleId: 'Welcome',
       icon: Icons.MonitorPlay,
       href: welcomeAliasRoute,
     },
+    */
   ],
 };

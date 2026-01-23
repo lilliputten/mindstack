@@ -16,8 +16,10 @@ interface WorkoutContextProviderProps {
   children: React.ReactNode;
 }
 
-export function WorkoutContextProvider({ userId, topicId, children }: WorkoutContextProviderProps) {
-  const workoutData = useWorkoutQuery({ topicId, userId });
+export function WorkoutContextProvider({ topicId, children }: WorkoutContextProviderProps) {
+  const workoutData = useWorkoutQuery({
+    topicId,
+  });
 
   return <WorkoutContext.Provider value={workoutData}>{children}</WorkoutContext.Provider>;
 }

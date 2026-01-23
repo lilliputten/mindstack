@@ -22,6 +22,7 @@ interface TMemo {
 export function WorkoutQuestionBlock() {
   const t = useT();
   const memo = React.useMemo<TMemo>(() => ({}), []);
+  const workoutContext = useWorkoutContext();
   const {
     // topicId,
     workout,
@@ -32,16 +33,13 @@ export function WorkoutQuestionBlock() {
     goNextQuestion,
     goPrevQuestion,
     pending: isWorkoutPending,
-  } = useWorkoutContext();
+  } = workoutContext;
 
   const totalSteps = questionOrderedIds.length;
   const stepIndex = workout?.stepIndex || 0;
   const currentStep = stepIndex + 1;
   const questionId = questionOrderedIds[stepIndex];
   const isExceed = currentStep > totalSteps;
-
-  // const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
-  // const goToTheRoute = useGoToTheRoute();
 
   const handleFinishWorkout = React.useCallback(() => {
     finishWorkout();
@@ -62,9 +60,12 @@ export function WorkoutQuestionBlock() {
         currentStep,
       });
       handleFinishWorkout();
-      setTimeout(() => {
+      const handler = setTimeout(() => {
         memo.isGoingOut = true;
       }, 1000);
+      return () => {
+        clearTimeout(handler);
+      };
     }
   }, [isWorkoutPending, memo, handleFinishWorkout, isExceed, currentStep, totalSteps]);
 

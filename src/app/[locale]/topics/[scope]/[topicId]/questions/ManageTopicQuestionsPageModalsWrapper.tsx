@@ -37,8 +37,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
 
   // Add New Question Modal
   const openAddQuestionModal = React.useCallback(() => {
-    const url = `${questionsListRoutePath}/add`;
-    goToTheRoute(url, true);
+    goToTheRoute(`${questionsListRoutePath}/add`);
   }, [goToTheRoute, questionsListRoutePath]);
   React.useEffect(() => {
     if (showAddModal) {
@@ -48,8 +47,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
 
   // Generate Questions Modal
   const openGenerateQuestionsModal = React.useCallback(() => {
-    const url = `${questionsListRoutePath}/generate`;
-    goToTheRoute(url, true);
+    goToTheRoute(`${questionsListRoutePath}/generate`);
   }, [goToTheRoute, questionsListRoutePath]);
   React.useEffect(() => {
     if (showGenerateModal) {
@@ -60,8 +58,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
   // Delete Question Modal
   const openDeleteQuestionModal = React.useCallback(
     (questionId: TQuestionId) => {
-      const url = `${questionsListRoutePath}/delete?questionId=${questionId}`;
-      goToTheRoute(url);
+      goToTheRoute(`${questionsListRoutePath}/delete?questionId=${questionId}`);
     },
     [goToTheRoute, questionsListRoutePath],
   );
@@ -74,8 +71,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
   // Edit Question Card
   const openEditQuestionCard = React.useCallback(
     (questionId: TQuestionId) => {
-      const url = `${questionsListRoutePath}/${questionId}/edit`;
-      goToTheRoute(url);
+      goToTheRoute(`${questionsListRoutePath}/${questionId}/edit`);
     },
     [goToTheRoute, questionsListRoutePath],
   );
@@ -88,8 +84,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
   // Edit Answers Page
   const openEditAnswersPage = React.useCallback(
     (questionId: TQuestionId) => {
-      const url = `${questionsListRoutePath}/${questionId}/answers`;
-      goToTheRoute(url);
+      goToTheRoute(`${questionsListRoutePath}/${questionId}/answers`);
     },
     [goToTheRoute, questionsListRoutePath],
   );

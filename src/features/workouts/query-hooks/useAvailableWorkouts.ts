@@ -44,6 +44,7 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
 
   const { authenticated: isAuthenticated, loading: isUserLoading } = useSessionData();
 
+  // AKA isOffline
   const isLocal = !isUserLoading && !isAuthenticated;
 
   const queryClient = useQueryClient();

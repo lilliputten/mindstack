@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
@@ -76,6 +77,7 @@ export function WorkoutTopicGo() {
     topicId,
     workout,
     startWorkout,
+    refetch: refetchWorkout,
     // isPending,
     // isFetched,
     // isLoading,
@@ -95,7 +97,12 @@ export function WorkoutTopicGo() {
   }
 
   const availableTopicQuery = useAvailableTopicById({ id: topicId });
-  const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
+  const {
+    topic,
+    isLoading: isTopicLoading,
+    isFetched: isTopicFetched,
+    refetch: refetchTopic,
+  } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
 
   const questionsOrder = workout?.questionsOrder;
@@ -132,6 +139,13 @@ export function WorkoutTopicGo() {
     // isFetched: isQuestionFetched,
     // isLoading: isQuestionLoading,
   } = availableQuestionQuery;
+
+  React.useEffect(() => {
+    // NOTE: Or display a message below (see `!workout` condition)
+    if (!isWorkoutPending && !workout) {
+      goToTheRoute(workoutRoutePath);
+    }
+  }, [isWorkoutPending, workout, goToTheRoute, workoutRoutePath]);
 
   const handleStart = React.useCallback(() => {
     if (!memo.isStarting) {
@@ -257,10 +271,28 @@ export function WorkoutTopicGo() {
     },
   });
 
-  const isWaiting = isTopicPending || !topic || isWorkoutPending || !workout;
+  const isWaiting = isTopicPending || isWorkoutPending; // || !topic || !workout;
 
   const content = isWaiting ? (
     <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+  ) : !topic ? (
+    <PageError
+      className={cn(
+        isDev && '__WorkoutTopicGo_Error_NoTopic', // DEBUG
+      )}
+      error={t('WorkoutTopicGo.NoTopicFound')}
+      reset={refetchTopic}
+      // extraActions={extraActions}
+    />
+  ) : !workout ? (
+    <PageError
+      className={cn(
+        isDev && '__WorkoutWorkoutGo_Error_NoWorkout', // DEBUG
+      )}
+      error={t('WorkoutTopicGo.NoWorkoutFound')}
+      reset={refetchWorkout}
+      // extraActions={extraActions}
+    />
   ) : isStarting ? (
     <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
       <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />

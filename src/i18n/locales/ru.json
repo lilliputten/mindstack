@@ -25,7 +25,7 @@
   "CreationDate": "Дата создания",
   "CurrencyUSD": "доллары США",
   "CurrentProgress": "Текущий прогресс",
-  "CurrentSessionRatio": "Текущее соотношение сессии",
+  "CurrentSessionRatio": "Текущий счёт",
   "Delete": "Удалить",
   "Deleting": "Удаление",
   "Description": "Описание",
@@ -107,7 +107,7 @@
   "Yes": "Да",
   "or": "или",
   "AIGenerationsStatusInfo": {
-    "AvailableAIGenerations": "Доступные генерации ИИ: {availableGenerations}",
+    "AvailableAIGenerations": "Доступные генерации с ИИ: {availableGenerations}",
     "CheckYourUsagePlan": "проверьте свой тарифный план",
     "NoAIGenerationsAvailable": "Нет доступных генераций ИИ!",
     "UnlimitedAIGenerationsAvailable": "Доступны неограниченные генерации ИИ",
@@ -388,6 +388,11 @@
   },
   "AvailableWorkoutsFiltersFields": {
     "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Не реализован поиск данных по темам для локально сохраненных тренировок (для неавторизованных пользователей). \nАвторизуйтесь для полноценного поиска."
+  },
+  "AvailableWorkoutsListItem": {
+    "CurrentRatio": "Рейтинг",
+    "ProgressInfo": "Вопрос {stepNo} из {stepsCount}",
+    "TrainingDuration": "Продолжительность"
   },
   "Bot": {
     "SelectLanguage": "Выбрать язык",
@@ -1225,6 +1230,7 @@
     "Data": "Данные",
     "Info": "Информация",
     "MyTopics": "Мои темы",
+    "Trainings": "Тренировки",
     "Welcome": "Добро пожаловать"
   },
   "StripePayment": {
@@ -1401,7 +1407,7 @@
   "WorkoutInfo": {
     "Completed": "Завершено",
     "CurrentProgress": "Текущий прогресс",
-    "CurrentSessionRatio": "Текущее соотношение сессии",
+    "CurrentSessionRatio": "Текущий счёт",
     "FinishedAt": "Завершено в",
     "FinishedText": "Завершено {formattedDate}",
     "InProgress": "В процессе",
@@ -1444,6 +1450,7 @@
     "ConsistentPerformance": "Последовательная производительность",
     "CorrectAnswers": "Правильные ответы",
     "CurrentAccuracy": "Текущая точность",
+    "CurrentRatio": "Счёт",
     "Date": "Дата",
     "DayStreak": "Дневная серия",
     "Displaying": "Отображается",
@@ -1459,6 +1466,7 @@
     "NoTrainingHistoryYet": "Пока Нет Истории Тренировок",
     "NoWorkoutCreated": "Тренировка не создана",
     "NoWorkoutDataFound": "Данные о тренировке не найдены",
+    "NoWorkoutDescription": "Вы можете начать новую тренировку или попробовать найти нужные варианты в общем списке.",
     "NoWorkoutHistoryAvailable": "История тренировок недоступна",
     "OnAStreak": "На серии в",
     "OnAStreakTemplate": "Вы находитесь на {streak}-дневной серии",
@@ -1487,7 +1495,9 @@
     "TotalTrainings": "Всего тренировок",
     "TrainingCompletedDetails": "Тренировка завершилась <FinishedTime></FinishedTime> назад за <DurationTime></DurationTime> с коэффициентом {ratioPercent}%",
     "TrainingCreatedAndReadyToStart": "Тренировка создана",
+    "TrainingDuration": "Продолжительность обучения",
     "TrainingHasntStarted": "Тренировка еще не началась",
+    "TrainingNotStarted": "Тренировка не начата",
     "WhatYoullSeeAfter": "Что вы увидите после первой тренировки",
     "YourLearningProgress": "Ваш прогресс в обучении с течением времени",
     "YourLearningProgressOverTime": "Ваш прогресс в обучении с течением времени",
@@ -1501,6 +1511,10 @@
     "Training": "Тренировка",
     "TrainingAlreadyCompleted": "Тренировка завершена.",
     "TrainingIsStarting": "Тренировка начинается..."
+  },
+  "WorkoutTopicGo": {
+    "NoTopicFound": "Тема не найдена",
+    "NoWorkoutFound": "Тренировка не найдена"
   },
   "YookassaPayment": {
     "DowngradeRequestsThroughSupport": "Запросы на понижение должны обрабатываться через поддержку",

@@ -138,6 +138,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       <ScrollArea
         className={cn(
           isDev && '__WorkoutTopic_Scroll', // DEBUG
+          'flex flex-1 flex-col',
           className,
         )}
         viewportClassName={cn(
@@ -151,12 +152,12 @@ export function WorkoutTopic(props: TPropsWithClassName) {
           topic={topic}
           className={cn(
             isDev && '__WorkoutTopic_TopicHeader', // DEBUG
-            'flex-1 items-start max-sm:flex-col-reverse',
+            'items-start max-sm:flex-col-reverse',
           )}
           showName={false}
           showDescription
         />
-        <WorkoutStats full />
+        <WorkoutStats full className="flex-1" />
         <WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />
       </ScrollArea>
     );

@@ -394,6 +394,11 @@
   "AvailableWorkoutsFiltersFields": {
     "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Topics' data search for locally saved workouts (for unauthorized users) is not implemented. Log in for a full-fledged search."
   },
+  "AvailableWorkoutsListItem": {
+    "CurrentRatio": "Rating",
+    "ProgressInfo": "Question {stepNo} of {stepsCount}",
+    "TrainingDuration": "Duration"
+  },
   "Bot": {
     "LanguageChangedFor": "Language has been changed for",
     "SelectLanguage": "Select Language",
@@ -1230,6 +1235,7 @@
     "Data": "Data",
     "Info": "Information",
     "MyTopics": "My Topics",
+    "Trainings": "Trainings",
     "Welcome": "Welcome"
   },
   "StripePayment": {
@@ -1449,6 +1455,7 @@
     "ConsistentPerformance": "Consistent Performance",
     "CorrectAnswers": "Correct Answers",
     "CurrentAccuracy": "Current Accuracy",
+    "CurrentRatio": "Current ratio",
     "Date": "Date",
     "DayStreak": "Day Streak",
     "Displaying": "Displaying",
@@ -1464,6 +1471,7 @@
     "NoTrainingHistoryYet": "No Training History Yet",
     "NoWorkoutCreated": "No workout created",
     "NoWorkoutDataFound": "No workout data found",
+    "NoWorkoutDescription": "You can start a new workout or try to find the right options in the general list.",
     "NoWorkoutHistoryAvailable": "No workout history available",
     "OnAStreak": "On a",
     "OnAStreakTemplate": "You're on a {streak}-day streak",
@@ -1492,7 +1500,9 @@
     "TotalTrainings": "Total Trainings",
     "TrainingCompletedDetails": "The workout has completed <FinishedTime></FinishedTime> ago in <DurationTime></DurationTime> with a ratio of {ratioPercent}%",
     "TrainingCreatedAndReadyToStart": "The workout has been created <CreatedAt></CreatedAt> and now is ready to start",
+    "TrainingDuration": "Training duration",
     "TrainingHasntStarted": "Training hasn't been started yet",
+    "TrainingNotStarted": "The training has not been started",
     "WhatYoullSeeAfter": "What you'll see after your first workout",
     "YourLearningProgress": "Your learning progress over time",
     "YourLearningProgressOverTime": "Your learning progress over time",
@@ -1506,6 +1516,10 @@
     "Training": "Training",
     "TrainingAlreadyCompleted": "The training is completed.",
     "TrainingIsStarting": "The training is starting..."
+  },
+  "WorkoutTopicGo": {
+    "NoTopicFound": "No topic found",
+    "NoWorkoutFound": "No workout found"
   },
   "YookassaPayment": {
     "DowngradeRequestsThroughSupport": "Downgrade requests should be processed through support",

@@ -171,11 +171,6 @@ export function filterLocalWorkouts(
 ): Array<TIndexedDBWorkoutData> {
   let filteredWorkouts = workouts;
 
-  console.log('[WorkoutsFiltersHelpers:filterLocalWorkouts]', {
-    filters,
-    workouts,
-  });
-
   /* // TODO: For searchText & searchLang (or langCode or langName) topic data is required
    * // Filter by search text (matches against topicId since we don't have topic name in IndexedDB)
    * if (filters.searchText && filters.searchText.trim()) {
@@ -196,7 +191,6 @@ export function filterLocalWorkouts(
 
   // Filter by hasActiveWorkouts (boolean with null = ignore)
   if (filters.hasActiveWorkouts != undefined) {
-    debugger;
     if (filters.hasActiveWorkouts) {
       // Filter for active workouts (started but not finished)
       filteredWorkouts = filteredWorkouts.filter((workout) => workout.started && !workout.finished);
