@@ -27,8 +27,6 @@ export default async function WorkoutTopicWrapper({ params }: TAwaitedProps) {
     throw new Error('No topic ID specified');
   }
 
-  // redirect(`/topics/available/${topicId}/workout/go`);
-
   return (
     <PageWrapper
       className={cn(
@@ -44,8 +42,6 @@ export default async function WorkoutTopicWrapper({ params }: TAwaitedProps) {
         className={cn(
           isDev && '__WorkoutTopicWrapper_Content', // DEBUG
         )}
-        // NOTE: workout is taken from WorkoutContextProvider
-        // topicId={topicId}
       />
     </PageWrapper>
   );

@@ -25,10 +25,8 @@ export default async function WorkoutTopicGoWrapper({ params }: TAwaitedProps) {
   const { topicId } = await params;
 
   if (!topicId) {
-    return <PageError error={'Not topic specified.'} />;
+    return <PageError error={'No topic specified.'} />;
   }
-
-  // TODO: Check if no active training and then go to workout review/control page (on the client, because the user might be unauthorized)
 
   return (
     <PageWrapper
@@ -37,7 +35,7 @@ export default async function WorkoutTopicGoWrapper({ params }: TAwaitedProps) {
       )}
       innerClassName={cn(
         isDev && '__WorkoutTopicGoWrapper_Inner', // DEBUG
-        'w-full rounded-lg gap-4 py-6',
+        'w-full gap-4 py-6',
       )}
       limitWidth
     >

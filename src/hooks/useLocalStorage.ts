@@ -2,8 +2,12 @@
 
 import React from 'react';
 
-const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] => {
-  const [storedValue, setStoredValue] = React.useState(initialValue);
+export const useLocalStorage = <T>(
+  key: string,
+  initialValue: T | undefined,
+): [T | undefined, (value: T | undefined) => void, boolean] => {
+  const [storedValue, setStoredValue] = React.useState<T | undefined>(initialValue);
+  const [inited, setInited] = React.useState(false);
 
   React.useEffect(() => {
     // Retrieve from localStorage
@@ -11,15 +15,19 @@ const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => voi
     if (item) {
       setStoredValue(JSON.parse(item));
     }
+    setInited(true);
   }, [key]);
 
-  const setValue = (value: T) => {
+  const setValue = (value: T | undefined) => {
     // Save state
     setStoredValue(value);
     // Save to localStorage
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (value == undefined) {
+      window.localStorage.removeItem(key);
+    } else {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
   };
-  return [storedValue, setValue];
-};
 
-export default useLocalStorage;
+  return [storedValue, setValue, inited];
+};

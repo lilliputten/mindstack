@@ -7,7 +7,7 @@ import { isDev } from '@/config';
 
 import { TUser } from '../types';
 
-type TUserSubset = Pick<TUser, 'id' | 'name' | 'image'>;
+type TUserSubset = Pick<TUser, 'id' | 'email' | 'name' | 'image'>;
 
 interface TSmallUserBlockProps {
   className?: string;
@@ -59,11 +59,11 @@ export function SmallUserBlock(props: TSmallUserBlockProps) {
             ) : (
               <AvatarFallback>
                 <span className="sr-only">{user.name}</span>
-                <Icons.User className="size-4 opacity-50" />
+                <Icons.User className={cn(tiny ? 'size-3.5' : 'size-4', 'opacity-50')} />
               </AvatarFallback>
             )}
           </Avatar>
-          <div className="truncate">{user.name}</div>
+          <div className="max-w-36 truncate">{user.name || user.email || t('Anonymous')}</div>
         </>
       )}
     </div>

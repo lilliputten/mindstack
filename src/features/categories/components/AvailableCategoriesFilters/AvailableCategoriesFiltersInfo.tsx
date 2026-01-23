@@ -37,12 +37,12 @@ export function AvailableCategoriesFiltersInfo(props: TProps) {
           data-id={id}
           className={cn(
             isDev && '__AvailableCategoriesFiltersInfo_Item', // DEBUG
-            'me-2',
+            'me-2 truncate',
             '[&:not(:last-child)]:after:inline-block',
             '[&:not(:last-child)]:after:ps-1',
             '[&:not(:last-child)]:after:content-["|"]',
             '[&:not(:last-child)]:after:opacity-15',
-            className,
+            // className,
           )}
         >
           {!showOnlyValue && (

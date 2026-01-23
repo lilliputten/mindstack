@@ -4,7 +4,7 @@ import React from 'react';
 import { QueryKey, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
+import { getErrorText, invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers';
 import { safeJsonParse } from '@/lib/helpers/json';
 import { useT } from '@/i18n';
 import { defaultStaleTime } from '@/constants';
@@ -13,8 +13,15 @@ import { TUserId } from '@/features/users/types';
 import { createWorkoutStats } from '@/features/workouts/actions/createWorkoutStats';
 import { getWorkout } from '@/features/workouts/actions/getWorkout';
 import { updateWorkout } from '@/features/workouts/actions/updateWorkout';
-import { TWorkoutData } from '@/features/workouts/types';
+import {
+  deleteWorkoutFromDB,
+  getAllWorkoutTopicIds,
+  getWorkoutFromDB,
+  saveWorkoutToDB,
+} from '@/features/workouts/lib/indexedDB';
+import { TWorkout, TWorkoutData } from '@/features/workouts/types';
 
+import { useSessionData } from '../useSessionUser';
 import { useAvailableTopicById } from './useAvailableTopicById';
 import { useQuestionIdsForTopicId } from './useQuestionIdsForTopicId';
 
@@ -32,22 +39,21 @@ interface TMemo {
   userId?: TUserId;
   workout?: TWorkoutData | null;
   questionIds?: string[];
-  isOffline?: boolean;
 }
 
 interface TUseWorkoutQueryProps {
   topicId?: TTopicId;
-  userId?: TUserId;
   enabled?: boolean;
-  preparing?: boolean;
 }
 
 export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
-  const { enabled = true, preparing, topicId, userId } = props;
+  const { enabled = true, topicId } = props;
   const queryClient = useQueryClient();
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
   const t = useT();
+
+  const { authenticated: isAuthenticated, loading: isUserLoading } = useSessionData();
 
   const questionIdsQuery = useQuestionIdsForTopicId({ topicId });
   const {
@@ -60,94 +66,79 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
 
   const availableTopicQuery = useAvailableTopicById({ id: topicId || '' });
   const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
-  const isTopicPending = isTopicLoading || !isTopicFetched;
+  const isTopicReady = !isTopicLoading && isTopicFetched;
+  const isTopicPending = !isTopicReady;
 
-  const isOffline =
-    isQuestionIdsPending || isTopicPending || !userId || !topicId || !enabled || !!preparing;
+  // AKA isOffline
+  const isLocal = !isUserLoading && !isAuthenticated;
 
   memo.topicId = topicId;
-  memo.userId = userId;
   memo.questionIds = questionIds;
-  memo.isOffline = isOffline;
 
   const queryKey: QueryKey = React.useMemo(() => ['workout', topicId], [topicId]);
 
-  const [localWorkout, setLocalWorkout] = React.useState<TWorkoutData | null>(null);
-  const [localInitialized, setLocalInitialized] = React.useState(false);
+  const areDepsReady = !isUserLoading && !isTopicPending && !isQuestionIdsPending;
+  const isEnabled = enabled && areDepsReady;
 
-  // Load from localStorage
-  React.useEffect(() => {
-    if (typeof localStorage === 'object' && topicId) {
-      try {
-        const stored = localStorage.getItem(`workout-${topicId}`);
-        const data = safeJsonParse<TWorkoutData | null>(stored, null);
-        if (data?.startedAt && typeof data.startedAt === 'string') {
-          data.startedAt = new Date(data.startedAt);
-        }
-        if (data?.finishedAt && typeof data.finishedAt === 'string') {
-          data.finishedAt = new Date(data.finishedAt);
-        }
-        setLocalWorkout(data);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to load workout from localStorage:', error);
-        debugger; // eslint-disable-line no-debugger
-      }
+  const fetchFromIndexedDB = React.useCallback(async (topicId?: string) => {
+    if (!topicId) {
+      return undefined;
     }
-    setLocalInitialized(true);
-  }, [topicId]);
+    const data = await getWorkoutFromDB(topicId);
+    if (!data) {
+      return undefined;
+    }
+    const workoutData = safeJsonParse<TWorkoutData | undefined>(JSON.stringify(data), undefined);
+    if (!workoutData) {
+      return undefined;
+    }
+    // WTF?
+    if (workoutData.startedAt && typeof workoutData.startedAt === 'string') {
+      workoutData.startedAt = new Date(workoutData.startedAt);
+    }
+    if (workoutData.finishedAt && typeof workoutData.finishedAt === 'string') {
+      workoutData.finishedAt = new Date(workoutData.finishedAt);
+    }
+    return workoutData;
+  }, []);
 
-  // Save to localStorage
-  const saveToLocalStorage = React.useCallback(
-    (workout: TWorkoutData | null) => {
-      if (typeof localStorage === 'object' && topicId) {
-        try {
-          if (workout) {
-            localStorage.setItem(`workout-${topicId}`, JSON.stringify(workout));
-          } else {
-            localStorage.removeItem(`workout-${topicId}`);
-          }
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('Failed to save workout to localStorage:', error);
-          debugger; // eslint-disable-line no-debugger
-        }
+  const queryFn = React.useCallback(async () => {
+    try {
+      if (!topicId) {
+        return null;
       }
-    },
-    [topicId],
-  );
-
-  const isQueryEnabled = !!userId && !!topicId && !!enabled && !preparing;
+      if (isLocal) {
+        const localData = await fetchFromIndexedDB(topicId);
+        return localData || null;
+      }
+      const serverData = await getWorkout(topicId);
+      return serverData || null;
+    } catch (error) {
+      const details = getErrorText(error);
+      const message = 'Cannot load workout data';
+      // eslint-disable-next-line no-console
+      console.error('[useWorkoutQuery:queryFn]', message, {
+        details,
+        error,
+        topicId,
+      });
+      debugger; // eslint-disable-line no-debugger
+      return null;
+    }
+  }, [isLocal, topicId, fetchFromIndexedDB]);
 
   const query = useQuery<TWorkoutData | null>({
     queryKey,
     staleTime,
-    enabled: isQueryEnabled, // !isOffline && localInitialized,
-    queryFn: async () => {
-      try {
-        if (!topicId || !userId) {
-          return null;
-        }
-        const serverData: TWorkoutData | undefined = await getWorkout(topicId);
-        /* console.log('[useWorkoutQuery:queryFn] Received server data', {
-         *   topicId,
-         *   userId,
-         *   serverData,
-         * });
-         */
-        return serverData || null;
-      } catch (error) {
-        const details = error instanceof APIError ? error.details : null;
-        const message = 'Cannot load workout data';
-        // eslint-disable-next-line no-console
-        console.error('[useWorkoutQuery:queryFn]', message, { details, error, topicId });
-        debugger; // eslint-disable-line no-debugger
-        return null;
-      }
-    },
+    enabled: isEnabled,
+    queryFn: queryFn,
   });
 
-  const workout = isOffline || !query.data ? localWorkout : query.data;
+  const isQueryReady =
+    query.isFetched && !query.isLoading && !query.isPending && !query.isRefetching;
+  const isWorkoutReady = areDepsReady && isQueryReady;
+
+  const workout = query.data;
   memo.workout = workout;
 
   const questionOrderedIds = React.useMemo(
@@ -156,45 +147,54 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
   );
 
   const updateWorkoutData = React.useCallback(
-    async (data: Partial<TWorkoutData> | undefined) => {
+    async (data: Partial<TWorkout> | undefined) => {
+      if (!topicId) {
+        return;
+      }
       if (!data) {
-        saveToLocalStorage(null);
-        setLocalWorkout(null);
+        await deleteWorkoutFromDB(topicId);
+        // setLocalWorkout(undefined);
         return;
       }
       const updatedData = memo.workout ? { ...memo.workout, ...data } : (data as TWorkoutData);
-      // Always save to localStorage
-      saveToLocalStorage(updatedData);
-      setLocalWorkout(updatedData);
+      // Always save to IndexedDB
+      await saveWorkoutToDB(topicId, updatedData);
+      // setLocalWorkout(updatedData);
       memo.workout = updatedData;
       // Save to server if online
-      if (!isOffline) {
+      if (!isLocal) {
         try {
-          if (data && topicId) {
-            const serverData = await updateWorkout(topicId, data);
-            /* console.log('[useWorkoutQuery:updateWorkoutData] Saved to server', {
-             *   serverData,
-             *   updatedData,
-             * });
-             */
-            queryClient.setQueryData(queryKey, serverData);
-          }
+          await updateWorkout(topicId, updatedData);
         } catch (error) {
+          const message = 'Failed to update workout on server';
           // eslint-disable-next-line no-console
-          console.error('Failed to update workout on server:', error);
+          console.error('[useWorkoutQuery:updateWorkoutData]', message, {
+            error,
+            topicId,
+            data,
+          });
           debugger; // eslint-disable-line no-debugger
           toast.error(t('Workout.FailedToSaveWorkout'));
         }
       }
+      queryClient.setQueryData(queryKey, updatedData);
+      // Invalidate queries
+      const invalidatePrefixes = [
+        // Invalidate all possible keys
+        ['workout', topicId],
+        ['available-workouts'],
+      ].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [queryKey]);
     },
-    [memo, saveToLocalStorage, isOffline, topicId, queryClient, queryKey, t],
+    [memo, isLocal, topicId, queryClient, queryKey, t],
   );
 
   const createNewWorkoutData = React.useCallback(() => {
-    const questionsOrder = shuffleQuestionsStr(memo.questionIds);
+    const { questionIds } = memo;
+    const questionsOrder = shuffleQuestionsStr(questionIds);
     const now = new Date();
     const newWorkout: TWorkoutData = {
-      questionsCount: memo.questionIds?.length || 0,
+      questionsCount: questionIds?.length || 0,
       questionsOrder,
       questionResults: '',
       stepIndex: 0,
@@ -212,19 +212,18 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
 
   const createWorkout = React.useCallback(() => {
     const newWorkout = createNewWorkoutData();
-    /* console.log('[useWorkoutQuery:createWorkout]', {
-     *   newWorkout,
-     * });
-     */
     return updateWorkoutData(newWorkout);
   }, [createNewWorkoutData, updateWorkoutData]);
 
   const startWorkout = React.useCallback(() => {
-    const workout = memo.workout || createNewWorkoutData();
+    const { questionIds } = memo;
+    const workout = memo.workout
+      ? { ...memo.workout, questionsOrder: shuffleQuestionsStr(questionIds) }
+      : createNewWorkoutData();
     const now = new Date();
     const updatedWorkout: TWorkoutData = {
       ...workout,
-      startedAt: now, // (new Date()).toISOString()
+      startedAt: now,
       finishedAt: now,
       started: true,
       finished: false,
@@ -235,12 +234,8 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       currentTime: 0, // Current time remained to thefinish, in seconds (if finished)
       correctAnswers: 0, // Current correct answers count (if finished)
     };
-    /* console.log('[useWorkoutQuery:startWorkout]', {
-     *   updatedWorkout,
-     * });
-     */
     return updateWorkoutData(updatedWorkout);
-  }, [createNewWorkoutData, memo.workout, updateWorkoutData]);
+  }, [createNewWorkoutData, memo, updateWorkoutData]);
 
   const finishWorkout = React.useCallback(async () => {
     if (!memo.workout || !topicId) return;
@@ -257,7 +252,7 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
 
     // Save workout stats to database
     try {
-      if (userId) {
+      if (!isLocal) {
         await createWorkoutStats({
           topicId,
           totalQuestions: totalSteps,
@@ -274,7 +269,14 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Failed to save workout stats:', error);
+      console.error('[useWorkoutQuery:finishWorkout]', 'Failed to save workout stats', {
+        error,
+        topicId,
+        totalSteps,
+        correctAnswers,
+        currentRatio,
+        currentTime,
+      });
       debugger; // eslint-disable-line no-debugger
     }
 
@@ -288,13 +290,9 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       currentTime,
       currentRatio,
     };
-    /* console.log('[useWorkoutQuery:finishWorkout]', {
-     *   updateData,
-     * });
-     */
 
     return updateWorkoutData(updateData);
-  }, [memo, questionIds, updateWorkoutData, topicId, userId, queryClient]);
+  }, [memo, questionIds, updateWorkoutData, topicId, queryClient, isLocal]);
 
   const goPrevQuestion = React.useCallback(() => {
     if (!memo.workout) return;
@@ -303,10 +301,6 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       stepIndex: newStepIndex,
       selectedAnswerId: '',
     };
-    /* console.log('[useWorkoutQuery:goPrevQuestion]', {
-     *   updateData,
-     * });
-     */
     return updateWorkoutData(updateData);
   }, [memo, updateWorkoutData]);
 
@@ -321,15 +315,11 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
       stepIndex: stepIndex + 1,
       selectedAnswerId: '',
     };
-    /* console.log('[useWorkoutQuery:goNextQuestion]', {
-     *   updateData,
-     * });
-     */
     return updateWorkoutData(updateData);
   }, [memo, questionIds, finishWorkout, updateWorkoutData]);
 
   const saveResult = React.useCallback(
-    (result: boolean | undefined) => {
+    (result: boolean | undefined, selectedAnswerId?: string) => {
       if (!memo.workout) return;
       const currentResults = memo.workout.questionResults || '[]';
       const resultsList = safeJsonParse<(number | null)[]>(currentResults, []);
@@ -342,63 +332,72 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
         questionResults,
         correctAnswers,
       };
-      /* console.log('[useWorkoutQuery:saveResult]', {
-       *   updateData,
-       * });
-       */
+      if (selectedAnswerId) {
+        updateData.selectedAnswerId = selectedAnswerId;
+      }
       return updateWorkoutData(updateData);
     },
     [memo, updateWorkoutData],
   );
 
-  const saveAnswer = React.useCallback(
-    (selectedAnswerId?: string) => {
-      const updateData: Partial<TWorkoutData> = {
-        selectedAnswerId: selectedAnswerId || '',
-      };
-      /* console.log('[useWorkoutQuery:saveAnswer]', {
-       *   updateData,
-       * });
-       */
-      return updateWorkoutData(updateData);
-    },
-    [updateWorkoutData],
-  );
-
   const saveResultAndGoNext = React.useCallback(
-    (result: boolean | undefined) => {
-      /* console.log('[useWorkoutQuery:saveResultAndGoNext]', {
-       *   result,
-       * });
-       */
-      saveResult(result);
-      goNextQuestion();
+    async (result: boolean | undefined) => {
+      await saveResult(result);
+      await goNextQuestion();
     },
     [saveResult, goNextQuestion],
   );
 
-  const isFetched = query.isFetched || !isQueryEnabled;
-  const isPending = !isFetched || query.isLoading || !localInitialized;
+  return React.useMemo(
+    () => ({
+      workout,
+      questionIds,
+      questionOrderedIds,
+      topicId,
+      topic,
+      pending: !isWorkoutReady,
+      queryKey,
+      createWorkout,
+      startWorkout,
+      finishWorkout,
+      goPrevQuestion,
+      goNextQuestion,
+      saveResult,
+      saveResultAndGoNext,
+      updateWorkoutData,
+      ...query,
+    }),
+    [
+      workout,
+      questionIds,
+      questionOrderedIds,
+      topicId,
+      topic,
+      isWorkoutReady,
+      queryKey,
+      createWorkout,
+      startWorkout,
+      finishWorkout,
+      goPrevQuestion,
+      goNextQuestion,
+      saveResult,
+      saveResultAndGoNext,
+      updateWorkoutData,
+      query,
+    ],
+  );
+}
 
-  return {
-    workout,
-    questionIds,
-    questionOrderedIds,
-    topicId,
-    topic,
-    isTopicPending,
-    userId,
-    pending: isPending,
-    queryKey,
-    createWorkout,
-    startWorkout,
-    finishWorkout,
-    goPrevQuestion,
-    goNextQuestion,
-    saveResult,
-    saveAnswer,
-    saveResultAndGoNext,
-    updateWorkoutData,
-    ...query,
-  };
+export async function getAllLocalWorkoutTopicIds(): Promise<string[]> {
+  try {
+    return await getAllWorkoutTopicIds();
+  } catch (error) {
+    const message = 'Failed to get workout topic IDs from IndexedDB';
+    // eslint-disable-next-line no-console
+    console.error('[useWorkoutQuery:getAllLocalWorkoutTopicIds]', message, {
+      error,
+    });
+    debugger; // eslint-disable-line no-debugger
+    return [];
+  }
 }

@@ -22,10 +22,11 @@ interface TNavAuthButtonProps extends TPropsWithClassName {
   onPrimary?: boolean;
   onSidebar?: boolean;
   isUser?: boolean;
+  onClickEffect?: () => void;
 }
 
 export function NavUserAuthButton(props: TNavAuthButtonProps) {
-  const { onPrimary, onSidebar, isUser, className } = props;
+  const { onPrimary, onSidebar, isUser, className, onClickEffect } = props;
   const { data: session, status: sessionStatus } = useSession();
   const { showSignInModal } = useSignInModalContext();
   const t = useT();
@@ -41,9 +42,13 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
         )}
       >
         {hasValidUser && onSidebar ? (
-          <NavUserBlock onPrimary={onPrimary} onSidebar={onSidebar} />
+          <NavUserBlock onPrimary={onPrimary} onSidebar={onSidebar} onClickEffect={onClickEffect} />
         ) : hasValidUser && !onSidebar ? (
-          <NavUserAccount onPrimary={onPrimary} onSidebar={onSidebar} />
+          <NavUserAccount
+            onPrimary={onPrimary}
+            onSidebar={onSidebar}
+            onClickEffect={onClickEffect}
+          />
         ) : sessionStatus === 'loading' ? (
           <Skeleton className="h-9 w-28 rounded-full lg:flex" />
         ) : (
@@ -56,7 +61,10 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
             )}
             variant="ghostOnTheme" // {onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
             size="sm"
-            onClick={() => showSignInModal()}
+            onClick={() => {
+              onClickEffect?.();
+              showSignInModal();
+            }}
           >
             <span className="truncate">{t('NavAuthButton.SignIn')}</span>
             <Icons.ArrowRight className="size-4" />

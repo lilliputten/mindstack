@@ -17,13 +17,13 @@ import { isDev } from '@/constants';
 interface NavBarBrandProps {
   isUser?: boolean;
   onSidebar?: boolean;
+  onClickEffect?: () => void;
 }
 
 function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) {
-  const { children, className: parentClassName } = props;
+  const { children, className: parentClassName, onClickEffect } = props;
   const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  // const rootAliasRoute = isUser ? aboutAliasRoute : welcomeAliasRoute;
   const publicRootRoutesList = getAllRouteSynonyms(rootAliasRoute, locale);
   const isRoot = !pathname || publicRootRoutesList.includes(pathname);
   const urlRoute = isRoot ? welcomeAliasRoute : rootAliasRoute;
@@ -35,31 +35,23 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
     'space-x-1.5',
     'gap-2',
     'transition-all',
-    // 'mr-4',
     'select-none',
     'hover:opacity-80',
   );
-  // if (isRoot) {
-  //   return <div className={className}>{children}</div>;
-  // }
   return (
-    <Link href={urlRoute} className={className}>
+    <Link onClick={onClickEffect} href={urlRoute} className={className}>
       {children}
     </Link>
   );
 }
 
 export function NavBarBrand(props: NavBarBrandProps) {
-  // const { onSidebar } = props;
-  // const { resolvedTheme } = useTheme();
-  // const isDark = resolvedTheme === 'dark';
   return (
     <BrandWrapper {...props} className="h-12">
       <Image
         data-testid="NavBarBrandImage"
-        src={logoSvg} // {!isDark && onSidebar ? logoOnWhiteSvg : logoSvg}
+        src={logoSvg}
         className="h-auto w-48 select-none sm:min-w-48"
-        // className="h-14 w-auto"
         priority={false}
         alt={siteTitle}
       />

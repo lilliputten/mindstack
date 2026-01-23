@@ -1,5 +1,7 @@
 import { UserGradeSchema, UserGradeType } from '@/generated/prisma';
 
+import { guestUserId } from '@/features/workouts/lib/indexedDB';
+
 export interface TGradeComparisonResult {
   type: 'new' | 'same' | 'upgrade' | 'downgrade' | 'guest';
   currentGrade: UserGradeType;
@@ -19,7 +21,7 @@ export function gradeComparison(
   let type: TGradeComparisonResult['type'] = 'new';
 
   if (currentGrade === 'GUEST') {
-    type = 'guest'; // Not allowed
+    type = guestUserId; // Not allowed
   } else if (currentGrade === 'BASIC') {
     type = 'new'; // New subscription
   } else if (currentGradeIndex === requestedGradeIndex) {

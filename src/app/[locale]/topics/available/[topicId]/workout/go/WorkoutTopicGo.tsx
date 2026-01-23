@@ -5,11 +5,11 @@ import React from 'react';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
@@ -65,11 +65,27 @@ interface TMemo {
   isStarting?: boolean;
   // Init timeout handler, if not resolved (true)
   // initTimeoutHandler?: ReturnType<typeof setTimeout> | true;
+  // workoutContext?: ReturnType<typeof useWorkoutContext>;
 }
 
 export function WorkoutTopicGo() {
   const memo = React.useMemo<TMemo>(() => ({}), []);
-  const { topicId, workout, pending: isWorkoutPending, startWorkout } = useWorkoutContext();
+  const workoutContext = useWorkoutContext();
+  const {
+    ///
+    pending: isWorkoutPending,
+    topicId,
+    workout,
+    startWorkout,
+    refetch: refetchWorkout,
+    // isPending,
+    // isFetched,
+    // isLoading,
+  } = workoutContext;
+  // memo.workoutContext = workoutContext;
+  // const isWorkoutReady =
+  //   !workoutContext.isPending && !workoutContext.isLoading && workoutContext.isFetched;
+  // const isWorkoutPending = !isWorkoutReady;
 
   const t = useT();
 
@@ -81,7 +97,12 @@ export function WorkoutTopicGo() {
   }
 
   const availableTopicQuery = useAvailableTopicById({ id: topicId });
-  const { topic, isLoading: isTopicLoading, isFetched: isTopicFetched } = availableTopicQuery;
+  const {
+    topic,
+    isLoading: isTopicLoading,
+    isFetched: isTopicFetched,
+    refetch: refetchTopic,
+  } = availableTopicQuery;
   const isTopicPending = isTopicLoading && !isTopicFetched;
 
   const questionsOrder = workout?.questionsOrder;
@@ -89,7 +110,7 @@ export function WorkoutTopicGo() {
 
   const isWorkoutFinished = workout?.finished;
   const isWorkoutInProgress = workout?.started && !isWorkoutFinished;
-  const hasActiveWorkout = workout && isWorkoutInProgress;
+  // const hasActiveWorkout = workout && isWorkoutInProgress;
 
   const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
 
@@ -112,22 +133,6 @@ export function WorkoutTopicGo() {
   const currentQuestionId = unpackedQuestionsOrder[stepIndex] || '';
   const nextQuestionId = unpackedQuestionsOrder[stepIndex + 1] || '';
 
-  // Effect: Detect any question changes to determinde if we should to (re-)start a workout if none
-  React.useEffect(() => {
-    if (currentQuestionId) {
-      const hasFinishedRightNow = !!memo.questionId && Boolean(memo.finished) !== isWorkoutFinished;
-      if (!isWorkoutPending && (currentQuestionId !== memo.questionId || hasFinishedRightNow)) {
-        // Real change (or just initializtion otherwise)
-        if (memo.questionId || hasFinishedRightNow) {
-          memo.hasWorkoutUpdated = true;
-        }
-        memo.questionId = currentQuestionId;
-        memo.finished = isWorkoutFinished;
-        setInited(true);
-      }
-    }
-  }, [memo, isWorkoutPending, currentQuestionId, isWorkoutFinished]);
-
   const availableQuestionQuery = useAvailableQuestionById({ id: currentQuestionId || '' });
   const {
     question,
@@ -135,11 +140,15 @@ export function WorkoutTopicGo() {
     // isLoading: isQuestionLoading,
   } = availableQuestionQuery;
 
-  // Effect: Start workout if no active one (and hasn't been any activity yet)
   React.useEffect(() => {
-    if (!memo.isStarting && !memo.hasWorkoutUpdated && !hasActiveWorkout && !isWorkoutPending) {
-      // eslint-disable-next-line no-console
-      console.warn('[WorkoutTopicGo] No active training: startaing it now!');
+    // NOTE: Or display a message below (see `!workout` condition)
+    if (!isWorkoutPending && !workout) {
+      goToTheRoute(workoutRoutePath);
+    }
+  }, [isWorkoutPending, workout, goToTheRoute, workoutRoutePath]);
+
+  const handleStart = React.useCallback(() => {
+    if (!memo.isStarting) {
       memo.isStarting = true;
       setIsStarting(true);
       startWorkout()
@@ -151,7 +160,65 @@ export function WorkoutTopicGo() {
           setIsStarting(false);
         });
     }
-  }, [memo, startWorkout, hasActiveWorkout, isWorkoutPending, isWorkoutFinished]);
+  }, [memo, startWorkout]);
+
+  /* // Effect:Start workout if no active one (and hasn't been any activity yet) (Is it necessary?)
+   * React.useEffect(() => {
+   *   console.log('[WorkoutTopicGo:Effect:Start]', {
+   *     memo,
+   *     hasActiveWorkout,
+   *     isWorkoutPending,
+   *   });
+   *   if (!memo.isStarting && !memo.hasWorkoutUpdated && !hasActiveWorkout && !isWorkoutPending) {
+   *     const message = 'No active training: startaing it now!';
+   *     // eslint-disable-next-line no-console
+   *     console.warn('[WorkoutTopicGo:Effect:Start]', message, {
+   *       memo,
+   *       hasActiveWorkout,
+   *       isWorkoutPending,
+   *     });
+   *     handleStart();
+   *   }
+   * }, [memo, startWorkout, hasActiveWorkout, isWorkoutPending, isWorkoutFinished, handleStart]);
+   */
+
+  // Effect:Finished: Detect any question changes to determinde if we should to (re-)start a workout if none
+  React.useEffect(() => {
+    if (currentQuestionId) {
+      const hasFinishedRightNow = !!memo.questionId && Boolean(memo.finished) !== isWorkoutFinished;
+      if (!isWorkoutPending && (currentQuestionId !== memo.questionId || hasFinishedRightNow)) {
+        // Real change (or just initializtion otherwise)
+        if (memo.questionId || hasFinishedRightNow) {
+          memo.hasWorkoutUpdated = true;
+        }
+        memo.questionId = currentQuestionId;
+        memo.finished = isWorkoutFinished;
+        if (isWorkoutFinished && !memo.isStarting) {
+          const message = 'No active training';
+          // eslint-disable-next-line no-console
+          console.warn('[WorkoutTopicGo:Effect:Finished]', message, {
+            isWorkoutFinished,
+          });
+          /* // TODO: Redirect to the workout page?
+           * setTimeout(() => {
+           *   // DEBUG: isMounted = false
+           *   if (isMounted) {
+           *     goToTheRoute(workoutRoutePath);
+           *   }
+           * }, 2000);
+           */
+        }
+        setInited(true);
+      }
+    }
+  }, [
+    memo,
+    isWorkoutPending,
+    currentQuestionId,
+    isWorkoutFinished,
+    goToTheRoute,
+    workoutRoutePath,
+  ]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -204,68 +271,60 @@ export function WorkoutTopicGo() {
     },
   });
 
-  const content =
-    isTopicPending || !topic || isWorkoutPending || !workout ? (
-      <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
-    ) : isStarting ? (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
-        <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
-        <p>{t('WorkoutTopic.TrainingIsStarting')}</p>
-      </div>
-    ) : isWorkoutFinished ? (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
-        <Icons.Activity className="mx-auto size-8 text-theme" />
-        <p className="text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
-        <WorkoutControl className="items-center" />
-      </div>
-    ) : (
-      <Card
-        className={cn(
-          isDev && '__WorkoutTopicGo', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden',
-        )}
-      >
-        <ScrollArea
-          className={cn(
-            isDev && '__WorkoutTopicGo_Scroll', // DEBUG
-          )}
-          viewportClassName={cn(
-            isDev && '__WorkoutTopicGo_ScrollViewport', // DEBUG
-            '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
-          )}
-        >
-          <CardHeader
-            className={cn(
-              isDev && '__WorkoutTopicGo_Header', // DEBUG
-              'item-start flex flex-col gap-4',
-            )}
-          >
-            <TopicHeader
-              scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
-              topic={topic}
-              className="flex-1 max-sm:flex-col-reverse"
-              showName={false}
-              showDescription
-            />
-            {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
-          </CardHeader>
-          <CardContent
-            className={cn(
-              isDev && '__WorkoutTopicGo_Content', // DEBUG
-              'relative flex flex-1 flex-col overflow-hidden px-0',
-            )}
-          >
-            <WorkoutTopicGoContent topic={topic} />
-          </CardContent>
-        </ScrollArea>
-      </Card>
-    );
+  const isWaiting = isTopicPending || isWorkoutPending; // || !topic || !workout;
 
-  /* // DEMO: Show ContentSkeleton
-   * if (false) {
-   *   return <ContentSkeleton />;
-   * }
-   */
+  const content = isWaiting ? (
+    <ContentSkeleton omitHeader answersCount={question?._count?.answers} />
+  ) : !topic ? (
+    <PageError
+      className={cn(
+        isDev && '__WorkoutTopicGo_Error_NoTopic', // DEBUG
+      )}
+      error={t('WorkoutTopicGo.NoTopicFound')}
+      reset={refetchTopic}
+      // extraActions={extraActions}
+    />
+  ) : !workout ? (
+    <PageError
+      className={cn(
+        isDev && '__WorkoutWorkoutGo_Error_NoWorkout', // DEBUG
+      )}
+      error={t('WorkoutTopicGo.NoWorkoutFound')}
+      reset={refetchWorkout}
+      // extraActions={extraActions}
+    />
+  ) : isStarting ? (
+    <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+      <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
+      <p>{t('WorkoutTopic.TrainingIsStarting')}</p>
+    </div>
+  ) : isWorkoutFinished ? (
+    <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
+      <Icons.Check className="mx-auto size-8 text-theme" />
+      <p className="px-6 text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
+      <WorkoutControl className="items-center p-6" handleStart={handleStart} />
+    </div>
+  ) : (
+    <ScrollArea
+      className={cn(
+        isDev && '__WorkoutTopicGo_Scroll', // DEBUG
+      )}
+      viewportClassName={cn(
+        isDev && '__WorkoutTopicGo_ScrollViewport', // DEBUG
+        '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
+      )}
+    >
+      <TopicHeader
+        scope={TopicsManageScopeIds.AVAILABLE_TOPICS}
+        topic={topic}
+        className="flex-1 px-6 max-sm:flex-col-reverse"
+        showName={false}
+        showDescription
+      />
+      {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
+      <WorkoutTopicGoContent topic={topic} />
+    </ScrollArea>
+  );
 
   return (
     <>

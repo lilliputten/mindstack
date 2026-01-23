@@ -10,6 +10,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import prettierConfig from 'eslint-config-prettier';
 import { readGitignoreFiles } from 'eslint-gitignore';
+import progress from 'eslint-plugin-file-progress';
 // import pluginJson from 'eslint-plugin-json';
 import prettierPlugin from 'eslint-plugin-prettier';
 import pluginReact from 'eslint-plugin-react';
@@ -43,12 +44,16 @@ const defaultJsRules = {
 };
 
 export default [
+  // @see https://github.com/sibiraj-s/eslint-plugin-file-progress
+  progress.configs.recommended,
+
   {
     ignores: [
       // Ignore `.gitignore` specified fiels etc...
       ...readGitignoreFiles({ cwd: __dirname }),
       '.next/**',
       'src/generated/prisma/**',
+      'coverage',
       '*~',
     ],
   },

@@ -5,7 +5,6 @@ import React from 'react';
 import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
@@ -37,13 +36,13 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
 
   const workoutContext = useWorkoutContext();
   const {
-    //  topicId, topic,
-    // userId,
-    workout,
     // pending,
     // startWorkout,
-    questionIds,
     // topic,
+    // topicId,
+    // userId,
+    questionIds,
+    workout,
   } = workoutContext;
 
   // const nothingToDisplay = !workout;
@@ -61,12 +60,6 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
   const handleResumeWorkout = React.useCallback(() => {
     goToTheRoute(`${availableTopicsRoute}/${topicId}/workout/go`);
   }, [goToTheRoute, topicId]);
-
-  // const handleStartWorkout = React.useCallback(() => {
-  //   // console.log('[WorkoutControl:handleStartWorkout]');
-  //   startWorkout();
-  //   setTimeout(handleResumeWorkout, 10);
-  // }, [handleResumeWorkout, startWorkout]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -142,14 +135,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
         breadcrumbs={breadcrumbs}
         inactiveLastBreadcrumb
       />
-      <Card
-        className={cn(
-          isDev && '__ViewAvailableTopic_Card', // DEBUG
-          'relative mx-6 flex flex-1 flex-col overflow-hidden xl:col-span-2',
-        )}
-      >
-        <ViewAvailableTopicContent topic={topic} />
-      </Card>
+      <ViewAvailableTopicContent topic={topic} />
     </>
   );
 }

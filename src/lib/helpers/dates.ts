@@ -4,6 +4,8 @@ import { useFormatter } from 'next-intl';
 import { defaultLocale, TLocale, TTranslator, useT } from '@/i18n';
 import { dayMs, halfYearMs, hourMs, minuteMs } from '@/constants';
 
+export type TDateLike = Date | string | number;
+
 /* // TODO: Translations:
  *
  * See translation approach in ``formatSecondsDuration`.
@@ -29,7 +31,7 @@ const relativeDateLimit = dayMs;
 // export const halfMonthLimit = dayMs * 15;
 
 /** Workaround for cases when date has been passed as an ISO string or en empty value (now) */
-export function ensureDate(date?: Date | string | number): Date {
+export function ensureDate(date?: TDateLike): Date {
   if (!date) {
     return new Date();
   }
@@ -200,7 +202,7 @@ export function formatDate(input: string | number | Date, locale: TLocale = defa
  * // Using timeOnly option
  * timeAgo(new Date(Date.now() - 2 * 60 * 60 * 1000), true); // Returns "2h"
  */
-export function timeAgo(timestamp: Date | string | number | undefined, timeOnly?: boolean): string {
+export function timeAgo(timestamp: TDateLike | undefined, timeOnly?: boolean): string {
   const now = Date.now();
   const ticks = !timestamp
     ? now
@@ -245,7 +247,7 @@ export function timeAgo(timestamp: Date | string | number | undefined, timeOnly?
  * // With Date object
  * stringifyPeriod(new Date(Date.now() - 2 * 60 * 60 * 1000)); // Returns "2h"
  */
-export function stringifyPeriod(timestamp?: Date | string | number): string {
+export function stringifyPeriod(timestamp?: TDateLike): string {
   if (!timestamp) {
     return '';
   }
@@ -368,7 +370,7 @@ export function translateParsedPeriod(periodStr?: string, t?: TTranslator): stri
  * // Translating compound times
  * translatedPeriod(Date.now() - (2 * 60 + 30) * 1000, mockT); // Returns "3 minutos" (rounded up)
  */
-export function translatedPeriod(timestamp?: Date | string | number, t?: TTranslator): string {
+export function translatedPeriod(timestamp?: TDateLike, t?: TTranslator): string {
   const str = stringifyPeriod(timestamp);
   return translateParsedPeriod(str, t);
 }

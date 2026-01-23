@@ -35,7 +35,7 @@ export default {
       },
       colors: {
         background: 'rgb(var(--backgroundColorRGB) / <alpha-value>)',
-        foreground: 'var(--foregroundColor)',
+        foreground: 'rgb(var(--foregroundColorRGB) / <alpha-value>)',
         ...primaryColorSpread,
         ...secondaryColorSpread,
         // ...darkBlueColorSpread,

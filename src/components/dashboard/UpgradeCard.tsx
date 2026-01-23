@@ -6,11 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 
-export function UpgradeCard({
-  className,
-  dontFlatten,
-  onSidebar,
-}: TPropsWithClassName & { dontFlatten?: boolean; onSidebar?: boolean }) {
+type TProps = TPropsWithClassName & {
+  dontFlatten?: boolean;
+  onSidebar?: boolean;
+  onClickEffect?: () => void;
+};
+
+export function UpgradeCard({ className, dontFlatten, onSidebar, onClickEffect }: TProps) {
   const t = useT();
 
   return (
@@ -36,6 +38,7 @@ export function UpgradeCard({
             'w-full',
             // onSidebar && 'bg-white text-theme-600 hover:bg-theme-700 hover:text-white',
           )}
+          onClick={onClickEffect}
         >
           <Link href={pricingAliasRoute} className="flex items-center gap-2">
             {t('UpgradeCard.Upgrade')}

@@ -1,6 +1,6 @@
 import { TFiltersDataKey, TOrderBySelectOption } from './CategoriesFiltersTypes';
 
-// NOTE: These texts should be key values in the translation files. See `AvailableCategoriesFilterTexts` namespace.
+// NOTE: These texts should be key values in the translation files. See `AvailableWorkoutsFilterTexts` namespace.
 
 export const fieldUnionStrings = {
   true: 'Yes',

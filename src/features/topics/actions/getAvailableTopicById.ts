@@ -31,7 +31,7 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
   // Check user rights to delete the question...?
   const user = await getCurrentUser();
   const userId = user?.id;
-  // const isAdmin = user?.role === 'ADMIN';
+  const isAdmin = user?.role === 'ADMIN';
   try {
     if (isDev) {
       // DEBUG: Emulate network delay
@@ -56,10 +56,15 @@ export async function getAvailableTopicById(params: TGetAvailableTopicByIdParams
       include.questions = true;
     }
     if (includeWorkout && userId) {
-      include.userTopicWorkout = {
-        where: { userId },
-        select: IncludedUserTopicWorkoutSelect,
-      };
+      // Only include user's workouts if not admin
+      if (isAdmin) {
+        include.userTopicWorkout = { select: IncludedUserTopicWorkoutSelect };
+      } else {
+        include.userTopicWorkout = {
+          where: { userId },
+          select: IncludedUserTopicWorkoutSelect,
+        };
+      }
     }
 
     const topicWithWorkouts = await prisma.topic.findUnique({

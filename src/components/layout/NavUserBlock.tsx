@@ -19,6 +19,7 @@ import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';
+import { clearAllWorkoutsFromDB } from '@/features/workouts/lib';
 
 import { SidebarMenuItem, SidebarWrapper } from './SidebarComponents';
 
@@ -26,7 +27,7 @@ interface TNavUserBlockProps extends TPropsWithClassName {
   onPrimary?: boolean;
   onSidebar?: boolean;
   align?: 'center' | 'end' | 'start';
-  closeOuterMenu?: () => void;
+  onClickEffect?: () => void;
 }
 
 export function NavUserBlock(props: TNavUserBlockProps) {
@@ -35,7 +36,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
     onSidebar,
     className,
     align,
-    closeOuterMenu,
+    onClickEffect,
   } = props;
   const { data: session } = useSession();
   const user = session?.user;
@@ -48,10 +49,11 @@ export function NavUserBlock(props: TNavUserBlockProps) {
   const handleSignOut = React.useCallback(
     (event: React.MouseEvent | Event) => {
       event.preventDefault();
-      closeOuterMenu?.();
+      onClickEffect?.();
       // Clear react-query and local caches
       queryClient.clear();
       clearLocalStorage({ except: ['cookies-accepted'] });
+      clearAllWorkoutsFromDB();
       if (typeof document !== 'undefined') {
         deleteAllCookies();
       }
@@ -59,7 +61,7 @@ export function NavUserBlock(props: TNavUserBlockProps) {
         // callbackUrl: `${window.location.origin}/`,
       });
     },
-    [closeOuterMenu, queryClient],
+    [onClickEffect, queryClient],
   );
 
   if (!user) {

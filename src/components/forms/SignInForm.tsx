@@ -14,6 +14,7 @@ import { TGenericIcon } from '@/components/shared/IconTypes';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
 import { rootAliasRoute, siteTitle } from '@/config';
 import { isDev } from '@/constants';
+import { clearAllWorkoutsFromDB } from '@/features/workouts/lib';
 
 import { EmailSignInForm } from './EmailSignInForm';
 import { TelegramSignIn } from './TelegramSignIn';
@@ -58,6 +59,7 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
     signIn(provider, options).then(() => {
       // Run a client code ona successfull signin
       clearLocalStorage({ except: ['cookies-accepted'] });
+      clearAllWorkoutsFromDB();
       if (onSignInDone) {
         onSignInDone(provider);
       }

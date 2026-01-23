@@ -24,6 +24,7 @@ export const {
   ArrowRight,
   ArrowUpRight,
   BookMarked,
+  Footprints,
   BookOpen,
   BookOpenCheck,
   Bot,
@@ -72,6 +73,7 @@ export const {
   LineChart,
   ListChecks,
   ListFilter,
+  ListTodo,
   LogOut,
   Menu,
   MessageCircleQuestion,
@@ -87,6 +89,7 @@ export const {
   Pencil,
   Play,
   Plus,
+  Rocket,
   Rows3,
   Save,
   Search,
@@ -129,7 +132,7 @@ export const MenuVertical = icons.EllipsisVertical;
 export const Messages = icons.MessagesSquare;
 export const Page = icons.File;
 export const Post = icons.FileText;
-export const Questions = icons.ListTodo;
+export const Questions = ListTodo;
 export const Refresh = icons.RefreshCw;
 export const Remove = icons.Minus;
 export const Spinner = icons.Loader2;

@@ -12,7 +12,7 @@ import { useSettingsContext } from '@/contexts/SettingsContext';
 import { SidebarMenuItem, SidebarWrapper, TSidebarBlockProps } from './SidebarComponents';
 
 export function NavModeToggleBlock(props: TSidebarBlockProps) {
-  const { onSidebar, className, align } = props;
+  const { onSidebar, className, align, onClickEffect } = props;
   const Wrapper = onSidebar ? SidebarWrapper : DropdownMenuContent;
   const MenuItem = onSidebar ? SidebarMenuItem : DropdownMenuItem;
   const { resolvedTheme: currentTheme = defaultSystemTheme, themes } = useTheme();
@@ -38,7 +38,10 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
               'flex cursor-pointer items-center gap-2 text-sm',
             )}
             disabled={thisTheme === currentTheme}
-            onSelect={() => setTheme(thisTheme)}
+            onSelect={() => {
+              onClickEffect?.();
+              setTheme(thisTheme);
+            }}
           >
             {ThemeIcon && <ThemeIcon className="size-4" />}
             <span>{t(thisTheme)}</span>
