@@ -167,7 +167,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           'flex flex-col justify-center gap-6',
         )}
       >
-        <CardContent className="p-6">
+        <CardContent className="flex flex-col justify-center gap-6 p-6">
           <CardTitle className="flex items-center justify-center gap-2 text-center">
             <Icons.Activity className="size-4 text-theme" />
             <span className="truncate">{t('WorkoutStats.RecentTraining')}</span>

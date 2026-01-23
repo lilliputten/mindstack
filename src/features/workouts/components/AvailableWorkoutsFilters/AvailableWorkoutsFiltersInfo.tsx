@@ -7,6 +7,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { isDev } from '@/config';
+import { useCategoryNames } from '@/features/categories';
 import {
   getActiveFilterIds,
   getFilterFieldName,
@@ -27,17 +28,26 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
   const { isLocal } = useWorkoutsFiltersContext();
 
   const tTexts = useT('AvailableWorkoutsFilterTexts');
-  // const t = useT();
 
   const activeFilterIds = getActiveFilterIds(filtersData);
+  const { categoryNames, isLoading: isCategoryNamesLoading } = useCategoryNames();
 
-  if (activeFilterIds.length === 0) {
+  if (!activeFilterIds.length) {
     return null;
   }
 
+  const categoryIds = filtersData?.categoryIds?.length ? filtersData?.categoryIds : undefined;
+  const convertedData = filtersData && {
+    ...filtersData,
+    categoryIds,
+    categoryNames: !isCategoryNamesLoading
+      ? categoryIds?.map((id) => categoryNames?.[id]).filter(Boolean)
+      : undefined,
+  };
+
   const renderItems = activeFilterIds
     .map((id) => {
-      const val = filtersData[id];
+      const val = convertedData?.[id];
       // Temporarily don't use `searchText` and `searchLang` for local mode: Required loading & caching topics data for local filtering
       if (isLocal && (id === 'searchText' || id === 'searchLang')) {
         return;
@@ -45,8 +55,11 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
       if (id === 'adminMode' && !val) {
         return;
       }
+      if (id === 'categoryIds' && !convertedData?.categoryNames?.length) {
+        return undefined;
+      }
       const { showOnlyValue, value } = getFiltersDataValueString(id, {
-        filtersData,
+        filtersData: convertedData,
         specific: true,
         t: tTexts,
       });
@@ -81,8 +94,6 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
     <div
       className={cn(
         isDev && '__AvailableWorkoutsFiltersInfo', // DEBUG
-        // 'flex gap-2 text-sm',
-        // 'flex-wrap gap-y-1',
         className,
       )}
     >

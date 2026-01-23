@@ -1,11 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
@@ -15,8 +14,6 @@ import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TAvailableTopic } from '@/features/topics/types';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
-
-// TODO: Use 'next/navigation'
 
 interface TAvailableTopicsListItemProps {
   index: number;
@@ -29,19 +26,19 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const { topic, style } = props;
   const t = useT();
   const {
-    id: topicId,
-    // userId,
-    // name,
+    // createdAt,
     // description,
     // isPublic,
+    // keywords,
     // langCode,
     // langName,
-    // keywords,
-    // createdAt,
+    // name,
     // updatedAt,
-    userTopicWorkout: workouts,
+    // userId,
     // workoutStats,
     _count,
+    id: topicId,
+    userTopicWorkout: workouts,
   } = topic;
 
   const workout = workouts?.[0];
@@ -49,10 +46,9 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const questionsCount = _count?.questions;
   const allowedTraining = !!questionsCount;
 
-  const router = useRouter();
   const pathname = usePathname();
   const topicsRoutePath = `${pathname}/${topicId}`;
-  const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout`;
+  const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
 
   const user = useSessionUser();
   const isOwner = topic?.userId && topic?.userId === user?.id;
@@ -62,13 +58,8 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
 
   const goToTheRoute = useGoToTheRoute();
-  // const goBack = useGoBack(`${routePath}/${topic.id}`);
 
   const isCurrentTopicRoutePath = comparePathsWithoutLocalePrefix(topicsRoutePath, pathname);
-  const startWorkout = (ev: React.MouseEvent) => {
-    ev.stopPropagation();
-    router.push(workoutRoutePath);
-  };
 
   let cardContent = (
     <>
@@ -102,13 +93,13 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap gap-4 text-xs max-sm:flex-col md:items-end',
+          'flex flex-1 flex-wrap items-end gap-4 text-xs max-sm:flex-col max-sm:items-start',
         )}
       >
         <div
           className={cn(
             isDev && '__AvailableTopicsList_TopicItem__TopicProperties', // DEBUG
-            'flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
+            'text-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
           )}
         >
           <TopicProperties topic={topic} showDates />
@@ -131,12 +122,21 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
             </Button>
           )}
           {allowedTraining && (
+            <Link
+              href={workoutRoutePath}
+              className={cn(
+                buttonVariants({ variant: 'theme' }),
+                'text-truncate flex items-center gap-2',
+              )}
+            >
+              <Icons.Rocket className="size-4 opacity-50" />
+              <span className="truncate">{t('AvailableTopics.ToTraining')}</span>
+            </Link>
+          )}
+          {/*allowedTraining && (
             <Button variant="theme" onClick={startWorkout} className="flex gap-2">
-              <Icons.ArrowRight className="hidden size-4 opacity-50 sm:flex" />
-              {/*
-              <span>Training</span>
-              */}
-              <span>
+              <Icons.Rocket className="size-4 opacity-50" />
+              <span className="truncate">
                 {workout?.finished
                   ? t('AvailableTopics.RestartTraining')
                   : workout?.started
@@ -144,7 +144,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
                     : t('AvailableTopics.StartTraining')}
               </span>
             </Button>
-          )}
+            )*/}
         </div>
       </CardContent>
     </>

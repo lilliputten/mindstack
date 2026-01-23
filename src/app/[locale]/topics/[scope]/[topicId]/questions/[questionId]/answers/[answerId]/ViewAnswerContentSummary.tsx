@@ -75,7 +75,7 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
               {topic._count?.questions}
             </span>
           ) : (
-            <span className="opacity-50">{t('ViewAnswerContentSummary.NoQuestions')}:</span>
+            <span className="opacity-50">{t('NoQuestions')}:</span>
           )}
         </p>
       </div>

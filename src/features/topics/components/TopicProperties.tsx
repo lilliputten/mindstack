@@ -41,7 +41,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
   } = topic;
   const categoryIds = topic.categoryIds || topic.categories?.map(({ id }) => id);
   const userQuery = useUserById(userId);
-  const { user } = userQuery;
+  const { user, isLoading: isUserLoading } = userQuery;
   const questionsCount = _count?.questions;
   const keywordsList = keywords
     ?.split(',')
@@ -66,39 +66,57 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     /* !!compareDates(updatedAt, createdAt) && */ createdDateStr !== updatedDateStr;
   return (
     <>
-      <span id="questions" className="flex items-center gap-1" title={t('QuestionsCount')}>
-        <Icons.Questions className="mr-1 size-4 opacity-50" />{' '}
-        {questionsCount ? questionsCount : t('NoQuestions')}
+      <span id="questions" className="flex items-center gap-1 truncate" title={t('QuestionsCount')}>
+        <Icons.Questions className="mr-1 size-4 shrink-0 opacity-50" />{' '}
+        <span className="truncate">{questionsCount ? questionsCount : t('NoQuestions')}</span>
       </span>
       {!!(langName || langCode) && (
-        <span id="language" className="flex items-center gap-1" title={t('TopicLanguage')}>
-          <Icons.Languages className="mr-1 size-4 opacity-50" /> {langContent}
+        <span id="language" className="flex items-center gap-1 truncate" title={t('TopicLanguage')}>
+          <Icons.Languages className="mr-1 size-4 shrink-0 opacity-50" />{' '}
+          <span className="truncate">{langContent}</span>
         </span>
       )}
       {!!keywordsContent?.length && (
-        <span id="keyword" className="flex flex-wrap items-center gap-1" title={t('Keywords')}>
-          <Icons.Tags className="mr-1 size-4 opacity-50" /> {keywordsContent}
+        <span
+          id="keyword"
+          className="flex flex-wrap items-center gap-1 truncate"
+          title={t('Keywords')}
+        >
+          <Icons.Tags className="mr-1 size-4 shrink-0 opacity-50" /> {keywordsContent}
         </span>
       )}
       {!!categoryIds?.length && (
-        <span id="categories" className="flex flex-wrap items-center gap-1" title={t('Categories')}>
-          <Icons.Categories className="mr-1 size-4 opacity-50" />
-          <PlainCategoriesListByCategoryIds categoryIds={categoryIds} />
+        <span id="categories" className="flex items-center gap-1 truncate" title={t('Categories')}>
+          <Icons.Categories className="mr-1 size-4 shrink-0 opacity-50" />
+          <PlainCategoriesListByCategoryIds
+            className="max-w-50 truncate"
+            categoryIds={categoryIds}
+          />
         </span>
       )}
       {!!userId && (
-        <span id="user-author" className="flex items-center gap-1" title={t('Author')}>
-          <SmallUserBlock isLoading={!user} user={user} tiny />
+        <span id="user-author" className="flex items-center gap-1 truncate" title={t('Author')}>
+          <SmallUserBlock isLoading={isUserLoading} user={user} tiny />
         </span>
       )}
       {showDates && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('CreationDate')}>
-          <Icons.CalendarDays className="mr-1 size-4 opacity-50" /> {createdDateStr}
+        <span
+          id="createdAt"
+          className="flex items-center gap-1 truncate text-xs"
+          title={t('CreationDate')}
+        >
+          <Icons.CalendarDays className="mr-1 size-4 shrink-0 opacity-50" />{' '}
+          <span className="truncate">{createdDateStr}</span>
         </span>
       )}
       {showDates && updatedAt && areDifferentDates && (
-        <span id="createdAt" className="flex items-center gap-1 text-xs" title={t('UpdatedDate')}>
-          <Icons.Pencil className="mr-1 size-4 opacity-50" /> {updatedDateStr}
+        <span
+          id="createdAt"
+          className="flex items-center gap-1 truncate text-xs"
+          title={t('UpdatedDate')}
+        >
+          <Icons.Pencil className="mr-1 size-4 shrink-0 opacity-50" />{' '}
+          <span className="truncate">{updatedDateStr}</span>
         </span>
       )}
     </>

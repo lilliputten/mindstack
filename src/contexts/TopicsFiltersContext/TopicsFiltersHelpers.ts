@@ -95,7 +95,10 @@ export function getFiltersDataValueString(
   const { filtersData } = opts;
   const id =
     fieldId === 'categoryIds' && filtersData?.['categoryNames'] ? 'categoryNames' : fieldId;
-  const value = filtersData?.[id];
+  let value = filtersData?.[id];
+  if (Array.isArray(value)) {
+    value = value.join(', ');
+  }
   return getFiltersDataRawValueString(fieldId, value, opts);
 }
 

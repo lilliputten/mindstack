@@ -26,6 +26,11 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
   const tTexts = useT('AvailableTopicsFilterTexts');
   const activeFilterIds = getActiveFilterIds(filtersData);
   const { categoryNames, isLoading: isCategoryNamesLoading } = useCategoryNames();
+
+  if (!activeFilterIds.length) {
+    return null;
+  }
+
   const categoryIds = filtersData?.categoryIds?.length ? filtersData?.categoryIds : undefined;
   const convertedData = filtersData && {
     ...filtersData,
@@ -34,6 +39,7 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
       ? categoryIds?.map((id) => categoryNames?.[id]).filter(Boolean)
       : undefined,
   };
+
   const renderItems = activeFilterIds
     .map((id) => {
       const val = convertedData?.[id];

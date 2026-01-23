@@ -87,7 +87,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     isActive && startedAt && (
       <div className="flex items-center gap-1">
         <Icons.Clock className="size-4 opacity-50" />
-        <span>
+        <span className="truncate">
           {t('AvailableWorkoutsListItem.TrainingDuration')}:{' '}
           <ShowTimeSince date={startedAt} timeout={0} />
         </span>
@@ -96,7 +96,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     isActive && workout.stepIndex !== undefined && workout.questionsCount && (
       <div className="flex items-center gap-1">
         <Icons.Footprints className="size-4 opacity-50" />
-        <span>
+        <span className="truncate">
           {t('AvailableWorkoutsListItem.ProgressInfo', {
             stepNo: (workout.stepIndex || 0) + 1,
             stepsCount: workout.questionsCount,
@@ -108,7 +108,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     isActive && workout.currentRatio != undefined && (
       <div className="flex items-center gap-1">
         <Icons.ChartNoAxesGantt className="size-4 opacity-50" />
-        <span>
+        <span className="truncate">
           {t('AvailableWorkoutsListItem.CurrentRatio')}: {workout.currentRatio}%
         </span>
       </div>
@@ -125,10 +125,10 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       )}
     >
       <CardHeader className="p-4 pb-2">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-1 flex-col gap-2">
-            <CardTitle className="text-base sm:text-lg">
-              <Link href={topicRoute} className="hover:underline">
+        <div className="flex items-start justify-between gap-4 max-sm:flex-col-reverse">
+          <div className="text-truncate flex flex-1 flex-col gap-2">
+            <CardTitle className="text-truncate text-base sm:text-lg">
+              <Link href={topicRoute} className="text-truncate hover:underline">
                 {isTopicBusy ? (
                   <Skeleton className="h-7 w-1/2" />
                 ) : (
@@ -137,19 +137,19 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               </Link>
             </CardTitle>
           </div>
-          <div className="flex items-center gap-2 text-xs">
+          <div className="text-truncate flex items-center gap-2 text-xs">
             {isActive && (
-              <span className="animate-pulse rounded-full border border-green-500/20 px-2 py-1 text-green-500">
+              <span className="animate-pulse truncate rounded-full border border-green-500/20 px-2 py-1 text-green-500">
                 {t('AvailableWorkouts.Active')}
               </span>
             )}
             {isCompleted && (
-              <span className="rounded-full border border-green-500/20 px-2 py-1 text-green-500">
+              <span className="truncate rounded-full border border-green-500/20 px-2 py-1 text-green-500">
                 {t('AvailableWorkouts.Completed')}
               </span>
             )}
             {!started && !finished && (
-              <span className="rounded-full border border-gray-500/20 px-2 py-1">
+              <span className="truncate rounded-full border border-gray-500/20 px-2 py-1">
                 {t('AvailableWorkouts.NotStarted')}
               </span>
             )}
@@ -176,26 +176,26 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               'flex flex-wrap gap-2 gap-y-1 text-xs',
             )}
           >
-            <div className="flex flex-wrap items-center gap-1">
-              <span className="opacity-50">{t('QuestionsCount')}:</span>
-              <span className="font-medium">{questionsCount}</span>
+            <div className="text-truncate flex flex-wrap items-center gap-1">
+              <span className="truncate opacity-50">{t('QuestionsCount')}:</span>
+              <span className="truncate font-medium">{questionsCount}</span>
             </div>
-            <div className="flex flex-wrap items-center gap-1">
-              <span className="opacity-50">{t('AverageSuccessRate')}:</span>
-              <span className="font-medium">{averageRatio}%</span>
+            <div className="text-truncate flex flex-wrap items-center gap-1">
+              <span className="truncate opacity-50">{t('AverageSuccessRate')}:</span>
+              <span className="truncate font-medium">{averageRatio}%</span>
             </div>
             {!!totalTimeSeconds && (
-              <div className="flex flex-wrap items-center gap-1">
-                <span className="opacity-50">{t('TotalDuration')}:</span>
-                <span className="font-medium">
+              <div className="text-truncate flex flex-wrap items-center gap-1">
+                <span className="truncate opacity-50">{t('TotalDuration')}:</span>
+                <span className="truncate font-medium">
                   <ShowTimeSince date={totalTimeSeconds * 1000} timeout={0} />
                 </span>
               </div>
             )}
             {(finishedAt || startedAt) && (
-              <div className="flex flex-wrap items-center gap-1">
-                <span className="opacity-50">{t('LastActivity')}:</span>
-                <span className="font-medium">
+              <div className="text-truncate flex flex-wrap items-center gap-1">
+                <span className="truncate opacity-50">{t('LastActivity')}:</span>
+                <span className="truncate font-medium">
                   <ShowTimeSince date={finishedAt || startedAt || undefined} /> ago
                 </span>
               </div>
@@ -213,46 +213,63 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
           {!started && (
             <Link
               href={startRoute}
-              className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+              className={cn(
+                buttonVariants({ variant: 'theme' }),
+                'text-truncate flex items-center gap-2',
+              )}
             >
-              <Icons.Play className="size-4" />
-              {t('StartTraining')}
+              <Icons.Rocket className="size-4 shrink-0" />
+              <span className="truncate">{t('ToTraining')}</span>
             </Link>
           )}
 
           {isActive && (
             <Link
               href={workoutGoRoute}
-              className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+              className={cn(
+                buttonVariants({ variant: 'theme' }),
+                'text-truncate flex items-center gap-2',
+              )}
             >
-              <Icons.Play className="size-4" />
-              {t('ResumeTraining')}
+              <Icons.Play className="size-4 shrink-0" />
+              <span className="truncate">{t('ResumeTraining')}</span>
             </Link>
           )}
 
+          {/* // NOTE: It's almost the same as 'ToTraining' above
           <Link
             href={workoutRoute}
-            className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'text-truncate flex items-center gap-2',
+            )}
           >
-            <Icons.Eye className="size-4" />
-            {t('ViewTraining')}
+            <Icons.Eye className="shrink-0 size-4" />
+            <span className="truncate">{t('ViewTraining')}</span>
           </Link>
+            */}
 
           <Link
             href={topicRoute}
-            className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'text-truncate flex items-center gap-2',
+            )}
           >
-            <Icons.Topics className="size-4" />
-            {t('ViewTopic')}
+            <Icons.Topics className="size-4 shrink-0" />
+            <span className="truncate">{t('ViewTopic')}</span>
           </Link>
 
           {(isAdmin || isOwner) && (
             <Link
               href={manageTopicRoute}
-              className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
+              className={cn(
+                buttonVariants({ variant: 'outline' }),
+                'text-truncate flex items-center gap-2',
+              )}
             >
-              <Icons.Edit className="size-4" />
-              {t('EditTopic')}
+              <Icons.Edit className="size-4 shrink-0" />
+              <span className="truncate">{t('EditTopic')}</span>
             </Link>
           )}
         </div>

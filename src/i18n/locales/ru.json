@@ -52,6 +52,7 @@
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
   "NoCategoriesAvailable": "Нет доступных категорий",
   "NoFiltersApplied": "Фильтры не применены",
+  "NoQuestions": "Нет вопросов",
   "NoTopics": "Нет тем",
   "NoTopicsAvailable": "Нет доступных тем",
   "NoWorkoutsAvailable": "Нет доступных тренировок",
@@ -83,6 +84,7 @@
   "StartedAt": "Начато в",
   "Status": "Статус",
   "Timeline": "Хронология",
+  "ToTraining": "К тренировке",
   "Topic": "Тема",
   "TopicLanguage": "Язык темы",
   "TopicName": "Название темы",
@@ -261,6 +263,7 @@
     "ResumeTraining": "Продолжить тренировку",
     "StartNewTraining": "Начать новую тренировку",
     "StartTraining": "Начать тренировку",
+    "ToTraining": "К тренировке",
     "TrainingDetails": "Детали тренировки",
     "TrainingInfo": "Показать информацию о тренировке"
   },
@@ -319,7 +322,7 @@
     "ManageYourTopicsAction": "Управлять своими темами"
   },
   "AvailableWorkouts": {
-    "Active": "Активный",
+    "Active": "Активно",
     "BrowseMoreTopics": "Просмотреть больше тем",
     "Completed": "Завершено",
     "ErrorLoadingWorkoutsData": "Ошибка загрузки данных о тренировках",
@@ -387,7 +390,7 @@
     "WithoutStats": "Без статистики"
   },
   "AvailableWorkoutsFiltersFields": {
-    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Не реализован поиск данных по темам для локально сохраненных тренировок (для неавторизованных пользователей). \nАвторизуйтесь для полноценного поиска."
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Для локально сохраненных тренировок (для неавторизованных пользователей) не реализован поиск данных по темам. \nАвторизуйтесь для полноценного поиска."
   },
   "AvailableWorkoutsListItem": {
     "CurrentRatio": "Рейтинг",
@@ -1186,8 +1189,8 @@
     "CanNotSaveLocalSettings": "Невозможно сохранить локальные настройки",
     "CanNotSaveSettings": "Не могу сохранить настройки.",
     "LoadingSettings": "Загрузка настроек...",
-    "SuccessfullyLoadedSettings": "Настройки успешно загружены.",
-    "SuccessfullySavedSettings": "Настройки успешно сохранены.",
+    "SuccessfullyLoadedSettings": "Настройки загружены.",
+    "SuccessfullySavedSettings": "Настройки сохранены.",
     "tsx": {
       "SavingSettings": "Сохранение настроек..."
     }
@@ -1316,7 +1319,6 @@
     "ManageQuestion": "Параметры вопроса",
     "ManageTopic": "Управление темой",
     "NoAnswers": "Нет ответов",
-    "NoQuestions": "Нет вопросов",
     "Properties": "Свойства",
     "Timeline": "Хронология",
     "TopicCreatedBy": "Тема создана",
@@ -1460,7 +1462,7 @@
     "HistoricalPerformance": "Историческая производительность",
     "ImprovingSpeed": "Улучшение скорости",
     "KeepItUp": "Продолжайте!",
-    "LearningInsights": "Обучающие выводы",
+    "LearningInsights": "Анализ результатов",
     "MaintainingConsistentPerformanceText": "Вы поддерживаете стабильную производительность на всех тренировках",
     "NoTrainingHistory": "История тренировок еще не собрана",
     "NoTrainingHistoryYet": "Пока Нет Истории Тренировок",

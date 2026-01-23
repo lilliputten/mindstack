@@ -95,14 +95,14 @@ export function PageEmpty(props: TPageEmptyProps) {
         <div
           className={cn(
             isDev && '__PageEmpty_Buttons', // DEBUG
-            'flex w-full flex-wrap justify-center gap-4',
+            'text-truncate flex w-full flex-wrap justify-center gap-4',
             buttonsClassName,
           )}
         >
           {hasCustomButton && (
-            <Button onClick={onButtonClick} className="flex gap-2">
-              <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
-              <span>{buttonTitle}</span>
+            <Button onClick={onButtonClick} className="text-truncate flex gap-2">
+              <Icons.Add className="size-4 opacity-50" />
+              <span className="truncate">{buttonTitle}</span>
             </Button>
           )}
           {buttons}

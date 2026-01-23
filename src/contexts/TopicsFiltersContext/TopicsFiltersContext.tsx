@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { ErrorLike } from '@/lib/errors';
-import { deepCompare, getErrorText } from '@/lib/helpers';
+import { deepCompare, getErrorText, prepareObjectToLossyCompare } from '@/lib/helpers';
 import { updateUrlParamsWithSchema } from '@/lib/helpers/urls';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
@@ -30,6 +30,28 @@ type TMemo = {
   isSettingsReady?: boolean;
   defaultFiltersData?: TFiltersData;
 };
+
+/** Lossy compare with defaults. Don't count:
+ * - empty arrays
+ * - empty strings
+ * - nullable entries
+ */
+function compareWithDefaults(
+  defaultFiltersData?: TFiltersData,
+  filtersData?: TFiltersData,
+  ignoreOnlyMy?: boolean,
+) {
+  if (!defaultFiltersData || !filtersData) {
+    return false;
+  }
+  const cmp1 = prepareObjectToLossyCompare(defaultFiltersData);
+  const cmp2 = prepareObjectToLossyCompare(filtersData);
+  if (ignoreOnlyMy) {
+    delete cmp1?.showOnlyMyTopics;
+    delete cmp2?.showOnlyMyTopics;
+  }
+  return deepCompare(cmp1, cmp2);
+}
 
 export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
   const {
@@ -94,7 +116,8 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           filtersData = { ...filtersData };
           delete filtersData.showOnlyMyTopics;
         }
-        const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
+        // Compare data with defaults (fuzzy)
+        const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData);
         setError(undefined);
         try {
           await applyFilters(filtersData);

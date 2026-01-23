@@ -150,31 +150,34 @@ export function WorkoutQuestion({
       <div
         className={cn(
           isDev && '__WorkoutQuestion_Actions', // DEBUG
-          'flex justify-center gap-2',
+          'text-truncate flex flex-wrap justify-center gap-2',
         )}
       >
         {/* Back Button */}
         {currentStep > 1 && (
           <Button
             data-testid="__WorkoutQuestion_Skip_Button"
-            className={cn('gap-2')}
+            className="text-truncate flex gap-2"
             variant="outline"
             onClick={goPrevQuestion}
           >
             <Icons.ArrowLeft className="size-5 opacity-50" />
-            {t('Back')}
+            <span className="truncate">{t('Back')}</span>
           </Button>
         )}
         {!isFinished &&
           (selectedAnswer ? (
             <Button
               data-testid="__WorkoutQuestion_Skip_Button"
-              className={cn(selectedAnswer?.isCorrect && 'animate-pulse', 'gap-2')}
+              className={cn(
+                selectedAnswer?.isCorrect && 'animate-pulse',
+                'text-truncate flex gap-2',
+              )}
               variant={selectedAnswer ? 'theme' : 'outline'}
               onClick={onContinue}
             >
               <Icons.ArrowRight className="size-5 opacity-50" />
-              <span>{t('Continue')}</span>
+              <span className="truncate">{t('Continue')}</span>
             </Button>
           ) : (
             <>
@@ -182,12 +185,12 @@ export function WorkoutQuestion({
               {!selectedAnswer /* && currentStep < totalSteps */ && (
                 <Button
                   data-testid="__WorkoutQuestion_Skip_Button"
-                  className="gap-2"
+                  className="text-truncate flex gap-2"
                   variant="outline"
                   onClick={onSkip}
                 >
                   <Icons.ArrowRight className="size-5 opacity-50" />
-                  <span>{t('Skip')}</span>
+                  <span className="truncate">{t('Skip')}</span>
                 </Button>
               )}
             </>
@@ -196,7 +199,7 @@ export function WorkoutQuestion({
         <Button
           data-testid="__WorkoutQuestion_Finish_Button"
           className={cn(
-            'gap-2',
+            'text-truncate flex gap-2',
             isFinished && 'animate-pulse',
             // selectedAnswer && 'disabled',
           )}
@@ -204,7 +207,7 @@ export function WorkoutQuestion({
           onClick={onFinish}
         >
           <Icons.Flag className="size-5 opacity-50" />
-          <span>{t('Finish')}</span>
+          <span className="truncate">{t('Finish')}</span>
         </Button>
       </div>
     ),

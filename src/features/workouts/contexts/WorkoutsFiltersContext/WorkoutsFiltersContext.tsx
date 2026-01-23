@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types/react';
+import { deepCompare, prepareObjectToLossyCompare } from '@/lib/helpers';
 import { useLocalStorage, useSessionData } from '@/hooks';
 
 import {
@@ -79,6 +80,20 @@ function getFiltersParamsFromData(filtersData: TFiltersData) {
   };
 }
 
+/** Lossy compare with defaults. Don't count:
+ * - empty arrays
+ * - empty strings
+ * - nullable entries
+ */
+function compareWithDefaults(defaultFiltersData?: TFiltersData, filtersData?: TFiltersData) {
+  if (!defaultFiltersData || !filtersData) {
+    return false;
+  }
+  const cmp1 = prepareObjectToLossyCompare(defaultFiltersData);
+  const cmp2 = prepareObjectToLossyCompare(filtersData);
+  return deepCompare(cmp1, cmp2);
+}
+
 export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextProviderProps) {
   const { children, storageKey = 'workouts-filters', onFiltersChanged } = props;
 
@@ -105,7 +120,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
   const filtersData = form.watch();
   const isSubmitEnabled = form.formState.isDirty;
   const onDefaults = React.useMemo(
-    () => JSON.stringify(filtersData) === JSON.stringify(filtersDataDefaults),
+    () => compareWithDefaults(filtersDataDefaults, filtersData),
     [filtersData],
   );
 

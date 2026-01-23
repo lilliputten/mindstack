@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { ErrorLike } from '@/lib/errors';
-import { deepCompare, getErrorText } from '@/lib/helpers';
+import { deepCompare, getErrorText, prepareObjectToLossyCompare } from '@/lib/helpers';
 import { updateUrlParamsWithSchema } from '@/lib/helpers/urls';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
@@ -32,6 +32,20 @@ type TMemo = {
   isSettingsReady?: boolean;
   defaultFiltersData?: TFiltersData;
 };
+
+/** Lossy compare with defaults. Don't count:
+ * - empty arrays
+ * - empty strings
+ * - nullable entries
+ */
+function compareWithDefaults(defaultFiltersData?: TFiltersData, filtersData?: TFiltersData) {
+  if (!defaultFiltersData || !filtersData) {
+    return false;
+  }
+  const cmp1 = prepareObjectToLossyCompare(defaultFiltersData);
+  const cmp2 = prepareObjectToLossyCompare(filtersData);
+  return deepCompare(cmp1, cmp2);
+}
 
 export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps) {
   const {
@@ -223,7 +237,7 @@ export function CategoriesFiltersProvider(props: CategoriesFiltersProviderProps)
       return;
     }
     form.reset(filtersData);
-    const isDefaults = deepCompare(memo.defaultFiltersData, filtersData);
+    const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData);
     setOnDefaults(isDefaults);
   }, [memo, form, filtersData]);
 

@@ -106,28 +106,35 @@ export function AvailableWorkoutsList(props: TProps) {
         )}
       >
         <PageEmpty
-          className="mx-6"
+          className={cn(
+            isDev && '__AvailableWorkoutsListPage_PageEmpty', // DEBUG
+            'mx-6',
+          )}
           title={t('NoWorkoutsAvailable')}
           description={t('AvailableWorkouts.NoWorkoutsExplanation')}
           buttons={
             <>
-              <Button variant="ghost" onClick={goBack} className="flex gap-2">
-                <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                {t('GoBack')}
+              <Button variant="ghost" onClick={goBack} className="text-truncate flex gap-2">
+                <Icons.ArrowLeft className="size-4 shrink-0 opacity-50" />
+                <span className="truncate">{t('GoBack')}</span>
               </Button>
               <Link
                 href={availableTopicsRoute}
-                className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
+                className={cn(buttonVariants({ variant: 'default' }), 'text-truncate flex gap-2')}
               >
-                <Icons.Topics className="size-4" />
+                <Icons.Topics className="size-4 shrink-0 opacity-50" />
                 <span className="truncate">
                   {t('AvailableWorkouts.SelectTopicToStartTraining')}
                 </span>
               </Link>
               {!isFiltersExpanded && (
-                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
-                  <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  {t('ChangeFilters')}
+                <Button
+                  variant="outline"
+                  onClick={expandFilters}
+                  className="text-truncate flex gap-2"
+                >
+                  <Icons.Settings2 className="size-4 shrink-0 opacity-50" />
+                  <span className="truncate">{t('ChangeFilters')}</span>
                 </Button>
               )}
             </>
@@ -170,13 +177,21 @@ export function AvailableWorkoutsList(props: TProps) {
       ))}
 
       {isUser && (
-        <div className="flex items-center justify-center">
+        <div
+          className={cn(
+            isDev && '__AvailableWorkoutsList_BrowseButton', // DEBUG
+            'flex items-center justify-center',
+          )}
+        >
           <Link
             href={availableTopicsRoute}
-            className={cn(buttonVariants({ variant: 'outline' }), 'flex items-center gap-2')}
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'text-truncate flex items-center gap-2',
+            )}
           >
-            <Icons.Plus className="size-5" />
-            {t('AvailableWorkouts.BrowseMoreTopics')}
+            <Icons.Plus className="size-4 shrink-0" />
+            <span className="truncate">{t('AvailableWorkouts.BrowseMoreTopics')}</span>
           </Link>
         </div>
       )}

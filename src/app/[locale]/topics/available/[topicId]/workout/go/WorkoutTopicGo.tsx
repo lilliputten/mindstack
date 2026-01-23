@@ -300,8 +300,8 @@ export function WorkoutTopicGo() {
     </div>
   ) : isWorkoutFinished ? (
     <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
-      <Icons.Activity className="mx-auto size-8 text-theme" />
-      <p className="text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
+      <Icons.Check className="mx-auto size-8 text-theme" />
+      <p className="px-6 text-lg">{t('WorkoutTopic.TrainingAlreadyCompleted')}</p>
       <WorkoutControl className="items-center p-6" handleStart={handleStart} />
     </div>
   ) : (

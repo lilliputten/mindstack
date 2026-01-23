@@ -45,9 +45,7 @@ describe('getAvailableWorkouts', () => {
     try {
       mockedGetCurrentUser.mockResolvedValue(undefined);
 
-      await expect(getAvailableWorkouts({ noDebug: true })).rejects.toThrow(
-        'Unauthorized: Only authenticated users can access workouts',
-      );
+      await expect(getAvailableWorkouts({ noDebug: true })).rejects.toThrow('UNATHORIZED');
     } finally {
       await cleanupDb(createdIds);
     }
@@ -64,7 +62,7 @@ describe('getAvailableWorkouts', () => {
       mockedGetCurrentUser.mockResolvedValue(user);
 
       await expect(getAvailableWorkouts({ adminMode: true, noDebug: true })).rejects.toThrow(
-        'Admin mode is allowed only for administrators',
+        'ADMIN_REQUIRED',
       );
     } finally {
       await cleanupDb(createdIds);

@@ -175,7 +175,11 @@ export function CategorySelect({
                       <CommandItem
                         key={category.id}
                         value={category.id}
-                        onSelect={() => handleCategoryToggle(category.id)}
+                        onSelect={() => {
+                          handleCategoryToggle(category.id);
+                          // Close the pulldown after each select
+                          setOpen(false);
+                        }}
                         className={cn(
                           isDev && '__CategorySelect_Item', // DEBUG
                           'cursor-pointer',

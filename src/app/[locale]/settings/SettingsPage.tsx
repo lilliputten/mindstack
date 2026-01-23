@@ -16,10 +16,12 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { SettingsForm } from '@/components/pages/SettingsPage/SettingsForm';
 import { TSettingsFormData } from '@/components/pages/SettingsPage/SettingsForm/types';
 import * as Icons from '@/components/shared/Icons';
+import { rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { settingsSchema, TSettings } from '@/features/settings/types';
 import { TUserId } from '@/features/users/types/TUser';
+import { useGoBack } from '@/hooks';
 
 import { CardContentSkeleton } from './skeletons';
 
@@ -46,6 +48,8 @@ export function SettingsPage(props: TSettingsPageProps) {
   const t = useT();
   const formSchema = React.useMemo(() => settingsSchema, []);
   const [isUserReady, setIsUserReady] = React.useState<boolean>(false);
+
+  const goBack = useGoBack(rootAliasRoute);
 
   // @see https://react-hook-form.com/docs/useform
   const form = useForm<TSettingsFormData>({
@@ -109,11 +113,18 @@ export function SettingsPage(props: TSettingsPageProps) {
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
+        id: 'Back',
+        content: t('Back'),
+        icon: Icons.ArrowLeft,
+        visibleFor: 'sm',
+        onClick: goBack,
+      },
+      {
         id: 'save',
         content: t('Save'),
         variant: 'theme',
         icon: Icons.Save,
-        visibleFor: 'xs',
+        visibleFor: 'sm',
         disabled: !isSubmitEnabled,
         onClick: form.handleSubmit(handleFormSubmit),
       },
@@ -121,7 +132,7 @@ export function SettingsPage(props: TSettingsPageProps) {
         id: 'reset',
         content: t('Reset'),
         icon: Icons.Close,
-        visibleFor: 'sm',
+        visibleFor: 'md',
         disabled: !isDirty,
         onClick: () => form.reset(),
       },
@@ -132,12 +143,12 @@ export function SettingsPage(props: TSettingsPageProps) {
         pending: isReLoading,
         // size: 'icon',
         icon: Icons.Refresh,
-        visibleFor: 'sm',
+        visibleFor: 'md',
         disabled: !isReady,
         onClick: () => (isDirty ? setReloadConfirmModalVisible(true) : doReload()),
       },
     ],
-    [t, doReload, form, handleFormSubmit, isDirty, isReLoading, isReady, isSubmitEnabled],
+    [t, doReload, form, handleFormSubmit, isDirty, isReLoading, isReady, isSubmitEnabled, goBack],
   );
 
   return (
