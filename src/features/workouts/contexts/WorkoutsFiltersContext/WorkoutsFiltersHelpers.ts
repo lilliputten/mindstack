@@ -173,6 +173,7 @@ export function filterLocalWorkouts(
 
   console.log('[WorkoutsFiltersHelpers:filterLocalWorkouts]', {
     filters,
+    workouts,
   });
 
   /* // TODO: For searchText & searchLang (or langCode or langName) topic data is required
@@ -187,14 +188,15 @@ export function filterLocalWorkouts(
    */
 
   // Filter by hasWorkoutStats (boolean with null = ignore)
-  if (filters.hasWorkoutStats !== null && filters.hasWorkoutStats !== undefined) {
+  if (filters.hasWorkoutStats != undefined) {
     // Note: We can't actually filter by workoutStats in IndexedDB since they're not stored
     // This is a placeholder for future implementation when workoutStats are stored locally
     // For now, we just accept all workouts when this filter is active
   }
 
   // Filter by hasActiveWorkouts (boolean with null = ignore)
-  if (filters.hasActiveWorkouts !== null && filters.hasActiveWorkouts !== undefined) {
+  if (filters.hasActiveWorkouts != undefined) {
+    debugger;
     if (filters.hasActiveWorkouts) {
       // Filter for active workouts (started but not finished)
       filteredWorkouts = filteredWorkouts.filter((workout) => workout.started && !workout.finished);

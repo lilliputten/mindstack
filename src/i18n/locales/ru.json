@@ -326,7 +326,7 @@
     "NoWorkoutsExplanation": "Нет доступных тренировок. \nПопробуйте изменить настройки фильтров.",
     "NotStarted": "Не начато",
     "SelectTopicToStartTraining": "Выберите тему, чтобы начать тренировку",
-    "UnauthorizedUserSuggestionMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут просматривать тренировки."
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Войдите в систему</SigninLink>, чтобы иметь доступ к своим тренировкам на разных устройствах и использовать полноценный поиск."
   },
   "AvailableWorkoutsFilterTexts": {
     "AdminMode": "Режим администратора",
@@ -387,7 +387,7 @@
     "WithoutStats": "Без статистики"
   },
   "AvailableWorkoutsFiltersFields": {
-    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Поиск данных по темам для локально сохраненных тренировок (для неавторизованных пользователей) не реализован. \nАвторизуйтесь для полноценного поиска."
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Не реализован поиск данных по темам для локально сохраненных тренировок (для неавторизованных пользователей). \nАвторизуйтесь для полноценного поиска."
   },
   "Bot": {
     "SelectLanguage": "Выбрать язык",

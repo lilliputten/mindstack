@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -41,12 +41,17 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     // stats: workoutStats,
   } = workout;
 
+  console.log('[AvailableWorkoutsListItem]', {
+    workout,
+  });
+
   const isOwner = userId === user?.id;
   const isActive = started && !finished;
   const isCompleted = finished;
 
   const topicRoute = `${availableTopicsRoute}/${topicId}` as TRoutePath;
   const workoutRoute = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
+  const workoutGoRoute = `${workoutRoute}/go` as TRoutePath;
   const startRoute = `${topicRoute}/workout/go` as TRoutePath;
   const manageTopicRoute = ((isAdmin ? allTopicsRoute : myTopicsRoute) +
     `/${topicId}/edit`) as TRoutePath;
@@ -54,20 +59,9 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
   const workoutStatsCount = workoutStats?.length || 0;
   const hasWorkoutStats = !!workoutStatsCount;
 
-  const availableTopicQuery = useAvailableTopicById({
-    id: topicId,
-    // availableTopicsQueryKey,
-    // // ...availableTopicsQueryProps,
-    // includeWorkout: availableTopicsQueryProps.includeWorkout,
-    // includeUser: availableTopicsQueryProps.includeUser,
-    // includeQuestionsCount: availableTopicsQueryProps.includeQuestionsCount,
-  });
-  const {
-    // ...
-    topic,
-    isFetched: isTopicFetched,
-    isLoading: isTopicLoading,
-  } = availableTopicQuery;
+  const availableTopicQuery = useAvailableTopicById({ id: topicId });
+
+  const { topic, isFetched: isTopicFetched, isLoading: isTopicLoading } = availableTopicQuery;
   const isTopicReady = isTopicFetched && !isTopicLoading;
   const isTopicBusy = !isTopicReady;
 
@@ -132,16 +126,47 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
 
       <CardContent className="flex flex-col gap-4 p-4 pt-2">
         {/* Workout details */}
-        {!!detailItems.length && (
-          <div
-            className={cn(
-              isDev && '__AvailableWorkoutsListItem_Details', // DEBUG
-              'flex flex-wrap gap-2 gap-y-1 text-xs',
-            )}
-          >
-            {detailItems}
-          </div>
-        )}
+        <div
+          className={cn(
+            isDev && '__AvailableWorkoutsListItem_Details', // DEBUG
+            'flex flex-wrap gap-2 gap-y-1 text-xs',
+          )}
+        >
+          {!!detailItems.length && detailItems}
+
+          {isActive && startedAt && (
+            <>
+              <div className="flex items-center gap-1">
+                <Icons.Clock className="size-4 opacity-50" />
+                <span>
+                  {t('WorkoutStats.TrainingDuration')}:{' '}
+                  <ShowTimeSince date={startedAt} timeout={0} />
+                </span>
+              </div>
+
+              {workout.stepIndex !== undefined && workout.questionsCount && (
+                <div className="flex items-center gap-1">
+                  <Icons.ListTodo className="size-4 opacity-50" />
+                  <span>
+                    {t('WorkoutStats.ProgressInfo', {
+                      stepNo: (workout.stepIndex || 0) + 1,
+                      stepsCount: workout.questionsCount,
+                    })}
+                  </span>
+                </div>
+              )}
+
+              {workout.currentRatio && (
+                <div className="flex items-center gap-1">
+                  <Icons.BarChart2 className="size-4 opacity-50" />
+                  <span>
+                    {t('WorkoutStats.CurrentRatio')}: {workout.currentRatio}%
+                  </span>
+                </div>
+              )}
+            </>
+          )}
+        </div>
 
         {/* Workout summary stats */}
         {hasWorkoutStats && (
@@ -197,7 +222,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
 
           {isActive && (
             <Link
-              href={workoutRoute}
+              href={workoutGoRoute}
               className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
             >
               <Icons.Play className="size-4" />

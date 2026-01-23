@@ -33,6 +33,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
     filtersData,
     form,
     isReady,
+    isLocal,
     isSubmitEnabled,
     toggleFilters,
     hideFilters,
@@ -166,6 +167,22 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       'flex flex-col gap-4',
                     )}
                   >
+                    {isLocal && (
+                      <div
+                        className={cn(
+                          isDev && '__AvailableWorkoutsFiltersFields_Info', // DEBUG
+                          'flex items-center gap-2 rounded-md border border-theme/20 p-2',
+                        )}
+                      >
+                        <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+                        <p className="flex-1 text-sm opacity-50">
+                          {t(
+                            'AvailableWorkoutsFiltersFields.TemporarilyDontUseTopicsDataForLocallyStoredWorkouts',
+                          )}
+                        </p>
+                      </div>
+                    )}
+
                     <AvailableWorkoutsFiltersFields form={form} />
                   </div>
                   <div

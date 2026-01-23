@@ -24,7 +24,6 @@ import {
   TAvailableWorkoutsResultsQueryData,
   TGetAvailableWorkoutsParams,
   TUserTopicWorkout,
-  TWorkout,
 } from '@/features/workouts/types';
 import { useSessionData } from '@/hooks';
 

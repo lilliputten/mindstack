@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { TPropsWithChildren } from '@/lib/types';
-import useLocalStorage from '@/hooks/useLocalStorage';
-import { useSessionData, useSessionUser } from '@/hooks';
+import { TPropsWithChildren } from '@/lib/types/react';
+import { useLocalStorage, useSessionData } from '@/hooks';
 
 import {
   filtersDataDefaults,
@@ -52,6 +51,34 @@ interface TWorkoutsFiltersContextProviderProps extends TPropsWithChildren {
   onFiltersChanged?: (filters: TAvailableWorkoutsFiltersParams) => void;
 }
 
+function getFiltersParamsFromData(filtersData: TFiltersData) {
+  const {
+    searchText,
+    hasWorkoutStats,
+    hasActiveWorkouts,
+    langCode,
+    langName,
+    searchLang,
+    minStarted,
+    maxStarted,
+    minFinished,
+    maxFinished,
+  } = filtersData;
+
+  return {
+    searchText: searchText != null ? searchText : undefined,
+    hasWorkoutStats: hasWorkoutStats != null ? hasWorkoutStats : undefined,
+    hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
+    langCode: langCode != null ? langCode : undefined,
+    langName: langName != null ? langName : undefined,
+    searchLang: searchLang != null ? searchLang : undefined,
+    minStarted,
+    maxStarted,
+    minFinished,
+    maxFinished,
+  };
+}
+
 export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextProviderProps) {
   const { children, storageKey = 'workouts-filters', onFiltersChanged } = props;
 
@@ -60,11 +87,12 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
 
   const [isExpanded, setExpanded] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
+  const [isInited, setIsInited] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
   const [filtersParams, setFiltersParams] = React.useState<TAvailableWorkoutsFiltersParams>({});
 
-  const [storedFilters, setStoredFilters] = useLocalStorage<TFiltersData>(
+  const [storedFilters, setStoredFilters, localStorageInited] = useLocalStorage<TFiltersData>(
     storageKey,
     filtersDataDefaults,
   );
@@ -82,42 +110,23 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
   );
 
   const getFiltersParams = React.useCallback((): TAvailableWorkoutsFiltersParams => {
-    const {
-      searchText,
-      hasWorkoutStats,
-      hasActiveWorkouts,
-      langCode,
-      langName,
-      searchLang,
-      minStarted,
-      maxStarted,
-      minFinished,
-      maxFinished,
-    } = filtersData;
-
-    return {
-      searchText: searchText || undefined,
-      hasWorkoutStats: hasWorkoutStats || undefined,
-      hasActiveWorkouts: hasActiveWorkouts || undefined,
-      langCode: langCode || undefined,
-      langName: langName || undefined,
-      searchLang: searchLang || undefined,
-      minStarted,
-      maxStarted,
-      minFinished,
-      maxFinished,
-    };
+    return getFiltersParamsFromData(filtersData);
   }, [filtersData]);
 
   const handleApplyButton = React.useCallback(
     async (data: TFiltersData) => {
       try {
-        setStoredFilters(data);
         form.reset(data);
-        const filtersParams = getFiltersParams();
+        const isDefaults = JSON.stringify(data) === JSON.stringify(filtersDataDefaults);
+        const saveData = isDefaults ? undefined : data;
+        setStoredFilters(saveData);
+        const filtersParams = getFiltersParamsFromData(data);
         setFiltersParams(filtersParams);
         onFiltersChanged?.(filtersParams);
         setExpanded(false);
+        if (!isInited) {
+          setIsInited(true);
+        }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
         setError(errorMessage);
@@ -125,12 +134,12 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
         console.error('[WorkoutsFiltersContext:handleApplyButton]', { error: err });
       }
     },
-    [form, getFiltersParams, onFiltersChanged, setStoredFilters],
+    [form, isInited, onFiltersChanged, setStoredFilters],
   );
 
   const handleResetToDefaults = React.useCallback(() => {
     form.reset(filtersDataDefaults);
-    setStoredFilters(filtersDataDefaults);
+    setStoredFilters(undefined);
     setFiltersParams({});
     onFiltersChanged?.({});
   }, [form, onFiltersChanged, setStoredFilters]);
@@ -147,9 +156,18 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
     setExpanded(false);
   }, []);
 
+  // Initialization
   React.useEffect(() => {
+    if (isInited || !localStorageInited) return;
+    // Initialize with stored filters or defaults
+    const initialFilters = { ...filtersDataDefaults, ...storedFilters };
+    form.reset(initialFilters);
+    setStoredFilters(initialFilters);
+    const filtersParams = getFiltersParamsFromData(initialFilters);
+    setFiltersParams(filtersParams);
     setIsReady(true);
-  }, []);
+    setIsInited(true);
+  }, [form, isInited, localStorageInited, storedFilters, setStoredFilters, storageKey]);
 
   const expandFilters = React.useCallback(() => {
     if (!isExpanded) {
@@ -165,8 +183,8 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       onDefaults,
       isSubmitEnabled,
       isExpanded,
-      isReady: isReady && !isUserLoading,
-      isInited: isReady,
+      isReady: isReady && !isUserLoading && localStorageInited,
+      isInited,
       isLocal,
       error,
       handleApplyButton,
@@ -186,6 +204,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       isExpanded,
       isReady,
       isUserLoading,
+      localStorageInited,
       isLocal,
       error,
       handleApplyButton,
@@ -195,6 +214,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       hideFilters,
       expandFilters,
       getFiltersParams,
+      isInited,
     ],
   );
 

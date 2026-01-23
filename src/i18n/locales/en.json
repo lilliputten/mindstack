@@ -331,7 +331,7 @@
     "NoWorkoutsExplanation": "There are no available workouts. Try to change the filters settings.",
     "NotStarted": "Not Started",
     "SelectTopicToStartTraining": "Choose a topic to start learning",
-    "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorized users</SigninLink> can browse workouts."
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorize</SigninLink> to share your workouts across devices and enable full-fledged search on them."
   },
   "AvailableWorkoutsFilterTexts": {
     "AdminMode": "Admin mode",
@@ -392,7 +392,7 @@
     "WithoutStats": "Without Statistics"
   },
   "AvailableWorkoutsFiltersFields": {
-    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Topic data search for locally saved workouts (for unauthorized users) is not implemented. Log in for a full-fledged search."
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Topics' data search for locally saved workouts (for unauthorized users) is not implemented. Log in for a full-fledged search."
   },
   "Bot": {
     "LanguageChangedFor": "Language has been changed for",

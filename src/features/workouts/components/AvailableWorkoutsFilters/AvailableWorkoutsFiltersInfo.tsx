@@ -14,6 +14,8 @@ import {
   TFiltersData,
 } from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersHelpers';
 
+import { useWorkoutsFiltersContext } from '../../contexts';
+
 interface TProps extends TPropsWithClassName {
   filtersData: TFiltersData;
   maxValueLength?: number;
@@ -21,6 +23,8 @@ interface TProps extends TPropsWithClassName {
 
 export function AvailableWorkoutsFiltersInfo(props: TProps) {
   const { className, filtersData, maxValueLength = 30 } = props;
+
+  const { isLocal } = useWorkoutsFiltersContext();
 
   const tTexts = useT('AvailableWorkoutsFilterTexts');
   // const t = useT();
@@ -34,6 +38,10 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
   const renderItems = activeFilterIds
     .map((id) => {
       const val = filtersData[id];
+      // Temporarily don't use `searchText` and `searchLang` for local mode: Required loading & caching topics data for local filtering
+      if (isLocal && (id === 'searchText' || id === 'searchLang')) {
+        return;
+      }
       if (id === 'adminMode' && !val) {
         return;
       }

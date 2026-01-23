@@ -326,7 +326,7 @@
     "NoWorkoutsExplanation": "No hay entrenamientos disponibles. \nIntente cambiar la configuración de los filtros.",
     "NotStarted": "No iniciado",
     "SelectTopicToStartTraining": "Elige un tema para empezar a aprender",
-    "UnauthorizedUserSuggestionMessage": "<SigninLink>Los usuarios autorizados</SigninLink> pueden explorar entrenamientos."
+    "UnauthorizedUserSuggestionMessage": "<SigninLink>Autoriza</SigninLink> para compartir tus entrenamientos entre dispositivos y habilitar la búsqueda completa en ellos."
   },
   "AvailableWorkoutsFilterTexts": {
     "AdminMode": "Modo administrador",
@@ -387,7 +387,7 @@
     "WithoutStats": "Sin estadísticas"
   },
   "AvailableWorkoutsFiltersFields": {
-    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "No se implementa la búsqueda de datos de temas para entrenamientos guardados localmente (para usuarios no autorizados). \nInicie sesión para realizar una búsqueda completa."
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "La búsqueda de datos de temas para entrenamientos guardados localmente (para usuarios no autorizados) no está implementada. \nInicie sesión para realizar una búsqueda completa."
   },
   "Bot": {
     "LanguageChangedFor": "El idioma ha sido cambiado a",

@@ -27,6 +27,11 @@ export function AvailableWorkoutsListPage() {
 
   const { filtersParams, isReady } = useWorkoutsFiltersContext();
 
+  console.log('[AvailableWorkoutsListPage:DEBUG]', {
+    isReady,
+    filtersParams,
+  });
+
   const availableWorkoutsQuery = useAvailableWorkouts({
     traceId: 'AvailableWorkoutsListPage',
     enabled: isReady,
