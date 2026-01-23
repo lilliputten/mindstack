@@ -43,9 +43,11 @@ const defaultJsRules = {
   'no-constant-binary-expression': 'off',
 };
 
+const showProgress = !!process.env.SHOW_ESLINT_PROGRESS;
+
 export default [
   // @see https://github.com/sibiraj-s/eslint-plugin-file-progress
-  progress.configs.recommended,
+  showProgress ? progress.configs.recommended : undefined,
 
   {
     ignores: [
