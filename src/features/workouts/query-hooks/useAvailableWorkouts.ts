@@ -13,17 +13,18 @@ import {
   stringifyQueryKey,
   updateItemInQueryCache,
 } from '@/lib/helpers/react-query';
-import { defaultItemsLimit, defaultStaleTime } from '@/constants';
+import { defaultItemsLimit, defaultStaleTime, epochStartDate } from '@/constants';
 import { getAvailableWorkouts } from '@/features/workouts/actions/getAvailableWorkouts';
 import {
-  convertWorkoutsToUserTopicWorkouts,
-  getAllWorkoutsFromDB,
-  guestUserId,
-} from '@/features/workouts/lib/indexedDB';
+  filterLocalWorkouts,
+  TIndexedDBWorkoutData,
+} from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersHelpers';
+import { getAllWorkoutsFromDB, guestUserId } from '@/features/workouts/lib/indexedDB';
 import {
   TAvailableWorkoutsResultsQueryData,
   TGetAvailableWorkoutsParams,
   TUserTopicWorkout,
+  TWorkout,
 } from '@/features/workouts/types';
 import { useSessionData } from '@/hooks';
 
@@ -76,7 +77,27 @@ export function useAvailableWorkouts(props: TUseAvailableWorkoutsProps = {}) {
       if (isLocal) {
         try {
           const allWorkouts = await getAllWorkoutsFromDB();
-          const convertedWorkouts = convertWorkoutsToUserTopicWorkouts(allWorkouts, guestUserId);
+
+          // Convert workouts to proper format with topicId and updatedAt (both stored in IndexedDB). TODO: Use TWorkout
+          const workoutsWithTopicId: Array<TIndexedDBWorkoutData> = allWorkouts.map((workout) => {
+            const workoutWithId = workout as TIndexedDBWorkoutData;
+            return {
+              ...workoutWithId,
+              topicId: workoutWithId.topicId || 'unknown',
+              updatedAt: workoutWithId.updatedAt || epochStartDate,
+              createdAt: workoutWithId.createdAt || epochStartDate,
+            };
+          });
+
+          // Apply local filtering based on queryProps
+          const filteredWorkouts = filterLocalWorkouts(workoutsWithTopicId, queryProps);
+
+          // Convert to API format (without the extra fields we added)
+          const convertedWorkouts = filteredWorkouts.map((workout) => ({
+            ...workout,
+            userId: guestUserId,
+          }));
+
           return {
             items: convertedWorkouts,
             totalCount: convertedWorkouts.length,

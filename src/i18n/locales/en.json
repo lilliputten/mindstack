@@ -391,6 +391,9 @@
     "WithoutActive": "Without Active Workouts",
     "WithoutStats": "Without Statistics"
   },
+  "AvailableWorkoutsFiltersFields": {
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Topic data search for locally saved workouts (for unauthorized users) is not implemented. Log in for a full-fledged search."
+  },
   "Bot": {
     "LanguageChangedFor": "Language has been changed for",
     "SelectLanguage": "Select Language",

@@ -386,6 +386,9 @@
     "WithoutActive": "Sin entrenamientos activos",
     "WithoutStats": "Sin estadísticas"
   },
+  "AvailableWorkoutsFiltersFields": {
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "No se implementa la búsqueda de datos de temas para entrenamientos guardados localmente (para usuarios no autorizados). \nInicie sesión para realizar una búsqueda completa."
+  },
   "Bot": {
     "LanguageChangedFor": "El idioma ha sido cambiado a",
     "SelectLanguage": "Seleccionar Idioma",

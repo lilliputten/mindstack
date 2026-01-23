@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { useSessionData, useSessionUser } from '@/hooks';
 
 import {
   filtersDataDefaults,
@@ -23,6 +24,7 @@ interface TWorkoutsFiltersContextValue {
   isExpanded: boolean;
   isReady: boolean;
   isInited: boolean;
+  isLocal: boolean;
   error: string | null;
   handleApplyButton: (data: TFiltersData) => Promise<void>;
   handleResetToDefaults: () => void;
@@ -52,6 +54,9 @@ interface TWorkoutsFiltersContextProviderProps extends TPropsWithChildren {
 
 export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextProviderProps) {
   const { children, storageKey = 'workouts-filters', onFiltersChanged } = props;
+
+  const { loading: isUserLoading, authenticated: isAuthenticated } = useSessionData();
+  const isLocal = !isAuthenticated;
 
   const [isExpanded, setExpanded] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
@@ -160,8 +165,9 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       onDefaults,
       isSubmitEnabled,
       isExpanded,
-      isReady,
+      isReady: isReady && !isUserLoading,
       isInited: isReady,
+      isLocal,
       error,
       handleApplyButton,
       handleResetToDefaults,
@@ -179,6 +185,8 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
       isSubmitEnabled,
       isExpanded,
       isReady,
+      isUserLoading,
+      isLocal,
       error,
       handleApplyButton,
       handleResetToDefaults,

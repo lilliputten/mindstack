@@ -34,6 +34,8 @@ import {
   orderBySelectOptions,
 } from '@/features/workouts/contexts/WorkoutsFiltersContext/WorkoutsFiltersTypes';
 
+import { useWorkoutsFiltersContext } from '../../contexts';
+
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
 }
@@ -56,6 +58,8 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
 
   const tTexts = useT('AvailableWorkoutsFilterTexts');
   const t = useT();
+
+  const { isLocal, isReady } = useWorkoutsFiltersContext();
 
   const { data: sessionData } = useSession();
   const user = sessionData?.user;
@@ -88,7 +92,6 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
           className={cn('flex flex-col gap-2', !form.watch('categoryIds')?.length && 'opacity-50')}
         >
           <CategorySelectField
-            // form={form}
             // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
             control={form.control}
             name="categoryIds"
@@ -97,95 +100,118 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
             placeholder={t('AvailableWorkoutsFilters.SelectCategories')}
           />
         </div>
-        {/* Search Text */}
-        <FormField
-          name="searchText"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label className="truncate" htmlFor={searchTextKey}>
-                {getFilterFieldName('searchText', tTexts)}
-              </Label>
-              <FormControl>
-                <div className="relative flex gap-2">
-                  <Input
-                    id={searchTextKey}
-                    placeholder={t('AvailableWorkoutsFilters.SearchForTextPlaceholder')}
-                    {...field}
-                    value={field.value || ''}
-                    className={cn('pr-11')}
-                    maxLength={maxSearchTextLength}
-                  />
-                  {field.value && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => field.onChange('')}
-                      className={cn(
-                        'absolute right-0 top-1/2 -translate-y-1/2',
-                        'rounded-sm',
-                        'opacity-30 transition hover:opacity-50',
+        {/* Temporarily don't use `searchText` and `searchLang` for local mode: Required loading & caching topics data for local filtering */}
+        {isLocal ? (
+          <div
+            className={cn(
+              isDev && '__AvailableWorkoutsFiltersFields_Info', // DEBUG
+              'flex items-center gap-2 rounded-md border border-theme/20 p-2',
+            )}
+          >
+            <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+            <p className="flex-1 text-sm opacity-50">
+              {t(
+                'AvailableWorkoutsFiltersFields.TemporarilyDontUseTopicsDataForLocallyStoredWorkouts',
+              )}
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Search Text (Temporarily don't use for local mode) */}
+            <FormField
+              name="searchText"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem
+                  className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}
+                >
+                  <Label className="truncate" htmlFor={searchTextKey}>
+                    {getFilterFieldName('searchText', tTexts)}
+                  </Label>
+                  <FormControl>
+                    <div className="relative flex gap-2">
+                      <Input
+                        id={searchTextKey}
+                        placeholder={t('AvailableWorkoutsFilters.SearchForTextPlaceholder')}
+                        {...field}
+                        value={field.value || ''}
+                        className={cn('pr-11')}
+                        maxLength={maxSearchTextLength}
+                      />
+                      {field.value && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => field.onChange('')}
+                          className={cn(
+                            'absolute right-0 top-1/2 -translate-y-1/2',
+                            'rounded-sm',
+                            'opacity-30 transition hover:opacity-50',
+                          )}
+                          title={t('AvailableWorkoutsFilters.ClearText')}
+                        >
+                          <Icons.Close className="size-4" />
+                        </Button>
                       )}
-                      title={t('AvailableWorkoutsFilters.ClearText')}
-                    >
-                      <Icons.Close className="size-4" />
-                    </Button>
-                  )}
-                </div>
-              </FormControl>
-              <FormHint className="text-truncate">
-                {t('AvailableWorkoutsFilters.SearchTextHint')}
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* Search Language (only one language field as requested) */}
-        <FormField
-          name="searchLang"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label className="truncate" htmlFor={searchLangKey}>
-                {getFilterFieldName('searchLang', tTexts)}
-              </Label>
-              <FormControl>
-                <div className="relative flex gap-2">
-                  <Input
-                    id={searchLangKey}
-                    placeholder={t('AvailableWorkoutsFilters.SearchLangPlaceholder')}
-                    {...field}
-                    value={field.value || ''}
-                    className={cn('pr-11')}
-                  />
-                  {field.value && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => field.onChange('')}
-                      className={cn(
-                        'absolute right-0 top-1/2 -translate-y-1/2',
-                        'rounded-sm',
-                        'opacity-30 transition hover:opacity-50',
+                    </div>
+                  </FormControl>
+                  <FormHint className="text-truncate">
+                    {t('AvailableWorkoutsFilters.SearchTextHint')}
+                  </FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Search Language (only one language field as requested) */}
+            <FormField
+              name="searchLang"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem
+                  className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}
+                >
+                  <Label className="truncate" htmlFor={searchLangKey}>
+                    {getFilterFieldName('searchLang', tTexts)}
+                  </Label>
+                  <FormControl>
+                    <div className="relative flex gap-2">
+                      <Input
+                        id={searchLangKey}
+                        placeholder={t('AvailableWorkoutsFilters.SearchLangPlaceholder')}
+                        {...field}
+                        value={field.value || ''}
+                        className={cn('pr-11')}
+                      />
+                      {field.value && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => field.onChange('')}
+                          className={cn(
+                            'absolute right-0 top-1/2 -translate-y-1/2',
+                            'rounded-sm',
+                            'opacity-30 transition hover:opacity-50',
+                          )}
+                          title={t('AvailableWorkoutsFilters.ClearText')}
+                        >
+                          <Icons.Close className="size-4" />
+                        </Button>
                       )}
-                      title={t('AvailableWorkoutsFilters.ClearText')}
-                    >
-                      <Icons.Close className="size-4" />
-                    </Button>
-                  )}
-                </div>
-              </FormControl>
-              <FormHint className="text-truncate">
-                {t.rich('AvailableWorkoutsFilters.SearchLangHint', {
-                  code: (chunks) => <code>{chunks}</code>,
-                })}
-              </FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                    </div>
+                  </FormControl>
+                  <FormHint className="text-truncate">
+                    {t.rich('AvailableWorkoutsFilters.SearchLangHint', {
+                      code: (chunks) => <code>{chunks}</code>,
+                    })}
+                  </FormHint>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
         {/* Order By Select */}
         <FormField
           name="orderBySelect"

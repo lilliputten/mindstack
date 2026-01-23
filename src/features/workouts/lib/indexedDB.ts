@@ -2,8 +2,7 @@
  * IndexedDB helper for client-side workout data storage
  */
 
-import { TWorkoutData } from '../types';
-import { TUserTopicWorkout } from '../types/TGetAvailableWorkouts';
+import { TUserTopicWorkout, TWorkout, TWorkoutData } from '../types';
 
 export const WORKOUTS_DB_NAME = 'mindstack-workouts';
 export const WORKOUTS_STORE_NAME = 'workouts';
@@ -102,7 +101,7 @@ export async function saveWorkoutToDB(topicId: string, workout: TWorkoutData): P
 /**
  * Get a workout from IndexedDB by topicId
  */
-export async function getWorkoutFromDB(topicId: string): Promise<TWorkoutData | null> {
+export async function getWorkoutFromDB(topicId: string): Promise<TWorkout | null> {
   const db = await getWorkoutsDB();
 
   return new Promise((resolve, reject) => {
@@ -189,7 +188,7 @@ export async function getAllWorkoutTopicIds(): Promise<string[]> {
 /**
  * Get all workouts from IndexedDB
  */
-export async function getAllWorkoutsFromDB(): Promise<TWorkoutData[]> {
+export async function getAllWorkoutsFromDB(): Promise<TWorkout[]> {
   const db = await getWorkoutsDB();
 
   return new Promise((resolve, reject) => {

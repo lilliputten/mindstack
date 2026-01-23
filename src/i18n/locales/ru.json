@@ -386,6 +386,9 @@
     "WithoutActive": "Без активных тренировок",
     "WithoutStats": "Без статистики"
   },
+  "AvailableWorkoutsFiltersFields": {
+    "TemporarilyDontUseTopicsDataForLocallyStoredWorkouts": "Поиск данных по темам для локально сохраненных тренировок (для неавторизованных пользователей) не реализован. \nАвторизуйтесь для полноценного поиска."
+  },
   "Bot": {
     "SelectLanguage": "Выбрать язык",
     "accountCreated": "✅ Акаунт успешно создан.",
