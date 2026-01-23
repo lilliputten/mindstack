@@ -8,7 +8,7 @@ export interface TSidebarBlockProps extends TPropsWithClassName {
   onPrimary?: boolean;
   onSidebar?: boolean;
   align?: 'center' | 'end' | 'start';
-  closeOuterMenu?: () => void;
+  onClickEffect?: () => void;
 }
 
 export function SidebarWrapper(props: TSidebarBlockProps & { children: React.ReactNode }) {

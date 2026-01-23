@@ -15,7 +15,7 @@ import { useSessionUser } from '@/hooks';
 import { SidebarMenuItem, SidebarWrapper, TSidebarBlockProps } from './SidebarComponents';
 
 export function NavLocaleSwitcherBlock(props: TSidebarBlockProps) {
-  const { onSidebar, className, align } = props;
+  const { onSidebar, className, align, onClickEffect } = props;
 
   const user = useSessionUser();
   const isAdmin = user?.role === 'ADMIN';
@@ -48,7 +48,10 @@ export function NavLocaleSwitcherBlock(props: TSidebarBlockProps) {
         <MenuItem
           key={cur}
           data-locale={cur}
-          onSelect={() => setLocale(cur)}
+          onSelect={() => {
+            onClickEffect?.();
+            setLocale(cur);
+          }}
           disabled={cur === locale}
           className={cn(
             isDev && '__NavLocaleSwitcherBlock_MenuItem', // DEBUG

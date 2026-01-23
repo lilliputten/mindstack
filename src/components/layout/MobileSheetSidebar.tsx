@@ -88,7 +88,6 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
 
 export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren) {
   const { children, open, setOpen } = props;
-  // const { isSm, isMobile } = useMediaQuery();
   const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
   const isLg = isMediaInited && mediaWidths.includes('lg');
   if (!isLg) {
@@ -114,23 +113,19 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
           closeClassName={cn(
             isDev && '__DashboardSidebar_MobileSheetWrapper_Close', // DEBUG
             'text-white',
-            // 'hover:bg-white',
           )}
         >
           <ScrollArea
             className={cn(
               isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea', // DEBUG
               'h-full overflow-y-auto',
-              // 'bg-theme/10',
             )}
             viewportClassName={cn(
               isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea_Viewport',
-              // 'flex flex-1 flex-col',
-              // 'bg-decorative-gradient',
               '[&>div]:flex [&>div]:flex-col [&>div]:flex-1',
             )}
           >
-            {/* MobileSheetSidebar */}
+            {/* MobileSheetSidebar Content */}
             {children}
           </ScrollArea>
         </SheetContent>
@@ -140,7 +135,8 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
 }
 
 export function MobileSheetSidebar(props: TGenericSidebarProps & TMobileSheetProps) {
-  const { isUser } = props;
+  const { isUser, setOpen } = props;
+  const onClickEffect = () => setOpen(false);
   return (
     <div
       className={cn(
@@ -149,7 +145,7 @@ export function MobileSheetSidebar(props: TGenericSidebarProps & TMobileSheetPro
       )}
     >
       <nav className={cn('flex flex-1 flex-col gap-y-8 p-6 text-lg font-medium')}>
-        <NavBarBrand isUser={isUser} onSidebar />
+        <NavBarBrand onClickEffect={onClickEffect} isUser={isUser} onSidebar />
 
         {showProjectsSelector && <ProjectSwitcher large />}
 
@@ -163,12 +159,12 @@ export function MobileSheetSidebar(props: TGenericSidebarProps & TMobileSheetPro
             'flex flex-col gap-2',
           )}
         >
-          <NavModeToggleBlock onSidebar />
-          <NavLocaleSwitcherBlock onSidebar />
+          <NavModeToggleBlock onClickEffect={onClickEffect} onSidebar />
+          <NavLocaleSwitcherBlock onClickEffect={onClickEffect} onSidebar />
         </div>
 
         {/* User menu */}
-        <NavUserAuthButton isUser={isUser} onPrimary onSidebar />
+        <NavUserAuthButton onClickEffect={onClickEffect} isUser={isUser} onPrimary onSidebar />
 
         {showUpgradeCard && (
           <div
@@ -177,7 +173,7 @@ export function MobileSheetSidebar(props: TGenericSidebarProps & TMobileSheetPro
               'mt-auto',
             )}
           >
-            <UpgradeCard dontFlatten onSidebar />
+            <UpgradeCard onClickEffect={onClickEffect} dontFlatten onSidebar />
           </div>
         )}
       </nav>
