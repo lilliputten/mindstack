@@ -2,27 +2,40 @@ import Image from 'next/image';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { SmallWelcomeText } from '@/components/screens/SmallWelcomeText';
-import svgArt from '@/assets/arts/bink-bus-single.svg';
+// import svgArt from '@/assets/arts/bink-bus-single.svg';
 import { isDev } from '@/constants';
 
 export function WelcomeVisualBlock(props: TPropsWithClassName) {
   const { className } = props;
+  const t = useT();
   return (
     <div
       className={cn(
-        isDev && '__WelcomeVisualBlock_Scroll', // DEBUG
-        'flex flex-1 flex-col items-center justify-center',
+        isDev && '__WelcomeVisualBlock', // DEBUG
+        'relative w-full p-6',
+        'flex flex-1 flex-col items-center justify-center gap-4',
         className,
       )}
     >
       <div
         className={cn(
-          isDev && '__WelcomeVisualBlock', // DEBUG
-          'relative w-full px-6',
-          'flex flex-1 flex-col items-center justify-center',
+          isDev && '__WelcomeVisualBlock_ImageContainer', // DEBUG
+          'relative w-full overflow-hidden rounded-lg',
+          'aspect-video',
         )}
       >
+        <Image
+          src="/static/landing/features/14.jpg"
+          alt={t('Landing.HeroSection.Title')}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
+      {/* // Show a logo in the top right corner
         <Image
           src={svgArt}
           alt="Intro illustration"
@@ -33,7 +46,6 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
             'select-none',
           )}
         />
-        {/* // Show a logo in the top right corner
         <div
           className={cn(
             isDev && '__WelcomeVisualBlock_Logo', // DEBUG
@@ -47,8 +59,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
           <Image src={logoSvg} className="h-12 w-auto" alt={siteTitle} priority={false} />
         </div>
         */}
-        <SmallWelcomeText className="p-6 pb-8 pt-0" />
-      </div>
+      <SmallWelcomeText className="" />
     </div>
   );
 }

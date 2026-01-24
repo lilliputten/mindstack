@@ -23,8 +23,8 @@ AccordionItem.displayName = 'AccordionItem';
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & { wrapperClassName?: string }
+>(({ className, wrapperClassName, children, ...props }, ref) => (
   <AccordionPrimitive.Header
     className={cn(
       isDev && '__AccordionTrigger_Header', // DEBUG
@@ -40,7 +40,7 @@ const AccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
-      <span className="text-truncate">{children}</span>
+      <span className={cn('text-truncate', wrapperClassName)}>{children}</span>
       <ChevronDown className="size-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

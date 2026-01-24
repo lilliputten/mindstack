@@ -36,7 +36,9 @@ export function CategoriesSection() {
             'flex flex-col gap-4',
           )}
         >
-          <p className="text-truncate">{t('Landing.CategoriesSection.IntroduceCategories')}</p>
+          <h3 className="text-truncate mb-3 mt-0 text-xl font-semibold text-theme">
+            {t('Landing.CategoriesSection.IntroduceCategories')}
+          </h3>
           {recentCategories.map((category) => (
             <CategoriesSectionItem
               key={category.id}
@@ -64,7 +66,7 @@ export function CategoriesSection() {
         <Link
           href={`${availableCategoriesRoute}/suggest` as TRoutePath}
           className={cn(
-            buttonVariants({ variant: 'theme' }),
+            buttonVariants({ variant: user?.id ? 'theme' : 'outline' }),
             'text-truncate flex items-center gap-2',
             !user?.id && 'disabled',
           )}

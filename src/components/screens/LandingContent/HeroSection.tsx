@@ -74,15 +74,12 @@ export function HeroSection() {
         <div
           className={cn(
             isDev && '__HeroSection_ImageContainer', // DEBUG
-            'relative w-full overflow-hidden rounded-xl',
-            'aspect-[16/9]',
+            'relative w-full overflow-hidden rounded-lg',
+            'aspect-video',
           )}
         >
           <Image
-            // src="/static/landing/placeholder-main-ui.png"
-            // src="/static/landing/top-splash/como-estas-v1.jpg"
-            // src="/static/landing/top-splash/brain-clash-v2.jpg"
-            src="/static/landing/top-splash/brain-clash-v6.jpg"
+            src="/static/landing/features/14.jpg"
             alt={t('Landing.HeroSection.Title')}
             fill
             className="object-cover"

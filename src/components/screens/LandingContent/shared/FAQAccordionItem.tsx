@@ -4,6 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 interface FAQAccordionItemProps {
@@ -27,8 +28,13 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
           isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
           'text-truncate px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base',
         )}
+        wrapperClassName={cn(
+          isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
+          'flex gap-4 items-center',
+        )}
       >
-        {question}
+        <Icons.MessageCircleQuestion className="size-8 text-theme opacity-50" />
+        <span className="text-truncate flex-1">{question}</span>
       </AccordionTrigger>
       <AccordionContent
         className={cn(

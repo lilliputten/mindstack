@@ -19,6 +19,9 @@ import { IconProps, IconType } from './IconTypes';
 
 // Stock lucide icons...
 export const {
+  Timer,
+  Focus,
+  ScanEye,
   Activity,
   ArrowLeft,
   ArrowRight,

@@ -8,20 +8,17 @@ import { getErrorText } from '@/lib/helpers';
 import { TLocale } from '@/i18n/types';
 import { hourMs } from '@/constants/datetime';
 
+import { recentCategoriesCount } from '../constants';
+
 /** Auto-revalidate every hour (in seconds) */
 const revalidateTimeoutSec = Math.round(hourMs / 1000);
-
-const defaultRecentCategoriesCount = 5;
 
 interface TParams {
   take?: number;
   locale?: TLocale;
 }
 
-export async function getRecentCategories({
-  take = defaultRecentCategoriesCount,
-  locale,
-}: TParams) {
+export async function getRecentCategories({ take = recentCategoriesCount, locale }: TParams) {
   try {
     // NOTE: Don't use `getAvailableCategories`, because it uses nextjs context
     // (`auth`, for example, what is unavailable during SSG, if called from
@@ -67,7 +64,7 @@ export async function getRecentCategories({
 }
 
 export const getCachedRecentCategories = async ({
-  take = defaultRecentCategoriesCount,
+  take = recentCategoriesCount,
   locale,
 }: TParams) => {
   const localeKey = locale ?? 'all';

@@ -37,13 +37,13 @@ export function HowItWorksCards() {
         />
         <CardWithIcon
           debugId="Card-2"
-          icon={Icons.Heart}
+          icon={Icons.Activity}
           title={t('Landing.HowItWorksCards.Title-2')}
           description={t('Landing.HowItWorksCards.Text-2')}
         />
         <CardWithIcon
           debugId="Card-3"
-          icon={Icons.Star}
+          icon={Icons.LineChart}
           title={t('Landing.HowItWorksCards.Title-3')}
           description={t('Landing.HowItWorksCards.Text-3')}
         />

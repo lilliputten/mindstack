@@ -33,7 +33,7 @@ export function FeaturesSection() {
           debugId="CreateCustomTopics"
           title={t('Landing.FeaturesSection.Card-1-Title')}
           description={t('Landing.FeaturesSection.Card-1-Text')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
+          imageSrc="/static/landing/features/15.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-1-Title')}
           imageAspectRatio="aspect-video"
           // descriptionSize="lg"
@@ -47,7 +47,7 @@ export function FeaturesSection() {
           debugId="InteractiveWorkouts"
           title={t('Landing.FeaturesSection.Card-2-Title')}
           description={t('Landing.FeaturesSection.Card-2-Text')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
+          imageSrc="/static/landing/features/09.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-2-Title')}
           imageAspectRatio="aspect-video"
         />
@@ -55,9 +55,9 @@ export function FeaturesSection() {
           debugId="QuestionAnswerSystem"
           title={t('Landing.FeaturesSection.Card-3-Title')}
           description={t('Landing.FeaturesSection.Card-3-Text')}
-          imageSrc="/static/landing/placeholder-feature-4-3.png"
+          imageSrc="/static/landing/features/07.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-3-Title')}
-          imageAspectRatio="aspect-[4/3]"
+          imageAspectRatio="aspect-video"
         />
       </div>
 
@@ -67,15 +67,15 @@ export function FeaturesSection() {
           debugId="MultiLanguageSupport"
           title={t('Landing.FeaturesSection.Card-4-Title')}
           description={t('Landing.FeaturesSection.Card-4-Text')}
-          imageSrc="/static/landing/placeholder-feature.png"
+          imageSrc="/static/landing/features/10.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-4-Title')}
-          imageAspectRatio="aspect-square"
+          imageAspectRatio="aspect-video"
         />
         <FeatureCard
           debugId="ProgressTracking"
           title={t('Landing.FeaturesSection.Card-5-Title')}
           description={t('Landing.FeaturesSection.Card-5-Text')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
+          imageSrc="/static/landing/features/11.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-5-Title')}
           imageAspectRatio="aspect-video"
         />
@@ -83,9 +83,9 @@ export function FeaturesSection() {
           debugId="ShareCollaborate"
           title={t('Landing.FeaturesSection.Card-6-Title')}
           description={t('Landing.FeaturesSection.Card-6-Text')}
-          imageSrc="/static/landing/placeholder-feature-4-3.png"
+          imageSrc="/static/landing/features/13.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-6-Title')}
-          imageAspectRatio="aspect-[4/3]"
+          imageAspectRatio="aspect-video"
         />
       </div>
     </section>

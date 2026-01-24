@@ -29,19 +29,19 @@ export function CardsWithIconsSection() {
       <div className="my-3 grid gap-6 py-6 lg:grid-cols-3">
         <CardWithIcon
           debugId="Card-1"
-          icon={Icons.Sparkles}
+          icon={Icons.Timer}
           title={t('Landing.CardsWithIconsSection.Title-1')}
           description={t('Landing.CardsWithIconsSection.Text-1')}
         />
         <CardWithIcon
           debugId="Card-2"
-          icon={Icons.Heart}
+          icon={Icons.Activity}
           title={t('Landing.CardsWithIconsSection.Title-2')}
           description={t('Landing.CardsWithIconsSection.Text-2')}
         />
         <CardWithIcon
           debugId="Card-3"
-          icon={Icons.Star}
+          icon={Icons.ScanEye}
           title={t('Landing.CardsWithIconsSection.Title-3')}
           description={t('Landing.CardsWithIconsSection.Text-3')}
         />

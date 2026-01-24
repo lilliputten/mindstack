@@ -15,7 +15,7 @@ export function SmallWelcomeText(props: TPropsWithClassName) {
       className={cn(
         isDev && '__SmallWelcomeText', // DEBUG
         className,
-        'flex max-w-md flex-col gap-4',
+        'flex flex-col gap-4',
         'text-content',
       )}
     >
