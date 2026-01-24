@@ -9,7 +9,9 @@ import { hourMs } from '@/constants/datetime';
 /** Auto-revalidate every hour (in seconds) */
 const revalidateTimeoutSec = Math.round(hourMs / 1000);
 
-export async function getRecentCategories(take: number = 5) {
+const defaultRecentCategoriesCount = 5;
+
+export async function getRecentCategories(take: number = defaultRecentCategoriesCount) {
   try {
     const categories = await prisma.category.findMany({
       where: {
@@ -40,7 +42,7 @@ export async function getRecentCategories(take: number = 5) {
   }
 }
 
-export const getCachedRecentCategories = (take: number = 5) => {
+export const getCachedRecentCategories = (take: number = defaultRecentCategoriesCount) => {
   const cachedFn = unstable_cache(
     async () => getRecentCategories(take),
     ['recent-categories', `take-${take}`],

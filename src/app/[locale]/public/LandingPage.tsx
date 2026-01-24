@@ -9,8 +9,13 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { LandingContent } from '@/components/screens/LandingContent';
 import { isDev } from '@/constants';
+import { LandingPageContext } from '@/contexts/LandingPageContext';
+import { getCachedRecentCategories } from '@/features/categories/actions';
+import { TCategory } from '@/features/categories/types';
 
-type TLandingPageProps = TAwaitedLocaleProps;
+type TLandingPageProps = TAwaitedLocaleProps & {
+  recentCategories?: TCategory[];
+};
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
   const { locale } = await params;
@@ -23,7 +28,20 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
 
 const saveScrollHash = getRandomHashString();
 
-export async function LandingPage({ params }: TLandingPageProps) {
+export async function generateStaticParams() {
+  try {
+    const recentCategories = await getCachedRecentCategories();
+    return [{ recentCategories }];
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('[LandingPage:generateStaticParams] Failed to fetch recent categories', {
+      error,
+    });
+    return [{ recentCategories: [] }];
+  }
+}
+
+export async function LandingPage({ params, recentCategories = [] }: TLandingPageProps) {
   const { locale } = await params;
 
   // Enable static rendering
@@ -57,7 +75,9 @@ export async function LandingPage({ params }: TLandingPageProps) {
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
-        <LandingContent />
+        <LandingPageContext.Provider value={{ recentCategories: recentCategories ?? [] }}>
+          <LandingContent />
+        </LandingPageContext.Provider>
       </ScrollArea>
     </PageWrapper>
   );
