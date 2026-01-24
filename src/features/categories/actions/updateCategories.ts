@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
@@ -100,6 +101,16 @@ export async function updateCategories(params: TUpdateCategoriesParams & TOption
     });
 
     const updatedCategories = await Promise.all(updatePromises);
+
+    // Clear recent categories cache
+    try {
+      revalidateTag('recent-categories-all');
+    } catch (cacheError) {
+      if (!noDebug) {
+        // eslint-disable-next-line no-console
+        console.warn('[updateCategories] Failed to clear cache', { cacheError });
+      }
+    }
 
     return updatedCategories;
   } catch (error) {

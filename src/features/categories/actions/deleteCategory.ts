@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
@@ -39,6 +40,16 @@ export async function deleteCategory(params: TDeleteCategoryParams & TOptions) {
     const category = await prisma.category.delete({
       where: { id },
     } satisfies Prisma.CategoryDeleteArgs);
+
+    // Clear recent categories cache
+    try {
+      revalidateTag('recent-categories-all');
+    } catch (cacheError) {
+      if (!noDebug) {
+        // eslint-disable-next-line no-console
+        console.warn('[deleteCategory] Failed to clear cache', { cacheError });
+      }
+    }
 
     return category;
   } catch (error) {

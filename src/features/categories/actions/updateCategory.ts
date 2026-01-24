@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
@@ -85,6 +86,16 @@ export async function updateCategory(params: TUpdateCategoryParams & TOptions) {
         translations: true,
       } satisfies Prisma.CategoryUpdateArgs['include'],
     } satisfies Prisma.CategoryUpdateArgs);
+
+    // Clear recent categories cache
+    try {
+      revalidateTag('recent-categories-all');
+    } catch (cacheError) {
+      if (!noDebug) {
+        // eslint-disable-next-line no-console
+        console.warn('[updateCategory] Failed to clear cache', { cacheError });
+      }
+    }
 
     return category;
   } catch (error) {
