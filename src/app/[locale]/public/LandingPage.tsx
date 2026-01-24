@@ -1,10 +1,10 @@
 import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { getRandomHashString } from '@/lib/helpers';
+import { getErrorText, getRandomHashString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { getT } from '@/i18n';
-import { TAwaitedLocaleProps } from '@/i18n/types';
+import { strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { LandingContent } from '@/components/screens/LandingContent';
@@ -28,25 +28,61 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
 
 const saveScrollHash = getRandomHashString();
 
-export async function generateStaticParams() {
-  try {
-    const promise = isDev ? getRecentCategories() : getCachedRecentCategories();
-    const recentCategories = await promise;
-    console.log('[LandingPage:generateStaticParams]', {
-      recentCategories,
-    });
-    return [{ recentCategories }];
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[LandingPage:generateStaticParams] Failed to fetch recent categories', {
-      error,
-    });
-    return [{ recentCategories: [] }];
-  }
+async function getCategories(locale: TLocale) {
+  const promise = isDev ? getRecentCategories({ locale }) : getCachedRecentCategories({ locale });
+  return await promise;
 }
 
-export async function LandingPage({ params, recentCategories = [] }: TLandingPageProps) {
-  const { locale } = await params;
+export async function generateStaticParams() {
+  const locales = strictLocalesList;
+  const params = [];
+  for (const locale of locales) {
+    let recentCategories: TCategory[] = [];
+    try {
+      // Fetch categories for each locale to enable per-locale SSG generation
+      recentCategories = await getCategories(locale);
+    } catch (error) {
+      const message = 'Failed to fetch recent categories for static generation';
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
+      // eslint-disable-next-line no-console
+      console.error('[LandingPage:generateStaticParams]', comboMsg, {
+        error,
+        locale,
+        locales,
+      });
+      debugger; // eslint-disable-line no-debugger
+    }
+    params.push({ locale, recentCategories });
+  }
+  return params;
+}
+
+export async function LandingPage(props: TLandingPageProps) {
+  const resolvedParams = await props.params;
+  const { locale } = resolvedParams;
+
+  let recentCategories: TCategory[] = props.recentCategories || [];
+
+  // Use pre-fetched categories from generateStaticParams if available,
+  // otherwise fetch them (for non-SSG scenarios)
+  if (!recentCategories.length) {
+    try {
+      recentCategories = await getCategories(locale);
+    } catch (error) {
+      const message = 'Failed to fetch recent categories';
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
+      // eslint-disable-next-line no-console
+      console.error('[LandingPage]', comboMsg, {
+        error,
+        locale,
+        resolvedParams,
+        props,
+      });
+      debugger; // eslint-disable-line no-debugger
+    }
+  }
 
   // Enable static rendering
   setRequestLocale(locale);

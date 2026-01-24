@@ -72,46 +72,45 @@ const cleanupDb = async (ids: CreatedId[]) => {
   }
 };
 
-// Global beforeAll to clean up any previous test data
-beforeAll(async () => {
-  await cleanupStaleTestData();
-});
-
-async function cleanupStaleTestData() {
-  try {
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-    const staleTestData = await jestPrisma.category.findMany({
-      where: {
-        OR: [
-          { translations: { some: { name: { contains: 'Test Category' } } } },
-          { translations: { some: { name: { contains: 'ucs-' } } } },
-          { createdAt: { lt: oneHourAgo } },
-        ],
-      },
-      include: {
-        translations: true,
-      },
-    });
-
-    if (staleTestData.length > 0) {
-      // eslint-disable-next-line no-console
-      console.log(`Cleaning up ${staleTestData.length} stale test categories`);
-      await Promise.all(
-        staleTestData.map(async (category) => {
-          await jestPrisma.categoryTranslation.deleteMany({
-            where: { categoryId: category.id },
-          });
-          await jestPrisma.category.delete({
-            where: { id: category.id },
-          });
-        }),
-      );
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[cleanupStaleTestData] Failed to clean up stale data', error);
-  }
-}
+/* // UNUSED: Global beforeAll to clean up any previous test data
+ * beforeAll(async () => {
+ *   await cleanupStaleTestData();
+ * });
+ * async function cleanupStaleTestData() {
+ *   try {
+ *     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+ *     const staleTestData = await jestPrisma.category.findMany({
+ *       where: {
+ *         OR: [
+ *           { translations: { some: { name: { contains: 'Test Category' } } } },
+ *           { translations: { some: { name: { contains: 'ucs-' } } } },
+ *           { createdAt: { lt: oneHourAgo } },
+ *         ],
+ *       },
+ *       include: {
+ *         translations: true,
+ *       },
+ *     });
+ *     if (staleTestData.length > 0) {
+ *       // eslint-disable-next-line no-console
+ *       console.log(`Cleaning up ${staleTestData.length} stale test categories`);
+ *       await Promise.all(
+ *         staleTestData.map(async (category) => {
+ *           await jestPrisma.categoryTranslation.deleteMany({
+ *             where: { categoryId: category.id },
+ *           });
+ *           await jestPrisma.category.delete({
+ *             where: { id: category.id },
+ *           });
+ *         }),
+ *       );
+ *     }
+ *   } catch (error) {
+ *     // eslint-disable-next-line no-console
+ *     console.error('[cleanupStaleTestData] Failed to clean up stale data', error);
+ *   }
+ * }
+ */
 
 describe('updateCategories', () => {
   afterEach(() => {
