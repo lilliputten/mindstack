@@ -26,7 +26,7 @@ export function CardWithIcon({
     <Card
       className={cn(
         isDev && ['__CardWithIcon', debugId].filter(Boolean).join('_'), // DEBUG
-        'flex flex-row gap-4 p-6',
+        'flex flex-col gap-4 p-6 sm:flex-row',
         'bg-theme/10',
         className,
       )}
@@ -34,9 +34,9 @@ export function CardWithIcon({
       <div className="flex-shrink-0">
         <Icon className="size-11 text-theme" />
       </div>
-      <div className="flex flex-col gap-2">
-        <p className="text-base font-semibold">{title}</p>
-        <p className="text-base leading-6 text-muted-foreground">{description}</p>
+      <div className="text-truncate flex flex-col gap-2">
+        <p className="text-truncate text-lg font-semibold">{title}</p>
+        <p className="text-truncate text-base leading-6">{description}</p>
       </div>
     </Card>
   );

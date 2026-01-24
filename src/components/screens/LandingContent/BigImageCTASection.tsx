@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, startAliasRoute } from '@/config';
 
@@ -14,24 +14,28 @@ export function BigImageCTASection() {
     <section
       className={cn(
         isDev && '__BigImageCTASection', // DEBUG
-        'py-12',
+        'py-8',
       )}
     >
       <div className="mb-3 max-w-2xl">
-        <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          Start Your Memory Training Journey Today
+        <h2 className="text-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          Build Your Knowledge Base Today
         </h2>
-        <p className="mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
-          Join thousands of learners who are already improving their memory and knowledge retention
-          with MindStack. Create your first topic and begin training in minutes.
+        <p className="text-truncate mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
+          Whether you're learning a new language, preparing for exams, or mastering professional
+          skills, MindStack adapts to your goals.
         </p>
         <div className="mb-6 flex flex-wrap gap-3">
-          <Button variant="theme" size="lg" rounded="lg">
-            <Link href={startAliasRoute} className="flex items-center gap-2">
-              <Icons.ArrowRight className="size-4" />
-              <span>Try It Free</span>
-            </Link>
-          </Button>
+          <Link
+            href={startAliasRoute}
+            className={cn(
+              buttonVariants({ variant: 'theme' }),
+              'text-truncate flex items-center gap-2',
+            )}
+          >
+            <Icons.ArrowRight className="size-4 shrink-0 opacity-50" />
+            <span className="truncate">Try It Free</span>
+          </Link>
         </div>
       </div>
       <div className="relative mt-4 w-full max-w-none">

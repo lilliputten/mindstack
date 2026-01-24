@@ -437,13 +437,6 @@
     "CurrentSubscriptionPeriodMissing": "Current subscription period is missing for user {userId}",
     "UpgradeNotAllowedMessage": "You're trying to upgrade from the \"{currentPeriod}\" to the \"{requestedPeriod}\" subscription types. It's not possible. Please contact or report to technical support."
   },
-  "CardsWithIconsSection": {
-    "AIPoweredLearningDescription": "Leverage advanced AI to enhance your learning experience. Get personalized recommendations and intelligent content generation.",
-    "ActiveRecallPracticeDescription": "Strengthen your memory through active recall. Practice retrieving information from memory rather than just re-reading, proven to be more effective for long-term retention.",
-    "Description": "MindStack combines powerful features with an intuitive interface to make memory training effective and enjoyable. Build your knowledge base and practice anywhere, anytime.",
-    "SpacedRepetitionDescription": "Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance.",
-    "Title": "Why Choose MindStack"
-  },
   "CategoryHeader": {
     "YourCategory": "Your Category"
   },
@@ -684,22 +677,6 @@
     "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
     "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment"
   },
-  "FeaturesSection": {
-    "CreateCustomTopics": "Create Custom Topics",
-    "CreateCustomTopicsDescription": "Organize your learning materials into custom topics. Each topic can contain multiple questions and answers, allowing you to structure your knowledge base exactly how you need it. Support for multiple languages helps you learn in your preferred language.",
-    "Description": "MindStack provides everything you need to create, organize, and practice your learning materials. Build your knowledge base with topics, questions, and answers, then train your memory with interactive workouts.",
-    "InteractiveWorkouts": "Interactive Workouts",
-    "InteractiveWorkoutsDescription": "Practice your knowledge with interactive workout sessions. Answer questions, track your progress, and improve your memory retention through spaced repetition and active recall techniques.",
-    "MultiLanguageSupport": "Multi-language Support",
-    "MultiLanguageSupportDescription": "Learn and practice in multiple languages. Switch between languages seamlessly to enhance your multilingual learning experience.",
-    "ProgressTracking": "Progress Tracking",
-    "ProgressTrackingDescription": "Monitor your learning progress with detailed statistics. Track your performance across different topics, see your improvement over time, and identify areas that need more practice.",
-    "QuestionAndAnswerSystem": "Question & Answer System",
-    "QuestionAndAnswerSystemDescription": "Build comprehensive Q&A sets for each topic. Create multiple answer options and mark correct answers to test your understanding effectively.",
-    "ShareAndCollaborate": "Share & Collaborate",
-    "ShareAndCollaborateDescription": "Share your topics with others or explore topics created by the community. Learn together and build knowledge collaboratively.",
-    "Title": "Powerful Features for Memory Training"
-  },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
@@ -759,6 +736,44 @@
     "CategoryImagePreview": "Image Preview",
     "RemoveImage": "Remove Image",
     "SelectImage": "Select Image"
+  },
+  "Landing": {
+    "CardsWithIconsSection": {
+      "Description": "Features based on what actually helps people learn",
+      "Text-1": "We help you review material at intervals that match how memory naturally works.",
+      "Text-2": "Practicing pulling information from memory makes future recall easier and more reliable.",
+      "Text-3": "The app adjusts to concentrate on topics that need your attention, while maintaining what you've already learned.",
+      "Title": "Why We Built It This Way",
+      "Title-1": "Timed Reviews",
+      "Title-2": "Retrieval Practice",
+      "Title-3": "Smart Focus"
+    },
+    "FeaturesSection": {
+      "Card-1-Text": "Build custom topics with questions and answers. Structure your learning materials exactly how you need them, with support for multiple languages and tagging systems.",
+      "Card-1-Title": "Create and Organize Your Knowledge",
+      "Card-2-Text": "Practice with AI-optimized sessions using spaced repetition and active recall. The system adapts to your performance for maximum retention.",
+      "Card-2-Title": "Interactive Smart Workouts",
+      "Card-3-Text": "Generate questions and answers instantly using AI. Perfect for starting new topics or expanding existing ones.",
+      "Card-3-Title": "AI-Powered Content Creation",
+      "Card-4-Text": "Learn in English, Spanish, Russian, or any language. Perfect for language learners and multilingual content.",
+      "Card-4-Title": "Multi-Language Learning",
+      "Card-5-Text": "Track your improvement with detailed statistics, performance graphs, and retention metrics.",
+      "Card-5-Title": "Progress Analytics",
+      "Card-6-Text": "Share your topics with others or explore community-created materials.",
+      "Card-6-Title": "Share and Collaborate",
+      "Description": "From creating custom study materials to tracking your progress, MindStack combines proven learning techniques with modern technology.",
+      "Title": "Everything You Need for Effective Learning"
+    },
+    "HowItWorksCards": {
+      "Description": "Get started with MindStack in just a few minutes",
+      "Text-1": "Start with existing topics or create your own with our AI assistant",
+      "Text-2": "Practice with adaptive sessions that focus on what you need most",
+      "Text-3": "Monitor progress and see your knowledge grow over time",
+      "Title": "Start Learning in 3 Simple Steps",
+      "Title-1": "Create or Choose Topics",
+      "Title-2": "Train with Smart Workouts",
+      "Title-3": "Track and Improve"
+    }
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "You have reached the maximum number of answers for your current plan",

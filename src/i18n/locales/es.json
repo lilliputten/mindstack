@@ -1,7 +1,5 @@
 {
-  "AIPoweredLearning": "Aprendizaje impulsado por IA",
   "AccessDeniedError": "Acceso denegado",
-  "ActiveRecallPractice": "Práctica de recuperación activa",
   "AddTopic": "Agregar Tema",
   "AllowedToGenerate": "Permitido generar",
   "Answer": "Respuesta",
@@ -80,7 +78,6 @@
   "SelectDeselectAll": "Seleccionar/deseleccionar todo",
   "ShowMenu": "Mostrar menú",
   "Skip": "Omitir",
-  "SpacedRepetition": "Repetición espaciada",
   "Start": "Iniciar",
   "StartTraining": "Empezar a entrenar",
   "StartedAt": "Iniciado en",
@@ -432,13 +429,6 @@
     "CurrentSubscriptionPeriodMissing": "El periodo de suscripción actual falta para el usuario {userId}",
     "UpgradeNotAllowedMessage": "Estás intentando actualizar de \"{currentPeriod}\" a \"{requestedPeriod}\" tipos de suscripción. No es posible. Por favor, contacta o informa al soporte técnico."
   },
-  "CardsWithIconsSection": {
-    "AIPoweredLearningDescription": "Aprovecha la IA avanzada para mejorar tu experiencia de aprendizaje. Obtén recomendaciones personalizadas y generación inteligente de contenido.",
-    "ActiveRecallPracticeDescription": "Fortalece tu memoria a través de la recuperación activa. Practica la recuperación de información de la memoria en lugar de solo releer, lo que se ha demostrado que es más efectivo para la retención a largo plazo.",
-    "Description": "MindStack combina potentes funciones con una interfaz intuitiva para hacer que el entrenamiento de la memoria sea efectivo y agradable. Construye tu base de conocimientos y practica en cualquier lugar y en cualquier momento.",
-    "SpacedRepetitionDescription": "Los algoritmos integrados de repetición espaciada te ayudan a recordar la información durante más tiempo al optimizar los intervalos de revisión según tu rendimiento.",
-    "Title": "Por qué elegir MindStack"
-  },
   "CategoryHeader": {
     "YourCategory": "Tu categoría"
   },
@@ -678,22 +668,6 @@
     "InvalidSubscriptionTypeValue": "Valor de tipo de suscripción no válido: {value}",
     "SubscriptionTypeNotSubjectToPayment": "El tipo de suscripción \"{subscriptionType}\" no está sujeto a pago"
   },
-  "FeaturesSection": {
-    "CreateCustomTopics": "Crear temas personalizados",
-    "CreateCustomTopicsDescription": "Organice sus materiales de aprendizaje en temas personalizados. Cada tema puede contener múltiples preguntas y respuestas, lo que le permite estructurar su base de conocimientos exactamente como lo necesita. La compatibilidad con múltiples idiomas le ayuda a aprender en su idioma preferido.",
-    "Description": "MindStack proporciona todo lo que necesita para crear, organizar y practicar sus materiales de aprendizaje. Construya su base de conocimientos con temas, preguntas y respuestas, y luego entrene su memoria con sesiones interactivas.",
-    "InteractiveWorkouts": "Entrenamientos interactivos",
-    "InteractiveWorkoutsDescription": "Practique su conocimiento con sesiones de entrenamiento interactivas. Responda preguntas, haga un seguimiento de su progreso y mejore su retención de memoria a través de técnicas de repetición espaciada y recuperación activa.",
-    "MultiLanguageSupport": "Soporte multilingüe",
-    "MultiLanguageSupportDescription": "Aprenda y practique en múltiples idiomas. Cambie entre idiomas sin problemas para mejorar su experiencia de aprendizaje multilingüe.",
-    "ProgressTracking": "Seguimiento de progreso",
-    "ProgressTrackingDescription": "Monitoree su progreso de aprendizaje con estadísticas detalladas. Siga su desempeño en diferentes temas, vea su mejora con el tiempo e identifique áreas que necesitan más práctica.",
-    "QuestionAndAnswerSystem": "Sistema de preguntas y respuestas",
-    "QuestionAndAnswerSystemDescription": "Cree conjuntos completos de preguntas y respuestas para cada tema. Cree múltiples opciones de respuesta y marque las respuestas correctas para probar su comprensión de manera efectiva.",
-    "ShareAndCollaborate": "Compartir y colaborar",
-    "ShareAndCollaborateDescription": "Comparta sus temas con otros o explore temas creados por la comunidad. Aprendan juntos y construyan conocimiento de forma colaborativa.",
-    "Title": "Potentes características para el entrenamiento de la memoria"
-  },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Recuento de respuestas a generar para cada pregunta (mínimo - máximo).",
     "AnswersCountLabelPrefix": "Cantidad de respuestas:",
@@ -753,6 +727,44 @@
     "CategoryImagePreview": "Vista previa de imagen",
     "RemoveImage": "Quitar imagen",
     "SelectImage": "Seleccionar imagen"
+  },
+  "Landing": {
+    "CardsWithIconsSection": {
+      "Description": "Funciones basadas en lo que realmente ayuda a las personas a aprender",
+      "Text-1": "Le ayudamos a revisar material a intervalos que coincidan con el funcionamiento natural de la memoria.",
+      "Text-2": "Practicar extraer información de la memoria hace que el recuerdo futuro sea más fácil y confiable.",
+      "Text-3": "La aplicación se ajusta para concentrarse en temas que necesitan su atención, manteniendo al mismo tiempo lo que ya ha aprendido.",
+      "Title": "Por qué lo construimos de esta manera",
+      "Title-1": "Revisiones cronometradas",
+      "Title-2": "Práctica de recuperación",
+      "Title-3": "Enfoque inteligente"
+    },
+    "FeaturesSection": {
+      "Card-1-Text": "Cree temas personalizados con preguntas y respuestas. \nEstructura tus materiales de aprendizaje exactamente como los necesitas, con soporte para múltiples idiomas y sistemas de etiquetado.",
+      "Card-1-Title": "Crea y organiza tu conocimiento",
+      "Card-2-Text": "Practique con sesiones optimizadas por IA utilizando repeticiones espaciadas y recuperación activa. \nEl sistema se adapta a su rendimiento para una máxima retención.",
+      "Card-2-Title": "Entrenamientos inteligentes interactivos",
+      "Card-3-Text": "Genere preguntas y respuestas al instante utilizando IA. \nPerfecto para iniciar nuevos temas o ampliar los existentes.",
+      "Card-3-Title": "Creación de contenido impulsada por IA",
+      "Card-4-Text": "Aprende en inglés, español, ruso o cualquier idioma. \nPerfecto para estudiantes de idiomas y contenido multilingüe.",
+      "Card-4-Title": "Aprendizaje multilingüe",
+      "Card-5-Text": "Realice un seguimiento de su mejora con estadísticas detalladas, gráficos de rendimiento y métricas de retención.",
+      "Card-5-Title": "Análisis de progreso",
+      "Card-6-Text": "Comparta sus temas con otras personas o explore materiales creados por la comunidad.",
+      "Card-6-Title": "Comparte y colabora",
+      "Description": "Desde la creación de materiales de estudio personalizados hasta el seguimiento de su progreso, MindStack combina técnicas de aprendizaje comprobadas con tecnología moderna.",
+      "Title": "Todo lo que necesitas para un aprendizaje eficaz"
+    },
+    "HowItWorksCards": {
+      "Description": "Comience a usar MindStack en solo unos minutos",
+      "Text-1": "Comience con temas existentes o cree los suyos propios con nuestro asistente de IA",
+      "Text-2": "Practica con sesiones adaptativas que se centran en lo que más necesitas",
+      "Text-3": "Supervise el progreso y vea crecer sus conocimientos con el tiempo",
+      "Title": "Empiece a aprender en 3 sencillos pasos",
+      "Title-1": "Crear o elegir temas",
+      "Title-2": "Entrena con entrenamientos inteligentes",
+      "Title-3": "Seguimiento y mejora"
+    }
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "Ha alcanzado el número máximo de respuestas para su plan actual",

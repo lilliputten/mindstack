@@ -3,8 +3,9 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Link } from '@/i18n';
 import { Accordion } from '@/components/ui/Accordion';
-import { isDev } from '@/config';
+import { isDev, pricingChooseRoute } from '@/config';
 
 import { FAQAccordionItem } from './shared';
 
@@ -17,14 +18,14 @@ export function FAQSection() {
       )}
     >
       <div className="mb-3 flex max-w-2xl flex-col">
-        <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+        <h2 className="text-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
           Frequently Asked Questions
         </h2>
-        <p className="text-base leading-6 text-muted-foreground lg:text-lg">
+        <p className="text-truncate ext-base leading-6 lg:text-lg">
           Everything you need to know about MindStack and how to get started with memory training.
         </p>
       </div>
-      <Accordion type="single" collapsible className="mt-3">
+      <Accordion type="single" collapsible className="mt-8">
         <FAQAccordionItem
           value="WhatIsMindStack"
           question="What is MindStack?"
@@ -100,6 +101,47 @@ export function FAQSection() {
           }
         />
         <FAQAccordionItem
+          value="TrackProgress"
+          question="How do I track my progress?"
+          answer={
+            <p>
+              MindStack provides detailed statistics and progress tracking. You can see your
+              performance across different topics, track improvement over time, and identify areas
+              that need more practice. The dashboard shows your workout history and success rates.
+            </p>
+          }
+        />
+        <FAQAccordionItem
+          value="WithoutAccount"
+          question="Can I use MindStack without creating an account?"
+          answer={
+            <p>
+              Yes! You can explore public topics and try workouts without registration. Create an
+              account to save your progress and build custom topics.
+            </p>
+          }
+        />
+        <FAQAccordionItem
+          value="LearningTechniques"
+          question="What learning techniques does MindStack use?"
+          answer={
+            <p>
+              We combine spaced repetition, active recall, and interleaved practice - all proven by
+              cognitive science to improve long-term retention.
+            </p>
+          }
+        />
+        <FAQAccordionItem
+          value="MobileApp"
+          question="Is there a mobile app?"
+          answer={
+            <p>
+              MindStack is a progressive web app that works perfectly on all devices. Save it to
+              your home screen for an app-like experience.
+            </p>
+          }
+        />
+        <FAQAccordionItem
           value="FreeToUse"
           question="Is MindStack free to use?"
           answer={
@@ -111,13 +153,13 @@ export function FAQSection() {
           }
         />
         <FAQAccordionItem
-          value="TrackProgress"
-          question="How do I track my progress?"
+          value="Price"
+          question="How much does it cost?"
           answer={
             <p>
-              MindStack provides detailed statistics and progress tracking. You can see your
-              performance across different topics, track improvement over time, and identify areas
-              that need more practice. The dashboard shows your workout history and success rates.
+              Basic features are free forever. Premium plans unlock unlimited topics, advanced
+              analytics, and AI features. See <Link href={pricingChooseRoute}>pricing</Link>{' '}
+              section.
             </p>
           }
         />

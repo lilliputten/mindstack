@@ -5,56 +5,85 @@ import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { aboutAliasRoute, isDev, startAliasRoute } from '@/config';
+import { availableCategoriesRoute, isDev, startAliasRoute } from '@/config';
 
 export function HeroSection() {
   return (
     <section
       className={cn(
         isDev && '__HeroSection', // DEBUG
-        'flex flex-col items-center py-12',
+        'flex flex-col items-center pb-8 pt-12',
       )}
     >
-      <div className="mb-3 flex max-w-2xl flex-col items-center text-center">
-        {/* // Announce block
+      <div className="text-truncate mb-3 flex max-w-2xl flex-col items-center text-center">
+        {/* // TODO: Announce block
         <Link
-          href="#"
-          className="mb-3 inline-flex items-center rounded-2xl border border-border/30 bg-muted/50 px-3 py-0.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          href="/"
+          className={cn(
+            isDev && '__HeroSection_Announce', // DEBUG
+            'mb-3 inline-flex items-center rounded-2xl',
+            'border border-theme/50',
+            'bg-muted/50 px-3 py-0.5 text-sm text-theme hover:underline',
+          )}
         >
-          Version 0.0.3 released!
+          Version 0.0.4 released!
         </Link>
-        */}
-        <h1 className="text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
-          Master Your Memory with MindStack
+         */}
+        <h1 className="text-truncate text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+          Train Your Brain. Build Your Knowledge.
         </h1>
-        <p className="mb-6 text-balance text-base leading-6 text-muted-foreground lg:text-lg">
-          Create custom topics, questions, and answers to train your memory effectively. Build your
-          knowledge base and practice with interactive workouts.
+        <p className="text-truncate mb-6 text-balance text-base leading-6 lg:text-lg">
+          MindStack transforms how you learn and remember with AI‑powered memory training, spaced
+          repetition, and active recall.
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button variant="theme" size="lg" rounded="lg">
-            <Link href={startAliasRoute} className="flex items-center gap-2">
-              <Icons.ArrowRight className="size-4 opacity-50" />
-              <span>Get Started</span>
-            </Link>
-          </Button>
-          <Button variant="outline" size="lg" rounded="lg">
-            <Link href={aboutAliasRoute} className="flex items-center gap-2">
-              <Icons.Info className="size-4 opacity-50" />
-              <span>Learn More</span>
-            </Link>
-          </Button>
+        <div className="text-truncate flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href={startAliasRoute}
+            className={cn(
+              buttonVariants({ variant: 'theme' }),
+              'text-truncate flex items-center gap-2',
+            )}
+          >
+            <Icons.Rocket className="size-4 shrink-0 opacity-50" />
+            <span className="truncate">Start Training Free</span>
+          </Link>
+          <Link
+            href={availableCategoriesRoute}
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'text-truncate flex items-center gap-2',
+            )}
+          >
+            <Icons.Categories className="size-4 shrink-0 opacity-50" />
+            <span className="truncate">Explore Available Categories</span>
+          </Link>
         </div>
       </div>
-      <div className="relative mt-3 w-full max-w-none">
-        <div className="relative aspect-[2356/1404] w-full overflow-hidden rounded-lg">
+      <div
+        className={cn(
+          isDev && '__HeroSection_ImageWrapper', // DEBUG
+          'relative mt-8 w-full max-w-none',
+        )}
+      >
+        <div
+          className={cn(
+            isDev && '__HeroSection_ImageContainer', // DEBUG
+            'relative w-full overflow-hidden rounded-xl',
+            // 'border border-dashed border-red-500/50', // DEBUG
+            // 'aspect-[2356/1404]',
+            'aspect-[16/9]',
+          )}
+        >
           <Image
-            src="/static/landing/placeholder-main-ui.png"
-            alt="MindStack application interface"
+            // src="/static/landing/placeholder-main-ui.png"
+            // src="/static/landing/top-splash/como-estas-v1.jpg"
+            // src="/static/landing/top-splash/brain-clash-v2.jpg"
+            src="/static/landing/top-splash/brain-clash-v6.jpg"
+            alt="MindStack Mind Trainer Application"
             fill
-            className="object-contain"
+            className="object-cover"
             priority
           />
         </div>

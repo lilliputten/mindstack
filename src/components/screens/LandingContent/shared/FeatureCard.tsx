@@ -41,12 +41,11 @@ export function FeatureCard({
       )}
     >
       <div className={cn(contentMaxWidth)}>
-        <h3 className="mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
+        <h3 className="text-truncate mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
         <p
           className={cn(
-            descriptionSize === 'lg'
-              ? 'text-base leading-6 text-muted-foreground lg:text-lg'
-              : 'text-sm leading-5 text-muted-foreground',
+            descriptionSize === 'lg' ? 'text-base leading-6 lg:text-lg' : 'text-sm leading-5',
+            'text-truncate',
           )}
         >
           {description}
