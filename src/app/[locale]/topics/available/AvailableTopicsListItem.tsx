@@ -17,13 +17,13 @@ import { useGoToTheRoute, useSessionUser } from '@/hooks';
 
 interface TAvailableTopicsListItemProps {
   index: number;
-  style?: React.CSSProperties;
+  className?: string;
   topic: TAvailableTopic;
 }
 
 export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
-  const { topic, style } = props;
+  const { topic, className } = props;
   const t = useT();
   const {
     // createdAt,
@@ -165,11 +165,8 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',
         'hover:bg-theme/15',
+        className,
       )}
-      // onClick={defaultAction}
-      style={{
-        ...style,
-      }}
     >
       {cardContent}
     </Card>

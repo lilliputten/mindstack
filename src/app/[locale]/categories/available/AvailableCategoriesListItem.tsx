@@ -18,13 +18,12 @@ import { useGoToTheRoute, useSessionData } from '@/hooks';
 // TODO: Use 'next/navigation'
 
 interface TAvailableCategoriesListItemProps {
-  index: number;
-  style?: React.CSSProperties;
+  className?: string;
   category: TAvailableCategory;
 }
 
 export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemProps) {
-  const { category, style } = props;
+  const { category, className } = props;
   const t = useT();
 
   const locale = useLocale() as TLocale;
@@ -150,10 +149,8 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
         'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',
         'hover:bg-theme/15',
+        className,
       )}
-      style={{
-        ...style,
-      }}
     >
       {cardContent}
     </Card>

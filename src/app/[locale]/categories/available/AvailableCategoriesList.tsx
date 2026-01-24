@@ -144,8 +144,8 @@ export function AvailableCategoriesList(props: TProps) {
       )}
       // thumbClassName="bg-theme-600/40"
     >
-      {allCategories.map((category, index) => (
-        <AvailableCategoriesListItem key={category.id} index={index} category={category} />
+      {allCategories.map((category) => (
+        <AvailableCategoriesListItem key={category.id} category={category} />
       ))}
       {user?.id ? (
         <div className="flex items-center justify-center">

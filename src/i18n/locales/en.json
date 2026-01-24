@@ -754,7 +754,10 @@
       "Title-3": "Smart Focus"
     },
     "CategoriesSection": {
-      "Description": "Explore predefined categories or create your own. Here are some popular starting points:",
+      "Description": "Explore predefined categories or create your own, if you're authorized.",
+      "IntroduceCategories": "Here are some popular categories:",
+      "NoCategories": "Apparently, there no categories for your language yet. You can suggest some yours.",
+      "SuggestCategory": "Suggest Your Category",
       "Title": "Learn Anything, From Languages to Programming",
       "ViewAllCategoriesText": "View All Categories"
     },

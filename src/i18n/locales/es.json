@@ -745,7 +745,10 @@
       "Title-3": "Enfoque inteligente"
     },
     "CategoriesSection": {
-      "Description": "Explora categorías predefinidas o crea las tuyas. Aquí hay algunos puntos de partida populares:",
+      "Description": "Explora categorías predefinidas o crea las tuyas propias, si estás autorizado.",
+      "IntroduceCategories": "Aquí hay algunas categorías populares:",
+      "NoCategories": "Aparentemente todavía no hay categorías para tu idioma. \nPuedes sugerirnos algunos tuyos.",
+      "SuggestCategory": "Sugiere tu categoría",
       "Title": "Aprende cualquier cosa, desde idiomas hasta programación",
       "ViewAllCategoriesText": "Ver todas las categorías"
     },
