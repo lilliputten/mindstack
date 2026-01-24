@@ -23,6 +23,7 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   future: {
+    // NOTE: Use media rule with `(hover: hover) and (pointer: fine)` if true (don't use hovers on touchscreens)
     hoverOnlyWhenSupported: true,
   },
   prefix: '',

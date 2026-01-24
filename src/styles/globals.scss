@@ -363,6 +363,11 @@
     }
   }
 
+  .on-theme {
+    // NOTE: Workaround for `text-theme-foreground` (apparently, sometimes it's overrides by other `text-*` utilities)
+    color: #fff;
+  }
+
   .text-content {
     h1,
     h2,
@@ -381,7 +386,7 @@
       @apply list-decimal space-y-2 pl-6;
     }
     ul.items {
-      @apply list-square space-y-2 pl-6;
+      @apply list-disc space-y-2 pl-6;
     }
     h1,
     h2,
