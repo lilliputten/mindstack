@@ -28,6 +28,13 @@ export default {
   prefix: '',
   theme: {
     extend: {
+      listStyleType: {
+        none: 'none',
+        disc: 'disc',
+        decimal: 'decimal',
+        square: 'square',
+        roman: 'upper-roman',
+      },
       screens: {
         // '3xl': '1280px', // Adds a 3xl breakpoint
         xs: '480px',

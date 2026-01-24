@@ -373,9 +373,15 @@
     p,
     ul,
     ol {
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
       @apply text-truncate;
+    }
+    ol.items {
+      @apply list-decimal space-y-2 pl-6;
+    }
+    ul.items {
+      @apply list-square space-y-2 pl-6;
     }
     h1,
     h2,
