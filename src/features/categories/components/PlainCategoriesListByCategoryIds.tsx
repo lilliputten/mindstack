@@ -6,7 +6,10 @@ import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
-import { getCategoryName, TCategoryId, useAvailableCategories } from '@/features/categories';
+
+import { getCategoryName } from '../helpers';
+import { useAvailableCategories } from '../query-hooks';
+import { TCategoryId } from '../types';
 
 interface TProps {
   categoryIds?: TCategoryId[];

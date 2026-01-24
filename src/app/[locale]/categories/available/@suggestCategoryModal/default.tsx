@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { AddCategoryModal } from '@/features/categories';
+import { AddCategoryModal } from '@/features/categories/components';
 
 export default function SuggestCategoryModalDefault() {
   const pathname = usePathname();

@@ -10,12 +10,9 @@ import { Card, CardContent } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, manageCategoriesRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import {
-  CategoryHeader,
-  CategoryProperties,
-  getCategoryName,
-  TAvailableCategory,
-} from '@/features/categories';
+import { CategoryHeader, CategoryProperties } from '@/features/categories/components';
+import { getCategoryName } from '@/features/categories/helpers';
+import { TAvailableCategory } from '@/features/categories/types';
 import { useGoToTheRoute, useSessionData } from '@/hooks';
 
 // TODO: Use 'next/navigation'

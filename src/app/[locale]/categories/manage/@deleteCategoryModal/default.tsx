@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { DeleteCategoryModal } from '@/features/categories';
+import { DeleteCategoryModal } from '@/features/categories/components';
 
 export default function DeleteCategoriesModalDefault() {
   const pathname = usePathname();

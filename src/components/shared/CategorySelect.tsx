@@ -22,7 +22,8 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { getCategoryName, useAllPublicCategories } from '@/features/categories';
+import { getCategoryName } from '@/features/categories/helpers';
+import { useAllPublicCategories } from '@/features/categories/hooks';
 
 interface CategorySelectProps {
   selectedCategoryIds: string[];

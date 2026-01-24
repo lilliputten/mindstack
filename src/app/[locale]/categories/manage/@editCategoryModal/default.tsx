@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { EditCategoryModal } from '@/features/categories';
+import { EditCategoryModal } from '@/features/categories/components';
 
 export default function EditCategoriesModalDefault() {
   const pathname = usePathname();

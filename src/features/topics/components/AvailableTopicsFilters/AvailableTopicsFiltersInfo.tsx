@@ -13,7 +13,7 @@ import {
   getFiltersDataValueString,
   TFiltersData,
 } from '@/contexts/TopicsFiltersContext';
-import { useCategoryNames } from '@/features/categories';
+import { useCategoryNames } from '@/features/categories/hooks'; // ATTENTION: Inter-features import!
 
 interface TProps extends TPropsWithClassName {
   filtersData?: TFiltersData;

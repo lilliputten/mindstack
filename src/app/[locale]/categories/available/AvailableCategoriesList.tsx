@@ -14,7 +14,8 @@ import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute, rootAliasRoute, startAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { useAvailableCategories, useCategoriesFiltersContext } from '@/features/categories';
+import { useCategoriesFiltersContext } from '@/features/categories/contexts';
+import { useAvailableCategories } from '@/features/categories/query-hooks';
 import { useGoBack } from '@/hooks';
 
 import { AvailableCategoriesListItem } from './AvailableCategoriesListItem';

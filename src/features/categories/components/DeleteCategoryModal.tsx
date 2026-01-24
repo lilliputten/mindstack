@@ -13,10 +13,12 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageError } from '@/components/shared';
 import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev, manageCategoriesRoute } from '@/config';
-import { getCategoryName, useAvailableCategoryById } from '@/features/categories';
 import { deleteCategory } from '@/features/categories/actions/deleteCategory';
 import { TAvailableCategory, TCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+
+import { getCategoryName } from '../helpers';
+import { useAvailableCategoryById } from '../query-hooks';
 
 interface TDeleteCategoryModalProps {
   categoryId?: TCategoryId;

@@ -32,7 +32,7 @@ import { rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
-import { PlainCategoriesListByCategoryIds } from '@/features/categories';
+import { PlainCategoriesListByCategoryIds } from '@/features/categories/components';
 import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { deleteTopics, updateTopic } from '@/features/topics/actions';
 import { AvailableTopicsFilters } from '@/features/topics/components/AvailableTopicsFilters';

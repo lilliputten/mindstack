@@ -1,4 +1,4 @@
-import { EditCategoryModal } from '@/features/categories';
+import { EditCategoryModal } from '@/features/categories/components';
 
 interface EditCategoriesModalPageProps {
   searchParams: Promise<{ categoryId?: string; from?: string }>;
