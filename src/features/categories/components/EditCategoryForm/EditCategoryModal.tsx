@@ -88,16 +88,6 @@ export function EditCategoryModal(props: TProps) {
   const saveCategoryMutation = useMutation({
     mutationFn,
     onSuccess: (_updatedCategory) => {
-      /* // Update the item to the cached react-query data
-       * availableCategoriesQuery.updateCategory(updatedCategory);
-       */
-      // Invalidate the most recent suggested category queries when in suggestion mode
-      if (suggestionMode) {
-        const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
-        invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
-          // availableCategoriesQuery.queryKey,
-        ]);
-      }
       /* // Invalidate all other keys...
        * availableCategoriesQuery.invalidateAllKeysExcept([availableCategoriesQuery.queryKey]);
        */
@@ -106,6 +96,7 @@ export function EditCategoryModal(props: TProps) {
         // Keys to invalidate...
         ['available-category', categoryId],
         ['available-categories'],
+        ['most-recent-suggested-category'],
       ].map(makeQueryKeyPrefix);
       invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
         // availableCategoriesQuery.queryKey,

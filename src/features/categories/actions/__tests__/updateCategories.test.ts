@@ -31,18 +31,87 @@ type CreatedId =
   | { type: 'categoryTranslation'; categoryId: string; locale: string };
 
 const cleanupDb = async (ids: CreatedId[]) => {
-  for (const created of ids.reverse()) {
-    if (created.type === 'categoryTranslation') {
-      await jestPrisma.categoryTranslation.deleteMany({
-        where: { categoryId: created.categoryId, locale: created.locale },
-      });
-    } else if (created.type === 'category') {
-      await jestPrisma.category.deleteMany({ where: { id: created.id } });
-    } else if (created.type === 'user') {
-      await jestPrisma.user.deleteMany({ where: { id: created.id } });
+  try {
+    for (const created of ids.reverse()) {
+      if (created.type === 'categoryTranslation') {
+        await jestPrisma.categoryTranslation.deleteMany({
+          where: { categoryId: created.categoryId, locale: created.locale },
+        });
+      } else if (created.type === 'category') {
+        // First delete any dependent records
+        await jestPrisma.categoryTranslation.deleteMany({
+          where: { categoryId: created.id },
+        });
+        await jestPrisma.category.deleteMany({
+          where: { id: created.id },
+        });
+      } else if (created.type === 'user') {
+        // First delete any categories owned by this user
+        const userCategories = await jestPrisma.category.findMany({
+          where: { createdBy: created.id },
+          select: { id: true },
+        });
+
+        await Promise.all([
+          jestPrisma.categoryTranslation.deleteMany({
+            where: { categoryId: { in: userCategories.map((c) => c.id) } },
+          }),
+          jestPrisma.category.deleteMany({
+            where: { id: { in: userCategories.map((c) => c.id) } },
+          }),
+        ]);
+
+        await jestPrisma.user.deleteMany({
+          where: { id: created.id },
+        });
+      }
     }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('[cleanupDb] Overall cleanup failed', error);
   }
 };
+
+// Global beforeAll to clean up any previous test data
+beforeAll(async () => {
+  await cleanupStaleTestData();
+});
+
+async function cleanupStaleTestData() {
+  try {
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const staleTestData = await jestPrisma.category.findMany({
+      where: {
+        OR: [
+          { translations: { some: { name: { contains: 'Test Category' } } } },
+          { translations: { some: { name: { contains: 'ucs-' } } } },
+          { createdAt: { lt: oneHourAgo } },
+        ],
+      },
+      include: {
+        translations: true,
+      },
+    });
+
+    if (staleTestData.length > 0) {
+      // eslint-disable-next-line no-console
+      console.log(`Cleaning up ${staleTestData.length} stale test categories`);
+      await Promise.all(
+        staleTestData.map(async (category) => {
+          await jestPrisma.categoryTranslation.deleteMany({
+            where: { categoryId: category.id },
+          });
+          await jestPrisma.category.delete({
+            where: { id: category.id },
+          });
+        }),
+      );
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('[cleanupStaleTestData] Failed to clean up stale data', error);
+  }
+}
 
 describe('updateCategories', () => {
   afterEach(() => {

@@ -45,49 +45,26 @@ model Session {
   @@map("sessions")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
-enum UserGrade {
-  GUEST
-  BASIC
-  PRO
-  PREMIUM
-  UNLIMITED
-}
-
-enum UserSubscriptionPeriod {
-  MONTH
-  YEAR
-}
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-
-  role  UserRole  @default(USER)
-  grade UserGrade @default(BASIC)
-
-  // TODO: Control subscription period and return grade to the default when it's finished
+  id                    String                  @id @default(cuid())
+  name                  String?
+  email                 String?                 @unique
+  emailVerified         DateTime?               @map("email_verified")
+  image                 String?
+  role                  UserRole                @default(USER)
+  grade                 UserGrade               @default(BASIC)
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
   subscriptionPeriod    UserSubscriptionPeriod? @map("subscription_period")
   subscriptionStartedAt DateTime?               @updatedAt @map("subscription_started_at")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  accounts         Account[]
-  sessions         Session[]
-  topics           Topic[]
-  userPayments     UserPayment[]
-  userSettings     UserSettings?
-  userTopicWorkout UserTopicWorkout[]
-  workoutStats     WorkoutStats[]
-  AIGenerations    AIGeneration[]
+  accounts              Account[]
+  AIGenerations         AIGeneration[]
+  sessions              Session[]
+  topics                Topic[]
+  userPayments          UserPayment[]
+  userSettings          UserSettings?
+  userTopicWorkout      UserTopicWorkout[]
+  workoutStats          WorkoutStats[]
 
   @@map("users")
 }
@@ -96,52 +73,29 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
-  // Temp parameters passing to user creation
-  name   String?
-  locale String?
-  image  String?
+  name       String?
+  locale     String?
+  image      String?
 
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
 
-enum UserPaymentProvider {
-  YOOKASSA
-  STRIPE
-}
-
-enum UserPaymentStatus {
-  PENDING
-  FAILED
-  CANCELED
-  SUCCEED
-}
-
-// TODO: Rename to 'UserGradePayment'
 model UserPayment {
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  provider UserPaymentProvider @default(YOOKASSA)
-
-  subscriptionType String @map("subscription_type")
-
-  price    Float
-  currency CurrencyType
-
-  paymentId String @map("payment_id")
-  uniqueKey String @map("unique_key")
-
-  status UserPaymentStatus
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  userId           String              @map("user_id")
+  provider         UserPaymentProvider @default(YOOKASSA)
+  paymentId        String              @map("payment_id")
+  uniqueKey        String              @map("unique_key")
+  status           UserPaymentStatus
+  subscriptionType String              @map("subscription_type")
+  currency         CurrencyType
+  price            Float
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @default(now()) @updatedAt @map("updated_at")
+  user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, provider, paymentId, uniqueKey], map: "user_provider_payment_unique")
-  // Search created payments without paymentId (on success callback)
   @@index([userId, provider, uniqueKey, createdAt], map: "user_provider_unique_created")
-  // Search outdated failed payments to clean then up
   @@index([status, createdAt], map: "status_created")
   @@map("user_payments")
 }
@@ -153,15 +107,8 @@ model TelegramSession {
   @@map("telegram_session")
 }
 
-enum AllowedUserType {
-  EMAIL
-  TELEGRAM
-}
-
 model AllowedUser {
-  id Int @id @default(autoincrement())
-
-  // Telegram or email.
+  id    Int             @id @default(autoincrement())
   type  AllowedUserType @default(EMAIL)
   value String          @default("")
 
@@ -188,75 +135,45 @@ model UserSettings {
 }
 
 model AIGeneration {
-  id String @id @default(cuid())
-
-  modelUsed String? @map("model_used")
-
-  spentTimeMs Int @default(0) @map("spent_time_ms")
-  spentTokens Int @default(0) @map("spent_tokens")
-
-  topicId String? @map("topic_id")
-
-  createdAt  DateTime @default(now()) @map("created_at")
-  finishedAt DateTime @default(now()) @map("finished_at")
-  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
-
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  modelUsed   String?  @map("model_used")
+  spentTimeMs Int      @default(0) @map("spent_time_ms")
+  spentTokens Int      @default(0) @map("spent_tokens")
+  topicId     String?  @map("topic_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  finishedAt  DateTime @default(now()) @map("finished_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("ai_generations")
 }
 
-enum CategoryStatus {
-  PUBLIC
-  SUGGESTED
-  HIDDEN
-}
-
 model Category {
-  id String @id @default(cuid())
-
-  status CategoryStatus @default(PUBLIC)
-
-  // Translated fields: name, description, keywords
-  // - name - Required for at least one translation
-  // - description - Markdown text
-  // - keywords - Comma-separated list
+  id           String                @id @default(cuid())
+  status       CategoryStatus        @default(PUBLIC)
+  createdAt    DateTime              @default(now()) @map("created_at")
+  updatedAt    DateTime              @default(now()) @updatedAt @map("updated_at")
+  createdBy    String?               @map("created_by")
+  imageUrl     String?               @map("image_url")
+  updatedBy    String?               @map("updated_by")
   translations CategoryTranslation[]
-
-  imageUrl String? @map("image_url") // Stores Vercel Blob public URL
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-
-  // Categories are not tied to the users, but we want to keep information about creators and updaters
-  createdBy String? @map("created_by") // The creator user id
-  updatedBy String? @map("updated_by") // The updater user id
-
-  topics Topic[] @relation(name: "CategoryToTopic", map: "category_to_topic")
+  topics       Topic[]               @relation("CategoryToTopic")
 
   @@index([status])
   @@map("categories")
 }
 
-// Category records' translations: name, description, keywords
 model CategoryTranslation {
-  categoryId String
-  locale     String // e.g., 'en', 'es', 'ru'
-
-  // name - Required for at least one translation
-  name String
-
-  // description - Markdown text
+  categoryId  String
+  locale      String
+  name        String
   description String?
+  keywords    String?
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  // keywords - Comma-separated list
-  keywords String?
-
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@unique([categoryId, locale]) // Ensures one translation per locale per category
+  @@unique([categoryId, locale])
   @@map("category_translations")
 }
 
@@ -279,7 +196,7 @@ model Topic {
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userTopicWorkout   UserTopicWorkout[]
   workoutStats       WorkoutStats[]
-  categories         Category[]         @relation(name: "CategoryToTopic", map: "category_to_topic")
+  categories         Category[]         @relation("CategoryToTopic")
 
   @@index([userId])
   @@map("topics")
@@ -343,25 +260,19 @@ model UserTopicWorkout {
 }
 
 model WorkoutStats {
-  id      String @id @default(cuid())
-  userId  String @map("user_id")
-  topicId String @map("topic_id")
-
-  // Round statistics
-  totalQuestions Int @map("total_questions")
-  correctAnswers Int @map("correct_answers")
+  id             String           @id @default(cuid())
+  userId         String           @map("user_id")
+  topicId        String           @map("topic_id")
+  totalQuestions Int              @map("total_questions")
+  correctAnswers Int              @map("correct_answers")
   ratio          Int
-  timeSeconds    Int @map("time_seconds")
-
-  // Timestamps
-  startedAt  DateTime @map("started_at")
-  finishedAt DateTime @map("finished_at")
-  createdAt  DateTime @default(now()) @map("created_at")
-
-  // Relations
-  topic   Topic            @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  workout UserTopicWorkout @relation(fields: [userId, topicId], references: [userId, topicId], onDelete: Cascade)
+  timeSeconds    Int              @map("time_seconds")
+  startedAt      DateTime         @map("started_at")
+  finishedAt     DateTime         @map("finished_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  topic          Topic            @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workout        UserTopicWorkout @relation(fields: [userId, topicId], references: [userId, topicId], onDelete: Cascade)
 
   @@index([userId])
   @@index([topicId])
@@ -369,24 +280,60 @@ model WorkoutStats {
   @@map("workout_stats")
 }
 
-enum CurrencyType {
-  USD
-  EUR
-  RUB
-  TGSTAR
-}
-
 model Currency {
-  id   Int          @id @default(autoincrement())
-  type CurrencyType @unique @default(USD)
-
-  // Used to calculate the currency value by dividing the USD currency: `{usdPrice} / ratio`, see the `calcCurrencyFromUsd` helper function
-  ratio Float
-
-  // This field is set if there the updating process has been active (since the specified time)
-  updatingSince DateTime? @map("updating_since")
-
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  id            Int          @id @default(autoincrement())
+  type          CurrencyType @unique @default(USD)
+  ratio         Float
+  updatedAt     DateTime     @default(now()) @updatedAt @map("updated_at")
+  updatingSince DateTime?    @map("updating_since")
 
   @@map("currencies")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserGrade {
+  GUEST
+  BASIC
+  PRO
+  PREMIUM
+  UNLIMITED
+}
+
+enum UserSubscriptionPeriod {
+  MONTH
+  YEAR
+}
+
+enum UserPaymentProvider {
+  YOOKASSA
+  STRIPE
+}
+
+enum UserPaymentStatus {
+  PENDING
+  FAILED
+  SUCCEED
+  CANCELED
+}
+
+enum AllowedUserType {
+  EMAIL
+  TELEGRAM
+}
+
+enum CategoryStatus {
+  PUBLIC
+  SUGGESTED
+  HIDDEN
+}
+
+enum CurrencyType {
+  USD
+  RUB
+  TGSTAR
+  EUR
 }

@@ -10,7 +10,7 @@ import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useEnvConext } from '@/contexts/EnvContext';
+import { useEnvContext } from '@/contexts/EnvContext';
 
 import { TelegramSignInForm } from './TelegramSignInForm';
 
@@ -62,7 +62,7 @@ export function TelegramSignIn(props: TProps) {
   const { className, inBody, isLogging, redirectUrl } = props;
   const t = useT();
   // TODO: Is that possible to pass the `redirectUrl` link to the telegram bot?
-  const { BOT_USERNAME } = useEnvConext();
+  const { BOT_USERNAME } = useEnvContext();
   // TODO: Try to pass `redirectUrl` parameter with tegeram bot url's `start` parameter
   const telegramUrl = `https://t.me/${BOT_USERNAME}?start=/authorize`;
   return (

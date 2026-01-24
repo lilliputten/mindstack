@@ -86,6 +86,8 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
           // Keys to invalidate...
           ['available-category', categoryId],
           ['available-categories'],
+          // Invalidate the most recent suggested category queries when in suggestion mode
+          ['most-recent-suggested-category'],
         ].map(makeQueryKeyPrefix);
         invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
       }, invalidateTimeout);

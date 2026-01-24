@@ -7,9 +7,11 @@ import { Link, useT } from '@/i18n';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { availableCategoriesRoute, isDev } from '@/config';
+import { useLandingPageContext } from '@/contexts/LandingPageContext';
 
 export function CategoriesSection() {
   const t = useT();
+  const { recentCategories } = useLandingPageContext();
   return (
     <section
       className={cn(
@@ -27,6 +29,7 @@ export function CategoriesSection() {
       </div>
       <div className="my-3 grid gap-6 py-6 lg:grid-cols-3">
         <div>--SHORT CATEGORIES LIST--</div>
+        <pre>{JSON.stringify(recentCategories, null, 2)}</pre>
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <Link

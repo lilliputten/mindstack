@@ -9,8 +9,8 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { LandingContent } from '@/components/screens/LandingContent';
 import { isDev } from '@/constants';
-import { LandingPageContext } from '@/contexts/LandingPageContext';
-import { getCachedRecentCategories } from '@/features/categories/actions';
+import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
+import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
 
 type TLandingPageProps = TAwaitedLocaleProps & {
@@ -30,7 +30,11 @@ const saveScrollHash = getRandomHashString();
 
 export async function generateStaticParams() {
   try {
-    const recentCategories = await getCachedRecentCategories();
+    const promise = isDev ? getRecentCategories() : getCachedRecentCategories();
+    const recentCategories = await promise;
+    console.log('[LandingPage:generateStaticParams]', {
+      recentCategories,
+    });
     return [{ recentCategories }];
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -48,37 +52,37 @@ export async function LandingPage({ params, recentCategories = [] }: TLandingPag
   setRequestLocale(locale);
 
   return (
-    <PageWrapper
-      id="LandingPage"
-      className={cn(
-        isDev && '__LandingPage', // DEBUG
-      )}
-      innerClassName={cn(
-        isDev && '__LandingPage_Inner', // DEBUG
-        'size-full',
-      )}
-      // scrollable
-      // limitWidth
-    >
-      <ScrollArea
-        saveScrollKey="LandingPage"
-        saveScrollHash={saveScrollHash}
+    <LandingPageContextRoot recentCategories={recentCategories}>
+      <PageWrapper
+        id="LandingPage"
         className={cn(
-          isDev && '__LandingPage_Scroll', // DEBUG
-          'flex flex-1 flex-col overflow-hidden',
-          'bg-theme-500/5',
+          isDev && '__LandingPage', // DEBUG
         )}
-        viewportClassName={cn(
-          isDev && '__LandingPage_ScrollViewport', // DEBUG
-          'flex flex-1 flex-col',
-          'bg-decorative-gradient',
-          '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+        innerClassName={cn(
+          isDev && '__LandingPage_Inner', // DEBUG
+          'size-full',
         )}
+        // scrollable
+        // limitWidth
       >
-        <LandingPageContext.Provider value={{ recentCategories: recentCategories ?? [] }}>
+        <ScrollArea
+          saveScrollKey="LandingPage"
+          saveScrollHash={saveScrollHash}
+          className={cn(
+            isDev && '__LandingPage_Scroll', // DEBUG
+            'flex flex-1 flex-col overflow-hidden',
+            'bg-theme-500/5',
+          )}
+          viewportClassName={cn(
+            isDev && '__LandingPage_ScrollViewport', // DEBUG
+            'flex flex-1 flex-col',
+            'bg-decorative-gradient',
+            '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
+          )}
+        >
           <LandingContent />
-        </LandingPageContext.Provider>
-      </ScrollArea>
-    </PageWrapper>
+        </ScrollArea>
+      </PageWrapper>
+    </LandingPageContextRoot>
   );
 }

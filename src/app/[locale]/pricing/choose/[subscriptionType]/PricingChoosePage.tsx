@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/config';
-import { useEnvConext } from '@/contexts/EnvContext';
+import { useEnvContext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
 import { useStripePayment, useYookassaPayment } from '@/features/payments/hooks';
@@ -39,7 +39,7 @@ export function PricingChoosePage({
 
   const CurrencySign = CurrencySigns[localeCurrency];
   const TgStarSign = CurrencySigns.TGSTAR;
-  const { BOT_USERNAME } = useEnvConext();
+  const { BOT_USERNAME } = useEnvContext();
 
   const [isWorking, startWorking] = React.useTransition();
 

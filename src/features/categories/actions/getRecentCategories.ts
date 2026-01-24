@@ -13,6 +13,9 @@ const defaultRecentCategoriesCount = 5;
 
 export async function getRecentCategories(take: number = defaultRecentCategoriesCount) {
   try {
+    // NOTE: Don't use `getAvailableCategories`, because it uses nextjs context
+    // (`auth`, for example, what is unavailable during SSG, if called from
+    // `generateStaticParams`)
     const categories = await prisma.category.findMany({
       where: {
         status: 'PUBLIC',
@@ -23,14 +26,13 @@ export async function getRecentCategories(take: number = defaultRecentCategories
         _count: {
           select: { topics: true },
         },
-        translations: {
-          where: {
-            locale: 'en', // Only include English translations for testing
-          },
-        },
+        translations: true,
       },
     });
-
+    console.log('[getRecentCategories]', {
+      categories,
+    });
+    debugger;
     return categories;
   } catch (error) {
     const message = 'Failed to get recent categories';
@@ -42,7 +44,7 @@ export async function getRecentCategories(take: number = defaultRecentCategories
   }
 }
 
-export const getCachedRecentCategories = (take: number = defaultRecentCategoriesCount) => {
+export const getCachedRecentCategories = async (take: number = defaultRecentCategoriesCount) => {
   const cachedFn = unstable_cache(
     async () => getRecentCategories(take),
     ['recent-categories', `take-${take}`],

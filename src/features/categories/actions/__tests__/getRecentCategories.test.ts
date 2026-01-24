@@ -12,11 +12,17 @@ type CreatedId =
   | { type: 'user'; id: string }
   | { type: 'category'; id: string }
   | { type: 'categoryTranslation'; categoryId: string; locale: string }
-  | { type: 'topic'; id: string; categoryId: string };
+  | { type: 'topic'; id: string; categoryId: string }
+  | { type: 'question'; id: string; topicId: string }
+  | { type: 'answer'; id: string; questionId: string };
 
 const cleanupDb = async (ids: CreatedId[]) => {
   for (const created of ids.reverse()) {
-    if (created.type === 'categoryTranslation') {
+    if (created.type === 'answer') {
+      await jestPrisma.answer.deleteMany({ where: { id: created.id } });
+    } else if (created.type === 'question') {
+      await jestPrisma.question.deleteMany({ where: { id: created.id } });
+    } else if (created.type === 'categoryTranslation') {
       await jestPrisma.categoryTranslation.deleteMany({
         where: { categoryId: created.categoryId, locale: created.locale },
       });
@@ -25,6 +31,21 @@ const cleanupDb = async (ids: CreatedId[]) => {
     } else if (created.type === 'user') {
       await jestPrisma.user.deleteMany({ where: { id: created.id } });
     } else if (created.type === 'topic') {
+      // Clean up questions and answers associated with the topic first
+      const questions = await jestPrisma.question.findMany({
+        where: { topicId: created.id },
+      });
+
+      for (const question of questions) {
+        await jestPrisma.answer.deleteMany({
+          where: { questionId: question.id },
+        });
+      }
+
+      await jestPrisma.question.deleteMany({
+        where: { topicId: created.id },
+      });
+
       await jestPrisma.topic.deleteMany({ where: { id: created.id } });
     }
   }
@@ -75,10 +96,11 @@ describe('getRecentCategories', () => {
         locale: 'en',
       });
 
-      const topics = await jestPrisma.topic.findMany({
+      // Find and track all topics created with this category
+      const popularCategoryTopics = await jestPrisma.topic.findMany({
         where: { categories: { some: { id: popularCategory.id } } },
       });
-      topics.forEach((topic) => {
+      popularCategoryTopics.forEach((topic) => {
         createdIds.push({ type: 'topic', id: topic.id, categoryId: popularCategory.id });
       });
 
@@ -105,12 +127,13 @@ describe('getRecentCategories', () => {
         locale: 'en',
       });
 
-      const singleTopic = await jestPrisma.topic.findFirst({
+      // Find and track all topics created with this category
+      const lessPopularCategoryTopics = await jestPrisma.topic.findMany({
         where: { categories: { some: { id: lessPopularCategory.id } } },
       });
-      if (singleTopic) {
-        createdIds.push({ type: 'topic', id: singleTopic.id, categoryId: lessPopularCategory.id });
-      }
+      lessPopularCategoryTopics.forEach((topic) => {
+        createdIds.push({ type: 'topic', id: topic.id, categoryId: lessPopularCategory.id });
+      });
 
       // Test with default take (5)
       const result = await getRecentCategories();
@@ -145,7 +168,7 @@ describe('getRecentCategories', () => {
       createdIds.push({ type: 'user', id: user.id });
 
       // Create multiple categories
-      await Promise.all(
+      const createdCategories = await Promise.all(
         Array.from({ length: 5 }, (_, i) =>
           jestPrisma.category.create({
             data: {
@@ -165,6 +188,24 @@ describe('getRecentCategories', () => {
           }),
         ),
       );
+
+      // Track all categories and their associated topics
+      for (const category of createdCategories) {
+        createdIds.push({ type: 'category', id: category.id });
+        createdIds.push({
+          type: 'categoryTranslation',
+          categoryId: category.id,
+          locale: 'en',
+        });
+
+        // Find and track all topics created with this category
+        const categoryTopics = await jestPrisma.topic.findMany({
+          where: { categories: { some: { id: category.id } } },
+        });
+        categoryTopics.forEach((topic) => {
+          createdIds.push({ type: 'topic', id: topic.id, categoryId: category.id });
+        });
+      }
 
       // Get only 2 categories
       const result = await getRecentCategories(2);
@@ -202,6 +243,14 @@ describe('getRecentCategories', () => {
       createdIds.push({ type: 'category', id: publicCategory.id });
       createdIds.push({ type: 'categoryTranslation', categoryId: publicCategory.id, locale: 'en' });
 
+      // Find and track all topics created with this category (though none should exist in this test)
+      const publicCategoryTopics = await jestPrisma.topic.findMany({
+        where: { categories: { some: { id: publicCategory.id } } },
+      });
+      publicCategoryTopics.forEach((topic) => {
+        createdIds.push({ type: 'topic', id: topic.id, categoryId: publicCategory.id });
+      });
+
       // Create hidden category
       const hiddenCategory = await jestPrisma.category.create({
         data: {
@@ -217,6 +266,14 @@ describe('getRecentCategories', () => {
       });
       createdIds.push({ type: 'category', id: hiddenCategory.id });
       createdIds.push({ type: 'categoryTranslation', categoryId: hiddenCategory.id, locale: 'en' });
+
+      // Find and track all topics created with this category (though none should exist in this test)
+      const hiddenCategoryTopics = await jestPrisma.topic.findMany({
+        where: { categories: { some: { id: hiddenCategory.id } } },
+      });
+      hiddenCategoryTopics.forEach((topic) => {
+        createdIds.push({ type: 'topic', id: topic.id, categoryId: hiddenCategory.id });
+      });
 
       const result = await getRecentCategories();
 

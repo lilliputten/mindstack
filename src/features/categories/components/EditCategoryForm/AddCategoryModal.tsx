@@ -93,13 +93,14 @@ export function AddCategoryModal(props: TProps) {
     onSuccess: (_savedCategory) => {
       setSaved(true);
 
-      // Invalidate the most recent suggested category queries when in suggestion mode
-      if (suggestionMode) {
-        const invalidatePrefixes = [['most-recent-suggested-category']].map(makeQueryKeyPrefix);
-        invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
-          // availableCategoriesQuery.queryKey,
-        ]);
-      }
+      const invalidatePrefixes = [
+        ['available-categories'],
+        // Invalidate the most recent suggested category queries when in suggestion mode
+        ['most-recent-suggested-category'],
+      ].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [
+        // availableCategoriesQuery.queryKey,
+      ]);
     },
     onError: (error, newCategory) => {
       const message = t('AddCategoryModal.CantSaveCategory');

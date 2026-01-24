@@ -17,8 +17,10 @@ export function LandingContent() {
   return (
     <>
       <main className="flex w-full max-w-6xl flex-col px-6">
+        {/* // DEBUG: Hide temporarily
         <HeroSection />
         <FeaturesSection />
+        */}
         <CategoriesSection />
         <CardsWithIconsSection />
         <BigImageCTASection />

@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/Table';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { useEnvConext } from '@/contexts/EnvContext';
+import { useEnvContext } from '@/contexts/EnvContext';
 
 interface ComparisonFeature {
   name: string;
@@ -30,7 +30,7 @@ const useDarkHeader = true;
 
 export function PricingComparisonTable() {
   const t = useT();
-  const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvConext();
+  const { BASIC_USER_GENERATIONS, PRO_USER_MONTHLY_GENERATIONS } = useEnvContext();
 
   const features: ComparisonFeature[] = React.useMemo(
     () => [
