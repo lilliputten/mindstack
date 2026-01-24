@@ -729,6 +729,11 @@
     "SelectImage": "Seleccionar imagen"
   },
   "Landing": {
+    "BigImageCTASection": {
+      "Description": "Ya sea que estés aprendiendo un nuevo idioma, preparando exámenes o dominando habilidades profesionales, MindStack se adapta a tus objetivos.",
+      "Title": "Construye tu base de conocimiento hoy",
+      "TryItFreeText": "Pruébalo gratis"
+    },
     "CardsWithIconsSection": {
       "Description": "Funciones basadas en lo que realmente ayuda a las personas a aprender",
       "Text-1": "Le ayudamos a revisar material a intervalos que coincidan con el funcionamiento natural de la memoria.",
@@ -738,6 +743,11 @@
       "Title-1": "Revisiones cronometradas",
       "Title-2": "Práctica de recuperación",
       "Title-3": "Enfoque inteligente"
+    },
+    "CategoriesSection": {
+      "Description": "Explora categorías predefinidas o crea las tuyas. Aquí hay algunos puntos de partida populares:",
+      "Title": "Aprende cualquier cosa, desde idiomas hasta programación",
+      "ViewAllCategoriesText": "Ver todas las categorías"
     },
     "FAQSection": {
       "Description": "Todo lo que necesita saber sobre MindStack y cómo comenzar con el entrenamiento de la memoria.",
@@ -792,10 +802,10 @@
       }
     },
     "FeaturesSection": {
-      "Card-1-Text": "Cree temas personalizados con preguntas y respuestas. \nEstructura tus materiales de aprendizaje exactamente como los necesitas, con soporte para múltiples idiomas y sistemas de etiquetado.",
+      "Card-1-Text": "Crea tus propios módulos de aprendizaje: formula preguntas y respuestas, y ordénalos por categorías. Utiliza la función multilingüe y etiquetas para una organización del conocimiento clara y completamente personalizada.",
       "Card-1-Title": "Crea y organiza tu conocimiento",
-      "Card-2-Text": "Practique con sesiones optimizadas por IA utilizando repeticiones espaciadas y recuperación activa. \nEl sistema se adapta a su rendimiento para una máxima retención.",
-      "Card-2-Title": "Entrenamientos inteligentes interactivos",
+      "Card-2-Text": "Enriquece tu entrenamiento utilizando colecciones populares de temas creadas por otros usuarios. O comienza con tus materiales privados: el sistema respalda eficazmente cualquier camino que elijas.",
+      "Card-2-Title": "Practica dentro de una Comunidad de Estudiantes",
       "Card-3-Text": "Genere preguntas y respuestas al instante utilizando IA. \nPerfecto para iniciar nuevos temas o ampliar los existentes.",
       "Card-3-Title": "Creación de contenido impulsada por IA",
       "Card-4-Text": "Aprende en inglés, español, ruso o cualquier idioma. \nPerfecto para estudiantes de idiomas y contenido multilingüe.",
@@ -804,8 +814,14 @@
       "Card-5-Title": "Análisis de progreso",
       "Card-6-Text": "Comparta sus temas con otras personas o explore materiales creados por la comunidad.",
       "Card-6-Title": "Comparte y colabora",
-      "Description": "Desde la creación de materiales de estudio personalizados hasta el seguimiento de su progreso, MindStack combina técnicas de aprendizaje comprobadas con tecnología moderna.",
+      "Description": "Desde la creación de materiales de estudio personalizados hasta el seguimiento de su progreso, la aplicación combina técnicas de aprendizaje comprobadas con tecnología moderna.",
       "Title": "Todo lo que necesitas para un aprendizaje eficaz"
+    },
+    "HeroSection": {
+      "Description": "MindStack transforma la forma en que aprendes y recuerdas con entrenamiento de memoria impulsado por IA, repetición espaciada y recuperación activa.",
+      "ExploreAvailableCategoriesText": "Explorar categorías disponibles",
+      "StartTrainingFreeText": "Comenzar entrenamiento gratis",
+      "Title": "Entrena tu cerebro. Construye tu conocimiento."
     },
     "HowItWorksCards": {
       "Description": "Comience a usar MindStack en solo unos minutos",
@@ -816,6 +832,12 @@
       "Title-1": "Crear o elegir temas",
       "Title-2": "Entrena con entrenamientos inteligentes",
       "Title-3": "Seguimiento y mejora"
+    },
+    "PromoCTASection": {
+      "Description": "Únete a una comunidad en crecimiento de aprendices y descubre una mejor forma de recordar",
+      "ExploreCategoriesText": "Explorar categorías",
+      "StartFreeTrainingText": "Comenzar entrenamiento gratis",
+      "Title": "Comienza a construir tu conocimiento hoy"
     }
   },
   "LimitsError": {

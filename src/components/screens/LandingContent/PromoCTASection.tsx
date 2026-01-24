@@ -3,12 +3,15 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { aboutAliasRoute, isDev, startAliasRoute } from '@/config';
 
 export function PromoCTASection() {
+  const t = useT();
+
   return (
     <section
       className={cn(
@@ -32,11 +35,11 @@ export function PromoCTASection() {
         )}
       />
       <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center px-4 text-center">
-        <h2 className="mb-6 mt-0 text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
-          Start Building Your Knowledge Today
+        <h2 className="mb-6 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
+          {t('Landing.PromoCTASection.Title')}
         </h2>
         <p className="mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
-          Join a growing community of learners and discover a better way to remember
+          {t('Landing.PromoCTASection.Description')}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
@@ -47,7 +50,7 @@ export function PromoCTASection() {
             )}
           >
             <Icons.Rocket className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">Start Free Training</span>
+            <span className="truncate">{t('Landing.PromoCTASection.StartFreeTrainingText')}</span>
           </Link>
           {/* TODO: Create Your Account */}
           <Link
@@ -58,7 +61,7 @@ export function PromoCTASection() {
             )}
           >
             <Icons.Categories className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">Explore Categories</span>
+            <span className="truncate">{t('Landing.PromoCTASection.ExploreCategoriesText')}</span>
           </Link>
         </div>
       </div>

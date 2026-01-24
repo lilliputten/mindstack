@@ -4,12 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { availableCategoriesRoute, isDev, startAliasRoute } from '@/config';
 
 export function HeroSection() {
+  const t = useT();
+
   return (
     <section
       className={cn(
@@ -32,11 +35,10 @@ export function HeroSection() {
         </Link>
          */}
         <h1 className="text-truncate text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
-          Train Your Brain. Build Your Knowledge.
+          {t('Landing.HeroSection.Title')}
         </h1>
         <p className="text-truncate mb-6 text-balance text-base leading-6 lg:text-lg">
-          MindStack transforms how you learn and remember with AI‑powered memory training, spaced
-          repetition, and active recall.
+          {t('Landing.HeroSection.Description')}
         </p>
         <div className="text-truncate flex flex-wrap items-center justify-center gap-3">
           <Link
@@ -47,7 +49,7 @@ export function HeroSection() {
             )}
           >
             <Icons.Rocket className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">Start Training Free</span>
+            <span className="truncate">{t('Landing.HeroSection.StartTrainingFreeText')}</span>
           </Link>
           <Link
             href={availableCategoriesRoute}
@@ -57,7 +59,9 @@ export function HeroSection() {
             )}
           >
             <Icons.Categories className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">Explore Available Categories</span>
+            <span className="truncate">
+              {t('Landing.HeroSection.ExploreAvailableCategoriesText')}
+            </span>
           </Link>
         </div>
       </div>
@@ -71,8 +75,6 @@ export function HeroSection() {
           className={cn(
             isDev && '__HeroSection_ImageContainer', // DEBUG
             'relative w-full overflow-hidden rounded-xl',
-            // 'border border-dashed border-red-500/50', // DEBUG
-            // 'aspect-[2356/1404]',
             'aspect-[16/9]',
           )}
         >
@@ -81,7 +83,7 @@ export function HeroSection() {
             // src="/static/landing/top-splash/como-estas-v1.jpg"
             // src="/static/landing/top-splash/brain-clash-v2.jpg"
             src="/static/landing/top-splash/brain-clash-v6.jpg"
-            alt="MindStack Mind Trainer Application"
+            alt={t('Landing.HeroSection.Title')}
             fill
             className="object-cover"
             priority

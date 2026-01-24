@@ -15,15 +15,14 @@ export function CategoriesSection() {
       className={cn(
         isDev && '__CategoriesSection', // DEBUG
         'py-8 pb-8',
-        // 'border border-red-500',
       )}
     >
       <div className="mb-3 flex flex-col">
-        <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          Learn Anything, From Languages to Programming
+        <h2 className="mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          {t('Landing.CategoriesSection.Title')}
         </h2>
         <p className="text-base leading-6 text-muted-foreground lg:text-lg">
-          Explore predefined categories or create your own. Here are some popular starting points:
+          {t('Landing.CategoriesSection.Description')}
         </p>
       </div>
       <div className="my-3 grid gap-6 py-6 lg:grid-cols-3">
@@ -38,7 +37,7 @@ export function CategoriesSection() {
           )}
         >
           <Icons.Categories className="size-4 shrink-0 opacity-50" />
-          <span className="truncate">View All Categories</span>
+          <span className="truncate">{t('Landing.CategoriesSection.ViewAllCategoriesText')}</span>
         </Link>
       </div>
     </section>

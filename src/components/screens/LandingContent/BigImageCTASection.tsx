@@ -4,12 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, startAliasRoute } from '@/config';
 
 export function BigImageCTASection() {
+  const t = useT();
+
   return (
     <section
       className={cn(
@@ -18,12 +21,11 @@ export function BigImageCTASection() {
       )}
     >
       <div className="mb-3 max-w-2xl">
-        <h2 className="text-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          Build Your Knowledge Base Today
+        <h2 className="text-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          {t('Landing.BigImageCTASection.Title')}
         </h2>
         <p className="text-truncate mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
-          Whether you're learning a new language, preparing for exams, or mastering professional
-          skills, MindStack adapts to your goals.
+          {t('Landing.BigImageCTASection.Description')}
         </p>
         <div className="mb-6 flex flex-wrap gap-3">
           <Link
@@ -34,7 +36,7 @@ export function BigImageCTASection() {
             )}
           >
             <Icons.ArrowRight className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">Try It Free</span>
+            <span className="truncate">{t('Landing.BigImageCTASection.TryItFreeText')}</span>
           </Link>
         </div>
       </div>
@@ -42,7 +44,7 @@ export function BigImageCTASection() {
         <div className="relative aspect-[2356/1404] w-full overflow-hidden rounded-lg">
           <Image
             src="/static/landing/placeholder-main-ui.png"
-            alt="MindStack dashboard overview"
+            alt={t('Landing.BigImageCTASection.Title')}
             fill
             className="object-contain"
           />

@@ -738,6 +738,11 @@
     "SelectImage": "Select Image"
   },
   "Landing": {
+    "BigImageCTASection": {
+      "Description": "Whether you're learning a new language, preparing for exams, or mastering professional skills, MindStack adapts to your goals.",
+      "Title": "Build Your Knowledge Base Today",
+      "TryItFreeText": "Try It Free"
+    },
     "CardsWithIconsSection": {
       "Description": "Features based on what actually helps people learn",
       "Text-1": "We help you review material at intervals that match how memory naturally works.",
@@ -747,6 +752,11 @@
       "Title-1": "Timed Reviews",
       "Title-2": "Retrieval Practice",
       "Title-3": "Smart Focus"
+    },
+    "CategoriesSection": {
+      "Description": "Explore predefined categories or create your own. Here are some popular starting points:",
+      "Title": "Learn Anything, From Languages to Programming",
+      "ViewAllCategoriesText": "View All Categories"
     },
     "FAQSection": {
       "Description": "Everything you need to know about MindStack and how to get started with memory training.",
@@ -801,10 +811,10 @@
       }
     },
     "FeaturesSection": {
-      "Card-1-Text": "Build custom topics with questions and answers. Structure your learning materials exactly how you need them, with support for multiple languages and tagging systems.",
+      "Card-1-Text": "Create your own learning modules: formulate questions and answers, and sort them into categories. Use multilingual support and tags for the clearest and most personalized organization of knowledge.",
       "Card-1-Title": "Create and Organize Your Knowledge",
-      "Card-2-Text": "Practice with AI-optimized sessions using spaced repetition and active recall. The system adapts to your performance for maximum retention.",
-      "Card-2-Title": "Interactive Smart Workouts",
+      "Card-2-Text": "Enrich your training by using popular topic collections created by other users. Or start with your private materials — the system effectively supports any path you choose.",
+      "Card-2-Title": "Practice Within a Community of Learners",
       "Card-3-Text": "Generate questions and answers instantly using AI. Perfect for starting new topics or expanding existing ones.",
       "Card-3-Title": "AI-Powered Content Creation",
       "Card-4-Text": "Learn in English, Spanish, Russian, or any language. Perfect for language learners and multilingual content.",
@@ -813,8 +823,14 @@
       "Card-5-Title": "Progress Analytics",
       "Card-6-Text": "Share your topics with others or explore community-created materials.",
       "Card-6-Title": "Share and Collaborate",
-      "Description": "From creating custom study materials to tracking your progress, MindStack combines proven learning techniques with modern technology.",
+      "Description": "From creating custom study materials to tracking your progress, the application combines proven learning techniques with modern technology.",
       "Title": "Everything You Need for Effective Learning"
+    },
+    "HeroSection": {
+      "Description": "MindStack transforms how you learn and remember with AI‑powered memory training, spaced repetition, and active recall.",
+      "ExploreAvailableCategoriesText": "Explore Available Categories",
+      "StartTrainingFreeText": "Start Training Free",
+      "Title": "Train Your Brain. Build Your Knowledge."
     },
     "HowItWorksCards": {
       "Description": "Get started with MindStack in just a few minutes",
@@ -825,6 +841,12 @@
       "Title-1": "Create or Choose Topics",
       "Title-2": "Train with Smart Workouts",
       "Title-3": "Track and Improve"
+    },
+    "PromoCTASection": {
+      "Description": "Join a growing community of learners and discover a better way to remember",
+      "ExploreCategoriesText": "Explore Categories",
+      "StartFreeTrainingText": "Start Free Training",
+      "Title": "Start Building Your Knowledge Today"
     }
   },
   "LimitsError": {

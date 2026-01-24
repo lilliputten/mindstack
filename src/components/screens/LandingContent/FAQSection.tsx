@@ -30,7 +30,7 @@ export function FAQSection() {
       )}
     >
       <div className="mb-3 flex max-w-2xl flex-col">
-        <h2 className="text-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+        <h2 className="text-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
           {t('Landing.FAQSection.Title')}
         </h2>
         <p className="text-truncate ext-base leading-6 lg:text-lg">

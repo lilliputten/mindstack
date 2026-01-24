@@ -16,11 +16,10 @@ export function HowItWorksCards() {
       className={cn(
         isDev && '__HowItWorksCards', // DEBUG
         'py-8 pb-0',
-        // 'border border-red-500',
       )}
     >
       <div className="mb-3 flex max-w-2xl flex-col">
-        <h2 className="text-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+        <h2 className="text-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
           {t('Landing.HowItWorksCards.Title')}
         </h2>
         {
