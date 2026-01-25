@@ -50,14 +50,15 @@ export function AppIntroBlock(props: TPropsWithClassName) {
       ) : (
         <>
           <p className="font-medium">
-            You're currently <strong>{getUserStatusText(user)}</strong>.
+            {t('AppIntro.CurrentUserStatus', { status: getUserStatusText(user, t) })}
           </p>
 
           {/* Guest specific */}
           {!user && (
             <p>
-              Explore public topics, try workouts, and change settings. <strong>Sign in</strong> to
-              save your progress and unlock creation features.
+              {t.rich('AppIntro.GuestSpecificText', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </p>
           )}
 
@@ -65,13 +66,14 @@ export function AppIntroBlock(props: TPropsWithClassName) {
           {isUser && (
             <>
               <p>
-                You can <Link href={myTopicsRoute}>create and edit your own topics</Link>, track
-                detailed statistics, and save your workout history.
+                {t.rich('AppIntro.LoggedInUserText1', {
+                  LinkMyTopics: (chunks) => <Link href={myTopicsRoute}>{chunks}</Link>,
+                })}
               </p>
               <p>
-                Need inspiration? Browse{' '}
-                <Link href={availableCategoriesRoute}>topic categories</Link> or use the search to
-                find materials.
+                {t.rich('AppIntro.LoggedInUserText2', {
+                  LinkCategories: (chunks) => <Link href={availableCategoriesRoute}>{chunks}</Link>,
+                })}
               </p>
             </>
           )}
@@ -79,8 +81,10 @@ export function AppIntroBlock(props: TPropsWithClassName) {
           {/* Admin */}
           {isAdmin && (
             <p className="border-l-2 border-red-500 pl-3">
-              <strong>Admin access:</strong> You can monitor{' '}
-              <Link href={myTopicsRoute}>system usage</Link> and manage user accounts.
+              {t.rich('AppIntro.AdminAccessText', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+                LinkMyTopics: (chunks) => <Link href={myTopicsRoute}>{chunks}</Link>,
+              })}
             </p>
           )}
         </>
@@ -89,28 +93,33 @@ export function AppIntroBlock(props: TPropsWithClassName) {
       {/* Features available to all */}
       <div className="space-y-1">
         <p>
-          <strong>Everyone can:</strong>
+          <strong>{t('AppIntro.EveryoneCan')}</strong>
         </p>
         <ul className="list-disc space-y-1 pl-5">
           <li>
-            View and practice with <Link href={availableTopicsRoute}>public topics</Link>
+            {t.rich('AppIntro.EveryoneCanList1', {
+              LinkAvailableTopics: (chunks) => <Link href={availableTopicsRoute}>{chunks}</Link>,
+            })}
           </li>
-          <li>Search and filter topics by category, language, or tags</li>
-          <li>Adjust workout settings and preferences</li>
-          <li>Track basic session performance</li>
+          <li>{t('AppIntro.EveryoneCanList2')}</li>
+          <li>{t('AppIntro.EveryoneCanList3')}</li>
+          <li>{t('AppIntro.EveryoneCanList4')}</li>
         </ul>
       </div>
 
       {/* PRO features */}
       <div className="space-y-1">
         <p>
-          <strong>PRO users</strong> additionally get: <Link href={pricingAliasRoute}>Upgrade</Link>
+          {t.rich('AppIntro.ProUsersAlsoGet', {
+            strong: (chunks) => <strong>{chunks}</strong>,
+            LinkPricing: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
+          })}
         </p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>AI-powered question & answer generation</li>
-          <li>Unlimited custom topics and questions</li>
-          <li>Advanced analytics and progress insights</li>
-          <li>Priority support</li>
+          <li>{t('AppIntro.ProUsersList1')}</li>
+          <li>{t('AppIntro.ProUsersList2')}</li>
+          <li>{t('AppIntro.ProUsersList3')}</li>
+          <li>{t('AppIntro.ProUsersList4')}</li>
         </ul>
       </div>
     </div>

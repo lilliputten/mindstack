@@ -5,13 +5,13 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { isDev } from '@/constants';
 
-export function InfoVisualBlock(props: TPropsWithClassName) {
+export function AppInfoVisualBlock(props: TPropsWithClassName) {
   const { className } = props;
   const t = useT();
   return (
     <div
       className={cn(
-        isDev && '__InfoVisualBlock', // DEBUG
+        isDev && '__AppInfoVisualBlock', // DEBUG
         className,
         'gap-4',
         'flex flex-col',
@@ -23,7 +23,7 @@ export function InfoVisualBlock(props: TPropsWithClassName) {
     >
       <div
         className={cn(
-          isDev && '__InfoVisualBlock_ImageContainer', // DEBUG
+          isDev && '__AppInfoVisualBlock_ImageContainer', // DEBUG
           'relative w-full overflow-hidden rounded-lg',
           'aspect-video',
         )}

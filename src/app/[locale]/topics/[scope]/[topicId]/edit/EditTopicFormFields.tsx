@@ -152,7 +152,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint className="content-truncate">{t('EditTopicFormFields.KeywordsHint')}</FormHint>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.KeywordsHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -169,7 +171,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint className="content-truncate">{t('EditTopicFormFields.IsPublicHint')}</FormHint>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.IsPublicHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}

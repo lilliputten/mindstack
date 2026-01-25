@@ -120,7 +120,10 @@ export function AvailableWorkoutsList(props: TProps) {
               </Button>
               <Link
                 href={availableTopicsRoute}
-                className={cn(buttonVariants({ variant: 'default' }), 'content-truncate flex gap-2')}
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'content-truncate flex gap-2',
+                )}
               >
                 <Icons.Topics className="size-4 shrink-0 opacity-50" />
                 <span className="truncate">

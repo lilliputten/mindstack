@@ -191,7 +191,22 @@
     "WRONG": "Sólo respuestas incorrectas"
   },
   "AppIntro": {
+    "AdminAccessText": "<strong>Acceso de administrador:</strong> Puede supervisar <LinkMyTopics>el uso del sistema</LinkMyTopics> y gestionar cuentas de usuario.",
     "BlockContent": "Ya sea que esté aprendiendo un nuevo idioma, dominando una habilidad o preparándose para un examen, estamos aquí para ayudarlo a desarrollar conocimientos duraderos a través de una práctica inteligente.",
+    "CurrentUserStatus": "Actualmente eres {status}.",
+    "EveryoneCan": "Todos pueden:",
+    "EveryoneCanList1": "Ver y practicar con <LinkAvailableTopics>temas públicos</LinkAvailableTopics>",
+    "EveryoneCanList2": "Buscar y filtrar temas por categoría, idioma o etiquetas",
+    "EveryoneCanList3": "Ajustar la configuración y preferencias de entrenamiento",
+    "EveryoneCanList4": "Hacer un seguimiento del rendimiento básico de la sesión",
+    "GuestSpecificText": "Explore temas públicos, pruebe entrenamientos y cambie configuraciones. <strong>Inicie sesión</strong> para guardar su progreso y desbloquear funciones de creación.",
+    "LoggedInUserText1": "Puede <LinkMyTopics>crear y editar sus propios temas</LinkMyTopics>, hacer un seguimiento detallado de las estadísticas y guardar su historial de entrenamiento.",
+    "LoggedInUserText2": "¿Necesita inspiración? Explore <LinkCategories>categorías de temas</LinkCategories> o utilice la búsqueda para encontrar materiales.",
+    "ProUsersAlsoGet": "<strong>Los usuarios PRO</strong> obtienen adicionalmente: <LinkPricing>Actualizar</LinkPricing>",
+    "ProUsersList1": "Generación de preguntas y respuestas impulsada por IA",
+    "ProUsersList2": "Temas y preguntas personalizados ilimitados",
+    "ProUsersList3": "Análisis e ideas de progreso avanzados",
+    "ProUsersList4": "Soporte prioritario",
     "Subtitle": "Bienvenido a MindStack, tu compañero personal de entrenamiento de la memoria."
   },
   "AvailableCategories": {
@@ -1393,6 +1408,14 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "No se pueden cargar los datos de los temas"
+  },
+  "UserStatusText": {
+    "Administrator": "un administrador",
+    "GuestUser": "un usuario invitado",
+    "LoggedUser": "un usuario conectado",
+    "PremiumUser": "un usuario PREMIUM",
+    "ProUser": "un usuario PRO",
+    "UnlimitedUser": "un usuario ILIMITADO"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Agregar Nueva Respuesta",

@@ -195,7 +195,22 @@
     "WRONG": "Only wrong answers"
   },
   "AppIntro": {
+    "AdminAccessText": "<strong>Admin access:</strong> You can monitor <LinkMyTopics>system usage</LinkMyTopics> and manage user accounts.",
     "BlockContent": "Whether you're learning a new language, mastering a skill, or preparing for an exam, we're here to help you build lasting knowledge through smart practice.",
+    "CurrentUserStatus": "You're currently {status}.",
+    "EveryoneCan": "Everyone can:",
+    "EveryoneCanList1": "View and practice with <LinkAvailableTopics>public topics</LinkAvailableTopics>",
+    "EveryoneCanList2": "Search and filter topics by category, language, or tags",
+    "EveryoneCanList3": "Adjust workout settings and preferences",
+    "EveryoneCanList4": "Track basic session performance",
+    "GuestSpecificText": "Explore public topics, try workouts, and change settings. <strong>Sign in</strong> to save your progress and unlock creation features.",
+    "LoggedInUserText1": "You can <LinkMyTopics>create and edit your own topics</LinkMyTopics>, track detailed statistics, and save your workout history.",
+    "LoggedInUserText2": "Need inspiration? Browse <LinkCategories>topic categories</LinkCategories> or use the search to find materials.",
+    "ProUsersAlsoGet": "<strong>PRO users</strong> additionally get: <LinkPricing>Upgrade</LinkPricing>",
+    "ProUsersList1": "AI-powered question & answer generation",
+    "ProUsersList2": "Unlimited custom topics and questions",
+    "ProUsersList3": "Advanced analytics and progress insights",
+    "ProUsersList4": "Priority support",
     "Subtitle": "Welcome to MindStack, your personal memory training partner."
   },
   "AvailableCategories": {
@@ -1402,6 +1417,14 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Cannot load topics data"
+  },
+  "UserStatusText": {
+    "Administrator": "an administrator",
+    "GuestUser": "a guest user",
+    "LoggedUser": "a logged user",
+    "PremiumUser": "a PREMIUM user",
+    "ProUser": "a PRO user",
+    "UnlimitedUser": "a UNLIMITED user"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Add New Answer",

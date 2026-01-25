@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { InfoScreen } from '@/components/screens/InfoScreen';
+import { AppInfoScreen } from '@/components/screens/AppInfoScreen';
 import { isDev } from '@/constants';
 
 type TInfoPageProps = TAwaitedLocaleProps;
@@ -39,9 +39,9 @@ export async function InfoPage({ params }: TInfoPageProps) {
         'size-full',
       )}
     >
-      <InfoScreen
+      <AppInfoScreen
         className={cn(
-          isDev && '__InfoPage_InfoScreen', // DEBUG
+          isDev && '__InfoPage_AppInfoScreen', // DEBUG
         )}
         isLogged={isLogged}
       />
