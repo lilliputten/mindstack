@@ -12,8 +12,8 @@ import {
   TApplyFiltersData,
   TAvailableCategoriesFiltersParams,
   TFiltersData,
-  useAvailableCategories,
-} from '@/features/categories';
+} from '@/features/categories/contexts';
+import { useAvailableCategories } from '@/features/categories/query-hooks';
 import { useGoToTheRoute } from '@/hooks';
 
 import { AvailableCategoriesListPage } from './AvailableCategoriesListPage';

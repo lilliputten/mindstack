@@ -30,10 +30,10 @@ import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { allTopicsRoute, manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { getCategoryName } from '@/features/categories';
 import { deleteCategories, updateCategory } from '@/features/categories/actions';
 import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';
 import { useCategoriesFiltersContext } from '@/features/categories/contexts/CategoriesFiltersContext';
+import { getCategoryName } from '@/features/categories/helpers';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack } from '@/hooks';
@@ -394,7 +394,7 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
           description={t('ManageCategoriesList.NoCategoriesFoundDescription')}
           buttons={
             <>
-              <Button variant="ghost" onClick={goBack} className="text-truncate flex gap-2">
+              <Button variant="ghost" onClick={goBack} className="content-truncate flex gap-2">
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
                 <span className="truncate">{t('ManageCategoriesList.GoBack')}</span>
               </Button>
@@ -402,13 +402,13 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
                 <Button
                   variant="outline"
                   onClick={expandFilters}
-                  className="text-truncate flex gap-2"
+                  className="content-truncate flex gap-2"
                 >
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
                   <span className="truncate">{t('ManageCategoriesList.ChangeFilters')}</span>
                 </Button>
               )}
-              <Button variant="theme" className="text-truncate flex gap-2">
+              <Button variant="theme" className="content-truncate flex gap-2">
                 <Link href={`${routePath}/add` as TRoutePath} className="flex gap-2">
                   <Icons.Categories className="hidden size-4 opacity-50 sm:flex" />
                   <span className="truncate">{t('ManageCategoriesList.AddCategory')}</span>
@@ -747,7 +747,7 @@ export function ManageCategoriesList(props: TManageCategoriesListProps) {
         isVisible={showDeleteConfirm}
         actionsClassName="justify-center"
       >
-        <div className="text-truncate text-center">
+        <div className="content-truncate text-center">
           {t('ManageCategoriesList.ConfirmDeleteCategoriesMessageWithPluralCount', {
             count: selectedCategories.size,
           })}

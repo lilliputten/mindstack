@@ -9,8 +9,8 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
 import { availableCategoriesRoute, manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
-import { useAvailableCategories } from '@/features/categories';
 import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';
+import { useAvailableCategories } from '@/features/categories/query-hooks';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
 
 import { AvailableCategoriesList } from './AvailableCategoriesList';

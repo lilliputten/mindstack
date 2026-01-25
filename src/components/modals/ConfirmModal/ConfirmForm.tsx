@@ -74,14 +74,14 @@ export function ConfirmForm(props: TConfirmFormProps) {
           <Button
             type="submit"
             variant={confirmButtonVariant}
-            className="text-truncate gap-2"
+            className="content-truncate gap-2"
             onClick={handleConfirm}
           >
             <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
             <span className="truncate">{buttonText}</span>
           </Button>
         )}
-        <Button variant={cancelButtonVariant} onClick={onClose} className="text-truncate gap-2">
+        <Button variant={cancelButtonVariant} onClick={onClose} className="content-truncate gap-2">
           <Icons.Close className="size-4" />
           <span className="truncate">{cancelButtonText}</span>
         </Button>

@@ -8,7 +8,7 @@ import { TAwaitedLocaleProps } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, startAliasRoute } from '@/config';
 import { CategoriesProvider } from '@/contexts/CategoriesContext';
-import { TCategoryId } from '@/features/categories';
+import { TCategoryId } from '@/features/categories/types';
 
 import { ManageCategoriesPageModalsWrapper } from './ManageCategoriesPageModalsWrapper';
 

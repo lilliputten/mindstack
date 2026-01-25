@@ -1,4 +1,4 @@
-import { DeleteCategoryModal } from '@/features/categories';
+import { DeleteCategoryModal } from '@/features/categories/components';
 
 interface DeleteCategoriesModalPageProps {
   searchParams: Promise<{ categoryId?: string; from?: string }>;

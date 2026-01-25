@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
@@ -68,6 +69,16 @@ export async function createCategories(params: TCreateCategoriesParams & TOption
         } satisfies Prisma.CategoryCreateArgs['include'],
       } satisfies Prisma.CategoryCreateArgs);
       createdCategoriesWithTranslations.push(createdCategory);
+    }
+
+    // Clear recent categories cache
+    try {
+      revalidateTag('recent-categories-all');
+    } catch (cacheError) {
+      if (!noDebug) {
+        // eslint-disable-next-line no-console
+        console.warn('[createCategories] Failed to clear cache', { cacheError });
+      }
     }
 
     return createdCategoriesWithTranslations;

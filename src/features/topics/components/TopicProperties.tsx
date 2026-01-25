@@ -6,7 +6,7 @@ import { useFormatter } from 'next-intl';
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { useT } from '@/i18n';
 import * as Icons from '@/components/shared/Icons';
-import { PlainCategoriesListByCategoryIds } from '@/features/categories';
+import { PlainCategoriesListByCategoryIds } from '@/features/categories/components'; // ATTENTION: Inter-features import!
 import { TAvailableTopic } from '@/features/topics/types';
 import { SmallUserBlock, useUserById } from '@/features/users';
 

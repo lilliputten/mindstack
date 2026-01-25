@@ -195,7 +195,52 @@
     "WRONG": "Only wrong answers"
   },
   "AppIntro": {
-    "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
+    "AIGenerationsPerMonth": "{count} AI generations per month",
+    "AIGenerationsTotal": "{count} AI generations total",
+    "AIQuestionAnswerGeneration": "AI-powered question & answer generation",
+    "AIQuestionGeneration": "AI-powered question generation",
+    "AddAnswersPerQuestion": "Add up to {limit} answers per question",
+    "AddAnswersPerQuestionPro": "Add up to {limit} answers per question",
+    "AddQuestionsPerTopic": "Add up to {limit} questions per topic",
+    "AddQuestionsPerTopicPro": "Add up to {limit} questions per topic",
+    "AdjustPersonalSettings": "Adjust your personal settings",
+    "AdjustWorkoutSettings": "Adjust workout settings and preferences",
+    "AdminAccessText": "<strong>Admin access:</strong> You can monitor <LinkMyTopics>system usage</LinkMyTopics> and manage user accounts.",
+    "AdvancedAnalytics": "Advanced analytics and progress insights",
+    "AdvancedAnalyticsInsights": "Advanced analytics and progress insights",
+    "AdvancedIntegrations": "Advanced integrations",
+    "AdvancedPrioritySupport": "Advanced priority support",
+    "BasicFeaturesTitle": "<strong>Basic users</strong> get all guest features, plus:",
+    "BasicProgressTracking": "Basic progress tracking",
+    "BasicWorkoutSessions": "Basic workout sessions",
+    "BlockContent": "Whether you're learning a new language, mastering a skill, or preparing for an exam, we're here to help you build lasting knowledge through smart practice.",
+    "BrowseCategories": "Browse <CategoriesLink>topic categories</CategoriesLink> and search by category, language, or tags",
+    "CreateTopics": "Create up to {limit} topics",
+    "CreateUnlimitedTopics": "Create unlimited topics",
+    "CurrentUserStatus": "You're currently {status}.",
+    "EveryoneCan": "Everyone can:",
+    "EverythingInProPlan": "Everything in PRO plan",
+    "ExportImportFunctionality": "Export/import functionality",
+    "FindInspiration": "Need inspiration? Browse <LinkCategories>topic categories</LinkCategories> or use the search to find materials.",
+    "FutureFeatureNote": "Not implemented in the current version.",
+    "GuestFeaturesTitle": "<strong>As a guest</strong>, you can explore and practice:",
+    "GuestSpecificText": "Explore public topics, try workouts, and change settings. <strong>Sign in</strong> to save your progress and unlock creation features.",
+    "LocalProgressTrackingNote": "Progress tracking is possible on the local device for unauthorized users.",
+    "ManageTopicsAndStats": "You can <LinkMyTopics>create and edit your own topics</LinkMyTopics>, track detailed statistics, and save your workout history.",
+    "PremiumFeaturesTitle": "<strong>Premium users</strong> get all PRO features, plus:",
+    "PremiumUsersAlsoGet": "<strong>PRO and PREMIUM users</strong> get even more: <LinkPricing>Compare plans</LinkPricing>",
+    "PrioritySupport": "Priority support",
+    "ProFeaturesTitle": "<strong>PRO users</strong> get all Basic features, plus:",
+    "ProUsersAlsoGet": "<strong>PRO users</strong> additionally get: <LinkPricing>Upgrade</LinkPricing>",
+    "ProgressTracking": " <Trainings>Track trainings progress</Trainings>",
+    "PublicCommunityAccess": "Access to public community features",
+    "Subtitle": "Welcome to MindStack, your personal memory training partner.",
+    "TrackBasicPerformance": "Track basic session performance",
+    "TryWorkoutSessions": "Try workout sessions",
+    "UnlimitedAIGenerations": "Unlimited AI generations",
+    "UnlimitedContentCreation": "Unlimited content creation",
+    "UnlimitedCustomTopics": "Unlimited custom topics and questions",
+    "ViewPublicTopics": "View and practice with <LinkAvailableTopics>public topics</LinkAvailableTopics>"
   },
   "AvailableCategories": {
     "ManageCategory": "Manage Category"
@@ -437,13 +482,6 @@
     "CurrentSubscriptionPeriodMissing": "Current subscription period is missing for user {userId}",
     "UpgradeNotAllowedMessage": "You're trying to upgrade from the \"{currentPeriod}\" to the \"{requestedPeriod}\" subscription types. It's not possible. Please contact or report to technical support."
   },
-  "CardsWithIconsSection": {
-    "AIPoweredLearningDescription": "Leverage advanced AI to enhance your learning experience. Get personalized recommendations and intelligent content generation.",
-    "ActiveRecallPracticeDescription": "Strengthen your memory through active recall. Practice retrieving information from memory rather than just re-reading, proven to be more effective for long-term retention.",
-    "Description": "MindStack combines powerful features with an intuitive interface to make memory training effective and enjoyable. Build your knowledge base and practice anywhere, anytime.",
-    "SpacedRepetitionDescription": "Built-in spaced repetition algorithms help you remember information longer by optimizing review intervals based on your performance.",
-    "Title": "Why Choose MindStack"
-  },
   "CategoryHeader": {
     "YourCategory": "Your Category"
   },
@@ -684,22 +722,6 @@
     "InvalidSubscriptionTypeValue": "Invalid subscription type value: {value}",
     "SubscriptionTypeNotSubjectToPayment": "The subscription type \"{subscriptionType}\" is not subject to payment"
   },
-  "FeaturesSection": {
-    "CreateCustomTopics": "Create Custom Topics",
-    "CreateCustomTopicsDescription": "Organize your learning materials into custom topics. Each topic can contain multiple questions and answers, allowing you to structure your knowledge base exactly how you need it. Support for multiple languages helps you learn in your preferred language.",
-    "Description": "MindStack provides everything you need to create, organize, and practice your learning materials. Build your knowledge base with topics, questions, and answers, then train your memory with interactive workouts.",
-    "InteractiveWorkouts": "Interactive Workouts",
-    "InteractiveWorkoutsDescription": "Practice your knowledge with interactive workout sessions. Answer questions, track your progress, and improve your memory retention through spaced repetition and active recall techniques.",
-    "MultiLanguageSupport": "Multi-language Support",
-    "MultiLanguageSupportDescription": "Learn and practice in multiple languages. Switch between languages seamlessly to enhance your multilingual learning experience.",
-    "ProgressTracking": "Progress Tracking",
-    "ProgressTrackingDescription": "Monitor your learning progress with detailed statistics. Track your performance across different topics, see your improvement over time, and identify areas that need more practice.",
-    "QuestionAndAnswerSystem": "Question & Answer System",
-    "QuestionAndAnswerSystemDescription": "Build comprehensive Q&A sets for each topic. Create multiple answer options and mark correct answers to test your understanding effectively.",
-    "ShareAndCollaborate": "Share & Collaborate",
-    "ShareAndCollaborateDescription": "Share your topics with others or explore topics created by the community. Learn together and build knowledge collaboratively.",
-    "Title": "Powerful Features for Memory Training"
-  },
   "GenerateAnswersForm": {
     "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
@@ -759,6 +781,121 @@
     "CategoryImagePreview": "Image Preview",
     "RemoveImage": "Remove Image",
     "SelectImage": "Select Image"
+  },
+  "Landing": {
+    "BigImageCTASection": {
+      "Description": "Whether you're learning a new language, preparing for exams, or mastering professional skills, MindStack adapts to your goals.",
+      "Title": "Build Your Knowledge Base Today",
+      "TryItFreeText": "Try It Free"
+    },
+    "CardsWithIconsSection": {
+      "Description": "Features based on what actually helps people learn",
+      "Text-1": "We help you review material at intervals that match how memory naturally works.",
+      "Text-2": "Practicing pulling information from memory makes future recall easier and more reliable.",
+      "Text-3": "The app adjusts to concentrate on topics that need your attention, while maintaining what you've already learned.",
+      "Title": "Why We Built It This Way",
+      "Title-1": "Timed Reviews",
+      "Title-2": "Retrieval Practice",
+      "Title-3": "Smart Focus"
+    },
+    "CategoriesSection": {
+      "Description": "Explore predefined categories or create your own, if you're authorized.",
+      "IntroduceCategories": "Here are some popular categories:",
+      "NoCategories": "Apparently, there no categories for your language yet. You can suggest some yours.",
+      "SuggestCategory": "Suggest Your Category",
+      "Title": "Learn Anything, From Languages to Programming",
+      "ViewAllCategoriesText": "View All Categories"
+    },
+    "FAQSection": {
+      "Description": "Everything you need to know about MindStack and how to get started with memory training.",
+      "Title": "Frequently Asked Questions",
+      "FreeToUse": {
+        "Answer": "MindStack offers a free tier that includes core features for creating topics, questions, and workouts. Additional features and higher limits may be available in premium plans. Check our pricing page for more details.",
+        "Question": "Is MindStack free to use?"
+      },
+      "HowToCreateFirstTopic": {
+        "Answer": "<p>Creating a topic in MindStack is simple:</p><ol><li>Sign up for a free account</li><li>Navigate to \"My Topics\" in the dashboard</li><li>Click \"Create Topic\" and fill in the title and language</li><li>Add questions and answers to your topic</li><li>Start practicing with workouts!</li></ol>",
+        "Question": "How do I create my first topic?"
+      },
+      "LearningProgramming": {
+        "Answer": "Absolutely! MindStack is perfect for learning programming concepts, syntax, algorithms, and more. Create topics for different programming languages, frameworks, or concepts. The spaced repetition system helps you remember code patterns and technical details effectively.",
+        "Question": "Can I use MindStack for learning programming?"
+      },
+      "LearningTechniques": {
+        "Answer": "We combine spaced repetition, active recall, and interleaved practice - all proven by cognitive science to improve long-term retention.",
+        "Question": "What learning techniques does MindStack use?"
+      },
+      "MobileApp": {
+        "Answer": "MindStack is a progressive web app that works perfectly on all devices. Save it to your home screen for an app-like experience.",
+        "Question": "Is there a mobile app?"
+      },
+      "MultipleLanguages": {
+        "Answer": "Yes! MindStack supports multiple languages. You can create topics in different languages and switch between them seamlessly. This is especially useful for language learning or when studying materials in different languages.",
+        "Question": "Does MindStack support multiple languages?"
+      },
+      "Price": {
+        "Answer": "Basic features are free forever. Premium plans unlock unlimited topics, advanced analytics, and AI features. See <LinkPricing>pricing</LinkPricing> section.",
+        "Question": "How much does it cost?"
+      },
+      "ShareTopics": {
+        "Answer": "Yes! You can share your topics with the community or keep them private. Explore topics created by other users to discover new learning materials. This collaborative approach helps everyone learn together.",
+        "Question": "Can I share my topics with others?"
+      },
+      "TrackProgress": {
+        "Answer": "MindStack provides detailed statistics and progress tracking. You can see your performance across different topics, track improvement over time, and identify areas that need more practice. The dashboard shows your workout history and success rates.",
+        "Question": "How do I track my progress?"
+      },
+      "WhatIsMindStack": {
+        "Answer": "MindStack is a memory training application that helps you create, organize, and practice learning materials. You can create custom topics with questions and answers, then use interactive workouts to train your memory through spaced repetition and active recall techniques.",
+        "Question": "What is MindStack?"
+      },
+      "WithoutAccount": {
+        "Answer": "Yes! You can explore public topics and try workouts without registration. Create an account to save your progress and build custom topics.",
+        "Question": "Can I use MindStack without creating an account?"
+      },
+      "WorkoutSystem": {
+        "Answer": "Workouts present questions from your topics in a randomized order. You answer each question, and the system tracks your performance. Based on your answers, MindStack uses spaced repetition algorithms to schedule reviews at optimal intervals, helping you remember information for longer periods.",
+        "Question": "How does the workout system work?"
+      }
+    },
+    "FeaturesSection": {
+      "Card-1-Text": "Create your own learning modules: formulate questions and answers, and sort them into categories. Use multilingual support and tags for the clearest and most personalized organization of knowledge.",
+      "Card-1-Title": "Create and Organize Your Knowledge",
+      "Card-2-Text": "Enrich your training by using popular topic collections created by other users. Or start with your private materials — the system effectively supports any path you choose.",
+      "Card-2-Title": "Practice Within a Community of Learners",
+      "Card-3-Text": "Generate questions and answers instantly using AI. Perfect for starting new topics or expanding existing ones.",
+      "Card-3-Title": "AI-Powered Content Creation",
+      "Card-4-Text": "Learn in English, Spanish, Russian, or any language. Perfect for language learners and multilingual content.",
+      "Card-4-Title": "Multi-Language Learning",
+      "Card-5-Text": "Track your improvement with detailed statistics, performance graphs, and retention metrics.",
+      "Card-5-Title": "Progress Analytics",
+      "Card-6-Text": "Share your topics with others or explore community-created materials.",
+      "Card-6-Title": "Share and Collaborate",
+      "Description": "From creating custom study materials to tracking your progress, the application combines proven learning techniques with modern technology.",
+      "Title": "Everything You Need for Effective Learning"
+    },
+    "HeroSection": {
+      "Description": "MindStack transforms how you learn and remember with AI‑powered memory training, spaced repetition, and active recall.",
+      "ExploreAvailableCategoriesText": "Explore Available Categories",
+      "StartTrainingFreeText": "Start Training Free",
+      "Title": "Train Your Brain. Build Your Knowledge."
+    },
+    "HowItWorksCards": {
+      "Description": "Get started with MindStack in just a few minutes",
+      "Text-1": "Start with existing topics or create your own with our AI assistant",
+      "Text-2": "Practice with adaptive sessions that focus on what you need most",
+      "Text-3": "Monitor progress and see your knowledge grow over time",
+      "Title": "Start Learning in 3 Simple Steps",
+      "Title-1": "Create or Choose Topics",
+      "Title-2": "Train with Smart Workouts",
+      "Title-3": "Track and Improve"
+    },
+    "PromoCTASection": {
+      "Description": "Join a growing community of learners and discover a better way to remember",
+      "ExploreCategoriesText": "Explore Categories",
+      "StartFreeTrainingText": "Start Free Training",
+      "Title": "Start Building Your Knowledge Today"
+    }
   },
   "LimitsError": {
     "ANSWERS_LIMIT_REACHED": "You have reached the maximum number of answers for your current plan",
@@ -896,6 +1033,7 @@
     "SignIn": "Sign In"
   },
   "NavLinks": {
+    "About": "About the Application",
     "AboutProject": "About Project",
     "Administration": "Administration",
     "AllTopics": "All Topics",
@@ -1308,6 +1446,14 @@
   },
   "UseAvailableTopics": {
     "CannotLoadTopicsData": "Cannot load topics data"
+  },
+  "UserStatusText": {
+    "Administrator": "an administrator",
+    "GuestUser": "a guest user",
+    "LoggedUser": "a logged user",
+    "PremiumUser": "a PREMIUM user",
+    "ProUser": "a PRO user",
+    "UnlimitedUser": "a UNLIMITED user"
   },
   "ViewAnswerCard": {
     "AddNewAnswer": "Add New Answer",

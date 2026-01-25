@@ -29,6 +29,7 @@ export function NavModeToggle(props: TNavModeToggleProps) {
             isDev && '__NavModeToggle', // DEBUG
             'flex items-center',
             'relative size-10',
+            'text-theme-foreground',
             'hover:bg-theme-400/50',
             'hover:border-white/10',
             className,

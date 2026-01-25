@@ -49,7 +49,7 @@ export function AcceptCookiesPopup() {
         <Button
           onClick={handleAcceptCookies}
           size="sm"
-          className="bg-white text-theme hover:bg-theme-600 hover:text-white"
+          className="bg-white text-theme hover:bg-theme-200"
         >
           {t('AcceptCookiesPopup.Accept')}
         </Button>

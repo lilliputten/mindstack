@@ -203,7 +203,7 @@ export async function PricingChooseSuccessRoute({
           p: (chunks) => <>{chunks}</>,
           Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
         })}
-        explanationClassName="text-content"
+        explanationClassName="content-text"
       />
     );
   }
@@ -222,7 +222,7 @@ export async function PricingChooseSuccessRoute({
           p: (chunks) => <>{chunks}</>,
           Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
         })}
-        explanationClassName="text-content"
+        explanationClassName="content-text"
       />
     );
   }
@@ -243,7 +243,7 @@ export async function PricingChooseSuccessRoute({
           received: subscriptionType,
           strong: (chunks) => <strong>{chunks}</strong>,
         })}
-        explanationClassName="text-content"
+        explanationClassName="content-text"
       />
     );
   }

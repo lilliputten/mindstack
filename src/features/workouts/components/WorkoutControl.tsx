@@ -89,14 +89,14 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     <div
       className={cn(
         isDev && '__WorkoutControl', // DEBUG
-        'text-truncate flex flex-col gap-4',
+        'content-truncate flex flex-col gap-4',
         className,
       )}
     >
       <p
         className={cn(
           isDev && '__WorkoutControl_Info', // DEBUG
-          'text-truncate text-center text-sm',
+          'content-truncate text-center text-sm',
         )}
       >
         <WorkoutStateDetails workout={workout} />
@@ -104,13 +104,13 @@ export function WorkoutControl(props: TWorkoutControlProps) {
       <div
         className={cn(
           isDev && '__WorkoutControl_Actions', // DEBUG
-          'text-truncate flex flex-wrap justify-center gap-2',
+          'content-truncate flex flex-wrap justify-center gap-2',
         )}
       >
         <Button
           onClick={handleGoWorkout}
           variant={!isOnWorkoutRoute && isWorkoutFinished ? 'outline' : 'theme'}
-          className="text-truncate flex items-center gap-2"
+          className="content-truncate flex items-center gap-2"
         >
           <Icons.Rocket className="size-4 opacity-50" />
           <span className="truncate">
@@ -126,7 +126,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
             href={workoutRoute}
             className={cn(
               buttonVariants({ variant: 'theme' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Info className="size-4 opacity-50" />
@@ -137,7 +137,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
           <Button
             onClick={finishWorkout}
             variant="theme"
-            className="text-truncate flex items-center gap-2"
+            className="content-truncate flex items-center gap-2"
           >
             <Icons.Flag className="size-4 opacity-50" />
             <span className="truncate">{t('AvailableTopics.FinishTraining')}</span>

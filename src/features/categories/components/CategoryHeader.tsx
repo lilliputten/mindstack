@@ -125,7 +125,7 @@ export function CategoryHeader(props: TCategoryHeaderProps & TCategoryHeaderOpti
       className={cn(
         isDev && '__CategoryHeader', // DEBUG
         'flex flex-col items-stretch gap-4',
-        'text-truncate',
+        'content-truncate',
         className,
       )}
     >
@@ -159,10 +159,10 @@ export function CategoryHeader(props: TCategoryHeaderProps & TCategoryHeaderOpti
               <div
                 className={cn(
                   isDev && '__CategoryHeader_Description', // DEBUG
-                  'text-truncate text-base',
+                  'content-truncate text-base',
                 )}
               >
-                <MarkdownText className="text-truncate text-content">
+                <MarkdownText className="content-truncate content-text">
                   {categoryDescription}
                 </MarkdownText>
               </div>
@@ -187,7 +187,7 @@ export function CategoryHeader(props: TCategoryHeaderProps & TCategoryHeaderOpti
             isDev && '__CategoryHeader_DetailsSection', // DEBUG
             'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
             'text-xs opacity-50',
-            'text-truncate',
+            'content-truncate',
           )}
         >
           {/*!hasMainSection && <ShowDetails category={category} showDates={showDates} />*/}

@@ -1,6 +1,6 @@
-import { generateMetadata, LandingPage } from './LandingPage';
+import { generateMetadata, generateStaticParams, LandingPage } from './LandingPage';
 
 // export const dynamic = 'force-dynamic';
 
-export { generateMetadata };
+export { generateMetadata, generateStaticParams };
 export default LandingPage;

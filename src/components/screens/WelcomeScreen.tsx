@@ -75,7 +75,8 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
           saveScrollHash={saveSignInScrollHash}
           className={cn(
             isDev && '__WelcomeScreen_SignIn_Scroll', // DEBUG
-            'flex-1 overflow-visible',
+            'relative overflow-visible',
+            // 'flex-1',
           )}
           viewportClassName={cn(
             isDev && '__WelcomeScreen_SignIn_ScrollViewport', // DEBUG
@@ -87,7 +88,6 @@ export function WelcomeScreen(props: TPropsWithClassName & { isLogged: boolean }
             className={cn(
               isDev && '__WelcomeScreen_SignIn_Content', // DEBUG
             )}
-            // TODO: It's possible to pass a `redirectUrl` parameter
           />
         </ScrollArea>
       )}

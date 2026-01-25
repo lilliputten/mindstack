@@ -51,7 +51,7 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
       {!!keywordsContent?.length && (
         <span
           id="keywords"
-          className="text-truncate flex flex-wrap items-center gap-1"
+          className="content-truncate flex flex-wrap items-center gap-1"
           title={t('Keywords')}
         >
           <Icons.Tags className="mr-1 size-4 opacity-50" /> {keywordsContent}
@@ -61,17 +61,17 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
       {!!createdBy && (
         <span
           id="user-author"
-          className="text-truncate flex items-center gap-1"
+          className="content-truncate flex items-center gap-1"
           title={t('Author')}
         >
-          <SmallUserBlock className="text-truncate" isLoading={!user} user={user} tiny />
+          <SmallUserBlock className="content-truncate" isLoading={!user} user={user} tiny />
         </span>
       )}
 
       {showDates && (
         <span
           id="createdAt"
-          className="text-truncate flex items-center gap-1 text-xs"
+          className="content-truncate flex items-center gap-1 text-xs"
           title={t('CreationDate')}
         >
           <Icons.CalendarDays className="mr-1 size-4 opacity-50" />{' '}
@@ -82,7 +82,7 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
       {showDates && updatedAt && areDifferentDates && (
         <span
           id="updatedAt"
-          className="text-truncate flex items-center gap-1 text-xs"
+          className="content-truncate flex items-center gap-1 text-xs"
           title={t('UpdatedDate')}
         >
           <Icons.Pencil className="mr-1 size-4 opacity-50" />{' '}

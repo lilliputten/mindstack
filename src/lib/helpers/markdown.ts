@@ -4,10 +4,17 @@ const defaultEllipsis = '…';
  * Strips markdown formatting from text and returns plain text
  */
 function stripMarkdown(markdown: string): string {
+  let str = markdown.trim();
+  // Process code blocks before other processing (TODO: To check for inner code blocks?)
+  const isOnlyCode = str.startsWith('```') && str.endsWith('```');
+  if (isOnlyCode) {
+    str = str.replace(/```/g, '');
+  } else {
+    // Remove only code blocks content
+    str = str.replace(/```[\s\S]*?```/g, '');
+  }
   return (
-    markdown
-      // Remove code blocks first (before other processing)
-      .replace(/```[\s\S]*?```/g, '')
+    str
       // Remove headers
       .replace(/^#{1,6}\s+/gm, '')
       // Remove bold/italic

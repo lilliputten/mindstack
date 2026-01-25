@@ -19,7 +19,7 @@ import { CurrencySigns } from '@/components/currencies';
 import { useSignInModalContext } from '@/components/modals';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingChooseRoute, userStartAliasRoute } from '@/config';
-import { useEnvConext } from '@/contexts/EnvContext';
+import { useEnvContext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
 import {
   subscriptionsRequireUser,
@@ -77,7 +77,7 @@ function usePlansData({
     // PREMIUM_TOPICS_LIMIT,
     // PREMIUM_QUESTIONS_LIMIT,
     // PREMIUM_ANSWERS_LIMIT,
-  } = useEnvConext();
+  } = useEnvContext();
 
   const formatLimit = React.useCallback(
     (limit?: number) => (limit === -1 ? t('Unlimited') : limit?.toString() || '0'),
@@ -339,7 +339,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3 text-sm">
                         <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
-                        <span className="text-truncate">{feature}</span>
+                        <span className="content-truncate">{feature}</span>
                       </li>
                     ))}
                   </ul>

@@ -40,20 +40,19 @@ export function FeatureCard({
         className,
       )}
     >
+      <div className={cn('relative w-full overflow-hidden rounded-lg', imageAspectRatio)}>
+        <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
+      </div>
       <div className={cn(contentMaxWidth)}>
-        <h3 className="mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
+        <h3 className="content-truncate mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
         <p
           className={cn(
-            descriptionSize === 'lg'
-              ? 'text-base leading-6 text-muted-foreground lg:text-lg'
-              : 'text-sm leading-5 text-muted-foreground',
+            descriptionSize === 'lg' ? 'text-base leading-6 lg:text-lg' : 'text-sm leading-5',
+            'content-truncate',
           )}
         >
           {description}
         </p>
-      </div>
-      <div className={cn('relative w-full overflow-hidden rounded-lg', imageAspectRatio)}>
-        <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
       </div>
     </Card>
   );

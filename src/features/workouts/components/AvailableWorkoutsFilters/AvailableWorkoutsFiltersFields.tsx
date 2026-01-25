@@ -139,7 +139,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     )}
                   </div>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableWorkoutsFilters.SearchTextHint')}
                 </FormHint>
                 <FormMessage />
@@ -184,7 +184,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     )}
                   </div>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t.rich('AvailableWorkoutsFilters.SearchLangHint', {
                     code: (chunks) => <code>{chunks}</code>,
                   })}
@@ -249,7 +249,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     />
                   </FormControl>
                 </div>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableWorkoutsFilters.AdminModeHint')}
                 </FormHint>
                 <FormMessage />
@@ -297,7 +297,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormHint className="text-truncate">
+                  <FormHint className="content-truncate">
                     {t('AvailableWorkoutsFilters.HasWorkoutStatsHint')}
                   </FormHint>
                   <FormMessage />
@@ -345,7 +345,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableWorkoutsFilters.HasActiveWorkoutsHint')}
                 </FormHint>
                 <FormMessage />

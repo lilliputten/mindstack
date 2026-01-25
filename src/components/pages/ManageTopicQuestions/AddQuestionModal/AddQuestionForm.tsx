@@ -136,7 +136,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
             )}
           >
             <Icons.CircleAlert className="size-6 flex-shrink-0 text-red-500" />
-            <p className="text-content text-truncate flex-1 text-sm text-red-500">
+            <p className="content-text content-truncate flex-1 text-sm text-red-500">
               <span className="font-bold">{t('AddQuestionForm.CannotCreateQuestion')}</span>
               {': '}
               <span>{getLocalizedLimitError(limitsError, t)}</span>

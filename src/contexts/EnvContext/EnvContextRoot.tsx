@@ -1,10 +1,5 @@
 import React from 'react';
 
-import { EnvContextProvider, EnvContextType } from '@/contexts/EnvContext';
-
-import '@/styles/globals.scss';
-import '@/styles/root.scss';
-
 import {
   BASIC_ANSWERS_LIMIT,
   BASIC_QUESTIONS_LIMIT,
@@ -19,6 +14,7 @@ import {
   PRO_TOPICS_LIMIT,
   PRO_USER_MONTHLY_GENERATIONS,
 } from '@/config/envServer';
+import { EnvContextProvider, EnvContextType } from '@/contexts/EnvContext';
 import { getAllCurrencyRatios } from '@/features/currencies';
 
 const TOPICS_LIMIT = {

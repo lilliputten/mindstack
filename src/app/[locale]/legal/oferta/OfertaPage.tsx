@@ -132,7 +132,7 @@ export async function OfertaPage(props: TOfertaPagePropsWithContent) {
         '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
       )}
     >
-      <MaxWidthWrapper className="text-content flex flex-col p-6">
+      <MaxWidthWrapper className="content-text flex flex-col p-6">
         <MarkdownText vars={vars}>{content || ''}</MarkdownText>
       </MaxWidthWrapper>
       <ContentFooter />

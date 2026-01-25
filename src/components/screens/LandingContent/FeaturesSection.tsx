@@ -14,16 +14,16 @@ export function FeaturesSection() {
     <section
       className={cn(
         isDev && '__FeaturesSection', // DEBUG
-        'py-12',
+        'py-8 pb-2',
         'gap-6',
       )}
     >
       <div className="mb-3 max-w-2xl">
-        <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          {t('FeaturesSection.Title')}
+        <h2 className="content-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          {t('Landing.FeaturesSection.Title')}
         </h2>
-        <p className="text-base leading-6 text-muted-foreground lg:text-lg">
-          {t('FeaturesSection.Description')}
+        <p className="content-truncate text-base leading-6 text-muted-foreground lg:text-lg">
+          {t('Landing.FeaturesSection.Description')}
         </p>
       </div>
 
@@ -31,10 +31,10 @@ export function FeaturesSection() {
       <div className="my-6 grid gap-3">
         <FeatureCard
           debugId="CreateCustomTopics"
-          title={t('FeaturesSection.CreateCustomTopics')}
-          description={t('FeaturesSection.CreateCustomTopicsDescription')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
-          imageAlt="Custom topics creation interface"
+          title={t('Landing.FeaturesSection.Card-1-Title')}
+          description={t('Landing.FeaturesSection.Card-1-Text')}
+          imageSrc="/static/landing/features/15.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-1-Title')}
           imageAspectRatio="aspect-video"
           // descriptionSize="lg"
           contentMaxWidth="max-w-2xl"
@@ -45,19 +45,19 @@ export function FeaturesSection() {
       <div className="my-6 grid gap-6 md:grid-cols-2">
         <FeatureCard
           debugId="InteractiveWorkouts"
-          title={t('FeaturesSection.InteractiveWorkouts')}
-          description={t('FeaturesSection.InteractiveWorkoutsDescription')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
-          imageAlt="Interactive workout interface"
+          title={t('Landing.FeaturesSection.Card-2-Title')}
+          description={t('Landing.FeaturesSection.Card-2-Text')}
+          imageSrc="/static/landing/features/09.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-2-Title')}
           imageAspectRatio="aspect-video"
         />
         <FeatureCard
           debugId="QuestionAnswerSystem"
-          title={t('FeaturesSection.QuestionAndAnswerSystem')}
-          description={t('FeaturesSection.QuestionAndAnswerSystemDescription')}
-          imageSrc="/static/landing/placeholder-feature-4-3.png"
-          imageAlt="Question and answer management"
-          imageAspectRatio="aspect-[4/3]"
+          title={t('Landing.FeaturesSection.Card-3-Title')}
+          description={t('Landing.FeaturesSection.Card-3-Text')}
+          imageSrc="/static/landing/features/07.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-3-Title')}
+          imageAspectRatio="aspect-video"
         />
       </div>
 
@@ -65,27 +65,27 @@ export function FeaturesSection() {
       <div className="my-6 grid gap-6 md:grid-cols-3">
         <FeatureCard
           debugId="MultiLanguageSupport"
-          title={t('FeaturesSection.MultiLanguageSupport')}
-          description={t('FeaturesSection.MultiLanguageSupportDescription')}
-          imageSrc="/static/landing/placeholder-feature.png"
-          imageAlt="Multi-language support"
-          imageAspectRatio="aspect-square"
+          title={t('Landing.FeaturesSection.Card-4-Title')}
+          description={t('Landing.FeaturesSection.Card-4-Text')}
+          imageSrc="/static/landing/features/10.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-4-Title')}
+          imageAspectRatio="aspect-video"
         />
         <FeatureCard
           debugId="ProgressTracking"
-          title={t('FeaturesSection.ProgressTracking')}
-          description={t('FeaturesSection.ProgressTrackingDescription')}
-          imageSrc="/static/landing/placeholder-feature-16-9.png"
-          imageAlt="Progress tracking dashboard"
+          title={t('Landing.FeaturesSection.Card-5-Title')}
+          description={t('Landing.FeaturesSection.Card-5-Text')}
+          imageSrc="/static/landing/features/11.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-5-Title')}
           imageAspectRatio="aspect-video"
         />
         <FeatureCard
           debugId="ShareCollaborate"
-          title={t('FeaturesSection.ShareAndCollaborate')}
-          description={t('FeaturesSection.ShareAndCollaborateDescription')}
-          imageSrc="/static/landing/placeholder-feature-4-3.png"
-          imageAlt="Sharing and collaboration features"
-          imageAspectRatio="aspect-[4/3]"
+          title={t('Landing.FeaturesSection.Card-6-Title')}
+          description={t('Landing.FeaturesSection.Card-6-Text')}
+          imageSrc="/static/landing/features/13.jpg"
+          imageAlt={t('Landing.FeaturesSection.Card-6-Title')}
+          imageAspectRatio="aspect-video"
         />
       </div>
     </section>

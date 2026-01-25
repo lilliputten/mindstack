@@ -10,24 +10,20 @@ import { Card, CardContent } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, manageCategoriesRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import {
-  CategoryHeader,
-  CategoryProperties,
-  getCategoryName,
-  TAvailableCategory,
-} from '@/features/categories';
+import { CategoryHeader, CategoryProperties } from '@/features/categories/components';
+import { getCategoryName } from '@/features/categories/helpers';
+import { TAvailableCategory } from '@/features/categories/types';
 import { useGoToTheRoute, useSessionData } from '@/hooks';
 
 // TODO: Use 'next/navigation'
 
 interface TAvailableCategoriesListItemProps {
-  index: number;
-  style?: React.CSSProperties;
+  className?: string;
   category: TAvailableCategory;
 }
 
 export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemProps) {
-  const { category, style } = props;
+  const { category, className } = props;
   const t = useT();
 
   const locale = useLocale() as TLocale;
@@ -128,7 +124,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
               isDev && '__AvailableCategoriesListItem_Content_CategoryProperties', // DEBUG
               'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
               'text-xs',
-              'text-truncate',
+              'content-truncate',
             )}
           >
             <CategoryProperties category={category} showDates />
@@ -153,10 +149,8 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
         'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',
         'hover:bg-theme/15',
+        className,
       )}
-      style={{
-        ...style,
-      }}
     >
       {cardContent}
     </Card>

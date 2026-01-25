@@ -22,7 +22,8 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { FormHint } from '@/components/blocks/FormHint';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { getCategoryName, useAllPublicCategories } from '@/features/categories';
+import { getCategoryName } from '@/features/categories/helpers';
+import { useAllPublicCategories } from '@/features/categories/hooks';
 
 interface CategorySelectProps {
   selectedCategoryIds: string[];
@@ -184,7 +185,7 @@ export function CategorySelect({
                           isDev && '__CategorySelect_Item', // DEBUG
                           'cursor-pointer',
                           'flex items-center gap-2',
-                          'text-truncate w-full',
+                          'content-truncate w-full',
                           'hover:bg-theme/10',
                           'transitiion truncate',
                           isSelected && 'bg-theme/20 hover:bg-theme/30',
@@ -254,7 +255,7 @@ export function CategorySelectField({
               placeholder={placeholder}
             />
           </FormControl>
-          {hint && <FormHint className="text-truncate">{hint}</FormHint>}
+          {hint && <FormHint className="content-truncate">{hint}</FormHint>}
           <FormMessage />
         </FormItem>
       )}

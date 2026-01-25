@@ -101,7 +101,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint className="text-truncate">
+              <FormHint className="content-truncate">
                 {t('EditTopicFormFields.TopicNameHint')}
               </FormHint>
               <FormMessage />
@@ -126,7 +126,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint className="text-truncate">
+              <FormHint className="content-truncate">
                 {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
               </FormHint>
               <FormMessage />
@@ -152,7 +152,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   {...field}
                 />
               </FormControl>
-              <FormHint className="text-truncate">{t('EditTopicFormFields.KeywordsHint')}</FormHint>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.KeywordsHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -169,7 +171,9 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
               <FormControl>
                 <Switch id={isPublicKey} checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
-              <FormHint className="text-truncate">{t('EditTopicFormFields.IsPublicHint')}</FormHint>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.IsPublicHint')}
+              </FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -210,7 +214,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   )}
                   {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
                 </Button>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('EditTopicFormFields.TopicLanguageHint')}
                 </FormHint>
                 <FormMessage />
@@ -240,7 +244,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   }}
                 />
               </FormControl>
-              <FormHint className="text-truncate">
+              <FormHint className="content-truncate">
                 {t('EditTopicFormFields.UseRandomQuestionsCountHint')}
               </FormHint>
               <FormMessage />

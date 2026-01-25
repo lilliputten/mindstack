@@ -113,7 +113,7 @@ export async function PricingChooseCancelRoute({
           p: (chunks) => <>{chunks}</>,
           Link: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
         })}
-        explanationClassName="text-content"
+        explanationClassName="content-text"
       />
     );
   }
@@ -134,7 +134,7 @@ export async function PricingChooseCancelRoute({
           received: subscriptionType,
           strong: (chunks) => <strong>{chunks}</strong>,
         })}
-        explanationClassName="text-content"
+        explanationClassName="content-text"
       />
     );
   }

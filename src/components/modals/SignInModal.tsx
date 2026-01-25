@@ -67,7 +67,7 @@ function SignInModal(props: TSignInModalProps) {
             '[&>div]:flex-col',
             '[&>div]:gap-4',
             '[&>div]:flex-1',
-            '[&_.text-content_a]:text-theme-300',
+            '[&_.content-text_a]:text-theme-300',
           )}
         >
           <SignInForm onSignInDone={handleSignInDone} redirectUrl={redirectUrl} />

@@ -32,7 +32,7 @@ POST /api/topics/{topicId}/questions
     >
       <div className="grid gap-12 md:grid-cols-[0.5fr_1fr]">
         <div className="max-w-2xl">
-          <h2 className="mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          <h2 className="mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
             Built for Developers and Learners
           </h2>
           <p className="text-base leading-6 text-muted-foreground lg:text-lg">

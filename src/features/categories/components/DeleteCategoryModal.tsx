@@ -13,10 +13,12 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageError } from '@/components/shared';
 import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev, manageCategoriesRoute } from '@/config';
-import { getCategoryName, useAvailableCategoryById } from '@/features/categories';
 import { deleteCategory } from '@/features/categories/actions/deleteCategory';
 import { TAvailableCategory, TCategory, TCategoryId } from '@/features/categories/types';
 import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+
+import { getCategoryName } from '../helpers';
+import { useAvailableCategoryById } from '../query-hooks';
 
 interface TDeleteCategoryModalProps {
   categoryId?: TCategoryId;
@@ -84,6 +86,8 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
           // Keys to invalidate...
           ['available-category', categoryId],
           ['available-categories'],
+          // Invalidate the most recent suggested category queries when in suggestion mode
+          ['most-recent-suggested-category'],
         ].map(makeQueryKeyPrefix);
         invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
       }, invalidateTimeout);
@@ -162,7 +166,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
         <div
           className={cn(
             isDev && '__DeleteCategoryModal_Content', // DEBUG
-            'text-truncate text-center',
+            'content-truncate text-center',
           )}
         >
           {isCategoryReady ? (

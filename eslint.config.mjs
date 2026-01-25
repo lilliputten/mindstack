@@ -44,10 +44,11 @@ const defaultJsRules = {
 };
 
 const showProgress = !!process.env.SHOW_ESLINT_PROGRESS;
+const progressAdornment = progress.configs.recommended;
 
 export default [
   // @see https://github.com/sibiraj-s/eslint-plugin-file-progress
-  showProgress ? progress.configs.recommended : undefined,
+  showProgress && progressAdornment,
 
   {
     ignores: [
@@ -248,4 +249,4 @@ export default [
       'prettier/prettier': 'warn',
     },
   },
-];
+].filter(Boolean);

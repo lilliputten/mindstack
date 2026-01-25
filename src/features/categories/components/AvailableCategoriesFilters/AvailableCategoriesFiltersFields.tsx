@@ -112,7 +112,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   )}
                 </div>
               </FormControl>
-              <FormHint className="text-truncate">
+              <FormHint className="content-truncate">
                 {t('AvailableCategoriesFiltersFields.SearchForTextHint')}
               </FormHint>
               <FormMessage />
@@ -156,7 +156,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   )}
                 </div>
               </FormControl>
-              <FormHint className="MarkdownText text-truncate">
+              <FormHint className="MarkdownText content-truncate">
                 {t.rich('AvailableCategoriesFiltersFields.SearchForLanguageHint', {
                   code: (chunks) => <code>{chunks}</code>,
                 })}
@@ -200,7 +200,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableCategoriesFiltersFields.SelectStatusHint')}
                 </FormHint>
                 <FormMessage />
@@ -237,7 +237,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint className="text-truncate">
+              <FormHint className="content-truncate">
                 {t('AvailableCategoriesFiltersFields.ChooseSortOrderHint')}
               </FormHint>
               <FormMessage />
@@ -284,7 +284,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableCategoriesFiltersFields.DisplayCategoriesWithImageHint')}
                 </FormHint>
                 <FormMessage />
@@ -330,7 +330,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormHint className="text-truncate">
+                <FormHint className="content-truncate">
                   {t('AvailableCategoriesFiltersFields.DisplayCategoriesWithTopicsHint')}
                 </FormHint>
                 <FormMessage />

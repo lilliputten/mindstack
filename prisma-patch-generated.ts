@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /**
  * WARNING: This is a temporary solution to fix incompatibilities between zod, zod-prisma-types and prisma.
- * This script patches the generated file to replace z.cuid() with z.string().cuid().
+ * This script patches the generated file to replace z.cuid() with a proper string validation.
  * This should be removed once the underlying issue is resolved in the dependencies.
  */
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -20,6 +20,10 @@ try {
 
     // Replace all occurrences of z.cuid() with z.string().cuid()
     const updatedContent = content.replace(/z\.cuid\(\)/g, 'z.string().cuid()');
+
+    // // Replace all occurrences of z.cuid() with a proper string validation that mimics cuid format
+    // // CUIDs start with a letter and contain alphanumeric characters, typically have a specific length
+    // const updatedContent = content.replace(/z\.cuid\(\)/g, 'z.string().regex(/^[a-z][a-z0-9]+$/, "Expected a cuid-like string")');
 
     // Write the updated content back to the file
     writeFileSync(generatedFilePath, updatedContent, 'utf8');

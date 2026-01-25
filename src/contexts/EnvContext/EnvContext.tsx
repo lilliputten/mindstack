@@ -31,7 +31,7 @@ export function EnvContextProvider(props: { children: React.ReactNode } & EnvCon
   return <EnvContext.Provider value={restProps}>{children}</EnvContext.Provider>;
 }
 
-export function useEnvConext() {
+export function useEnvContext() {
   const context = React.useContext(EnvContext);
   if (!context) {
     throw new Error('useEnvContext must be used within an EnvContextProvider');

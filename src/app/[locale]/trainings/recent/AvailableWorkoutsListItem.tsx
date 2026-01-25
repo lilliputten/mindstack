@@ -126,9 +126,9 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     >
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between gap-4 max-sm:flex-col-reverse">
-          <div className="text-truncate flex flex-1 flex-col gap-2">
-            <CardTitle className="text-truncate text-base sm:text-lg">
-              <Link href={topicRoute} className="text-truncate hover:underline">
+          <div className="content-truncate flex flex-1 flex-col gap-2">
+            <CardTitle className="content-truncate text-base sm:text-lg">
+              <Link href={topicRoute} className="content-truncate hover:underline">
                 {isTopicBusy ? (
                   <Skeleton className="h-7 w-1/2" />
                 ) : (
@@ -137,7 +137,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               </Link>
             </CardTitle>
           </div>
-          <div className="text-truncate flex items-center gap-2 text-xs">
+          <div className="content-truncate flex items-center gap-2 text-xs">
             {isActive && (
               <span className="animate-pulse truncate rounded-full border border-green-500/20 px-2 py-1 text-green-500">
                 {t('AvailableWorkouts.Active')}
@@ -176,16 +176,16 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               'flex flex-wrap gap-2 gap-y-1 text-xs',
             )}
           >
-            <div className="text-truncate flex flex-wrap items-center gap-1">
+            <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('QuestionsCount')}:</span>
               <span className="truncate font-medium">{questionsCount}</span>
             </div>
-            <div className="text-truncate flex flex-wrap items-center gap-1">
+            <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('AverageSuccessRate')}:</span>
               <span className="truncate font-medium">{averageRatio}%</span>
             </div>
             {!!totalTimeSeconds && (
-              <div className="text-truncate flex flex-wrap items-center gap-1">
+              <div className="content-truncate flex flex-wrap items-center gap-1">
                 <span className="truncate opacity-50">{t('TotalDuration')}:</span>
                 <span className="truncate font-medium">
                   <ShowTimeSince date={totalTimeSeconds * 1000} timeout={0} />
@@ -193,7 +193,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               </div>
             )}
             {(finishedAt || startedAt) && (
-              <div className="text-truncate flex flex-wrap items-center gap-1">
+              <div className="content-truncate flex flex-wrap items-center gap-1">
                 <span className="truncate opacity-50">{t('LastActivity')}:</span>
                 <span className="truncate font-medium">
                   <ShowTimeSince date={finishedAt || startedAt || undefined} /> ago
@@ -215,7 +215,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               href={startRoute}
               className={cn(
                 buttonVariants({ variant: 'theme' }),
-                'text-truncate flex items-center gap-2',
+                'content-truncate flex items-center gap-2',
               )}
             >
               <Icons.Rocket className="size-4 shrink-0" />
@@ -228,7 +228,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               href={workoutGoRoute}
               className={cn(
                 buttonVariants({ variant: 'theme' }),
-                'text-truncate flex items-center gap-2',
+                'content-truncate flex items-center gap-2',
               )}
             >
               <Icons.Play className="size-4 shrink-0" />
@@ -241,7 +241,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             href={workoutRoute}
             className={cn(
               buttonVariants({ variant: 'outline' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Eye className="shrink-0 size-4" />
@@ -253,7 +253,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             href={topicRoute}
             className={cn(
               buttonVariants({ variant: 'outline' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Topics className="size-4 shrink-0" />
@@ -265,7 +265,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               href={manageTopicRoute}
               className={cn(
                 buttonVariants({ variant: 'outline' }),
-                'text-truncate flex items-center gap-2',
+                'content-truncate flex items-center gap-2',
               )}
             >
               <Icons.Edit className="size-4 shrink-0" />

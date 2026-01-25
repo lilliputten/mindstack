@@ -5,5 +5,6 @@ export * from './deleteCategory';
 export * from './getAvailableCategories';
 export * from './getCategoryById';
 export * from './getMostRecentSuggestedCategory';
+export * from './getRecentCategories';
 export * from './updateCategories';
 export * from './updateCategory';

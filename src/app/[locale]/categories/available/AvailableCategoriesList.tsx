@@ -14,7 +14,8 @@ import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
 import { manageCategoriesRoute, rootAliasRoute, startAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { useAvailableCategories, useCategoriesFiltersContext } from '@/features/categories';
+import { useCategoriesFiltersContext } from '@/features/categories/contexts';
+import { useAvailableCategories } from '@/features/categories/query-hooks';
 import { useGoBack } from '@/hooks';
 
 import { AvailableCategoriesListItem } from './AvailableCategoriesListItem';
@@ -143,8 +144,8 @@ export function AvailableCategoriesList(props: TProps) {
       )}
       // thumbClassName="bg-theme-600/40"
     >
-      {allCategories.map((category, index) => (
-        <AvailableCategoriesListItem key={category.id} index={index} category={category} />
+      {allCategories.map((category) => (
+        <AvailableCategoriesListItem key={category.id} category={category} />
       ))}
       {user?.id ? (
         <div className="flex items-center justify-center">
@@ -164,7 +165,7 @@ export function AvailableCategoriesList(props: TProps) {
           )}
         >
           <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-          <p className="text-content flex-1 text-sm">
+          <p className="content-text flex-1 text-sm">
             {t.rich('AvailableCategoriesList.UnauthorizedUserSuggestionMessage', {
               SigninLink: (chunks) => (
                 <Link

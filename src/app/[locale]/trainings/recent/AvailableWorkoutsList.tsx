@@ -114,13 +114,16 @@ export function AvailableWorkoutsList(props: TProps) {
           description={t('AvailableWorkouts.NoWorkoutsExplanation')}
           buttons={
             <>
-              <Button variant="ghost" onClick={goBack} className="text-truncate flex gap-2">
+              <Button variant="ghost" onClick={goBack} className="content-truncate flex gap-2">
                 <Icons.ArrowLeft className="size-4 shrink-0 opacity-50" />
                 <span className="truncate">{t('GoBack')}</span>
               </Button>
               <Link
                 href={availableTopicsRoute}
-                className={cn(buttonVariants({ variant: 'default' }), 'text-truncate flex gap-2')}
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'content-truncate flex gap-2',
+                )}
               >
                 <Icons.Topics className="size-4 shrink-0 opacity-50" />
                 <span className="truncate">
@@ -131,7 +134,7 @@ export function AvailableWorkoutsList(props: TProps) {
                 <Button
                   variant="outline"
                   onClick={expandFilters}
-                  className="text-truncate flex gap-2"
+                  className="content-truncate flex gap-2"
                 >
                   <Icons.Settings2 className="size-4 shrink-0 opacity-50" />
                   <span className="truncate">{t('ChangeFilters')}</span>
@@ -187,7 +190,7 @@ export function AvailableWorkoutsList(props: TProps) {
             href={availableTopicsRoute}
             className={cn(
               buttonVariants({ variant: 'outline' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Plus className="size-4 shrink-0" />
@@ -204,7 +207,7 @@ export function AvailableWorkoutsList(props: TProps) {
           )}
         >
           <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-          <p className="text-content flex-1 text-sm">
+          <p className="content-text flex-1 text-sm">
             {t.rich('AvailableWorkouts.UnauthorizedUserSuggestionMessage', {
               SigninLink: (chunks) => (
                 <Button

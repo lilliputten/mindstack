@@ -76,15 +76,15 @@ export function PageEmpty(props: TPageEmptyProps) {
         )}
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
-      <EmptyPlaceholder.Title className="text-truncate">{title}</EmptyPlaceholder.Title>
-      <EmptyPlaceholder.Description className="text-truncate">
+      <EmptyPlaceholder.Title className="content-truncate">{title}</EmptyPlaceholder.Title>
+      <EmptyPlaceholder.Description className="content-truncate">
         {description}
       </EmptyPlaceholder.Description>
       {explanation && (
         <div
           className={cn(
             isDev && '__PageError_Explanation', // DEBUG
-            'text-content text-truncate text-center text-sm font-normal leading-6',
+            'content-text content-truncate text-center text-sm font-normal leading-6',
             explanationClassName,
           )}
         >
@@ -95,12 +95,12 @@ export function PageEmpty(props: TPageEmptyProps) {
         <div
           className={cn(
             isDev && '__PageEmpty_Buttons', // DEBUG
-            'text-truncate flex w-full flex-wrap justify-center gap-4',
+            'content-truncate flex w-full flex-wrap justify-center gap-4',
             buttonsClassName,
           )}
         >
           {hasCustomButton && (
-            <Button onClick={onButtonClick} className="text-truncate flex gap-2">
+            <Button onClick={onButtonClick} className="content-truncate flex gap-2">
               <Icons.Add className="size-4 opacity-50" />
               <span className="truncate">{buttonTitle}</span>
             </Button>

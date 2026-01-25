@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 
 import { manageCategoriesRoute } from '@/config';
-import { AddCategoryModal } from '@/features/categories';
+import { AddCategoryModal } from '@/features/categories/components';
 
 export default function AddCategoryModalDefault() {
   const pathname = usePathname();

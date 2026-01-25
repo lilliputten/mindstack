@@ -1,17 +1,33 @@
+import { TTranslator } from '@/i18n';
 import { TUser } from '@/features/users/types';
 
-export function getUserStatusText(user?: TUser) {
-  const isLogged = !!user;
-  const isAdmin = user?.role === 'ADMIN';
-  const isPro = user?.grade === 'PRO';
-  if (isAdmin) {
-    return 'an administrator';
+export function getUserStatusText(user?: TUser, t?: TTranslator) {
+  /* // Grades
+   * GUEST
+   * BASIC
+   * PRO
+   * PREMIUM
+   * UNLIMITED
+   */
+
+  if (!user || user.grade === 'GUEST') {
+    return t?.('UserStatusText.GuestUser');
   }
-  if (isPro) {
-    return 'a PRO user';
+
+  if (user.role === 'ADMIN') {
+    return t?.('UserStatusText.Administrator');
   }
-  if (isLogged) {
-    return 'a logged user';
+
+  if (user.grade === 'PRO') {
+    return t?.('UserStatusText.ProUser');
   }
-  return 'a guest user';
+  if (user.grade === 'PREMIUM') {
+    return t?.('UserStatusText.PremiumUser');
+  }
+  if (user.grade === 'UNLIMITED') {
+    return t?.('UserStatusText.UnlimitedUser');
+  }
+
+  // BASIC
+  return t?.('UserStatusText.LoggedUser');
 }
