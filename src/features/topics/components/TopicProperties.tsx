@@ -53,9 +53,13 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     </span>
   ));
   const langContent = [
-    langName && <span key="langName">{langName}</span>,
+    langName && (
+      <span key="langName" className="truncate">
+        {langName}
+      </span>
+    ),
     langCode && (
-      <span key="langCode" className="opacity-50">
+      <span key="langCode" className="truncate opacity-50">
         ({langCode})
       </span>
     ),
@@ -73,7 +77,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
       {!!(langName || langCode) && (
         <span id="language" className="flex items-center gap-1 truncate" title={t('TopicLanguage')}>
           <Icons.Languages className="mr-1 size-4 shrink-0 opacity-50" />{' '}
-          <span className="truncate">{langContent}</span>
+          <span className="flex gap-1 truncate">{langContent}</span>
         </span>
       )}
       {!!keywordsContent?.length && (
