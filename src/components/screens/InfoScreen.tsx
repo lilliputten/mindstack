@@ -44,7 +44,7 @@ export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
           'content-text',
         )}
       >
-        <h1 className="text-center">{t('NavLinks.Information')}</h1>
+        <h1 className="text-center">{t('NavLinks.About')}</h1>
         <AppIntroBlock />
       </div>
     </ScrollArea>

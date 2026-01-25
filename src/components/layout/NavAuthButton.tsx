@@ -57,7 +57,10 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
             className={cn(
               isDev && '__NavAuthButton_SignInButton', // DEBUG
               'flex gap-2 truncate px-2',
-              onSidebar && 'text-white hover:bg-white hover:text-theme-700',
+              'text-theme-foreground',
+              'hover:bg-theme-400/50',
+              'hover:border-white/10',
+              onSidebar && 'hover:bg-white hover:text-theme-700',
             )}
             variant="ghostOnTheme" // {onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
             size="sm"

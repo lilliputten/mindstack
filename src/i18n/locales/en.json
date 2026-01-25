@@ -195,7 +195,8 @@
     "WRONG": "Only wrong answers"
   },
   "AppIntro": {
-    "BlockContent": "<p>This is a small memory training application. Take a look at a brief <AboutLink>application reference</AboutLink>.</p>"
+    "BlockContent": "Whether you're learning a new language, mastering a skill, or preparing for an exam, we're here to help you build lasting knowledge through smart practice.",
+    "Subtitle": "Welcome to MindStack, your personal memory training partner."
   },
   "AvailableCategories": {
     "ManageCategory": "Manage Category"
@@ -988,6 +989,7 @@
     "SignIn": "Sign In"
   },
   "NavLinks": {
+    "About": "About the Application",
     "AboutProject": "About Project",
     "Administration": "Administration",
     "AllTopics": "All Topics",

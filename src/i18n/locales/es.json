@@ -191,7 +191,8 @@
     "WRONG": "Sólo respuestas incorrectas"
   },
   "AppIntro": {
-    "BlockContent": "<p>Esta es una pequeña aplicación de entrenamiento de memoria. Echa un vistazo a una breve <AboutLink>referencia de la aplicación</AboutLink>.</p>"
+    "BlockContent": "Ya sea que esté aprendiendo un nuevo idioma, dominando una habilidad o preparándose para un examen, estamos aquí para ayudarlo a desarrollar conocimientos duraderos a través de una práctica inteligente.",
+    "Subtitle": "Bienvenido a MindStack, tu compañero personal de entrenamiento de la memoria."
   },
   "AvailableCategories": {
     "ManageCategory": "Administrar categoría"
@@ -979,6 +980,7 @@
     "SignIn": "Iniciar Sesión"
   },
   "NavLinks": {
+    "About": "Acerca de la aplicación",
     "AboutProject": "Acerca del Proyecto",
     "Administration": "Administración",
     "AllTopics": "Todos los Temas",

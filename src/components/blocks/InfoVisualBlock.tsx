@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-// import svgArt from '@/assets/arts/girl-with-a-book.svg';
 import { isDev } from '@/constants';
 
 export function InfoVisualBlock(props: TPropsWithClassName) {
@@ -14,7 +13,6 @@ export function InfoVisualBlock(props: TPropsWithClassName) {
       className={cn(
         isDev && '__InfoVisualBlock', // DEBUG
         className,
-        // 'm-4',
         'gap-4',
         'flex flex-col',
         'items-stretch',
@@ -38,46 +36,6 @@ export function InfoVisualBlock(props: TPropsWithClassName) {
           priority
         />
       </div>
-      {/*
-      <Image
-        // priority
-        src={svgArt}
-        alt="Data illustration"
-        className={cn(
-          isDev && '__InfoVisualBlock_Art', // DEBUG
-          'mx-auto mt-4',
-          'sm:max-w-lg',
-        )}
-      />
-      <div
-        className={cn(
-          isDev && '__InfoVisualBlock:Art', // DEBUG
-          className,
-          'flex flex-col',
-          'items-center',
-          'justify-center',
-          'bg-contain',
-          'bg-center',
-          'bg-no-repeat',
-          // 'min-h-40',
-        )}
-        style={{
-          minHeight: '30vh',
-          backgroundImage: 'url(/static/arts/data-blue.svg)',
-        }}
-      />
-      <div
-        className={cn(
-          isDev && '__InfoVisualBlock:Content', // DEBUG
-          className,
-          'flex flex-col',
-          'items-center',
-          'justify-center',
-        )}
-      >
-        Info Info Block
-      </div>
-      */}
     </div>
   );
 }
