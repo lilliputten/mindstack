@@ -28,6 +28,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
     url = PUBLIC_URL,
   } = params;
   const t = await getT({ locale });
+  const imageUrl = url + image;
   return {
     title: title || t('Pages.RootTitle') || siteTitle,
     description: description || t('Pages.RootDescription') || siteDescription,
@@ -45,14 +46,14 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
       title,
       description,
       siteName: title,
-      images: [image],
+      images: [imageUrl],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [image],
-      creator: '@lilliputten',
+      images: [imageUrl],
+      // creator: '@lilliputten',
     },
     icons,
     metadataBase: new URL(url), // NOTE: It may break vercel build if there is a malformed url

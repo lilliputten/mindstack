@@ -106,10 +106,30 @@ export const isVercelProduction =
 export const isDev = envServer.NODE_ENV === 'development';
 
 // Derived variables
-export const PUBLIC_URL = isVercel
-  ? 'https://' +
-    (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
-  : NEXT_PUBLIC_URL;
+
+/** Public url. One of vercel ones for production */
+export const PUBLIC_URL = isDev
+  ? 'http://localhost:3000'
+  : isVercelProduction
+    ? NEXT_PUBLIC_URL /* 'https://' +envServer.VERCEL_PROJECT_PRODUCTION_URL */
+    : 'https://' + envServer.VERCEL_URL;
+/* // DEBUG
+ * console.log('[envServer]', {
+ *   PUBLIC_URL,
+ *   VERCEL_PROJECT_PRODUCTION_URL: envServer.VERCEL_PROJECT_PRODUCTION_URL,
+ *   VERCEL_URL: envServer.VERCEL_URL,
+ *   NEXT_PUBLIC_URL,
+ *   isVercel,
+ *   isVercelProduction,
+ *   isDev,
+ * });
+ */
+/* // Old approach
+ * export const PUBLIC_URL = isVercel
+ *   ? 'https://' +
+ *     (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
+ *   : NEXT_PUBLIC_URL;
+ */
 
 export const WEBHOOK_HOST = envServer.WEBHOOK_HOST || PUBLIC_URL;
 
