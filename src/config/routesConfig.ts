@@ -86,6 +86,15 @@ export const rewritedRoutes = staticRewrites.map(({ destination }) => destinatio
 export const redirectedRoutes = staticRedirects.map(({ destination }) => destination);
 export const aliasedRoutes = rewritedRoutes.concat(redirectedRoutes);
 
+/** Don't include these links into the sitemap */
+export const excludeFromSitemap = [
+  // Exclude links
+  aboutAliasRoute,
+  publicAboutRoute,
+  docsAliasRoute,
+  publicDocsRoute,
+];
+
 /** All used routes */
 const allRoutes = [
   // 0. Root route

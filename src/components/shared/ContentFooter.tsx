@@ -12,7 +12,6 @@ import {
   contactsAliasRoute,
   cookiesAliasRoute,
   currentYear,
-  docsAliasRoute,
   isDev,
   pricingAliasRoute,
   privacyAliasRoute,
@@ -85,12 +84,12 @@ export function ContentFooter() {
             })}
           </p>
         </div>
+        {/*
         <div>
           <div className="flex flex-col items-start gap-4 pt-3 text-sm">
             <LocalLink href={docsAliasRoute} className="hover:underline">
               {t('ContentFooter.DocumentationLink')}
             </LocalLink>
-            {/*
             <PublicLink
               href="https://github.com/lilliputten/mindstack"
               target="_blank"
@@ -105,9 +104,9 @@ export function ContentFooter() {
             <LocalLink href={supportLink} className="hover:underline">
               Support
             </LocalLink>
-            */}
           </div>
         </div>
+        */}
         <div>
           <div className="flex flex-col items-start gap-4 pt-3 text-sm">
             <PublicLink

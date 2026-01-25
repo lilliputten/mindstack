@@ -39,12 +39,10 @@ export function AppInfoScreen(props: TPropsWithClassName & { isLogged: boolean }
           isDev && '__AppInfoScreen_IntroText', // DEBUG
           className,
           'flex flex-col gap-4',
-          'max-w-xl',
-          'w-full',
-          'content-text',
+          'w-full max-w-xl',
         )}
       >
-        <h2 className="pt-6 text-center text-2xl">{t('NavLinks.About')}</h2>
+        <h2 className="pt-6 text-center text-3xl text-theme">{t('NavLinks.About')}</h2>
         <AppIntroBlock />
       </div>
     </ScrollArea>

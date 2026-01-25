@@ -47,6 +47,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
     ul: (chunks) => <ul className="items">{chunks}</ul>,
     li: (chunks) => <li>{chunks}</li>,
     strong: (chunks) => <strong>{chunks}</strong>,
+    LinkAvailableTopics: (chunks) => <Link href={availableTopicsRoute}>{chunks}</Link>,
     LinkPricing: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
     CategoriesLink: (chunks) => <Link href={availableCategoriesRoute}>{chunks}</Link>,
     LinkMyTopics: (chunks) => <Link href={myTopicsRoute}>{chunks}</Link>,
@@ -62,7 +63,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         className,
       )}
     >
-      <h3 className="py-2 text-lg">{t('AppIntro.Subtitle')}</h3>
+      <p className="py-2 text-lg font-semibold text-theme">{t('AppIntro.Subtitle')}</p>
 
       <p>
         {t.rich('AppIntro.BlockContent', {

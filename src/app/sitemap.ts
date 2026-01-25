@@ -3,14 +3,16 @@ import { MetadataRoute } from 'next';
 import { publicAppUrl } from '@/config/env';
 import { getPathname } from '@/i18n/routing';
 import { strictLocalesList, TLocale } from '@/i18n/types';
-import { aliasedRoutes, publicRoutes } from '@/config';
+import { aliasedRoutes, excludeFromSitemap, publicRoutes } from '@/config';
 
 type Href = Parameters<typeof getPathname>[0]['href'];
+
+const allExcludes = excludeFromSitemap.concat(aliasedRoutes);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Retrieve all routes excluding
   return publicRoutes
-    .filter((route) => !aliasedRoutes.includes(route))
+    .filter((route) => !allExcludes.includes(route))
     .map((path) => getRouteEntry(path as Href));
 }
 

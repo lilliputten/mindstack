@@ -112,7 +112,8 @@ const ScrollArea = React.forwardRef<
           className={cn(
             isDev && '__ScrollArea_Viewport_DISABLED', // DEBUG
             viewportClassName,
-            'size-full rounded-[inherit]',
+            'size-full', // ???
+            'rounded-[inherit]',
           )}
         >
           <div
@@ -143,7 +144,8 @@ const ScrollArea = React.forwardRef<
         className={cn(
           isDev && '__ScrollArea_Viewport', // DEBUG
           viewportClassName,
-          'size-full rounded-[inherit]',
+          'size-full', // ???
+          'rounded-[inherit]',
           '[&>div]:!flex', // XXX ??? Try to make inner page scrollable?
         )}
       >

@@ -13,7 +13,7 @@ export function SignInBlock(props: { redirectUrl?: string } & TPropsWithClassNam
     <div
       className={cn(
         isDev && '__SignInBlock', // DEBUG
-        'm-auto w-full max-w-md',
+        'mx-auto w-full max-w-md',
         'flex flex-1 flex-col items-center justify-center',
         className,
       )}
