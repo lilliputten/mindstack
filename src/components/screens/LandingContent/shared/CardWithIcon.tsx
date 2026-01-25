@@ -34,9 +34,9 @@ export function CardWithIcon({
       <div className="flex-shrink-0">
         <Icon className="size-11 text-theme" />
       </div>
-      <div className="text-truncate flex flex-col gap-2">
-        <p className="text-truncate text-lg font-semibold">{title}</p>
-        <p className="text-truncate text-base leading-6">{description}</p>
+      <div className="content-truncate flex flex-col gap-2">
+        <p className="content-truncate text-lg font-semibold">{title}</p>
+        <p className="content-truncate text-base leading-6">{description}</p>
       </div>
     </Card>
   );

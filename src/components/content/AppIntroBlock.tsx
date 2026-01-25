@@ -23,7 +23,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
       className={cn(
         isDev && '__AppIntroBlock', // DEBUG
         'flex flex-col gap-2',
-        'text-content',
+        'content-text',
         className,
       )}
     >

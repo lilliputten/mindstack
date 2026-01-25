@@ -26,7 +26,7 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
       <AccordionTrigger
         className={cn(
           isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
-          'text-truncate px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base',
+          'content-truncate px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base',
         )}
         wrapperClassName={cn(
           isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
@@ -34,12 +34,12 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
         )}
       >
         <Icons.MessageCircleQuestion className="size-8 text-theme opacity-50" />
-        <span className="text-truncate flex-1">{question}</span>
+        <span className="content-truncate flex-1">{question}</span>
       </AccordionTrigger>
       <AccordionContent
         className={cn(
           isDev && '__FAQAccordionItem_AccordionContent', // DEBUG
-          'text-truncate px-6 pb-6 text-base',
+          'content-truncate px-6 pb-6 text-base',
         )}
       >
         {answer}

@@ -339,7 +339,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3 text-sm">
                         <Icons.Check className="mt-0.5 size-4 shrink-0 text-theme" />
-                        <span className="text-truncate">{feature}</span>
+                        <span className="content-truncate">{feature}</span>
                       </li>
                     ))}
                   </ul>

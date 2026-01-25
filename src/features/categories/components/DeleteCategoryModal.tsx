@@ -166,7 +166,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
         <div
           className={cn(
             isDev && '__DeleteCategoryModal_Content', // DEBUG
-            'text-truncate text-center',
+            'content-truncate text-center',
           )}
         >
           {isCategoryReady ? (

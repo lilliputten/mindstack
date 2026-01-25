@@ -184,7 +184,7 @@ export function PricingChoosePage({
             isDev && '__PricingChoosePage_Title', // DEBUG
             'text-2xl md:text-4xl lg:text-5xl',
             'text-balance leading-tight tracking-tight',
-            'text-gradient-brand text-truncate font-semibold',
+            'text-gradient-brand content-truncate font-semibold',
             'mb-6 mt-12 p-4',
           )}
         >
@@ -197,7 +197,7 @@ export function PricingChoosePage({
         <p
           className={cn(
             isDev && '__PricingChoosePage_subscriptionMessage', // DEBUG
-            'text-content text-truncate',
+            'content-text content-truncate',
           )}
         >
           {subscriptionMessage}
@@ -217,14 +217,14 @@ export function PricingChoosePage({
           <div
             className={cn(
               isDev && '__PricingChoosePage_PriceInfo', // DEBUG
-              'text-truncate mt-4 flex flex-col items-center',
+              'content-truncate mt-4 flex flex-col items-center',
             )}
           >
-            <div className="text-truncate flex flex-wrap items-baseline gap-2">
+            <div className="content-truncate flex flex-wrap items-baseline gap-2">
               <span
                 className={cn(
                   isDev && '__PricingChoosePage_paymentMessage', // DEBUG
-                  'text-content text-truncate h-9',
+                  'content-text content-truncate h-9',
                 )}
               >
                 {paymentMessage}:
@@ -258,7 +258,7 @@ export function PricingChoosePage({
               )}
             </div>
             {isUpgrade && (
-              <div className="text-truncate mt-2 w-full text-sm text-muted-foreground">
+              <div className="content-truncate mt-2 w-full text-sm text-muted-foreground">
                 {t('PricingChoosePage.UpgradePriceInfo')}
               </div>
             )}
@@ -310,10 +310,10 @@ export function PricingChoosePage({
             icon={Icons.Telegram}
             description={
               <>
-                <p className="text-truncate">
+                <p className="content-truncate">
                   {t('PricingChoosePage.TelegramStarsOptionAvailable')}
                 </p>
-                <p className="text-truncate text-sm opacity-50">
+                <p className="content-truncate text-sm opacity-50">
                   {t('PricingChoosePage.TelegramStarsCompletePayment')}
                 </p>
               </>
@@ -331,7 +331,7 @@ export function PricingChoosePage({
       )}
 
       <div className="mt-12 flex flex-col items-center text-center">
-        <p className="text-content text-truncate w-full">
+        <p className="content-text content-truncate w-full">
           {t.rich('PricingChoosePage.OtherOptionsText', {
             PricingLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
             ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,

@@ -77,7 +77,7 @@ export function TelegramSignIn(props: TProps) {
       <p className="mt-2 text-center text-sm font-medium">{t('TelegramSignIn.OrUseTelegram')}</p>
       <TelegramSignInButton telegramUrl={telegramUrl} />
       <TelegramQRCode telegramUrl={telegramUrl} />
-      <p className="text-content text-center text-sm">
+      <p className="content-text text-center text-sm">
         {t.rich('TelegramSignIn.QRDescription', {
           BotUsername: () => <code>@{BOT_USERNAME}</code>,
           BotLink: (chunks) => (

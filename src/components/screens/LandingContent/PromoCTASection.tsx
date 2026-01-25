@@ -46,7 +46,7 @@ export function PromoCTASection() {
             href={startAliasRoute}
             className={cn(
               buttonVariants({ variant: 'theme', size: 'lg', rounded: 'lg' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Rocket className="size-4 shrink-0 opacity-50" />
@@ -57,7 +57,7 @@ export function PromoCTASection() {
             href={aboutAliasRoute}
             className={cn(
               buttonVariants({ variant: 'theme', size: 'lg', rounded: 'lg' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Categories className="size-4 shrink-0 opacity-50" />

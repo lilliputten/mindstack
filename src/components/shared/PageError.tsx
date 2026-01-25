@@ -114,10 +114,10 @@ export function PageError(props: TErrorProps) {
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
       {titleText && (
-        <ErrorPlaceHolder.Title className="text-truncate">{titleText}</ErrorPlaceHolder.Title>
+        <ErrorPlaceHolder.Title className="content-truncate">{titleText}</ErrorPlaceHolder.Title>
       )}
       {errText && (
-        <ErrorPlaceHolder.Description className="text-truncate">
+        <ErrorPlaceHolder.Description className="content-truncate">
           {errText}
         </ErrorPlaceHolder.Description>
       )}
@@ -125,7 +125,7 @@ export function PageError(props: TErrorProps) {
         <div
           className={cn(
             isDev && '__PageError_Explanation', // DEBUG
-            'text-content text-truncate text-center text-sm font-normal leading-6',
+            'content-text content-truncate text-center text-sm font-normal leading-6',
             explanationClassName,
           )}
         >

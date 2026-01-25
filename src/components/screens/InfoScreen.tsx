@@ -41,7 +41,7 @@ export function InfoScreen(props: TPropsWithClassName & { isLogged: boolean }) {
           'flex flex-col gap-4',
           'max-w-xl',
           'w-full',
-          'text-content',
+          'content-text',
         )}
       >
         <h1 className="text-center">{t('NavLinks.Information')}</h1>

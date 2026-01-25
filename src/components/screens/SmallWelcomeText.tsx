@@ -16,7 +16,7 @@ export function SmallWelcomeText(props: TPropsWithClassName) {
         isDev && '__SmallWelcomeText', // DEBUG
         className,
         'flex flex-col gap-4',
-        'text-content',
+        'content-text',
       )}
     >
       <h2 className="text-center text-2xl">{t('Pages.WelcomeTitle')}</h2>

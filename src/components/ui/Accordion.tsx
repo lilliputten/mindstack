@@ -40,7 +40,7 @@ const AccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
-      <span className={cn('text-truncate', wrapperClassName)}>{children}</span>
+      <span className={cn('content-truncate', wrapperClassName)}>{children}</span>
       <ChevronDown className="size-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
@@ -60,7 +60,7 @@ const AccordionContent = React.forwardRef<
     )}
     {...props}
   >
-    <div className="text-content text-truncate pb-4 pt-0">{children}</div>
+    <div className="content-text content-truncate pb-4 pt-0">{children}</div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;

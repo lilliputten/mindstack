@@ -178,14 +178,14 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
         <div
           className={cn(
             isDev && '__TopicHeader_MainSection', // DEBUG
-            'text-truncate flex flex-1 items-start gap-2 max-sm:flex-col-reverse',
+            'content-truncate flex flex-1 items-start gap-2 max-sm:flex-col-reverse',
           )}
         >
           <div
             className={cn(
               isDev && '__TopicHeader_Texts', // DEBUG
               'flex flex-1 flex-col gap-2',
-              TRUNCATE_TITLE ? 'truncate' : 'text-truncate',
+              TRUNCATE_TITLE ? 'truncate' : 'content-truncate',
             )}
           >
             {hasName && (
@@ -193,7 +193,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
                 id="name"
                 className={cn(
                   isDev && '__TopicHeader_Name', // DEBUG
-                  TRUNCATE_TITLE ? 'truncate' : 'text-truncate',
+                  TRUNCATE_TITLE ? 'truncate' : 'content-truncate',
                   'text-xl',
                 )}
               >
@@ -231,7 +231,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
         <div
           className={cn(
             isDev && '__TopicHeader_DetailsSection', // DEBUG
-            'text-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+            'content-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2',
             'text-xs opacity-50',
           )}
         >

@@ -150,14 +150,14 @@ export function WorkoutQuestion({
       <div
         className={cn(
           isDev && '__WorkoutQuestion_Actions', // DEBUG
-          'text-truncate flex flex-wrap justify-center gap-2',
+          'content-truncate flex flex-wrap justify-center gap-2',
         )}
       >
         {/* Back Button */}
         {currentStep > 1 && (
           <Button
             data-testid="__WorkoutQuestion_Skip_Button"
-            className="text-truncate flex gap-2"
+            className="content-truncate flex gap-2"
             variant="outline"
             onClick={goPrevQuestion}
           >
@@ -171,7 +171,7 @@ export function WorkoutQuestion({
               data-testid="__WorkoutQuestion_Skip_Button"
               className={cn(
                 selectedAnswer?.isCorrect && 'animate-pulse',
-                'text-truncate flex gap-2',
+                'content-truncate flex gap-2',
               )}
               variant={selectedAnswer ? 'theme' : 'outline'}
               onClick={onContinue}
@@ -185,7 +185,7 @@ export function WorkoutQuestion({
               {!selectedAnswer /* && currentStep < totalSteps */ && (
                 <Button
                   data-testid="__WorkoutQuestion_Skip_Button"
-                  className="text-truncate flex gap-2"
+                  className="content-truncate flex gap-2"
                   variant="outline"
                   onClick={onSkip}
                 >
@@ -199,7 +199,7 @@ export function WorkoutQuestion({
         <Button
           data-testid="__WorkoutQuestion_Finish_Button"
           className={cn(
-            'text-truncate flex gap-2',
+            'content-truncate flex gap-2',
             isFinished && 'animate-pulse',
             // selectedAnswer && 'disabled',
           )}

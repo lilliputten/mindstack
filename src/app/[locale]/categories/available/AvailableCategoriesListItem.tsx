@@ -124,7 +124,7 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
               isDev && '__AvailableCategoriesListItem_Content_CategoryProperties', // DEBUG
               'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
               'text-xs',
-              'text-truncate',
+              'content-truncate',
             )}
           >
             <CategoryProperties category={category} showDates />

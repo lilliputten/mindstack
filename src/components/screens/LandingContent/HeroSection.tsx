@@ -20,7 +20,7 @@ export function HeroSection() {
         'flex flex-col items-center pb-8 pt-12',
       )}
     >
-      <div className="text-truncate mb-3 flex max-w-2xl flex-col items-center text-center">
+      <div className="content-truncate mb-3 flex max-w-2xl flex-col items-center text-center">
         {/* // TODO: Announce block
         <Link
           href="/"
@@ -34,18 +34,18 @@ export function HeroSection() {
           Version 0.0.4 released!
         </Link>
          */}
-        <h1 className="text-truncate text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+        <h1 className="content-truncate text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
           {t('Landing.HeroSection.Title')}
         </h1>
-        <p className="text-truncate mb-6 text-balance text-base leading-6 lg:text-lg">
+        <p className="content-truncate mb-6 text-balance text-base leading-6 lg:text-lg">
           {t('Landing.HeroSection.Description')}
         </p>
-        <div className="text-truncate flex flex-wrap items-center justify-center gap-3">
+        <div className="content-truncate flex flex-wrap items-center justify-center gap-3">
           <Link
             href={startAliasRoute}
             className={cn(
               buttonVariants({ variant: 'theme' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Rocket className="size-4 shrink-0 opacity-50" />
@@ -55,7 +55,7 @@ export function HeroSection() {
             href={availableCategoriesRoute}
             className={cn(
               buttonVariants({ variant: 'outline' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.Categories className="size-4 shrink-0 opacity-50" />

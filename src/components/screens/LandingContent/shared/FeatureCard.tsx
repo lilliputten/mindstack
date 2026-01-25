@@ -44,11 +44,11 @@ export function FeatureCard({
         <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
       </div>
       <div className={cn(contentMaxWidth)}>
-        <h3 className="text-truncate mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
+        <h3 className="content-truncate mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
         <p
           className={cn(
             descriptionSize === 'lg' ? 'text-base leading-6 lg:text-lg' : 'text-sm leading-5',
-            'text-truncate',
+            'content-truncate',
           )}
         >
           {description}

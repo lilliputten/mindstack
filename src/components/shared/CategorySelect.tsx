@@ -185,7 +185,7 @@ export function CategorySelect({
                           isDev && '__CategorySelect_Item', // DEBUG
                           'cursor-pointer',
                           'flex items-center gap-2',
-                          'text-truncate w-full',
+                          'content-truncate w-full',
                           'hover:bg-theme/10',
                           'transitiion truncate',
                           isSelected && 'bg-theme/20 hover:bg-theme/30',
@@ -255,7 +255,7 @@ export function CategorySelectField({
               placeholder={placeholder}
             />
           </FormControl>
-          {hint && <FormHint className="text-truncate">{hint}</FormHint>}
+          {hint && <FormHint className="content-truncate">{hint}</FormHint>}
           <FormMessage />
         </FormItem>
       )}

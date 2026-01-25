@@ -196,7 +196,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       variant="theme"
                       disabled={!isSubmitEnabled}
                       onClick={form.handleSubmit(handleApplyButton)}
-                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
+                      className="content-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Check className="size-4 opacity-50" />
                       <span className="truncate">{t('Apply')}</span>
@@ -206,7 +206,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       variant="outline"
                       onClick={handleResetToDefaults}
                       disabled={onDefaults}
-                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
+                      className="content-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       <span className="truncate">{t('ResetToDefaults')}</span>
@@ -216,7 +216,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       variant="outline"
                       onClick={handleClearChanges}
                       disabled={!form.formState.isDirty}
-                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate"
+                      className="content-truncate flex max-w-full items-center justify-start gap-2 truncate"
                     >
                       <Icons.Close className="size-4 opacity-50" />
                       <span className="truncate">{t('ClearChanges')}</span>
@@ -225,7 +225,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       type="button"
                       variant="ghost"
                       onClick={hideFilters}
-                      className="text-truncate flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
+                      className="content-truncate flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
                     >
                       <Icons.ChevronUp className="size-4 opacity-50" />
                       <span className="truncate">{t('Hide')}</span>

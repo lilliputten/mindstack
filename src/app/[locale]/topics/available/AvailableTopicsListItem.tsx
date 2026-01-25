@@ -99,7 +99,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         <div
           className={cn(
             isDev && '__AvailableTopicsList_TopicItem__TopicProperties', // DEBUG
-            'text-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
+            'content-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
           )}
         >
           <TopicProperties topic={topic} showDates />
@@ -126,7 +126,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
               href={workoutRoutePath}
               className={cn(
                 buttonVariants({ variant: 'theme' }),
-                'text-truncate flex items-center gap-2',
+                'content-truncate flex items-center gap-2',
               )}
             >
               <Icons.Rocket className="size-4 opacity-50" />

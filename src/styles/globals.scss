@@ -363,12 +363,7 @@
     }
   }
 
-  .on-theme {
-    // NOTE: Workaround for `text-theme-foreground` (apparently, sometimes it's overrides by other `text-*` utilities)
-    color: #fff;
-  }
-
-  .text-content {
+  .content-text {
     h1,
     h2,
     h3,
@@ -380,7 +375,7 @@
     ol {
       margin-top: 0.5em;
       margin-bottom: 0.5em;
-      @apply text-truncate;
+      @apply content-truncate;
     }
     ol.items {
       @apply list-decimal space-y-2 pl-6;
@@ -437,7 +432,7 @@
     text-overflow: ellipsis;
   }
 
-  .text-truncate {
+  .content-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;

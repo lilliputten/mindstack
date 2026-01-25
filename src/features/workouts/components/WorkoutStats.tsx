@@ -655,7 +655,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           'overflow-visible',
         )}
         // error={error || 'Error loading available categories data'}
-        explanationClassName="text-content text-truncate"
+        explanationClassName="content-text content-truncate"
         error={errorText}
         // reset={refetch}
         // extraActions={extraActions}

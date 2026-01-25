@@ -27,7 +27,7 @@ export function SuccessSplash({ title, children, className, isInactive }: Succes
       <Icons.CheckCircle className="mt-2 size-16 text-green-500" />
       <div className="flex flex-col gap-4 text-center">
         <h3 className="text-xl font-semibold text-green-500">{title}</h3>
-        <p className="text-content">{children}</p>
+        <p className="content-text">{children}</p>
       </div>
     </div>
   );

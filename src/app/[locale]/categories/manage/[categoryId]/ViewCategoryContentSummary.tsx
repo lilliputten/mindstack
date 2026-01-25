@@ -102,7 +102,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
       )}
     >
       {/* Title */}
-      <h2 className="text-truncate mb-2 text-2xl">{categoryName}</h2>
+      <h2 className="content-truncate mb-2 text-2xl">{categoryName}</h2>
 
       {/* Description Section */}
       {categoryDescription && (
@@ -217,7 +217,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
             <h4 className="truncate font-medium opacity-50">{t('Created')}</h4>
             <div className="flex flex-wrap items-center gap-2">
               <SmallUserBlock isLoading={isCreatedUserLoading} user={createdUser} />
-              <div className="text-truncate opacity-50">
+              <div className="content-truncate opacity-50">
                 {getFormattedRelativeDate(format, category.createdAt)}
               </div>
             </div>
@@ -227,7 +227,7 @@ function CategoryContentDetails({ category, className }: TCategoryContentDetails
             <h4 className="truncate font-medium opacity-50">{t('Modified')}</h4>
             <div className="flex flex-wrap items-center gap-2">
               <SmallUserBlock isLoading={isUpdatedUserLoading} user={updatedUser} />
-              <div className="text-truncate opacity-50">
+              <div className="content-truncate opacity-50">
                 {getFormattedRelativeDate(format, category.updatedAt)}
               </div>
             </div>

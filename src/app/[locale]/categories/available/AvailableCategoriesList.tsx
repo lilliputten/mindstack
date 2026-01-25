@@ -165,7 +165,7 @@ export function AvailableCategoriesList(props: TProps) {
           )}
         >
           <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-          <p className="text-content flex-1 text-sm">
+          <p className="content-text flex-1 text-sm">
             {t.rich('AvailableCategoriesList.UnauthorizedUserSuggestionMessage', {
               SigninLink: (chunks) => (
                 <Link

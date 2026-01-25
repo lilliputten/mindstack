@@ -19,10 +19,10 @@ export function FeaturesSection() {
       )}
     >
       <div className="mb-3 max-w-2xl">
-        <h2 className="text-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+        <h2 className="content-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
           {t('Landing.FeaturesSection.Title')}
         </h2>
-        <p className="text-truncate text-base leading-6 text-muted-foreground lg:text-lg">
+        <p className="content-truncate text-base leading-6 text-muted-foreground lg:text-lg">
           {t('Landing.FeaturesSection.Description')}
         </p>
       </div>

@@ -42,11 +42,11 @@ export function PricingChoosePaymentMethodCard({
     >
       <div className="flex items-center gap-3">
         <Icon className="size-6 text-theme" />
-        <h3 className="text-truncate text-xl font-semibold text-theme">{title}</h3>
+        <h3 className="content-truncate text-xl font-semibold text-theme">{title}</h3>
       </div>
-      <div className="text-content text-truncate flex flex-1 flex-col gap-2">
+      <div className="content-text content-truncate flex flex-1 flex-col gap-2">
         {typeof description === 'string' ? (
-          <p className="text-truncate">{description}</p>
+          <p className="content-truncate">{description}</p>
         ) : (
           description
         )}

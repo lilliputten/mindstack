@@ -21,10 +21,10 @@ export function BigImageCTASection() {
       )}
     >
       <div className="mb-3 max-w-2xl">
-        <h2 className="text-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+        <h2 className="content-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
           {t('Landing.BigImageCTASection.Title')}
         </h2>
-        <p className="text-truncate mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
+        <p className="content-truncate mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
           {t('Landing.BigImageCTASection.Description')}
         </p>
         <div className="mb-6 flex flex-wrap gap-3">
@@ -32,7 +32,7 @@ export function BigImageCTASection() {
             href={startAliasRoute}
             className={cn(
               buttonVariants({ variant: 'theme' }),
-              'text-truncate flex items-center gap-2',
+              'content-truncate flex items-center gap-2',
             )}
           >
             <Icons.ArrowRight className="size-4 shrink-0 opacity-50" />
