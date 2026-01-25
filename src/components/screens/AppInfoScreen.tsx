@@ -44,7 +44,7 @@ export function AppInfoScreen(props: TPropsWithClassName & { isLogged: boolean }
           'content-text',
         )}
       >
-        <h1 className="text-center">{t('NavLinks.About')}</h1>
+        <h2 className="pt-6 text-center text-2xl">{t('NavLinks.About')}</h2>
         <AppIntroBlock />
       </div>
     </ScrollArea>
