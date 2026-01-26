@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
     locale,
     title,
     description,
+    noIndex: true,
   });
 }
 

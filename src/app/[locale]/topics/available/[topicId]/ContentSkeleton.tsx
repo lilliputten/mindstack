@@ -7,6 +7,31 @@ interface TProps {
   className?: string;
 }
 
+export function InnerSkeleton({ className }: TProps) {
+  return (
+    <div
+      className={cn(
+        isDev && '__ViewAvailableTopic_InnerSkeleton', // DEBUG
+        'flex flex-col gap-4',
+        className,
+      )}
+    >
+      {isDev && <p className="text-sm opacity-50">__ViewAvailableTopic_InnerSkeleton</p>}
+      <Skeleton className="h-8 w-full rounded-lg" />
+      <Skeleton className="h-4 w-full rounded-lg" />
+      <Skeleton className="h-4 w-full rounded-lg" />
+
+      {generateArray(3).map((_, i) => (
+        <Skeleton key={i} className="h-32 w-full rounded-lg" />
+      ))}
+      <div className="flex justify-center gap-2">
+        {generateArray(3).map((_, i) => (
+          <Skeleton key={i} className="h-10 w-32 rounded-lg" />
+        ))}
+      </div>
+    </div>
+  );
+}
 export function ContentSkeleton({ className }: TProps) {
   return (
     <div
@@ -22,18 +47,7 @@ export function ContentSkeleton({ className }: TProps) {
         <Skeleton className="h-8 w-1/3 rounded-lg" />
       </div>
       <div className="h-4" />
-      <div className="flex flex-col gap-4">
-        <Skeleton className="h-8 w-3/5 rounded-lg" />
-        <Skeleton className="h-4 w-4/5 rounded-lg" />
-        <Skeleton className="h-4 w-2/3 rounded-lg" />
-
-        {generateArray(2).map((_, i) => (
-          <Skeleton key={i} className="h-8 w-full rounded-lg" />
-        ))}
-      </div>
-      <div className="flex flex-row gap-2">
-        <Skeleton className="h-10 w-40 rounded-lg" />
-      </div>
+      <InnerSkeleton />
     </div>
   );
 }

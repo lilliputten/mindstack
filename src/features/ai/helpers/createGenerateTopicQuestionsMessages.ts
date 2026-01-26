@@ -104,6 +104,7 @@ Example format:
     .filter(Boolean)
     .join('\n\n');
 
+  // NOTE: Temporarily monitoring AI generation
   console.log('[createGenerateTopicQuestionsMessages]', {
     systemMessageContent,
     userMessageContent,

@@ -104,6 +104,7 @@
   "ViewTopic": "Просмотр темы",
   "ViewTraining": "Просмотр тренировки",
   "Yes": "Да",
+  "ago": "назад",
   "or": "или",
   "AIGenerationsStatusInfo": {
     "AvailableAIGenerations": "Доступные генерации с ИИ: {availableGenerations}",
@@ -217,7 +218,7 @@
     "FutureFeatureNote": "Не реализовано в текущей версии.",
     "GuestFeaturesTitle": "<strong>Как гость</strong>, вы можете исследовать и практиковаться:",
     "GuestSpecificText": "Изучайте публичные темы, пробуйте тренировки и изменяйте настройки. <strong>Войдите</strong>, чтобы сохранить свой прогресс и разблокировать возможности создания.",
-    "LocalProgressTrackingNote": "Отслеживание прогресса возможно на локальном устройстве для неавторизованных пользователей.",
+    "LocalProgressTrackingNote": "Для неавторизованных пользователей отслеживание прогресса (как и сохранение других настронк) возможно на локальном устройстве.",
     "ManageTopicsAndStats": "Вы можете <LinkMyTopics>создавать и редактировать свои собственные темы</LinkMyTopics>, отслеживать подробную статистику и сохранять историю тренировок.",
     "PremiumFeaturesTitle": "<strong>Премиум-пользователи</strong> получают все PRO-функции, плюс:",
     "PremiumUsersAlsoGet": "<strong>PRO и PREMIUM пользователи</strong> получают еще больше: <LinkPricing>Сравнить планы</LinkPricing>",
@@ -437,7 +438,9 @@
   "AvailableWorkoutsListItem": {
     "CurrentRatio": "Рейтинг",
     "ProgressInfo": "Вопрос {stepNo} из {stepsCount}",
-    "TrainingDuration": "Продолжительность"
+    "TrainingDuration": "Продолжительность",
+    "WorkoutStatsCount": "Количество тренировок",
+    "lastActivityTimeAgo": "<TimeAgo></TimeAgo> назад"
   },
   "Bot": {
     "SelectLanguage": "Выбрать язык",
@@ -1104,7 +1107,7 @@
     "Questions": "Вопросы",
     "RecentWorkoutsTitle": "Недавние тренировки",
     "RedirectTitle": "Перенаправление...",
-    "RootDescription": "Приложение для тренировки памяти",
+    "RootDescription": "Приложение для тренировки памяти для интерактивного обучения и практики интервального повторения",
     "RootKeywords": "память, тренировка, применение",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Настройки приложения",
@@ -1113,10 +1116,10 @@
     "TermsPageTitle": "Условия использования",
     "TestQueryTitle": "Тестовый текстовый запрос AI",
     "TrainingTopicReviewTitle": "Обзор тренировки",
-    "ViewAvailableTopicTitle": "Посмотреть доступную тему",
+    "ViewAvailableTopicTitle": "Тема",
     "ViewCategoryTitle": "Просмотр категорию",
     "WelcomeTitle": "Добро пожаловать!",
-    "WorkoutTopicGoTitle": "Обучение теме"
+    "WorkoutTopicGoTitle": "Тренировка"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Недействительный уровень подписки",
@@ -1416,6 +1419,10 @@
     "yellow": "Желтый",
     "zinc": "Цинк"
   },
+  "TopicBriefInfo": {
+    "CannotRetrieveTopic": "Невозможно получить данные темы",
+    "QuestionsExamples": "Примеры вопросов в этой теме:"
+  },
   "TopicHeader": {
     "TheTrainingIsActive": "Тренировка активна",
     "YourTopic": "Ваша тема"
@@ -1635,7 +1642,7 @@
     "ThereIsOnlyOneHistoryRecordNow": "Сейчас есть только одна запись в истории.",
     "ThisWillBeYourFirst": "Это будет ваша первая тренировка по этой теме!",
     "Time": "Время",
-    "TimeElapsed": "Прошло времени",
+    "TimeElapsed": "Затраченное время",
     "TotalTime": "Общее время",
     "TotalTrainings": "Всего тренировок",
     "TrainingCompletedDetails": "Тренировка завершилась <FinishedTime></FinishedTime> назад за <DurationTime></DurationTime> с коэффициентом {ratioPercent}%",

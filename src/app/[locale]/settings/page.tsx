@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
     locale,
     title,
     description,
+    noIndex: true,
   });
 }
 

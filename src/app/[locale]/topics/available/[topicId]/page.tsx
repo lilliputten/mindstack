@@ -1,4 +1,5 @@
 import { constructMetadata } from '@/lib/constructMetadata';
+import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
@@ -6,18 +7,23 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { getTopicMetadata, TTopicId } from '@/features/topics';
 
 import { ViewAvailableTopicPageWrapper } from './ViewAvailableTopicPageWrapper';
 
-type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId; topicId: string }>;
+type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId; topicId: TTopicId }>;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
-  const { locale } = await params;
+  const { locale, topicId } = await params;
   const t = await getT({ locale });
-  const title = t('Pages.ViewAvailableTopicTitle');
+  const topicMetadata = await getTopicMetadata({
+    locale,
+    topicId,
+    titlePrefix: t('Pages.ViewAvailableTopicTitle'),
+  });
   return constructMetadata({
     locale,
-    title,
+    ...topicMetadata,
   });
 }
 

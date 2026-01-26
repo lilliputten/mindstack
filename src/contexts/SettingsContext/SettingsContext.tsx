@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
@@ -11,7 +10,6 @@ import { getErrorText } from '@/lib/helpers';
 import { deleteCookie, setCookie } from '@/lib/helpers/cookies';
 import { removeFalsyValues, removeNullUndefinedValues } from '@/lib/helpers/objects';
 import { useT } from '@/i18n';
-// import { TDefinedUserId } from '@/features/users/types/TUser';
 import { defaultLocale, TLocale } from '@/i18n/types';
 import { getSettings } from '@/features/settings/actions';
 import { defaultSettings, settingsSchema, TSettings } from '@/features/settings/types';
@@ -68,9 +66,6 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
   const themeContext = useTheme();
   memo.setAppTheme = themeContext.setTheme;
 
-  const { switchRouterLocale } = useSwitchRouterLocale();
-  const locale = useLocale();
-
   const updateThemeForNewSettings = React.useCallback(
     (settings: TSettings, force?: boolean) => {
       const isThemeChanged = force || memo.settings.theme !== settings.theme;
@@ -81,13 +76,23 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
     [memo],
   );
 
-  // Update system locale
-  React.useEffect(() => {
-    const thisLocale = (settings.locale || defaultLocale) as TLocale;
-    if (ready && locale !== thisLocale) {
-      switchRouterLocale(thisLocale);
-    }
-  }, [ready, locale, settings.locale, switchRouterLocale]);
+  const { switchRouterLocale } = useSwitchRouterLocale();
+
+  /* // UNUSED: Update system locale: This code overrides url-requested locale
+   * const locale = useLocale();
+   * React.useEffect(() => {
+   *   const thisLocale = (settings.locale || defaultLocale) as TLocale;
+   *   console.log('[SettingsContext:switchRouterLocale]', {
+   *     inited,
+   *     ready,
+   *     locale,
+   *     thisLocale,
+   *   });
+   *   if (ready && locale !== thisLocale) {
+   *     switchRouterLocale(thisLocale);
+   *   }
+   * }, [inited, ready, locale, settings.locale, switchRouterLocale]);
+   */
 
   // Update theme color
   React.useEffect(() => {
@@ -190,9 +195,10 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
     async (locale: TSettings['locale'] = defaultLocale) => {
       const updatedSettings = { ...memo.settings, locale };
       const result = await updateAndSaveSettings(updatedSettings);
+      switchRouterLocale(locale as TLocale);
       return result.ok && result.data ? result.data : updatedSettings;
     },
-    [memo, updateAndSaveSettings],
+    [memo, updateAndSaveSettings, switchRouterLocale],
   );
 
   /** Set and save theme */

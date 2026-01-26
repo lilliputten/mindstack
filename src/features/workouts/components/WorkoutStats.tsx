@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useFormatter } from 'next-intl';
 
 import { getErrorText } from '@/lib/helpers';
-import { formatSecondsDuration, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { useWorkoutStatsHistory } from '@/hooks/react-query/useWorkoutStatsHistory';
@@ -37,7 +35,7 @@ interface TWorkoutStatsProps {
 
 export function WorkoutStats(props: TWorkoutStatsProps) {
   const { className, full, hideTimes } = props;
-  const format = useFormatter();
+  // const format = useFormatter();
   const t = useT();
 
   const { user, loading: isUserLoading } = useSessionData();
@@ -78,9 +76,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     workout?.stepIndex && workout?.correctAnswers
       ? (workout.correctAnswers / (workout.stepIndex + 1)) * 100
       : 0;
-  const timeElapsed = workout?.startedAt
-    ? Math.round((new Date().getTime() - workout.startedAt.getTime()) / 1000)
-    : 0;
+  const timeElapsed = workout?.startedAt ? new Date().getTime() - workout.startedAt.getTime() : 0;
   const averageTimePerQuestion =
     workout?.stepIndex && timeElapsed > 0 ? Math.round(timeElapsed / (workout.stepIndex + 1)) : 0;
 
@@ -139,7 +135,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm">{t('WorkoutStats.AvgTime')}</p>
                   <p className="text-2xl font-bold">
-                    {formatSecondsDuration(historicalStats.averageTime)}
+                    {historicalStats.averageTime ? (
+                      <ShowTimeSince date={historicalStats.averageTime / 1000} timeout={0} />
+                    ) : (
+                      <span className="opacity-30">—</span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -196,7 +196,13 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm">{t('WorkoutStats.TimeElapsed')}</p>
                   <p className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold">{formatSecondsDuration(timeElapsed)}</span>
+                    <span className="text-2xl font-bold">
+                      {timeElapsed ? (
+                        <ShowTimeSince date={timeElapsed} timeout={0} />
+                      ) : (
+                        <span className="opacity-30">—</span>
+                      )}
+                    </span>
                     {isWorkoutInProgress && (
                       <span className="opacity-50">{t('WorkoutStats.Active')}</span>
                     )}
@@ -207,12 +213,18 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm">{t('WorkoutStats.CorrectAnswers')}</p>
-                  <p className="text-lg font-semibold">{workout.correctAnswers || 0}</p>
+                  <p className="text-lg font-semibold">
+                    {workout.correctAnswers || <span className="opacity-30">—</span>}
+                  </p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm">{t('WorkoutStats.AvgTimePerQuestion')}</p>
                   <p className="text-lg font-semibold">
-                    {formatSecondsDuration(averageTimePerQuestion)}
+                    {averageTimePerQuestion ? (
+                      <ShowTimeSince date={averageTimePerQuestion} timeout={0} />
+                    ) : (
+                      <span className="opacity-30">—</span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -423,7 +435,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               </div>
               <div className="space-y-1 text-center">
                 <p className="text-2xl font-bold">
-                  {formatSecondsDuration(historicalStats.averageTime)}
+                  {historicalStats.averageTime ? (
+                    <ShowTimeSince date={historicalStats.averageTime * 1000} timeout={0} />
+                  ) : (
+                    <span className="opacity-30">—</span>
+                  )}
                 </p>
                 <p className="text-sm">{t('WorkoutStats.AvgTime')}</p>
               </div>
@@ -491,7 +507,8 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                     recentWorkouts.map((workout) => (
                       <TableRow key={workout.id}>
                         <TableCell id="Date">
-                          {getFormattedRelativeDate(format, workout.createdAt)}
+                          {/*getFormattedRelativeDate(format, workout.createdAt)*/}
+                          <ShowTimeSince date={workout.createdAt} timeout={0} />
                         </TableCell>
                         <TableCell id="Accuracy" className="truncate text-center">
                           <Badge
@@ -508,7 +525,11 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                           </Badge>
                         </TableCell>
                         <TableCell id="Time" className="truncate text-right max-md:hidden">
-                          {formatSecondsDuration(workout.timeSeconds)}
+                          {workout.timeSeconds ? (
+                            <ShowTimeSince date={workout.timeSeconds * 1000} timeout={0} />
+                          ) : (
+                            <span className="opacity-30">—</span>
+                          )}
                         </TableCell>
                         {/* <TableCell>{workout.questionsCount}</TableCell> */}
                       </TableRow>
@@ -549,7 +570,6 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
       </Card>
     );
   }, [
-    format,
     full,
     hasMoreWorkouts,
     hasUser,
@@ -596,9 +616,18 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
             </div>
             <div>
               <p className="text-2xl font-bold">
-                {isWorkoutInProgress
+                {timeElapsed || workout?.currentTime ? (
+                  <ShowTimeSince
+                    date={(timeElapsed || workout?.currentTime || 0) * 1000}
+                    timeout={0}
+                  />
+                ) : (
+                  <span className="opacity-30">—</span>
+                )}
+
+                {/*isWorkoutInProgress
                   ? formatSecondsDuration(timeElapsed)
-                  : formatSecondsDuration(workout?.currentTime || 0)}
+                  : formatSecondsDuration(workout?.currentTime || 0)*/}
               </p>
               <p className="text-xs">{t('WorkoutStats.Time')}</p>
             </div>

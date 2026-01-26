@@ -80,7 +80,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
             : t('AvailableTopics.StartTraining'),
         variant: 'theme',
         icon: Icons.Activity,
-        visibleFor: 'xs',
+        visibleFor: 'md',
         disabled: !allowedTraining,
         onClick: handleResumeWorkout, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
       },

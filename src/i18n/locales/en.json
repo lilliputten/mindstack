@@ -110,6 +110,7 @@
   "ViewTopic": "View Topic",
   "ViewTraining": "View Training",
   "Yes": "Yes",
+  "ago": "ago",
   "butReceived": "but received",
   "ifYouHaveAnyProblems": "if you have any problems",
   "or": "or",
@@ -225,7 +226,7 @@
     "FutureFeatureNote": "Not implemented in the current version.",
     "GuestFeaturesTitle": "<strong>As a guest</strong>, you can explore and practice:",
     "GuestSpecificText": "Explore public topics, try workouts, and change settings. <strong>Sign in</strong> to save your progress and unlock creation features.",
-    "LocalProgressTrackingNote": "Progress tracking is possible on the local device for unauthorized users.",
+    "LocalProgressTrackingNote": "For unauthorized users, progress tracking (as well as saving other settings) is possible on a local device.",
     "ManageTopicsAndStats": "You can <LinkMyTopics>create and edit your own topics</LinkMyTopics>, track detailed statistics, and save your workout history.",
     "PremiumFeaturesTitle": "<strong>Premium users</strong> get all PRO features, plus:",
     "PremiumUsersAlsoGet": "<strong>PRO and PREMIUM users</strong> get even more: <LinkPricing>Compare plans</LinkPricing>",
@@ -445,7 +446,9 @@
   "AvailableWorkoutsListItem": {
     "CurrentRatio": "Rating",
     "ProgressInfo": "Question {stepNo} of {stepsCount}",
-    "TrainingDuration": "Duration"
+    "TrainingDuration": "Duration",
+    "WorkoutStatsCount": "Trainings count",
+    "lastActivityTimeAgo": "<TimeAgo></TimeAgo> ago"
   },
   "Bot": {
     "LanguageChangedFor": "Language has been changed for",
@@ -1112,7 +1115,7 @@
     "Questions": "Questions",
     "RecentWorkoutsTitle": "Recent Trainings",
     "RedirectTitle": "Redirecting...",
-    "RootDescription": "Memory Training Application",
+    "RootDescription": "Memory Training Application for interactive learning and spaced repetition practice",
     "RootKeywords": "memory, training, application",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
@@ -1121,10 +1124,10 @@
     "TermsPageTitle": "Terms of Service",
     "TestQueryTitle": "Test AI Text Query",
     "TrainingTopicReviewTitle": "Training Topic Review",
-    "ViewAvailableTopicTitle": "View Available Topic",
+    "ViewAvailableTopicTitle": "Topic",
     "ViewCategoryTitle": "View Category",
     "WelcomeTitle": "Welcome!",
-    "WorkoutTopicGoTitle": "Training the Topic"
+    "WorkoutTopicGoTitle": "Training"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Invalid subscription grade",
@@ -1423,6 +1426,10 @@
     "violet": "Violet",
     "yellow": "Yellow",
     "zinc": "Zinc"
+  },
+  "TopicBriefInfo": {
+    "CannotRetrieveTopic": "Cannot retrieve topic data",
+    "QuestionsExamples": "Examples of questions in this topic:"
   },
   "TopicHeader": {
     "TheTrainingIsActive": "The training is active",

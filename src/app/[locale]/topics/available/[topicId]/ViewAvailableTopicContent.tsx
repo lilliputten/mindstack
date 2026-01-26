@@ -11,10 +11,13 @@ import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { TopicBriefInfo } from '@/features/topics';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TAvailableTopic } from '@/features/topics/types';
 import { WorkoutControl, WorkoutStats } from '@/features/workouts/components';
 import { useGoToTheRoute } from '@/hooks';
+
+import { InnerSkeleton } from './ContentSkeleton';
 
 interface TViewAvailableTopicContentProps {
   topic: TAvailableTopic;
@@ -32,12 +35,15 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
   const {
     workout,
     startWorkout,
+    isLoading: isWorkoutLoading,
+    isFetched: isWorkoutFetched,
     // questionIds,
   } = workoutContext;
+  const isWorkoutReady = !isWorkoutLoading && isWorkoutFetched;
   // const isWorkoutInProgress = workout?.started && !workout?.finished;
   // const questionsCount = questionIds?.length || 0;
   // const allowedTraining = !!questionsCount;
-  const nothingToDisplay = !workout;
+  const noWorkout = !workout;
 
   const goToTheRoute = useGoToTheRoute();
 
@@ -47,6 +53,10 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
   const handleStart = React.useCallback(() => {
     startWorkout().then(() => goToTheRoute(workoutRouteGoPath));
   }, [startWorkout, goToTheRoute, workoutRouteGoPath]);
+
+  if (false || !isWorkoutReady) {
+    return <InnerSkeleton className="mx-6" />;
+  }
 
   return (
     <ScrollArea
@@ -64,7 +74,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
       <div
         className={cn(
           isDev && '__ViewAvailableTopicContent_Header', // DEBUG
-          'flex flex-col gap-4',
+          'flex shrink-0 flex-col gap-4',
         )}
       >
         <TopicHeader
@@ -89,12 +99,29 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
         />
         */}
       </div>
-      {nothingToDisplay ? (
+      {noWorkout ? (
         <PageEmpty
           className="size-full flex-1"
           icon={Icons.Rocket}
-          title={t('ViewAvailableTopicContent.TrainingNotStarted')}
-          description={t('ViewAvailableTopicContent.NoActiveTrainingText')}
+          // title={t('ViewAvailableTopicContent.TrainingNotStarted')}
+          // description={t('ViewAvailableTopicContent.NoActiveTrainingText')}
+          explanation={
+            <div className="flex flex-col gap-4">
+              <h3 className="content-truncate font-heading text-2xl font-bold">
+                {t('ViewAvailableTopicContent.TrainingNotStarted')}
+              </h3>
+              <p className="content-truncate text-center text-sm font-normal leading-6 text-muted-foreground">
+                {t('ViewAvailableTopicContent.NoActiveTrainingText')}
+              </p>
+              <TopicBriefInfo
+                topicId={topicId}
+                className={cn(
+                  isDev && '__ViewAvailableTopicContent_TopicBriefInfo', // DEBUG
+                  'mb-2',
+                )}
+              />
+            </div>
+          }
           framed={false}
           buttons={<WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />}
         />

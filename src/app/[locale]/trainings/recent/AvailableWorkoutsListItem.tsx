@@ -38,7 +38,6 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     finishedAt,
     workoutStats,
     questionsCount,
-    // stats: workoutStats,
   } = workout;
 
   if (isDev) {
@@ -177,6 +176,12 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             )}
           >
             <div className="content-truncate flex flex-wrap items-center gap-1">
+              <span className="truncate opacity-50">
+                {t('AvailableWorkoutsListItem.WorkoutStatsCount')}:
+              </span>
+              <span className="truncate font-medium">{workoutStatsCount}</span>
+            </div>
+            <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('QuestionsCount')}:</span>
               <span className="truncate font-medium">{questionsCount}</span>
             </div>
@@ -196,7 +201,10 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               <div className="content-truncate flex flex-wrap items-center gap-1">
                 <span className="truncate opacity-50">{t('LastActivity')}:</span>
                 <span className="truncate font-medium">
-                  <ShowTimeSince date={finishedAt || startedAt || undefined} /> ago
+                  {t.rich('AvailableWorkoutsListItem.lastActivityTimeAgo', {
+                    TimeAgo: () => <ShowTimeSince date={finishedAt || startedAt || undefined} />,
+                  })}
+                  {/* <ShowTimeSince date={finishedAt || startedAt || undefined} /> {t('ago')} */}
                 </span>
               </div>
             )}

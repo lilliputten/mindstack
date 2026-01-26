@@ -6,18 +6,23 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { getTopicMetadata } from '@/features/topics';
 
 import { WorkoutTopicGo } from './WorkoutTopicGo';
 
 type TAwaitedProps = TAwaitedLocaleProps<{ scope: TTopicsManageScopeId; topicId: string }>;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
-  const { locale } = await params;
+  const { locale, topicId } = await params;
   const t = await getT({ locale });
-  const title = t('Pages.WorkoutTopicGoTitle');
+  const topicMetadata = await getTopicMetadata({
+    locale,
+    topicId,
+    titlePrefix: t('Pages.WorkoutTopicGoTitle'),
+  });
   return constructMetadata({
     locale,
-    title,
+    ...topicMetadata,
   });
 }
 

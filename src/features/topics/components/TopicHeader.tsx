@@ -231,7 +231,8 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
         <div
           className={cn(
             isDev && '__TopicHeader_DetailsSection', // DEBUG
-            'content-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+            // 'content-truncate',
+            'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
             'text-xs opacity-50',
           )}
         >

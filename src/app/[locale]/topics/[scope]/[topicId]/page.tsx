@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   return constructMetadata({
     locale,
     title: t('Pages.ManageTopicTitle'),
+    noIndex: true,
   });
 }
 

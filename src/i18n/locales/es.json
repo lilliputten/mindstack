@@ -106,6 +106,7 @@
   "ViewTopic": "Ver tema",
   "ViewTraining": "Ver entrenamiento",
   "Yes": "Sí",
+  "ago": "atrás",
   "butReceived": "pero recibido",
   "ifYouHaveAnyProblems": "si tiene algún problema",
   "or": "o",
@@ -221,7 +222,7 @@
     "FutureFeatureNote": "No implementado en la versión actual.",
     "GuestFeaturesTitle": "<strong>Como invitado</strong>, puede explorar y practicar:",
     "GuestSpecificText": "Explore temas públicos, pruebe entrenamientos y cambie configuraciones. <strong>Inicie sesión</strong> para guardar su progreso y desbloquear funciones de creación.",
-    "LocalProgressTrackingNote": "El seguimiento de progreso es posible en el dispositivo local para usuarios no autorizados.",
+    "LocalProgressTrackingNote": "Para usuarios no autorizados, es posible realizar un seguimiento del progreso (así como guardar otras configuraciones) en un dispositivo local.",
     "ManageTopicsAndStats": "Puede <LinkMyTopics>crear y editar sus propios temas</LinkMyTopics>, hacer un seguimiento detallado de las estadísticas y guardar su historial de entrenamiento.",
     "PremiumFeaturesTitle": "<strong>Los usuarios Premium</strong> obtienen todas las características PRO, más:",
     "PremiumUsersAlsoGet": "Los usuarios <strong>PRO y PREMIUM</strong> obtienen aún más: <LinkPricing>Comparar planes</LinkPricing>",
@@ -437,7 +438,9 @@
   "AvailableWorkoutsListItem": {
     "CurrentRatio": "Clasificación",
     "ProgressInfo": "Pregunta {stepNo} de {stepsCount}",
-    "TrainingDuration": "Duración"
+    "TrainingDuration": "Duración",
+    "WorkoutStatsCount": "Los entrenamientos cuentan",
+    "lastActivityTimeAgo": "hace <TimeAgo></TimeAgo>"
   },
   "Bot": {
     "LanguageChangedFor": "El idioma ha sido cambiado a",
@@ -1103,7 +1106,7 @@
     "Questions": "Preguntas",
     "RecentWorkoutsTitle": "Entrenamientos Recientes",
     "RedirectTitle": "Redirigiendo...",
-    "RootDescription": "Aplicación de entrenamiento de la memoria",
+    "RootDescription": "Aplicación Memory Training para el aprendizaje interactivo y la práctica de repeticiones espaciadas",
     "RootKeywords": "memoria, entrenamiento, aplicación",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
@@ -1112,10 +1115,10 @@
     "TermsPageTitle": "Términos de servicio",
     "TestQueryTitle": "Pruebe la consulta de texto de IA",
     "TrainingTopicReviewTitle": "Revisión del tema de capacitación",
-    "ViewAvailableTopicTitle": "Ver tema disponible",
+    "ViewAvailableTopicTitle": "Tema",
     "ViewCategoryTitle": "Ver categoría",
     "WelcomeTitle": "¡Bienvenido!",
-    "WorkoutTopicGoTitle": "Entrenando el tema"
+    "WorkoutTopicGoTitle": "Capacitación"
   },
   "ParsePaidableSubscriptionType": {
     "InvalidSubscriptionGrade": "Grado de suscripción no válido",
@@ -1414,6 +1417,10 @@
     "violet": "Violeta",
     "yellow": "Amarillo",
     "zinc": "Zinc"
+  },
+  "TopicBriefInfo": {
+    "CannotRetrieveTopic": "No se pueden recuperar datos del tema",
+    "QuestionsExamples": "Ejemplos de preguntas en este tema:"
   },
   "TopicHeader": {
     "TheTrainingIsActive": "La formación está activa.",

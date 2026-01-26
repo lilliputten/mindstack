@@ -56,7 +56,13 @@ export function WorkoutControl(props: TWorkoutControlProps) {
 
   if (isWorkoutPending) {
     return (
-      <div className={cn(isDev && '__WorkoutControl_Skeleton', 'flex flex-col gap-4', className)}>
+      <div
+        className={cn(
+          isDev && '__WorkoutControl_Skeleton',
+          'flex flex-col items-center gap-4',
+          className,
+        )}
+      >
         <Skeleton className="h-4 w-48" />
         <Skeleton className="h-10 w-32" />
       </div>

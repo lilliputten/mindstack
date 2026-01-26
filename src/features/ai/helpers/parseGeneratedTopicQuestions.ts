@@ -48,6 +48,7 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
 
   try {
     rawJson = queryData.content;
+    // NOTE: Temporarily monitoring AI generation
     console.log('[parseGeneratedTopicQuestions] Got raw text', {
       rawJson,
       queryData,
@@ -66,6 +67,7 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     // Remove empty questions/answers data
     const withoutEmptyObjects = dropEmptyQuestionsAndAnswers(rawData as TQuestionsAndAnswers);
     // rawData = rawJson && JSON.parse(rawJson);
+    // NOTE: Temporarily monitoring AI generation
     console.log('[parseGeneratedTopicQuestions] Parsed raw data', {
       withoutEmptyObjects,
       rawData,

@@ -21,10 +21,10 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
    *
    * According to https://www.opengraph.xyz/url/https%3A%2F%2Fmind-stack-trainer.vercel.app
    *
-   * Image is 1250x650px. Recommended size is 1200x630px.
-   * Missing a call-to-action in your image
-   * Title is short (18 characters). Optimal: 50-60 characters
-   * Description is short (27 chars). Optimal: 110-160 chars
+   * - [x] Image is 1250x650px. Recommended size is 1200x630px.
+   * - [ ] Missing a call-to-action in your image
+   * - [ ] Title is short (18 characters). Optimal: 50-60 characters
+   * - [x] Description is short (27 chars). Optimal: 110-160 chars
    *
    * According to https://orcascan.com/tools/open-graph-validator?url=https%3A%2F%2Fmind-stack-trainer.vercel.app:
    *
@@ -36,7 +36,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
     keywords,
     image = '/static/opengraph-image.jpg',
     icons = '/favicon.ico',
-    noIndex = true,
+    noIndex = false,
     locale = defaultLanguage, // routing.defaultLocale as TLocale,
     url = PUBLIC_URL,
   } = params;
@@ -46,12 +46,8 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
     title: title || t('Pages.RootTitle') || siteTitle,
     description: description || t('Pages.RootDescription') || siteDescription,
     keywords: [siteKeywords, t('Pages.RootKeywords'), keywords].filter(Boolean).join(', '),
-    authors: [
-      {
-        name: 'lilliputten',
-      },
-    ],
-    creator: 'lilliputten',
+    // authors: [{ name: 'lilliputten' }],
+    // creator: 'lilliputten',
     openGraph: {
       type: 'website',
       locale, // 'en',

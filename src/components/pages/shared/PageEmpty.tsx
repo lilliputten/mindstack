@@ -8,8 +8,8 @@ import { isDev } from '@/config';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 
 interface TPageEmptyProps extends TPropsWithClassName {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   explanation?: TReactNode;
   explanationClassName?: string;
   extraActions?: TReactNode;
@@ -71,15 +71,18 @@ export function PageEmpty(props: TPageEmptyProps) {
       <EmptyPlaceholder.Icon
         className={cn(
           isDev && '__PageEmpty_Icon', // DEBUG
-          // 'mb-4',
           iconClassName,
         )}
         icon={typeof icon === 'string' ? getIconByName(icon) || defaultIcon : icon}
       />
-      <EmptyPlaceholder.Title className="content-truncate">{title}</EmptyPlaceholder.Title>
-      <EmptyPlaceholder.Description className="content-truncate">
-        {description}
-      </EmptyPlaceholder.Description>
+      {!!title && (
+        <EmptyPlaceholder.Title className="content-truncate">{title}</EmptyPlaceholder.Title>
+      )}
+      {!!description && (
+        <EmptyPlaceholder.Description className="content-truncate">
+          {description}
+        </EmptyPlaceholder.Description>
+      )}
       {explanation && (
         <div
           className={cn(
