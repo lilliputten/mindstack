@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
@@ -46,9 +47,11 @@ const defaultTheme = 'system';
 
 type TMemo = {
   inited?: boolean;
+  effectiveInited?: boolean;
   settings: TSettings;
   loadingPromise?: Promise<TSettings | undefined>;
   setAppTheme?: React.Dispatch<React.SetStateAction<string>>;
+  locale?: TLocale;
 };
 
 export function SettingsContextProvider({ children, user }: SettingsContextProviderProps) {
@@ -78,20 +81,28 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
 
   const { switchRouterLocale } = useSwitchRouterLocale();
 
+  const locale = useLocale() as TLocale;
+  memo.locale = locale;
+
   /* // UNUSED: Update system locale: This code overrides url-requested locale
-   * const locale = useLocale();
    * React.useEffect(() => {
+   *   const { inited, effectiveInited } = memo;
    *   const thisLocale = (settings.locale || defaultLocale) as TLocale;
    *   console.log('[SettingsContext:switchRouterLocale]', {
    *     inited,
+   *     effectiveInited,
    *     ready,
    *     locale,
    *     thisLocale,
    *   });
-   *   if (ready && locale !== thisLocale) {
-   *     switchRouterLocale(thisLocale);
+   *   debugger;
+   *   if (!effectiveInited && inited) {
+   *     memo.effectiveInited = true;
    *   }
-   * }, [inited, ready, locale, settings.locale, switchRouterLocale]);
+   *   if (ready && locale !== thisLocale) {
+   *     // switchRouterLocale(thisLocale);
+   *   }
+   * }, [memo, ready, locale, settings.locale, switchRouterLocale]);
    */
 
   // Update theme color
@@ -155,6 +166,11 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
     async (settings: TSettings) => {
       // Save local data and apply the data first
       setAndMemoizeSettings(settings);
+      // Switch locale if changed
+      const isLocaleChanged = settings.locale !== memo.locale;
+      if (isLocaleChanged) {
+        switchRouterLocale(settings.locale as TLocale);
+      }
       // Then invoke (if authorized) the save procedure on the server
       if (!userId) {
         return { ok: true, data: settings } as const;
@@ -187,7 +203,7 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
       );
       return savePromise;
     },
-    [setAndMemoizeSettings, t, userId],
+    [memo, switchRouterLocale, setAndMemoizeSettings, t, userId],
   );
 
   /** Set and save locale */
@@ -266,9 +282,10 @@ export function SettingsContextProvider({ children, user }: SettingsContextProvi
         setAndMemoizeSettings(settings);
       }
       // Get user data from server, if there is an authentificated user
-      setInited(true);
-      memo.inited = true;
-      loadSettings();
+      loadSettings().then(() => {
+        setInited(true);
+        memo.inited = true;
+      });
     }
   }, [memo, setAndMemoizeSettings, userId, loadSettings]);
 
