@@ -73,6 +73,7 @@ export function ContentFooter() {
               ),
               AuthorLink: (chunks) => (
                 <PublicLink
+                  // href="https://lilliputten.com/projects/2026/mindstack"
                   href="https://lilliputten.com"
                   target="_blank"
                   rel="noreferrer"

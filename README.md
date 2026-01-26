@@ -11,7 +11,7 @@ NextJS Memory Training Application for interactive learning and spaced repetitio
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.0 / 2026.01.27 00:12:27 +0300
+- Project info: v.0.1.0 / 2026.01.27 01:34:38 +0300
 
 ## 🌟 Overview
 
@@ -29,6 +29,7 @@ MindStack is a modern memory training application that helps users create, organ
 ### ✅ Implemented Features
 
 **Learning & Practice**
+
 - Interactive workout sessions with spaced repetition algorithms
 - Progress tracking and statistics for each topic
 - Public topics available without authorization (limited analytics)
@@ -37,6 +38,7 @@ MindStack is a modern memory training application that helps users create, organ
 - Multi-language topic support (predefined and custom languages)
 
 **Content Management**
+
 - Create, edit, and manage topics with questions and answers
 - Mark topics as private or share them with other users
 - AI-powered question and answer generation
@@ -44,12 +46,14 @@ MindStack is a modern memory training application that helps users create, organ
 - Category management for topic organization
 
 **Payment & Subscriptions**
+
 - International payment processing via Stripe
 - Russian payment processing via YooKassa
 - Multiple subscription tiers (Basic, Pro, Premium, Unlimited)
 - Payment status tracking and management
 
 **Authentication & Security**
+
 - Multiple OAuth providers: GitHub, Google, Yandex
 - Email-based authentication
 - Telegram bot authentication (via OTP)
@@ -57,6 +61,7 @@ MindStack is a modern memory training application that helps users create, organ
 - User grade system with tiered features
 
 **Internationalization**
+
 - Full interface support for English, Spanish, and Russian
 - Dynamic language switching
 - Automatic locale detection
@@ -65,11 +70,13 @@ MindStack is a modern memory training application that helps users create, organ
 ### 🔮 Planned Features
 
 **Content Enhancement**
+
 - Custom illustrations for questions and answers
 - AI-generated preview images for questions and answers
 - Main page display of recent and popular topics
 
 **User Experience**
+
 - Link multiple authorized accounts
 - Telegram bot statistics tracking
 - In-app, email, and Telegram notifications
@@ -77,6 +84,7 @@ MindStack is a modern memory training application that helps users create, organ
 - Badges and achievement system
 
 **Advanced Features**
+
 - Enhanced statistics and analytics dashboard
 - Social sharing of topics and achievements
 - Collaborative topic editing
@@ -85,6 +93,7 @@ MindStack is a modern memory training application that helps users create, organ
 ## 🛠️ Technology Stack
 
 ### Core Framework
+
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Full type safety
 - **React 19** - Latest React features
@@ -92,31 +101,37 @@ MindStack is a modern memory training application that helps users create, organ
 - **PostgreSQL** - Production database
 
 ### Styling & UI
+
 - **Tailwind CSS 3.4** - Utility-first CSS framework
 - **Radix UI** - Accessible UI primitives
 - **SCSS/Sass** - Advanced styling with CSS variables
 - **next-themes** - Dark/light mode support
 
 ### State Management
+
 - **React Query (TanStack Query 5)** - Server state management
 - **Zustand 5** - Client state management
 - **React Context** - Local component state
 
 ### Authentication & Validation
+
 - **NextAuth.js 5** - Multi-provider authentication
 - **Zod** - Schema validation
 - **Telegram Auth** - Secure Telegram integration
 
 ### AI Integration
+
 - **GigaChat** - AI content generation
 - **LangChain** - AI model orchestration
 - **Cloudflare Workers AI** - Alternative AI provider
 
 ### Payments
+
 - **Stripe** - International payments
 - **Yookassa** - Russian payment processing
 
 ### Testing & Quality
+
 - **Jest** - Testing framework
 - **React Testing Library** - Component testing
 - **ESLint** - Code linting
@@ -126,11 +141,13 @@ MindStack is a modern memory training application that helps users create, organ
 ## 📦 Installation & Setup
 
 ### Prerequisites
+
 - Node.js 18+
 - PostgreSQL database
 - pnpm package manager
 
 ### Quick Start
+
 ```bash
 # Clone the repository
 git clone https://github.com/lilliputten/mindstack.git
@@ -155,6 +172,7 @@ pnpm dev
 Copy `.env.SAMPLE` to `.env` and configure the following variables. For a complete reference, see the [.env.SAMPLE](.env.SAMPLE) file.
 
 **Application Configuration**
+
 ```env
 NEXT_PUBLIC_URL="https://your-domain.com"      # Public application URL
 NODE_ENV="development"                         # Environment: development/production
@@ -165,11 +183,13 @@ NEXT_PUBLIC_DEBUG_LOCALE="xx"                  # Debug locale for testing
 ```
 
 **Database**
+
 ```env
 DATABASE_URL="postgresql://user:password@host:port/database"  # PostgreSQL connection string
 ```
 
 **Authentication & Security**
+
 ```env
 AUTH_SECRET="your-secret-key"                  # NextAuth.js secret key
 SET_FIRST_USER_ADMIN=true                      # Make first registered user admin
@@ -195,6 +215,7 @@ EMAIL_TEST_USER=""                             # Test email address
 ```
 
 **Payment Systems**
+
 ```env
 # Debug & Testing
 NEXT_DO_TEST_PAYMENTS=false                    # Enable test payments
@@ -214,6 +235,7 @@ YOOKASSA_SECRET_KEY_TEST=""                    # YooKassa test secret key
 ```
 
 **AI Integration**
+
 ```env
 # Cloudflare Workers AI
 CLOUDFLARE_ACCOUNT_ID=""                       # Cloudflare account ID
@@ -229,6 +251,7 @@ LANGSMITH_API_KEY=""                           # LangSmith API key for advanced 
 ```
 
 **Telegram Integration**
+
 ```env
 # Telegram Bot Configuration
 BOT_TOKEN=""                                   # Telegram bot token
@@ -248,6 +271,7 @@ WEBHOOK_HOST=""                                # Webhook host URL for bot
 ```
 
 **Additional Services**
+
 ```env
 # Exchange Rate API
 EXCHANGERATE_API_KEY=""                        # Exchange rate API key for currency conversion
@@ -290,6 +314,7 @@ mindstack/
 ### Available Scripts
 
 **Development**
+
 ```bash
 pnpm dev          # Start development server
 pnpm build        # Build for production
@@ -297,6 +322,7 @@ pnpm start        # Start production server
 ```
 
 **Database Operations**
+
 ```bash
 pnpm prisma-generate     # Generate Prisma client
 pnpm prisma-migrate-dev  # Run database migrations
@@ -304,6 +330,7 @@ pnpm prisma-studio       # Database GUI
 ```
 
 **Code Quality**
+
 ```bash
 pnpm lint-all      # Run all linting checks
 pnpm check-types   # TypeScript type checking
@@ -311,6 +338,7 @@ pnpm test          # Run test suite
 ```
 
 **Maintenance**
+
 ```bash
 pnpm clear-all     # Clear all caches
 pnpm sort-locales  # Sort translation files
@@ -345,11 +373,13 @@ pnpm test-watch
 ## 🌍 Internationalization
 
 ### Supported Languages
+
 - English (`en`) - Default
 - Spanish (`es`)
 - Russian (`ru`)
 
 ### Adding Translations
+
 1. Update `src/i18n/types.ts` with new locale
 2. Add locale file in `src/i18n/locales/`
 3. Use `useT` hook in components for translations
@@ -357,6 +387,7 @@ pnpm test-watch
 ## 📊 Database Schema
 
 Key models include:
+
 - **User**: Core user entity with roles and subscriptions
 - **Topic**: Learning topics with questions
 - **Question & Answer**: Quiz content
@@ -368,11 +399,13 @@ Key models include:
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Connect GitHub repository to Vercel
 2. Configure environment variables
 3. Automatic deployments on push to `main`
 
 ### Manual Deployment
+
 ```bash
 # Build and start
 pnpm build
@@ -394,6 +427,7 @@ We welcome contributions! Please follow these guidelines:
 5. Submit a pull request
 
 ### Coding Standards
+
 - Use TypeScript strictly (no `any` types)
 - Follow existing project patterns
 - Write comprehensive tests

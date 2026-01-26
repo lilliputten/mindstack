@@ -1,14 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useFormatter, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 
-import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { TLocale, useT } from '@/i18n';
 import * as Icons from '@/components/shared/Icons';
 import { getCategoryKeywords } from '@/features/categories/helpers';
 import { TAvailableCategory } from '@/features/categories/types';
-import { SmallUserBlock, useUserById } from '@/features/users';
 
 interface TCategoryPropertiesOptions {
   showDates?: boolean;
@@ -19,15 +17,12 @@ interface TCategoryPropertiesProps {
 
 export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPropertiesOptions) {
   const t = useT();
-  const { category, showDates } = props;
-  const format = useFormatter();
-  const { _count, createdAt, updatedAt, createdBy } = category;
+  const { category } = props;
+  const { _count } = category;
 
   const locale = useLocale() as TLocale;
 
   const topicsCount = _count?.topics;
-  const userQuery = useUserById(createdBy || undefined);
-  const { user } = userQuery;
 
   // Get keywords from all translations
   const keywords = getCategoryKeywords(category, locale);
@@ -37,9 +32,17 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
     </span>
   ));
 
-  const createdDateStr = getFormattedRelativeDate(format, createdAt);
-  const updatedDateStr = getFormattedRelativeDate(format, updatedAt);
-  const areDifferentDates = createdDateStr !== updatedDateStr;
+  /* // UNUSED: Extra details omitted
+   * const format = useFormatter();
+   * const userQuery = useUserById(createdBy || undefined);
+   * const { user } = userQuery;
+   * const format = useFormatter();
+   * const userQuery = useUserById(createdBy || undefined);
+   * const { user } = userQuery;
+   * const createdDateStr = getFormattedRelativeDate(format, createdAt);
+   * const updatedDateStr = getFormattedRelativeDate(format, updatedAt);
+   * const areDifferentDates = createdDateStr !== updatedDateStr;
+   */
 
   return (
     <>
@@ -58,6 +61,7 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
         </span>
       )}
 
+      {/* NOTE: Extra details are ommited
       {!!createdBy && (
         <span
           id="user-author"
@@ -67,7 +71,6 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
           <SmallUserBlock className="content-truncate" isLoading={!user} user={user} tiny />
         </span>
       )}
-
       {showDates && (
         <span
           id="createdAt"
@@ -78,7 +81,6 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
           <span className="truncate">{createdDateStr}</span>
         </span>
       )}
-
       {showDates && updatedAt && areDifferentDates && (
         <span
           id="updatedAt"
@@ -89,6 +91,7 @@ export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPr
           <span className="truncate">{updatedDateStr}</span>
         </span>
       )}
+      */}
     </>
   );
 }
