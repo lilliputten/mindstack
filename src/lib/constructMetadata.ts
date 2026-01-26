@@ -17,6 +17,19 @@ interface TConstructMetadataParams {
 
 /** Server function to create html, oath, twitter and other meta data tags */
 export async function constructMetadata(params: TConstructMetadataParams = {}): Promise<Metadata> {
+  /* // NOTE: Opengraph warnings:
+   *
+   * According to https://www.opengraph.xyz/url/https%3A%2F%2Fmind-stack-trainer.vercel.app
+   *
+   * Image is 1250x650px. Recommended size is 1200x630px.
+   * Missing a call-to-action in your image
+   * Title is short (18 characters). Optimal: 50-60 characters
+   * Description is short (27 chars). Optimal: 110-160 chars
+   *
+   * According to https://orcascan.com/tools/open-graph-validator?url=https%3A%2F%2Fmind-stack-trainer.vercel.app:
+   *
+   * The following Open Graph tags are missing from this webpage: <meta property="og:logo" content="your value" />
+   */
   const {
     title,
     description,

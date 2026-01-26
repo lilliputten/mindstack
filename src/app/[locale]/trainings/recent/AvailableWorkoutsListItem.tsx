@@ -182,7 +182,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             </div>
             <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('AverageSuccessRate')}:</span>
-              <span className="truncate font-medium">{averageRatio}%</span>
+              <span className="truncate font-medium">{Math.round(averageRatio)}%</span>
             </div>
             {!!totalTimeSeconds && (
               <div className="content-truncate flex flex-wrap items-center gap-1">
