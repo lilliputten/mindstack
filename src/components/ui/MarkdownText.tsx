@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -63,6 +61,7 @@ export function MarkdownText({ children, className, omitLinks, vars }: MarkdownP
     <div
       className={cn(
         'MarkdownText',
+        // 'flex flex-col gap-4',
         'prose prose-sm max-w-none',
         'prose-headings:font-semibold prose-headings:text-foreground',
         'prose-p:leading-relaxed prose-p:text-foreground',
