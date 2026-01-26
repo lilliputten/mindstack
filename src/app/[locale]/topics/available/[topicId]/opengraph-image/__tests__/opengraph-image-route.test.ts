@@ -10,13 +10,14 @@ jest.mock('next/og', () => ({
   }),
 }));
 
-// Mock the topic metadata function to avoid importing react-markdown
+// Mock the topic functions to avoid importing react-markdown and complex dependencies
 jest.mock('@/features/topics', () => ({
   getTopicMetadata: jest.fn().mockResolvedValue({
     title: 'Test Topic Title',
     description: 'Test Topic Description',
     keywords: 'test,keywords',
   }),
+  renderTopicOpengraphImage: jest.fn().mockResolvedValue(Buffer.from('mocked-jpeg-data')),
 }));
 
 // Mock i18n to avoid complex dependencies

@@ -92,7 +92,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
               <div className="space-y-1">
                 <p>{t.rich('AppIntro.GuestFeaturesTitle', richTextTags)}</p>
                 <ul className="list-disc space-y-1 pl-5">
-                  <li>{t('AppIntro.ViewPublicTopics')}</li>
+                  <li>{t.rich('AppIntro.ViewPublicTopics', richTextTags)}</li>
                   <li>{t('AppIntro.TryWorkoutSessions')}</li>
                   <li>{t('AppIntro.AdjustPersonalSettings')}</li>
                   <li>

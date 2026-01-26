@@ -1,5 +1,4 @@
 import { constructMetadata } from '@/lib/constructMetadata';
-import { truncateMarkdown } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { getT } from '@/i18n';
 import { TAwaitedLocaleProps } from '@/i18n/types';
@@ -21,10 +20,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
     topicId,
     titlePrefix: t('Pages.ViewAvailableTopicTitle'),
   });
-  return constructMetadata({
-    locale,
-    ...topicMetadata,
-  });
+  return constructMetadata(topicMetadata);
 }
 
 export default async function ViewTopicPageHolder({ params }: TAwaitedProps) {

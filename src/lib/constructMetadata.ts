@@ -4,10 +4,11 @@ import { defaultLanguage, siteDescription, siteKeywords, siteTitle } from '@/con
 import { PUBLIC_URL } from '@/config/envServer';
 import { getT } from '@/i18n';
 
-interface TConstructMetadataParams {
+export interface TConstructMetadataParams {
   /*extends Partial<Pick<SiteConfig, 'title' | 'description' | 'keywords'>>*/ title?: string;
   description?: string;
   keywords?: string;
+  // logo?: string;
   image?: string;
   icons?: string;
   noIndex?: boolean;
@@ -34,6 +35,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
     title,
     description,
     keywords,
+    // logo = '/static/favicons/transparent-circle.png',
     image = '/static/opengraph-image.jpg',
     icons = '/favicon.ico',
     noIndex = false,
@@ -42,6 +44,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
   } = params;
   const t = await getT({ locale });
   const imageUrl = url + image;
+  // const logoUrl = url + logo;
   return {
     title: title || t('Pages.RootTitle') || siteTitle,
     description: description || t('Pages.RootDescription') || siteDescription,
@@ -64,6 +67,13 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
       images: [imageUrl],
       // creator: '@lilliputten',
     },
+    /* // It generated <meta name="og:logo" ...> instead of <meta property="og:logo" ...>
+     * other: {
+     *   'og:logo': logoUrl, // Absolute URL required
+     *   'og:logo:width': '512',
+     *   'og:logo:height': '512',
+     * },
+     */
     icons,
     metadataBase: new URL(url), // NOTE: It may break vercel build if there is a malformed url
     manifest: `${url}/site.webmanifest`,

@@ -110,7 +110,7 @@
       "name": "Jest single test",
       "type": "node-terminal",
       "request": "launch",
-      "command": "pnpm exec jest --no-watch --testTimeout=60000 getAvailableWorkouts.test"
+      "command": "pnpm exec jest --no-watch --testTimeout=60000 opengraph-image-route.test"
     }
   ]
 }

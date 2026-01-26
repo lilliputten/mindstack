@@ -20,10 +20,7 @@ export async function generateMetadata({ params }: TAwaitedProps) {
     topicId,
     titlePrefix: t('Pages.WorkoutTopicGoTitle'),
   });
-  return constructMetadata({
-    locale,
-    ...topicMetadata,
-  });
+  return constructMetadata(topicMetadata);
 }
 
 export default async function WorkoutTopicGoWrapper({ params }: TAwaitedProps) {

@@ -1,6 +1,6 @@
-import { Metadata } from 'next';
-
+import { TConstructMetadataParams } from '@/lib/constructMetadata';
 import { truncateMarkdown } from '@/lib/helpers';
+import { defaultLanguage } from '@/config';
 
 import { getAvailableTopicById } from '../actions';
 import { TAvailableTopic, TTopicId } from '../types';
@@ -17,7 +17,7 @@ interface TTopicMetadata {
 /** Server function to create html, oath, twitter and other meta data tags */
 export async function getTopicMetadata(params: TTopicMetadata) {
   const {
-    // locale = defaultLanguage,
+    locale = defaultLanguage,
     topicId,
     titlePrefix,
     defaultTitle,
@@ -52,8 +52,10 @@ export async function getTopicMetadata(params: TTopicMetadata) {
   const keywords = topic?.keywords || defaultKeywords;
 
   return {
+    locale,
+    image: `/${locale}/topics/available/${topicId}/opengraph-image`,
     title,
     description,
     keywords,
-  } satisfies Partial<Metadata>;
+  } satisfies TConstructMetadataParams;
 }
