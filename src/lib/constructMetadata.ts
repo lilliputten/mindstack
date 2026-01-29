@@ -36,7 +36,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
     description,
     keywords,
     // logo = '/static/favicons/transparent-circle.png',
-    image = '/static/opengraph-image.jpg',
+    image = '/static/opengraph-image-v2.jpg',
     icons = '/favicon.ico',
     noIndex = false,
     locale = defaultLanguage, // routing.defaultLocale as TLocale,
