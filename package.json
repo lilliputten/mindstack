@@ -183,8 +183,8 @@
     "zustand": "^5.0.8"
   },
   "scripts": {
-    "prettier": "echo --Run prettier-- && prettier --write --cache . | grep -v -e cached -e unchanged || true",
-    "prettier-quick": "echo --Run quick prettier-- && pretty-quick --write --cache .",
+    "format": "echo --Run prettier-- && prettier --write --cache . | grep -v -e cached -e unchanged || true",
+    "format-quick": "echo --Run quick prettier-- && pretty-quick --write --cache .",
     "stylelint": "echo --Lint styles-- && stylelint --allow-empty-input ./**/*.{css,scss}",
     "stylelint-fix": "echo --Lint styles-- && stylelint --allow-empty-input ./**/*.{css,scss} --fix",
     "check-types": "echo --Run typescript linter-- && tsc --pretty --noEmit",
@@ -194,7 +194,7 @@
     "eslint": "echo --Lint sources with eslint-- && cross-env SHOW_ESLINT_PROGRESS=1 eslint .",
     "lint-all": "echo --Run all pre-commit check-ups-- && npm-run-all check-types eslint stylelint && echo --All lints passed--",
     "sort-locales": "echo --Sort all locales-- && tsx src/packages/sort-json/cli.ts --in-place -c -i \"src/i18n/locales/*.json\"",
-    "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier-quick lint-all && echo --All checks passed--",
+    "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all format-quick lint-all && echo --All checks passed--",
     "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
     "clear-all": "echo --Clear all cache and temp files-- && rimraf node_modules/.cache .next && jest --clearCache && echo Cleared cache",
     "dev-entry-UNUSED": "echo --Run nextjs server in iisnode mode-- && node iisnode-nextjs-entry.js",

@@ -7,7 +7,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { isDev } from '@/config';
-import { useCategoryNames } from '@/features/categories/hooks'; // ATTENTION: Inter-features import!
+import { useCategoryNames } from '@/features/categories/hooks';
 import {
   getActiveFilterIds,
   getFilterFieldName,

@@ -44,9 +44,10 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
   } = params;
   const t = await getT({ locale });
   const imageUrl = url + image;
+  const rootTitle = t('Pages.RootTitle') || siteTitle;
   // const logoUrl = url + logo;
   return {
-    title: title || t('Pages.RootTitle') || siteTitle,
+    title: title || rootTitle,
     description: description || t('Pages.RootDescription') || siteDescription,
     keywords: [siteKeywords, t('Pages.RootKeywords'), keywords].filter(Boolean).join(', '),
     // authors: [{ name: 'lilliputten' }],
@@ -57,7 +58,7 @@ export async function constructMetadata(params: TConstructMetadataParams = {}): 
       url,
       title,
       description,
-      siteName: title,
+      siteName: rootTitle,
       images: [imageUrl],
     },
     twitter: {
