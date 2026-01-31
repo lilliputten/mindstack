@@ -11,15 +11,21 @@ import { TBillingPeriod } from './shared/types';
 
 const BILLING_PERIOD_KEY = 'pricing-billing-period';
 
+const defaultBillingPeriod: TBillingPeriod = 'monthly';
+
 export function PricingContent() {
-  const [billingPeriod, setBillingPeriod] = React.useState<TBillingPeriod | undefined>();
+  const [billingPeriod, setBillingPeriod] = React.useState<TBillingPeriod | undefined>(
+    defaultBillingPeriod,
+  );
 
   React.useEffect(() => {
     // Initialize from localStorage or default to 'yearly'
     if (typeof window !== 'undefined') {
       const savedPeriodRaw = localStorage.getItem(BILLING_PERIOD_KEY);
       const savedPeriod =
-        savedPeriodRaw === 'monthly' || savedPeriodRaw === 'yearly' ? savedPeriodRaw : 'yearly';
+        savedPeriodRaw === 'monthly' || savedPeriodRaw === 'yearly'
+          ? savedPeriodRaw
+          : defaultBillingPeriod;
       setBillingPeriod(savedPeriod);
     }
   }, []);

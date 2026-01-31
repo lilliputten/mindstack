@@ -4,16 +4,17 @@ import React from 'react';
 import NextLink from 'next/link';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 interface PricingChoosePaymentMethodCardProps {
+  // priceText: React.ReactNode;
   title: string;
   icon: React.ElementType;
   description: string | React.ReactNode;
-  buttonText?: string;
+  buttonText?: React.ReactNode;
   onClick?: () => void;
   className?: string;
   link?: string;
@@ -22,6 +23,7 @@ interface PricingChoosePaymentMethodCardProps {
 }
 
 export function PricingChoosePaymentMethodCard({
+  // priceText,
   title,
   icon: Icon,
   description,
@@ -32,6 +34,13 @@ export function PricingChoosePaymentMethodCard({
   isLink = false,
   disabled = false,
 }: PricingChoosePaymentMethodCardProps) {
+  const content =
+    (isLink && link) || typeof buttonText === 'string' ? (
+      <span className="content-truncate">{buttonText}</span>
+    ) : (
+      buttonText
+    );
+  const buttonClassName = 'mt-auto h-auto flex w-full';
   return (
     <Card
       className={cn(
@@ -52,25 +61,57 @@ export function PricingChoosePaymentMethodCard({
         )}
       </div>
       {isLink && link ? (
-        <Button variant="theme" disabled={disabled} className="mt-auto flex w-full">
-          <NextLink
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              'flex w-full items-center justify-center gap-1',
-              disabled && 'pointer-events-none opacity-50',
-            )}
-          >
-            <span className="truncate">{buttonText}</span>
-            <Icons.ExternalLink className="size-3.5 opacity-50" />
-          </NextLink>
-        </Button>
+        <NextLink
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            isDev && '__PricingChoosePaymentMethodCard_Link', // DEBUG
+            buttonVariants({ variant: 'theme' }),
+            buttonClassName,
+            'flex flex-wrap items-center gap-x-1',
+            disabled && 'pointer-events-none opacity-50',
+          )}
+        >
+          {content}
+          <Icons.ExternalLink className="size-3.5 shrink-0 opacity-50" />
+        </NextLink>
       ) : buttonText && onClick ? (
-        <Button variant="theme" onClick={onClick} disabled={disabled} className="mt-auto w-full">
-          <span className="truncate">{buttonText}</span>
+        <Button
+          variant="theme"
+          onClick={onClick}
+          disabled={disabled}
+          className={cn(
+            isDev && '__PricingChoosePaymentMethodCard_Button', // DEBUG
+            buttonClassName,
+          )}
+        >
+          {content}
         </Button>
       ) : null}
     </Card>
   );
+  /*
+inline-flex
+items-center
+justify-center
+text-sm
+font-medium
+focus-visible:outline-none
+disabled:opacity-30
+disabled:cursor-default
+disabled:pointer-events-none
+select-none
+transition
+bg-theme
+text-theme-foreground
+hover:bg-theme-600
+h-10
+px-4
+py-2
+rounded-md
+__PricingChoosePaymentMethodCard_Button
+mt-auto
+w-full
+   */
 }
