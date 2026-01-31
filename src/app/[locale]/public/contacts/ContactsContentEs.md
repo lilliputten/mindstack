@@ -8,7 +8,7 @@
 
 ## El Autor
 
-[{authorName}]({authorSiteUrl}) -- un mantenedor, Investigador de IA y Desarrollador de Software.
+[{authorName}]({authorSiteUrl}) -- un mantenedor y Desarrollador de Software.
 
 ## Detalles de Contacto
 

@@ -8,7 +8,7 @@
 
 ## The Author
 
-[{authorName}]({authorSiteUrl}) -- a maintainer, AI Researcher & Software Developer.
+[{authorName}]({authorSiteUrl}) -- a maintainer & Software Developer.
 
 ## Contact Details
 
