@@ -34,7 +34,7 @@ function calcCurrencyFromBase(
   return basePrice / ratio;
 }
 
-export function prettifyPrice(price?: number) {
+export function prettifyPrice(price?: number, opts: { onlyCents?: boolean } = {}) {
   if (price == undefined) {
     return undefined;
   }
@@ -44,7 +44,7 @@ export function prettifyPrice(price?: number) {
   const intValStr = String(intVal);
   const intSize = intValStr.length;
   // Prettify...
-  if (intSize > 1) {
+  if (!opts.onlyCents && intSize > 1) {
     const zerableDecimalPositions = intSize > 2 ? Math.min(3, Math.round(intSize / 2)) : 0;
     const zerableBase = zerableDecimalPositions ? Math.pow(10, zerableDecimalPositions) : 5;
     value = Math.round(value / zerableBase) * zerableBase;

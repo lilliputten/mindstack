@@ -1240,7 +1240,7 @@
   "PricingChoosePage": {
     "CheckAvailableSubscriptionPlans": "Check Other Available Subscription Plans",
     "ChoosePaymentMethod": "Choose Payment Method",
-    "CompleteSubscription": "To complete your <strong>{planName}</strong> subscription <strong>{period, select, YEAR {for a yeatr} MONTH {for a month} other {{period}} }</strong>.",
+    "CompleteSubscription": "To complete your <strong>{planName}</strong> subscription <strong>{period, select, YEAR {for a year} MONTH {for a month} other {{period}} }</strong>.",
     "ContactSupport": "Contact Support",
     "ContactSupportForDowngrade": "You are downgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong>. You need to contact <ContactsLink>support</ContactsLink> to downgrade.",
     "ContactTechnicalSupport": "Contact the technical support",
@@ -1252,13 +1252,13 @@
     "NoPaymentUrlProvided": "No payment url provided",
     "OpenTelegramBot": "Pay <PriceText></PriceText> in the telegram bot @{botUsername}",
     "OtherOptionsText": "If you want to choose other subscription options, please go to <PricingLink>the pricing page</PricingLink> or <ContactsLink>contact us</ContactsLink> in case of any problems.",
-    "PayWithInternationalCard": "Pay <PriceText></PriceText> <nobr>(<EURPriceText></EURPriceText>)</nobr> with International Card",
+    "PayWithInternationalCard": "Pay <PriceText></PriceText> by International Card",
     "PayWithRussianCard": "Pay <PriceText></PriceText> with Russian Card",
     "PaymentCreated": "Payment has been successfully created",
     "PaymentCreatingError": "Payment creating error",
     "PaymentIsCreating": "The payment is creating",
     "RussianBankCard": "Russian Bank Card",
-    "RussianBankCardDescription": "Pay with your Russian bank card. Works with cards from any bank and country.",
+    "RussianBankCardDescription": "Pay with your Russian bank card. It works with cards of any Russian bank.",
     "SameGradeMessage": "You already have the {currentGrade} subscription plan",
     "SelectAnotherSubscriptionType": "Select another subscription type",
     "TelegramStars": "Telegram Stars",
@@ -1266,8 +1266,7 @@
     "TelegramStarsOptionAvailable": "This option is temporarily unavailable (it will be available later if you log in with a Telegram account).",
     "UpgradeMessage": "You are upgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong> ({period})",
     "UpgradePriceInfo": "You will only be charged the difference between the subscription plans.",
-    "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}",
-    "YoureToPay": "You're to pay"
+    "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Can't calculate prices for a \"{subscriptionType}\" subscription type",

@@ -74,7 +74,9 @@ export function PricingChoosePaymentMethodCard({
           )}
         >
           {content}
+          {/*
           <Icons.ExternalLink className="size-3.5 shrink-0 opacity-50" />
+          */}
         </NextLink>
       ) : buttonText && onClick ? (
         <Button

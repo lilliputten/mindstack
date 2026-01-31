@@ -7,23 +7,23 @@ import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
 import { CurrencySigns } from '@/components/currencies';
 import { contactsAliasRoute, isDev, pricingAliasRoute } from '@/config';
-import { stringifyPrice, TCurrencyPrices, TCurrencyType } from '@/features/currencies';
+import { stringifyPrice, TCurrencyType } from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
 
 interface TPriceTextProps {
   comparisonResult?: TGradeComparisonResult;
-  prices: TCurrencyPrices;
+  price: number | string;
   className?: string;
   localeCurrency: TCurrencyType;
 }
 
 export function PriceText(props: TPriceTextProps) {
-  const { className, localeCurrency, comparisonResult, prices } = props;
+  const { className, localeCurrency, comparisonResult, price } = props;
   const t = useT();
 
   const isTg = localeCurrency === 'TGSTAR';
   const CurrencySign = CurrencySigns[localeCurrency];
-  const localePrice = prices?.[localeCurrency];
+  // const localePrice = prices?.[localeCurrency];
 
   const isDowngrade = comparisonResult?.type === 'downgrade';
 
@@ -55,7 +55,7 @@ export function PriceText(props: TPriceTextProps) {
       <span className="flex items-baseline gap-x-1">
         <span className="flex items-center gap-x-0.5">
           {currencyBlock}
-          <span>{stringifyPrice(localePrice)}</span>
+          <span>{typeof price === 'number' ? stringifyPrice(price) : price}</span>
         </span>
       </span>
     </span>

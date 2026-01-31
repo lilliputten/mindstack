@@ -1243,13 +1243,13 @@
     "NoPaymentUrlProvided": "No se proporcionó URL de pago",
     "OpenTelegramBot": "Pagar <PriceText></PriceText> en el bot de Telegram @{botUsername}",
     "OtherOptionsText": "Si desea elegir otras opciones de suscripción, vaya a <PricingLink>la página de precios</PricingLink> o <ContactsLink>contáctenos</ContactsLink> en caso de cualquier problema.",
-    "PayWithInternationalCard": "Pagar <PriceText></PriceText> <nobr>(<EURPriceText></EURPriceText>)</nobr> con Tarjeta Internacional",
+    "PayWithInternationalCard": "Pagar <PriceText></PriceText> con Tarjeta Internacional",
     "PayWithRussianCard": "Paga <PriceText></PriceText> con Tarjeta Rusa",
     "PaymentCreated": "El pago ha sido creado exitosamente.",
     "PaymentCreatingError": "Error al crear el pago",
     "PaymentIsCreating": "El pago está creando",
     "RussianBankCard": "Tarjeta Bancaria Rusa",
-    "RussianBankCardDescription": "Pague con su tarjeta bancaria rusa. Funciona con tarjetas de cualquier banco y país.",
+    "RussianBankCardDescription": "Paga con tu tarjeta bancaria rusa. \nFunciona con tarjetas de cualquier banco ruso.",
     "SameGradeMessage": "Ya tienes el plan de suscripción {currentGrade}",
     "SelectAnotherSubscriptionType": "Seleccionar otro tipo de suscripción",
     "TelegramStars": "Estrellas de Telegram",
@@ -1257,8 +1257,7 @@
     "TelegramStarsOptionAvailable": "Esta opción no está disponible temporalmente (estará disponible más adelante si inicia sesión con una cuenta de Telegram).",
     "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong> ({period})",
     "UpgradePriceInfo": "Sólo se te cobrará la diferencia entre los planes de suscripción.",
-    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
-    "YoureToPay": "Usted debe pagar"
+    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "No se pueden calcular precios para el tipo de suscripción \"{subscriptionType}\"",

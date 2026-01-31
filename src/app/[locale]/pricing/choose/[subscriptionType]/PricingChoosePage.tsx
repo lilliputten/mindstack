@@ -11,7 +11,13 @@ import { Button } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
-import { TCurrencyPrices, TCurrencyType } from '@/features/currencies';
+import {
+  getAllCurrencyRatios,
+  prettifyPrice,
+  TCurrencyPrices,
+  TCurrencyRatios,
+  TCurrencyType,
+} from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
 import { useStripePayment, useYookassaPayment } from '@/features/payments/hooks';
 import { parsePaidableSubscriptionType, TPaidableSubscriptionType } from '@/features/subscriptions';
@@ -168,19 +174,64 @@ export function PricingChoosePage(props: PricingChoosePageProps) {
    * }, [isDowngrade, richProps, t]);
    */
 
+  const [ratios, setRatios] = React.useState<TCurrencyRatios | undefined>();
+
+  React.useEffect(() => {}, []);
+
+  React.useEffect(() => {
+    getAllCurrencyRatios().then(setRatios);
+  }, []);
+
   const PriceTextForCurrency = React.useCallback(
-    ({ localeCurrency, className }: { localeCurrency: TCurrencyType; className?: string }) => (
-      <PriceText
-        className={cn(
-          isDev && '__PricingChoosePage_PriceTextForCurrency', // DEBUG
-          className,
-        )}
-        comparisonResult={comparisonResult}
-        prices={prices}
-        localeCurrency={localeCurrency}
-      />
-    ),
-    [comparisonResult, prices],
+    ({ localeCurrency, className }: { localeCurrency: TCurrencyType; className?: string }) => {
+      const isUSD = localeCurrency === 'USD';
+      const price = prices[localeCurrency];
+      const items = [
+        <PriceText
+          key={'basePrice-' + localeCurrency}
+          comparisonResult={comparisonResult}
+          price={price}
+          localeCurrency={localeCurrency}
+        />,
+      ];
+      // Display alternative price in EUR for an USD option
+      if (isUSD) {
+        const eurFromRatios = ratios && price / ratios.EUR;
+        const eurPrice = eurFromRatios && prettifyPrice(eurFromRatios, { onlyCents: true });
+        if (eurPrice) {
+          items.push(
+            <span
+              className={cn(
+                isDev && '__PricingChoosePage_PriceTextForCurrency_ExtaPrice', // DEBUG
+                'flex truncate opacity-70',
+              )}
+            >
+              ({t('or')}
+              <PriceText
+                key={'extraPrice-EUR'}
+                className="ml-1"
+                comparisonResult={comparisonResult}
+                price={eurPrice}
+                localeCurrency="EUR"
+              />
+              )
+            </span>,
+          );
+        }
+      }
+      return (
+        <span
+          className={cn(
+            isDev && '__PricingChoosePage_PriceTextForCurrency', // DEBUG
+            'flex gap-x-1 truncate',
+            className,
+          )}
+        >
+          {items}
+        </span>
+      );
+    },
+    [t, comparisonResult, prices, ratios],
   );
 
   const buttonTextClass =
@@ -329,7 +380,7 @@ export function PricingChoosePage(props: PricingChoosePageProps) {
                   ? t('PricingChoosePage.ContactSupport')
                   : t.rich('PricingChoosePage.PayWithInternationalCard', {
                       PriceText: () => <PriceTextForCurrency localeCurrency="USD" />,
-                      EURPriceText: () => <PriceTextForCurrency localeCurrency="EUR" />,
+                      // EURPriceText: () => <PriceTextForCurrency localeCurrency="EUR" />,
                       // span: (chunks) => <span className="xxx">{chunks}</span>,
                       nobr: (chunks) => (
                         <span className="flex truncate whitespace-nowrap">{chunks}</span>
@@ -352,9 +403,9 @@ export function PricingChoosePage(props: PricingChoosePageProps) {
                 <p className="content-truncate">
                   {t('PricingChoosePage.TelegramStarsOptionAvailable')}
                 </p>
-                <p className="content-truncate text-sm opacity-50">
+                {/*<p className="content-truncate text-sm opacity-50">
                   {t('PricingChoosePage.TelegramStarsCompletePayment')}
-                </p>
+                </p>*/}
               </>
             }
             buttonText={
@@ -368,7 +419,7 @@ export function PricingChoosePage(props: PricingChoosePageProps) {
                     })}
               </span>
             }
-            link={isDowngrade ? '#' : telegramUrl}
+            link={!isDowngrade ? telegramUrl : undefined}
             isLink={!isDowngrade}
             // disabled={isDowngrade}
           />

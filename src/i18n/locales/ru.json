@@ -1244,13 +1244,13 @@
     "NoPaymentUrlProvided": "Не предоставлен URL оплаты",
     "OpenTelegramBot": "Оплатить <PriceText></PriceText> в боте Telegram @{botUsername}",
     "OtherOptionsText": "Если вы хотите выбрать другие варианты подписки, перейдите на <PricingLink>страницу цен</PricingLink> или <ContactsLink>свяжитесь с нами</ContactsLink> в случае возникновения каких-либо проблем.",
-    "PayWithInternationalCard": "Оплатить <PriceText></PriceText> <nobr>(<EURPriceText></EURPriceText>)</nobr> с помощью международной карты",
+    "PayWithInternationalCard": "Оплатить <PriceText></PriceText> международной картой",
     "PayWithRussianCard": "Оплатить <PriceText></PriceText> российской картой",
     "PaymentCreated": "Платеж успешно создан",
     "PaymentCreatingError": "Ошибка создания платежа",
     "PaymentIsCreating": "Платеж создается",
     "RussianBankCard": "Российская банковская карта",
-    "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого банка и страны.",
+    "RussianBankCardDescription": "Оплатите с помощью вашей российской банковской карты. Работает с картами любого российского банка.",
     "SameGradeMessage": "У вас уже есть план подписки {currentGrade}",
     "SelectAnotherSubscriptionType": "Выберите другой тип подписки",
     "TelegramStars": "Звезды Telegram",
@@ -1258,8 +1258,7 @@
     "TelegramStarsOptionAvailable": "Эта опция временно недоступна (она будет доступна позже, если вы войдете под учетной записью Telegram).",
     "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade</strong> до <strong>{requestedGrade</strong> ({ period})",
     "UpgradePriceInfo": "С вас будет взиматься только разница между планами",
-    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
-    "YoureToPay": "Вы платите"
+    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Не удается рассчитать цены для типа подписки \"{subscriptionType}\"",
