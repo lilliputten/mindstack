@@ -1234,7 +1234,7 @@
     "ChoosePaymentMethod": "Выберите способ оплаты",
     "CompleteSubscription": "для подключения подписки {planName}",
     "ContactSupport": "Связаться с поддержкой",
-    "ContactSupportForDowngrade": "Вы переходите с <strong>{currentGrade</strong> на <strong>{requestedGrade</strong>. \nЧтобы перейти на более раннюю версию, вам необходимо обратиться в <ContactsLink>поддержку</ContactsLink>.",
+    "ContactSupportForDowngrade": "Вы переходите с <strong>{currentGrade}</strong> на <strong>{requestedGrade}</strong>. \nЧтобы перейти на более раннюю версию, вам необходимо обратиться в <ContactsLink>поддержку</ContactsLink>.",
     "ContactTechnicalSupport": "Обратитесь в техническую поддержку",
     "DowngradeRequiresSupport": "Для понижения уровня необходимо связаться с поддержкой",
     "DowngradeWarning": "Предупреждение о понижении уровня — пожалуйста, свяжитесь с поддержкой",
