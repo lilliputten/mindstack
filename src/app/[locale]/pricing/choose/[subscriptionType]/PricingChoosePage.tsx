@@ -8,15 +8,15 @@ import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Link, TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { CurrencySigns } from '@/components/currencies';
 import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
-import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';
+import { TCurrencyPrices, TCurrencyType } from '@/features/currencies';
 import { TGradeComparisonResult } from '@/features/payments/helpers';
 import { useStripePayment, useYookassaPayment } from '@/features/payments/hooks';
 import { parsePaidableSubscriptionType, TPaidableSubscriptionType } from '@/features/subscriptions';
 
+import { PriceText } from './PriceText';
 import { PricingChoosePaymentMethodCard } from './PricingChoosePaymentMethodCard';
 
 interface PricingChoosePageProps {
@@ -28,24 +28,25 @@ interface PricingChoosePageProps {
 
 type TPaymentResult = { paymentUrl?: string };
 
-export function PricingChoosePage({
-  subscriptionType,
-  comparisonResult,
-  locale,
-  prices,
-}: PricingChoosePageProps) {
+export function PricingChoosePage(props: PricingChoosePageProps) {
+  const {
+    subscriptionType,
+    comparisonResult,
+    // locale,
+    prices,
+  } = props;
   const t = useT();
   const { grade, period } = parsePaidableSubscriptionType(subscriptionType, t);
-  const localeCurrency = localeCurrencies[locale];
+  // const localeCurrency = localeCurrencies[locale];
 
-  const CurrencySign = CurrencySigns[localeCurrency];
-  const TgStarSign = CurrencySigns.TGSTAR;
+  // const CurrencySign = CurrencySigns[localeCurrency];
+  // const TgStarSign = CurrencySigns.TGSTAR;
   const { BOT_USERNAME } = useEnvContext();
 
   const [isWorking, startWorking] = React.useTransition();
 
-  const localePrice = prices?.[localeCurrency];
-  const tgPrice = prices?.TGSTAR;
+  // const localePrice = prices?.[localeCurrency];
+  // const tgPrice = prices?.TGSTAR;
 
   const telegramUrl = `${tgUrlPrefix}/${BOT_USERNAME}`;
 
@@ -68,8 +69,9 @@ export function PricingChoosePage({
       strong: (chunks) => <strong>{chunks}</strong>,
       currentGrade: comparisonResult?.currentGrade,
       requestedGrade: comparisonResult?.requestedGrade,
+      period,
     }),
-    [comparisonResult?.currentGrade, comparisonResult?.requestedGrade],
+    [comparisonResult, period],
   );
 
   const ensureValidConditions = React.useCallback(() => {
@@ -148,18 +150,41 @@ export function PricingChoosePage({
        * });
        */
     } else {
-      return t('PricingChoosePage.CompleteSubscription', { planName: grade });
+      return t.rich('PricingChoosePage.CompleteSubscription', {
+        ...richProps,
+        planName: grade,
+        period,
+      });
     }
-  }, [richProps, grade, isDowngrade, isGuest, isSame, isUpgrade, t]);
+  }, [richProps, grade, period, isDowngrade, isGuest, isSame, isUpgrade, t]);
 
-  // Determine the appropriate payment message based on comparison result
-  const paymentMessage = React.useMemo(() => {
-    if (isDowngrade) {
-      return t.rich('PricingChoosePage.ContactSupportForDowngrade', richProps);
-    } else {
-      return t('PricingChoosePage.YoureToPay');
-    }
-  }, [isDowngrade, richProps, t]);
+  /* // Determine the appropriate payment message based on comparison result
+   * const paymentMessage = React.useMemo(() => {
+   *   if (isDowngrade) {
+   *     return t.rich('PricingChoosePage.ContactSupportForDowngrade', richProps);
+   *   } else {
+   *     return t('PricingChoosePage.YoureToPay');
+   *   }
+   * }, [isDowngrade, richProps, t]);
+   */
+
+  const PriceTextForCurrency = React.useCallback(
+    ({ localeCurrency, className }: { localeCurrency: TCurrencyType; className?: string }) => (
+      <PriceText
+        className={cn(
+          isDev && '__PricingChoosePage_PriceTextForCurrency', // DEBUG
+          className,
+        )}
+        comparisonResult={comparisonResult}
+        prices={prices}
+        localeCurrency={localeCurrency}
+      />
+    ),
+    [comparisonResult, prices],
+  );
+
+  const buttonTextClass =
+    'leading-5 flex flex-wrap gap-x-1 justify-center content-truncate text-center';
 
   return (
     <main
@@ -212,6 +237,12 @@ export function PricingChoosePage({
               'content-truncate mt-4 flex flex-col items-center',
             )}
           >
+            {/*
+            // DEMO
+            <PriceTextForCurrency localeCurrency="RUB" />
+            <PriceTextForCurrency localeCurrency="USD" />
+            <PriceTextForCurrency localeCurrency="TGSTAR" />
+            // OLD WAY: Displaying single price for all methods (may be confused due to varios multipliers from `src/constants/prices.ts`
             <div className="content-truncate flex flex-wrap items-baseline gap-2">
               <span
                 className={cn(
@@ -249,6 +280,7 @@ export function PricingChoosePage({
                 </>
               )}
             </div>
+            */}
             {isUpgrade && (
               <div className="content-truncate mt-2 w-full text-sm text-muted-foreground">
                 {t('PricingChoosePage.UpgradePriceInfo')}
@@ -273,9 +305,14 @@ export function PricingChoosePage({
             icon={Icons.Billing}
             description={t('PricingChoosePage.RussianBankCardDescription')}
             buttonText={
-              isDowngrade
-                ? t('PricingChoosePage.ContactSupport')
-                : t('PricingChoosePage.PayWithRussianCard')
+              <span className={buttonTextClass}>
+                {isDowngrade
+                  ? t('PricingChoosePage.ContactSupport')
+                  : t.rich('PricingChoosePage.PayWithRussianCard', {
+                      PriceText: () => <PriceTextForCurrency localeCurrency="RUB" />,
+                      span: (chunks) => <span className="xxx">{chunks}</span>,
+                    })}
+              </span>
             }
             onClick={handleRussianCard}
             // disabled={isDowngrade}
@@ -287,9 +324,18 @@ export function PricingChoosePage({
             icon={Icons.Globe}
             description={t('PricingChoosePage.InternationalCardDescription')}
             buttonText={
-              isDowngrade
-                ? t('PricingChoosePage.ContactSupport')
-                : t('PricingChoosePage.PayWithInternationalCard')
+              <span className={buttonTextClass}>
+                {isDowngrade
+                  ? t('PricingChoosePage.ContactSupport')
+                  : t.rich('PricingChoosePage.PayWithInternationalCard', {
+                      PriceText: () => <PriceTextForCurrency localeCurrency="USD" />,
+                      EURPriceText: () => <PriceTextForCurrency localeCurrency="EUR" />,
+                      // span: (chunks) => <span className="xxx">{chunks}</span>,
+                      nobr: (chunks) => (
+                        <span className="flex truncate whitespace-nowrap">{chunks}</span>
+                      ),
+                    })}
+              </span>
             }
             onClick={handleInternationalCard}
             // disabled={isDowngrade}
@@ -297,6 +343,7 @@ export function PricingChoosePage({
 
           {/* Telegram Stars */}
           <PricingChoosePaymentMethodCard
+            disabled
             className="md:col-span-2 2xl:md:col-span-1"
             title={t('PricingChoosePage.TelegramStars')}
             icon={Icons.Telegram}
@@ -311,9 +358,15 @@ export function PricingChoosePage({
               </>
             }
             buttonText={
-              isDowngrade
-                ? t('PricingChoosePage.ContactSupport')
-                : t('PricingChoosePage.OpenTelegramBot', { botUsername: BOT_USERNAME })
+              <span className={buttonTextClass}>
+                {isDowngrade
+                  ? t('PricingChoosePage.ContactSupport')
+                  : t.rich('PricingChoosePage.OpenTelegramBot', {
+                      botUsername: BOT_USERNAME,
+                      PriceText: () => <PriceTextForCurrency localeCurrency="TGSTAR" />,
+                      // span: (chunks) => <span className="xxx">{chunks}</span>,
+                    })}
+              </span>
             }
             link={isDowngrade ? '#' : telegramUrl}
             isLink={!isDowngrade}

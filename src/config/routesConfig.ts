@@ -33,6 +33,7 @@ export const authErrorRoute = '/auth/error';
 export const myTopicsRoute = '/topics/my';
 
 // 5. Subsription routes
+/** Pricing choose route, requires a tariff parameter, like `pro-month` */
 export const pricingChooseRoute = '/pricing/choose';
 
 // 6. Alias routes
@@ -80,6 +81,8 @@ export const staticRedirects: Redirect[] = [
   { source: startAliasRoute, destination: availableTopicsRoute, permanent: true },
   { source: rootCategoriesRoute, destination: availableCategoriesRoute, permanent: true },
   { source: rootTrainingsRoute, destination: recentTrainingsRoute, permanent: true },
+  // // There no root page for `pricingChooseRoute` route, expected tariff paramater, like `pro-month`
+  // { source: pricingChooseRoute, destination: pricingAliasRoute, permanent: true },
 ] as const;
 
 export const rewritedRoutes = staticRewrites.map(({ destination }) => destination);

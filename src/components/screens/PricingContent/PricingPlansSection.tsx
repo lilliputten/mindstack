@@ -294,7 +294,7 @@ export function PricingPlansSection({ billingPeriod }: PricingPlansSectionProps)
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="truncate rounded-full bg-theme px-6 py-2 text-xs font-medium text-white">
-                      {t('Pricing.MostPopular')}
+                      {t('Pricing.MostConvenient')}
                     </span>
                   </div>
                 )}

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Accordion } from '@/components/ui/Accordion';
-import { isDev, pricingChooseRoute } from '@/config';
+import { isDev, pricingAliasRoute } from '@/config';
 
 import { FAQAccordionItem } from './shared';
 
@@ -19,7 +19,7 @@ export function FAQSection() {
     ol: (chunks) => <ol className="items">{chunks}</ol>,
     ul: (chunks) => <ul className="items">{chunks}</ul>,
     li: (chunks) => <li>{chunks}</li>,
-    LinkPricing: (chunks) => <Link href={pricingChooseRoute}>{chunks}</Link>,
+    LinkPricing: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
   };
 
   return (
