@@ -142,12 +142,16 @@ export function PageError(props: TErrorProps) {
           <Button
             variant="theme"
             onClick={goBack}
-            className="text-overflow flex items-center gap-2"
+            className="content-overflow flex items-center gap-2"
           >
             <Icons.ArrowLeft className="size-4" />
             <span className="truncate">{t('GoBack')}</span>
           </Button>
-          <Button variant="theme" onClick={goHome} className="text-overflowflex items-center gap-2">
+          <Button
+            variant="theme"
+            onClick={goHome}
+            className="content-overflow flex items-center gap-2"
+          >
             <Icons.Home className="size-4" />
             <span className="truncate">{t('GoHome')}</span>
           </Button>
@@ -158,7 +162,11 @@ export function PageError(props: TErrorProps) {
         </Link>
         */}
           {!!reset && (
-            <Button onClick={reset} className="text-overflowflex items-center gap-2">
+            <Button
+              onClick={reset}
+              variant="theme"
+              className="content-overflow flex items-center gap-2"
+            >
               <Icons.Refresh className="size-4" />
               <span className="truncate">{t('TryAgain')}</span>
             </Button>

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { RichTranslationValues } from 'next-intl';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
@@ -59,6 +60,17 @@ export function PricingChoosePage({
   const isGuest = comparisonResult?.type === 'guest';
   const isDowngrade = comparisonResult?.type === 'downgrade';
   const isUpgrade = comparisonResult?.type === 'upgrade';
+
+  const richProps = React.useMemo<RichTranslationValues>(
+    () => ({
+      PricingLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
+      ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
+      strong: (chunks) => <strong>{chunks}</strong>,
+      currentGrade: comparisonResult?.currentGrade,
+      requestedGrade: comparisonResult?.requestedGrade,
+    }),
+    [comparisonResult?.currentGrade, comparisonResult?.requestedGrade],
+  );
 
   const ensureValidConditions = React.useCallback(() => {
     // Guest users should authorize in order to be able to make payments
@@ -125,18 +137,9 @@ export function PricingChoosePage({
     if (isGuest) {
       return t('PricingChoosePage.GuestNotAllowed');
     } else if (isDowngrade) {
-      return t.rich('PricingChoosePage.ContactSupportForDowngrade', {
-        ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
-        strong: (chunks) => <strong>{chunks}</strong>,
-        currentGrade: comparisonResult?.currentGrade,
-        requestedGrade: comparisonResult?.requestedGrade,
-      });
+      return t.rich('PricingChoosePage.ContactSupportForDowngrade', richProps);
     } else if (isUpgrade) {
-      return t.rich('PricingChoosePage.UpgradeMessage', {
-        strong: (chunks) => <strong>{chunks}</strong>,
-        currentGrade: comparisonResult?.currentGrade,
-        requestedGrade: comparisonResult?.requestedGrade,
-      });
+      return t.rich('PricingChoosePage.UpgradeMessage', richProps);
     } else if (isSame) {
       return null;
       /* // NOTE: This message already displayed in the title
@@ -147,27 +150,16 @@ export function PricingChoosePage({
     } else {
       return t('PricingChoosePage.CompleteSubscription', { planName: grade });
     }
-  }, [
-    comparisonResult?.currentGrade,
-    comparisonResult?.requestedGrade,
-    grade,
-    isDowngrade,
-    isGuest,
-    isSame,
-    isUpgrade,
-    t,
-  ]);
+  }, [richProps, grade, isDowngrade, isGuest, isSame, isUpgrade, t]);
 
   // Determine the appropriate payment message based on comparison result
   const paymentMessage = React.useMemo(() => {
     if (isDowngrade) {
-      return t.rich('PricingChoosePage.ContactSupportForDowngrade', {
-        ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
-      });
+      return t.rich('PricingChoosePage.ContactSupportForDowngrade', richProps);
     } else {
       return t('PricingChoosePage.YoureToPay');
     }
-  }, [isDowngrade, t]);
+  }, [isDowngrade, richProps, t]);
 
   return (
     <main
@@ -286,7 +278,7 @@ export function PricingChoosePage({
                 : t('PricingChoosePage.PayWithRussianCard')
             }
             onClick={handleRussianCard}
-            disabled={isDowngrade}
+            // disabled={isDowngrade}
           />
 
           {/* International Card */}
@@ -300,7 +292,7 @@ export function PricingChoosePage({
                 : t('PricingChoosePage.PayWithInternationalCard')
             }
             onClick={handleInternationalCard}
-            disabled={isDowngrade}
+            // disabled={isDowngrade}
           />
 
           {/* Telegram Stars */}
@@ -332,10 +324,7 @@ export function PricingChoosePage({
 
       <div className="mt-12 flex flex-col items-center text-center">
         <p className="content-text content-truncate w-full">
-          {t.rich('PricingChoosePage.OtherOptionsText', {
-            PricingLink: (chunks) => <Link href={pricingAliasRoute}>{chunks}</Link>,
-            ContactsLink: (chunks) => <Link href={contactsAliasRoute}>{chunks}</Link>,
-          })}
+          {t.rich('PricingChoosePage.OtherOptionsText', richProps)}
         </p>
       </div>
     </main>
