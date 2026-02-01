@@ -1,13 +1,12 @@
 'use server';
 
 import { defaultAiClientType } from '@/lib/ai/types/TAiClientType';
-import { debugObj } from '@/lib/debug';
 import { AIGenerationError } from '@/lib/errors/AIGenerationError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { checkAllowedAIGenerations, saveAIGeneration } from '@/features/ai-generations/actions';
-import { sendLoggingMessage } from '@/features/bot/actions';
+import { logData } from '@/features/logger/server-actions';
 
 import { TAIQueryOptions } from '../types';
 import { TPlainMessage } from '../types/messages';
@@ -39,13 +38,14 @@ export async function sendUserAIRequest(
     throw new AIGenerationError('UNATHORIZED');
   }
 
-  const debugStr = debugObj({
+  const __debugData = {
     versionInfo,
     messages,
     opts,
     user,
-  });
-  await sendLoggingMessage(`[mindstack:sendUserAIRequest]\n${debugStr}`);
+  };
+  const __idMsg = '[mindstack:sendUserAIRequest]';
+  await logData(__idMsg, __debugData);
 
   const startTime = new Date();
 

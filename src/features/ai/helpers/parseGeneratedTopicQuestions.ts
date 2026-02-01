@@ -1,6 +1,9 @@
+'use client';
+
 import { MessageContent } from '@langchain/core/messages';
 
 import { getErrorText, parseDangerousJson } from '@/lib/helpers';
+import { logData } from '@/features/logger/server-actions';
 
 import {
   generatedQuestionsSchema,
@@ -48,7 +51,7 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
 
   try {
     rawJson = queryData.content;
-    // NOTE: Temporarily monitoring AI generation
+    // DEBUG: Temporarily monitoring AI generation
     console.log('[parseGeneratedTopicQuestions] Got raw text', {
       rawJson,
       queryData,
@@ -56,30 +59,15 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     if (typeof rawJson !== 'string') {
       throw new Error(`Received unexpected result type instead of json string: ${typeof rawJson}`);
     }
-    rawJson = rawJson.trim();
-    // NOTE: Cloudflare might return this: ```json\n{...}\n```
-    const mdStart = '```json';
-    const mdEnd = '```';
-    if (rawJson.startsWith(mdStart) && rawJson.endsWith(mdEnd)) {
-      rawJson = rawJson.substring(mdStart.length, rawJson.length - mdEnd.length).trim();
-    }
     rawData = parseDangerousJson(rawJson);
     // Remove empty questions/answers data
     const withoutEmptyObjects = dropEmptyQuestionsAndAnswers(rawData as TQuestionsAndAnswers);
-    // rawData = rawJson && JSON.parse(rawJson);
-    // NOTE: Temporarily monitoring AI generation
-    console.log('[parseGeneratedTopicQuestions] Parsed raw data', {
-      withoutEmptyObjects,
-      rawData,
-      rawJson,
-      queryData,
-    });
+    // TODO: Drop invalid questions ande answers?
     if (!withoutEmptyObjects) {
       throw new Error('Got an invalid (empty) json object');
     }
     const validatedData: TGeneratedQuestions = generatedQuestionsSchema.parse(withoutEmptyObjects);
-    // DEBUG
-    // eslint-disable-next-line no-console
+    // DEBUG: Show parsed data
     console.log('[parseGeneratedTopicQuestions] Parsed validated data', {
       validatedData,
       rawData,
@@ -90,16 +78,26 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
   } catch (error) {
     const humanMsg = 'Can not parse generated topic questions';
     const errDetails = getErrorText(error);
-    // const errMsg = [humanMsg, errDetails].filter(Boolean).join(': ');
-    // eslint-disable-next-line no-console
-    console.error('[parseGeneratedTopicQuestions] ❌', humanMsg, {
+    const __debugData = {
+      __LOG_EXPLANATIONS: [
+        // Reminders for those who will read the log records later
+        'queryData -- The data returned by the AI query (sendAiTextQuery);',
+        'rawJson -- The raw json string returned from the AI query (queryData.content);',
+        'rawData -- The data that returned from parseDangerousJson;',
+        'withoutEmptyObjects -- Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
+      ],
       errDetails,
-      error,
       rawJson,
       rawData,
+      // error, // NOTE: Error object might be not serializable
       queryData,
-    });
+    };
+    const __idMsg = '[parseGeneratedTopicQuestions] ❌ ' + humanMsg;
+    // eslint-disable-next-line no-console
+    console.error(__idMsg, { ...__debugData, error });
     debugger; // eslint-disable-line no-debugger
+    // Send log message to the telegram logging channel
+    logData(__idMsg, __debugData);
     throw new Error(humanMsg);
   }
 }

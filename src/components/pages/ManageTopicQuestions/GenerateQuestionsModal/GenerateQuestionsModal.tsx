@@ -47,7 +47,7 @@ const idToken = '([^/]*)';
 const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostfix + '$');
 
 /** A debug data file id */
-const debugDataId: TAIQuerDebugDataId = 'questions-query-data-01';
+const debugDataId: TAIQuerDebugDataId = 'questions-query-data-02';
 
 export function GenerateQuestionsModal() {
   const { manageScope } = useManageTopicsStore();
@@ -220,6 +220,7 @@ export function GenerateQuestionsModal() {
             isGenerated: true,
           }),
         );
+        // TODO: Here should be a grid editor step, to allow the user to tune-up generated data
         /* console.log('[GenerateQuestionsModal:handleGenerateQuestions] Parsed questions', {
          *   newQuestions,
          *   questions,

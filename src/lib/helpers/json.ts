@@ -12,8 +12,16 @@ export function safeJsonParse<T = unknown>(data: string | undefined | null, defa
 }
 
 export function parseDangerousJson(rawString?: string, noDebug?: boolean) {
-  if (!rawString || rawString.trim().length === 0) {
+  rawString = rawString?.trim();
+  if (!rawString || rawString?.length === 0) {
     return undefined;
+  }
+
+  // NOTE: Cloudflare might return this: ```json\n{...}\n```
+  const mdStart = '```json';
+  const mdEnd = '```';
+  if (rawString.startsWith(mdStart) && rawString.endsWith(mdEnd)) {
+    rawString = rawString.substring(mdStart.length, rawString.length - mdEnd.length).trim();
   }
 
   try {

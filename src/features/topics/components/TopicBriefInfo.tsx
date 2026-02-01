@@ -1,4 +1,4 @@
-import { getErrorText } from '@/lib/helpers';
+import { generateArray, getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
@@ -41,9 +41,9 @@ export function TopicBriefInfo(props: TProps) {
   if (false || !isReady) {
     return (
       <div className="flex flex-col gap-2">
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-6 w-full" />
+        {generateArray(3).map((i) => (
+          <Skeleton key={i} className="h-12 w-full" />
+        ))}
       </div>
     );
   }
@@ -64,11 +64,13 @@ export function TopicBriefInfo(props: TProps) {
         className,
       )}
     >
-      <h4 className="font-semibold">{t('TopicBriefInfo.QuestionsExamples')}</h4>
+      <h4 className="font-semibold uppercase text-theme">
+        {t('TopicBriefInfo.QuestionsExamples')}
+      </h4>
       <div
         className={cn(
           isDev && '__TopicBriefInfo_Questions', // DEBUG
-          'flex flex-col gap-1',
+          'flex flex-col gap-2 text-xs',
         )}
       >
         {allQuestions.slice(0, showQuestionsCount).map((question) => {
@@ -76,7 +78,8 @@ export function TopicBriefInfo(props: TProps) {
             <div
               key={question.id}
               className={cn(
-                isDev && '__TopicBriefInfo_QuestionsList', // DEBUG
+                isDev && '__TopicBriefInfo_QuestionsItem', // DEBUG
+                'w-full rounded border border-theme-500/10 bg-theme-500/5 p-4 py-1 opacity-50',
               )}
             >
               <MarkdownText>{question.text}</MarkdownText>

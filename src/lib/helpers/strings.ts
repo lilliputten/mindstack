@@ -23,6 +23,10 @@ export function capitalizeString(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+export function unixEOLs(s: string) {
+  return s.replace(/\r\n/g, '\n');
+}
+
 const defaultEllipsis = '…';
 
 export function truncateString(str?: string, len?: number, ellipsis: string = defaultEllipsis) {

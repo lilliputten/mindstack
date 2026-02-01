@@ -17,7 +17,8 @@ async function getDebugDataContent(debugData: TAIQuerDebugDataId) {
   switch (debugData) {
     case 'answers-query-data-01':
       return await import('./sample-data/GenerateQuestions/answers-query-data-01.json');
-
+    case 'questions-query-data-02':
+      return await import('./sample-data/GenerateQuestions/questions-query-data-02.json');
     case 'questions-query-data-01':
     default:
       return await import('./sample-data/GenerateQuestions/questions-query-data-01.json');

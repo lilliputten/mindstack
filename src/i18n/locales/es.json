@@ -1612,6 +1612,7 @@
     "KeepItUp": "¡Sigue así!",
     "LearningInsights": "Perspectivas de Aprendizaje",
     "MaintainingConsistentPerformanceText": "Mantienes un rendimiento constante en todos los entrenamientos.",
+    "NoActiveTrainingText": "No tienes entrenamiento activo ni registros históricos para mostrar. \nEmpieza a entrenar ahora.",
     "NoTrainingHistory": "Aún no se ha recopilado historial de entrenamiento",
     "NoTrainingHistoryYet": "Aún No Hay Historial de Entrenamiento",
     "NoWorkoutCreated": "No se creó entrenamiento",

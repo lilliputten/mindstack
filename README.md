@@ -11,7 +11,7 @@ NextJS Memory Training Application for interactive learning and spaced repetitio
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.0 / 2026.01.31 20:58:04 +0300
+- Project info: v.0.1.0 / 2026.02.02 00:10:03 +0300
 
 ## 🌟 Overview
 

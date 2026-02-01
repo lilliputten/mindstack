@@ -373,7 +373,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         content: t('Save'),
         variant: 'success',
         icon: Icons.Save,
-        visibleFor: 'sm',
+        visibleFor: 'xs',
         pending: isPending,
         disabled: !isSubmitEnabled,
         onClick: handleSubmit,

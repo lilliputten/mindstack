@@ -1,0 +1,173 @@
+﻿{
+  "questionsCount": 10,
+  "questions": [
+    {
+      "text": "What is the purpose of using a WHERE clause in SQL queries?",
+      "answersCount": 4,
+      "answers": [
+        {
+          "text": "To filter rows based on specific conditions",
+          "explanation": "The WHERE clause filters rows from a table or view by specifying conditions.",
+          "isCorrect": true
+        },
+        {
+          "text": "To join tables together",
+          "explanation": "JOINs are used to combine data from two or more tables, not filtering rows.",
+          "isCorrect": false
+        },
+        {
+          "text": "To sort the result set",
+          "explanation": "Sorting is done using the ORDER BY clause, not the WHERE clause.",
+          "isCorrect": false
+        },
+        {
+          "text": "To group data",
+          "explanation": "GROUP BY is used for aggregations and grouping, not filtering rows.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What is the difference between a PRIMARY KEY and a UNIQUE constraint in SQL?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "A PRIMARY KEY allows NULL values while a UNIQUE constraint does not allow NULL values",
+          "explanation": "Both PRIMARY KEY and UNIQUE constraints do not allow NULL values by default.",
+          "isCorrect": false
+        },
+        {
+          "text": "A PRIMARY KEY can only be defined on one column while a UNIQUE constraint can be defined on multiple columns",
+          "explanation": "A PRIMARY KEY can be defined on multiple columns but a UNIQUE constraint can also be defined on multiple columns.",
+          "isCorrect": false
+        },
+        {
+          "text": "A PRIMARY KEY enforces uniqueness and cannot contain duplicate values while a UNIQUE constraint ensures uniqueness but may allow NULL values",
+          "explanation": "This is correct; a PRIMARY KEY does not allow NULL values whereas a UNIQUE constraint can include NULL values.",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "text": "What is the purpose of using a GROUP BY clause in SQL?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "To aggregate data by groups",
+          "explanation": "GROUP BY is used to group rows that have common characteristics and perform aggregation functions like SUM, AVG, COUNT etc.",
+          "isCorrect": true
+        },
+        {
+          "text": "To order the result set",
+          "explanation": "ORDER BY is used to sort the result set, not group data.",
+          "isCorrect": false
+        },
+        {
+          "text": "To filter rows based on specific conditions",
+          "explanation": "WHERE is used to filter rows, not group them.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What is the difference between UNION and UNION ALL in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "UNION removes duplicates while UNION ALL includes all rows including duplicates",
+          "explanation": "This is correct; UNION eliminates duplicate rows while UNION ALL retains all rows, including duplicates.",
+          "isCorrect": true
+        },
+        {
+          "text": "UNION returns distinct rows while UNION ALL returns all rows without checking for duplicates",
+          "explanation": "This explanation is accurate and matches the functionality of these operators.",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "text": "What is the use of the HAVING clause in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "To filter groups after aggregation",
+          "explanation": "HAVING is used to filter groups based on aggregated results, such as SUM, AVG, COUNT etc.",
+          "isCorrect": true
+        },
+        {
+          "text": "To filter individual rows before aggregation",
+          "explanation": "WHERE is used to filter individual rows, not groups after aggregation.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What is the purpose of using a CTE (Common Table Expression) in SQL?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "To create temporary views within a query",
+          "explanation": "CTE allows you to define a temporary result set that can be referenced within the same query.",
+          "isCorrect": true
+        },
+        {
+          "text": "To improve performance by reducing the complexity of nested queries",
+          "explanation": "While CTE can simplify complex queries, its primary purpose is to provide a named temporary result set.",
+          "isCorrect": false
+        },
+        {
+          "text": "To store data permanently in the database",
+          "explanation": "CTEs are not permanent storage mechanisms; they are temporary result sets."
+        }
+      ]
+    },
+    {
+      "text": "What is the difference between DELETE and TRUNCATE in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "DELETE is slower than TRUNCATE because it logs each row deletion individually while TRUNCATE deletes entire tables quickly without logging each row"
+        },
+        {
+          "text": "TRUNCATE resets the auto-increment counter while DELETE does not affect the auto-increment sequence"
+        }
+      ]
+    },
+    {
+      "text": "What is the difference between a VIEW and a MATERIALIZED VIEW in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "VIEW is a virtual table while MATERIALIZED VIEW stores the result of a query in a physical table"
+        },
+        {
+          "text": "VIEW updates automatically when the underlying data changes while MATERIALIZED VIEW requires manual refresh"
+        }
+      ]
+    },
+    {
+      "text": "What is the purpose of using a FULL JOIN in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "FULL JOIN combines rows from both tables, returning all records from both tables regardless of whether there is a match"
+        },
+        {
+          "text": "FULL JOIN returns only matching rows from both tables"
+        }
+      ]
+    },
+    {
+      "text": "What is the purpose of using a self-join in SQL?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "Self-join is used to compare a table against itself to find relationships or patterns within the same dataset"
+        },
+        {
+          "text": "Self-join is used to join two different tables"
+        }
+      ]
+    }
+  ]
+}

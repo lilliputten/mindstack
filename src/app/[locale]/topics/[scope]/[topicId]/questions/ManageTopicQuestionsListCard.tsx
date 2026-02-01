@@ -40,6 +40,8 @@ import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 const saveScrollHash = getRandomHashString();
 
+const truncateLongMarkdownTextsTo = 200;
+
 export interface TManageTopicQuestionsListCardProps {
   topicId: TTopicId;
   handleDeleteQuestion: (questionId: TQuestionId) => void;
@@ -237,12 +239,16 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           </div>
         </TableCell>
       )}
-      <TableCell id="text" className="max-w-24 truncate" title={truncateMarkdown(text, 120)}>
+      <TableCell
+        id="text"
+        className="max-w-24 truncate"
+        title={truncateMarkdown(text, truncateLongMarkdownTextsTo)}
+      >
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
           href={questionRoutePath as TRoutePath}
         >
-          {truncateMarkdown(text, 80)}
+          {truncateMarkdown(text, truncateLongMarkdownTextsTo)}
         </Link>
       </TableCell>
       <TableCell id="answers" className="max-w-[8em] truncate max-sm:hidden">

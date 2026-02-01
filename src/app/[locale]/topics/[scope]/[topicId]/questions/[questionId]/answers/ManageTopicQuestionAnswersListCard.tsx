@@ -58,6 +58,8 @@ export interface TManageTopicQuestionAnswersListCardProps {
 
 const useDarkHeader = true;
 
+const truncateLongMarkdownTextsTo = 200;
+
 function AnswersTableHeader({
   isAdminMode,
   selectedAnswers,
@@ -262,12 +264,16 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
           </div>
         </TableCell>
       )}
-      <TableCell id="text" className="max-w-[20em] truncate" title={truncateMarkdown(text, 120)}>
+      <TableCell
+        id="text"
+        className="max-w-[20em] truncate"
+        title={truncateMarkdown(text, truncateLongMarkdownTextsTo)}
+      >
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
           href={answerRoutePath as TRoutePath}
         >
-          {truncateMarkdown(text, 80)}
+          {truncateMarkdown(text, truncateLongMarkdownTextsTo)}
         </Link>
       </TableCell>
       <TableCell id="isCorrect" className="w-[8em] max-lg:hidden">
@@ -663,7 +669,7 @@ export function ManageTopicQuestionAnswersListCard(
     <>
       <DashboardHeader
         heading={truncateMarkdown(question.text, 100)} // "Manage Answers"
-        title={truncateMarkdown(question.text, 200)}
+        title={truncateMarkdown(question.text, truncateLongMarkdownTextsTo)}
         className={cn(
           isDev && '__ManageTopicQuestionAnswersListCard_DashboardHeader', // DEBUG
           'mx-6',

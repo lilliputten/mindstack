@@ -1621,6 +1621,7 @@
     "KeepItUp": "Keep it up!",
     "LearningInsights": "Learning Insights",
     "MaintainingConsistentPerformanceText": "You're maintaining consistent performance across workouts",
+    "NoActiveTrainingText": "You have no active training nor history records to display. Start training now.",
     "NoTrainingHistory": "No training history has been collected yet",
     "NoTrainingHistoryYet": "No Training History Yet",
     "NoWorkoutCreated": "No workout created",

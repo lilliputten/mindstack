@@ -23,6 +23,7 @@ import { PageError, ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
+import { TopicBriefInfo } from '@/features/topics';
 import { useSessionData } from '@/hooks';
 
 import { WorkoutStatsSkeleton } from './WorkoutStatsSkeleton';
@@ -670,8 +671,29 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
           'size-full overflow-visible',
         )}
         icon={Icons.Rocket}
-        title={t('WorkoutStats.TrainingNotStarted')}
-        description={t('WorkoutStats.NoWorkoutDescription')}
+        // title={t('WorkoutStats.TrainingNotStarted')}
+        // description={t('WorkoutStats.NoWorkoutDescription')}
+        explanation={
+          <div className="flex flex-col gap-4">
+            <h3 className="content-truncate font-heading text-2xl font-bold">
+              {t('WorkoutStats.TrainingNotStarted')}
+            </h3>
+            <p className="content-truncate text-center text-sm font-normal leading-6 text-muted-foreground">
+              {t('WorkoutStats.NoActiveTrainingText')}
+            </p>
+            {!!topicId && (
+              <TopicBriefInfo
+                topicId={topicId}
+                className={cn(
+                  isDev && '__WorkoutStats_TopicBriefInfo', // DEBUG
+                  'mb-2',
+                )}
+              />
+            )}
+          </div>
+        }
+        // framed={false}
+        // buttons={<WorkoutControl omitNoWorkoutMessage handleStart={handleStart} />}
       />
     );
   }

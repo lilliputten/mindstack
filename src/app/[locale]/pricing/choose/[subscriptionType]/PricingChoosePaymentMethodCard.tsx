@@ -6,7 +6,6 @@ import NextLink from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 interface PricingChoosePaymentMethodCardProps {
@@ -74,9 +73,6 @@ export function PricingChoosePaymentMethodCard({
           )}
         >
           {content}
-          {/*
-          <Icons.ExternalLink className="size-3.5 shrink-0 opacity-50" />
-          */}
         </NextLink>
       ) : buttonText && onClick ? (
         <Button

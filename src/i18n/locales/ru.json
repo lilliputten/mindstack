@@ -1613,6 +1613,7 @@
     "KeepItUp": "Продолжайте!",
     "LearningInsights": "Анализ результатов",
     "MaintainingConsistentPerformanceText": "Вы поддерживаете стабильную производительность на всех тренировках",
+    "NoActiveTrainingText": "У вас нет ни активного обучения, ни записей истории для отображения. \nНачните обучение прямо сейчас.",
     "NoTrainingHistory": "История тренировок еще не собрана",
     "NoTrainingHistoryYet": "Пока Нет Истории Тренировок",
     "NoWorkoutCreated": "Тренировка не создана",

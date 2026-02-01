@@ -2,7 +2,16 @@ import z from 'zod';
 
 import { AnswerSchema } from '@/generated/prisma';
 
-const generatedAnswerSchema = AnswerSchema.pick({ text: true, explanation: true, isCorrect: true });
+const generatedAnswerSchema = z.object({
+  text: AnswerSchema.shape['text'],
+  explanation: AnswerSchema.shape['explanation'].optional(),
+  isCorrect: AnswerSchema.shape['isCorrect'].optional(),
+});
+const _generatedAnswerSchemaSharp = AnswerSchema.pick({
+  text: true,
+  explanation: true,
+  isCorrect: true,
+});
 export type TGeneratedAnswer = z.infer<typeof generatedAnswerSchema>;
 export const generatedAnswersSchema = z.object({
   answers: z.array(generatedAnswerSchema),

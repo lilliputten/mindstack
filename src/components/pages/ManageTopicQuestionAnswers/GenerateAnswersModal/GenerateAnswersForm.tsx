@@ -72,8 +72,8 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
     () => ({
       debugData: __useDebugData,
       answersGenerationType: answersGenerationTypes[0],
-      answersCountMin: 1,
-      answersCountMax: 5,
+      answersCountMin: isDev ? 1 : 2,
+      answersCountMax: isDev ? 1 : 6,
       extraText: '',
     }),
     [__useDebugData],

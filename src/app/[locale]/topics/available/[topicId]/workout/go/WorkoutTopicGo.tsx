@@ -237,7 +237,8 @@ export function WorkoutTopicGo() {
         icon: Icons.Edit,
         visibleFor: 'xl',
         hidden: !allowedEdit,
-        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
+        // onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
+        href: `${manageTopicsRoute}/${topicId}`,
       },
       {
         id: 'ManageQuestion',
@@ -246,20 +247,11 @@ export function WorkoutTopicGo() {
         icon: Icons.Questions,
         visibleFor: 'xl',
         hidden: !isWorkoutInProgress || !allowedEdit,
-        onClick: () =>
-          goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`),
+        // onClick: () => goToTheRoute(`${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`),
+        href: `${myTopicsRoute}/${topicId}/questions/${currentQuestionId || ''}`,
       },
     ],
-    [
-      t,
-      goBack,
-      allowedEdit,
-      isWorkoutInProgress,
-      goToTheRoute,
-      manageTopicsRoute,
-      topicId,
-      currentQuestionId,
-    ],
+    [t, goBack, allowedEdit, isWorkoutInProgress, manageTopicsRoute, topicId, currentQuestionId],
   );
 
   const breadcrumbs = useTopicsBreadcrumbsItems({

@@ -4,13 +4,12 @@ import { revalidateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/db';
-import { debugObj } from '@/lib/debug';
 import { getErrorText, translatedPeriod } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
-import { sendLoggingMessage } from '@/features/bot/actions/sendLoggingMessage';
 import { allowSuggestCategoriesIn } from '@/features/categories/constants';
+import { logData } from '@/features/logger/server-actions';
 import { getUserById } from '@/features/users/actions';
 
 import { defaultCategoryStatus, TCreateCategoryParams } from '../types/Categories';
@@ -80,12 +79,13 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
     // Send logging message
     if (!noDebug) {
       const creator = category.createdBy && (await getUserById(category.createdBy));
-      const debugStr = debugObj({
+      const __debugData = {
         category,
         creator,
         versionInfo,
-      });
-      await sendLoggingMessage(`[mindstack:createCategory]\n${debugStr}`);
+      };
+      const __idMsg = '[mindstack:createCategory]';
+      logData(__idMsg, __debugData);
     }
 
     // Clear recent categories cache

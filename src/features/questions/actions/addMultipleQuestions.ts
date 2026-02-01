@@ -102,13 +102,8 @@ export async function addMultipleQuestions(
         },
       });
     });
-    /* console.log('[addMultipleQuestions] prismaPromises', {
-     *   questionDataItems,
-     *   prismaPromises,
-     *   newQuestions,
-     * });
-     */
-    debugger; // eslint-disable-line no-debugger
+
+    // Using transactions...
     const createdQuestions = await prisma.$transaction(prismaPromises);
 
     return createdQuestions;
