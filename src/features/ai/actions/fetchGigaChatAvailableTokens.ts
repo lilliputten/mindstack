@@ -3,7 +3,7 @@
 import { IBalance } from 'gigachat-node/interfaces/balance';
 
 import { GIGACHAT_MODEL } from '@/config/envServer';
-import { getGigaChatDirectClient } from '@/lib/ai/getGigaChatDirectClient';
+import { getGigaChatDirectClient } from '@/lib/ai';
 
 export async function fetchGigaChatAvailableTokens() {
   try {

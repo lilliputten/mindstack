@@ -17,4 +17,5 @@ export type TAIQuerDebugDataId =
 export interface TAIQueryOptions {
   clientType?: TAiClientType;
   debugData?: TAIQuerDebugDataId;
+  temperature?: number;
 }

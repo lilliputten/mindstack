@@ -7,13 +7,11 @@ import { sendUserAIRequest, TAIRequestOptions } from '../actions';
 import { TAITextQueryData } from '../types';
 import { TPlainMessage } from '../types/messages';
 
-type TOptions = TAIRequestOptions;
-
 export function useUserAIRequest() {
   const invalidateKeys = useInvalidateReactQueryKeys();
-  /** A hook to send AI query, calls `sendUserAIRequest`, see for reference */
+  /** A hook to send AI query, calls server action `sendUserAIRequest`, see for reference */
   const userAIRequest = React.useCallback(
-    async (messages: TPlainMessage[], opts: TOptions = {}) => {
+    async (messages: TPlainMessage[], opts: TAIRequestOptions = {}) => {
       const queryData: TAITextQueryData = await sendUserAIRequest(messages, opts);
       invalidateKeys([aiGenerationsStatusQueryKey]);
       return queryData;
