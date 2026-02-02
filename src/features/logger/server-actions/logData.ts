@@ -1,7 +1,10 @@
 'use server';
 
+import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { headers } from 'next/headers';
+
 import { debugObj } from '@/lib/debug';
-import { getErrorText, unixEOLs } from '@/lib/helpers';
+import { formatDateTag, getErrorText, unixEOLs } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
@@ -12,10 +15,23 @@ export async function logData(
   data?: object,
   showLog?: boolean | 'error',
 ): Promise<unknown> {
+  const headersObj: ReadonlyHeaders = await headers();
+  // DEBUG: Use reduce to convert headers to a plain object
+  const allHeaders = Array.from(headersObj.entries()).reduce(
+    (acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+  const referer = allHeaders.referer;
+  const timesamp = formatDateTag();
   const user = await getCurrentUser();
   const infoStr = debugObj({
     versionInfo,
+    timesamp,
     isDev,
+    referer,
     user,
   });
   let dataStr = '';

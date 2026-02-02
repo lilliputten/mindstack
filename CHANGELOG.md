@@ -1,12 +1,13 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.01, 22:37
+ @changed 2026.02.02, 15:59
 -->
 
 # CHANGELOG
 
-## Fixed minor issues - 2026.02.01
+## Fixed minor issues - 2026.02.02
 
+- Fixed other possible ai generated data issues (missed closing square brackets in json).
 - Fixed an error with too strict expectations for generated answers (categoryIds and isCorrect flags became optional).
 - Added a function to send logs to the telegram bot (`logData`).
 - Added demo data with problematic generation results (`questions-query-data-02`).

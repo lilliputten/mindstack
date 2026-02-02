@@ -1,0 +1,24 @@
+{
+  "content": "{\n  \"questionsCount\": 3,\n  \"questions\": [\n    {\n      \"text\": \"DEMO: ¿Qué significa la expresión 'no entiendo' en español?\",\n      \"answersCount\": 3,\n      \"answers\": [\n        {\n          \"text\": \"DEMO: I understand\",\n        \"explanation\": \"Incorrecto, 'no entiendo' no significa 'I understand' en español.\",\n        \"isCorrect\": false\n      },\n      {\n        \"text\": \"DEMO: I don't understand\",\n        \"explanation\": \"Correcto, 'no entiendo' significa 'I don't understand' en español.\",\n        \"isCorrect\": true\n      },\n      {\n        \"text\": \"DEMO: BROKEN: I agree\",\n        \"explanation\": \"Incorrecto, 'no entiendo' no significa 'I agree' en español.\",\n        \"isCorrect\": false\n      }\n    },\n    {\n      \"text\": \"DEMO: ¿Cómo se dice 'sorry' en español?\",\n      \"answersCount\": 3,\n      \"answers\": [\n        {\n          \"text\": \"DEMO: Lo siento\",\n        \"explanation\": \"Correcto, 'lo siento' significa 'sorry' en español.\",\n        \"isCorrect\": true\n      },\n      {\n        \"text\": \"DEMO: Perdón\",\n        \"explanation\": \"Correcto, 'perdón' también significa 'sorry' en español.\",\n        \"isCorrect\": true\n      },\n      {\n        \"text\": \"DEMO: Gracias\",\n        \"explanation\": \"Incorrecto, 'gracias' no significa 'sorry' en español.\",\n        \"isCorrect\": false\n      }\n    },\n    {\n      \"text\": \"DEMO: ¿Qué significa la frase 'qué pasa' en español?\",\n      \"answersCount\": 3,\n      \"answers\": [\n        {\n          \"text\": \"DEMO: What's happening\",\n        \"explanation\": \"Correcto, 'qué pasa' significa 'what's happening' en español.\",\n        \"isCorrect\": true\n      },\n        {\n          \"text\": \"DEMO: How are you\",\n        \"explanation\": \"Incorrecto, 'qué pasa' no significa 'how are you' en español.\",\n        \"isCorrect\": false\n      },\n        {\n          \"text\": \"DEMO: Where are you\",\n        \"explanation\": \"Incorrecto, 'qué pasa' no significa 'where are you' en español.\",\n        \"isCorrect\": false\n      }\n    }\n  ]\n}",
+  "additional_kwargs": {},
+  "response_metadata": {
+    "tokenUsage": {
+      "input_tokens": 410,
+      "output_tokens": 1774,
+      "total_tokens": 2184
+    },
+    "finish_reason": "stop",
+    "xHeaders": {
+      "xRequestID": "3299326f-5cd0-48e8-8df6-3d7aa54d00cc",
+      "xSessionID": "ae2f3a12-9e60-4b4d-a40e-29e2e92fcedc"
+    }
+  },
+  "id": "3299326f-5cd0-48e8-8df6-3d7aa54d00cc",
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 410,
+    "output_tokens": 1774,
+    "total_tokens": 2184
+  }
+}

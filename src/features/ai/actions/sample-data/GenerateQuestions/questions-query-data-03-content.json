@@ -1,0 +1,65 @@
+{
+  "questionsCount": 3,
+  "questions": [
+    {
+      "text": "DEMO: ¿Qué significa la expresión 'no entiendo' en español?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "DEMO: I understand",
+        "explanation": "Incorrecto, 'no entiendo' no significa 'I understand' en español.",
+        "isCorrect": false
+      },
+      {
+        "text": "DEMO: I don't understand",
+        "explanation": "Correcto, 'no entiendo' significa 'I don't understand' en español.",
+        "isCorrect": true
+      },
+      {
+        "text": "DEMO: BROKEN: I agree",
+        "explanation": "Incorrecto, 'no entiendo' no significa 'I agree' en español.",
+        "isCorrect": false
+      }
+    },
+    {
+      "text": "DEMO: ¿Cómo se dice 'sorry' en español?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "DEMO: Lo siento",
+        "explanation": "Correcto, 'lo siento' significa 'sorry' en español.",
+        "isCorrect": true
+      },
+      {
+        "text": "DEMO: Perdón",
+        "explanation": "Correcto, 'perdón' también significa 'sorry' en español.",
+        "isCorrect": true
+      },
+      {
+        "text": "DEMO: Gracias",
+        "explanation": "Incorrecto, 'gracias' no significa 'sorry' en español.",
+        "isCorrect": false
+      }
+    },
+    {
+      "text": "DEMO: ¿Qué significa la frase 'qué pasa' en español?",
+      "answersCount": 3,
+      "answers": [
+        {
+          "text": "DEMO: What's happening",
+        "explanation": "Correcto, 'qué pasa' significa 'what's happening' en español.",
+        "isCorrect": true
+      },
+        {
+          "text": "DEMO: How are you",
+        "explanation": "Incorrecto, 'qué pasa' no significa 'how are you' en español.",
+        "isCorrect": false
+      },
+        {
+          "text": "DEMO: Where are you",
+        "explanation": "Incorrecto, 'qué pasa' no significa 'where are you' en español.",
+        "isCorrect": false
+      }
+    }
+  ]
+}

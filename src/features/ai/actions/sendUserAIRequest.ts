@@ -4,7 +4,6 @@ import { defaultAiClientType } from '@/lib/ai/types/TAiClientType';
 import { AIGenerationError } from '@/lib/errors/AIGenerationError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
-import { versionInfo } from '@/config';
 import { checkAllowedAIGenerations, saveAIGeneration } from '@/features/ai-generations/actions';
 import { logData } from '@/features/logger/server-actions';
 
@@ -39,12 +38,12 @@ export async function sendUserAIRequest(
   }
 
   const __debugData = {
-    versionInfo,
     messages,
     opts,
-    user,
   };
-  const __idMsg = '[mindstack:sendUserAIRequest]';
+  const __idMsg = '[mindstack:sendUserAIRequest] ℹ️ AI API request: Sending';
+  // eslint-disable-next-line no-console
+  console.log(__idMsg, { ...__debugData, user });
   await logData(__idMsg, __debugData);
 
   const startTime = new Date();
@@ -68,15 +67,29 @@ export async function sendUserAIRequest(
       finishedAt: endTime,
     });
 
+    const __debugData = {
+      queryData,
+    };
+    const __idMsg = '[mindstack:sendUserAIRequest] 🆗 AI API request: Success';
+    // eslint-disable-next-line no-console
+    console.log(__idMsg, { ...__debugData, user });
+    await logData(__idMsg, __debugData);
+
     return queryData;
   } catch (error) {
-    const errMsg = getErrorText(error);
+    const humanMsg = '❌ AI API request: Error';
+    const errDetails = getErrorText(error);
+    const __debugData = {
+      errDetails,
+      messages,
+      opts,
+    };
+    const __idMsg = '[sendUserAIRequest] ' + humanMsg;
     // eslint-disable-next-line no-console
-    console.error('[sendUserAIRequest]', errMsg, {
-      error,
-      user,
-    });
+    console.error(__idMsg, { ...__debugData, error, user });
     debugger; // eslint-disable-line no-debugger
+    // Send log message to the telegram logging channel
+    logData(__idMsg, __debugData);
     // Re-throw errors from checkAllowedAIGenerations or other errors
     throw error;
   }

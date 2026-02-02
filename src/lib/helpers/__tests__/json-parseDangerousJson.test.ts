@@ -11,7 +11,27 @@ describe('parseDangerousJson', () => {
     enableErrorLogging();
   });
 
-  // Test Case 1: Unpaired brackets
+  // Missed square brackets
+  test('should handle missed brackets', () => {
+    const unpairedBracketsJson = `{ "count": 1, "items":
+      [
+        {
+          { "text": "TEXT-1", "answersCount": 3, "answers": [
+            { "text": "TEXT-2", "explanation": "TEXT-3", "isCorrect": true },
+        }
+      ]
+    }`;
+    // Should be invalid JSON initially
+    expect(() => JSON.parse(unpairedBracketsJson)).toThrow();
+    const healed = parseDangerousJson(unpairedBracketsJson, true);
+    expect(healed).toBeDefined();
+    // The library returns objects directly, so we should check if it's an object
+    expect(typeof healed).toBe('object');
+    expect(healed).toHaveProperty('count');
+    expect(healed).toHaveProperty('items');
+  });
+
+  // Unpaired brackets
   test('should handle unpaired brackets', () => {
     const unpairedBracketsJson = `{ "count": 1, "items":
       [
@@ -24,20 +44,17 @@ describe('parseDangerousJson', () => {
         }
       ]
     }`;
-
     // Should be invalid JSON initially
     expect(() => JSON.parse(unpairedBracketsJson)).toThrow();
-
     const healed = parseDangerousJson(unpairedBracketsJson, true);
     expect(healed).toBeDefined();
-
     // The library returns objects directly, so we should check if it's an object
     expect(typeof healed).toBe('object');
     expect(healed).toHaveProperty('count');
     expect(healed).toHaveProperty('items');
   });
 
-  // Test Case 2: Incorrectly repaired JSON
+  // Incorrectly repaired JSON
   test('should handle incorrectly repaired JSON', () => {
     const incorrectlyRepairedJson = `{ "count": 1 "items":
       [
@@ -48,19 +65,16 @@ describe('parseDangerousJson', () => {
           { "text": "TEXT-6", "explanation": "TEXT-7", "isCorrect": false }
         ]}
       ]}`;
-
     // Should be invalid JSON initially
     expect(() => JSON.parse(incorrectlyRepairedJson)).toThrow();
-
     const healed = parseDangerousJson(incorrectlyRepairedJson, true);
     expect(healed).toBeDefined();
-
     // The library returns objects directly
     expect(typeof healed).toBe('object');
     expect(healed).toHaveProperty('count');
   });
 
-  // Test Case 3: Missed comma (the original sample)
+  // Missed comma (the original sample)
   test('should handle missed comma', () => {
     const missedCommaJson = `{
       "count": 1,
@@ -77,20 +91,17 @@ describe('parseDangerousJson', () => {
         }
       ]
     }`;
-
     // Should be invalid JSON initially
     expect(() => JSON.parse(missedCommaJson)).toThrow();
-
     const healed = parseDangerousJson(missedCommaJson, true);
     expect(healed).toBeDefined();
-
     // The library returns objects directly
     expect(typeof healed).toBe('object');
     expect(healed).toHaveProperty('count');
     expect(healed).toHaveProperty('items');
   });
 
-  // Test Case 4: Valid JSON should return parsed object
+  // Valid JSON should return parsed object
   test('should parse valid JSON correctly', () => {
     const validJson = `{
       "count": 1,
@@ -105,7 +116,6 @@ describe('parseDangerousJson', () => {
         }
       ]
     }`;
-
     const result = parseDangerousJson(validJson, true);
     expect(typeof result).toBe('object');
     expect(result).toHaveProperty('count', 1);
@@ -113,17 +123,16 @@ describe('parseDangerousJson', () => {
     expect(Array.isArray(result?.items)).toBe(true);
   });
 
-  // Test Case 5: Empty or undefined input
+  // Empty or undefined input
   test('should handle empty input gracefully', () => {
     expect(parseDangerousJson(undefined, true)).toBeUndefined();
     expect(parseDangerousJson('', true)).toBeUndefined();
     expect(parseDangerousJson('   ', true)).toBeUndefined();
   });
 
-  // Test Case 6: Completely invalid JSON
+  // Completely invalid JSON
   test('should handle completely invalid JSON gracefully', () => {
     const completelyInvalid = 'This is not JSON at all { [ }';
-
     const result = parseDangerousJson(completelyInvalid, true);
     // The best-effort parser tries to extract whatever it can
     // For this input, it might return "This" or some parsed fragment

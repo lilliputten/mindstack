@@ -2,6 +2,11 @@ node_modules
 .next
 .contentlayer
 pnpm-lock.yaml
+
+# Generated: Prisma zod models
 src/generated
+
+# Sample data: AI generated results (including broken)
+src/features/ai/actions/sample-data
 
 **/*.mdx
