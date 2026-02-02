@@ -130,6 +130,7 @@ export function TextQueryForm() {
          */
         const queryResult = await sendAiTextQuery(messages, {
           clientType,
+          // temperature,
           debugData: formData.showDebugData,
         });
         const { content } = queryResult;

@@ -1,7 +1,8 @@
 import { GigaChat } from 'gigachat';
 
 import { GIGACHAT_CREDENTIALS } from '@/config/envServer';
-import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
+
+import { getHttpsAgent } from './getHttpsAgent';
 
 let cachedClient: GigaChat | undefined;
 

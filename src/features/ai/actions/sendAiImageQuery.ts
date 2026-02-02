@@ -4,8 +4,7 @@ import * as fs from 'fs';
 import { detectImage } from 'gigachat';
 import { ChatCompletion, WithXHeaders } from 'gigachat/interfaces';
 
-import { getGigaChatClient } from '@/lib/ai/getGigaChatClient';
-import { TAiClientType } from '@/lib/ai/types/TAiClientType';
+import { getGigaChatClient, TAiClientType } from '@/lib/ai';
 
 import { TPlainMessage } from '../types/messages';
 

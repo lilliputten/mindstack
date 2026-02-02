@@ -2,7 +2,8 @@
 import { GigaChat as GigaChatDirect } from 'gigachat-node';
 
 import { GIGACHAT_CREDENTIALS, GIGACHAT_MODEL } from '@/config/envServer';
-import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
+
+import { getHttpsAgent } from './getHttpsAgent';
 
 let cachedClient: GigaChatDirect | undefined;
 

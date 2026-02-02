@@ -239,6 +239,9 @@ YOOKASSA_SECRET_KEY_TEST=""                    # YooKassa test secret key
 **AI Integration**
 
 ```env
+# Trying to use low temperatures in attempt to minify json hallucinations
+GENERATION_TEMPERATURE=0.1
+
 # Cloudflare AI
 CLOUDFLARE_ACCOUNT_ID=""                       # Cloudflare account ID
 CLOUDFLARE_API_TOKEN=""                        # Cloudflare API token

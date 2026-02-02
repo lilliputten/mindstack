@@ -3,7 +3,7 @@
 
 import { z } from 'zod';
 
-import { GigachatModelSchema } from '../constants/ai';
+import { GigachatModelSchema } from '../lib/ai/types';
 
 export const envServerSchema = z.object({
   // App
@@ -47,6 +47,7 @@ export const envServerSchema = z.object({
   WEBHOOK_HOST: z.string().optional(),
 
   // AI API
+  GENERATION_TEMPERATURE: z.coerce.number(),
   // GigaChat AI API
   GIGACHAT_CREDENTIALS: z.string().min(1),
   GIGACHAT_MODEL: GigachatModelSchema,
