@@ -16,12 +16,7 @@ import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TTopicId } from '@/features/topics/types';
-import {
-  useAvailableTopicById,
-  useAvailableTopicsByScope,
-  useGoBack,
-  useGoToTheRoute,
-} from '@/hooks';
+import { useAvailableTopicById, useAvailableTopicsByScope, useGoBack } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewTopicContentSummary } from './ViewTopicContentSummary';
@@ -36,8 +31,10 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
   const { topicId, availableTopicsQuery, availableTopicQuery } = props;
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
+
   const goBack = useGoBack(routePath);
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
+
   const t = useT();
 
   const {
@@ -96,7 +93,6 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -104,61 +100,51 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Start Training',
-        content: t('ViewTopicPage.StartTraining'),
-        // variant: 'theme',
+        content: t('StartTraining'),
         icon: Icons.ArrowRight,
         visibleFor: 'md',
-        onClick: () => goToTheRoute(`${availableTopicsRoute}/${topicId}/workout`),
+        href: `${availableTopicsRoute}/${topicId}/workout`,
         hidden: !allowedTraining,
       },
       {
         id: 'Reload',
         content: t('ViewTopicPage.Reload'),
-        // variant: 'ghost',
         icon: Icons.Refresh,
-        // visibleFor: 'lg',
         onClick: handleReload,
       },
       {
         id: 'Edit',
         content: t('Edit'),
-        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${topicRoutePath}/edit`),
+        href: `${topicRoutePath}/edit`,
       },
       {
         id: 'Questions',
         content: t('Questions'),
-        // variant: 'ghost',
         icon: Icons.Questions,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${topicRoutePath}/questions`),
+        href: `${topicRoutePath}/questions`,
       },
       {
         id: 'Add New Question',
         content: t('ViewTopicPage.AddNewQuestion'),
-        // variant: 'success',
         icon: Icons.Add,
-        // visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
+        href: `${questionsListRoutePath}/add`,
       },
       {
         id: 'Generate Questions',
         content: t('ViewTopicPage.GenerateQuestions'),
-        // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
-        onClick: () => goToTheRoute(`${questionsListRoutePath}/generate`),
+        href: `${questionsListRoutePath}/generate`,
       },
       {
         id: 'Delete Topic',
         content: t('ViewTopicPage.DeleteTopic'),
-        // variant: 'destructive',
         icon: Icons.Trash,
-        // visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${routePath}/delete?topicId=${topicId}&from=ViewTopicPage`),
+        href: `${routePath}/delete?topicId=${topicId}&from=ViewTopicPage`,
       },
     ],
     [
@@ -168,7 +154,6 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       handleReload,
       aiGenerationsAllowed,
       aiGenerationsLoading,
-      goToTheRoute,
       topicId,
       topicRoutePath,
       questionsListRoutePath,

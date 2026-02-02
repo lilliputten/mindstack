@@ -247,6 +247,10 @@
 }
 
 @layer utilities {
+  .disabled {
+    @apply pointer-events-none cursor-default opacity-50;
+  }
+
   .step {
     counter-increment: step;
   }
@@ -347,12 +351,6 @@
       background-size: cover;
       opacity: 0.05;
     }
-  }
-
-  .disabled {
-    pointer-events: none;
-    opacity: 50%;
-    cursor: default;
   }
 
   .single-child {

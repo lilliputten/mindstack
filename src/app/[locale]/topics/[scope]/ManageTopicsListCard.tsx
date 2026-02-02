@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { TCachedUsers, useCachedUsersForTopics } from '@/hooks/topics/useCachedUsersForTopics';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
@@ -44,6 +44,8 @@ import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 import { ContentSkeletonTable } from './ContentSkeleton';
 
 const sessionSaveScrollHash = getRandomHashString();
+
+const truncateLongTextsTo = 200;
 
 interface TManageTopicsListCardProps {
   handleDeleteTopic: (topicId: TTopicId, from: string) => void;
@@ -299,7 +301,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
           className="text-ellipsis whitespace-normal hover:underline"
           href={`${routePath}/${id}` as TRoutePath}
         >
-          {truncateString(name, 40)}
+          {truncateString(name, truncateLongTextsTo)}
         </Link>
       </TableCell>
       <TableCell id="categories" className="truncate max-md:hidden">
@@ -378,7 +380,7 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
     handleDeleteTopic,
     handleEditTopic,
     handleEditQuestions,
-    handleAddTopic,
+    // handleAddTopic,
     availableTopicsQuery,
     goBack,
     selectedTopics,
@@ -387,6 +389,8 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
   const { manageScope } = useManageTopicsStore();
   const t = useT();
   const isAdminMode = manageScope === TopicsManageScopeIds.ALL_TOPICS; // || user?.role === 'ADMIN';
+
+  const topicsListRoutePath = `/topics/${manageScope}`;
 
   const { isExpanded: isFiltersExpanded, expandFilters } = useTopicsFiltersContext();
 
@@ -479,20 +483,34 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
           description={t('ManageTopicsListCard.NoTopicsFoundDescription')}
           buttons={
             <>
-              <Button variant="ghost" onClick={goBack} className="flex gap-2">
+              <Button
+                variant="ghost"
+                onClick={goBack}
+                className="content-truncate flex items-center gap-2"
+              >
                 <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
-                {t('GoBack')}
+                <span className="truncate">{t('GoBack')}</span>
               </Button>
               {!isFiltersExpanded && (
-                <Button variant="outline" onClick={expandFilters} className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={expandFilters}
+                  className="content-truncate flex items-center gap-2"
+                >
                   <Icons.Settings2 className="hidden size-4 opacity-50 sm:flex" />
-                  {t('ChangeFilters')}
+                  <span className="truncate">{t('ChangeFilters')}</span>
                 </Button>
               )}
-              <Button onClick={handleAddTopic} className="flex gap-2">
+              <Link
+                href={`${topicsListRoutePath}/add` as TRoutePath}
+                className={cn(
+                  buttonVariants({ variant: 'outline' }),
+                  'content-truncate flex items-center gap-2',
+                )}
+              >
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                {t('AddTopic')}
-              </Button>
+                <span className="truncate">{t('AddTopic')}</span>
+              </Link>
             </>
           }
         />
@@ -565,13 +583,20 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
 }
 
 export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
-  const { handleAddTopic, availableTopicsQuery } = props;
+  const { availableTopicsQuery } = props;
   const { manageScope } = useManageTopicsStore();
   const namespace = topicsNamespaces[manageScope];
   const t = useT();
   const [selectedTopics, setSelectedTopics] = React.useState<Set<TTopicId>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const queryClient = useQueryClient();
+
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  // const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  // const questionsListRoutePath = `${topicRoutePath}/questions`;
+  // const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
+  // const answersListRoutePath = `${questionRoutePath}/answers`;
+  // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
 
   const { refetch, isFetched, isRefetching, isLoading } = availableTopicsQuery;
 
@@ -762,13 +787,13 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         content: t('ManageTopicsListCard.AddNewTopic'),
         icon: Icons.Add,
         visibleFor: 'md',
-        onClick: handleAddTopic,
+        // onClick: handleAddTopic,
+        href: `${topicsListRoutePath}/add`,
       },
     ],
     [
       t,
       goBack,
-      handleAddTopic,
       handleReload,
       isRefetching,
       selectedTopics.size,
@@ -778,6 +803,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       handleResetSelectedPublic,
       deleteSelectedMutation.isPending,
       handleShowDeleteConfirm,
+      topicsListRoutePath,
     ],
   );
 

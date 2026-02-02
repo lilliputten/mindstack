@@ -97,10 +97,10 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
   return (
     <ManageTopicQuestionsPageHolder
       topicId={topicId}
-      handleDeleteQuestion={openDeleteQuestionModal}
-      handleEditQuestion={openEditQuestionCard}
-      handleAddQuestion={openAddQuestionModal}
-      handleEditAnswers={openEditAnswersPage}
+      // handleDeleteQuestion={openDeleteQuestionModal}
+      // handleEditQuestion={openEditQuestionCard}
+      // handleAddQuestion={openAddQuestionModal}
+      // handleEditAnswers={openEditAnswersPage}
     />
   );
 }

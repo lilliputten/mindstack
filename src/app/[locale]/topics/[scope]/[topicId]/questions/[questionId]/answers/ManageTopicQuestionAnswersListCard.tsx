@@ -10,7 +10,7 @@ import { getRandomHashString } from '@/lib/helpers/strings';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -42,7 +42,6 @@ import {
   useAvailableTopicById,
   useGoBack,
   useGoToTheRoute,
-  useSessionUser,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -61,12 +60,12 @@ const useDarkHeader = true;
 const truncateLongMarkdownTextsTo = 200;
 
 function AnswersTableHeader({
-  isAdminMode,
+  // isAdminMode,
   selectedAnswers,
   allAnswers,
   toggleAll,
 }: {
-  isAdminMode: boolean;
+  // isAdminMode: boolean;
   selectedAnswers: Set<TAnswerId>;
   allAnswers: TAnswer[];
   toggleAll: () => void;
@@ -100,7 +99,7 @@ function AnswersTableHeader({
         >
           <Checkbox
             checked={hasSelected}
-            aria-label="Select/deselect all"
+            aria-label={t('SelectDeselectAll')}
             className={cn(
               'block',
               // Dark theme
@@ -115,18 +114,18 @@ function AnswersTableHeader({
             icon={isIndeterminate ? Icons.Dot : Icons.Check}
           />
         </TableHead>
-        <TableHead id="no" className="truncate text-right max-lg:hidden">
+        <TableHead id="no" className="max-w-2 truncate text-right max-lg:hidden">
           No
         </TableHead>
-        {isAdminMode && isDev && (
-          <TableHead id="topicId" className="truncate max-lg:hidden">
+        {/*isAdminMode && isDev && (
+          <TableHead id="id" className="truncate max-lg:hidden">
             ID
           </TableHead>
-        )}
+          )*/}
         <TableHead id="text" className="truncate">
           {t('ViewAnswerContentSummary.AnswerText')}
         </TableHead>
-        <TableHead id="isCorrect" className="truncate max-lg:hidden">
+        <TableHead id="isCorrect" className="truncate max-sm:hidden">
           {t('ViewAnswerContentSummary.CorrectAnswer')}
         </TableHead>
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
@@ -142,7 +141,7 @@ interface TAnswersTableRowProps {
   answer: TAnswer;
   idx: number;
   answersListRoutePath: string;
-  isAdminMode: boolean;
+  // isAdminMode: boolean;
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
   isSelected: boolean;
   toggleSelected: (answerId: TAnswerId) => void;
@@ -152,7 +151,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
   const {
     answer,
     answersListRoutePath,
-    isAdminMode,
+    // isAdminMode,
     idx,
     availableAnswersQuery,
     isSelected,
@@ -251,19 +250,19 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
         onClick={() => toggleSelected(id)}
         title={t('SelectAnswer')}
       >
-        <Checkbox checked={isSelected} className="block" aria-label="Select answer" />
+        <Checkbox checked={isSelected} className="block" aria-label={t('SelectAnswer')} />
       </TableCell>
-      <TableCell id="no" className="max-w-[1em] truncate text-right opacity-50 max-lg:hidden">
+      <TableCell id="no" className="max-w-2 truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {isAdminMode && isDev && (
-        <TableCell id="answerId" className="max-w-[8em] truncate max-lg:hidden" title={id}>
+      {/*isAdminMode && isDev && (
+        <TableCell id="id" className="max-w-[8em] truncate max-lg:hidden" title={id}>
           <div className="truncate">
             <span className="mr-[2px] opacity-30">#</span>
             {id}
           </div>
         </TableCell>
-      )}
+        )*/}
       <TableCell
         id="text"
         className="max-w-[20em] truncate"
@@ -276,7 +275,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
           {truncateMarkdown(text, truncateLongMarkdownTextsTo)}
         </Link>
       </TableCell>
-      <TableCell id="isCorrect" className="w-[8em] max-lg:hidden">
+      <TableCell id="isCorrect" className="w-[8em] max-sm:hidden">
         <Switch
           checked={isCorrect}
           onCheckedChange={handleToggleCorrect}
@@ -293,35 +292,24 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
       </TableCell>
       <TableCell id="actions" className="w-[2em] text-right">
         <div className="flex justify-end gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0"
-            // onClick={() => handleEditAnswer(answer.id)}
-            aria-label="Edit"
+          <Link
+            href={`${answerRoutePath}/edit` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
+            aria-label={t('Edit')}
             title={t('Edit')}
           >
-            <Link className="flex" href={`${answerRoutePath}/edit` as TRoutePath}>
-              <Icons.Edit className="size-4" />
-            </Link>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0 text-destructive"
-            // onClick={() => handleDeleteAnswer(answer.id)}
-            aria-label="Delete"
+            <Icons.Edit className="size-4" />
+          </Link>
+          <Link
+            href={
+              `${answersListRoutePath}/delete?answerId=${answer.id}&from=ManageTopicQuestionAnswersListCard` as TRoutePath
+            }
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
+            aria-label={t('Delete')}
             title={t('Delete')}
           >
-            <Link
-              className="flex"
-              href={
-                `${answersListRoutePath}/delete?answerId=${answer.id}&from=ManageTopicQuestionAnswersListCard` as TRoutePath
-              }
-            >
-              <Icons.Trash className="size-4" />
-            </Link>
-          </Button>
+            <Icons.Trash className="size-4 text-destructive" />
+          </Link>
         </div>
       </TableCell>
     </TableRow>
@@ -330,7 +318,7 @@ function AnswersTableRow(props: TAnswersTableRowProps) {
 
 interface TAnswersTableContentProps extends TManageTopicQuestionAnswersListCardProps {
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
-  answersListRoutePath: string;
+  // answersListRoutePath: string;
   selectedAnswers: Set<TAnswerId>;
   setSelectedAnswers: React.Dispatch<React.SetStateAction<Set<TAnswerId>>>;
 }
@@ -341,17 +329,31 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
   const t = useT();
 
   const {
+    topicId,
+    questionId,
     className,
     availableAnswersQuery,
-    answersListRoutePath,
+    // answersListRoutePath,
     selectedAnswers,
     setSelectedAnswers,
   } = props;
 
-  const user = useSessionUser();
+  const { manageScope } = useManageTopicsStore();
+
+  // Calculate paths...
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
+  const answersListRoutePath = `${questionRoutePath}/answers`;
+  // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
+
+  const goBack = useGoBack(questionsListRoutePath);
+
+  // const user = useSessionUser();
   // const isLogged = !!user;
-  const isAdmin = user?.role === 'ADMIN';
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  // const isAdmin = user?.role === 'ADMIN';
+  // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
 
   const {
     allAnswers,
@@ -421,25 +423,48 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
         framed={false}
         buttons={
           <>
-            <Button>
-              <Link href={`${answersListRoutePath}/add` as TRoutePath} className="flex gap-2">
-                <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
+            <Button
+              variant="ghost"
+              onClick={goBack}
+              className="content-truncate flex items-center gap-2"
+            >
+              <Icons.ArrowLeft className="hidden size-4 opacity-50 sm:flex" />
+              <span className="truncate">{t('GoBack')}</span>
+            </Button>
+            <Link
+              href={`${answersListRoutePath}/add` as TRoutePath}
+              className={cn(
+                buttonVariants({ variant: 'theme' }),
+                'content-truncate flex items-center gap-2',
+              )}
+              aria-label={t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
+              title={t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
+            >
+              <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
+              <span className="truncate">
                 {t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
-              </Link>
-            </Button>
-            <Button disabled={!aiGenerationsAllowed || aiGenerationsLoading} variant="secondary">
-              <Link href={`${answersListRoutePath}/generate` as TRoutePath} className="flex gap-2">
-                <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
+              </span>
+            </Link>
+            <Link
+              href={`${answersListRoutePath}/generate` as TRoutePath}
+              className={cn(
+                buttonVariants({ variant: 'secondary' }),
+                'content-truncate flex items-center gap-2',
+              )}
+              aria-label={t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
+              title={t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
+            >
+              <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
+              <span className="truncate">
                 {t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
-              </Link>
-            </Button>
+              </span>
+            </Link>
           </>
         }
       />
     );
   }
 
-  // TODO: Use ScrollAreaInfinite
   return (
     <ScrollAreaInfinite
       effectorData={allAnswers}
@@ -465,7 +490,7 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
     >
       <Table>
         <AnswersTableHeader
-          isAdminMode={isAdmin}
+          // isAdminMode={isAdmin}
           selectedAnswers={selectedAnswers}
           allAnswers={allAnswers}
           toggleAll={toggleAll}
@@ -477,7 +502,7 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
               idx={idx}
               answer={answer}
               answersListRoutePath={answersListRoutePath}
-              isAdminMode={isAdmin}
+              // isAdminMode={isAdmin}
               availableAnswersQuery={availableAnswersQuery}
               isSelected={selectedAnswers.has(answer.id)}
               toggleSelected={toggleSelected}
@@ -601,7 +626,6 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
@@ -609,7 +633,6 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Reload',
         content: t('Reload'),
-        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isAnswersRefetching,
@@ -618,9 +641,7 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Delete Selected',
         content: t('ManageTopicQuestionAnswersListCard.DeleteSelected'),
-        // variant: 'destructive',
         icon: Icons.Trash,
-        // visibleFor: 'xl',
         hidden: !selectedAnswers.size,
         pending: deleteSelectedMutation.isPending,
         onClick: handleShowDeleteSelectedConfirm,
@@ -628,7 +649,6 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Add New Answer',
         content: t('ManageTopicQuestionAnswersListCard.AddNewAnswer'),
-        // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
@@ -636,9 +656,7 @@ export function ManageTopicQuestionAnswersListCard(
       {
         id: 'Generate Answers',
         content: t('ManageTopicQuestionAnswersListCard.GenerateAnswers'),
-        // variant: 'secondary',
         icon: Icons.WandSparkles,
-        // visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
       },
@@ -686,7 +704,7 @@ export function ManageTopicQuestionAnswersListCard(
           'flex flex-row flex-wrap items-start',
           'overflow-hidden rounded-md transition',
         )}
-        answersListRoutePath={answersListRoutePath}
+        // answersListRoutePath={answersListRoutePath}
         availableAnswersQuery={availableAnswersQuery}
         selectedAnswers={selectedAnswers}
         setSelectedAnswers={setSelectedAnswers}
