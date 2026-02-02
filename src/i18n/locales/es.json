@@ -79,7 +79,7 @@
   "ShowMenu": "Mostrar menú",
   "Skip": "Omitir",
   "Start": "Iniciar",
-  "StartTraining": "Empezar a entrenar",
+  "StartTraining": "Iniciar Entrenamiento",
   "StartedAt": "Iniciado en",
   "Status": "Estado",
   "Timeline": "Cronología",
@@ -1548,7 +1548,6 @@
     "NoTopicFound": "No se encontró tema",
     "Questions": "Preguntas",
     "Reload": "Recargar",
-    "StartTraining": "Iniciar Entrenamiento",
     "ViewTopic": "Ver Tema"
   },
   "Workout": {
