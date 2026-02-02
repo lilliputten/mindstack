@@ -743,6 +743,8 @@
     "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA"
   },
   "GenerateQuestionsForm": {
+    "AiClientTypeHint": "Seleccione un proveedor de IA para generar los datos",
+    "AiClientTypeLabel": "Proveedor de IA",
     "AnswersCountHint": "Recuento de respuestas a generar para cada pregunta (mínimo - máximo).",
     "AnswersCountLabelPrefix": "Cantidad de respuestas:",
     "AnswersGenerationTypeHint": "Elige el tipo de respuestas a generar para cada pregunta.",
@@ -759,6 +761,8 @@
     "GenerationTypePlaceholder": "Seleccionar tipo de generación",
     "QuestionsCountHint": "Conteo de preguntas a generar (mínimo - máximo).",
     "QuestionsCountLabelPrefix": "Cantidad de preguntas:",
+    "TemperatureHint": "Seleccione la temperatura de generación, de 0 a 1 (menos es una generación más predecible, más es más variable).",
+    "TemperatureLabel": "Temperatura de generación de IA",
     "UseDebugDataLabel": "¿Usar datos de depuración?"
   },
   "GenerateQuestionsModal": {

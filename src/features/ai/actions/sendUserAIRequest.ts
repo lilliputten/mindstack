@@ -38,8 +38,8 @@ export async function sendUserAIRequest(
   }
 
   const __debugData = {
-    messages,
     opts,
+    messages,
   };
   const __idMsg = '[mindstack:sendUserAIRequest] ℹ️ AI API request: Sending';
   // eslint-disable-next-line no-console

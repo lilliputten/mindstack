@@ -744,6 +744,8 @@
     "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены"
   },
   "GenerateQuestionsForm": {
+    "AiClientTypeHint": "Выберите AI провайдера для генерации данных",
+    "AiClientTypeLabel": "AI Провайдер",
     "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
     "AnswersCountLabelPrefix": "Количество ответов:",
     "AnswersGenerationTypeHint": "Выберите тип ответов для генерации для каждого вопроса.",
@@ -760,6 +762,8 @@
     "GenerationTypePlaceholder": "Выберите тип генерации",
     "QuestionsCountHint": "Количество вопросов для генерации (минимум-максимум).",
     "QuestionsCountLabelPrefix": "Количество вопросов:",
+    "TemperatureHint": "Выберите температуру генерации, от 0 до 1 (меньше -- более предсказуемая генерация, больше -- более вариантивная).",
+    "TemperatureLabel": "Температура AI генерации",
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {

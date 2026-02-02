@@ -105,6 +105,7 @@ export function GenerateQuestionsModal() {
       const topicText = topic?.name || '';
       const topicDescription = topic?.description || '';
       const topicKeywords = topic?.keywords || '';
+      const { clientType, temperature } = formData;
       const params: TGenerateTopicQuestionsParams = {
         ...formData,
         topicText,
@@ -124,7 +125,8 @@ export function GenerateQuestionsModal() {
        * });
        */
       const messages = createGenerateTopicQuestionsMessages(params);
-      /* // DEBUG
+      /*
+       * // DEBUG
        * const __debugMessagesStr = messages.map(({ content }) => content).join('\n\n');
        * console.log('[GenerateQuestionsModal:generateQuestionsMutation] Created messages', {
        *   __debugMessagesStr,
@@ -135,6 +137,8 @@ export function GenerateQuestionsModal() {
       const queryData: TAITextQueryData = await userAIRequest(messages, {
         topicId,
         debugData: debugData ? debugDataId : undefined,
+        clientType,
+        temperature,
       });
       /* // DEBUG
        * const __content = queryData?.content;

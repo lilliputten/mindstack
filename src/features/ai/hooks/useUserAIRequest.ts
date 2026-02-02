@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 
 import { useInvalidateReactQueryKeys } from '@/lib/data';
@@ -12,6 +14,7 @@ export function useUserAIRequest() {
   /** A hook to send AI query, calls server action `sendUserAIRequest`, see for reference */
   const userAIRequest = React.useCallback(
     async (messages: TPlainMessage[], opts: TAIRequestOptions = {}) => {
+      debugger;
       const queryData: TAITextQueryData = await sendUserAIRequest(messages, opts);
       invalidateKeys([aiGenerationsStatusQueryKey]);
       return queryData;
