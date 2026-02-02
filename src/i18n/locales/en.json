@@ -752,6 +752,8 @@
     "ToastSuccessData": "Successfully retrieved AI generated data"
   },
   "GenerateQuestionsForm": {
+    "AiClientTypeHint": "Select an AI provider to generate the data",
+    "AiClientTypeLabel": "AI Provider",
     "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
     "AnswersCountLabelPrefix": "Answers Count:",
     "AnswersGenerationTypeHint": "Choose the type of answers to generate for each question.",
@@ -768,6 +770,8 @@
     "GenerationTypePlaceholder": "Select generation type",
     "QuestionsCountHint": "Count of questions to generate (minimum - maximum).",
     "QuestionsCountLabelPrefix": "Questions Count:",
+    "TemperatureHint": "Select the generation temperature, from 0 to 1 (less is more predictable generation, more is more variable).",
+    "TemperatureLabel": "AI Generation Temperature",
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateQuestionsModal": {

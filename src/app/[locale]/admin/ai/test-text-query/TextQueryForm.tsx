@@ -124,8 +124,6 @@ export function TextQueryForm() {
     // form.setValue('topicParamsKey', topicParamsKey);
   }, [form, systemQueryText, userQueryText]);
 
-  // const { handleSubmit } = form;
-
   const [isPending, startTransition] = React.useTransition();
   const [isShowServerInfoRunning, startShowServerInfo] = React.useTransition();
   const [isShowGigaChatBalanceInfoRunning, startShowGigaChatBalanceInfo] = React.useTransition();
@@ -136,7 +134,7 @@ export function TextQueryForm() {
 
   const showGigaChatBalanceInfo = React.useCallback(() => {
     startShowGigaChatBalanceInfo(async () => {
-      // return await new Promise((r) => setTimeout(r, 3000));
+      // return await new Promise((r) => setTimeout(r, 3000)); // DEBUG
       setError(null);
       addLog({ type: 'info', content: `Fetching GigaChat tokens balance...` });
       try {
@@ -159,7 +157,7 @@ export function TextQueryForm() {
 
   const showServerInfo = React.useCallback(() => {
     startShowServerInfo(async () => {
-      // return await new Promise((r) => setTimeout(r, 3000));
+      // return await new Promise((r) => setTimeout(r, 3000)); // DEBUG
       setError(null);
       addLog({ type: 'info', content: `Fetching server info...` });
       try {
@@ -201,17 +199,17 @@ export function TextQueryForm() {
           { role: 'user', content: userQueryText },
         ];
         addLog({ type: 'data', title: 'Retrieving data with messages:', content: messages });
-        // DEBUG
-        console.log('[TextQueryForm:sendQuery] start', {
-          message,
-          clientType,
-          temperature,
-          systemQueryText,
-          userQueryText,
-          // messages,
-          // messagesJson: JSON.stringify(messages, null, 2),
-        });
-        debugger;
+        /* // DEBUG
+         * console.log('[TextQueryForm:sendQuery] start', {
+         *   message,
+         *   clientType,
+         *   temperature,
+         *   systemQueryText,
+         *   userQueryText,
+         *   // messages,
+         *   // messagesJson: JSON.stringify(messages, null, 2),
+         * });
+         */
         const queryResult = await sendAiTextQuery(messages, {
           clientType,
           temperature,
@@ -262,12 +260,6 @@ export function TextQueryForm() {
       setTopicParamsKey(paramsKey);
     }
   }, [paramsKey]);
-
-  console.log('XXX', {
-    topicParamsKey,
-    paramsKey,
-    values,
-  });
 
   // Ensure temperature is within valid range
   const temperature = values.temperature ?? 0.1;
