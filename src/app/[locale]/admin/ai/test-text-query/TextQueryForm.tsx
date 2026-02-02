@@ -17,16 +17,70 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { fetchGigaChatAvailableTokens } from '@/features/ai/actions';
 import { sendAiTextQuery } from '@/features/ai/actions/sendAiTextQuery';
+import { createGenerateTopicQuestionsMessages } from '@/features/ai/helpers';
+import { TGenerateTopicQuestionsParams } from '@/features/ai/types';
 import { TPlainMessage } from '@/features/ai/types/messages';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
-import { defaultValues, formSchema, TFormData, TFormType } from './TextQueryFormDefinitions';
+import {
+  defaultValues as defaultValuesBase,
+  formSchema,
+  TFormData,
+  TFormType,
+} from './TextQueryFormDefinitions';
 import { TextQueryFormFields } from './TextQueryFormFields';
+
+const topicParams: Record<string, TGenerateTopicQuestionsParams> = {
+  SpanishLanguage: {
+    questionsGenerationType: 'MIXED',
+    questionsCountMin: 3,
+    questionsCountMax: 5,
+    answersGenerationType: 'RANDOM',
+    answersCountMin: 2,
+    answersCountMax: 4,
+    topicText: ' Introducción a la Gramática Básica del Español',
+    topicDescription:
+      'Este tema cubre gramática elemental del español, como conjugaciones de verbos en presente, pronombres personales, artículos, adjetivos y formas básicas de sustantivos.',
+    topicKeywords:
+      'gramática, conjugaciones, verbos, pronombres, presente, artículos, adjetivos, sustantivos, formas',
+    extraText:
+      'Las preguntas deben enfocarse en gramática simple: conjugaciones de verbos en presente (ej. ser/estar/tener), uso de pronombres personales (yo/tú/él), artículos (el/la/un/una), concordancia de adjetivos y plurales de sustantivos. Evita preguntas de traducción directa inglés-español o definiciones de palabras aisladas. Haz preguntas sobre completar oraciones, elegir la forma correcta o identificar errores gramaticales básicos.',
+    existedQuestions: [
+      { text: `¿Cómo se conjuga 'vivir' en futuro para 'ellos'?` },
+      { text: `Reemplaza 'a mí' con el pronombre correcto: ______ gusta el español.` },
+      { text: `Cambia al plural y concuerda el adjetivo: El gato negro → ______.` },
+      { text: `Elige la forma correcta: Ayer ______ (ella / leer) el libro.` },
+    ],
+    langName: 'Spanish',
+    langCode: 'es',
+  },
+  Dummy: {
+    questionsGenerationType: 'BASIC',
+    questionsCountMin: 1,
+    questionsCountMax: 3,
+    answersGenerationType: 'RANDOM',
+    answersCountMin: 2,
+    answersCountMax: 4,
+    topicText: 'Sample Topic',
+    extraText: 'No additional instructions',
+    topicDescription: 'This is a sample topic for testing purposes',
+    topicKeywords: 'sample, testing, dummy',
+    existedQuestions: [
+      { text: 'Sample existing question?' },
+      { text: 'Another existing question?' },
+    ],
+    langName: 'English',
+    langCode: 'en',
+  },
+};
+const topicParamsKeys = Object.keys(topicParams);
 
 export function TextQueryForm() {
   const [_error, setError] = React.useState<string | null>(null);
   const [showForm, toggleForm] = React.useState(true);
+
+  const [topicParamsKey, setTopicParamsKey] = React.useState<string>(topicParamsKeys[0]);
 
   const [logs, setLogs] = React.useState<TLogRecord[]>([
     /* // DEMO: Sample data
@@ -38,12 +92,37 @@ export function TextQueryForm() {
      */
   ]);
 
+  const [systemQueryText, userQueryText] = React.useMemo(
+    () => createGenerateTopicQuestionsMessages(topicParams[topicParamsKey]).map((x) => x.content),
+    [topicParamsKey],
+  );
+
+  const defaultValues = React.useMemo<TFormData>(() => {
+    // const [systemQueryText, userQueryText] = createGenerateTopicQuestionsMessages(
+    //   topicParams[topicParamsKey],
+    // ).map((x) => x.content);
+    return {
+      // Create new demo default values...
+      ...defaultValuesBase,
+      systemQueryText,
+      userQueryText,
+    } satisfies TFormData;
+  }, [systemQueryText, userQueryText]);
+
   const form: TFormType = useForm<TFormData>({
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+
+  // Update form values when topicParamsKey changes
+  React.useEffect(() => {
+    // Update form values
+    form.setValue('systemQueryText', systemQueryText);
+    form.setValue('userQueryText', userQueryText);
+    // form.setValue('topicParamsKey', topicParamsKey);
+  }, [form, systemQueryText, userQueryText]);
 
   // const { handleSubmit } = form;
 
@@ -103,14 +182,14 @@ export function TextQueryForm() {
 
   const sendQuery = React.useCallback(
     async (formData: TFormData) => {
-      const { clientType, systemQueryText, userQueryText } = formData;
+      const { clientType, temperature, systemQueryText, userQueryText } = formData;
       setError(null);
       const queryInfo = [systemQueryText, userQueryText]
         .map((s) => s.trim())
         .filter(Boolean)
         .map((s) => `"${s}"`)
         .join(' / ');
-      const message = `Submitting query ${truncateString(queryInfo, 50)} to client type ${clientType}...`;
+      const message = `Submitting query ${truncateString(queryInfo, 50)} to client type ${clientType} with temperature ${temperature}...`;
       addLog({
         type: 'info',
         content: message,
@@ -122,15 +201,20 @@ export function TextQueryForm() {
           { role: 'user', content: userQueryText },
         ];
         addLog({ type: 'data', title: 'Retrieving data with messages:', content: messages });
-        /* // DEBUG
-         * console.log('[TextQueryForm:sendQuery] start', {
-         *   messages,
-         *   messagesJson: JSON.stringify(messages, null, 2),
-         * });
-         */
+        // DEBUG
+        console.log('[TextQueryForm:sendQuery] start', {
+          message,
+          clientType,
+          temperature,
+          systemQueryText,
+          userQueryText,
+          // messages,
+          // messagesJson: JSON.stringify(messages, null, 2),
+        });
+        debugger;
         const queryResult = await sendAiTextQuery(messages, {
           clientType,
-          // temperature,
+          temperature,
           debugData: formData.showDebugData,
         });
         const { content } = queryResult;
@@ -170,6 +254,26 @@ export function TextQueryForm() {
   const { formState, watch } = form;
   const { isValid, isReady } = formState;
   const values = watch();
+
+  const { topicParamsKey: paramsKey } = values;
+
+  React.useEffect(() => {
+    if (paramsKey) {
+      setTopicParamsKey(paramsKey);
+    }
+  }, [paramsKey]);
+
+  console.log('XXX', {
+    topicParamsKey,
+    paramsKey,
+    values,
+  });
+
+  // Ensure temperature is within valid range
+  const temperature = values.temperature ?? 0.1;
+  if (temperature < 0 || temperature > 1) {
+    toast.error('Temperature must be between 0 and 1');
+  }
 
   const isEmpty = React.useMemo(() => {
     return Object.entries(values)

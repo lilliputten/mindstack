@@ -47,7 +47,7 @@ export const envServerSchema = z.object({
   WEBHOOK_HOST: z.string().optional(),
 
   // AI API
-  GENERATION_TEMPERATURE: z.coerce.number(),
+  NEXT_PUBLIC_GENERATION_TEMPERATURE: z.coerce.number(),
   // GigaChat AI API
   GIGACHAT_CREDENTIALS: z.string().min(1),
   GIGACHAT_MODEL: GigachatModelSchema,

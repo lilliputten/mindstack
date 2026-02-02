@@ -17,7 +17,7 @@ export function createGenerateTopicQuestionsMessages(
     extraText,
     topicText,
     topicDescription,
-    // topicKeywords,
+    topicKeywords,
     existedQuestions,
     langName,
     langCode,
@@ -53,7 +53,7 @@ export function createGenerateTopicQuestionsMessages(
 
   const requirements = [
     langText
-      ? `All texts (except code examples) must be generated in ${langText} language.`
+      ? `All texts (except code examples, if any) must be generated in ${langText} language.`
       : `The language of the questions and answers must be derived from the language of the topic.`,
     generationTypeInstructions[questionsGenerationType],
     `Questions should be clear, educational, and relevant to the topic.`,
@@ -78,9 +78,9 @@ Example format:
   "questionsCount": 1,
   "questions": [
     {
-      "text": "What is the main concept of...?",
+      "text": "\${QUESTION_TEXT}",
       "answersCount": 1,
-      "answers": ["text": "Answer text...", "explanation": "Explanation text", "isCorrect": false]
+      "answers": ["text": "\${ANSWER_1}", "explanation": "\${EXPLANATION_1}", "isCorrect": \${BOOLEAN_VALUE}]
     }
   ]
 }
@@ -96,6 +96,7 @@ Example format:
   const userMessageContent = [
     `Topic: ${topicText}`,
     topicDescription && `Topic description: ${topicDescription}`,
+    topicKeywords && `Topic keywords: ${topicKeywords}`,
     `Generate ${questionsCountText} for this topic, with ${answersCountText} per each question.`,
     extraText && `Additional instructions: ${extraText}`,
     existedQuestionsText && `Avoid duplicating existing questions:`,

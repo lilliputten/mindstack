@@ -46,7 +46,7 @@ export const dashboardLinks: SidebarNavItem[] = [
     authorizedOnly: 'ADMIN',
     items: [
       { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'BotControl' },
-      { href: adminAiTestTextQueryRoute, icon: Icons.Bug, titleId: 'TestAiTextQuery' },
+      { href: adminAiTestTextQueryRoute, icon: Icons.BotMessageSquare, titleId: 'TestAiTextQuery' },
     ],
   },
   {

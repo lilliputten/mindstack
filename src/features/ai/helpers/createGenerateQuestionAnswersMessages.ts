@@ -73,7 +73,7 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     `Provide the result as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number of totally generated answers.`,
 
     langText
-      ? `All texts (except code examples) must be generated in ${langText} language.`
+      ? `All texts (, if any) must be generated in ${langText} language.`
       : `The language of the answers must be derived from the language of the question (or the topic).`,
 
     `Each answer object must have:`,
