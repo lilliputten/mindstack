@@ -4,6 +4,7 @@ import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MessageContent } from '@langchain/core/messages';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { getErrorText, truncateString } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -12,10 +13,12 @@ import { FormProvider } from '@/components/ui/Form';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
-import { Check, Close, Eye, FlaskConical } from '@/components/shared/Icons';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { fetchGigaChatAvailableTokens } from '@/features/ai/actions';
 import { sendAiTextQuery } from '@/features/ai/actions/sendAiTextQuery';
 import { TPlainMessage } from '@/features/ai/types/messages';
+import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
 import { defaultValues, formSchema, TFormData, TFormType } from './TextQueryFormDefinitions';
@@ -45,10 +48,58 @@ export function TextQueryForm() {
   // const { handleSubmit } = form;
 
   const [isPending, startTransition] = React.useTransition();
+  const [isShowServerInfoRunning, startShowServerInfo] = React.useTransition();
+  const [isShowGigaChatBalanceInfoRunning, startShowGigaChatBalanceInfo] = React.useTransition();
 
   const addLog = React.useCallback((record: TLogRecord) => {
     setLogs((prev) => [...prev, record]);
   }, []);
+
+  const showGigaChatBalanceInfo = React.useCallback(() => {
+    startShowGigaChatBalanceInfo(async () => {
+      // return await new Promise((r) => setTimeout(r, 3000));
+      setError(null);
+      addLog({ type: 'info', content: `Fetching GigaChat tokens balance...` });
+      try {
+        const res = await fetchGigaChatAvailableTokens();
+        addLog({ type: 'data', title: 'Response data:', content: res });
+        toast.success('Successfully received server info!');
+      } catch (error) {
+        const errMsg = getErrorText(error);
+        // eslint-disable-next-line no-console
+        console.error('[TextQueryForm:showGigaChatBalanceInfo]', errMsg, { error });
+        debugger; // eslint-disable-line no-debugger
+        setError(errMsg);
+        toast.error(errMsg);
+        addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
+      } finally {
+        addLog({ type: 'info', content: 'Request complete' });
+      }
+    });
+  }, [addLog]);
+
+  const showServerInfo = React.useCallback(() => {
+    startShowServerInfo(async () => {
+      // return await new Promise((r) => setTimeout(r, 3000));
+      setError(null);
+      addLog({ type: 'info', content: `Fetching server info...` });
+      try {
+        const res = await getServerInfo();
+        addLog({ type: 'data', title: 'Response data:', content: res });
+        toast.success('Successfully received server info!');
+      } catch (error) {
+        const errMsg = getErrorText(error);
+        // eslint-disable-next-line no-console
+        console.error('[TextQueryForm:showServerInfo]', errMsg, { error });
+        debugger; // eslint-disable-line no-debugger
+        setError(errMsg);
+        toast.error(errMsg);
+        addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
+      } finally {
+        addLog({ type: 'info', content: 'Request complete' });
+      }
+    });
+  }, [addLog]);
 
   const sendQuery = React.useCallback(
     async (formData: TFormData) => {
@@ -59,10 +110,12 @@ export function TextQueryForm() {
         .filter(Boolean)
         .map((s) => `"${s}"`)
         .join(' / ');
+      const message = `Submitting query ${truncateString(queryInfo, 50)} to client type ${clientType}...`;
       addLog({
         type: 'info',
-        content: `Submitting query ${truncateString(queryInfo, 50)} to client type ${clientType}...`,
+        content: message,
       });
+      toast.info(message);
       try {
         const messages: TPlainMessage[] = [
           { role: 'system', content: systemQueryText },
@@ -91,6 +144,7 @@ export function TextQueryForm() {
          */
         addLog({ type: 'data', title: 'Data received:', content: queryResult });
         addLog({ type: 'success', title: 'Received response:', content: `${resultText}` });
+        toast.success('Received response');
         toggleForm(false);
       } catch (error) {
         const errMsg = getErrorText(error);
@@ -98,7 +152,9 @@ export function TextQueryForm() {
         console.error('[TextQueryForm:sendQuery]', errMsg, { error });
         debugger; // eslint-disable-line no-debugger
         setError(errMsg);
-        addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
+        const message = `Error occurred: ${errMsg}`;
+        addLog({ type: 'error', content: message });
+        toast.error(message);
       } finally {
         addLog({ type: 'info', content: 'Request complete' });
       }
@@ -134,10 +190,28 @@ export function TextQueryForm() {
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
       {
+        id: 'Show GigaChat balance',
+        content: 'Show GigaChat balance',
+        variant: 'theme',
+        icon: Icons.DollarSign,
+        pending: isShowGigaChatBalanceInfoRunning,
+        onClick: showGigaChatBalanceInfo,
+        visibleFor: 'xl',
+      },
+      {
+        id: 'Show server info',
+        content: 'Show server info',
+        variant: 'theme',
+        icon: Icons.Check,
+        pending: isShowServerInfoRunning,
+        onClick: showServerInfo,
+        visibleFor: 'xl',
+      },
+      {
         id: 'Submit',
         content: 'Submit',
         variant: 'theme',
-        icon: Check,
+        icon: Icons.Check,
         disabled: !isSubmitEnabled,
         pending: isPending,
         onClick: () =>
@@ -152,7 +226,7 @@ export function TextQueryForm() {
         id: 'Toggle view',
         content: showForm ? 'Hide form' : 'Show form',
         variant: 'theme',
-        icon: Eye,
+        icon: Icons.Eye,
         onClick: () => toggleForm(!showForm),
         visibleFor: 'sm',
       },
@@ -160,22 +234,24 @@ export function TextQueryForm() {
         id: 'Clear log',
         content: 'Clear log',
         variant: 'ghost',
-        icon: Close,
+        icon: Icons.Close,
         disabled: !hasLogs || isPending,
         onClick: clearLogs,
         visibleFor: 'lg',
       },
     ],
     [
-      isPending,
+      isShowGigaChatBalanceInfoRunning,
+      showGigaChatBalanceInfo,
+      isShowServerInfoRunning,
+      showServerInfo,
       isSubmitEnabled,
+      isPending,
       showForm,
       hasLogs,
-      form,
-      startTransition,
-      sendQuery,
-      toggleForm,
       clearLogs,
+      form,
+      sendQuery,
     ],
   );
 
@@ -192,7 +268,7 @@ export function TextQueryForm() {
           <h1 className="truncate text-2xl">Test AI Text Query</h1>
           {form.watch('showDebugData') && (
             <Badge variant="destructive" className="flex gap-1 truncate">
-              <FlaskConical className="size-4 opacity-50" />
+              <Icons.FlaskConical className="size-4 opacity-50" />
               <span className="truncate font-bold">DEBUG</span>{' '}
               {/* <span className="truncate opacity-70">The fake local data will be returned</span> */}
             </Badge>
