@@ -46,53 +46,66 @@ function dropEmptyQuestionsAndAnswers(data?: TQuestionsAndAnswers) {
 }
 
 export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGeneratedQuestion[] {
-  let rawJson: MessageContent | undefined;
+  let rawContent: MessageContent | undefined;
   let rawData: unknown;
 
   try {
-    rawJson = queryData.content;
+    rawContent = queryData.content;
     // DEBUG: Temporarily monitoring AI generation
-    console.log('[parseGeneratedTopicQuestions] Got raw text', {
-      rawJson,
+    console.log('[parseGeneratedTopicQuestions] Step 1: Got raw content', {
+      rawContent,
       queryData,
     });
-    if (typeof rawJson !== 'string') {
-      throw new Error(`Received unexpected result type instead of json string: ${typeof rawJson}`);
+    debugger;
+    if (typeof rawContent !== 'string') {
+      throw new Error(
+        `Received unexpected result type instead of json string: ${typeof rawContent}`,
+      );
     }
-    rawData = parseDangerousJson(rawJson);
+    rawData = parseDangerousJson(rawContent);
+    // DEBUG: Temporarily monitoring AI generation
+    console.log('[parseGeneratedTopicQuestions] Step 2: Got parsed raw json data', {
+      rawData,
+    });
+    debugger;
     // Remove empty questions/answers data
-    const withoutEmptyObjects = dropEmptyQuestionsAndAnswers(rawData as TQuestionsAndAnswers);
+    const cleanedData = dropEmptyQuestionsAndAnswers(rawData as TQuestionsAndAnswers);
+    // DEBUG: Temporarily monitoring AI generation
+    console.log('[parseGeneratedTopicQuestions] Step 3: Got cleaned up data', {
+      cleanedData,
+    });
+    debugger;
     // TODO: Drop invalid questions ande answers?
-    if (!withoutEmptyObjects) {
+    if (!cleanedData) {
       throw new Error('Got an invalid (empty) json object');
     }
-    const validatedData: TGeneratedQuestions = generatedQuestionsSchema.parse(withoutEmptyObjects);
+    const validatedData: TGeneratedQuestions = generatedQuestionsSchema.parse(cleanedData);
     // DEBUG: Show parsed data
-    console.log('[parseGeneratedTopicQuestions] Parsed validated data', {
+    console.log('[parseGeneratedTopicQuestions] Step 4 (final): Got validated data', {
       validatedData,
-      rawData,
-      rawJson,
-      queryData,
+      // rawData,
+      // rawContent,
+      // queryData,
     });
     return validatedData.questions;
   } catch (error) {
-    const humanMsg = 'Can not parse generated topic questions';
+    const humanMsg = '❌ Can not parse generated topic questions';
     const errDetails = getErrorText(error);
     const __debugData = {
-      __LOG_EXPLANATIONS: [
+      __LOG_EXPLANATIONS__: [
         // Reminders for those who will read the log records later
-        'queryData -- The data returned by the AI query (sendAiTextQuery);',
-        'rawJson -- The raw json string returned from the AI query (queryData.content);',
-        'rawData -- The data that returned from parseDangerousJson;',
-        'withoutEmptyObjects -- Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
+        'queryData: The data returned by the AI query (sendAiTextQuery);',
+        'rawContent: The raw json string returned from the AI query (queryData.content);',
+        'rawData: The data that returned from parseDangerousJson;',
+        'cleanedData: Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
       ],
       errDetails,
-      rawJson,
+      rawContent,
       rawData,
       // error, // NOTE: Error object might be not serializable
       queryData,
     };
-    const __idMsg = '[parseGeneratedTopicQuestions] ❌ ' + humanMsg;
+    const __idMsg = '[parseGeneratedTopicQuestions] ' + humanMsg;
     // eslint-disable-next-line no-console
     console.error(__idMsg, { ...__debugData, error });
     debugger; // eslint-disable-line no-debugger

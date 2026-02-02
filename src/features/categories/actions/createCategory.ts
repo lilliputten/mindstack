@@ -6,7 +6,6 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { getErrorText, translatedPeriod } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
-import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
 import { allowSuggestCategoriesIn } from '@/features/categories/constants';
 import { logData } from '@/features/logger/server-actions';
@@ -82,9 +81,8 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
       const __debugData = {
         category,
         creator,
-        versionInfo,
       };
-      const __idMsg = '[mindstack:createCategory]';
+      const __idMsg = '[mindstack:createCategory] 📊';
       logData(__idMsg, __debugData);
     }
 
