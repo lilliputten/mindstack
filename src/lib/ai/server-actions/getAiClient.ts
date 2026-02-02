@@ -4,6 +4,7 @@ import { BaseChatModelParams } from '@langchain/core/language_models/chat_models
 import { GigaChatClientConfig } from 'gigachat';
 import { GigaChat, GigaChatCallOptions, GigaChatInput } from 'langchain-gigachat';
 
+import { defaultAIGenerationTemperature } from '@/config/env';
 import {
   CLOUDFLARE_ACCOUNT_ID,
   CLOUDFLARE_API_TOKEN,
@@ -12,7 +13,6 @@ import {
 } from '@/config/envServer';
 import { getHttpsAgent } from '@/lib/ai';
 
-import { defaultAiTemperature } from '../types/AITemperature';
 import { defaultAiClientType, TAiClientType } from '../types/TAiClientType';
 
 export type TGigaChatClient = GigaChat<GigaChatCallOptions>;
@@ -40,9 +40,10 @@ export async function getAiClient(
 // eslint-disable-next-line no-redeclare
 export async function getAiClient(
   clientType: TAiClientType = defaultAiClientType,
-  temperature: number = defaultAiTemperature,
+  temperature: number = defaultAIGenerationTemperature,
 ) {
   const idKey = [clientType, temperature].filter(Boolean).join('-');
+  debugger;
   if (cachedClients[idKey]) {
     return cachedClients[idKey];
   }

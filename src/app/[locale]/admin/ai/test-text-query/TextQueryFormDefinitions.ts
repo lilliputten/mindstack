@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { defaultAIGenerationTemperature } from '@/config/env';
 import { AiClientTypeEnum, defaultAiClientType } from '@/lib/ai/types/TAiClientType';
 
 export const formSchema = z.object({
@@ -8,6 +9,8 @@ export const formSchema = z.object({
   clientType: z.nativeEnum(AiClientTypeEnum),
   systemQueryText: z.string(),
   userQueryText: z.string(),
+  temperature: z.number().min(0).max(1).default(defaultAIGenerationTemperature),
+  topicParamsKey: z.string().optional(),
 });
 
 export type TFormData = z.infer<typeof formSchema>;
@@ -61,4 +64,5 @@ export const defaultValues: TFormData = {
   clientType: defaultAiClientType,
   systemQueryText,
   userQueryText,
+  temperature: defaultAIGenerationTemperature,
 };

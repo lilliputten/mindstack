@@ -2,12 +2,15 @@
 
 // NOTE: Using relative imports only, as it's used in `next.config.ts`
 import appInfo from '../app-info.json';
-import { ensureBoolean } from '../lib/helpers/types';
+import { ensureBoolean, ensureNumber } from '../lib/helpers/types';
 
 // System
 export const versionInfo = appInfo.versionInfo;
 
 export const appId = String(process.env.NEXT_PUBLIC_APP_ID || 'mindstack');
+
+export const defaultAIGenerationTemperature =
+  ensureNumber(process.env.NEXT_PUBLIC_GENERATION_TEMPERATURE) || 0.5;
 
 // Environment
 export const isDev = process.env.NODE_ENV === 'development';

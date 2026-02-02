@@ -3,7 +3,8 @@
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { GigaChatCallOptions } from 'langchain-gigachat';
 
-import { defaultAiClientType, defaultAiTemperature, getAiClient } from '@/lib/ai';
+import { defaultAIGenerationTemperature } from '@/config/env';
+import { defaultAiClientType, getAiClient } from '@/lib/ai';
 import { getErrorText } from '@/lib/helpers';
 
 import { TPlainMessage } from '../types/messages';
@@ -27,7 +28,11 @@ async function getDebugDataContent(debugData: TAIQuerDebugDataId) {
 }
 
 export async function sendAiTextQuery(messages: TPlainMessage[], opts: TAIQueryOptions = {}) {
-  const { clientType = defaultAiClientType, temperature = defaultAiTemperature, debugData } = opts;
+  const {
+    clientType = defaultAiClientType,
+    temperature = defaultAIGenerationTemperature,
+    debugData,
+  } = opts;
   if (debugData) {
     await new Promise((r) => setTimeout(r, 1000));
     try {
