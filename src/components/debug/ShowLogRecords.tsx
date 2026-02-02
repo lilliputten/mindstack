@@ -98,7 +98,7 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
     >
       <h2 className="flex px-4">
         <span className="flex-1 text-lg font-semibold">Operation Log</span>{' '}
-        <span className="opacity-30">(reversed)</span>
+        <span className="text-sm opacity-30">(reversed)</span>
       </h2>
       {!!reversedLogs.length && (
         <ScrollArea

@@ -94,49 +94,51 @@ MindStack is a modern memory training application that helps users create, organ
 
 ### Core Framework
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Full type safety
-- **React 19** - Latest React features
-- **Prisma 6** - Type-safe database ORM
-- **PostgreSQL** - Production database
+- **Next.js 15** — React framework with App Router
+- **TypeScript** — Full type safety
+- **React 19** — Latest React features
+- **Prisma 6** — Type-safe database ORM
+- **PostgreSQL** — Production database
 
 ### Styling & UI
 
-- **Tailwind CSS 3.4** - Utility-first CSS framework
-- **Radix UI** - Accessible UI primitives
-- **SCSS/Sass** - Advanced styling with CSS variables
-- **next-themes** - Dark/light mode support
+- **Tailwind CSS 3.4** — Utility-first CSS framework
+- **Radix UI** — Accessible UI primitives
+- **SCSS/Sass** — Advanced styling with CSS variables
+- **next-themes** — Dark/light mode support
 
 ### State Management
 
-- **React Query (TanStack Query 5)** - Server state management
-- **Zustand 5** - Client state management
-- **React Context** - Local component state
+- **React Query (TanStack Query 5)** — Server state management
+- **Zustand 5** — Client state management
+- **React Context** — Local component state
 
 ### Authentication & Validation
 
-- **NextAuth.js 5** - Multi-provider authentication
-- **Zod** - Schema validation
-- **Telegram Auth** - Secure Telegram integration
+- **NextAuth.js 5** — Multi-provider authentication
+- **Zod** — Schema validation
+- **Telegram Auth** — Secure Telegram integration
 
 ### AI Integration
 
-- **GigaChat** - AI content generation
-- **LangChain** - AI model orchestration
-- **Cloudflare Workers AI** - Alternative AI provider
+- **LangChain** — AI model orchestration
+- **GigaChat** — AI content generation (with different available model levels, `GIGACHAT_MODEL`: 'GigaChat' | 'GigaChat-Pro' | 'GigaChat-Max')
+- **Cloudflare AI** — Alternative AI provider
+
+See environment variable parameters.
 
 ### Payments
 
-- **Stripe** - International payments
-- **Yookassa** - Russian payment processing
+- **Stripe** — International payments
+- **Yookassa** — Russian payment processing
 
 ### Testing & Quality
 
-- **Jest** - Testing framework
-- **React Testing Library** - Component testing
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **Stylelint** - CSS/SCSS linting
+- **Jest** — Testing framework
+- **React Testing Library** — Component testing
+- **ESLint** — Code linting
+- **Prettier** — Code formatting
+- **Stylelint** — CSS/SCSS linting
 
 ## 📦 Installation & Setup
 
@@ -237,7 +239,7 @@ YOOKASSA_SECRET_KEY_TEST=""                    # YooKassa test secret key
 **AI Integration**
 
 ```env
-# Cloudflare Workers AI
+# Cloudflare AI
 CLOUDFLARE_ACCOUNT_ID=""                       # Cloudflare account ID
 CLOUDFLARE_API_TOKEN=""                        # Cloudflare API token
 
@@ -374,7 +376,7 @@ pnpm test-watch
 
 ### Supported Languages
 
-- English (`en`) - Default
+- English (`en`) — Default
 - Spanish (`es`)
 - Russian (`ru`)
 
@@ -437,7 +439,7 @@ We welcome contributions! Please follow these guidelines:
 
 ## 📝 License
 
-This project is licensed under the ISC License - see the LICENSE file for details.
+This project is licensed under the ISC License — see the [LICENSE](LICENSE) file for details.
 
 ## ☂ Support
 

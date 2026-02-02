@@ -55,7 +55,7 @@ MindStack is a NextJS Memory Training Application designed to help users learn a
 
 - **GigaChat** - AI content generation
 - **LangChain** - AI model orchestration
-- **Cloudflare Workers AI** - Alternative AI provider
+- **Cloudflare AI** - Alternative AI provider
 
 ### Payments
 
@@ -453,7 +453,7 @@ BOT_USERNAME=<telegram_bot_username>
 
 # AI
 GIGACHAT_CREDENTIALS=<gigachat_credentials>
-GIGACHAT_MODEL=<gigachat_model>
+GIGACHAT_MODEL=<'GigaChat' | 'GigaChat-Pro' | 'GigaChat-Max'>
 ```
 
 ### Optional Variables

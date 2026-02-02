@@ -3,6 +3,8 @@
 
 import { z } from 'zod';
 
+import { GigachatModelSchema } from '../constants/ai';
+
 export const envServerSchema = z.object({
   // App
   VERCEL_ENV: z.string().optional(),
@@ -47,7 +49,7 @@ export const envServerSchema = z.object({
   // AI API
   // GigaChat AI API
   GIGACHAT_CREDENTIALS: z.string().min(1),
-  GIGACHAT_MODEL: z.string().min(1),
+  GIGACHAT_MODEL: GigachatModelSchema,
   // CloudFlare AI API
   CLOUDFLARE_ACCOUNT_ID: z.string().min(1),
   CLOUDFLARE_API_TOKEN: z.string().min(1),
