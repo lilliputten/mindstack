@@ -15,6 +15,7 @@ import {
 
 interface TOptions {
   noDebug?: boolean;
+  // signal?: AbortSignal;
 }
 
 export async function getAvailableCategories(
@@ -36,7 +37,9 @@ export async function getAvailableCategories(
     maxCreatedAt,
     minUpdatedAt,
     maxUpdatedAt,
+    // Options
     noDebug,
+    // signal,
   } = params;
 
   if (isDev) {

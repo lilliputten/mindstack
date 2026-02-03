@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { CategorySelectField } from '@/components/shared/CategorySelect';
+import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
@@ -79,7 +79,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
     >
       <FormSection>
         {/* Categories */}
-        <CategorySelectField
+        <CategorySelect
           // form={form}
           // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
           control={form.control}

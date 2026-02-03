@@ -160,7 +160,7 @@ const nextConfig: NextConfig = {
     },
   },
   compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
 export default withNextIntl(nextConfig);

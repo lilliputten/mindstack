@@ -48,9 +48,9 @@ const sessionSaveScrollHash = getRandomHashString();
 const truncateLongTextsTo = 200;
 
 interface TManageTopicsListCardProps {
-  handleDeleteTopic: (topicId: TTopicId, from: string) => void;
-  handleEditTopic: (topicId: TTopicId) => void;
-  handleEditQuestions: (topicId: TTopicId) => void;
+  // handleDeleteTopic: (topicId: TTopicId, from: string) => void;
+  // handleEditTopic: (topicId: TTopicId) => void;
+  // handleEditQuestions: (topicId: TTopicId) => void;
   handleAddTopic: () => void;
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
 }
@@ -162,9 +162,9 @@ function TopicsTableHeader({
 interface TTopicsTableRowProps {
   topic: TAvailableTopic;
   idx: number;
-  handleDeleteTopic: TManageTopicsListCardProps['handleDeleteTopic'];
-  handleEditTopic: TManageTopicsListCardProps['handleEditTopic'];
-  handleEditQuestions: TManageTopicsListCardProps['handleEditQuestions'];
+  // handleDeleteTopic: TManageTopicsListCardProps['handleDeleteTopic'];
+  // handleEditTopic: TManageTopicsListCardProps['handleEditTopic'];
+  // handleEditQuestions: TManageTopicsListCardProps['handleEditQuestions'];
   isAdminMode: boolean;
   cachedUsers: TCachedUsers;
   isSelected: boolean;
@@ -175,9 +175,7 @@ interface TTopicsTableRowProps {
 function TopicsTableRow(props: TTopicsTableRowProps) {
   const {
     topic,
-    handleDeleteTopic,
-    handleEditTopic,
-    handleEditQuestions,
+    // handleDeleteTopic\|handleEditTopic\|handleEditQuestions
     isAdminMode,
     cachedUsers,
     idx,
@@ -258,7 +256,8 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
   const categoryIds = categories?.map(({ id }) => id);
 
   const { manageScope } = useManageTopicsStore();
-  const routePath = `/topics/${manageScope}`;
+  const topicsListRoutePath = `/topics/${manageScope}`;
+
   return (
     <TableRow
       className={cn(
@@ -299,7 +298,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       <TableCell id="name" className="truncate">
         <Link
           className="text-ellipsis whitespace-normal hover:underline"
-          href={`${routePath}/${id}` as TRoutePath}
+          href={`${topicsListRoutePath}/${id}` as TRoutePath}
         >
           {truncateString(name, truncateLongTextsTo)}
         </Link>
@@ -338,36 +337,32 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       </TableCell>
       <TableCell id="Actions" className="truncate text-right">
         <div className="flex justify-end gap-1 truncate">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0"
-            onClick={() => handleEditQuestions(topic.id)}
+          <Link
+            href={`${topicsListRoutePath}/add` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
             aria-label={t('ManageTopicsListCard.EditQuestions')}
             title={t('ManageTopicsListCard.EditQuestions')}
           >
             <Icons.Questions className="size-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0"
-            onClick={() => handleEditTopic(topic.id)}
+          </Link>
+          <Link
+            href={`${topicsListRoutePath}/${topic.id}/edit` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
             aria-label={t('ManageTopicsListCard.Edit')}
             title={t('ManageTopicsListCard.Edit')}
           >
             <Icons.Edit className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-9 shrink-0 text-destructive"
-            onClick={() => handleDeleteTopic(topic.id, 'ManageTopicsListCard')}
+          </Link>
+          <Link
+            href={
+              `${topicsListRoutePath}/delete?topicId=${topic.id}&from=ManageTopicsListCard` as TRoutePath
+            }
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
             aria-label={t('ManageTopicsListCard.Delete')}
             title={t('ManageTopicsListCard.Delete')}
           >
-            <Icons.Trash className="size-4" />
-          </Button>
+            <Icons.Trash className="size-4 text-destructive" />
+          </Link>
         </div>
       </TableCell>
     </TableRow>
@@ -377,9 +372,9 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
 export function TopicsTableContent(props: TTopicsTableContentProps) {
   const {
     className,
-    handleDeleteTopic,
-    handleEditTopic,
-    handleEditQuestions,
+    // handleDeleteTopic,
+    // handleEditTopic,
+    // handleEditQuestions,
     // handleAddTopic,
     availableTopicsQuery,
     goBack,
@@ -566,9 +561,9 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
               key={topic.id}
               idx={idx}
               topic={topic}
-              handleDeleteTopic={handleDeleteTopic}
-              handleEditTopic={handleEditTopic}
-              handleEditQuestions={handleEditQuestions}
+              // handleDeleteTopic={handleDeleteTopic}
+              // handleEditTopic={handleEditTopic}
+              // handleEditQuestions={handleEditQuestions}
               isAdminMode={isAdminMode}
               cachedUsers={cachedUsers}
               isSelected={selectedTopics.has(topic.id)}

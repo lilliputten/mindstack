@@ -133,9 +133,9 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
     >
       {filtersParams ? (
         <ManageTopicsListCard
-          handleDeleteTopic={openDeleteTopicModal}
-          handleEditTopic={openEditTopicCard}
-          handleEditQuestions={openEditQuestionsPage}
+          // handleDeleteTopic={openDeleteTopicModal}
+          // handleEditTopic={openEditTopicCard}
+          // handleEditQuestions={openEditQuestionsPage}
           handleAddTopic={openAddTopicModal}
           availableTopicsQuery={availableTopicsQuery}
         />

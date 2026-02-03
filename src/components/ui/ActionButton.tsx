@@ -77,9 +77,6 @@ export function ActionButton(props: TActionItem) {
           href={href as TRoutePath}
           className={cn(
             isDev && '__ActionButton_Link', // DEBUG
-            // buttonVariants({ variant, ...restButtonProps }),
-            // 'truncate',
-            // isDisabled && 'disabled',
             buttonClassName,
           )}
         >

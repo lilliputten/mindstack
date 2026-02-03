@@ -36,7 +36,7 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
 
 export function parseDangerousJson(rawContent?: string, noDebug?: boolean) {
   rawContent = sanitizeRawJson(rawContent, noDebug);
-  if (!rawContent || rawContent?.length === 0) {
+  if (!rawContent || !rawContent?.length) {
     return undefined;
   }
 

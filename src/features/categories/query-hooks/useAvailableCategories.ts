@@ -8,8 +8,7 @@ import {
   UseInfiniteQueryResult,
   useQueryClient,
 } from '@tanstack/react-query';
-
-// import { toast } from 'sonner';
+import { toast } from 'sonner';
 
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types/api';
 import { TAllUsedKeys } from '@/lib/types/react-query';
@@ -35,8 +34,7 @@ const itemsLimit = defaultItemsLimit;
 const staleTime = defaultStaleTime;
 
 /** Collection of all used query keys (may already be invalidated).
- *
- * QueryKeys are stored with stringified keys.
+ * NOTE: QueryKeys are stored with stringified keys.
  */
 const allUsedKeys: TAllUsedKeys = {};
 
@@ -46,10 +44,17 @@ type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' |
   all?: boolean;
 };
 
+interface TMemo {
+  query?: UseInfiniteQueryResult<TGetResultsInfiniteQueryData<TAvailableCategory>, Error>;
+  mounted?: boolean;
+}
+
 /** Hook to fetch available categories with pagination support */
 export function useAvailableCategories(props: TUseAvailableCategoriesProps = {}) {
   const { all, traceId, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
@@ -67,7 +72,75 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     () => ['available-categories', all ? 'all' : 'incremental', queryUrlHash],
     [all, queryUrlHash],
   );
-  allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
+  const keyId = stringifyQueryKey(queryKey);
+  allUsedKeys[keyId] = queryKey;
+
+  const queryFn = React.useCallback(
+    async ({ pageParam = 0 }: { pageParam?: number; signal?: AbortSignal }) => {
+      try {
+        /* console.log('[useAvailableCategories:queryFn] start', traceId, keyId, {
+         *   queryKey,
+         *   enabled,
+         *   queryProps,
+         *   memo,
+         * });
+         */
+        // TODO: To throw an exception if not `memo.mounted` set?
+        const result = await Promise.race([
+          getAvailableCategories({
+            ...queryProps,
+            skip: pageParam as number,
+            take: all ? undefined : itemsLimit,
+          }),
+          // To kill hanged out queries, and start it over
+          new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+        ]);
+        /* console.log('[useAvailableCategories:queryFn] done', traceId, keyId, {
+         *   result,
+         *   queryKey,
+         *   enabled,
+         *   queryProps,
+         *   memo,
+         * });
+         */
+        return result;
+      } catch (error) {
+        if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+          // NOTE: No user warnings for timeouts
+        } else {
+          const message = 'Cannot load categories data';
+          const details = getErrorText(error);
+          // eslint-disable-next-line no-console
+          console.error('[useAvailableCategories:queryFn]', traceId, message, {
+            traceId,
+            details,
+            error,
+            pageParam,
+            memo,
+            queryProps,
+          });
+          toast.error(message);
+        }
+        throw error;
+      }
+    },
+    [
+      // enabled,
+      // keyId,
+      // queryKey,
+      all,
+      memo,
+      queryProps,
+      traceId,
+    ],
+  );
 
   const query = useInfiniteQuery<
     TGetAvailableCategoriesResults,
@@ -79,6 +152,14 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     enabled,
     queryKey,
     staleTime,
+    /* // NOTE: Attempts to find proper parameters to prevent stucking with permanent 'isFetching' state in popups
+     * gcTime: 10 * 1000, // 10s garbage collection
+     * staleTime: 30 * 1000, // 30s stale
+     * refetchOnMount: false, // Don't restart on remount
+     * refetchOnWindowFocus: false,
+     * // Prevent background updates
+     * refetchOnReconnect: false,
+     */
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const loadedCount = (allPages as TGetResults<TAvailableCategory>[]).reduce(
@@ -89,30 +170,45 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         ? loadedCount
         : undefined;
     },
-    queryFn: async (params) => {
-      const { pageParam = 0 } = params;
-      try {
-        const result = await getAvailableCategories({
-          ...queryProps,
-          skip: pageParam as number,
-          take: all ? undefined : itemsLimit,
-        });
-        return result;
-      } catch (error) {
-        const details = getErrorText(error);
-        const message = 'Cannot load categories data';
-        // eslint-disable-next-line no-console
-        console.error('[useAvailableCategories:queryFn]', message, traceId, {
-          traceId,
-          details,
-          error,
-          pageParam,
-        });
-        // toast.error(message);
-        throw error;
-      }
-    },
+    queryFn,
   }) as UseInfiniteQueryResult<TGetResultsInfiniteQueryData<TAvailableCategory>, Error>;
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      /* console.log('[useAvailableCategories:mount]', traceId, keyId, {
+       *   memo,
+       * });
+       */
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        /* console.log('[useAvailableCategories:unmount]', traceId, keyId, {
+         *   isFetching,
+         *   memo,
+         * });
+         */
+        // NOTE: Trying to prevent stucking on permanent isFetching state on fast simultaneous unmounts (in dialog popups)
+        if (isFetching) {
+          /* console.log('[useAvailableCategories:unmount:CLEANUP]', traceId, keyId, {
+           *   isFetching,
+           *   queryKey,
+           *   queryClient,
+           *   query,
+           * });
+           */
+          // 1. IMMEDIATELY cancel pending requests
+          queryClient.cancelQueries({ queryKey, exact: true });
+          // 2. RESET to idle state (stops isLoading)
+          queryClient.resetQueries({ queryKey, exact: true });
+          // 3. Remove from cache entirely (prevents stale blocking)
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient, traceId, keyId]);
 
   const allCategories = React.useMemo(
     () => getUnqueItemsList(query.data?.pages),

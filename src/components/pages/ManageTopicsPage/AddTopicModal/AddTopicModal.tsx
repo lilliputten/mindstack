@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -10,6 +10,9 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { ScrollArea } from '@/components/ui/ScrollArea';
+import { SkeletonPopup } from '@/components/ui/SkeletonPopup';
+import { StableMountWrapper } from '@/components/hoc/withStableMount';
 import { isDev } from '@/constants';
 import { useSettings } from '@/contexts/SettingsContext';
 import { addNewTopic } from '@/features/topics/actions/addNewTopic';
@@ -20,18 +23,18 @@ import {
   useGoToTheRoute,
   useMediaQuery,
   useModalTitle,
-  useUpdateModalVisibility,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';
+import { AddTopicFormSkeleton } from './AddTopicFormSkeleton';
 
 const urlPostfix = '/add';
 
 export function AddTopicModal() {
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
-  const [isVisible, setVisible] = React.useState(false);
+  const [isFinished, setFinished] = React.useState(false);
   const { isMobile } = useMediaQuery();
 
   const { jumpToNewEntities } = useSettings();
@@ -48,12 +51,10 @@ export function AddTopicModal() {
   const goBack = useGoBack(routePath);
 
   const hideModal = React.useCallback(() => {
-    setVisible(false);
     goBack();
   }, [goBack]);
 
   useModalTitle(t('AddTopicModal.ModalTitle'), shouldBeVisible);
-  useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addTopicMutation = useMutation<TAvailableTopic, Error, TNewTopic>({
     mutationFn: addNewTopic,
@@ -62,11 +63,10 @@ export function AddTopicModal() {
       availableTopicsQuery.addNewTopic(addedTopic, true);
       // Invalidate all other keys...
       availableTopicsQuery.invalidateAllKeysExcept([availableTopicsQuery.queryKey]);
-      // Close the modal first
-      setVisible(false);
+      // Going out of here...
+      setFinished(true);
       if (jumpToNewEntities) {
-        // Then navigate to the edit page after a short delay to ensure modal is closed
-        // setTimeout(() => goToTheRoute(`${routePath}/${addedTopic.id}`, true), 100);
+        // Navigate to the edit page after successful creation
         goToTheRoute(`${routePath}/${addedTopic.id}`, true);
       } else {
         goBack();
@@ -82,8 +82,7 @@ export function AddTopicModal() {
         details,
         newTopic,
       });
-      // NOTE: Error is processing in `AddTopicForm`
-      // debugger; // eslint-disable-line no-debugger
+      // NOTE: Errors are processing in `AddTopicForm`, do nothing here
     },
   });
 
@@ -104,34 +103,56 @@ export function AddTopicModal() {
     return null;
   }
 
+  const isPending = isFinished || addTopicMutation.isPending;
+
   return (
-    <Modal
-      isVisible={isVisible}
-      hideModal={hideModal}
-      className={cn(
-        isDev && '__AddTopicModal', // DEBUG
-        'flex flex-col gap-0 text-theme-foreground',
-        addTopicMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
-      )}
-    >
-      <div
+    <Suspense fallback={<SkeletonPopup />}>
+      <Modal
+        isVisible
+        hideModal={hideModal}
         className={cn(
-          isDev && '__AddTopicModal_Header', // DEBUG
-          !isMobile && 'max-h-[90vh]',
-          'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
+          isDev && '__AddTopicModal', // DEBUG
+          'flex flex-col gap-0 text-theme-foreground',
+          !isMobile && 'max-h-[90%]',
+          isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('AddTopicModal.DialogTitle')}</DialogTitle>
-        <DialogDescription aria-hidden="true" hidden>
-          {t('AddTopicModal.DialogDescription')}
-        </DialogDescription>
-      </div>
-      <AddTopicForm
-        handleAddTopic={handleAddTopic}
-        className="p-8 text-foreground"
-        handleClose={hideModal}
-        isPending={addTopicMutation.isPending}
-      />
-    </Modal>
+        <div
+          className={cn(
+            isDev && '__AddTopicModal_Header', // DEBUG
+            !isMobile && 'max-h-[90vh]',
+            'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
+          )}
+        >
+          <DialogTitle className="DialogTitle">{t('AddTopicModal.DialogTitle')}</DialogTitle>
+          <DialogDescription aria-hidden="true" hidden>
+            {t('AddTopicModal.DialogDescription')}
+          </DialogDescription>
+        </div>
+        <ScrollArea
+          className={cn(
+            isDev && '__AddTopicModal_Scroll', // DEBUG
+          )}
+        >
+          <StableMountWrapper
+            componentName="AddTopicForm"
+            stabilizationDelay={500}
+            render={({ isMounted, hasStabilized }) => {
+              return !isMounted || !hasStabilized ? (
+                <AddTopicFormSkeleton className="w-full p-8" />
+              ) : (
+                <AddTopicForm
+                  hasStabilized={hasStabilized}
+                  handleAddTopic={handleAddTopic}
+                  className="p-8 text-foreground"
+                  handleClose={hideModal}
+                  isPending={isPending}
+                />
+              );
+            }}
+          />
+        </ScrollArea>
+      </Modal>
+    </Suspense>
   );
 }

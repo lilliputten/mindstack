@@ -25,26 +25,31 @@ import { isDev } from '@/config';
 import { getCategoryName } from '@/features/categories/helpers';
 import { useAllPublicCategories } from '@/features/categories/hooks';
 
+import { StableMountWrapper } from '../hoc';
+
 interface CategorySelectProps {
   selectedCategoryIds: string[];
   onSelectedCategoryIdsChange: (ids: string[]) => void;
   placeholder?: string;
   className?: string;
+  enabled?: boolean;
 }
 
-export function CategorySelect({
+function CategorySelectComponent({
   selectedCategoryIds,
   onSelectedCategoryIdsChange,
   placeholder,
   className,
+  enabled = true,
 }: CategorySelectProps) {
   const t = useT();
   const locale = useLocale() as TLocale;
 
   const [open, setOpen] = React.useState(false);
 
-  const { publicCategories, isLoading: isCategoriesLoading } = useAllPublicCategories({
+  const { publicCategories, isFetching: isCategoriesFetching } = useAllPublicCategories({
     traceId: 'CategorySelect',
+    enabled: enabled,
   });
 
   const handleCategoryToggle = React.useCallback(
@@ -145,12 +150,18 @@ export function CategorySelect({
             </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" align="start">
+        <PopoverContent
+          className={cn('w-full p-0')}
+          align="start"
+          // HINT: Prevent block scroll events by outer scrolls
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+        >
           <Command filter={filterCategory}>
             <CommandInput placeholder={t('CategorySelect.SearchCategoriesPlaceholder')} />
             <CommandList>
               <CommandEmpty>
-                {isCategoriesLoading ? (
+                {isCategoriesFetching ? (
                   <Icons.Spinner className="mx-auto size-8 animate-spin text-theme" />
                 ) : (
                   <>{t('CategorySelect.NoCategoriesFound')}</>
@@ -234,7 +245,7 @@ interface CategorySelectFieldProps {
   placeholder?: string;
 }
 
-export function CategorySelectField({
+export function CategorySelect({
   control,
   name,
   label,
@@ -249,10 +260,19 @@ export function CategorySelectField({
         <FormItem className="flex w-full flex-col gap-4">
           <FormLabel className="truncate">{label}</FormLabel>
           <FormControl>
-            <CategorySelect
-              selectedCategoryIds={Array.isArray(field.value) ? field.value : []}
-              onSelectedCategoryIdsChange={field.onChange}
-              placeholder={placeholder}
+            <StableMountWrapper
+              componentName="CategorySelect"
+              stabilizationDelay={500}
+              render={({ isMounted, hasStabilized }) => {
+                return (
+                  <CategorySelectComponent
+                    selectedCategoryIds={Array.isArray(field.value) ? field.value : []}
+                    onSelectedCategoryIdsChange={field.onChange}
+                    placeholder={placeholder}
+                    enabled={isMounted && hasStabilized}
+                  />
+                );
+              }}
             />
           </FormControl>
           {hint && <FormHint className="content-truncate">{hint}</FormHint>}

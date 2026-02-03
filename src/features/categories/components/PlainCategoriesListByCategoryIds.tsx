@@ -22,7 +22,7 @@ export function PlainCategoriesListByCategoryIds(props: TProps) {
   const t = useT();
   const availableCategoriesQuery = useAvailableCategories({
     traceId: 'PlainCategoriesListByCategoryIds',
-    includeTranslations: true,
+    // includeTranslations: true, // USELESS: It's a default option
     all: true,
   });
   const {

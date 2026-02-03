@@ -14,7 +14,7 @@ import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
-import { CategorySelectField } from '@/components/shared/CategorySelect';
+import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TTopic } from '@/features/topics/types';
@@ -74,7 +74,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
     <div className={cn('flex w-full flex-col gap-6 px-6 py-2 md:flex-row', className)}>
       <FormSection>
         {/* Categories */}
-        <CategorySelectField
+        <CategorySelect
           // form={form}
           // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
           control={form.control}

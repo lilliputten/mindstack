@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { CategorySelectField } from '@/components/shared/CategorySelect';
+import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
@@ -91,7 +91,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
         <div
           className={cn('flex flex-col gap-2', !form.watch('categoryIds')?.length && 'opacity-50')}
         >
-          <CategorySelectField
+          <CategorySelect
             // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
             control={form.control}
             name="categoryIds"

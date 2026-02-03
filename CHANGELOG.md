@@ -1,6 +1,6 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.03, 05:36
+ @changed 2026.02.03, 19:20
 -->
 
 # CHANGELOG
@@ -8,6 +8,7 @@
 ## Minor fixes - 2026.02.03
 
 - Added fixes for the malformed Cloudflare response (with "```json" tags and some preceding text).
+- Fixed an issue with blocked scroll (and touch) events in the nested Popover radix component (eg, if it's been wrapped in a popup dialog, like `CategorySelect` in the `AddTopicModal` -- preventing default events on the `PopoverContent` node), fixed (in a weird way) a bug with stuck categories loader in the `useAvailableCategories` react-query hook (with several workaround -- stale mount hook (`withStableMount`) and extra state and edge cases monitoring in the `useAvailableCategories` itself.
 
 ## [Issue #71: Enhanced AI data generation with new parameters, fixed JSON/route issues, updated management UI](https://github.com/lilliputten/mindstack/issues/71) #[v.0.1.1](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.1) - 2026.02.03
 
@@ -15,7 +16,7 @@
 - Resolved a NextJS routing error by correcting the route from `${topicRoutePath}/add` to `${topicRoutePath}/questions/add`
 - Added constants for GigaChat model selection (`GigaChat`, `GigaChat-Pro`, `GigaChat-Max`)
 - Updated the project license to MIT
-- Reorganized AI server actions and types modules for better maintainability
+- Reorganized AI server actions and type modules for better maintainability
 - Enhanced the cacheable AI provider generator (`getAiClient`) to support a temperature parameter
 - Introduced `clientType` and `temperature` parameters to AI generation forms for more precise control:
   * Added to `TextQueryForm`

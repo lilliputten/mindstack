@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { CategorySelectField } from '@/components/shared/CategorySelect';
+import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { pricingAliasRoute } from '@/config';
 import { isDev } from '@/constants';
@@ -30,6 +30,8 @@ export interface TAddTopicFormProps {
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
+  hasStabilized?: boolean;
+  isMounted?: boolean;
 }
 
 export interface TFormData {
@@ -38,8 +40,8 @@ export interface TFormData {
   categoryIds: string[];
 }
 
-export function AddTopicForm(props: TAddTopicFormProps) {
-  const { className, handleAddTopic, handleClose, isPending } = props;
+function AddTopicFormComponent(props: TAddTopicFormProps) {
+  const { className, handleAddTopic, handleClose, isPending, hasStabilized } = props;
   const t = useT();
 
   const formSchema = React.useMemo(
@@ -98,11 +100,12 @@ export function AddTopicForm(props: TAddTopicFormProps) {
     const newTopic: TNewTopic = { name, isPublic, categoryIds };
     return handleAddTopic(newTopic)
       .then(() => {
-        // NOTE: The form is processing in the `AddTopicModal`, see `addTopicMutation` hook
-        // reset();
-        // if (handleClose) {
-        //   handleClose();
-        // }
+        /* // NOTE: The form is processing and finalizing in the `AddTopicModal`, see `addTopicMutation` hook
+         * reset();
+         * if (handleClose) {
+         *   handleClose();
+         * }
+         */
         setLimitsError(undefined);
       })
       .catch((error) => {
@@ -195,13 +198,14 @@ export function AddTopicForm(props: TAddTopicFormProps) {
                 </FormItem>
               )}
             />
-            <CategorySelectField
+            <CategorySelect
               // @ts-expect-error - TypeScript doesn't properly infer the exact type compatibility
               control={form.control}
               name="categoryIds"
               label={t('AddTopicForm.CategoriesLabel')}
               hint={t('AddTopicForm.CategoriesHint')}
               placeholder={t('AddTopicForm.SelectCategoriesPlaceholder')}
+              enabled={hasStabilized}
             />
             <FormField
               name="isPublic"
@@ -249,3 +253,5 @@ export function AddTopicForm(props: TAddTopicFormProps) {
     </FormProvider>
   );
 }
+
+export const AddTopicForm = AddTopicFormComponent;
