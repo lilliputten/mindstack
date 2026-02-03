@@ -89,8 +89,9 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     });
     return validatedData.questions;
   } catch (error) {
-    const humanMsg = '❌ Can not parse generated topic questions';
-    const errDetails = getErrorText(error);
+    const message = '❌ Can not parse generated topic questions';
+    const details = getErrorText(error);
+    const comboMsg = [message, details].filter(Boolean).join(': ');
     const __debugData = {
       __LOG_EXPLANATIONS__: [
         // Reminders for those who will read the log records later
@@ -99,18 +100,18 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
         'rawData: The data that returned from parseDangerousJson;',
         'cleanedData: Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
       ],
-      errDetails,
+      details,
       rawContent,
       rawData,
       // error, // NOTE: Error object might be not serializable
       queryData,
     };
-    const __idMsg = '[parseGeneratedTopicQuestions] ' + humanMsg;
+    const __idMsg = '[parseGeneratedTopicQuestions] ' + message;
     // eslint-disable-next-line no-console
     console.error(__idMsg, { ...__debugData, error });
     debugger; // eslint-disable-line no-debugger
     // Send log message to the telegram logging channel
     logData(__idMsg, __debugData);
-    throw new Error(humanMsg);
+    throw new Error(comboMsg);
   }
 }

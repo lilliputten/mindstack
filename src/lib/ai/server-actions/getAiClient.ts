@@ -54,9 +54,11 @@ export async function getAiClient(
         model: '@cf/meta/llama-3.1-8b-instruct', // Default value
         cloudflareAccountId: CLOUDFLARE_ACCOUNT_ID,
         cloudflareApiToken: CLOUDFLARE_API_TOKEN,
+        disableStreaming: true,
+        streaming: false,
         // Pass a custom base URL to use Cloudflare AI Gateway
         // baseUrl: `https://gateway.ai.cloudflare.com/v1/{YOUR_ACCOUNT_ID}/{GATEWAY_NAME}/workers-ai/`,
-      } satisfies CloudflareWorkersAIInput & BaseLanguageModelParams);
+      } satisfies CloudflareWorkersAIInput & BaseLanguageModelParams & BaseChatModelParams);
     } else if (clientType === 'GigaChat') {
       // GigaChat
       client = new GigaChat({
@@ -65,7 +67,8 @@ export async function getAiClient(
         useApiForTokens: true, // enable token counting via API
         httpsAgent: getHttpsAgent(),
         temperature,
-        // maxTokens,
+        // maxTokens, // It might corrupt the response
+        streaming: false,
         verbose: true,
       } satisfies GigaChatClientConfig & GigaChatInput & BaseChatModelParams);
     }

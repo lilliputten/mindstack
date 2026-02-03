@@ -177,36 +177,23 @@ export function GenerateAnswersModal() {
       return queryData;
     },
     onError: (error, formData) => {
-      // const details = error instanceof APIError ? error.details : null;
-      const humanMsg = 'Cannot generate answers';
-      const errDetails = getErrorText(error);
+      const message = 'Cannot generate answers';
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
-      console.error('[GenerateAnswersModal:generateAnswersMutation]', humanMsg, {
-        errDetails,
+      console.error('[GenerateAnswersModal:generateAnswersMutation]', comboMsg, {
+        details,
         error,
         formData,
         questionId,
       });
       debugger; // eslint-disable-line no-debugger
-      setError(humanMsg);
+      setError(comboMsg);
     },
   });
 
   const addAnswersMutation = useMutation<TAvailableAnswer[], Error, TNewAnswer[]>({
     mutationFn: addMultipleAnswers,
-    /* onError: (error, newAnswers) => {
-     *   const details = error instanceof APIError ? error.details : null;
-     *   const message = 'Cannot create answer';
-     *   // eslint-disable-next-line no-console
-     *   console.error('[AddAnswersModal:addAnswersMutation]', message, {
-     *     error,
-     *     details,
-     *     newAnswers,
-     *     questionId,
-     *   });
-     *   debugger; // eslint-disable-line no-debugger
-     * },
-     */
   });
 
   const handleGenerateAnswers = React.useCallback(
@@ -238,11 +225,14 @@ export function GenerateAnswersModal() {
          *   answers,
          * });
          */
-        const newAnswers: TNewAnswer[] = answers.map((answer) => ({
+        const newAnswers: TNewAnswer[] | undefined = answers?.map((answer) => ({
           ...answer,
           questionId,
           isGenerated: true,
         }));
+        if (!newAnswers || !newAnswers.length) {
+          throw new Error('No answers generated');
+        }
         const addAnswersPromise = addAnswersMutation.mutateAsync(newAnswers);
         toast.promise(addAnswersPromise, {
           loading: t('GenerateAnswersModal.ToastLoadingAnswers'),
@@ -277,17 +267,17 @@ export function GenerateAnswersModal() {
         }
         return addAnswersPromise;
       } catch (error) {
-        const humanMsg = 'An error occurred while generating and adding question answers';
-        const errDetails = getErrorText(error);
-        // const errMsg = [humanMsg, getErrorText(error)].filter(Boolean).join(': ');
+        const message = 'An error occurred while generating and adding question answers';
+        const details = getErrorText(error);
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[GenerateAnswersModal] ❌', humanMsg, {
-          errDetails,
+        console.error('[GenerateAnswersModal] ❌', comboMsg, {
+          details,
           error,
         });
         debugger; // eslint-disable-line no-debugger
-        toast.error(humanMsg);
-        setError(humanMsg);
+        toast.error(comboMsg);
+        setError(comboMsg);
       }
     },
     [

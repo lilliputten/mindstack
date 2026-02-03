@@ -1,0 +1,29 @@
+```json
+{
+  "questionsCount": 10,
+  "questions": [
+    {
+      "text": "DEMO: What is the purpose of the Django Model layer in the Model View Template (MVT) architecture?",
+      "answersCount": 2,
+      "answers": [
+        {
+          "text": "DEMO: The Model layer is responsible for handling database operations and providing a layer of abstraction between the application logic and the database.",
+          "explanation": "This is the correct answer as the Model layer is where you define your database models and perform CRUD operations.",
+          "isCorrect": true
+        },
+        {
+          "text": "DEMO: The Model layer is responsible for handling user authentication and authorization.",
+          "explanation": "This is incorrect as user authentication and authorization are handled by the Authentication and Authorization layers in Django.",
+          "isCorrect": false
+        },
+        {
+          "text": "DEMO: The Model layer is responsible for handling template rendering.",
+          "explanation": "This is incorrect as template rendering is handled by the Template layer in the MVT architecture.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "DEMO: What is the primary purpose of Django's ORM?",
+      "answersCount": 2,
+

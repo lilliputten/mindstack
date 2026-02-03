@@ -1,0 +1,8 @@
+{
+    "content": "```json\n{\n  \"questionsCount\": 10,\n  \"questions\": [\n    {\n      \"text\": \"DEMO: What is the purpose of the Django Model layer in the Model View Template (MVT) architecture?\",\n      \"answersCount\": 2,\n      \"answers\": [\n        {\n          \"text\": \"DEMO: The Model layer is responsible for handling database operations and providing a layer of abstraction between the application logic and the database.\",\n          \"explanation\": \"This is the correct answer as the Model layer is where you define your database models and perform CRUD operations.\",\n          \"isCorrect\": true\n        },\n        {\n          \"text\": \"DEMO: The Model layer is responsible for handling user authentication and authorization.\",\n          \"explanation\": \"This is incorrect as user authentication and authorization are handled by the Authentication and Authorization layers in Django.\",\n          \"isCorrect\": false\n        },\n        {\n          \"text\": \"DEMO: The Model layer is responsible for handling template rendering.\",\n          \"explanation\": \"This is incorrect as template rendering is handled by the Template layer in the MVT architecture.\",\n          \"isCorrect\": false\n        }\n      ]\n    },\n    {\n      \"text\": \"DEMO: What is the primary purpose of Django's ORM?\",\n      \"answersCount\": 2,\n     ",
+    "additional_kwargs": {},
+    "response_metadata": {},
+    "id": "run-f466feae-c0c6-4156-8e05-1a66d8c5288a",
+    "tool_calls": [],
+    "invalid_tool_calls": []
+}

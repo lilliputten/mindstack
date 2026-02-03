@@ -47,7 +47,7 @@ const idToken = '([^/]*)';
 const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostfix + '$');
 
 /** A debug data file id */
-const debugDataId: TAIQuerDebugDataId = 'questions-query-data-04';
+const debugDataId: TAIQuerDebugDataId = 'questions-query-data-05';
 
 export function GenerateQuestionsModal() {
   const { manageScope } = useManageTopicsStore();
@@ -153,32 +153,30 @@ export function GenerateQuestionsModal() {
       return queryData;
     },
     onError: (error, formData) => {
-      const details = getErrorText(error); // error instanceof APIError ? error.details : null;
-      const humanMsg = 'Error generating questions';
-      const errDetails = getErrorText(error);
-      // const errMsg = [humanMsg, errDetails].filter(Boolean).join(': ');
+      const message = 'Error generating questions';
+      const details = getErrorText(error);
+      const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
-      console.error('[GenerateQuestionsModal:generateQuestionsMutation]', humanMsg, {
-        errDetails,
-        error,
+      console.error('[GenerateQuestionsModal:generateQuestionsMutation]', comboMsg, {
         details,
+        error,
         formData,
         topicId,
       });
       debugger; // eslint-disable-line no-debugger
-      setError(humanMsg);
+      setError(comboMsg);
     },
   });
 
   const addQuestionsMutation = useMutation<TAvailableQuestion[], Error, TNewQuestion[]>({
     mutationFn: addMultipleQuestions,
     /* onError: (error, newQuestions) => {
-     *   const errDetails = getErrorText(error); //  instanceof APIError ? error.details : null;
+     *   const details = getErrorText(error); //  instanceof APIError ? error.details : null;
      *   const message = 'Cannot create questions';
      *   // eslint-disable-next-line no-console
      *   console.error('[GenerateQuestionsModal:addQuestionsMutation]', message, {
      *     error,
-     *     errDetails,
+     *     details,
      *     newQuestions,
      *     topicId,
      *   });
@@ -212,6 +210,9 @@ export function GenerateQuestionsModal() {
          */
         // Parsing questions...
         const questions = parseGeneratedTopicQuestions(queryData);
+        if (!questions || !questions.length) {
+          throw new Error('No questions generated');
+        }
         const newQuestions: TNewQuestion[] = questions.map(
           ({
             answers,
@@ -219,7 +220,7 @@ export function GenerateQuestionsModal() {
             ...question
           }) => ({
             ...question,
-            answers: answers.map((answer) => ({ ...answer, isGenerated: true })),
+            answers: answers?.map((answer) => ({ ...answer, isGenerated: true })),
             topicId,
             isGenerated: true,
           }),
@@ -258,17 +259,17 @@ export function GenerateQuestionsModal() {
         setError(undefined);
         return addQuestionsPromise;
       } catch (error) {
-        const humanMsg = 'An error occurred while generating and adding topic questions';
-        const errDetails = getErrorText(error);
-        // const errMsg = [humanMsg, errDetails].filter(Boolean).join(': ');
+        const message = 'An error occurred while generating and adding topic questions';
+        const details = getErrorText(error);
+        const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[GenerateQuestionsModal] ❌', humanMsg, {
-          errDetails,
+        console.error('[GenerateQuestionsModal] ❌', comboMsg, {
+          details,
           error,
         });
         debugger; // eslint-disable-line no-debugger
-        toast.error(humanMsg);
-        setError(humanMsg);
+        toast.error(comboMsg);
+        setError(comboMsg);
       }
     },
     [
