@@ -47,7 +47,7 @@ const idToken = '([^/]*)';
 const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostfix + '$');
 
 /** A debug data file id */
-const debugDataId: TAIQuerDebugDataId = 'questions-query-data-03';
+const debugDataId: TAIQuerDebugDataId = 'questions-query-data-04';
 
 export function GenerateQuestionsModal() {
   const { manageScope } = useManageTopicsStore();

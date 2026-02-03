@@ -1,0 +1,8 @@
+{
+  "content": "Aquí te presento 10 preguntas para el tema \"Introducción a la Gramática Básica del Español\":\n\n```json\n{\n  \"questionsCount\": 10,\n  \"questions\": [\n    {\n      \"text\": \"DEMO: Completa la siguiente frase con el verbo correcto en presente: 'Yo ____ feliz'.\",\n      \"answersCount\": 5,\n      \"answers\": [\n        {\"text\": \"DEMO: Soy feliz\", \"explanation\": \"El verbo 'ser' se utiliza para describir características permanentes o estado de ánimo.\", \"isCorrect\": true},\n        {\"text\": \"DEMO: Estoy feliz\", \"explanation\": \"El verbo 'estar' se utiliza para describir estado de ánimo o condiciones temporales.\", \"isCorrect\": false},\n        {\"text\": \"DEMO: Tengo felicidad\", \"explanation\": \"El verbo 'tener' se utiliza para describir posesión o estado de ánimo.\", \"isCorrect\": false},\n        {\"text\": \"DEMO: Soy felizmente\", \"explanation\": \"La forma 'felizmente' es un adverbio que describe la manera en que algo sucede.\", \"isCorrect\": false},\n        {\"text\": \"DEMO: Estoy feliz",
+  "additional_kwargs": {},
+  "response_metadata": {},
+  "id": "run-b3e83fd5-4a33-4a6c-82ea-5d831515c2fe",
+  "tool_calls": [],
+  "invalid_tool_calls": []
+}

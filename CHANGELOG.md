@@ -5,6 +5,10 @@
 
 # CHANGELOG
 
+## Minor fixes - 2026.02.03
+
+- Added fixes for the malformed Cloudflare response (with "```json" tags and some preceding text).
+
 ## [Issue #71: Enhanced AI data generation with new parameters, fixed JSON/route issues, updated management UI](https://github.com/lilliputten/mindstack/issues/71) #[v.0.1.1](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.1) - 2026.02.03
 
 - Fixed possible AI-generated data issues by adding the `jsonrepair` library to handle missed closing square brackets in JSON

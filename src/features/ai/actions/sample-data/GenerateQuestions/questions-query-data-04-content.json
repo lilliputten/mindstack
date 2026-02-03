@@ -1,0 +1,15 @@
+Aquí te presento 10 preguntas para el tema "Introducción a la Gramática Básica del Español":
+
+```json
+{
+  "questionsCount": 10,
+  "questions": [
+    {
+      "text": "DEMO: Completa la siguiente frase con el verbo correcto en presente: 'Yo ____ feliz'.",
+      "answersCount": 5,
+      "answers": [
+        {"text": "DEMO: Soy feliz", "explanation": "El verbo 'ser' se utiliza para describir características permanentes o estado de ánimo.", "isCorrect": true},
+        {"text": "DEMO: Estoy feliz", "explanation": "El verbo 'estar' se utiliza para describir estado de ánimo o condiciones temporales.", "isCorrect": false},
+        {"text": "DEMO: Tengo felicidad", "explanation": "El verbo 'tener' se utiliza para describir posesión o estado de ánimo.", "isCorrect": false},
+        {"text": "DEMO: Soy felizmente", "explanation": "La forma 'felizmente' es un adverbio que describe la manera en que algo sucede.", "isCorrect": false},
+        {"text": "DEMO: Estoy feliz

@@ -5,7 +5,7 @@ import React from 'react';
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
-import { Button, ButtonProps, buttonVariants } from '@/components/ui/Button';
+import { Button, ButtonProps } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev, TRoutePath } from '@/config';
@@ -32,7 +32,7 @@ export function ActionButton(props: TActionItem) {
     iconProps = {},
     onClick,
     href,
-    className: buttonClassName,
+    className: passedButtonClassName,
     ...restButtonProps
   } = props;
   const { className: iconClassName, ...restIconProps } = iconProps;
@@ -55,30 +55,45 @@ export function ActionButton(props: TActionItem) {
     </>
   );
   const variant = isDisabled ? 'ghost' : buttonVariant;
-  const className = cn('flex justify-start items-center gap-2 truncate', buttonClassName);
+  const buttonClassName = cn(
+    'flex justify-start items-center gap-2 truncate',
+    passedButtonClassName,
+  );
   if (href) {
     return (
-      <Link
+      <Button
         id={id}
-        href={href as TRoutePath}
         className={cn(
-          isDev && '__ActionButton_Link', // DEBUG
-          buttonVariants({ variant, ...restButtonProps }),
-          'truncate',
-          isDisabled && 'disabled',
-          className,
+          isDev && '__ActionButton_WithLink', // DEBUG
+          buttonClassName,
         )}
+        onClick={onClick}
+        disabled={isDisabled}
+        variant={variant}
+        {...restButtonProps}
       >
-        {buttonContent}
-      </Link>
+        <Link
+          id={id}
+          href={href as TRoutePath}
+          className={cn(
+            isDev && '__ActionButton_Link', // DEBUG
+            // buttonVariants({ variant, ...restButtonProps }),
+            // 'truncate',
+            // isDisabled && 'disabled',
+            buttonClassName,
+          )}
+        >
+          {buttonContent}
+        </Link>
+      </Button>
     );
   }
   return (
     <Button
       id={id}
       className={cn(
-        isDev && '__ActionButton', // DEBUG
-        className,
+        isDev && '__ActionButton_Only', // DEBUG
+        buttonClassName,
       )}
       onClick={onClick}
       disabled={isDisabled}

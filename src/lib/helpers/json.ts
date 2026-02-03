@@ -19,10 +19,16 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
   }
 
   // NOTE: Cloudflare might return this: ```json\n{...}\n```
+  // NOTE: Sometimes it's possible to have some content before ```json from Cloudflare
   const mdStart = '```json';
   const mdEnd = '```';
-  if (rawContent.startsWith(mdStart) && rawContent.endsWith(mdEnd)) {
-    rawContent = rawContent.substring(mdStart.length, rawContent.length - mdEnd.length).trim();
+  const jsonStart = rawContent.indexOf(mdStart);
+  // OLD APPROACH: if (rawContent.startsWith(mdStart) && rawContent.endsWith(mdEnd)) ...
+  if (jsonStart !== -1) {
+    rawContent = rawContent.substring(jsonStart + mdStart.length).trim();
+    if (rawContent.endsWith(mdEnd)) {
+      rawContent = rawContent.substring(rawContent.length - mdEnd.length).trim();
+    }
   }
 
   return rawContent;
