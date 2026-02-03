@@ -594,7 +594,13 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         icon: Icons.Add,
         visibleFor: 'xl',
         // onClick: handleAddQuestion,
-        href: `${topicRoutePath}/add`,
+        /* // WRONG! -- This causes a mystic NextJS error: Functions cannot be
+         * // passed directly to Client Components unless you explicitly expose it
+         * // by marking it with "use server". Or maybe you meant to call this
+         * // function rather than return it.
+         * href: `${topicRoutePath}/add`,
+         */
+        href: `${topicRoutePath}/questions/add`,
       },
       {
         id: 'Generate Questions',
