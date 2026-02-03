@@ -1,4 +1,8 @@
-import { ChatCloudflareWorkersAI, CloudflareWorkersAIInput } from '@langchain/cloudflare';
+import {
+  ChatCloudflareWorkersAI,
+  CloudflareWorkersAI,
+  CloudflareWorkersAIInput,
+} from '@langchain/cloudflare';
 import { BaseLanguageModelParams } from '@langchain/core/language_models/base';
 import { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import { GigaChatClientConfig } from 'gigachat';
@@ -17,7 +21,7 @@ import { defaultAiClientType, TAiClientType } from '../types/TAiClientType';
 
 export type TGigaChatClient = GigaChat<GigaChatCallOptions>;
 export type TCloudflareClient = ChatCloudflareWorkersAI;
-export type TAiClient = GigaChat<GigaChatCallOptions> | TCloudflareClient;
+export type TAiClient = GigaChat<GigaChatCallOptions> | TCloudflareClient | CloudflareWorkersAI;
 
 const cachedClients: Partial<Record<string, TAiClient>> = {};
 
@@ -49,9 +53,21 @@ export async function getAiClient(
   let client: TAiClient | undefined;
   try {
     if (clientType === 'Cloudflare') {
-      // Cloudflare
+      /* // Cloudflare: CloudflareWorkersAI -- It returns plain content and it's borken too
+       * client = new CloudflareWorkersAI({
+       *   model: '@cf/meta/llama-3.1-8b-instruct',
+       *   cloudflareAccountId: CLOUDFLARE_ACCOUNT_ID,
+       *   cloudflareApiToken: CLOUDFLARE_API_TOKEN,
+       *   // temperature: 0.1, // (unavailable here)
+       *   // maxTokens: 4000, // Explicitly set higher limit (unavailable here)
+       *   streaming: false,
+       *   verbose: true,
+       * });
+       */
+      // Cloudflare: ChatCloudflareWorkersAI -- It returns detailed response with content field, but it mostly often is corrupted (about 800-1500 bytes).
       client = new ChatCloudflareWorkersAI({
-        model: '@cf/meta/llama-3.1-8b-instruct', // Default value
+        model: '@cf/meta/llama-3.1-70b-instruct', // A larger model?
+        // model: '@cf/meta/llama-3.1-8b-instruct',
         cloudflareAccountId: CLOUDFLARE_ACCOUNT_ID,
         cloudflareApiToken: CLOUDFLARE_API_TOKEN,
         disableStreaming: true,

@@ -1,6 +1,11 @@
 'use server';
 
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import {
+  AIMessageChunk,
+  HumanMessage,
+  MessageStructure,
+  SystemMessage,
+} from '@langchain/core/messages';
 import { GigaChatCallOptions } from 'langchain-gigachat';
 
 import { defaultAIGenerationTemperature } from '@/config/env';
@@ -59,10 +64,14 @@ export async function sendAiTextQuery(messages: TPlainMessage[], opts: TAIQueryO
       return new HumanMessage(text);
     });
     const client = await getAiClient(clientType, temperature);
-    const options = {
+    const res: string | AIMessageChunk<MessageStructure> = await client.invoke(prepartedMessages, {
       model: client.model,
-    } satisfies GigaChatCallOptions;
-    const res = await client.invoke(prepartedMessages, options);
+      temperature,
+      maxTokens: 6000, // Explicitly set higher limit
+    } satisfies GigaChatCallOptions);
+    if (typeof res === 'string') {
+      return { content: res, usage_metadata: undefined };
+    }
     const {
       content,
       name,
