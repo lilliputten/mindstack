@@ -177,12 +177,12 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0" htmlFor={clientTypeKey}>
-                {t('GenerateQuestionsForm.AiClientTypeLabel')}
+                {t('AiClientTypeLabel')}
               </Label>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id={clientTypeKey}>
-                    <SelectValue placeholder={t('GenerateQuestionsForm.AiClientTypeLabel')} />
+                    <SelectValue placeholder={t('AiClientTypeLabel')} />
                   </SelectTrigger>
                   <SelectContent>
                     {aiClientTypes.map((type) => (
@@ -193,7 +193,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormHint>{t('GenerateQuestionsForm.AiClientTypeHint')}</FormHint>
+              <FormHint>{t('AiClientTypeHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}
@@ -206,7 +206,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-4">
               <Label className="m-0 flex gap-2" htmlFor={temperatureKey}>
-                <span className="truncate">{t('GenerateQuestionsForm.TemperatureLabel')}</span>
+                <span className="truncate">{t('AiGenerationTemperature')}</span>
                 <span className="text-normal opacity-50">({field.value.toFixed(1)})</span>
               </Label>
               <FormControl>

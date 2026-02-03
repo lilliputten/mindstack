@@ -6,6 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { defaultAIGenerationTemperature } from '@/config/env';
+import {
+  aiClientTypes,
+  AiClientTypeSchema,
+  defaultAiClientType,
+} from '@/lib/ai/types/TAiClientType';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
@@ -33,13 +39,18 @@ import {
 } from '@/features/ai/types/GenerateAnswersTypes';
 import { TQuestionId } from '@/features/questions/types';
 
-const formSchema = generateQuestionAnswersParamsSchema.pick({
-  debugData: true,
-  answersGenerationType: true,
-  answersCountMin: true,
-  answersCountMax: true,
-  extraText: true,
-});
+const formSchema = generateQuestionAnswersParamsSchema
+  .pick({
+    debugData: true,
+    answersGenerationType: true,
+    answersCountMin: true,
+    answersCountMax: true,
+    extraText: true,
+  })
+  .extend({
+    clientType: AiClientTypeSchema.default(defaultAiClientType),
+    temperature: z.number().min(0).max(1).default(defaultAIGenerationTemperature),
+  });
 
 export type TFormData = z.infer<typeof formSchema>;
 
@@ -75,6 +86,8 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
       answersCountMin: isDev ? 1 : 2,
       answersCountMax: isDev ? 1 : 6,
       extraText: '',
+      clientType: defaultAiClientType,
+      temperature: defaultAIGenerationTemperature,
     }),
     [__useDebugData],
   );
@@ -109,6 +122,8 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
   const answersCountKey = React.useId();
   const extraTextKey = React.useId();
   const debugDataKey = React.useId();
+  const clientTypeKey = React.useId();
+  const temperatureKey = React.useId();
 
   const Icon = isPending ? Icons.Spinner : Icons.Check;
   const buttonText = isPending
@@ -155,6 +170,61 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
             )}
           />
         )}
+
+        {/* AI Client Type */}
+        <FormField
+          name="clientType"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="m-0" htmlFor={clientTypeKey}>
+                {t('AiClientTypeLabel')}
+              </Label>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id={clientTypeKey}>
+                    <SelectValue placeholder={t('AiClientTypeLabel')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {aiClientTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormHint>{t('AiClientTypeHint')}</FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Temperature */}
+        <FormField
+          name="temperature"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="m-0 flex gap-2" htmlFor={temperatureKey}>
+                <span className="truncate">{t('AiGenerationTemperature')}</span>
+                <span className="text-normal opacity-50">({field.value.toFixed(1)})</span>
+              </Label>
+              <FormControl>
+                <Slider
+                  id={temperatureKey}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  value={[field.value]}
+                  onValueChange={(value) => field.onChange(value[0])}
+                />
+              </FormControl>
+              <FormHint>{t('GenerateAnswersForm.TemperatureHint')}</FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           name="answersGenerationType"
           control={form.control}
