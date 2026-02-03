@@ -1,19 +1,37 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.02, 15:59
+ @changed 2026.02.03, 05:36
 -->
 
 # CHANGELOG
 
-## Fixed minor issues - 2026.02.02
+## [Issue #71: Enhanced AI data generation with new parameters, fixed JSON/route issues, updated management UI](https://github.com/lilliputten/mindstack/issues/71) #[v.0.1.1](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.1) - 2026.02.03
+
+- Fixed possible AI-generated data issues by adding the `jsonrepair` library to handle missed closing square brackets in JSON
+- Resolved a NextJS routing error by correcting the route from `${topicRoutePath}/add` to `${topicRoutePath}/questions/add`
+- Added constants for GigaChat model selection (`GigaChat`, `GigaChat-Pro`, `GigaChat-Max`)
+- Updated the project license to MIT
+- Reorganized AI server actions and types modules for better maintainability
+- Enhanced the cacheable AI provider generator (`getAiClient`) to support a temperature parameter
+- Introduced `clientType` and `temperature` parameters to AI generation forms for more precise control:
+  * Added to `TextQueryForm`
+  * Added to `GenerateQuestionsForm`
+  * Added to `GenerateAnswersForm`
+- Set a default temperature value via environment variables
+- Removed prop-drilled handlers (`handleDeleteQuestion`, `handleEditQuestion`, `handleAddQuestion`, `handleEditAnswers`) from topics, questions, and answers manage list pages
+- Updated actions and layouts in management list pages for improved UX
+
+Minor related issues:
 
 - Fixed other possible ai generated data issues (missed closing square brackets in json).
 - Fixed an error with too strict expectations for generated answers (categoryIds and isCorrect flags became optional).
 - Added a function to send logs to the telegram bot (`logData`).
 - Added demo data with problematic generation results (`questions-query-data-02`).
 - Updated questions and answers count to generate constants.
-- Added an alternative way to start nextjs dev server.
+- Added an alternative way to start nextjs dev server from vscode launch (direct nodejs command).
 - Added splitting large telegram messages.
+
+- [Compare versions](https://github.com/lilliputten/mindstack/compare/v.0.1.0...v.0.1.1)
 
 ## [Issue #68: Updated logo, translations, pricing calculations, and routing](https://github.com/lilliputten/mindstack/issues/68) - 2026.01.31
 
