@@ -43,7 +43,6 @@ export async function getAiClient(
   temperature: number = defaultAIGenerationTemperature,
 ) {
   const idKey = [clientType, temperature].filter(Boolean).join('-');
-  debugger;
   if (cachedClients[idKey]) {
     return cachedClients[idKey];
   }
