@@ -39,7 +39,7 @@ const topicParams: Record<string, TGenerateTopicQuestionsParams> = {
     answersGenerationType: 'RANDOM',
     answersCountMin: 2,
     answersCountMax: 4,
-    topicText: ' Introducción a la Gramática Básica del Español',
+    topicText: 'Introducción a la Gramática Básica del Español',
     topicDescription:
       'Este tema cubre gramática elemental del español, como conjugaciones de verbos en presente, pronombres personales, artículos, adjetivos y formas básicas de sustantivos.',
     topicKeywords:
