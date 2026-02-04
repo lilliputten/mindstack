@@ -16,7 +16,6 @@ import { TAvailableTopic } from '@/features/topics/types';
 import { useGoToTheRoute, useSessionUser } from '@/hooks';
 
 interface TAvailableTopicsListItemProps {
-  index: number;
   className?: string;
   topic: TAvailableTopic;
 }
