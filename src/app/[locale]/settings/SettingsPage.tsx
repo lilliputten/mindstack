@@ -162,29 +162,25 @@ export function SettingsPage(props: TSettingsPageProps) {
         )}
         actions={actions}
       />
+      {/*
       <Card
         className={cn(
           isDev && '__SettingsPage_Card', // DEBUG
           'relative flex flex-1 flex-col overflow-hidden',
-          'mx-6',
+          'bg-gr2',
+          'mx-6 py-6',
           className,
         )}
       >
-        {!isReady ? (
-          <CardContentSkeleton />
-        ) : (
-          <CardContent
-            className={cn(
-              isDev && '__SettingsPage_CardContent', // DEBUG
-              'relative flex flex-1 flex-col overflow-hidden px-0 pt-6',
-            )}
-          >
-            <ScrollArea saveScrollKey="SettingsPage" saveScrollHash={saveScrollHash}>
-              <SettingsForm form={form} settings={settings} userId={userId} />
-            </ScrollArea>
-          </CardContent>
-        )}
       </Card>
+      */}
+      {!isReady ? (
+        <CardContentSkeleton />
+      ) : (
+        <ScrollArea saveScrollKey="SettingsPage" saveScrollHash={saveScrollHash}>
+          <SettingsForm form={form} settings={settings} userId={userId} />
+        </ScrollArea>
+      )}
       <ConfirmModal
         dialogTitle="Confirm data loss"
         confirmButtonVariant="theme"

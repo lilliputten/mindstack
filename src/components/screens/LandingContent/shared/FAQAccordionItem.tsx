@@ -20,20 +20,26 @@ export function FAQAccordionItem({ debugId, value, question, answer }: FAQAccord
       value={value}
       className={cn(
         isDev && `__FAQAccordionItem_${debugId || value}`, // DEBUG
-        'bg-theme/10',
+        // 'bg-theme-700/5',
+        'bg-background/20',
+        'hover:bg-background/30',
+        // 'bg-gradient-to-r from-triadic1/10 to-theme/10',
+        // 'hover:from-triadic1/20 hover:to-theme/20',
+        'rounded-md',
+        // 'decorative-card shadow-sm',
       )}
     >
       <AccordionTrigger
         className={cn(
           isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
-          'content-truncate px-6 py-6 text-xl font-semibold text-theme-600 dark:text-theme-400 max-sm:text-base',
+          'content-truncate px-6 py-6 text-xl font-semibold text-theme-500 hover:text-theme-400 max-sm:text-base',
         )}
         wrapperClassName={cn(
           isDev && '__FAQAccordionItem_AccordionTrigger', // DEBUG
           'flex gap-4 items-center',
         )}
       >
-        <Icons.MessageCircleQuestion className="size-8 text-theme opacity-50" />
+        <Icons.MessageCircleQuestion className="size-8 opacity-20" />
         <span className="content-truncate flex-1">{question}</span>
       </AccordionTrigger>
       <AccordionContent

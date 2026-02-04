@@ -281,19 +281,92 @@
     );
   }
 
+  // Slightly rotated gradients (+45deg, -45deg)
+  .bg-gr-65 {
+    background-image: linear-gradient(65deg, var(--tw-gradient-stops));
+  }
+  .bg-gr-135 {
+    background-image: linear-gradient(135deg, var(--tw-gradient-stops));
+  }
+
+  // Theme-based gradients
+  .bg-theme-gr1 {
+    @apply bg-gr-135 from-theme-400/50 to-theme-600/50;
+  }
+
+  // gr0
+  .bg-gr0 {
+    @apply bg-gr-65 from-theme/15 to-theme/5;
+  }
+  .bg-grr {
+    @apply bg-gr-65 from-theme/5 to-theme/15;
+  }
+  // gr1
+  .bg-gr1 {
+    @apply bg-gr-65 from-triadic1/50 to-theme/50;
+  }
+  .bg-gr1r {
+    @apply bg-gr-65 from-theme/50 to-triadic1/50;
+  }
+  .bg-gr1x {
+    @apply bg-gr-65 from-triadic1/60 to-theme/60;
+  }
+  .bg-gr1rx {
+    @apply bg-gr-65 from-theme/60 to-triadic1/60;
+  }
+  // gr2
+  .bg-gr2 {
+    @apply bg-gr-65 from-triadic1/50 to-triadic2/50;
+  }
+  .bg-gr2r {
+    @apply bg-gr-65 from-triadic2/50 to-triadic1/50;
+  }
+  .bg-gr2x {
+    @apply bg-gr-65 from-triadic1/60 to-triadic2/60;
+  }
+  .bg-gr2rx {
+    @apply bg-gr-65 from-triadic2/60 to-triadic1/60;
+  }
+  // gr3
+  .bg-gr3 {
+    @apply bg-gr-65 from-triadic2/50 to-theme/50;
+  }
+  .bg-gr3r {
+    @apply bg-gr-65 from-theme/50 to-triadic2/50;
+  }
+  .bg-gr3x {
+    @apply bg-gr-65 from-triadic2/60 to-theme/60;
+  }
+  .bg-gr3rx {
+    @apply bg-gr-65 from-theme/60 to-triadic2/60;
+  }
+  // gr4
+  .bg-gr4 {
+    @apply bg-gr-65 from-complementary/50 to-theme/50;
+  }
+  .bg-gr4r {
+    @apply bg-gr-65 from-theme/50 to-complementary/50;
+  }
+  .bg-gr4x {
+    @apply bg-gr-65 from-complementary/60 to-theme/60;
+  }
+  .bg-gr4rx {
+    @apply bg-gr-65 from-theme/60 to-complementary/60;
+  }
+
   .bg-page-gradient {
     overflow: hidden;
     background:
       linear-gradient(
         160deg,
-        rgba(var(--color-blue-500-RGB) / 0%) 0%,
-        rgba(var(--color-blue-500-RGB) / 15%) 45%,
-        rgba(var(--color-blue-500-RGB) / 0%) 100%
+        rgba(var(--color-theme-RGB) / 0%) 0%,
+        rgba(var(--color-theme-500-RGB) / 8%) 45%,
+        rgba(var(--color-theme-RGB) / 0%) 100%
       ),
       radial-gradient(
         90% 60% at 30% 70%,
-        rgba(var(--color-theme-500-RGB) / 20%) 0%,
-        rgba(var(--color-theme-500-RGB) / 10%) 100%
+        rgba(var(--color-theme-500-RGB) / 15%) 0%,
+        rgba(var(--color-theme-500-RGB) / 5%) 100%
       );
   }
 
@@ -312,33 +385,6 @@
       );
   }
 
-  .decorative-shadow {
-    box-shadow: var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0));
-  }
-
-  .decorative-card {
-    --tw-ring-shadow: inset 0 0 3em rgba(var(--backgroundColorRGB) / 75%);
-  }
-
-  .text-gradient-brand {
-    background: linear-gradient(
-      15deg,
-      rgba(var(--primaryColorRGB) / 80%) 0%,
-      rgb(var(--color-theme-500-RGB)) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .bg-header-gradient {
-    background: radial-gradient(
-      80% 100% at 80% 0%,
-      rgba(var(--color-theme-600-RGB) / 50%) 50%,
-      rgba(var(--color-theme-500-RGB) / 70%) 100%
-    );
-  }
-
   .after-header-decor {
     &:after {
       overflow: hidden;
@@ -351,6 +397,54 @@
       background-size: cover;
       opacity: 0.05;
     }
+  }
+
+  .decorative-shadow {
+    box-shadow: var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0));
+  }
+
+  .decorative-card {
+    --tw-ring-shadow: inset 0 0 3em rgba(var(--backgroundColorRGB) / 75%);
+  }
+
+  .text-gradient-brand {
+    @apply bg-gr-65 from-theme to-triadic1;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gr1 {
+    @apply bg-gr-65 from-theme to-triadic1;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gr2 {
+    @apply bg-gr-65 from-theme to-triadic2;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gr3 {
+    @apply bg-gr-65 from-theme to-complementary;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-header-gradient {
+    background:
+      linear-gradient(
+        170deg,
+        rgba(var(--color-triadic1-RGB) / 30%) 0%,
+        // rgba(var(--color-triadic1-RGB) / 15%) 45%,
+        rgba(var(--color-triadic2-RGB) / 30%) 100%
+      ),
+      radial-gradient(
+        80% 100% at 80% 0%,
+        rgba(var(--color-theme-600-RGB) / 50%) 50%,
+        rgba(var(--color-theme-500-RGB) / 70%) 100%
+      );
   }
 
   .single-child {

@@ -20,19 +20,22 @@ export function UpgradeCard({ className, dontFlatten, onSidebar, onClickEffect }
       className={cn(
         isDev && '__UpgradeCard', // DEBUG
         !dontFlatten && 'md:max-xl:rounded-none md:max-xl:border-none md:max-xl:shadow-none',
-        'bg-theme/10',
-        onSidebar && 'bg-theme-400/10 text-white',
+        // 'bg-theme/10',
+        'bg-gradient-to-r from-triadic1/30 to-complementary/30',
+        // onSidebar && 'bg-theme-400/10 text-white',
+        onSidebar && 'text-white',
         className,
       )}
     >
-      <CardHeader className="md:max-xl:px-4">
+      <CardHeader className="flex flex-col gap-2 md:max-xl:px-4">
         <CardTitle>{t('UpgradeCard.Title')}</CardTitle>
-        <CardDescription>{t('UpgradeCard.Description')}</CardDescription>
+        <CardDescription className="font-normal">{t('UpgradeCard.Description')}</CardDescription>
       </CardHeader>
       <CardContent className="md:max-xl:px-4">
         <Button
-          size="sm"
-          variant={onSidebar ? 'temeInverted' : 'theme'}
+          // size="sm"
+          // variant={onSidebar ? 'themeInverted' : 'theme'}
+          variant="gr1"
           className={cn(
             isDev && '__UpgradeCard_Button', // DEBUG
             'w-full',

@@ -29,4 +29,4 @@ export const categoryImageAllowedTypesString = 'JPEG, PNG, WebP, GIF';
 /** Allow to suggest categories once in a period */
 export const allowSuggestCategoriesIn = 30 * minuteMs;
 
-export const recentCategoriesCount = 3;
+export const recentCategoriesCount = 4;

@@ -141,7 +141,7 @@ export function NavBar(props: NavBarProps) {
             'flex items-center gap-2',
             'flex',
             'leading-10',
-            'max-md:hidden',
+            'max-lg:hidden',
             'max-h-10',
             'justify-end',
           )}
@@ -161,7 +161,8 @@ export function NavBar(props: NavBarProps) {
             'ml-1 p-4',
             'transition-all',
             'duration-200',
-            'text-theme-foreground hover:bg-theme-600/50',
+            'text-theme-foreground',
+            'hover:bg-theme-400/50',
             'focus:outline-none',
             'active:bg-theme-700',
             'lg:hidden',

@@ -19,8 +19,8 @@ export function HowItWorksCards() {
       )}
     >
       <div className="mb-3 flex max-w-2xl flex-col">
-        <h2 className="content-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          {t('Landing.HowItWorksCards.Title')}
+        <h2 className="content-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+          <div className="content-truncate text-gr2 py-2">{t('Landing.HowItWorksCards.Title')}</div>
         </h2>
         {
           <p className="content-truncate text-base leading-6 text-muted-foreground lg:text-lg">

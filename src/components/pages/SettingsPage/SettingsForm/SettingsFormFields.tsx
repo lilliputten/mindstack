@@ -3,12 +3,7 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-import {
-  defaultThemeColor,
-  themeColorData,
-  themeColorIds,
-  TThemeColorId,
-} from '@/config/themeColors';
+import { defaultThemeColor, themeColorIds, TThemeColorId } from '@/config/themeColors';
 import {
   defaultSystemTheme,
   systemThemeIcons,
@@ -273,7 +268,6 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   </SelectTrigger>
                   <SelectContent>
                     {themeColorIds.map((id) => {
-                      const color = themeColorData[id].color;
                       return (
                         <SelectItem
                           key={id}
@@ -283,7 +277,26 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                             '[&>span]:flex [&>span]:items-center [&>span]:gap-2',
                           )}
                         >
-                          <span className="size-6 rounded-sm" style={{ backgroundColor: color }} />
+                          <span
+                            className={cn(
+                              isDev && `__ThemeSelect_SelectItem_${id}`, // DEBUG
+                              'flex size-6 items-end gap-[2px] overflow-hidden rounded-sm p-1',
+                            )}
+                            style={{ backgroundColor: `var(--color-${id})` }}
+                          >
+                            <span
+                              className="size-1.5 h-full"
+                              style={{ backgroundColor: `var(--color-${id}-triadic1)` }}
+                            />
+                            <span
+                              className="size-1.5 h-full border border-transparent"
+                              style={{ backgroundColor: `var(--color-${id}-complementary)` }}
+                            />
+                            <span
+                              className="size-1.5 h-full"
+                              style={{ backgroundColor: `var(--color-${id}-triadic2)` }}
+                            />
+                          </span>
                           {tThemes(id)}
                         </SelectItem>
                       );

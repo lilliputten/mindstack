@@ -27,15 +27,18 @@ export function HeroSection() {
           className={cn(
             isDev && '__HeroSection_Announce', // DEBUG
             'mb-3 inline-flex items-center rounded-2xl',
-            'border border-theme/50',
-            'bg-muted/50 px-3 py-0.5 text-sm text-theme hover:underline',
+            'bg-gr2',
+            // 'border-triadic1/50 border',
+            'px-4 py-1 text-sm hover:underline',
           )}
         >
           Version 0.0.4 released!
         </Link>
          */}
-        <h1 className="content-truncate text-gradient-brand mb-4 mt-0 text-balance p-4 text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
-          {t('Landing.HeroSection.Title')}
+        <h1 className="content-truncate mb-4 mt-0 text-balance text-5xl font-semibold leading-tight tracking-tight lg:text-6xl">
+          <div className="content-truncate text-gradient-brand p-4">
+            {t('Landing.HeroSection.Title')}
+          </div>
         </h1>
         <p className="content-truncate mb-6 text-balance text-base leading-6 lg:text-lg">
           {t('Landing.HeroSection.Description')}
@@ -44,7 +47,7 @@ export function HeroSection() {
           <Link
             href={startAliasRoute}
             className={cn(
-              buttonVariants({ variant: 'theme' }),
+              buttonVariants({ variant: 'gr1', size: 'xl' }),
               'content-truncate flex items-center gap-2',
             )}
           >
@@ -54,7 +57,7 @@ export function HeroSection() {
           <Link
             href={availableCategoriesRoute}
             className={cn(
-              buttonVariants({ variant: 'outline' }),
+              buttonVariants({ variant: 'outline', size: 'xl' }),
               'content-truncate flex items-center gap-2',
             )}
           >

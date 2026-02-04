@@ -24,8 +24,10 @@ export function CategoriesSection() {
       )}
     >
       <div className="flex flex-col">
-        <h2 className="content-truncate mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-          {t('Landing.CategoriesSection.Title')}
+        <h2 className="content-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
+          <div className="content-truncate text-gr2 py-2">
+            {t('Landing.CategoriesSection.Title')}
+          </div>
         </h2>
         <p className="content-truncate">{t('Landing.CategoriesSection.Description')}</p>
       </div>
@@ -39,15 +41,17 @@ export function CategoriesSection() {
           <h3 className="content-truncate mb-3 mt-0 text-xl font-semibold text-theme">
             {t('Landing.CategoriesSection.IntroduceCategories')}
           </h3>
-          {recentCategories.map((category) => (
-            <CategoriesSectionItem
-              key={category.id}
-              category={category}
-              className={cn(
-                isDev && '__CategoriesSection_Category', // DEBUG
-              )}
-            />
-          ))}
+          <div className="mt-0 grid gap-2 gap-x-6 lg:grid-cols-2">
+            {recentCategories.map((category) => (
+              <CategoriesSectionItem
+                key={category.id}
+                category={category}
+                className={cn(
+                  isDev && '__CategoriesSection_Category', // DEBUG
+                )}
+              />
+            ))}
+          </div>
         </div>
       ) : (
         <p className="content-truncate">{t('Landing.CategoriesSection.NoCategories')}</p>
@@ -56,7 +60,7 @@ export function CategoriesSection() {
         <Link
           href={availableCategoriesRoute}
           className={cn(
-            buttonVariants({ variant: 'theme' }),
+            buttonVariants({ variant: 'gr1' }),
             'content-truncate flex items-center gap-2',
           )}
         >
@@ -66,7 +70,8 @@ export function CategoriesSection() {
         <Link
           href={`${availableCategoriesRoute}/suggest` as TRoutePath}
           className={cn(
-            buttonVariants({ variant: user?.id ? 'theme' : 'outline' }),
+            buttonVariants({ variant: 'outline' }),
+            // buttonVariants({ variant: user?.id ? 'outline' : 'outline' }),
             'content-truncate flex items-center gap-2',
             !user?.id && 'disabled',
           )}

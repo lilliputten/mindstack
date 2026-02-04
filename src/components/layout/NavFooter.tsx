@@ -17,6 +17,7 @@ export function NavFooter() {
         isDev && '__NavFooter', // DEBUG
         'relative flex w-full px-6',
         'bg-theme-600',
+        // 'bg-header-gradient',
         'text-white',
       )}
     >
@@ -30,9 +31,9 @@ export function NavFooter() {
           'z-0',
         )}
       />
-      <div className="flex flex-row items-center gap-3 truncate py-1">
+      <div className="z-10 flex flex-row items-center gap-3 truncate py-1 opacity-70">
         <span>{siteTitle} </span>
-        <span className="truncate text-xs opacity-50">{versionInfo}</span>
+        <span className="truncate text-xs">{versionInfo}</span>
       </div>
     </div>
   );

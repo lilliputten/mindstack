@@ -651,7 +651,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
     return (
       <WorkoutStatsSkeleton
         className={cn(
-          isDev && '__WorkoutStats_Skeleton', // DEBUG
+          isDev && '__WorkoutStats_Busy_Skeleton', // DEBUG
           className,
         )}
       />
@@ -659,6 +659,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   }
 
   if (!workout && !full) {
+    // CHECK: To show skeleton or nothing?
     return null;
   }
 
@@ -722,7 +723,15 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
   ].filter(Boolean);
 
   if (!renderItems.length) {
-    return <div>XXX</div>;
+    // CHECK: To show skeleton or nothing?
+    return (
+      <WorkoutStatsSkeleton
+        className={cn(
+          isDev && '__WorkoutStats_Empty_Skeleton', // DEBUG
+          className,
+        )}
+      />
+    );
   }
 
   return (
