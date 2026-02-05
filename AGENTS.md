@@ -19,6 +19,7 @@ For translations:
 
 - Don't duplicate namespace objects: merge data into existed ones. (Check `AvailableCategoriesListPage`.)
 - Check json files validity.
+- Do not add the "�" characters to the translated texts, this means that an error has occurred: check which part of the source lines was omitted.
 
 For UI (`.tsx`) react components:
 

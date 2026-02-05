@@ -132,7 +132,7 @@ export function ViewQuestionContentSummary(props: TProps) {
   const topicInfoContent = isTopicLoadingOverall ? (
     <div
       className={cn(
-        isDev && '___ViewQuestionContentSummary_Section_Topic_Skeleton', // DEBUG
+        isDev && '__ViewQuestionContentSummary_Section_Topic_Skeleton', // DEBUG
         'flex size-full flex-1 flex-col gap-4',
       )}
     >

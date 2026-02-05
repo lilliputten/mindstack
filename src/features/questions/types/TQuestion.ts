@@ -13,22 +13,6 @@ export type TQuestionId = TQuestion['id'];
 
 /** User fields to include with a flag `iGetAvailableTopicsParamsSchema.ncludeUser` */
 export const IncludedTopicSelect = true;
-// export const IncludedTopicSelect = {
-//   id: true as const,
-//   name: true as const,
-//   // description: true as const,
-//   isPublic: true as const,
-//   // keywords: true as const,
-//   // langCode: true as const,
-//   // langName: true as const,
-//   // langCustom: true as const,
-//   // answersCountRandom: true as const,
-//   // answersCountMin: true as const,
-//   // answersCountMax: true as const,
-//   // createdAt: true as const,
-//   // updatedAt: true as const,
-//   userId: true as const,
-// };
 const _IncludedTopicSchema = TopicSchema; // .pick(IncludedTopicSelect);
 type TIncludedTopic = z.infer<typeof _IncludedTopicSchema>;
 

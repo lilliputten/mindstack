@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
+import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
@@ -121,7 +122,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               title={t('Language')}
             >
               <Icons.Languages className="size-4 shrink-0 opacity-50" />
-              {topic.langName} {topic.langCode && `(${topic.langCode})`}
+              <LanguageName langName={topic.langName} langCode={topic.langCode} />
             </Badge>
           )}
           {topic.answersCountRandom && topic.answersCountMin && topic.answersCountMax && (

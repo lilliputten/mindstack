@@ -12,7 +12,7 @@ import { isDev } from '@/constants';
 import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
 import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
-import { getCachedRecentTopics, getRecentTopics, TTopic } from '@/features/topics';
+import { getRecentTopics, TTopic } from '@/features/topics';
 
 type TLandingPageProps = TAwaitedLocaleProps & {
   recentCategories?: TCategory[];
@@ -60,14 +60,6 @@ export async function generateStaticParams() {
       if (topics.status === 'fulfilled') {
         recentTopics = topics.value;
       }
-      if (locale === 'ru') {
-        console.log('[LandingPage:generateStaticParams]', {
-          recentTopics,
-          topics,
-          locale,
-          locales,
-        });
-      }
     } catch (error) {
       const message = 'Failed to fetch recent categories for static generation';
       const details = getErrorText(error);
@@ -91,13 +83,6 @@ export async function LandingPage(props: TLandingPageProps) {
 
   let recentCategories: TCategory[] = props.recentCategories || [];
   let recentTopics: TTopic[] = props.recentTopics || [];
-
-  if (locale === 'ru') {
-    console.log('[LandingPage] Got topics data from generateStaticParams', {
-      locale,
-      recentTopics,
-    });
-  }
 
   // Use pre-fetched categories from generateStaticParams if available,
   // otherwise fetch them (for non-SSG scenarios)

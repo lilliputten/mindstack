@@ -8,7 +8,7 @@ import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { ShowTimeSince } from '@/components/shared';
+import { LanguageName, ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
@@ -79,7 +79,11 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       <span key="language" className="flex items-center gap-1">
         <Icons.Languages className="size-4 opacity-50" />
         <span className="truncate">
-          {isTopicBusy ? <Skeleton className="h-4 w-12" /> : topic?.langName || topic?.langCode}
+          {isTopicBusy ? (
+            <Skeleton className="h-4 w-12" />
+          ) : (
+            <LanguageName langCode={topic?.langCode} langName={topic?.langName} />
+          )}
         </span>
       </span>
     ),

@@ -5,6 +5,7 @@ import { useFormatter } from 'next-intl';
 
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { useT } from '@/i18n';
+import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PlainCategoriesListByCategoryIds } from '@/features/categories/components'; // ATTENTION: Inter-features import!
 import { TAvailableTopic } from '@/features/topics/types';
@@ -54,18 +55,6 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
       {kw}
     </span>
   ));
-  const langContent = [
-    langName && (
-      <span key="langName" className="truncate">
-        {langName}
-      </span>
-    ),
-    langCode && (
-      <span key="langCode" className="truncate opacity-50">
-        ({langCode})
-      </span>
-    ),
-  ].filter(Boolean);
   const createdDateStr = getFormattedRelativeDate(format, createdAt);
   const updatedDateStr = getFormattedRelativeDate(format, updatedAt);
   const areDifferentDates =
@@ -79,7 +68,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
       {!!(langName || langCode) && (
         <span id="language" className="flex items-center gap-1 truncate" title={t('TopicLanguage')}>
           <Icons.Languages className="mr-1 size-4 shrink-0 opacity-50" />{' '}
-          <span className="flex gap-1 truncate">{langContent}</span>
+          <LanguageName langCode={langCode} langName={langName} />
         </span>
       )}
       {!omitExtraDetails && !!keywordsContent?.length && (

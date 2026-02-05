@@ -14,6 +14,7 @@ import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
+import { LanguageName } from '@/components/shared';
 import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
@@ -200,13 +201,12 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langName ? (
-                      <span className="truncate">{langName}</span>
+                    {langCode || langName ? (
+                      <LanguageName langCode={langCode} langName={langName} />
                     ) : (
-                      <>{t('EditTopicFormFields.SelectLanguage')}</>
+                      t('EditTopicFormFields.SelectLanguage')
                     )}
                   </span>
-                  {langCode && <span className="opacity-50">{langCode}</span>}
                   {langCustom && (
                     <span className="opacity-50">
                       <Icons.Edit className="size-3" />

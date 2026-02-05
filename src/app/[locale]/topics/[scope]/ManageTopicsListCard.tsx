@@ -26,6 +26,7 @@ import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
+import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { rootAliasRoute, TRoutePath } from '@/config';
@@ -322,7 +323,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       )}
       <TableCell id="language" className="truncate max-xl:hidden">
         <div className="truncate">
-          {[langName, langCode && `(${langCode})`].filter(Boolean).join(' ')}
+          <LanguageName langCode={langCode} langName={langName} />
         </div>
       </TableCell>
       <TableCell id="keywords" className="truncate max-xl:hidden">
@@ -338,7 +339,7 @@ function TopicsTableRow(props: TTopicsTableRowProps) {
       <TableCell id="Actions" className="truncate text-right">
         <div className="flex justify-end gap-1 truncate">
           <Link
-            href={`${topicsListRoutePath}/add` as TRoutePath}
+            href={`${topicsListRoutePath}/${topic.id}/questions` as TRoutePath}
             className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-9 shrink-0')}
             aria-label={t('ManageTopicsListCard.EditQuestions')}
             title={t('ManageTopicsListCard.EditQuestions')}

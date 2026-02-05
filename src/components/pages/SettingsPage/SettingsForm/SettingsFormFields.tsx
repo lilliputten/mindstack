@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
+import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TSettings } from '@/features/settings/types';
@@ -370,13 +371,12 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langName ? (
-                      <span className="truncate font-normal">{langName}</span>
+                    {langCode || langName ? (
+                      <LanguageName langCode={langCode} langName={langName} />
                     ) : (
                       <>{t('SettingsFormFields.SelectLanguageButton')}</>
                     )}
                   </span>
-                  {langCode && <span className="truncate font-normal opacity-50">{langCode}</span>}
                   {langCustom && (
                     <span className="opacity-50">
                       <Icons.Edit className="size-3" />
