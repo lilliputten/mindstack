@@ -1,9 +1,17 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.03, 19:20
+ @changed 2026.02.05, 03:02
 -->
 
 # CHANGELOG
+
+## Minor fixes, #[v.0.1.2](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.2) - 2026.02.04
+
+- Issue #67: Added complementary and triadic colors to theme. Added extra colors to the landing page, navbar & footer, some other components.
+- Updated `AvailableCategoriesListItem` layout.
+- Added recent topics landing page section.
+
+- [Compare versions](https://github.com/lilliputten/mindstack/compare/v.0.1.1...v.0.1.2)
 
 ## Minor fixes - 2026.02.03
 
