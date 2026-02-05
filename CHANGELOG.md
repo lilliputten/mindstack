@@ -1,13 +1,27 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.05, 03:02
+ @changed 2026.02.06, 01:10
 -->
 
 # CHANGELOG
 
+## [Issue #64: Landing page layout updates, translations, and recent topics sort logic](https://github.com/lilliputten/mindstack/issues/64), #[v.0.1.3](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.3) - 2026.02.06
+
+- Updated recent topics getter on the landing page
+- Updated layout for landing page categories and topics lists
+- Fixed layouts and updated navigation buttons
+- Updated landing page cards with icons style
+- Updated some translations
+- Added language name/code translations (via LanguageName)
+- Updated sort logic for getRecentTopics server action: records with existing locale go first
+- Minor changes: warning instead of error on unmounted react-query in useAvailableCategories
+- Increased brightness effect for gradient buttons (brightness-120) in tailwind.config.ts
+
+- [Compare versions](https://github.com/lilliputten/mindstack/compare/v.0.1.2...v.0.1.3)
+
 ## Minor fixes, #[v.0.1.2](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.2) - 2026.02.04
 
-- Issue #67: Added complementary and triadic colors to theme. Added extra colors to the landing page, navbar & footer, some other components.
+- [Issue #67](https://github.com/lilliputten/mindstack/issues/67): Added complementary and triadic colors to theme. Added extra colors to the landing page, navbar & footer, some other components.
 - Updated `AvailableCategoriesListItem` layout.
 - Added recent topics landing page section.
 
