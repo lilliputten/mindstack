@@ -12,6 +12,7 @@ import { SmallUserBlock, useUserById } from '@/features/users';
 
 interface TTopicPropertiesOptions {
   showDates?: boolean;
+  omitExtraDetails?: boolean;
 }
 interface TTopicPropertiesProps {
   topic: TAvailableTopic;
@@ -23,6 +24,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     topic,
     // Options...
     showDates,
+    omitExtraDetails,
   } = props;
   const format = useFormatter();
   const {
@@ -80,7 +82,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
           <span className="flex gap-1 truncate">{langContent}</span>
         </span>
       )}
-      {!!keywordsContent?.length && (
+      {!omitExtraDetails && !!keywordsContent?.length && (
         <span
           id="keyword"
           className="flex flex-wrap items-center gap-1 truncate"
@@ -113,7 +115,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
           <span className="truncate">{createdDateStr}</span>
         </span>
       )}
-      {showDates && updatedAt && areDifferentDates && (
+      {!omitExtraDetails && showDates && updatedAt && areDifferentDates && (
         <span
           id="createdAt"
           className="flex items-center gap-1 truncate text-xs"

@@ -85,7 +85,7 @@ export async function LandingPage(props: TLandingPageProps) {
 
   // Use pre-fetched categories from generateStaticParams if available,
   // otherwise fetch them (for non-SSG scenarios)
-  if (!recentCategories.length) {
+  if (!recentCategories.length && !recentTopics.length) {
     try {
       // Fetch categories for each locale to enable per-locale SSG generation
       const [categories, topics] = await Promise.allSettled([

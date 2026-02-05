@@ -32,6 +32,7 @@ export function RecentTopicsSectionItem(props: TProps) {
         isDev && '__RecentTopicsSectionItem', // DEBUG
         className,
       )}
+      omitExtraDetails
     />
   );
 }

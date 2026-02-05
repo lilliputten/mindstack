@@ -21,9 +21,9 @@ export function LandingContent() {
         <HeroSection />
         <FeaturesSection />
         <RecentCategoriesSection />
-        <RecentTopicsSection />
         <CardsWithIconsSection />
         <BigImageCTASection />
+        <RecentTopicsSection />
         <HowItWorksCards />
         {/*
         <DescriptionCodeSection />

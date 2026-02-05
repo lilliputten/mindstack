@@ -17,18 +17,26 @@ interface TParams {
   locale?: string; // TODO: To use locale in sort order calculation
 }
 
-export async function getRecentTopics({ take = recentTopicsCount }: TParams) {
+export async function getRecentTopics({ take = recentTopicsCount, locale }: TParams) {
   try {
     // NOTE: Don't use `getAvailableTopics`, because it uses nextjs context
     // (`auth`, for example, what is unavailable during edge/SSG, if called from
     // `generateStaticParams`)
     const where: Prisma.TopicWhereInput = {
       isPublic: true,
+      ...(locale && {
+        OR: [{ langCode: locale }, { langCode: null }, { langCode: '' }],
+      }),
     };
+
+    const orderBy: Prisma.TopicOrderByWithRelationInput[] = [
+      // { langCode: locale } // ???
+      { createdAt: 'desc' },
+    ];
 
     const topics = await prisma.topic.findMany({
       where,
-      orderBy: [{ createdAt: 'desc' }],
+      orderBy,
       take,
       include: {
         _count: {

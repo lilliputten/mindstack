@@ -11,7 +11,7 @@ NextJS Memory Training Application for interactive learning and spaced repetitio
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.1 / 2026.02.05 02:48:04 +0300
+- Project info: v.0.1.2 / 2026.02.05 05:44:19 +0300
 
 ## 🌟 Overview
 
@@ -442,7 +442,7 @@ We welcome contributions! Please follow these guidelines:
 
 ## 📝 License
 
-This project is licensed under the ISC License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ## ☂ Support
 

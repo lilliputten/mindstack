@@ -815,7 +815,7 @@
     },
     "RecentTopicsSection": {
       "Description": "Welcome to your personal knowledge hub! This is where your topics will live—ready for review, practice, and mastery.",
-      "IntroduceTopics": "Here are some popular topics:",
+      "IntroduceTopics": "Here are some actual topics:",
       "NoTopics": "It looks a little quiet in here. Let's fill it with knowledge!",
       "SuggestTopic": "Add Your Topic",
       "Title": "Your Learning Journey Starts Here",

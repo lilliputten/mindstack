@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
-import { Button, buttonVariants } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
@@ -13,16 +13,17 @@ import { TopicsManageScopeIds } from '@/contexts/TopicsContext';
 import { TopicHeader } from '@/features/topics/components/TopicHeader';
 import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TAvailableTopic } from '@/features/topics/types';
-import { useGoToTheRoute, useSessionUser } from '@/hooks';
+import { useSessionUser } from '@/hooks';
 
 interface TAvailableTopicsListItemProps {
   className?: string;
   topic: TAvailableTopic;
+  omitExtraDetails?: boolean;
 }
 
 export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
-  const { topic, className } = props;
+  const { topic, className, omitExtraDetails } = props;
   const t = useT();
   const {
     // createdAt,
@@ -46,7 +47,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const allowedTraining = !!questionsCount;
 
   const pathname = usePathname();
-  const topicsRoutePath = `${pathname}/${topicId}`;
+  const topicsRoutePath = `${availableTopicsRoute}/${topicId}`;
   const workoutRoutePath = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
 
   const user = useSessionUser();
@@ -55,8 +56,6 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
   const allowedEdit = isAdminMode || isOwner;
 
   const manageTopicsRoute = isOwner ? myTopicsRoute : allTopicsRoute;
-
-  const goToTheRoute = useGoToTheRoute();
 
   const isCurrentTopicRoutePath = comparePathsWithoutLocalePrefix(topicsRoutePath, pathname);
 
@@ -101,7 +100,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
             'content-truncate flex flex-1 flex-wrap items-center gap-4 gap-y-2 py-3',
           )}
         >
-          <TopicProperties topic={topic} showDates />
+          <TopicProperties topic={topic} showDates omitExtraDetails={omitExtraDetails} />
         </div>
         <div
           className={cn(
@@ -110,23 +109,18 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
           )}
         >
           {allowedEdit && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => goToTheRoute(`${manageTopicsRoute}/${topicId}`)}
-              className="flex gap-2"
-              title={t('AvailableTopics.ManageTopic')}
+            <Link
+              href={`${manageTopicsRoute}/${topicId}` as TRoutePath}
+              className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'flex gap-2')}
+              title={'xxx' + t('AvailableTopics.ManageTopic')}
             >
               <Icons.Edit className="size-4" />
-            </Button>
+            </Link>
           )}
           {allowedTraining && (
             <Link
               href={workoutRoutePath}
-              className={cn(
-                buttonVariants({ variant: 'theme' }),
-                'content-truncate flex items-center gap-2',
-              )}
+              className={cn(buttonVariants({ variant: 'theme' }), 'flex gap-2')}
             >
               <Icons.Rocket className="size-4 opacity-50" />
               <span className="truncate">{t('AvailableTopics.ToTraining')}</span>

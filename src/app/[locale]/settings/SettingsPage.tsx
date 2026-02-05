@@ -5,10 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { getErrorText, getRandomHashString, removeNullUndefinedValues } from '@/lib/helpers';
-import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Card, CardContent } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
@@ -27,12 +25,12 @@ import { CardContentSkeleton } from './skeletons';
 
 const saveScrollHash = getRandomHashString();
 
-type TSettingsPageProps = TPropsWithClassName & {
+type TSettingsPageProps = {
   userId?: TUserId;
 };
 
 export function SettingsPage(props: TSettingsPageProps) {
-  const { className, userId } = props;
+  const { userId } = props;
   const settingsContext = useSettingsContext();
   const {
     settings,
