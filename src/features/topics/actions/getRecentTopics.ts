@@ -30,7 +30,9 @@ export async function getRecentTopics({ take = recentTopicsCount, locale }: TPar
     };
 
     const orderBy: Prisma.TopicOrderByWithRelationInput[] = [
-      // { langCode: locale } // ???
+      // First sort by locale (priority for the requested locale)
+      { langCode: locale === 'en' ? 'desc' : 'asc' },
+      // Then sort by creation date (newest first)
       { createdAt: 'desc' },
     ];
 
@@ -65,7 +67,7 @@ export async function getRecentTopics({ take = recentTopicsCount, locale }: TPar
     const message = 'Failed to get recent topics';
     const details = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[getRecentTopics:SCOPE_getRecentTopics]', message, details, {
+    console.error('[getRecentTopics]', message, details, {
       error,
       take,
     });

@@ -13,11 +13,15 @@ interface TCategoryPropertiesOptions {
 }
 interface TCategoryPropertiesProps {
   category: TAvailableCategory;
+  omitExtraDetails?: boolean;
 }
 
 export function CategoryProperties(props: TCategoryPropertiesProps & TCategoryPropertiesOptions) {
   const t = useT();
-  const { category } = props;
+  const {
+    category,
+    // omitExtraDetails,
+  } = props;
   const { _count } = category;
 
   const locale = useLocale() as TLocale;

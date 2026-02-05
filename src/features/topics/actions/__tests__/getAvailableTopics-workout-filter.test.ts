@@ -58,7 +58,7 @@ describe('getAvailableTopics - Workout Filtering by User Role', () => {
 
       // Create a shared topic
       const topic = await jestPrisma.topic.create({
-        data: { name: 'Shared Topic', isPublic: true, userId: user1.id },
+        data: { name: 'Shared Topic 1', isPublic: true, userId: user1.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 
@@ -111,7 +111,7 @@ describe('getAvailableTopics - Workout Filtering by User Role', () => {
 
       // Create a shared topic
       const topic = await jestPrisma.topic.create({
-        data: { name: 'Shared Topic', isPublic: true, userId: user.id },
+        data: { name: 'Shared Topic 2', isPublic: true, userId: user.id },
       });
       createdIds.push({ type: 'topic', id: topic.id });
 

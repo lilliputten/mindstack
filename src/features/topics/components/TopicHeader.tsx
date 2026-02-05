@@ -27,6 +27,7 @@ interface TTopicHeaderOptions {
   showName?: boolean;
   showDescription?: boolean;
   showProperties?: boolean;
+  omitExtraDetails?: boolean;
   withLink?: boolean;
 }
 
@@ -127,6 +128,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
     showDescription = true,
     showProperties = true,
     withLink,
+    omitExtraDetails,
   } = props;
   const {
     id,
@@ -211,20 +213,22 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
               </div>
             )}
           </div>
-          <div
-            className={cn(
-              isDev && '__TopicHeader_RightDetails', // DEBUG
-              '!mt-0 flex min-h-6 flex-wrap items-center gap-4 gap-y-2',
-              'text-xs opacity-50',
-            )}
-          >
-            <ShowDetails
-              topic={topic}
-              workout={workout}
-              isWorkoutLoading={isWorkoutLoading}
-              showDates={showDates}
-            />
-          </div>
+          {!omitExtraDetails && (
+            <div
+              className={cn(
+                isDev && '__TopicHeader_RightDetails', // DEBUG
+                '!mt-0 flex min-h-6 flex-wrap items-center gap-4 gap-y-2',
+                'text-xs opacity-50',
+              )}
+            >
+              <ShowDetails
+                topic={topic}
+                workout={workout}
+                isWorkoutLoading={isWorkoutLoading}
+                showDates={showDates}
+              />
+            </div>
+          )}
         </div>
       )}
       {showDetails && (

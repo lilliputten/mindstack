@@ -36,13 +36,14 @@ async function getCategories(locale: TLocale) {
 }
 
 async function getTopics(locale: TLocale) {
-  const promise = isDev ? getRecentTopics({ locale }) : getCachedRecentTopics({ locale });
+  const promise = getRecentTopics({ locale }); // isDev ? getRecentTopics({ locale }) : getCachedRecentTopics({ locale });
   return await promise;
 }
 
 export async function generateStaticParams() {
   const locales = strictLocalesList;
   const params = [];
+  // TODO: To run all request at once (via `Promise.all`)
   for (const locale of locales) {
     let recentCategories: TCategory[] = [];
     let recentTopics: TTopic[] = [];
@@ -58,6 +59,14 @@ export async function generateStaticParams() {
       }
       if (topics.status === 'fulfilled') {
         recentTopics = topics.value;
+      }
+      if (locale === 'ru') {
+        console.log('[LandingPage:generateStaticParams]', {
+          recentTopics,
+          topics,
+          locale,
+          locales,
+        });
       }
     } catch (error) {
       const message = 'Failed to fetch recent categories for static generation';
@@ -82,6 +91,13 @@ export async function LandingPage(props: TLandingPageProps) {
 
   let recentCategories: TCategory[] = props.recentCategories || [];
   let recentTopics: TTopic[] = props.recentTopics || [];
+
+  if (locale === 'ru') {
+    console.log('[LandingPage] Got topics data from generateStaticParams', {
+      locale,
+      recentTopics,
+    });
+  }
 
   // Use pre-fetched categories from generateStaticParams if available,
   // otherwise fetch them (for non-SSG scenarios)

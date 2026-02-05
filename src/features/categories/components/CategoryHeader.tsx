@@ -139,7 +139,7 @@ export function CategoryHeader(props: TCategoryHeaderProps & TCategoryHeaderOpti
           <div
             className={cn(
               isDev && '__CategoryHeader_Texts', // DEBUG
-              'flex flex-1 flex-col gap-2',
+              'flex h-full flex-1 flex-col justify-evenly gap-2',
               TRUNCATE_TITLE ? 'truncate' : 'overflow-hidden text-ellipsis',
             )}
           >
