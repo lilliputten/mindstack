@@ -30,11 +30,19 @@ export async function getRecentTopics({ take = recentTopicsCount, locale }: TPar
     };
 
     const orderBy: Prisma.TopicOrderByWithRelationInput[] = [
-      // First sort by locale (priority for the requested locale)
-      { langCode: locale === 'en' ? 'desc' : 'asc' },
       // Then sort by creation date (newest first)
       { createdAt: 'desc' },
     ];
+
+    if (locale) {
+      // Non-empty langCode first (nulls/empty last), then createdAt desc
+      orderBy.unshift({
+        langCode: {
+          sort: 'desc',
+          nulls: 'last', // nulls go to the end
+        },
+      });
+    }
 
     const topics = await prisma.topic.findMany({
       where,

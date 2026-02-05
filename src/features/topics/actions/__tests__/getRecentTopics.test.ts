@@ -136,7 +136,10 @@ describe('getRecentTopics', () => {
       // Get only 2 most recent topics
       const result = await getRecentTopics({ take: 2 });
 
-      expect(result).toHaveLength(2);
+      // Filter results to only include our test data
+      const filteredResults = result.filter((t) => t.name.includes(testPrefix));
+
+      expect(filteredResults).toHaveLength(2);
     } finally {
       await cleanupDb(createdIds);
     }
@@ -308,6 +311,86 @@ describe('getRecentTopics with locale', () => {
       const result = await getRecentTopics({ take: 2, locale: 'en' });
 
       expect(result).toHaveLength(2);
+    } finally {
+      await cleanupDb(createdIds);
+    }
+  });
+
+  it('should return topics with specified locale first, then empty/null langCode', async () => {
+    const dateTag = formatDateTag();
+    const testPrefix = `grt-locale-order-${dateTag}`;
+    const createdIds: CreatedId[] = [];
+    const now = Date.now();
+
+    try {
+      const user = await jestPrisma.user.create({
+        data: { email: `${testPrefix}-user@test.com`, role: 'USER' },
+      });
+      createdIds.push({ type: 'user', id: user.id });
+
+      // Create topics with different langCode values
+      const englishTopic = await jestPrisma.topic.create({
+        data: {
+          isPublic: true,
+          name: `${testPrefix} English Topic`,
+          userId: user.id,
+          langCode: 'en',
+          createdAt: new Date(now - 1000), // Slightly older than empty topic to test ordering
+        },
+      });
+      createdIds.push({ type: 'topic', id: englishTopic.id });
+
+      const emptyLangTopic = await jestPrisma.topic.create({
+        data: {
+          isPublic: true,
+          name: `${testPrefix} Empty Lang Topic`,
+          userId: user.id,
+          langCode: '',
+          createdAt: new Date(now), // Newest creation date
+        },
+      });
+      createdIds.push({ type: 'topic', id: emptyLangTopic.id });
+
+      const nullLangTopic = await jestPrisma.topic.create({
+        data: {
+          isPublic: true,
+          name: `${testPrefix} Null Lang Topic`,
+          userId: user.id,
+          langCode: null,
+          createdAt: new Date(now - 2000),
+        },
+      });
+      createdIds.push({ type: 'topic', id: nullLangTopic.id });
+
+      const spanishTopic = await jestPrisma.topic.create({
+        data: {
+          isPublic: true,
+          name: `${testPrefix} Spanish Topic`,
+          userId: user.id,
+          langCode: 'es',
+          createdAt: new Date(now - 500),
+        },
+      });
+      createdIds.push({ type: 'topic', id: spanishTopic.id });
+
+      // Get topics with English locale filter (should include en, empty, null)
+      const result = await getRecentTopics({ locale: 'en', take: 10 });
+
+      // Filter results to only include our test data
+      const filteredResults = result.filter((t) => t.name.includes(testPrefix));
+
+      // Should include 3 topics (en, empty, null) and exclude Spanish
+      expect(filteredResults).toHaveLength(3);
+      expect(filteredResults.some((t) => t.id === spanishTopic.id)).toBe(false);
+
+      // Verify the order: English first, then empty, then null
+      // Even though empty topic has newer creation date, it should come after English
+      expect(filteredResults[0].id).toBe(englishTopic.id);
+      expect(filteredResults[1].id).toBe(emptyLangTopic.id);
+      expect(filteredResults[2].id).toBe(nullLangTopic.id);
+
+      // Verify that within same langCode group, creation date order is maintained
+      // (This is already handled by the createdAt: 'desc' in orderBy)
     } finally {
       await cleanupDb(createdIds);
     }
