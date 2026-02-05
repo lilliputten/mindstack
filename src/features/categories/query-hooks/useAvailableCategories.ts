@@ -114,6 +114,15 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
             queryProps,
           });
           // NOTE: No user warnings for timeouts
+        } else if (!memo.mounted) {
+          const message = 'Query failed while unmounted. Probably, that is not an error.';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+          // NOTE: No user warnings for problems when unmounted
         } else {
           const message = 'Cannot load categories data';
           const details = getErrorText(error);
