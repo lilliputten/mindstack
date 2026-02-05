@@ -1653,7 +1653,7 @@
     "TotalTime": "Общее время",
     "TotalTrainings": "Всего тренировок",
     "TrainingCompletedDetails": "Тренировка завершилась <FinishedTime></FinishedTime> назад за <DurationTime></DurationTime> с коэффициентом {ratioPercent}%",
-    "TrainingCreatedAndReadyToStart": "Тренировка создана",
+    "TrainingCreatedAndReadyToStart": "Тренировка была создана <CreatedAt></CreatedAt> назад и теперь готова к запуску или продолжению.",
     "TrainingDuration": "Продолжительность обучения",
     "TrainingHasntStarted": "Тренировка еще не началась",
     "TrainingNotStarted": "Тренировка не начата",

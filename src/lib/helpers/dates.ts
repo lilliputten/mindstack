@@ -212,6 +212,15 @@ export function timeAgo(timestamp: TDateLike | undefined, timeOnly?: boolean): s
   return `${ms(now - ticks)}${timeOnly ? '' : ' ago'}`;
 }
 
+/** Get time diff in milliseconds
+ */
+export function getPeriodDiff(timestamp?: TDateLike): number {
+  if (!timestamp) {
+    return 0;
+  }
+  return typeof timestamp === 'number' ? timestamp : Date.now() - ensureDate(timestamp).getTime();
+}
+
 /**
  * Calculates the time difference from the given timestamp to now and returns
  * a formatted duration string without the "ago" suffix.
@@ -251,8 +260,7 @@ export function stringifyPeriod(timestamp?: TDateLike): string {
   if (!timestamp) {
     return '';
   }
-  const ticks =
-    typeof timestamp === 'number' ? timestamp : Date.now() - ensureDate(timestamp).getTime();
+  const ticks = getPeriodDiff(timestamp);
   if (!ticks) {
     return '';
   }

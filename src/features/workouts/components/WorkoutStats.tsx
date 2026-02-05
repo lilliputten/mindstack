@@ -137,7 +137,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <p className="text-sm">{t('WorkoutStats.AvgTime')}</p>
                   <p className="text-2xl font-bold">
                     {historicalStats.averageTime ? (
-                      <ShowTimeSince date={historicalStats.averageTime / 1000} timeout={0} />
+                      <ShowTimeSince date={historicalStats.averageTime / 1000} dontUpdate />
                     ) : (
                       <span className="opacity-30">—</span>
                     )}
@@ -199,7 +199,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <p className="flex items-baseline gap-2">
                     <span className="text-2xl font-bold">
                       {timeElapsed ? (
-                        <ShowTimeSince date={timeElapsed} timeout={0} />
+                        <ShowTimeSince date={timeElapsed} dontUpdate />
                       ) : (
                         <span className="opacity-30">—</span>
                       )}
@@ -222,7 +222,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                   <p className="text-sm">{t('WorkoutStats.AvgTimePerQuestion')}</p>
                   <p className="text-lg font-semibold">
                     {averageTimePerQuestion ? (
-                      <ShowTimeSince date={averageTimePerQuestion} timeout={0} />
+                      <ShowTimeSince date={averageTimePerQuestion} dontUpdate />
                     ) : (
                       <span className="opacity-30">—</span>
                     )}
@@ -247,7 +247,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-sm">{t('WorkoutStats.TotalTime')}</p>
                   <p className="text-2xl font-bold">
-                    <ShowTimeSince date={(workout.currentTime || 0) * 1000} timeout={0} />
+                    <ShowTimeSince date={(workout.currentTime || 0) * 1000} dontUpdate />
                   </p>
                 </div>
               </div>
@@ -437,7 +437,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
               <div className="space-y-1 text-center">
                 <p className="text-2xl font-bold">
                   {historicalStats.averageTime ? (
-                    <ShowTimeSince date={historicalStats.averageTime * 1000} timeout={0} />
+                    <ShowTimeSince date={historicalStats.averageTime * 1000} dontUpdate />
                   ) : (
                     <span className="opacity-30">—</span>
                   )}
@@ -509,7 +509,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                       <TableRow key={workout.id}>
                         <TableCell id="Date">
                           {/*getFormattedRelativeDate(format, workout.createdAt)*/}
-                          <ShowTimeSince date={workout.createdAt} timeout={0} />
+                          <ShowTimeSince date={workout.createdAt} dontUpdate />
                         </TableCell>
                         <TableCell id="Accuracy" className="truncate text-center">
                           <Badge
@@ -527,7 +527,7 @@ export function WorkoutStats(props: TWorkoutStatsProps) {
                         </TableCell>
                         <TableCell id="Time" className="truncate text-right max-md:hidden">
                           {workout.timeSeconds ? (
-                            <ShowTimeSince date={workout.timeSeconds * 1000} timeout={0} />
+                            <ShowTimeSince date={workout.timeSeconds * 1000} dontUpdate />
                           ) : (
                             <span className="opacity-30">—</span>
                           )}

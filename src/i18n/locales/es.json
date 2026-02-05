@@ -1652,7 +1652,7 @@
     "TotalTime": "Tiempo Total",
     "TotalTrainings": "Entrenamientos Totales",
     "TrainingCompletedDetails": "El entrenamiento se completó hace <FinishedTime></FinishedTime> en <DurationTime></DurationTime> con una proporción de {ratioPercent}%",
-    "TrainingCreatedAndReadyToStart": "El entrenamiento ha sido creado",
+    "TrainingCreatedAndReadyToStart": "El entrenamiento se creó hace <CreatedAt></CreatedAt> y ahora está listo para comenzar o continuar.",
     "TrainingDuration": "Duración del entrenamiento",
     "TrainingHasntStarted": "El entrenamiento aún no ha comenzado",
     "TrainingNotStarted": "El entrenamiento no ha comenzado",

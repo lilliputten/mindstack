@@ -19,9 +19,7 @@ export function WorkoutStateDetails({ workout }: { workout?: TWorkoutData }) {
         <>
           {t.rich('WorkoutStats.TrainingCompletedDetails', {
             FinishedTime: () => <ShowTimeSince date={workout.finishedAt || undefined} />,
-            DurationTime: () => (
-              <ShowTimeSince date={(workout.currentTime || 0) * 1000} timeout={0} />
-            ),
+            DurationTime: () => <ShowTimeSince date={(workout.currentTime || 0) * 1000} />,
             ratioPercent: workout.currentRatio || 0,
           })}{' '}
           <span className="opacity-50">

@@ -1661,7 +1661,7 @@
     "TotalTime": "Total Time",
     "TotalTrainings": "Total Trainings",
     "TrainingCompletedDetails": "The workout has completed <FinishedTime></FinishedTime> ago in <DurationTime></DurationTime> with a ratio of {ratioPercent}%",
-    "TrainingCreatedAndReadyToStart": "The workout has been created <CreatedAt></CreatedAt> and now is ready to start",
+    "TrainingCreatedAndReadyToStart": "The workout has been created <CreatedAt></CreatedAt> ago and now is ready to start or continue.",
     "TrainingDuration": "Training duration",
     "TrainingHasntStarted": "Training hasn't been started yet",
     "TrainingNotStarted": "The training has not been started",
