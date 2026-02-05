@@ -74,6 +74,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
           workout={workout}
           className="flex-1 max-sm:flex-col-reverse"
           showProperties={false}
+          omitExtraDetails={omitExtraDetails}
         />
       </CardHeader>
       {/*!!description && ( // NOTE: The description is displaying in the `TopicHeader` (above)
@@ -91,7 +92,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       <CardContent
         className={cn(
           isDev && '__AvailableTopicsList_TopicItem_CardContent_Properties', // DEBUG
-          'flex flex-1 flex-wrap items-end gap-4 text-xs max-sm:flex-col max-sm:items-start',
+          'content-truncate flex flex-1 flex-wrap items-end gap-4 text-xs max-sm:flex-col max-sm:items-start',
         )}
       >
         <div
@@ -102,31 +103,32 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
         >
           <TopicProperties topic={topic} showDates omitExtraDetails={omitExtraDetails} />
         </div>
-        <div
-          className={cn(
-            isDev && '__AvailableTopicsList_TopicItem__RightActions', // DEBUG
-            'flex flex-wrap items-center gap-2 md:items-end',
-          )}
-        >
-          {allowedEdit && (
-            <Link
-              href={`${manageTopicsRoute}/${topicId}` as TRoutePath}
-              className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'flex gap-2')}
-              title={'xxx' + t('AvailableTopics.ManageTopic')}
-            >
-              <Icons.Edit className="size-4" />
-            </Link>
-          )}
-          {allowedTraining && (
-            <Link
-              href={workoutRoutePath}
-              className={cn(buttonVariants({ variant: 'theme' }), 'flex gap-2')}
-            >
-              <Icons.Rocket className="size-4 opacity-50" />
-              <span className="truncate">{t('AvailableTopics.ToTraining')}</span>
-            </Link>
-          )}
-          {/*allowedTraining && (
+        {!omitExtraDetails && (
+          <div
+            className={cn(
+              isDev && '__AvailableTopicsList_TopicItem__RightActions', // DEBUG
+              'flex flex-wrap items-center gap-2 md:items-end',
+            )}
+          >
+            {allowedEdit && (
+              <Link
+                href={`${manageTopicsRoute}/${topicId}` as TRoutePath}
+                className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'flex gap-2')}
+                title={'xxx' + t('AvailableTopics.ManageTopic')}
+              >
+                <Icons.Edit className="size-4" />
+              </Link>
+            )}
+            {allowedTraining && (
+              <Link
+                href={workoutRoutePath}
+                className={cn(buttonVariants({ variant: 'theme' }), 'flex gap-2')}
+              >
+                <Icons.Rocket className="size-4 opacity-50" />
+                <span className="truncate">{t('ToTraining')}</span>
+              </Link>
+            )}
+            {/*allowedTraining && (
             <Button variant="theme" onClick={startWorkout} className="flex gap-2">
               <Icons.Rocket className="size-4 opacity-50" />
               <span className="truncate">
@@ -138,13 +140,17 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
               </span>
             </Button>
             )*/}
-        </div>
+          </div>
+        )}
       </CardContent>
     </>
   );
   if (!isCurrentTopicRoutePath) {
     cardContent = (
-      <Link className="flex-1 text-xl font-medium" href={topicsRoutePath as TRoutePath}>
+      <Link
+        className="content-truncate flex-1 text-xl font-medium"
+        href={topicsRoutePath as TRoutePath}
+      >
         {cardContent}
       </Link>
     );
@@ -154,7 +160,8 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
       className={cn(
         isDev && '__AvailableTopicsList_TopicItem_Card', // DEBUG
         'relative flex flex-1 flex-col',
-        'overflow-visible',
+        // 'overflow-visible', // ???
+        'content-truncate',
         'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',
         'hover:bg-theme/15',

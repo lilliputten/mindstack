@@ -6,6 +6,7 @@ export * from './GenericSkeleton';
 export * from './IconTypes';
 export * from './Icons';
 export * from './ImageUpload';
+export * from './LanguageName';
 export * from './MaxWidthWrapper';
 export * from './PageError';
 export * from './ScrollableLayout';

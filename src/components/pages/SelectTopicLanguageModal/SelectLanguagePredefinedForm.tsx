@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { predefinedLanguages } from '@/constants/languages';
 import { TTopicLanguageData } from '@/features/topics/types';
@@ -130,7 +131,7 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
               <SelectContent className="SelectLanguagePredefinedForm__SelectContent">
                 {languagesList.map(({ id, name }) => (
                   <SelectItem value={id} key={id} className="text-ellipsis">
-                    {name}
+                    <LanguageName langCode={id} langName={name} />
                   </SelectItem>
                 ))}
               </SelectContent>

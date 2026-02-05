@@ -131,22 +131,22 @@ function QuestionsTableHeader({
 }
 
 interface TQuestionsTableRowProps {
-  question: TQuestion;
-  idx: number;
-  questionsListRoutePath: string;
   // handleDeleteQuestion: TManageTopicQuestionsListCardProps['handleDeleteQuestion'];
-  // handleEditQuestion: TManageTopicQuestionsListCardProps['handleEditQuestion'];
   // handleEditAnswers: TManageTopicQuestionsListCardProps['handleEditAnswers'];
+  // handleEditQuestion: TManageTopicQuestionsListCardProps['handleEditQuestion'];
+  // questionsListRoutePath: string;
+  availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
+  idx: number;
   isAdminMode: boolean;
   isSelected: boolean;
+  question: TQuestion;
   toggleSelected: (questionId: TQuestionId) => void;
-  availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
 }
 
 function QuestionsTableRow(props: TQuestionsTableRowProps) {
   const {
     question,
-    questionsListRoutePath,
+    // questionsListRoutePath,
     // handleDeleteQuestion,
     // handleEditQuestion,
     // handleEditAnswers,
@@ -156,10 +156,15 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
     toggleSelected,
     availableQuestionsQuery,
   } = props;
-  const { id, text, _count, isGenerated } = question;
-  const questionRoutePath = `${questionsListRoutePath}/${id}`;
+  const { id, text, _count, isGenerated, topicId } = question;
   const answersCount = _count?.answers;
   const t = useT();
+
+  const { manageScope } = useManageTopicsStore();
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionRoutePath = `${questionsListRoutePath}/${id}`;
 
   const [isPending, startTransition] = React.useTransition();
   const queryClient = useQueryClient();
@@ -304,31 +309,29 @@ type TMemo = { allQuestions: TQuestion[] };
 export function QuestionsTableContent(
   props: TManageTopicQuestionsListCardProps & {
     className?: string;
-    questionsListRoutePath: string;
     availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
     selectedQuestions: Set<TQuestionId>;
     setSelectedQuestions: React.Dispatch<React.SetStateAction<Set<TQuestionId>>>;
-    // goToTheRoute: ReturnType<typeof useGoToTheRoute>;
   },
 ) {
   const {
-    className,
-    topicId,
-    availableQuestionsQuery,
-    questionsListRoutePath,
-    // handleDeleteQuestion,
+    // goToTheRoute,
     // handleAddQuestion,
-    // handleEditQuestion,
+    // handleDeleteQuestion,
     // handleEditAnswers,
+    // handleEditQuestion,
+    // questionsListRoutePath,
+    availableQuestionsQuery,
+    className,
     selectedQuestions,
     setSelectedQuestions,
-    // goToTheRoute,
+    topicId,
   } = props;
 
   const { manageScope } = useManageTopicsStore();
   const topicsListRoutePath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
-  // const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
   // const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
   // const answersListRoutePath = `${questionRoutePath}/answers`;
   // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
@@ -403,7 +406,7 @@ export function QuestionsTableContent(
         buttons={
           <>
             <Link
-              href={`${topicRoutePath}/add` as TRoutePath}
+              href={`${questionsListRoutePath}/add` as TRoutePath}
               className={cn(
                 buttonVariants({ variant: 'theme' }),
                 'content-truncate flex items-center gap-2',
@@ -416,15 +419,13 @@ export function QuestionsTableContent(
             <Link
               href={`${questionsListRoutePath}/generate` as TRoutePath}
               className={cn(
-                buttonVariants({ variant: 'secondary' }),
+                buttonVariants({ variant: 'gr1' }),
                 'content-truncate flex items-center gap-2',
                 (!aiGenerationsAllowed || aiGenerationsLoading) && 'disabled',
               )}
             >
               <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
-              <span className="truncate">
-                {t('ManageTopicQuestionsListCard.GenerateQuestions')}
-              </span>
+              <span className="truncate">{t('GenerateQuestions')}</span>
             </Link>
           </>
         }
@@ -468,14 +469,14 @@ export function QuestionsTableContent(
               key={question.id}
               idx={idx}
               question={question}
-              questionsListRoutePath={questionsListRoutePath}
-              // handleDeleteQuestion={handleDeleteQuestion}
-              // handleEditQuestion={handleEditQuestion}
-              // handleEditAnswers={handleEditAnswers}
+              availableQuestionsQuery={availableQuestionsQuery}
               isAdminMode={isAdmin}
               isSelected={selectedQuestions.has(question.id)}
               toggleSelected={toggleSelected}
-              availableQuestionsQuery={availableQuestionsQuery}
+              // handleDeleteQuestion={handleDeleteQuestion}
+              // handleEditAnswers={handleEditAnswers}
+              // handleEditQuestion={handleEditQuestion}
+              // questionsListRoutePath={questionsListRoutePath}
             />
           ))}
         </TableBody>
@@ -604,15 +605,15 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Generate Questions',
-        content: t('ManageTopicQuestionsListCard.GenerateQuestions'),
+        content: t('GenerateQuestions'),
         icon: Icons.WandSparkles,
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         href: `${questionsListRoutePath}/generate`,
       },
       {
         id: 'Start Training',
-        content: t('StartTraining'),
-        icon: Icons.ArrowRight,
+        content: t('ToTraining'),
+        icon: Icons.Rocket,
         visibleFor: 'md',
         href: `${availableTopicsRoute}/${topicId}/workout`,
         hidden: !allowedTraining,
@@ -660,10 +661,10 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
           'overflow-hidden rounded-md transition',
           // isDataLoading && 'opacity-50',
         )}
-        questionsListRoutePath={questionsListRoutePath}
         availableQuestionsQuery={availableQuestionsQuery}
         selectedQuestions={selectedQuestions}
         setSelectedQuestions={setSelectedQuestions}
+        // questionsListRoutePath={questionsListRoutePath}
         // goToTheRoute={goToTheRoute}
       />
       <ConfirmModal

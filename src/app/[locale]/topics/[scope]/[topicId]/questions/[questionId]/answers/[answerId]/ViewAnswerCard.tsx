@@ -8,13 +8,14 @@ import { Card } from '@/components/ui/Card';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
+import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { useAnswersBreadcrumbsItems } from '@/features/answers/components/AnswersBreadcrumbs';
 import { TAvailableAnswer } from '@/features/answers/types';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
-import { useGoBack, useGoToTheRoute } from '@/hooks';
+import { useGoBack } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewAnswerContent } from './ViewAnswerContent';
@@ -31,6 +32,9 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
 
   const t = useT();
 
+  const questionsCount = topic?._count?.questions;
+  const allowedTraining = !!questionsCount;
+
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topic.id}`;
@@ -39,7 +43,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
   const answersListRoutePath = `${questionRoutePath}/answers`;
   // const answerRoutePath = `${answersListRoutePath}/${answer.id}`;
 
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(answersListRoutePath);
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
 
@@ -48,7 +52,6 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -57,46 +60,50 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       {
         id: 'Edit',
         content: t('Edit'),
-        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${answersListRoutePath}/${answer.id}/edit`),
+        href: `${answersListRoutePath}/${answer.id}/edit`,
       },
       {
         id: 'Add New Answer',
         content: t('ViewAnswerCard.AddNewAnswer'),
-        // variant: 'success',
         icon: Icons.Add,
         visibleFor: 'xl',
-        onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
+        href: `${answersListRoutePath}/add`,
       },
       {
         id: 'Generate Answers',
         content: t('ViewAnswerCard.GenerateAnswers'),
-        // variant: 'secondary',
         icon: Icons.WandSparkles,
         visibleFor: 'xl',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
-        onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
+        href: `${answersListRoutePath}/generate`,
       },
       {
         id: 'Delete Answer',
         content: t('ViewAnswerCard.DeleteAnswer'),
-        // variant: 'destructive',
         icon: Icons.Trash,
         visibleFor: 'xl',
-        onClick: () =>
-          goToTheRoute(`${answersListRoutePath}/delete?answerId=${answer.id}&from=ViewAnswerCard`),
+        href: `${answersListRoutePath}/delete?answerId=${answer.id}&from=ViewAnswerCard`,
+      },
+      {
+        id: 'Start Training',
+        content: t('ToTraining'),
+        icon: Icons.Rocket,
+        visibleFor: 'md',
+        href: `${availableTopicsRoute}/${topic.id}/workout`,
+        hidden: !allowedTraining,
       },
     ],
     [
       t,
       goBack,
-      aiGenerationsAllowed,
-      aiGenerationsLoading,
-      goToTheRoute,
       answersListRoutePath,
       answer.id,
+      aiGenerationsAllowed,
+      aiGenerationsLoading,
+      topic.id,
+      allowedTraining,
     ],
   );
 

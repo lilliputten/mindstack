@@ -12,7 +12,7 @@ import { isDev } from '@/constants';
 import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
 import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
-import { getCachedRecentTopics, getRecentTopics, TTopic } from '@/features/topics';
+import { getRecentTopics, TTopic } from '@/features/topics';
 
 type TLandingPageProps = TAwaitedLocaleProps & {
   recentCategories?: TCategory[];
@@ -36,13 +36,14 @@ async function getCategories(locale: TLocale) {
 }
 
 async function getTopics(locale: TLocale) {
-  const promise = isDev ? getRecentTopics({ locale }) : getCachedRecentTopics({ locale });
+  const promise = getRecentTopics({ locale }); // isDev ? getRecentTopics({ locale }) : getCachedRecentTopics({ locale });
   return await promise;
 }
 
 export async function generateStaticParams() {
   const locales = strictLocalesList;
   const params = [];
+  // TODO: To run all request at once (via `Promise.all`)
   for (const locale of locales) {
     let recentCategories: TCategory[] = [];
     let recentTopics: TTopic[] = [];

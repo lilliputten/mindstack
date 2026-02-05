@@ -69,15 +69,6 @@ export function AvailableTopicsListWrapper() {
     // isFetched,
   } = availableTopicsQuery;
 
-  /* // DEBUG: Show current query key
-   * React.useEffect(() => {
-   *   const debugKey = queryKey.map(String).map(decodeURIComponent).join(', ').replace(/&/g, ' ');
-   *   console.log('[AvailableTopicsListWrapper:DEBUG]', debugKey, {
-   *     queryKey,
-   *   });
-   * }, [queryKey]);
-   */
-
   const applyFilters = React.useCallback(
     async (filtersData: TApplyFiltersData) => {
       const filtersParams = convertAvailableFiltersToParams(filtersData);

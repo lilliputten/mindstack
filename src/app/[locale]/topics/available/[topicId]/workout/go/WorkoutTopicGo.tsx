@@ -311,7 +311,7 @@ export function WorkoutTopicGo() {
         topic={topic}
         className="flex-1 px-6 max-sm:flex-col-reverse"
         showName={false}
-        showDescription
+        showDescription={false}
       />
       {/* <TopicProperties topic={topic} className="flex-1 text-sm" showDates /> */}
       <WorkoutTopicGoContent topic={topic} />

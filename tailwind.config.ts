@@ -117,9 +117,9 @@ export default {
         // sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
         // urban: ['var(--font-urban)', ...defaultTheme.fontFamily.sans],
       },
-      // brightness: {
-      //   85: '.85',
-      // },
+      brightness: {
+        120: '1.20',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

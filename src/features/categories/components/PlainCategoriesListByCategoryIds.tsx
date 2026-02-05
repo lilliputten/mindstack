@@ -64,6 +64,7 @@ export function PlainCategoriesListByCategoryIds(props: TProps) {
         isDev && '__PlainCategoriesList', // DEBUG
         className,
       )}
+      title={typeof categoriesBlock === 'string' ? categoriesBlock : undefined}
     >
       {categoriesBlock}
     </span>

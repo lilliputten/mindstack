@@ -100,8 +100,8 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Start Training',
-        content: t('StartTraining'),
-        icon: Icons.ArrowRight,
+        content: t('ToTraining'),
+        icon: Icons.Rocket,
         visibleFor: 'md',
         href: `${availableTopicsRoute}/${topicId}/workout`,
         hidden: !allowedTraining,
@@ -134,7 +134,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Generate Questions',
-        content: t('ViewTopicPage.GenerateQuestions'),
+        content: t('GenerateQuestions'),
         icon: Icons.WandSparkles,
         visibleFor: 'lg',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,

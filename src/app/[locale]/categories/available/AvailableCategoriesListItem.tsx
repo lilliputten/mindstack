@@ -20,10 +20,11 @@ import { useGoToTheRoute, useSessionData } from '@/hooks';
 interface TAvailableCategoriesListItemProps {
   className?: string;
   category: TAvailableCategory;
+  omitExtraDetails?: boolean;
 }
 
 export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemProps) {
-  const { category, className } = props;
+  const { category, className, omitExtraDetails } = props;
   const t = useT();
 
   const locale = useLocale() as TLocale;
@@ -87,49 +88,60 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
           <div
             className={cn(
               isDev && '__AvailableCategoriesListItem_Content_Header', // DEBUG
-              'flex flex-1 items-start gap-2',
+              'flex flex-1 items-stretch gap-2',
               // 'max-xs:flex-col-reverse',
             )}
           >
             <CategoryHeader
               category={category}
-              className="flex-1 max-xs:flex-col-reverse"
+              className={cn(
+                isDev && '__AvailableCategoriesListItem_CategoryHeader', // DEBUG
+                'flex-1 max-xs:flex-col-reverse',
+              )}
               showProperties={false}
             />
+            {!omitExtraDetails && (
+              <div
+                className={cn(
+                  isDev && '__AvailableCategoriesListItem_Content_RightActions', // DEBUG
+                  'flex flex-wrap items-center gap-2 xs:items-end',
+                )}
+              >
+                {allowedEdit && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      goToTheRoute(`${manageCategoriesRoute}/${category.id}`);
+                    }}
+                    className="flex items-center justify-center gap-2"
+                    title={t('AvailableCategories.ManageCategory')}
+                  >
+                    <Link href={`${manageCategoriesRoute}/${category.id}` as TRoutePath}>
+                      <Icons.Edit className="size-4" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+          {!omitExtraDetails && (
             <div
               className={cn(
-                isDev && '__AvailableCategoriesListItem_Content_RightActions', // DEBUG
-                'flex flex-wrap items-center gap-2 xs:items-end',
+                isDev && '__AvailableCategoriesListItem_Content_CategoryProperties', // DEBUG
+                'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
+                'text-xs',
+                'content-truncate',
               )}
             >
-              {allowedEdit && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    goToTheRoute(`${manageCategoriesRoute}/${category.id}`);
-                  }}
-                  className="flex items-center justify-center gap-2"
-                  title={t('AvailableCategories.ManageCategory')}
-                >
-                  <Link href={`${manageCategoriesRoute}/${category.id}` as TRoutePath}>
-                    <Icons.Edit className="size-4" />
-                  </Link>
-                </Button>
-              )}
+              <CategoryProperties
+                category={category}
+                showDates
+                omitExtraDetails={omitExtraDetails}
+              />
             </div>
-          </div>
-          <div
-            className={cn(
-              isDev && '__AvailableCategoriesListItem_Content_CategoryProperties', // DEBUG
-              'flex flex-1 flex-wrap items-center gap-4 gap-y-2',
-              'text-xs',
-              'content-truncate',
-            )}
-          >
-            <CategoryProperties category={category} showDates />
-          </div>
+          )}
         </div>
       </CardContent>
     </>

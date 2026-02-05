@@ -275,7 +275,8 @@ describe('getRecentCategories', () => {
         createdIds.push({ type: 'topic', id: topic.id, categoryId: hiddenCategory.id });
       });
 
-      const result = await getRecentCategories({});
+      // Use a higher take value to ensure all test categories are included despite parallel test interference
+      const result = await getRecentCategories({ take: 10 });
 
       // Filter results to only include our test data
       const filteredResults = result.filter((c) =>
@@ -376,7 +377,7 @@ describe('getRecentCategories with locale', () => {
 
       // Filter results to only include our test data
       const filteredResultsEn = resultEn.filter((c) =>
-        c.translations?.some((t) => t.name.includes(testPrefix)),
+        c.translations?.some((t) => t.name?.includes(testPrefix)),
       );
 
       expect(filteredResultsEn).toHaveLength(1);

@@ -8,7 +8,7 @@ import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { ShowTimeSince } from '@/components/shared';
+import { LanguageName, ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
@@ -52,9 +52,8 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
   const isCompleted = finished;
 
   const topicRoute = `${availableTopicsRoute}/${topicId}` as TRoutePath;
-  const workoutRoute = `${availableTopicsRoute}/${topicId}/workout` as TRoutePath;
+  const workoutRoute = `${topicRoute}/workout` as TRoutePath;
   const workoutGoRoute = `${workoutRoute}/go` as TRoutePath;
-  const startRoute = `${topicRoute}/workout/go` as TRoutePath;
   const manageTopicRoute = ((isAdmin ? allTopicsRoute : myTopicsRoute) +
     `/${topicId}/edit`) as TRoutePath;
 
@@ -79,7 +78,11 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       <span key="language" className="flex items-center gap-1">
         <Icons.Languages className="size-4 opacity-50" />
         <span className="truncate">
-          {isTopicBusy ? <Skeleton className="h-4 w-12" /> : topic?.langName || topic?.langCode}
+          {isTopicBusy ? (
+            <Skeleton className="h-4 w-12" />
+          ) : (
+            <LanguageName langCode={topic?.langCode} langName={topic?.langName} />
+          )}
         </span>
       </span>
     ),
@@ -87,8 +90,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       <div className="flex items-center gap-1">
         <Icons.Clock className="size-4 opacity-50" />
         <span className="truncate">
-          {t('AvailableWorkoutsListItem.TrainingDuration')}:{' '}
-          <ShowTimeSince date={startedAt} timeout={0} />
+          {t('AvailableWorkoutsListItem.TrainingDuration')}: <ShowTimeSince date={startedAt} />
         </span>
       </div>
     ),
@@ -193,7 +195,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               <div className="content-truncate flex flex-wrap items-center gap-1">
                 <span className="truncate opacity-50">{t('TotalDuration')}:</span>
                 <span className="truncate font-medium">
-                  <ShowTimeSince date={totalTimeSeconds * 1000} timeout={0} />
+                  <ShowTimeSince date={totalTimeSeconds * 1000} />
                 </span>
               </div>
             )}
@@ -218,9 +220,9 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
             'flex flex-wrap gap-2',
           )}
         >
-          {!started && (
+          {
             <Link
-              href={startRoute}
+              href={workoutRoute}
               className={cn(
                 buttonVariants({ variant: 'theme' }),
                 'content-truncate flex items-center gap-2',
@@ -229,7 +231,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               <Icons.Rocket className="size-4 shrink-0" />
               <span className="truncate">{t('ToTraining')}</span>
             </Link>
-          )}
+          }
 
           {isActive && (
             <Link

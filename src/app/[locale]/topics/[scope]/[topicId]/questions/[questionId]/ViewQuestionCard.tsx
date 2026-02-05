@@ -10,11 +10,12 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import * as Icons from '@/components/shared/Icons';
+import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
-import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
+import { useAvailableTopicById, useGoBack } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { ViewQuestionContentSummary } from './ViewQuestionContentSummary';
@@ -41,11 +42,14 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
   // const answersListRoutePath = `${questionRoutePath}/answers`;
   // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
 
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(questionsListRoutePath);
 
   const { topic } = availableTopicQuery;
   const { question } = availableQuestionQuery;
+
+  const questionsCount = topic?._count?.questions;
+  const allowedTraining = !!questionsCount;
 
   if (!topic) {
     throw new Error(`No topic exists for ${topicId}`);
@@ -59,7 +63,6 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         disabled: !goBack,
@@ -68,40 +71,39 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       {
         id: 'Edit',
         content: t('Edit'),
-        // variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${questionsListRoutePath}/${question.id}/edit`),
+        href: `${questionsListRoutePath}/${question.id}/edit`,
       },
       {
         id: 'Answers',
         content: t('Answers'),
-        // variant: 'theme',
         icon: Icons.Answers,
         visibleFor: 'lg',
-        onClick: () => goToTheRoute(`${questionsListRoutePath}/${question.id}/answers`),
+        href: `${questionsListRoutePath}/${question.id}/answers`,
       },
       {
         id: 'Add New Question',
         content: t('ViewQuestionCard.AddNewQuestion'),
-        // variant: 'success',
         icon: Icons.Add,
-        // visibleFor: 'xl',
-        onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
+        href: `${questionsListRoutePath}/add`,
       },
       {
         id: 'Delete Question',
         content: t('ViewQuestionCard.DeleteQuestion'),
-        // variant: 'destructive',
         icon: Icons.Trash,
-        // visibleFor: 'xl',
-        onClick: () =>
-          goToTheRoute(
-            `${questionsListRoutePath}/delete?questionId=${question.id}&from=ViewQuestionCard`,
-          ),
+        href: `${questionsListRoutePath}/delete?questionId=${question.id}&from=ViewQuestionCard`,
+      },
+      {
+        id: 'Start Training',
+        content: t('ToTraining'),
+        icon: Icons.Rocket,
+        visibleFor: 'md',
+        href: `${availableTopicsRoute}/${topicId}/workout`,
+        hidden: !allowedTraining,
       },
     ],
-    [t, goBack, goToTheRoute, questionsListRoutePath, question.id],
+    [t, goBack, allowedTraining, topicId, questionsListRoutePath, question.id],
   );
 
   const breadcrumbs = useQuestionsBreadcrumbsItems({
