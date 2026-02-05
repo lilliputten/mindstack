@@ -21,7 +21,7 @@ interface TParams {
 export async function getRecentCategories({ take = recentCategoriesCount, locale }: TParams) {
   try {
     // NOTE: Don't use `getAvailableCategories`, because it uses nextjs context
-    // (`auth`, for example, what is unavailable during SSG, if called from
+    // (`auth`, for example, what is unavailable during edge/SSG, if called from
     // `generateStaticParams`)
     const where: Prisma.CategoryWhereInput = {
       status: 'PUBLIC',
@@ -53,7 +53,7 @@ export async function getRecentCategories({ take = recentCategoriesCount, locale
     const message = 'Failed to get recent categories';
     const details = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[getRecentCategories:SCOPE_getRecentCategories]', message, details, {
+    console.error('[getRecentCategories]', message, details, {
       error,
       locale,
       take,
@@ -73,7 +73,7 @@ export const getCachedRecentCategories = async ({
     ['recent-categories', `take-${take}`, `locale-${localeKey}`],
     {
       tags: [
-        // Cahce keys to invalidate
+        // Cache keys to invalidate
         `recent-categories-take-${take}-locale-${localeKey}`,
         'recent-categories-all',
       ],

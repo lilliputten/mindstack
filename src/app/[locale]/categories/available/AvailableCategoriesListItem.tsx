@@ -46,7 +46,8 @@ export function AvailableCategoriesListItem(props: TAvailableCategoriesListItemP
       <CardContent
         className={cn(
           isDev && '__AvailableCategoriesListItem_Content', // DEBUG
-          'flex flex-1 gap-6 max-xs:flex-col xs:items-center',
+          'flex flex-1 gap-6 max-xs:flex-col',
+          // 'xs:items-center',
           'p-6',
           'text-base',
         )}

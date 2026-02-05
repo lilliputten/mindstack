@@ -12,7 +12,7 @@ interface TProps {
   className?: string;
 }
 
-export function CategoriesSectionItem(props: TProps) {
+export function RecentCategoriesSectionItem(props: TProps) {
   const { category, className } = props;
   /* // DEMO: category properties
    * const {
@@ -29,7 +29,7 @@ export function CategoriesSectionItem(props: TProps) {
     <AvailableCategoriesListItem
       category={category}
       className={cn(
-        isDev && '__CategoriesSectionItem', // DEBUG
+        isDev && '__RecentCategoriesSectionItem', // DEBUG
         className,
       )}
     />

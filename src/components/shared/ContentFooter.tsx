@@ -28,7 +28,8 @@ export function ContentFooter() {
         isDev && '__Footer', // DEBUG
         'mt-auto w-full pb-6 pt-12',
         'border-t border-theme-700/50',
-        'bg-header-gradient',
+        // 'bg-header-gradient',
+        'bg-theme-600',
         'text-white',
         'relative',
       )}
@@ -39,6 +40,7 @@ export function ContentFooter() {
           'absolute inset-0 overflow-hidden',
           'bg-header-gradient',
           'after-header-decor',
+          'opacity-50',
           'z-0',
         )}
       />

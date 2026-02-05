@@ -6,12 +6,13 @@ import { ContentFooter } from '@/components/shared';
 
 import { BigImageCTASection } from './BigImageCTASection';
 import { CardsWithIconsSection } from './CardsWithIconsSection';
-import { CategoriesSection } from './CategoriesSection';
 import { FAQSection } from './FAQSection';
 import { FeaturesSection } from './FeaturesSection';
 import { HeroSection } from './HeroSection';
 import { HowItWorksCards } from './HowItWorksCards';
 import { PromoCTASection } from './PromoCTASection';
+import { RecentCategoriesSection } from './RecentCategoriesSection';
+import { RecentTopicsSection } from './RecentTopicsSection';
 
 export function LandingContent() {
   return (
@@ -19,7 +20,8 @@ export function LandingContent() {
       <main className="flex w-full max-w-6xl flex-col px-6">
         <HeroSection />
         <FeaturesSection />
-        <CategoriesSection />
+        <RecentCategoriesSection />
+        <RecentTopicsSection />
         <CardsWithIconsSection />
         <BigImageCTASection />
         <HowItWorksCards />

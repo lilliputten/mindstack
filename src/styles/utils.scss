@@ -49,13 +49,44 @@
 // TODO: Detect the most readable (contrast) color for each spread, like it's done in `build-utils/getColorSpread.ts`
 
 @mixin defineThemeSpread($color, $fix: 0%) {
-  // Reversed: From the lightest to the darkest (as in tailwind schemas)
+  // NOTE: All colors are reversed, according to the tailwind style: From the lightest to the darkest (as in tailwind schemas)
+  // Base colors
+  --color-theme-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
+  --color-theme-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
+  // Complementary colors
+  --color-complementary-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix, $hue: 180deg))};
+  --color-complementary-400-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix + 10%, $hue: 180deg)
+    )};
+  --color-complementary-500-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix, $hue: 180deg)
+    )};
+  --color-complementary-600-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix - 10%, $hue: 180deg)
+    )};
+  --color-triadic1-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix, $hue: 120deg))};
+  --color-triadic1-400-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix - 10%, $hue: 120deg)
+    )};
+  --color-triadic1-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix, $hue: 120deg))};
+  --color-triadic1-600-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix + 10%, $hue: 120deg)
+    )};
+  --color-triadic2-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix, $hue: 240deg))};
+  --color-triadic2-400-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix - 10%, $hue: 240deg)
+    )};
+  --color-triadic2-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix, $hue: 240deg))};
+  --color-triadic2-600-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix + 10%, $hue: 240deg)
+    )};
+  // Lighter colors
   --color-theme-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
   --color-theme-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
   --color-theme-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
   --color-theme-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
   --color-theme-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
-  --color-theme-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
+  // Darker colors
   --color-theme-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
   --color-theme-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
   --color-theme-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
@@ -63,33 +94,58 @@
   --color-theme-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
 }
 @mixin defineThemeColor($id, $color, $fix: 0%) {
-  // Reversed: From the lightest to the darkest (as in tailwind schemas)
-  --color-#{'' + $id}-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
-  --color-#{'' + $id}-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
-  --color-#{'' + $id}-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
-  --color-#{'' + $id}-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
-  --color-#{'' + $id}-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
+  // NOTE: All colors are reversed: From the lightest to the darkest (as in tailwind schemas)
+  // Base colors
+  --color-#{'' + $id}-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
   --color-#{'' + $id}-500-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix))};
-  --color-#{'' + $id}-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
-  --color-#{'' + $id}-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
-  --color-#{'' + $id}-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
-  --color-#{'' + $id}-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
-  --color-#{'' + $id}-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
-  --color-#{'' + $id}-50: #{hexColor(color.adjust($color, $lightness: $fix + 45%))};
-  --color-#{'' + $id}-100: #{hexColor(color.adjust($color, $lightness: $fix + 40%))};
-  --color-#{'' + $id}-200: #{hexColor(color.adjust($color, $lightness: $fix + 30%))};
-  --color-#{'' + $id}-300: #{hexColor(color.adjust($color, $lightness: $fix + 20%))};
-  --color-#{'' + $id}-400: #{hexColor(color.adjust($color, $lightness: $fix + 10%))};
+  // Complementary colors
+  --color-#{'' + $id}-complementary-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix, $hue: 180deg)
+    )};
+  --color-#{'' + $id}-triadic1-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix, $hue: 120deg)
+    )};
+  --color-#{'' + $id}-triadic2-RGB: #{rgbComponents(
+      color.adjust($color, $lightness: $fix, $hue: 240deg)
+    )};
+  // // Lighter colors
+  // --color-#{'' + $id}-50-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 45%))};
+  // --color-#{'' + $id}-100-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 40%))};
+  // --color-#{'' + $id}-200-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 30%))};
+  // --color-#{'' + $id}-300-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 20%))};
+  // --color-#{'' + $id}-400-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix + 10%))};
+  // // Darker colors
+  // --color-#{'' + $id}-600-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 10%))};
+  // --color-#{'' + $id}-700-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 20%))};
+  // --color-#{'' + $id}-800-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 30%))};
+  // --color-#{'' + $id}-900-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 40%))};
+  // --color-#{'' + $id}-950-RGB: #{rgbComponents(color.adjust($color, $lightness: $fix - 45%))};
+  // Base colors
+  --color-#{'' + $id}: #{hexColor(color.adjust($color, $lightness: $fix))};
   --color-#{'' + $id}-500: #{hexColor(color.adjust($color, $lightness: $fix))};
-  --color-#{'' + $id}-600: #{hexColor(color.adjust($color, $lightness: $fix - 10%))};
-  --color-#{'' + $id}-700: #{hexColor(color.adjust($color, $lightness: $fix - 20%))};
-  --color-#{'' + $id}-800: #{hexColor(color.adjust($color, $lightness: $fix - 30%))};
-  --color-#{'' + $id}-900: #{hexColor(color.adjust($color, $lightness: $fix - 40%))};
-  --color-#{'' + $id}-950: #{hexColor(color.adjust($color, $lightness: $fix - 45%))};
+  // Complementary colors
+  --color-#{'' + $id}-complementary: #{hexColor(
+      color.adjust($color, $lightness: $fix, $hue: 180deg)
+    )};
+  --color-#{'' + $id}-triadic1: #{hexColor(color.adjust($color, $lightness: $fix, $hue: 120deg))};
+  --color-#{'' + $id}-triadic2: #{hexColor(color.adjust($color, $lightness: $fix, $hue: 240deg))};
+  // // Lighter colors
+  // --color-#{'' + $id}-50: #{hexColor(color.adjust($color, $lightness: $fix + 45%))};
+  // --color-#{'' + $id}-100: #{hexColor(color.adjust($color, $lightness: $fix + 40%))};
+  // --color-#{'' + $id}-200: #{hexColor(color.adjust($color, $lightness: $fix + 30%))};
+  // --color-#{'' + $id}-300: #{hexColor(color.adjust($color, $lightness: $fix + 20%))};
+  // --color-#{'' + $id}-400: #{hexColor(color.adjust($color, $lightness: $fix + 10%))};
+  // // Darker colors
+  // --color-#{'' + $id}-600: #{hexColor(color.adjust($color, $lightness: $fix - 10%))};
+  // --color-#{'' + $id}-700: #{hexColor(color.adjust($color, $lightness: $fix - 20%))};
+  // --color-#{'' + $id}-800: #{hexColor(color.adjust($color, $lightness: $fix - 30%))};
+  // --color-#{'' + $id}-900: #{hexColor(color.adjust($color, $lightness: $fix - 40%))};
+  // --color-#{'' + $id}-950: #{hexColor(color.adjust($color, $lightness: $fix - 45%))};
 }
 
 // Define themes (from a global variable `$themes`, see definition in the `src/config/themeColors.ts`)
 @mixin defineAllThemes($themes, $defaultTheme) {
+  /**! defineAllThemes */
   @each $id, $color, $fix in $themes {
     /* Theme: #{$id} #{$color} #{$fix} */
     @if $id == $defaultTheme {
@@ -109,6 +165,7 @@
 // Define themes (from a global variable `$themes`, see definition in the `src/config/themeColors.ts`)
 @mixin defineAllColors($themes, $defaultTheme) {
   :root {
+    /**! defineAllColors */
     @each $id, $color, $fix in $themes {
       /* Theme color: #{$id} #{$color} #{$fix} */
       @include defineThemeColor($id, $color, $fix);

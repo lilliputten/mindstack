@@ -63,7 +63,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         className,
       )}
     >
-      <p className="py-2 text-lg font-semibold text-theme">{t('AppIntro.Subtitle')}</p>
+      <p className="text-gr3 py-2 text-lg font-semibold">{t('AppIntro.Subtitle')}</p>
 
       <p>
         {t.rich('AppIntro.BlockContent', {

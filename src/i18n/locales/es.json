@@ -796,13 +796,21 @@
       "Title-2": "Práctica de recuperación",
       "Title-3": "Enfoque inteligente"
     },
-    "CategoriesSection": {
+    "RecentCategoriesSection": {
       "Description": "Explora categorías predefinidas o crea las tuyas propias, si estás autorizado.",
       "IntroduceCategories": "Aquí hay algunas categorías populares:",
       "NoCategories": "Aparentemente todavía no hay categorías para tu idioma. \nPuedes sugerirnos algunos tuyos.",
       "SuggestCategory": "Sugiere tu categoría",
       "Title": "Aprende cualquier cosa, desde idiomas hasta programación",
       "ViewAllCategoriesText": "Ver todas las categorías"
+    },
+    "RecentTopicsSection": {
+      "Description": "¡Bienvenido a tu centro de conocimiento personal! \nAquí es donde vivirán sus temas, listos para su revisión, práctica y dominio.",
+      "IntroduceTopics": "Aquí hay algunas categorías populares:",
+      "NoTopics": "Parece un poco tranquilo aquí. \n¡Vamos a llenarlo de conocimiento!",
+      "SuggestTopic": "Añade tu tema",
+      "Title": "Su viaje de aprendizaje comienza aquí",
+      "ViewAllTopicsText": "Ver todos los temas"
     },
     "FAQSection": {
       "Description": "Todo lo que necesita saber sobre MindStack y cómo comenzar con el entrenamiento de la memoria.",
@@ -1114,7 +1122,7 @@
     "RootKeywords": "memoria, entrenamiento, aplicación",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Configuración de la aplicación",
-    "SettingsTitle": "Configuración",
+    "SettingsTitle": "Configuración de la aplicación",
     "StartBotTitle": "Iniciar robot",
     "TermsPageTitle": "Términos de servicio",
     "TestQueryTitle": "Pruebe la consulta de texto de IA",

@@ -5,14 +5,13 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import { getColorSpread } from './build-utils/getColorSpread';
 // NOTE: It's not possible to export css modules on this stage
-import { darkBlueColor, primaryColor, secondaryColor } from './src/config/themeColors';
+import { primaryColor, secondaryColor } from './src/config/themeColors';
 
 // Core app color definitions
 // UNUSED? Construct primary/secondary colors spread tables
 // (with keys 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950) from key colors.
 const primaryColorSpread = getColorSpread('primary', primaryColor);
 const secondaryColorSpread = getColorSpread('secondary', secondaryColor);
-// const darkBlueColorSpread = getColorSpread('dark-blue', darkBlueColor);
 
 export default {
   darkMode: ['class'],
@@ -46,14 +45,9 @@ export default {
         foreground: 'rgb(var(--foregroundColorRGB) / <alpha-value>)',
         ...primaryColorSpread,
         ...secondaryColorSpread,
-        // ...darkBlueColorSpread,
-        'dark-blue': darkBlueColor,
         border: 'rgba(var(--color-theme-700-RGB) / 20%)',
         input: 'rgba(var(--color-theme-500-RGB) / 20%)',
-        // input: 'var(--inputColor)',
         ring: 'rgba(var(--color-theme-500-RGB) / 50%)',
-        // : 'var(--ringColor)',
-        // ring: 'var(--ringColor)',
         'background-light': 'var(--backgroundLightColor)',
         'foreground-light': 'var(--foregroundLightColor)',
         'background-dark': 'var(--backgroundDarkColor)',
@@ -76,6 +70,10 @@ export default {
         'theme-800': 'rgb(var(--color-theme-800-RGB))',
         'theme-900': 'rgb(var(--color-theme-900-RGB))',
         'theme-950': 'rgb(var(--color-theme-950-RGB))',
+        primary: 'var(--color-primary-500)',
+        complementary: 'rgb(var(--color-complementary-RGB))',
+        triadic1: 'rgb(var(--color-triadic1-RGB))',
+        triadic2: 'rgb(var(--color-triadic2-RGB))',
         success: {
           DEFAULT: 'var(--appSuccessColor)',
           foreground: 'var(--appSuccessForegroundColor)',
@@ -119,6 +117,9 @@ export default {
         // sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
         // urban: ['var(--font-urban)', ...defaultTheme.fontFamily.sans],
       },
+      // brightness: {
+      //   85: '.85',
+      // },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

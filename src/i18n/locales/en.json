@@ -805,13 +805,21 @@
       "Title-2": "Retrieval Practice",
       "Title-3": "Smart Focus"
     },
-    "CategoriesSection": {
+    "RecentCategoriesSection": {
       "Description": "Explore predefined categories or create your own, if you're authorized.",
       "IntroduceCategories": "Here are some popular categories:",
       "NoCategories": "Apparently, there no categories for your language yet. You can suggest some yours.",
       "SuggestCategory": "Suggest Your Category",
       "Title": "Learn Anything, From Languages to Programming",
       "ViewAllCategoriesText": "View All Categories"
+    },
+    "RecentTopicsSection": {
+      "Description": "Welcome to your personal knowledge hub! This is where your topics will live—ready for review, practice, and mastery.",
+      "IntroduceTopics": "Here are some popular topics:",
+      "NoTopics": "It looks a little quiet in here. Let's fill it with knowledge!",
+      "SuggestTopic": "Add Your Topic",
+      "Title": "Your Learning Journey Starts Here",
+      "ViewAllTopicsText": "View All Topics"
     },
     "FAQSection": {
       "Description": "Everything you need to know about MindStack and how to get started with memory training.",
@@ -1123,7 +1131,7 @@
     "RootKeywords": "memory, training, application",
     "RootTitle": "Mind Stack Trainer",
     "SettingsDescription": "Application settings",
-    "SettingsTitle": "Settings",
+    "SettingsTitle": "Application Settings",
     "StartBotTitle": "Start Bot",
     "TermsPageTitle": "Terms of Service",
     "TestQueryTitle": "Test AI Text Query",

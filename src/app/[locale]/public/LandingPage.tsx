@@ -12,9 +12,11 @@ import { isDev } from '@/constants';
 import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
 import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
+import { getCachedRecentTopics, getRecentTopics, TTopic } from '@/features/topics';
 
 type TLandingPageProps = TAwaitedLocaleProps & {
   recentCategories?: TCategory[];
+  recentTopics?: TTopic[];
 };
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
@@ -33,14 +35,30 @@ async function getCategories(locale: TLocale) {
   return await promise;
 }
 
+async function getTopics(locale: TLocale) {
+  const promise = isDev ? getRecentTopics({ locale }) : getCachedRecentTopics({ locale });
+  return await promise;
+}
+
 export async function generateStaticParams() {
   const locales = strictLocalesList;
   const params = [];
   for (const locale of locales) {
     let recentCategories: TCategory[] = [];
+    let recentTopics: TTopic[] = [];
     try {
       // Fetch categories for each locale to enable per-locale SSG generation
-      recentCategories = await getCategories(locale);
+      const [categories, topics] = await Promise.allSettled([
+        getCategories(locale),
+        getTopics(locale),
+      ]);
+      // Get all fulfilled results
+      if (categories.status === 'fulfilled') {
+        recentCategories = categories.value;
+      }
+      if (topics.status === 'fulfilled') {
+        recentTopics = topics.value;
+      }
     } catch (error) {
       const message = 'Failed to fetch recent categories for static generation';
       const details = getErrorText(error);
@@ -53,7 +71,7 @@ export async function generateStaticParams() {
       });
       debugger; // eslint-disable-line no-debugger
     }
-    params.push({ locale, recentCategories });
+    params.push({ locale, recentCategories, recentTopics });
   }
   return params;
 }
@@ -63,12 +81,24 @@ export async function LandingPage(props: TLandingPageProps) {
   const { locale } = resolvedParams;
 
   let recentCategories: TCategory[] = props.recentCategories || [];
+  let recentTopics: TTopic[] = props.recentTopics || [];
 
   // Use pre-fetched categories from generateStaticParams if available,
   // otherwise fetch them (for non-SSG scenarios)
   if (!recentCategories.length) {
     try {
-      recentCategories = await getCategories(locale);
+      // Fetch categories for each locale to enable per-locale SSG generation
+      const [categories, topics] = await Promise.allSettled([
+        getCategories(locale),
+        getTopics(locale),
+      ]);
+      // Get all fulfilled results
+      if (categories.status === 'fulfilled') {
+        recentCategories = categories.value;
+      }
+      if (topics.status === 'fulfilled') {
+        recentTopics = topics.value;
+      }
     } catch (error) {
       const message = 'Failed to fetch recent categories';
       const details = getErrorText(error);
@@ -88,7 +118,11 @@ export async function LandingPage(props: TLandingPageProps) {
   setRequestLocale(locale);
 
   return (
-    <LandingPageContextRoot recentCategories={recentCategories}>
+    <LandingPageContextRoot
+      // Data parameters...
+      recentCategories={recentCategories}
+      recentTopics={recentTopics}
+    >
       <PageWrapper
         id="LandingPage"
         className={cn(

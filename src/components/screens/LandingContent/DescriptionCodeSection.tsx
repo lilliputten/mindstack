@@ -32,10 +32,10 @@ POST /api/topics/{topicId}/questions
     >
       <div className="grid gap-12 md:grid-cols-[0.5fr_1fr]">
         <div className="max-w-2xl">
-          <h2 className="mb-4 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
-            Built for Developers and Learners
+          <h2 className="content-truncate mb-4 mt-0 text-3xl font-semibold leading-tight tracking-tight text-theme lg:text-4xl">
+            <div className="content-truncate text-gr2 py-2">Built for Developers and Learners</div>
           </h2>
-          <p className="text-base leading-6 text-muted-foreground lg:text-lg">
+          <p className="content-truncate text-base leading-6 text-muted-foreground lg:text-lg">
             MindStack is built with modern web technologies, making it fast, reliable, and easy to
             use. Whether you're learning programming concepts, languages, or any other subject,
             MindStack adapts to your learning style.

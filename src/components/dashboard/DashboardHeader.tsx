@@ -44,7 +44,6 @@ export function DashboardHeader(props: DashboardHeaderProps) {
         <Breadcrumbs
           className={cn(
             isDev && '__DashboardHeader_Breadcrumbs', // DEBUG
-            // 'truncate',
           )}
           items={breadcrumbs}
           inactiveLast={inactiveLastBreadcrumb}
@@ -62,7 +61,11 @@ export function DashboardHeader(props: DashboardHeaderProps) {
             'flex flex-1 flex-col gap-1 truncate',
           )}
         >
-          {heading && <h1 className="truncate font-heading text-2xl text-theme">{heading}</h1>}
+          {heading && (
+            <h1 className="content-truncate font-heading text-2xl">
+              <span className="text-gr2 truncate">{heading}</span>
+            </h1>
+          )}
           {text && <div className="truncate text-base opacity-50">{text}</div>}
           {children}
         </div>

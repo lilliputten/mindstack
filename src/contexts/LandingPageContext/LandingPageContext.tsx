@@ -3,13 +3,16 @@
 import React from 'react';
 
 import { TCategory } from '@/features/categories/types';
+import { TTopic } from '@/features/topics';
 
 export interface TLandingPageContextType {
   recentCategories: TCategory[];
+  recentTopics: TTopic[];
 }
 
 export const LandingPageContext = React.createContext<TLandingPageContextType>({
   recentCategories: [],
+  recentTopics: [],
 });
 
 export function LandingPageContextProvider(

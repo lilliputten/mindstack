@@ -131,8 +131,8 @@ export function AvailableTopicsList(props: TProps) {
       )}
       // thumbClassName="bg-theme-600/40"
     >
-      {allTopics.map((topic, index) => (
-        <AvailableTopicsListItem key={topic.id} index={index} topic={topic} />
+      {allTopics.map((topic) => (
+        <AvailableTopicsListItem key={topic.id} topic={topic} />
       ))}
     </ScrollAreaInfinite>
   );

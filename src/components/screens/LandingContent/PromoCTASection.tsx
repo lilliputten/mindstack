@@ -18,10 +18,13 @@ export function PromoCTASection() {
         isDev && '__PromoCTASection', // DEBUG
         'relative',
         'mb-12 rounded-2xl py-12',
-        'bg-header-gradient',
+        // 'bg-header-gradient',
+        // 'from-triadic1 to-triadic2 bg-gradient-to-r',
+        'bg-gradient-to-r from-triadic1/30 to-triadic2/30',
+        // 'bg-gr2',
         'dark text-white',
         'overflow-hidden',
-        // 'bg-gradient-to-br from-purple-200 to-blue-200',
+        'transition',
       )}
     >
       <div
@@ -34,18 +37,20 @@ export function PromoCTASection() {
           'opacity-50',
         )}
       />
-      <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center px-4 text-center">
-        <h2 className="mb-6 mt-0 py-2 text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
-          {t('Landing.PromoCTASection.Title')}
+      <div className="z-1 relative mx-auto flex max-w-2xl flex-col items-center gap-4 px-4 text-center">
+        <h2 className="content-truncate text-3xl font-semibold leading-tight tracking-tight lg:text-4xl">
+          <div className="content-truncate py-2 text-white">
+            {t('Landing.PromoCTASection.Title')}
+          </div>
         </h2>
-        <p className="mb-6 text-base leading-6 text-muted-foreground lg:text-lg">
+        <p className="content-truncate text-base leading-6 text-muted-foreground lg:text-lg">
           {t('Landing.PromoCTASection.Description')}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             href={startAliasRoute}
             className={cn(
-              buttonVariants({ variant: 'theme', size: 'lg', rounded: 'lg' }),
+              buttonVariants({ variant: 'gr2', size: 'lg', rounded: 'lg' }),
               'content-truncate flex items-center gap-2',
             )}
           >
@@ -56,7 +61,7 @@ export function PromoCTASection() {
           <Link
             href={aboutAliasRoute}
             className={cn(
-              buttonVariants({ variant: 'theme', size: 'lg', rounded: 'lg' }),
+              buttonVariants({ variant: 'outline', size: 'lg', rounded: 'lg' }),
               'content-truncate flex items-center gap-2',
             )}
           >

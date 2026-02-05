@@ -27,7 +27,8 @@ export function CardWithIcon({
       className={cn(
         isDev && ['__CardWithIcon', debugId].filter(Boolean).join('_'), // DEBUG
         'flex flex-col gap-4 p-6 sm:flex-row',
-        'bg-theme/10',
+        // 'bg-theme/10',
+        'bg-gr0',
         className,
       )}
     >
