@@ -86,12 +86,12 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       },
       {
         id: 'ReviewTraining',
-        content: t('AvailableTopics.TrainingDetails'),
+        content: t('ToTraining'),
         variant: 'ghost',
-        icon: Icons.LineChart,
+        icon: Icons.Rocket,
         visibleFor: 'lg',
         hidden: !workout,
-        onClick: () => goToTheRoute(`${availableTopicsRoute}/${topicId}/workout`),
+        href: `${availableTopicsRoute}/${topicId}/workout`,
       },
       {
         id: 'ManageTopic',
@@ -100,7 +100,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
         icon: Icons.Edit,
         visibleFor: 'xl',
         disabled: !allowedEdit,
-        onClick: () => goToTheRoute(`${manageTopicsRoute}/${topicId}`),
+        href: `${manageTopicsRoute}/${topicId}`,
       },
     ],
     [
@@ -110,7 +110,6 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
       allowedTraining,
       handleResumeWorkout,
       allowedEdit,
-      goToTheRoute,
       topicId,
       manageTopicsRoute,
     ],

@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -73,34 +73,32 @@ export function ViewQuestionContentSummary(props: TProps) {
       <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Answers')}</h3>
         <div className="flex flex-wrap gap-2">
-          <Button variant="ghost" size="sm" disabled={!isLogged}>
-            <Link
-              href={
-                `${routePath}/${question.topicId}/questions/${question.id}/answers` as TRoutePath
-              }
-              className="flex items-center gap-2"
-              title={t('ViewQuestionContentSummary.ManageAnswers')}
-            >
-              <Icons.Edit className="size-4 opacity-50" />
-              <span>{t('ViewQuestionContentSummary.ManageAnswers')}</span>
-            </Link>
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={!aiGenerationsAllowed || aiGenerationsLoading}
+          <Link
+            href={`${routePath}/${question.topicId}/questions/${question.id}/answers` as TRoutePath}
+            className={cn(
+              buttonVariants({ variant: 'ghost' }),
+              'flex items-center gap-2',
+              !isLogged && 'disabled',
+            )}
+            title={t('ViewQuestionContentSummary.ManageAnswers')}
           >
-            <Link
-              href={
-                `${routePath}/${question.topicId}/questions/${question.id}/answers/generate` as TRoutePath
-              }
-              className="flex items-center gap-2"
-              title={t('ViewQuestionContentSummary.GenerateAnswers')}
-            >
-              <Icons.WandSparkles className="size-4 opacity-50" />
-              <span>{t('ViewQuestionContentSummary.GenerateAnswers')}</span>
-            </Link>
-          </Button>
+            <Icons.Edit className="size-4 opacity-50" />
+            <span>{t('ViewQuestionContentSummary.ManageAnswers')}</span>
+          </Link>
+          <Link
+            href={
+              `${routePath}/${question.topicId}/questions/${question.id}/answers/generate` as TRoutePath
+            }
+            className={cn(
+              buttonVariants({ variant: 'gr1' }),
+              'flex items-center gap-2',
+              (!aiGenerationsAllowed || aiGenerationsLoading) && 'disabled',
+            )}
+            title={t('ViewQuestionContentSummary.GenerateAnswers')}
+          >
+            <Icons.WandSparkles className="size-4 opacity-50" />
+            <span>{t('ViewQuestionContentSummary.GenerateAnswers')}</span>
+          </Link>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -149,26 +147,26 @@ export function ViewQuestionContentSummary(props: TProps) {
         <h3 className="text-lg font-semibold">{t('ViewQuestionContentSummary.Topic')}</h3>
         <div className="flex flex-wrap gap-2">
           {isOwner && (
-            <Button variant="ghost" size="sm">
-              <Link
-                href={`${routePath}/${topic.id}` as TRoutePath}
-                className="flex items-center gap-2"
-              >
-                <Icons.Edit className="size-4 opacity-50" />
-                <span>{t('ViewQuestionContentSummary.ManageTopic')}</span>
-              </Link>
-            </Button>
-          )}
-          <Button variant="secondary" size="sm" disabled={!aiGenerationsAllowed}>
             <Link
-              href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
-              className="flex items-center gap-2"
-              title={t('ViewQuestionContentSummary.GenerateQuestions')}
+              href={`${routePath}/${topic.id}` as TRoutePath}
+              className={cn(buttonVariants({ variant: 'ghost' }), 'flex items-center gap-2')}
             >
-              <Icons.WandSparkles className="size-4 opacity-50" />
-              <span>{t('ViewQuestionContentSummary.GenerateQuestions')}</span>
+              <Icons.Edit className="size-4 opacity-50" />
+              <span className="truncate">{t('ViewQuestionContentSummary.ManageTopic')}</span>
             </Link>
-          </Button>
+          )}
+          <Link
+            href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
+            className={cn(
+              buttonVariants({ variant: 'gr1' }),
+              'flex items-center gap-2',
+              !aiGenerationsAllowed && 'disabled',
+            )}
+            title={t('GenerateQuestions')}
+          >
+            <Icons.WandSparkles className="size-4 opacity-50" />
+            <span className="truncate">{t('GenerateQuestions')}</span>
+          </Link>
         </div>
       </div>
       <div className="flex flex-col gap-2 rounded-lg bg-slate-500/10 p-3">

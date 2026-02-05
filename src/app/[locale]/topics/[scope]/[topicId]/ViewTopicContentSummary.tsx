@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import * as Icons from '@/components/shared/Icons';
@@ -67,24 +67,29 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         className="flex flex-col gap-4"
       >
         <h3 className="text-lg font-semibold">{t('Questions')}</h3>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-2">
           {!!topic._count?.questions && (
             <span className="flex items-center gap-2">
-              <Icons.Questions className="size-4 opacity-50" />
+              <Icons.Questions className="size-4 shrink-0 opacity-50" />
               <span>
                 {t('ViewTopicContentSummary.QuestionsCount')}: {topic._count.questions}
               </span>
             </span>
           )}
-          <Button variant="theme">
-            <Link
-              href={`${routePath}/${topic.id}/questions` as TRoutePath}
-              className="flex items-center gap-2"
-            >
-              <Icons.Edit className="size-4 opacity-50" />
-              <span>{t('ViewTopicContentSummary.ManageQuestions')}</span>
-            </Link>
-          </Button>
+          <Link
+            href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2')}
+          >
+            <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
+            <span>{t('GenerateQuestions')}</span>
+          </Link>
+          <Link
+            href={`${routePath}/${topic.id}/questions` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+          >
+            <Icons.Edit className="size-4 shrink-0 opacity-50" />
+            <span>{t('ViewTopicContentSummary.ManageQuestions')}</span>
+          </Link>
         </div>
       </div>
 
@@ -101,9 +106,9 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             title={t('Availability')}
           >
             {topic.isPublic ? (
-              <Icons.Eye className="size-4 opacity-50" />
+              <Icons.Eye className="size-4 shrink-0 opacity-50" />
             ) : (
-              <Icons.EyeOff className="size-4 opacity-50" />
+              <Icons.EyeOff className="size-4 shrink-0 opacity-50" />
             )}
             {topic.isPublic
               ? t('ViewTopicContentSummary.Public')
@@ -115,13 +120,13 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               className="flex items-center gap-1 px-2 py-1"
               title={t('Language')}
             >
-              <Icons.Languages className="size-4 opacity-50" />
+              <Icons.Languages className="size-4 shrink-0 opacity-50" />
               {topic.langName} {topic.langCode && `(${topic.langCode})`}
             </Badge>
           )}
           {topic.answersCountRandom && topic.answersCountMin && topic.answersCountMax && (
             <Badge variant="secondary" className="flex items-center gap-1 px-2 py-1">
-              <Icons.Hash className="size-4 opacity-50" />
+              <Icons.Hash className="size-4 shrink-0 opacity-50" />
               {t('ViewTopicContentSummary.RandomAnswers')}: {topic.answersCountMin}-
               {topic.answersCountMax}
             </Badge>

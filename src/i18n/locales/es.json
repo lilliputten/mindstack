@@ -36,6 +36,7 @@
   "ExtraLimitsErrorText": "<PricesLink>Consulta</PricesLink> las condiciones de tu plan tarifario.",
   "Finish": "Finalizar",
   "FinishedAt": "Terminado en",
+  "GenerateQuestions": "Generar Preguntas",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
   "GoHome": "Ir a casa",
@@ -309,7 +310,6 @@
     "ResumeTraining": "Reanudar Entrenamiento",
     "StartNewTraining": "Iniciar Nuevo Entrenamiento",
     "StartTraining": "Iniciar Entrenamiento",
-    "ToTraining": "Al entrenamiento",
     "TrainingDetails": "Detalles del Entrenamiento",
     "TrainingInfo": "Mostrar información de formación"
   },
@@ -573,7 +573,6 @@
     "DeleteAnswer": "Eliminar Respuesta",
     "EditAnswer": "Editar Respuesta",
     "GenerateAnswers": "Generar Respuestas",
-    "GenerateQuestions": "Generar Preguntas",
     "NoAnswerFound": "No se encontró respuesta",
     "NoQuestionFound": "No se encontró pregunta",
     "NoTopicFound": "No se encontró tema",
@@ -796,22 +795,6 @@
       "Title-2": "Práctica de recuperación",
       "Title-3": "Enfoque inteligente"
     },
-    "RecentCategoriesSection": {
-      "Description": "Explora categorías predefinidas o crea las tuyas propias, si estás autorizado.",
-      "IntroduceCategories": "Aquí hay algunas categorías populares:",
-      "NoCategories": "Aparentemente todavía no hay categorías para tu idioma. \nPuedes sugerirnos algunos tuyos.",
-      "SuggestCategory": "Sugiere tu categoría",
-      "Title": "Aprende cualquier cosa, desde idiomas hasta programación",
-      "ViewAllCategoriesText": "Ver todas las categorías"
-    },
-    "RecentTopicsSection": {
-      "Description": "¡Bienvenido a tu centro de conocimiento personal! \nAquí es donde vivirán sus temas, listos para su revisión, práctica y dominio.",
-      "IntroduceTopics": "Aquí hay algunos temas reales:",
-      "NoTopics": "Parece un poco tranquilo aquí. \n¡Vamos a llenarlo de conocimiento!",
-      "SuggestTopic": "Añade tu tema",
-      "Title": "Su viaje de aprendizaje comienza aquí",
-      "ViewAllTopicsText": "Ver todos los temas"
-    },
     "FAQSection": {
       "Description": "Todo lo que necesita saber sobre MindStack y cómo comenzar con el entrenamiento de la memoria.",
       "Title": "Preguntas Frecuentes",
@@ -901,6 +884,22 @@
       "ExploreCategoriesText": "Explorar categorías",
       "StartFreeTrainingText": "Comenzar entrenamiento gratis",
       "Title": "Comienza a construir tu conocimiento hoy"
+    },
+    "RecentCategoriesSection": {
+      "Description": "Explora categorías predefinidas o crea las tuyas propias, si estás autorizado.",
+      "IntroduceCategories": "Aquí hay algunas categorías populares:",
+      "NoCategories": "Aparentemente todavía no hay categorías para tu idioma. \nPuedes sugerirnos algunos tuyos.",
+      "SuggestCategory": "Sugiere tu categoría",
+      "Title": "Aprende cualquier cosa, desde idiomas hasta programación",
+      "ViewAllCategoriesText": "Ver todas las categorías"
+    },
+    "RecentTopicsSection": {
+      "Description": "¡Bienvenido a tu centro de conocimiento personal! \nAquí es donde vivirán sus temas, listos para su revisión, práctica y dominio.",
+      "IntroduceTopics": "Aquí hay algunos temas reales:",
+      "NoTopics": "Parece un poco tranquilo aquí. \n¡Vamos a llenarlo de conocimiento!",
+      "SuggestTopic": "Añade tu tema",
+      "Title": "Su viaje de aprendizaje comienza aquí",
+      "ViewAllTopicsText": "Ver todos los temas"
     }
   },
   "LimitsError": {
@@ -980,7 +979,6 @@
     "DeletingSelectedQuestions": "Eliminando preguntas seleccionadas...",
     "Edit": "Editar",
     "EditAnswers": "Editar Respuestas",
-    "GenerateQuestions": "Generar Preguntas",
     "Generated": "Generado",
     "ManageQuestions": "Gestionar Preguntas",
     "NoQuestionsCreatedYet": "Aún no se han creado preguntas",
@@ -1520,7 +1518,6 @@
     "Author": "Autor",
     "Created": "Creado",
     "GenerateAnswers": "Generar Respuestas",
-    "GenerateQuestions": "Generar Preguntas",
     "ManageAnswers": "Gestionar Respuestas",
     "ManageTopic": "Gestionar Tema",
     "Modified": "Modificado",
@@ -1556,7 +1553,6 @@
     "CannotUpdateTopicData": "No se pueden actualizar los datos del tema",
     "DeleteTopic": "Eliminar Tema",
     "Edit": "Editar",
-    "GenerateQuestions": "Generar Preguntas",
     "NoTopicFound": "No se encontró tema",
     "Questions": "Preguntas",
     "Reload": "Recargar",

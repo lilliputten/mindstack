@@ -38,6 +38,7 @@
   "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan conditions.",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
+  "GenerateQuestions": "Generate Questions",
   "GenerationMode": "Generation mode",
   "GoBack": "Go Back",
   "GoHome": "Go home",
@@ -313,7 +314,6 @@
     "ResumeTraining": "Resume Training",
     "StartNewTraining": "Start New Training",
     "StartTraining": "Start Training",
-    "ToTraining": "To Training",
     "TrainingDetails": "Training Details",
     "TrainingInfo": "Show Trainig Info"
   },
@@ -581,7 +581,6 @@
     "DeleteAnswer": "Delete Answer",
     "EditAnswer": "Edit Answer",
     "GenerateAnswers": "Generate Answers",
-    "GenerateQuestions": "Generate Questions",
     "NoAnswerFound": "No answer found",
     "NoQuestionFound": "No question found",
     "NoTopicFound": "No topic found",
@@ -805,22 +804,6 @@
       "Title-2": "Retrieval Practice",
       "Title-3": "Smart Focus"
     },
-    "RecentCategoriesSection": {
-      "Description": "Explore predefined categories or create your own, if you're authorized.",
-      "IntroduceCategories": "Here are some popular categories:",
-      "NoCategories": "Apparently, there no categories for your language yet. You can suggest some yours.",
-      "SuggestCategory": "Suggest Your Category",
-      "Title": "Learn Anything, From Languages to Programming",
-      "ViewAllCategoriesText": "View All Categories"
-    },
-    "RecentTopicsSection": {
-      "Description": "Welcome to your personal knowledge hub! This is where your topics will live—ready for review, practice, and mastery.",
-      "IntroduceTopics": "Here are some actual topics:",
-      "NoTopics": "It looks a little quiet in here. Let's fill it with knowledge!",
-      "SuggestTopic": "Add Your Topic",
-      "Title": "Your Learning Journey Starts Here",
-      "ViewAllTopicsText": "View All Topics"
-    },
     "FAQSection": {
       "Description": "Everything you need to know about MindStack and how to get started with memory training.",
       "Title": "Frequently Asked Questions",
@@ -910,6 +893,22 @@
       "ExploreCategoriesText": "Explore Categories",
       "StartFreeTrainingText": "Start Free Training",
       "Title": "Start Building Your Knowledge Today"
+    },
+    "RecentCategoriesSection": {
+      "Description": "Explore predefined categories or create your own, if you're authorized.",
+      "IntroduceCategories": "Here are some popular categories:",
+      "NoCategories": "Apparently, there no categories for your language yet. You can suggest some yours.",
+      "SuggestCategory": "Suggest Your Category",
+      "Title": "Learn Anything, From Languages to Programming",
+      "ViewAllCategoriesText": "View All Categories"
+    },
+    "RecentTopicsSection": {
+      "Description": "Welcome to your personal knowledge hub! This is where your topics will live—ready for review, practice, and mastery.",
+      "IntroduceTopics": "Here are some actual topics:",
+      "NoTopics": "It looks a little quiet in here. Let's fill it with knowledge!",
+      "SuggestTopic": "Add Your Topic",
+      "Title": "Your Learning Journey Starts Here",
+      "ViewAllTopicsText": "View All Topics"
     }
   },
   "LimitsError": {
@@ -989,7 +988,6 @@
     "DeletingSelectedQuestions": "Deleting selected questions...",
     "Edit": "Edit",
     "EditAnswers": "Edit Answers",
-    "GenerateQuestions": "Generate Questions",
     "Generated": "Generated",
     "ManageQuestions": "Manage Questions",
     "NoQuestionsCreatedYet": "No questions have been created yet",
@@ -1529,7 +1527,6 @@
     "Author": "Author",
     "Created": "Created",
     "GenerateAnswers": "Generate Answers",
-    "GenerateQuestions": "Generate Questions",
     "ManageAnswers": "Manage Answers",
     "ManageTopic": "Manage Topic",
     "Modified": "Modified",
@@ -1565,7 +1562,6 @@
     "CannotUpdateTopicData": "Cannot update topic data",
     "DeleteTopic": "Delete Topic",
     "Edit": "Edit",
-    "GenerateQuestions": "Generate Questions",
     "NoTopicFound": "No topic found",
     "Questions": "Questions",
     "Reload": "Reload",

@@ -125,7 +125,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
                 className={cn(buttonVariants({ variant: 'theme' }), 'flex gap-2')}
               >
                 <Icons.Rocket className="size-4 opacity-50" />
-                <span className="truncate">{t('AvailableTopics.ToTraining')}</span>
+                <span className="truncate">{t('ToTraining')}</span>
               </Link>
             )}
             {/*allowedTraining && (
