@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
 import { getErrorText, getRandomHashString } from '@/lib/helpers';
+import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { getT } from '@/i18n';
 import { strictLocalesList, TAwaitedLocaleProps, TLocale } from '@/i18n/types';
@@ -82,6 +83,7 @@ export async function generateStaticParams() {
 export async function LandingPage(props: TLandingPageProps) {
   const resolvedParams = await props.params;
   const { locale } = resolvedParams;
+  const user = await getCurrentUser();
 
   let recentCategories: TCategory[] = props.recentCategories || [];
   let recentTopics: TTopic[] = props.recentTopics || [];
@@ -117,9 +119,13 @@ export async function LandingPage(props: TLandingPageProps) {
     }
   }
 
-  // DEMO: Sending debug data as json objects (locale is adding to the main log message and `recentTopics` is sending as attached json)
-  const __idMsg = '[LandingPage:test] Debug log record';
-  logJsonData(__idMsg, { locale });
+  // DEMO: Sending debug data as json objects (locale is adding to the main log
+  // message and `resolvedParams` is sending as attached json) (only for
+  // production and not admin users)
+  // if (!isDev && user?.role !== 'ADMIN') {
+    const __idMsg = '[LandingPage:test] Debug log record';
+    logJsonData(__idMsg, { locale }/* , { resolvedParams } */);
+  // }
 
   // Enable static rendering
   setRequestLocale(locale);

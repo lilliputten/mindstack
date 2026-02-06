@@ -27,27 +27,32 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   );
   const clientIp = allHeaders['x-forwarded-for'] || allHeaders['x-real-ip'];
   const referer = allHeaders.referer;
+  const host = allHeaders.host;
   const matchedPath = allHeaders['x-matched-path'];
   const rewrittenPath = allHeaders['x-nextjs-rewritten-path'];
   // const link = allHeaders.link;
-  const userAgent = allHeaders['user-agent'];
+  const userAgent = allHeaders['user-agent']?.replace(/\s+/gm, ' ');
   const ipTimezone = allHeaders['x-vercel-ip-timezone'];
   const ipContinent = allHeaders['x-vercel-ip-continent'];
   const ipCountry = allHeaders['x-vercel-ip-country'];
   const ipLatitude = allHeaders['x-vercel-ip-latitude']; // "55.6784"
   const ipLongitude = allHeaders['x-vercel-ip-longitude']; // "37.2652"
-  const ipCity = allHeaders['x-vercel-ip-city'];
+  const ipCity = allHeaders['x-vercel-ip-city']?.replace(/%20/g, ' ');
   const intlLocale = allHeaders['x-next-intl-locale'];
-  const dateTag = formatDateTag(); // TODO: Use `d.toISOString()` (-> '2026-02-06T01:59:19.167Z')?
+  const now = new Date();
+  const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
+  const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
   const dataToSend: Record<string, unknown> = {
     versionInfo,
     isProd: !isDev,
     PUBLIC_URL,
     dateTag,
+    dateISO,
     matchedPath,
     rewrittenPath,
     intlLocale,
+    host,
     referer,
     clientIp,
     userAgent,
@@ -56,7 +61,8 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     ipContinent,
     ipCountry,
     ipCity,
-    ipLatLon: [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim(), // 55.6784 37.2652
+    ipLatLon:
+      [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined, // 55.6784 37.2652
     // allHeaders,
     user,
   };
@@ -82,18 +88,22 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
       dataStr = comboMsg;
     }
   }
-  // Add extra indents
-  const detailsStr = (infoStr + '\n' + dataStr).replace(/^/gm, '  ');
-  const logStr = unixEOLs(`${idMsg}\n${detailsStr}`);
+  const detailsStr =
+    // '```\n' +
+    [infoStr, dataStr]
+      .filter(Boolean)
+      .map((s) => s.trim())
+      .join('\n');
+  // + '\n```'; // .replace(/^/gm, '  ');
   // Show a message in console if the flag specified
   if (opts.level) {
     if (opts.level === 'error') {
       // eslint-disable-next-line no-console
-      console.error(logStr);
+      console.error(infoStr, detailsStr);
     } else {
       // eslint-disable-next-line no-console
-      console.log(logStr);
+      console.log(infoStr, detailsStr);
     }
   }
-  return await sendLoggingMessage(logStr, { ...opts });
+  return await sendLoggingMessage(idMsg, unixEOLs(detailsStr), { ...opts });
 }

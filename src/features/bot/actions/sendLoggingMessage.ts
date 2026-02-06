@@ -1,6 +1,6 @@
 'use server';
 
-import { Message } from 'grammy/types';
+import { Message, ParseMode } from 'grammy/types';
 
 import { LOGGING_CHANNEL_ID } from '@/config/envServer';
 import { getErrorText } from '@/lib/helpers';
@@ -9,24 +9,44 @@ import { getBot } from '@/features/bot/core/getBot';
 import { tgMessageLimit } from '../constants';
 import { TBot } from '../core/botTypes';
 
-const limit = tgMessageLimit; // Keep slightly below 4096 for safety
-
 export interface TLoggingMessageOptions {
   bot?: TBot;
   enablePreviews?: boolean;
+  parseMode?: ParseMode;
 }
 
-export async function sendLoggingMessage(text: string, opts: TLoggingMessageOptions = {}) {
+export async function sendLoggingMessage(
+  title: string,
+  text: string,
+  opts: TLoggingMessageOptions = {},
+) {
   try {
     const bot = opts.bot || getBot();
     let firstMsg: Message.TextMessage | undefined;
     // Send large messages splitted
-    for (let i = 0; i < text.length; i += limit) {
+    const limit = tgMessageLimit - title.length - 20; // Keep slightly below the limit for safety
+    const partsCount = Math.ceil(text.length / limit);
+    for (let i = 0, count = 1; i < text.length; i += limit, count++) {
       const part = text.substring(i, i + limit);
-      const msg = await bot.api.sendMessage(LOGGING_CHANNEL_ID, part, {
+      const titleStr = [
+        // Compose title...
+        partsCount > 1 && `\`[${count}/${partsCount}]\``,
+        title,
+      ]
+        .filter(Boolean)
+        .join(' ');
+      const content = [
+        // Compose content...
+        titleStr,
+        '```\n' + part + '\n```',
+      ]
+        .filter(Boolean)
+        .join('\n');
+      const msg = await bot.api.sendMessage(LOGGING_CHANNEL_ID, content, {
         link_preview_options: {
           is_disabled: !opts.enablePreviews,
         },
+        parse_mode: opts.parseMode || 'Markdown',
       });
       if (!firstMsg) {
         firstMsg = msg;
