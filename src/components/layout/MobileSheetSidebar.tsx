@@ -88,13 +88,14 @@ function MenuSections(props: TGenericSidebarProps & TMobileSheetProps) {
 
 export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren) {
   const { children, open, setOpen } = props;
+  const t = useT('NavLinks');
   const { inited: isMediaInited, mediaWidths } = useMediaMinDevices();
   const isLg = isMediaInited && mediaWidths.includes('lg');
   if (!isLg) {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
-        <DialogTitle className="sr-only">Navigation menu</DialogTitle>
-        <DialogDescription className="sr-only">Navigation menu</DialogDescription>
+        <DialogTitle className="sr-only">{t('NavigationMenu')}</DialogTitle>
+        <DialogDescription className="sr-only">{t('NavigationMenu')}</DialogDescription>
         {/* NOTE: Former navigation menu toggler. Now used a button from the NavBar
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="size-9 shrink-0 md:hidden">
