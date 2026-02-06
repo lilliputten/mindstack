@@ -133,7 +133,7 @@ export function getNativeFormattedRelativeDate(
   return formatter.format(date);
 }
 
-export function formatDateTag(input?: string | number | Date, omitTime: boolean = false): string {
+export function formatDateTag(input?: TDateLike, omitTime: boolean = false): string {
   const date = !input ? new Date() : input instanceof Date ? input : new Date(input);
   // const pad = (n: number) => (n < 10 ? '0' + n : n);
   const numPad = (n: number, pad: number = 2) => String(n).padStart(pad, '0');
@@ -158,7 +158,7 @@ export function formatDateTag(input?: string | number | Date, omitTime: boolean 
   return [formattedDate, formattedTime].filter(Boolean).join(',');
 }
 
-export function formatDate(input: string | number | Date, locale: TLocale = defaultLocale): string {
+export function formatDate(input: TDateLike, locale: TLocale = defaultLocale): string {
   const date = input instanceof Date ? input : new Date(input);
   return date.toLocaleDateString(locale, {
     month: 'long',

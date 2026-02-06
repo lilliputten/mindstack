@@ -1,3 +1,4 @@
+import React from 'react';
 import { setRequestLocale } from 'next-intl/server';
 
 import { constructMetadata } from '@/lib/constructMetadata';
@@ -12,6 +13,7 @@ import { isDev } from '@/constants';
 import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
 import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
+import { logJsonData } from '@/features/logger/server-actions';
 import { getRecentTopics, TTopic } from '@/features/topics';
 
 type TLandingPageProps = TAwaitedLocaleProps & {
@@ -114,6 +116,10 @@ export async function LandingPage(props: TLandingPageProps) {
       debugger; // eslint-disable-line no-debugger
     }
   }
+
+  // DEMO: Sending debug data as json objects (locale is adding to the main log message and `recentTopics` is sending as attached json)
+  const __idMsg = '[LandingPage:test] Debug log record';
+  logJsonData(__idMsg, { locale });
 
   // Enable static rendering
   setRequestLocale(locale);
