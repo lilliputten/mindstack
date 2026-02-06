@@ -1,36 +1,16 @@
-import natural from 'natural';
-
-// @see https://naturalnode.github.io/natural/
-// @see https://www.npmjs.com/package/natural
+import { getStemmer, TStemmer } from './helpers/getStemmer';
 
 export class TFIDFSimilarity {
   locale: string;
-  stemmer: natural.Stemmer;
+  stemmer: TStemmer;
   stopwords: Set<string>;
   constructor(locale = 'en') {
     // Initialize locale for language-specific text processing
     this.locale = locale;
     // Create stemmer for word normalization based on locale
-    this.stemmer = this.getStemmer(locale);
+    this.stemmer = getStemmer(locale);
     // Load stopwords for filtering common words
     this.stopwords = this.getStopwords(locale);
-  }
-
-  getStemmer(locale: string) {
-    const lang = locale.split('-')[0];
-    const stemmers: Record<string, natural.Stemmer> = {
-      en: natural.PorterStemmer,
-      ru: natural.PorterStemmerRu,
-      es: natural.PorterStemmerEs,
-      fr: natural.PorterStemmerFr,
-      de: natural.PorterStemmerDe,
-      it: natural.PorterStemmerIt,
-      pt: natural.PorterStemmerPt,
-      nl: natural.PorterStemmerNl,
-      sv: natural.PorterStemmerSv,
-      no: natural.PorterStemmerNo,
-    };
-    return stemmers[lang] || { stem: (word: string) => word };
   }
 
   getStopwords(locale: string) {

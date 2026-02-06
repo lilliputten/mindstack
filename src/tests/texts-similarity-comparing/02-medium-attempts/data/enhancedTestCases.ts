@@ -19,6 +19,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.95, // Should be very high after stemming
       cosineTFIDF: 0.9, // High similarity
       wordOrder: 0.7, // Different word order affects
+      optimizedSimilarity: 0.25,
     },
   },
 
@@ -35,6 +36,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.85, // "running" and "runs" both stem to "run"
       cosineTFIDF: 0.8,
       wordOrder: 0.65,
+      optimizedSimilarity: 0.45,
     },
   },
 
@@ -51,6 +53,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.5, // Better but needs synonym detection
       cosineTFIDF: 0.45, // Different words
       wordOrder: 0.3,
+      optimizedSimilarity: 0.35,
     },
   },
 
@@ -67,6 +70,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.9, // Same words, different order
       cosineTFIDF: 0.85, // Same word set
       wordOrder: 0.6, // Lower due to order change
+      optimizedSimilarity: 0.65,
     },
   },
 
@@ -74,6 +78,7 @@ export const enhancedTestCases = [
   {
     name: 'Russian cases and aspects',
     str1: 'Я читаю интересную книгу',
+    // str2: 'Он прочитал семьдесят пять интересной книги два раза по четрые',
     str2: 'Он прочитал интересной книги',
     locale: 'ru-RU',
     expected: {
@@ -83,6 +88,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.8, // "читаю" and "прочитал" share root
       cosineTFIDF: 0.75,
       wordOrder: 0.7,
+      optimizedSimilarity: 0.5,
     },
   },
 
@@ -99,6 +105,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.9, // "понять" and "понимать" share root
       cosineTFIDF: 0.85, // "проблему" and "проблемы" are forms
       wordOrder: 0.8,
+      optimizedSimilarity: 0.6,
     },
   },
 
@@ -115,6 +122,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.85, // Should stem to similar roots
       cosineTFIDF: 0.8,
       wordOrder: 0.75,
+      optimizedSimilarity: 0.5,
     },
   },
 
@@ -131,6 +139,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.75,
       cosineTFIDF: 0.8,
       wordOrder: 0.65,
+      optimizedSimilarity: 0.55,
     },
   },
 
@@ -147,6 +156,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.65,
       cosineTFIDF: 0.7,
       wordOrder: 0.55,
+      optimizedSimilarity: 0.45,
     },
   },
 
@@ -163,6 +173,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.4,
       cosineTFIDF: 0.55, // Should recognize some shared concepts
       wordOrder: 0.3,
+      optimizedSimilarity: 0.3,
     },
   },
 ];

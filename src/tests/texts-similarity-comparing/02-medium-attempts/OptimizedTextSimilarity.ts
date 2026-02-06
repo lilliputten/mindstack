@@ -1,18 +1,59 @@
-import { jaroWinklerSimilarity } from '../01-simple-tests/helpers/jaroWinklerSimilarity';
+import { NGrams } from 'natural';
 
-type TStemmer = (word: string) => string;
+import { jaroWinklerSimilarity } from '../01-simple-tests/helpers/jaroWinklerSimilarity';
+import { getStemmer, TStemmer } from './helpers/getStemmer';
+
 type TOptions = {
+  allowFast: boolean;
   useStemming: boolean;
   removeStopwords: boolean;
   nGramSize: number;
   cacheSize: number;
 };
 const defaultOptions: TOptions = {
+  allowFast: true,
   useStemming: true,
   removeStopwords: true,
   nGramSize: 2,
   cacheSize: 100,
 } as const;
+
+/**
+ * Generates n-grams from an array of tokens.
+ *
+ * @param tokens - Array of string tokens to generate n-grams from
+ * @param n - Size of each n-gram (number of tokens per n-gram)
+ * @returns Array of n-gram strings
+ *
+ * @example
+ * // Generate bigrams (2-grams) from a sentence
+ * const tokens = ['the', 'quick', 'brown', 'fox'];
+ * const bigrams = getNGrams(tokens, 2);
+ * // Result: ['the quick', 'quick brown', 'brown fox']
+ *
+ * @example
+ * // Generate trigrams (3-grams) from a sentence
+ * const tokens = ['the', 'quick', 'brown', 'fox', 'jumps'];
+ * const trigrams = getNGrams(tokens, 3);
+ * // Result: ['the quick brown', 'quick brown fox', 'brown fox jumps']
+ *
+ * @example
+ * // Generate unigrams (1-gram) from a sentence
+ * const tokens = ['the', 'quick', 'brown', 'fox'];
+ * const unigrams = getNGrams(tokens, 1);
+ * // Result: ['the', 'quick', 'brown', 'fox']
+ */
+function getNGrams(tokens: string[], n: number) {
+  const res1 = NGrams.ngrams(tokens, n).map((list) => list.join(' '));
+  /* // Local simple solution
+   * const ngrams = [];
+   * for (let i = 0; i <= tokens.length - n; i++) {
+   *   ngrams.push(tokens.slice(i, i + n).join(' '));
+   * }
+   * const res2 = ngrams;
+   */
+  return res1;
+}
 
 export class OptimizedTextSimilarity {
   locale: string;
@@ -28,41 +69,16 @@ export class OptimizedTextSimilarity {
       ...options,
     };
     // Initialize stemmer based on locale
-    this.stemmer = this.initStemmer();
+    this.stemmer = getStemmer(this.locale);
   }
 
-  initStemmer(): TStemmer {
-    // Lightweight stemmer for common languages
-    const stemmers: Record<string, TStemmer> = {
-      en: (word: string) => {
-        // Simple Porter stemmer rules (simplified)
-        if (word.endsWith('sses') || word.endsWith('ies'))
-          return word.substring(0, word.length - 2);
-        if (word.endsWith('s') && !word.endsWith('ss')) return word.substring(0, word.length - 1);
-        return word;
-      },
-      es: (word: string) => {
-        // Simple Spanish stemmer
-        if (word.endsWith('es')) return word.substring(0, word.length - 2);
-        if (word.endsWith('s') && !word.endsWith('as') && !word.endsWith('os'))
-          return word.substring(0, word.length - 1);
-        return word;
-      },
-      ru: (word: string) => {
-        // Basic Russian stemmer (very simplified)
-        const suffixes = ['ов', 'ев', 'ин', 'ын', 'ых', 'их', 'ами', 'ями'];
-        for (const suffix of suffixes) {
-          if (word.endsWith(suffix)) {
-            return word.substring(0, word.length - suffix.length);
-          }
-        }
-        return word;
-      },
-    };
-    const lang = this.locale.split('-')[0];
-    return stemmers[lang] || ((word) => word);
-  }
-
+  /**
+   * Preprocesses input text by normalizing, tokenizing, removing stopwords,
+   * and applying stemming
+   *
+   * @param text - The raw text string to preprocess
+   * @returns Array of preprocessed tokens
+   */
   preprocess(text: string) {
     const cacheKey = `preprocess:${text}`;
     if (this.cache.has(cacheKey)) {
@@ -84,7 +100,7 @@ export class OptimizedTextSimilarity {
     }
     // Apply stemming if enabled
     if (this.options.useStemming) {
-      tokens = tokens.map((word) => this.stemmer(word));
+      tokens = tokens.map((word) => this.stemmer.stem(word));
     }
     // Cache result
     if (this.cache.size < this.options.cacheSize) {
@@ -93,6 +109,14 @@ export class OptimizedTextSimilarity {
     return tokens;
   }
 
+  /**
+   * Calculates fast similarity between two texts using optimized approach
+   * Combines character-based Jaro-Winkler similarity with token-based Jaccard similarity
+   *
+   * @param text1 - First text string to compare
+   * @param text2 - Second text string to compare
+   * @returns Similarity score between 0 and 1, where 1 means identical texts
+   */
   fastSimilarity(text1: string, text2: string): number {
     // For texts up to 1KB, use optimized approach
 
@@ -122,26 +146,35 @@ export class OptimizedTextSimilarity {
     return charSimilarity * 0.4 + jaccard * 0.6;
   }
 
-  // For 1KB texts with word order consideration
+  /**
+   * Calculates n-gram similarity between two texts using Jaccard similarity algorithm
+   * Considers word order information, suitable for comparing texts up to 1KB
+   *
+   * @param text1 - First text string to compare
+   * @param text2 - Second text string to compare
+   * @param n - Size of n-grams, default is 2 (bigrams)
+   * @returns Similarity score between 0 and 1, where 1 means identical texts
+   */
   nGramSimilarity(text1: string, text2: string, n = 2): number {
     const tokens1 = this.preprocess(text1);
     const tokens2 = this.preprocess(text2);
 
-    if (tokens1.length < n || tokens2.length < n) {
+    if (this.options.allowFast && (tokens1.length < n || tokens2.length < n)) {
       return this.fastSimilarity(text1, text2);
     }
 
-    // Generate n-grams
-    const getNGrams = (tokens: string[], n: number) => {
-      const ngrams = [];
-      for (let i = 0; i <= tokens.length - n; i++) {
-        ngrams.push(tokens.slice(i, i + n).join(' '));
-      }
-      return ngrams;
-    };
-
     const ngrams1 = getNGrams(tokens1, n);
     const ngrams2 = getNGrams(tokens2, n);
+
+    /* console.log('[OptimizedTextSimilarity:nGramSimilarity]', {
+     *   ngrams1,
+     *   ngrams2,
+     *   tokens1,
+     *   tokens2,
+     *   text1,
+     *   text2,
+     * });
+     */
 
     const set1 = new Set(ngrams1);
     const set2 = new Set(ngrams2);

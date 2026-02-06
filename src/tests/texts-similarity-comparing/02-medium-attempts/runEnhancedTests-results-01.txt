@@ -1,0 +1,113 @@
+🧪 Enhanced Text Similarity Tests
+
+```
+
+1. English pluralization
+Locale: en
+Text 1: The quick brown fox jumps over the lazy dog...
+Text 2: Quick brown foxes jump over lazy dogs...
+Results:
+  3. Natural Stemming:      1.00   expected: 0.95   elapsed: 2.39ms
+  5. Word Order Aware:      0.62   expected: 0.70   elapsed: 0.37ms
+  6. Optimized Similarity:  0.27   expected: 0.25   elapsed: 0.39ms
+
+---
+
+2. English verb forms
+Locale: en
+Text 1: I am running to the store quickly...
+Text 2: He runs to stores quickly...
+Results:
+  3. Natural Stemming:      1.00   expected: 0.85   elapsed: 0.31ms
+  5. Word Order Aware:      0.60   expected: 0.65   elapsed: 0.14ms
+  6. Optimized Similarity:  0.25   expected: 0.45   elapsed: 0.04ms
+
+---
+
+3. English synonyms paraphrase
+Locale: en
+Text 1: The automobile manufacturer reported record profits...
+Text 2: Car maker announces highest ever earnings...
+Results:
+  3. Natural Stemming:      0.00   expected: 0.50   elapsed: 0.22ms
+  5. Word Order Aware:      0.00   expected: 0.30   elapsed: 0.25ms
+  6. Optimized Similarity:  0.00   expected: 0.35   elapsed: 0.05ms
+
+---
+
+4. English word order changed
+Locale: en
+Text 1: The cat chased the mouse in the garden...
+Text 2: In the garden, the mouse was chased by the cat...
+Results:
+  3. Natural Stemming:      0.89   expected: 0.90   elapsed: 0.21ms
+  5. Word Order Aware:      0.58   expected: 0.60   elapsed: 0.14ms
+  6. Optimized Similarity:  0.44   expected: 0.65   elapsed: 0.05ms
+
+---
+
+5. Russian cases and aspects
+Locale: ru-RU
+Text 1: Я читаю интересную книгу...
+Text 2: Он прочитал интересной книги...
+Results:
+  3. Natural Stemming:      0.67   expected: 0.80   elapsed: 1.57ms
+  5. Word Order Aware:      0.40   expected: 0.70   elapsed: 0.18ms
+  6. Optimized Similarity:  0.27   expected: 0.50   elapsed: 0.49ms
+
+---
+
+6. Russian different forms
+Locale: ru-RU
+Text 1: понять проблему...
+Text 2: понимать проблемы...
+Results:
+  3. Natural Stemming:      0.00   expected: 0.90   elapsed: 0.08ms
+  5. Word Order Aware:      0.00   expected: 0.80   elapsed: 0.04ms
+  6. Optimized Similarity:  0.37   expected: 0.60   elapsed: 0.09ms
+
+---
+
+7. Spanish gender and number
+Locale: es-ES
+Text 1: El gato negro duerme en la silla...
+Text 2: Las gatas negras duermen en los sillones...
+Results:
+  3. Natural Stemming:      0.75   expected: 0.85   elapsed: 0.96ms
+  5. Word Order Aware:      0.45   expected: 0.75   elapsed: 0.20ms
+  6. Optimized Similarity:  0.00   expected: 0.50   elapsed: 0.08ms
+
+---
+
+8. Mixed short text
+Locale: en
+Text 1: The AI conference in Berlin attracted over 500 participants ...
+Text 2: Berlin AI conference: 500+ attendees from 30 nations. Popula...
+Results:
+  3. Natural Stemming:      0.51   expected: 0.75   elapsed: 0.44ms
+  5. Word Order Aware:      0.31   expected: 0.65   elapsed: 0.44ms
+  6. Optimized Similarity:  0.00   expected: 0.55   elapsed: 0.15ms
+
+---
+
+9. Rephrased paragraph
+Locale: en
+Text 1: Climate change represents one of the most significant challe...
+Text 2: Humanity currently faces major challenges from climate chang...
+Results:
+  3. Natural Stemming:      0.41   expected: 0.65   elapsed: 0.72ms
+  5. Word Order Aware:      0.25   expected: 0.55   elapsed: 0.80ms
+  6. Optimized Similarity:  0.03   expected: 0.45   elapsed: 0.15ms
+
+---
+
+10. Same topic different words
+Locale: en
+Text 1: Apple unveiled its latest iPhone with improved camera and ba...
+Text 2: The new smartphone from Apple features better photography ca...
+Results:
+  3. Natural Stemming:      0.10   expected: 0.40   elapsed: 0.26ms
+  5. Word Order Aware:      0.06   expected: 0.30   elapsed: 0.18ms
+  6. Optimized Similarity:  0.00   expected: 0.30   elapsed: 0.06ms
+
+```
