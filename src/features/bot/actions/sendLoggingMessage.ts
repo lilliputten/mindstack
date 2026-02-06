@@ -1,23 +1,42 @@
 'use server';
 
+import { Message } from 'grammy/types';
+
 import { LOGGING_CHANNEL_ID } from '@/config/envServer';
 import { getErrorText } from '@/lib/helpers';
 import { getBot } from '@/features/bot/core/getBot';
 
-const limit = 4000; // Keep slightly below 4096 for safety
+import { tgMessageLimit } from '../constants';
+import { TBot } from '../core/botTypes';
 
-export async function sendLoggingMessage(text: string) {
+const limit = tgMessageLimit; // Keep slightly below 4096 for safety
+
+export interface TLoggingMessageOptions {
+  bot?: TBot;
+  enablePreviews?: boolean;
+}
+
+export async function sendLoggingMessage(text: string, opts: TLoggingMessageOptions = {}) {
   try {
-    const bot = getBot();
+    const bot = opts.bot || getBot();
+    let firstMsg: Message.TextMessage | undefined;
     // Send large messages splitted
     for (let i = 0; i < text.length; i += limit) {
       const part = text.substring(i, i + limit);
-      await bot.api.sendMessage(LOGGING_CHANNEL_ID, part);
+      const msg = await bot.api.sendMessage(LOGGING_CHANNEL_ID, part, {
+        link_preview_options: {
+          is_disabled: !opts.enablePreviews,
+        },
+      });
+      if (!firstMsg) {
+        firstMsg = msg;
+      }
     }
+    return firstMsg;
   } catch (error) {
     const errMsg = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[sendUserAIRequest]', errMsg, {
+    console.error('[sendLoggingMessage]', errMsg, {
       error,
       text,
     });

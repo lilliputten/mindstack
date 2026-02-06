@@ -133,7 +133,7 @@ function CategorySelectComponent({
                         'after:inline-block',
                         'after:opacity-50',
                       )}
-                      title={t('CategorySelect.RemoveCategory', { name: categoryNames[id] })}
+                      title={t('CategorySelect.RemoveCategory', { name: categoryNames[id] || '' })}
                       onClick={(ev) => {
                         ev.preventDefault();
                         handleCategoryToggle(id);

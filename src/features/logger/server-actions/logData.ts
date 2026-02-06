@@ -3,18 +3,19 @@
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { headers } from 'next/headers';
 
+import { PUBLIC_URL } from '@/config/envServer';
 import { debugObj } from '@/lib/debug';
 import { formatDateTag, getErrorText, unixEOLs } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
-import { sendLoggingMessage } from '@/features/bot/actions';
+import { sendLoggingMessage, TLoggingMessageOptions } from '@/features/bot/actions';
 
-export async function logData(
-  idMsg: string,
-  data?: object,
-  showLog?: boolean | 'error',
-): Promise<unknown> {
+export interface TLogDataOptions extends TLoggingMessageOptions {
+  level?: boolean | 'error';
+}
+
+export async function logData(idMsg: string, data?: object, opts: TLogDataOptions = {}) {
   const headersObj: ReadonlyHeaders = await headers();
   // DEBUG: Use reduce to convert headers to a plain object
   const allHeaders = Array.from(headersObj.entries()).reduce(
@@ -24,16 +25,26 @@ export async function logData(
     },
     {} as Record<string, string>,
   );
+  const clientIp = allHeaders['x-forwarded-for'] || allHeaders['x-real-ip'];
   const referer = allHeaders.referer;
-  const timesamp = formatDateTag();
+  const link = allHeaders.link;
+  const dateTag = formatDateTag();
   const user = await getCurrentUser();
-  const infoStr = debugObj({
+  const dataToSend: Record<string, unknown> = {
     versionInfo,
-    timesamp,
-    isDev,
+    isProd: !isDev,
+    PUBLIC_URL,
+    dateTag,
     referer,
+    link,
+    clientIp,
+    // allHeaders,
     user,
-  });
+  };
+  if (opts.level) {
+    dataToSend.level = opts.level;
+  }
+  const infoStr = debugObj(dataToSend);
   let dataStr = '';
   if (data) {
     try {
@@ -56,8 +67,8 @@ export async function logData(
   const detailsStr = (infoStr + '\n' + dataStr).replace(/^/gm, '  ');
   const logStr = unixEOLs(`${idMsg}\n${detailsStr}`);
   // Show a message in console if the flag specified
-  if (showLog) {
-    if (showLog === 'error') {
+  if (opts.level) {
+    if (opts.level === 'error') {
       // eslint-disable-next-line no-console
       console.error(logStr);
     } else {
@@ -65,5 +76,5 @@ export async function logData(
       console.log(logStr);
     }
   }
-  return await sendLoggingMessage(logStr);
+  return await sendLoggingMessage(logStr, { ...opts });
 }

@@ -3,7 +3,7 @@
 import { MessageContent } from '@langchain/core/messages';
 
 import { getErrorText, parseDangerousJson } from '@/lib/helpers';
-import { logData } from '@/features/logger/server-actions';
+import { logJsonData } from '@/features/logger/server-actions';
 
 import {
   generatedQuestionsSchema,
@@ -93,17 +93,10 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     const __debugData = {
-      __LOG_EXPLANATIONS__: [
-        // Reminders for those who will read the log records later
-        'queryData: The data returned by the AI query (sendAiTextQuery);',
-        'rawContent: The raw json string returned from the AI query (queryData.content);',
-        'rawData: The data that returned from parseDangerousJson;',
-        'cleanedData: Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
-      ],
       details,
       rawContent,
       rawData,
-      // error, // NOTE: Error object might be not serializable
+      error, // NOTE: Error object might be not serializable
       queryData,
     };
     const __idMsg = '[parseGeneratedTopicQuestions] ' + message;
@@ -111,7 +104,19 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     console.error(__idMsg, { ...__debugData, error });
     debugger; // eslint-disable-line no-debugger
     // Send log message to the telegram logging channel
-    logData(__idMsg, __debugData);
+    logJsonData(
+      __idMsg,
+      {
+        __LOG_EXPLANATIONS__: [
+          // Reminders for those who will read the log records later
+          'queryData: The data returned by the AI query (sendAiTextQuery);',
+          'rawContent: The raw json string returned from the AI query (queryData.content);',
+          'rawData: The data that returned from parseDangerousJson;',
+          'cleanedData: Cleaned up data (by dropEmptyQuestionsAndAnswers), passed to generatedQuestionsSchema.parse;',
+        ],
+      },
+      __debugData,
+    );
     throw new Error(comboMsg);
   }
 }

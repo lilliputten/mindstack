@@ -5,7 +5,7 @@ import { AIGenerationError } from '@/lib/errors/AIGenerationError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { checkAllowedAIGenerations, saveAIGeneration } from '@/features/ai-generations/actions';
-import { logData } from '@/features/logger/server-actions';
+import { logJsonData } from '@/features/logger/server-actions';
 
 import { TAIQueryOptions } from '../types';
 import { TPlainMessage } from '../types/messages';
@@ -43,8 +43,8 @@ export async function sendUserAIRequest(
   };
   const __idMsg = '[mindstack:sendUserAIRequest] ℹ️ AI API request: Sending';
   // eslint-disable-next-line no-console
-  console.log(__idMsg, { ...__debugData, user });
-  await logData(__idMsg, __debugData);
+  console.log(__idMsg, { user, ...__debugData });
+  await logJsonData(__idMsg, { opts }, __debugData);
 
   const startTime = new Date();
 
@@ -57,7 +57,7 @@ export async function sendUserAIRequest(
     const spentTokens = queryData.usage_metadata?.total_tokens || 0;
 
     // Create AIGeneration record
-    await saveAIGeneration({
+    const generationRecord = await saveAIGeneration({
       // userId: user.id,
       topicId,
       modelUsed: clientType,
@@ -68,12 +68,14 @@ export async function sendUserAIRequest(
     });
 
     const __debugData = {
+      opts,
       queryData,
+      generationRecord,
     };
     const __idMsg = '[mindstack:sendUserAIRequest] 🆗 AI API request: Success';
     // eslint-disable-next-line no-console
     console.log(__idMsg, { ...__debugData, user });
-    await logData(__idMsg, __debugData);
+    await logJsonData(__idMsg, { opts, generationRecord }, __debugData);
 
     return queryData;
   } catch (error) {
@@ -89,7 +91,7 @@ export async function sendUserAIRequest(
     console.error(__idMsg, { ...__debugData, error, user });
     debugger; // eslint-disable-line no-debugger
     // Send log message to the telegram logging channel
-    logData(__idMsg, __debugData);
+    logJsonData(__idMsg, __debugData);
     // Re-throw errors from checkAllowedAIGenerations or other errors
     throw error;
   }

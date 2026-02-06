@@ -8,7 +8,7 @@ import { getErrorText, translatedPeriod } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { allowSuggestCategoriesIn } from '@/features/categories/constants';
-import { logData } from '@/features/logger/server-actions';
+import { logJsonData } from '@/features/logger/server-actions';
 import { getUserById } from '@/features/users/actions';
 
 import { defaultCategoryStatus, TCreateCategoryParams } from '../types/Categories';
@@ -83,7 +83,7 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
         creator,
       };
       const __idMsg = '[mindstack:createCategory] 📊';
-      logData(__idMsg, __debugData);
+      logJsonData(__idMsg, null, __debugData);
     }
 
     // Clear recent categories cache

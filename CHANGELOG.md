@@ -1,12 +1,13 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.06, 01:10
+ @changed 2026.02.06, 03:14
 -->
 
 # CHANGELOG
 
 ## [Issue #64: Landing page layout updates, translations, and recent topics sort logic](https://github.com/lilliputten/mindstack/issues/64), #[v.0.1.3](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.3) - 2026.02.06
 
+- Updated telegram logger to send debugging data as attached JSON files.
 - Updated recent topics getter on the landing page
 - Updated layout for landing page categories and topics lists
 - Fixed layouts and updated navigation buttons
