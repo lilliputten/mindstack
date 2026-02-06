@@ -159,8 +159,7 @@ export function AvailableTopicsListItem(props: TAvailableTopicsListItemProps) {
     <Card
       className={cn(
         isDev && '__AvailableTopicsList_TopicItem_Card', // DEBUG
-        'relative flex flex-1 flex-col',
-        // 'overflow-visible', // ???
+        'relative flex flex-col',
         'content-truncate',
         'cursor-pointer border border-theme-800/10 transition',
         'bg-theme/10',

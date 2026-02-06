@@ -41,14 +41,14 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   const intlLocale = allHeaders['x-next-intl-locale'];
   const now = new Date();
   const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
-  const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
+  // const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
   const dataToSend: Record<string, unknown> = {
     versionInfo,
+    dateTag,
+    // dateISO,
     isProd: !isDev,
     PUBLIC_URL,
-    dateTag,
-    dateISO,
     matchedPath,
     rewrittenPath,
     intlLocale,
@@ -56,7 +56,6 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     referer,
     clientIp,
     userAgent,
-    // link,
     ipTimezone,
     ipContinent,
     ipCountry,

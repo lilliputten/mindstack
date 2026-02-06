@@ -7,7 +7,7 @@ import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { aboutAliasRoute, isDev, startAliasRoute } from '@/config';
+import { availableCategoriesRoute, isDev, startAliasRoute } from '@/config';
 
 export function PromoCTASection() {
   const t = useT();
@@ -18,10 +18,7 @@ export function PromoCTASection() {
         isDev && '__PromoCTASection', // DEBUG
         'relative',
         'mb-12 rounded-2xl py-12',
-        // 'bg-header-gradient',
-        // 'from-triadic1 to-triadic2 bg-gradient-to-r',
         'bg-gradient-to-r from-triadic1/30 to-triadic2/30',
-        // 'bg-gr2',
         'dark text-white',
         'overflow-hidden',
         'transition',
@@ -57,9 +54,8 @@ export function PromoCTASection() {
             <Icons.Rocket className="size-4 shrink-0 opacity-50" />
             <span className="truncate">{t('Landing.PromoCTASection.StartFreeTrainingText')}</span>
           </Link>
-          {/* TODO: Create Your Account */}
           <Link
-            href={aboutAliasRoute}
+            href={availableCategoriesRoute}
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg', rounded: 'lg' }),
               'content-truncate flex items-center gap-2',

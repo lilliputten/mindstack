@@ -122,10 +122,10 @@ export async function LandingPage(props: TLandingPageProps) {
   // DEMO: Sending debug data as json objects (locale is adding to the main log
   // message and `resolvedParams` is sending as attached json) (only for
   // production and not admin users)
-  // if (!isDev && user?.role !== 'ADMIN') {
+  if (!isDev && user?.role !== 'ADMIN' && !user?.email?.includes('lilliputten')) {
     const __idMsg = '[LandingPage:test] Debug log record';
-    logJsonData(__idMsg, { locale }/* , { resolvedParams } */);
-  // }
+    logJsonData(__idMsg, { locale } /* , { resolvedParams } */);
+  }
 
   // Enable static rendering
   setRequestLocale(locale);
