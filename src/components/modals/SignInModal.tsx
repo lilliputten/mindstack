@@ -42,6 +42,7 @@ function SignInModal(props: TSignInModalProps) {
           isDev && '__SignInModal_Inner', // DEBUG
           'flex w-full flex-1 flex-col justify-center',
           'overflow-hidden',
+          'bg-theme-600',
         )}
       >
         <div
@@ -49,7 +50,10 @@ function SignInModal(props: TSignInModalProps) {
             isDev && '__SignInModal_InnerHeader', // DEBUG
             'flex flex-col items-center justify-center',
             'space-y-3 border-b px-4 py-4 md:px-16',
-            'border-theme-600 bg-theme',
+            // 'border-theme-600',
+            'bg-header-gradient',
+            'after-header-decor',
+            'relative',
           )}
         >
           <SignInFormHeader introText={introText} />
@@ -58,10 +62,12 @@ function SignInModal(props: TSignInModalProps) {
           className={cn(
             isDev && '__SignInModal_Scroll', // DEBUG
             'flex-1 items-center justify-center',
+            'bg-theme-700',
           )}
           viewportClassName={cn(
             isDev && '__SignInModal_ScrollViewport', // DEBUG
-            'px-4 py-8 md:px-16 flex flex-col bg-theme-700',
+            'bg-header-gradient',
+            'px-4 py-8 md:px-16 flex flex-col',
             '[&>div]:!flex',
             '[&>div]:justify-center',
             '[&>div]:flex-col',

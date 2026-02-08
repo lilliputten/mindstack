@@ -116,17 +116,6 @@ export function MobileSheetWrapper(props: TMobileSheetProps & TPropsWithChildren
             'text-white',
           )}
         >
-          {/*
-          <div
-            className={cn(
-              isDev && '__NavBar_Decor', // DEBUG
-              'absolute inset-0 overflow-hidden',
-              'bg-header-gradient',
-              'after-header-decor',
-              'z-0',
-            )}
-          />
-          */}
           <ScrollArea
             className={cn(
               isDev && '__DashboardSidebar_MobileSheetWrapper_ScrollArea', // DEBUG
