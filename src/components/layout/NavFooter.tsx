@@ -17,7 +17,6 @@ export function NavFooter() {
         isDev && '__NavFooter', // DEBUG
         'relative flex w-full px-6',
         'bg-theme-600',
-        // 'bg-header-gradient',
         'text-white',
       )}
     >

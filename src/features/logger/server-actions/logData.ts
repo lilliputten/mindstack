@@ -3,7 +3,6 @@
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { headers } from 'next/headers';
 
-import { PUBLIC_URL } from '@/config/envServer';
 import { debugObj } from '@/lib/debug';
 import { formatDateTag, getErrorText, unixEOLs } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
@@ -48,12 +47,12 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     dateTag,
     // dateISO,
     isProd: !isDev,
-    PUBLIC_URL,
+    // PUBLIC_URL,
+    host,
+    referer,
     matchedPath,
     rewrittenPath,
     intlLocale,
-    host,
-    referer,
     clientIp,
     userAgent,
     ipTimezone,

@@ -1,9 +1,13 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.08, 05:14
+ @changed 2026.02.08, 19:23
 -->
 
 # CHANGELOG
+
+## Minor changes - 2026.02.08
+
+- Issue #77: Fixed a sticky mobile layout issue: now it's truly adaptive and leaving a room for a dynamic virtual keyboard with a `interactiveWidget: 'resizes-content'` viewport parameter. Updated styles for sign-in form. Added logging of user sign-in event.
 
 ## [Issue #75: Implemented text similarity comparison package](https://github.com/lilliputten/mindstack/issues/64) - 2026.02.07
 

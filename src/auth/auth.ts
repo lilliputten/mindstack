@@ -11,6 +11,8 @@ import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { checkIsAllowedUser } from '@/features/allowed-users/helpers/checkIsAllowedUser';
 import { TUserRejectReason } from '@/features/allowed-users/types/TUserRejectReason';
+import { logJsonData } from '@/features/logger/server-actions';
+import { TUser } from '@/features/users';
 import { getUserById } from '@/features/users/actions/';
 import { setFirstUserAsAdmin } from '@/features/users/helpers/setFirstUserAsAdmin';
 
@@ -98,6 +100,44 @@ export const nextAuthApp = NextAuth({
         }
         return `${invalidEmailRoute}?reason=${rejectReason}`;
       }
+
+      // DEBUG: Log user sign-in event
+      try {
+        // Prepare user data for logging/monitoring
+        const logData = {
+          userId: user.id,
+          email: user.email,
+          name: user.name,
+          role: (user as TUser).role,
+          grade: (user as TUser).grade,
+          provider,
+          credentials,
+          providerAccountId: account?.providerAccountId,
+        };
+        const extraData = {
+          user,
+          account,
+        };
+        // Log the user data for analytics or monitoring
+        // This follows project conventions for structured logging
+        const __idMsg = '[auth:signIn] User signed in';
+        logJsonData(__idMsg, logData, extraData);
+        // eslint-disable-next-line no-console
+        console.log(__idMsg, {
+          ...logData,
+          ...extraData,
+        });
+      } catch (error) {
+        // Follow project's error logging conventions
+        // eslint-disable-next-line no-console
+        console.error('[auth:signIn:error]', 'Failed to log data', {
+          error,
+          user,
+          account,
+        });
+        debugger; // eslint-disable-line no-debugger
+      }
+
       return true;
     },
 
