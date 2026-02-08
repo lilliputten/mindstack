@@ -1,0 +1,98 @@
+[
+  {
+    "language": "en",
+    "size": 100,
+    "ngramTime": 0.08379999999999654,
+    "cosineTime": 0.24459999999999127,
+    "ngramScore": 0.39999999999999997,
+    "cosineScore": 0.7562742387820014
+  },
+  {
+    "language": "en",
+    "size": 500,
+    "ngramTime": 0.014600000000086766,
+    "cosineTime": 0.03440000000000509,
+    "ngramScore": 0.7753587333003462,
+    "cosineScore": 0.9840081063535101
+  },
+  {
+    "language": "en",
+    "size": 2000,
+    "ngramTime": 0.012799999999970169,
+    "cosineTime": 0.11089999999990141,
+    "ngramScore": 0.751524690143616,
+    "cosineScore": 0.987363892409786
+  },
+  {
+    "language": "en",
+    "size": 5000,
+    "ngramTime": 0.02820000000008349,
+    "cosineTime": 0.22300000000007003,
+    "ngramScore": 0.9561487772093422,
+    "cosineScore": 0.9998400551542793
+  },
+  {
+    "language": "es",
+    "size": 100,
+    "ngramTime": 0.019900000000006912,
+    "cosineTime": 0.01890000000003056,
+    "ngramScore": 0.5826086956521739,
+    "cosineScore": 0.9807043775097521
+  },
+  {
+    "language": "es",
+    "size": 500,
+    "ngramTime": 0.006200000000035288,
+    "cosineTime": 0.019799999999918327,
+    "ngramScore": 0.5764705882352942,
+    "cosineScore": 0.9351572606389589
+  },
+  {
+    "language": "es",
+    "size": 2000,
+    "ngramTime": 0.008100000000013097,
+    "cosineTime": 0.6951999999999998,
+    "ngramScore": 0.8194444444444444,
+    "cosineScore": 0.9959769103014507
+  },
+  {
+    "language": "es",
+    "size": 5000,
+    "ngramTime": 0.01740000000006603,
+    "cosineTime": 0.13060000000007221,
+    "ngramScore": 0.8597377245884318,
+    "cosineScore": 0.9935515572471522
+  },
+  {
+    "language": "ru",
+    "size": 100,
+    "ngramTime": 0.011800000000107502,
+    "cosineTime": 0.008699999999976171,
+    "ngramScore": 0.517241379310345,
+    "cosineScore": 0.7980074688861063
+  },
+  {
+    "language": "ru",
+    "size": 500,
+    "ngramTime": 0.005899999999996908,
+    "cosineTime": 0.01700000000005275,
+    "ngramScore": 0.7177225340817962,
+    "cosineScore": 0.9774731183370281
+  },
+  {
+    "language": "ru",
+    "size": 2000,
+    "ngramTime": 0.010700000000042564,
+    "cosineTime": 0.06100000000003547,
+    "ngramScore": 0.8115496966519361,
+    "cosineScore": 0.9842741516223529
+  },
+  {
+    "language": "ru",
+    "size": 5000,
+    "ngramTime": 0.010099999999965803,
+    "cosineTime": 0.13269999999999982,
+    "ngramScore": 0.8996876429978313,
+    "cosineScore": 0.998357725865509
+  }
+]

@@ -1,0 +1,245 @@
+🧪 Enhanced Text Similarity Tests
+
+Initialization: 24.712ms
+
+---
+
+🔍 1. ABSOLUTELY NON-SIMILAR: Different scripts, domains, lengths
+Locale: en
+Text 1: Quantum entanglement in multidimensional string theory exhibits non-local correlation phenomena
+Text 2: 饺子蘸醋配大蒜味道特别好，酸辣土豆丝要炒得脆才好吃
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.00   elapsed: 3.07ms  
+  8. Text Similarity (Tokens):      0.00   expected: 0.00   elapsed: 0.28ms  
+
+---
+
+🔍 2. English pluralization
+Locale: en
+Text 1: The quick brown fox jumps over the lazy dog
+Text 2: Quick brown foxes jump over lazy dogs
+Results:
+  7. Text Similarity (Ngrams):      1.00   expected: 0.92   elapsed: 0.18ms  
+  8. Text Similarity (Tokens):      1.00   expected: 0.92   elapsed: 0.06ms  
+
+---
+
+🔍 3. English verb forms
+Locale: en
+Text 1: I am running to the store quickly
+Text 2: He runs to stores quickly
+Results:
+  7. Text Similarity (Ngrams):      1.00   expected: 0.68   elapsed: 0.06ms  
+  8. Text Similarity (Tokens):      1.00   expected: 0.68   elapsed: 0.03ms  
+
+---
+
+🔍 4. English synonyms paraphrase (not possible to detect with stemmer-based logic)
+Locale: en
+Text 1: The automobile manufacturer reported record profits
+Text 2: Car maker announces highest ever earnings
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.42   elapsed: 0.05ms  
+  8. Text Similarity (Tokens):      0.00   expected: 0.42   elapsed: 0.04ms  
+
+---
+
+🔍 5. English word order changed
+Locale: en
+Text 1: The cat chased the mouse in the garden
+Text 2: In the garden, the mouse was chased by the cat
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.90   elapsed: 0.11ms  
+  8. Text Similarity (Tokens):      1.00   expected: 0.90   elapsed: 0.04ms  
+
+---
+
+🔍 6. Russian cases and aspects
+Locale: ru-RU
+Text 1: Я читаю интересную книгу
+Text 2: Он прочитал интересной книги
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.72   elapsed: 0.27ms  
+  8. Text Similarity (Tokens):      0.33   expected: 0.72   elapsed: 0.04ms  
+
+---
+
+🔍 7. Russian different forms
+Locale: ru-RU
+Text 1: понять проблему
+Text 2: понимать проблемы
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.85   elapsed: 0.03ms  
+  8. Text Similarity (Tokens):      0.00   expected: 0.85   elapsed: 0.02ms  
+
+---
+
+🔍 8. Spanish gender and number
+Locale: es-ES
+Text 1: El gato negro duerme en la silla
+Text 2: Las gatas negras duermen en los sillones
+Results:
+  7. Text Similarity (Ngrams):      0.50   expected: N/A    elapsed: 0.33ms  
+  8. Text Similarity (Tokens):      0.75   expected: N/A    elapsed: 0.03ms  
+
+---
+
+🔍 9. Mixed short text
+Locale: en
+Text 1: The AI conference in Berlin attracted over 500 participants from 30 countries. Machine learning workshops were particul…
+Text 2: Berlin AI conference: 500+ attendees from 30 nations. Popular sessions included ML workshops.
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.82   elapsed: 0.12ms  
+  8. Text Similarity (Tokens):      0.53   expected: 0.82   elapsed: 0.08ms  
+
+---
+
+🔍 10. Rephrased paragraph
+Locale: en
+Text 1: Climate change represents one of the most significant challenges facing humanity today. Rising global temperatures, cau…
+Text 2: Humanity currently faces major challenges from climate change. The increase in Earth's temperature, mainly due to human…
+Results:
+  7. Text Similarity (Ngrams):      0.04   expected: N/A    elapsed: 0.21ms  
+  8. Text Similarity (Tokens):      0.44   expected: N/A    elapsed: 0.22ms  
+
+---
+
+🔍 11. Same topic different words
+Locale: en
+Text 1: Apple unveiled its latest iPhone with improved camera and battery life
+Text 2: The new smartphone from Apple features better photography capabilities and longer usage time
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.48   elapsed: 0.07ms  
+  8. Text Similarity (Tokens):      0.12   expected: 0.48   elapsed: 0.06ms  
+
+---
+
+🔍 12. Russian verb forms
+Locale: ru-RU
+Text 1: Я начинаю понимать эту проблему
+Text 2: Мы начали понимать эти проблемы
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.75   elapsed: 0.03ms  
+  8. Text Similarity (Tokens):      0.00   expected: 0.75   elapsed: 0.02ms  
+
+---
+
+🔍 13. Russian adjective forms
+Locale: ru-RU
+Text 1: Интересная книга лежит на столе
+Text 2: Интересные книги лежали на столе
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.82   elapsed: 0.03ms  
+  8. Text Similarity (Tokens):      0.58   expected: 0.82   elapsed: 0.03ms  
+
+---
+
+🔍 14. Russian verb aspects
+Locale: ru-RU
+Text 1: Я прочитал книгу
+Text 2: Я читал книгу
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.80   elapsed: 0.02ms  
+  8. Text Similarity (Tokens):      0.50   expected: 0.80   elapsed: 0.02ms  
+
+---
+
+🔍 15. Russian case forms
+Locale: ru-RU
+Text 1: Дверь открыта ключом
+Text 2: Ключ открыл дверь
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.68   elapsed: 0.02ms  
+  8. Text Similarity (Tokens):      0.50   expected: 0.68   elapsed: 0.02ms  
+
+---
+
+🔍 16. Russian complex sentence with multiple verb forms
+Locale: ru-RU
+Text 1: Я начал читать книгу, которая мне очень понравилась
+Text 2: Мы начали читать книги, которые нам очень понравились
+Results:
+  7. Text Similarity (Ngrams):      1.00   expected: 0.70   elapsed: 0.04ms  
+  8. Text Similarity (Tokens):      1.00   expected: 0.70   elapsed: 0.03ms  
+
+---
+
+🔍 17. Russian sentence with different case and number
+Locale: ru-RU
+Text 1: Эта интересная книга была написана в 1990 году
+Text 2: Эти интересные книги были написаны в 1990 году
+Results:
+  7. Text Similarity (Ngrams):      0.20   expected: 0.80   elapsed: 0.03ms  
+  8. Text Similarity (Tokens):      0.87   expected: 0.80   elapsed: 0.03ms  
+
+---
+
+🔍 18. Russian perfective vs imperfective aspect
+Locale: ru-RU
+Text 1: Я прочитал все письма
+Text 2: Я читал все письма
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.75   elapsed: 0.02ms  
+  8. Text Similarity (Tokens):      0.50   expected: 0.75   elapsed: 0.02ms  
+
+---
+
+🔍 19. Russian different word order with same meaning
+Locale: ru-RU
+Text 1: Книга, которую я читал, была интересной
+Text 2: Интересной была та книга, которую я читал
+Results:
+  7. Text Similarity (Ngrams):      0.33   expected: 0.80   elapsed: 0.04ms  
+  8. Text Similarity (Tokens):      1.00   expected: 0.80   elapsed: 0.03ms  
+
+---
+
+🔍 20. Russian medium sentence with multiple clauses
+Locale: ru-RU
+Text 1: Когда я учился в университете, я часто посещал библиотеку, чтобы читать научные статьи
+Text 2: Во время обучения в университете я регулярно ходил в библиотеку для чтения научных статей
+Results:
+  7. Text Similarity (Ngrams):      0.08   expected: 0.78   elapsed: 0.07ms  
+  8. Text Similarity (Tokens):      0.53   expected: 0.78   elapsed: 0.56ms  
+
+---
+
+🔍 21. Russian narrative with different verb aspects
+Locale: ru-RU
+Text 1: Вчера я позвонил другу и рассказал ему о новой книге, которую я прочитал на прошлой неделе
+Text 2: Вчера я звонил другу и рассказывал ему о новой книге, которую я читал на прошлой неделе
+Results:
+  7. Text Similarity (Ngrams):      0.20   expected: 0.85   elapsed: 0.10ms  
+  8. Text Similarity (Tokens):      0.70   expected: 0.85   elapsed: 0.07ms  
+
+---
+
+🔍 22. Russian description with adjective variations
+Locale: ru-RU
+Text 1: Большой старый дом, расположенный на окраине города, был построен в прошлом веке талантливыми архитекторами
+Text 2: Большие старые дома, которые находятся на окраинах городов, были построены в прошлых веках талантливыми архитекторами
+Results:
+  7. Text Similarity (Ngrams):      0.43   expected: 0.75   elapsed: 0.13ms  
+  8. Text Similarity (Tokens):      0.67   expected: 0.75   elapsed: 0.34ms  
+
+---
+
+🔍 23. Russian complex sentence with participles
+Locale: ru-RU
+Text 1: Человек, написавший эту книгу, получил много наград за свой труд, изменивший жизнь многих людей
+Text 2: Автор, создавший эту книгу, был награждён много раз за работу, повлиявшую на жизни множества читателей
+Results:
+  7. Text Similarity (Ngrams):      0.00   expected: 0.65   elapsed: 0.10ms  
+  8. Text Similarity (Tokens):      0.12   expected: 0.65   elapsed: 0.07ms  
+
+---
+
+🔍 24. Russian text with different repeated ngrams
+Locale: ru-RU
+Text 1: Старая мудрая сова сидела на старой ветке и наблюдала на старой ветке
+Text 2: Молодая глупая сова сидела на старой ветке и думала, что сова сидела
+Results:
+  7. Text Similarity (Ngrams):      0.23   expected: 0.88   elapsed: 0.08ms  
+  8. Text Similarity (Tokens):      0.62   expected: 0.88   elapsed: 0.07ms  
+
+---

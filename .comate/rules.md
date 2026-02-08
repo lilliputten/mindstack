@@ -47,3 +47,5 @@ debugger; // eslint-disable-line no-debugger
 Always put the real code into modules with meaningful names. Use `index.ts` files only for re-export. Eg., use `src/lib/indexedDB.ts` instead of `src/lib/indexedDB/index.ts` (or, alternatively, use `src/lib/indexedDB/indexedDB.ts` with reexport via `index.ts`).
 
 (End of common rules.)
+
+> @changed 2026.02.07, 19:20

@@ -3,7 +3,8 @@ Common rules:
 - Answer in English, create all texts and comments in English.
 - Never use `any` type.
 - Create intermidiate indices for newly created modules (with re-exports, in form of `export * from './MODULE'`).
-- Always check for typescript (via tsc) and eslint errors. Run eslint only for updated files.
+- Always check for typescript (via tsc) and eslint errors.
+- Run eslint only for changed files, as it's a really long procedure.
 - Never run tsc for specific files. Run only ` npx tsc --noEmit` for the whole project.
 - Always run created tests.
 - Carefully update original modules content: don't just ovverride the old contents.
@@ -11,19 +12,26 @@ Common rules:
 
 Console tools:
 
-- Project uses `pnpm` package manager.
+- The project uses `pnpm` package manager.
 - Use `;` command separator instead of `&&` for powershell terminal.
 
 For translations:
 
 - Don't duplicate namespace objects: merge data into existed ones. (Check `AvailableCategoriesListPage`.)
 - Check json files validity.
+- Do not add the "�" characters to the translated texts, this means that an error has occurred: check which part of the source lines was omitted.
 
 For UI (`.tsx`) react components:
 
 - Use tailwind styles.
 - Use icons from `src/components/shared/Icons.tsx` (import it as `import * as Icons from '@/components/shared/Icons'`).
 - Use shared ui components from `src/components/ui`.
+
+For tests:
+
+- Make sure that tests uses unique test data what avoids reace condition clashes.
+- Make sure that tests completely clean up the created test data.
+- See examples in the `src/features/categories/actions/__tests__/getRecentCategories.test.ts`.
 
 Always use the following error processing:
 
@@ -37,3 +45,7 @@ debugger; // eslint-disable-line no-debugger
 ```
 
 Always put the real code into modules with meaningful names. Use `index.ts` files only for re-export. Eg., use `src/lib/indexedDB.ts` instead of `src/lib/indexedDB/index.ts` (or, alternatively, use `src/lib/indexedDB/indexedDB.ts` with reexport via `index.ts`).
+
+(End of common rules.)
+
+> @changed 2026.02.07, 19:20

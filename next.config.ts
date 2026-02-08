@@ -167,6 +167,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    optimizePackageImports: ['multilingual-stemmer'],
     serverActions: {
       bodySizeLimit: `${blobBodySizeLimitMb}mb`,
     },

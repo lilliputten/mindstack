@@ -135,6 +135,13 @@
       "runtimeExecutable": "tsx"
     },
     {
+      "name": "specific typescript",
+      "program": "${workspaceRoot}/src/packages/text-similarity/test-run/runEnhancedTests.ts",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "tsx"
+    },
+    {
       "name": "Node: gulp",
       "type": "node",
       "request": "launch",
