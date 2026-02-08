@@ -1,9 +1,28 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.06, 03:14
+ @changed 2026.02.08, 05:14
 -->
 
 # CHANGELOG
+
+## [Issue #75: Implemented text similarity comparison package](https://github.com/lilliputten/mindstack/issues/64) - 2026.02.07
+
+Changes
+
+- Created `TextSimilarity` class for text preprocessing and comparison
+- Implemented `compareNGrams` (histogram intersection) and `compareTokens` (cosine similarity) algorithms
+- Added comprehensive test suite and benchmark scripts
+- Added detailed README with performance analysis and usage guidelines
+
+Core Features
+
+- **Two algorithms**: n-gram histogram intersection and cosine similarity.
+- **Multi-language support**: Optimized and tested for English, Russian, and Spanish.
+- **Fully supports languages**: *de, en, es, fr, it, nl, ru*. The resulting list depends on the intersection of the languages supported by `stemmers` (*ar, da, nl, en, fi, fr, de, el, hu, it, pt, ro, ru, es, sw, ta, tr*) and `stopwords` (*de, en, es, fr, it, nl, ru*) modules.
+- **Performance optimized**: Benchmarks show 0.1-3ms for n-gram and 0.2-8ms for token comparisons.
+- **Configurable**: Adjustable n-gram sizes and preprocessing options.
+
+For full details on algorithms, performance characteristics, and usage recommendations, see the README at [src/packages/text-similarity/README.md](src/packages/text-similarity/README.md).
 
 ## [Issue #64: Landing page layout updates, translations, and recent topics sort logic](https://github.com/lilliputten/mindstack/issues/64), #[v.0.1.3](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.3) - 2026.02.06
 
@@ -42,9 +61,9 @@
 - Reorganized AI server actions and type modules for better maintainability
 - Enhanced the cacheable AI provider generator (`getAiClient`) to support a temperature parameter
 - Introduced `clientType` and `temperature` parameters to AI generation forms for more precise control:
-  * Added to `TextQueryForm`
-  * Added to `GenerateQuestionsForm`
-  * Added to `GenerateAnswersForm`
+  - Added to `TextQueryForm`
+  - Added to `GenerateQuestionsForm`
+  - Added to `GenerateAnswersForm`
 - Set a default temperature value via environment variables
 - Removed prop-drilled handlers (`handleDeleteQuestion`, `handleEditQuestion`, `handleAddQuestion`, `handleEditAnswers`) from topics, questions, and answers manage list pages
 - Updated actions and layouts in management list pages for improved UX
@@ -142,13 +161,13 @@ See also:
 - Replaced all remaining instances of `getTranslations()` with `getT()` from centralized `i@/i18n` module
 - Added substantial volume of translations for numerous domains and UI components
 - Refactored content loading and rendering:
-  * Converted all MDX pages to dynamically loaded Markdown-based pages, removing MDX support
-  * Implemented server-side content loading helpers with React Query caching
-  * Refactored Docs, Privacy, Cookies, and Terms pages to use Static Site Generation (SSG)
+  - Converted all MDX pages to dynamically loaded Markdown-based pages, removing MDX support
+  - Implemented server-side content loading helpers with React Query caching
+  - Refactored Docs, Privacy, Cookies, and Terms pages to use Static Site Generation (SSG)
 - Updated infrastructure and tooling:
-  * Replaced external `json-sort-cli` with local script (`src/packages/sort-json`) for JSON sorting
-  * Updated Prisma from version 6 to 7
-  * Bumped application version to 0.0.4
+  - Replaced external `json-sort-cli` with local script (`src/packages/sort-json`) for JSON sorting
+  - Updated Prisma from version 6 to 7
+  - Bumped application version to 0.0.4
 - Performed code and style refactoring across various components and pages
 - Fixed various bugs and minor issues including layout problems and deprecated routes
 
@@ -212,18 +231,18 @@ Impact Areas:
 ## [Issue #37: Display intermediate and final workout statistics, current workout state, etc](https://github.com/lilliputten/mindstack/issues/37) - 2025.10.31
 
 - New Features:
-  * AI Generation System: Toggleable "Generated" columns, AI badges, generation tracking, and usage limits
-  * Workout Statistics: Comprehensive stats and historical data with expanded/short forms
-  * Enhanced Workout Flow: Refactored lifecycle with React Query for improved performance
-  * Translation Debug Mode: Added 'xx' locale to display translation IDs directly in UI
+  - AI Generation System: Toggleable "Generated" columns, AI badges, generation tracking, and usage limits
+  - Workout Statistics: Comprehensive stats and historical data with expanded/short forms
+  - Enhanced Workout Flow: Refactored lifecycle with React Query for improved performance
+  - Translation Debug Mode: Added 'xx' locale to display translation IDs directly in UI
 - Improvements:
-  * Upgraded user grade system (MEMBER→BASIC, PREMIUM→PRO, added PREMIUM)
-  * Updated UI components: headers, gradients, modals, and splash art
-  * Fixed workout starting logic and question presentation
-  * Improved error handling and syntax highlighting for markdown
+  - Upgraded user grade system (MEMBER→BASIC, PREMIUM→PRO, added PREMIUM)
+  - Updated UI components: headers, gradients, modals, and splash art
+  - Fixed workout starting logic and question presentation
+  - Improved error handling and syntax highlighting for markdown
 - Cleanup:
-  * Removed unused code and redundant components
-  * Refactored constants and hooks for better maintainability
+  - Removed unused code and redundant components
+  - Refactored constants and hooks for better maintainability
 
 The changes prepare the foundation for AI-powered features while modernizing the workout experience with better state management and user interface.
 

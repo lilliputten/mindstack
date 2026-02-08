@@ -1,17 +1,17 @@
 <!--
  @since 2025.07.05
- @changed 2026.01.26, 01:36
+ @changed 2026.02.08, 05:15
 -->
 
 # MindStack Memory Trainer
 
 NextJS Memory Training Application for interactive learning and spaced repetition practice.
 
-![Application](public/static/opengraph-image.jpg 'Application')
+![Application](public/static/opengraph-image-v2.jpg 'Application Splash')
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.3 / 2026.02.06 16:43:35 +0300
+- Project info: v.0.1.3 / 2026.02.08 04:57:16 +0300
 
 ## 🌟 Overview
 
@@ -456,8 +456,9 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - **Vercel Deployment**: https://mind-stack-trainer.vercel.app/
 - **GitHub Repository**: https://github.com/lilliputten/mindstack/
 - **Project Reference**: https://lilliputten.com/projects/2026/mindstack/
-- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ---
+
+See [CHANGELOG.md](CHANGELOG.md) for recent updates info.
 
 Built with ❤️ using Next.js, TypeScript, and modern web technologies.
