@@ -47,7 +47,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
 
   // Error: topic hasn't been found
   if (!topic) {
-    throw new Error(t('ViewTopicPage.NoTopicFound'));
+    throw new Error(t('NoTopicFound'));
   }
 
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -128,7 +128,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Add New Question',
-        content: t('ViewTopicPage.AddNewQuestion'),
+        content: t('AddNewQuestion'),
         icon: Icons.Add,
         href: `${questionsListRoutePath}/add`,
       },
@@ -142,7 +142,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
       },
       {
         id: 'Delete Topic',
-        content: t('ViewTopicPage.DeleteTopic'),
+        content: t('DeleteTopic'),
         icon: Icons.Trash,
         href: `${routePath}/delete?topicId=${topicId}&from=ViewTopicPage`,
       },

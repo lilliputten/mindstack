@@ -2,6 +2,10 @@
   "AIPoweredLearning": "AI-Powered Learning",
   "AccessDeniedError": "Access denied",
   "ActiveRecallPractice": "Active Recall Practice",
+  "AddNewAnswer": "Add New Answer",
+  "AddNewCategory": "Add New Category",
+  "AddNewQuestion": "Add New Question",
+  "AddNewTopic": "Add New Topic",
   "AddTopic": "Add Topic",
   "AiClientTypeHint": "Select an AI provider to generate the data",
   "AiClientTypeLabel": "AI Provider",
@@ -30,14 +34,20 @@
   "CurrentProgress": "Current progress",
   "CurrentSessionRatio": "Current session ratio",
   "Delete": "Delete",
+  "DeleteAnswer": "Delete Answer",
+  "DeleteQuestion": "Delete Question",
+  "DeleteTopic": "Delete Topic",
   "Deleting": "Deleting",
   "Description": "Description",
   "Edit": "Edit",
+  "EditAnswer": "Edit Answer",
+  "EditAnswers": "Edit Answers",
   "EditTopic": "Edit Topic",
   "Expected": "Expected",
   "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan conditions.",
   "Finish": "Finish",
   "FinishedAt": "Finished at",
+  "GenerateAnswers": "Generate Answers",
   "GenerateQuestions": "Generate Questions",
   "GenerationMode": "Generation mode",
   "GoBack": "Go Back",
@@ -49,16 +59,21 @@
   "Language": "Language",
   "LastActivity": "Last activity",
   "LegalOwnerName": "Igor A. Lilliputten",
+  "ManageOrCreateYourOwnTopics": "Manage or create your own topics",
   "ManageTopics": "Manage Topics",
   "Modified": "Modified",
   "NN": "№",
   "Name": "Name",
   "NavigationMenu": "Navigation menu",
   "No": "No",
+  "NoAnswerFound": "No answer found",
   "NoAnswersHaveBeenCreatedYet": "No answers have been created yet",
   "NoCategoriesAvailable": "No Categories Available",
   "NoFiltersApplied": "No filters applied",
+  "NoQuestionFound": "No question found",
   "NoQuestions": "No questions",
+  "NoQuestionsCreatedYet": "No questions have been created yet",
+  "NoTopicFound": "No topic found",
   "NoTopics": "No topics",
   "NoTopicsAvailable": "No topics available",
   "NoWorkoutsAvailable": "No Workouts Available",
@@ -70,13 +85,15 @@
   "Properties": "Properties",
   "Public": "Public",
   "Question": "Question",
+  "QuestionText": "Question Text",
   "Questions": "Questions",
   "QuestionsCount": "Questions count",
   "ReasonCode": "Reason code",
   "Refresh": "Refresh",
   "Reload": "Reload",
+  "ReloadDataFromServer": "Reload the data from the server",
   "Reset": "Reset",
-  "ResetChanges": "Reset Changes",
+  "ResetChanges": "Reset changes",
   "ResetToDefaults": "Reset To Defaults",
   "ResumeTraining": "Resume Training",
   "SUGGESTED": "Suggested",
@@ -90,6 +107,7 @@
   "StartTraining": "Start Training",
   "StartedAt": "Started at",
   "Status": "Status",
+  "SuggestNewCategory": "Suggest New Category",
   "Timeline": "Timeline",
   "ToTraining": "To Training",
   "Topic": "Topic",
@@ -103,6 +121,7 @@
   "TrainingStatus": "Training status",
   "Trainings": "Trainings",
   "TryAgain": "Try again",
+  "UnauthorizedUsersCantAddTopicMessage": "<SigninLink>Authorized users</SigninLink> can add their own and public topics.",
   "UnknownError": "Unknown Error",
   "UnknownTopic": "Unknown Topic",
   "Unlimited": "Unlimited",
@@ -151,10 +170,8 @@
   },
   "AddCategoryModal": {
     "CantSaveCategory": "Cannot save category",
-    "DialogTitle": "Add New Category",
     "ForbiddenSuggestionMessage": "To maintain quality, we limit how often you can suggest new categories. Please try again in {time}.",
     "ForbiddenSuggestionTitle": "The limit of offers for new categories has been reached",
-    "SuggestDialogTitle": "Suggest New Category",
     "UnauthorizedUserMessage": "Only authorized users can add categories.",
     "UnauthorizedUserTitle": "Unauthorized User"
   },
@@ -188,9 +205,6 @@
     "TopicName": "Topic Name"
   },
   "AddTopicModal": {
-    "DialogDescription": "Add Topic Dialog",
-    "DialogTitle": "Add Topic",
-    "ModalTitle": "Add a Topic",
     "ToastError": "Can not create new topic",
     "ToastLoading": "Creating new topic...",
     "ToastSuccess": "Successfully created new topic \"{name}\""
@@ -304,7 +318,6 @@
     "ManageCategories": "Manage Categories",
     "ManageYourCategoriesAction": "Manage Your Categories",
     "NoCategoriesExplanation": "There are no available categories. Change the filter settings.",
-    "SuggestNewCategory": "Suggest New Category",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Authorized users</SigninLink> can suggest new categories."
   },
   "AvailableTopics": {
@@ -371,8 +384,7 @@
   "AvailableTopicsList": {
     "ChangeFilters": "Change Filters",
     "ChangeFiltersText": "Change filters to allow displaying public topics (if there are any), or create your own ones.",
-    "GoBack": "Go Back",
-    "ManageOrCreateYourOwnTopics": "Manage or create your own topics"
+    "GoBack": "Go Back"
   },
   "AvailableTopicsListPage": {
     "AvailableTopicsHeading": "Available Topics",
@@ -577,20 +589,9 @@
     "ToastSuccess": "Successfully deleted topic \"{name}\""
   },
   "EditAnswerCard": {
-    "AddNewAnswer": "Add New Answer",
-    "AddNewQuestion": "Add New Question",
     "CannotSaveAnswerData": "Cannot save answer data",
     "CannotUpdateAnswerData": "Cannot update answer data",
-    "DeleteAnswer": "Delete Answer",
-    "EditAnswer": "Edit Answer",
-    "GenerateAnswers": "Generate Answers",
-    "NoAnswerFound": "No answer found",
-    "NoQuestionFound": "No question found",
-    "NoTopicFound": "No topic found",
     "Reload": "Reload",
-    "ReloadDataFromServer": "Reload the data from the server",
-    "ResetChanges": "Reset changes",
-    "Save": "Save",
     "SavingAnswerData": "Saving the answer data...",
     "SuccessfullySavedAnswer": "Successfully saved the answer"
   },
@@ -652,19 +653,13 @@
     "SavingData": "Saving category data..."
   },
   "EditQuestionCard": {
-    "AddNewQuestion": "Add New Question",
     "Back": "Back",
     "CannotSaveQuestionData": "Cannot save question data",
     "CannotUpdateQuestionData": "Cannot update question data",
-    "DeleteQuestion": "Delete Question",
     "EditQuestionProperties": "Edit Question Properties",
     "ItShouldBeAPositiveNumber": "It should be a positive number.",
     "MinimalValueShouldBeLessThanMaximal": "A minimal value should be less than maximal.",
-    "NoQuestionFound": "No question found",
-    "NoTopicFound": "No topic found",
-    "Reload": "Reload",
     "ReloadDataFromServer": "Reload the data from the server",
-    "ResetChanges": "Reset changes",
     "Save": "Save",
     "SavingQuestionData": "Saving the question data...",
     "SuccessfullySavedQuestion": "Successfully saved the question"
@@ -745,9 +740,6 @@
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateAnswersModal": {
-    "DialogDescription": "Generate Answers Dialog",
-    "DialogTitle": "Generate Answers",
-    "ModalTitle": "Generate Answers",
     "NoQuestionIdDefined": "No question ID defined",
     "ToastErrorAnswers": "Cannot add answers",
     "ToastErrorData": "Can not retrieve AI generated data",
@@ -962,7 +954,6 @@
     "UpdatedBy": "Updated By"
   },
   "ManageTopicQuestionAnswersListCard": {
-    "AddNewAnswer": "Add New Answer",
     "Cancel": "Cancel",
     "CannotDeleteSelectedAnswers": "Cannot delete selected answers",
     "ConfirmDeleteSelectedAnswers": "Confirm delete selected answers",
@@ -971,14 +962,11 @@
     "DeleteSelected": "Delete Selected",
     "Deleting": "Deleting",
     "DeletingSelectedAnswers": "Deleting selected answers...",
-    "GenerateAnswers": "Generate Answers",
     "NoAnswersDescription": "You dont have any answers yet. Add any answer to your profile.",
     "SelectedAnswersCount": "Selected answers count: {count}.",
     "SuccessfullyDeletedSelectedAnswers": "Successfully deleted selected answers"
   },
   "ManageTopicQuestionsListCard": {
-    "AddNewQuestion": "Add New Question",
-    "Answers": "Answers",
     "Back": "Back",
     "Cancel": "Cancel",
     "CannotDeleteSelectedQuestions": "Cannot delete selected questions",
@@ -990,26 +978,20 @@
     "Deleting": "Deleting",
     "DeletingSelectedQuestions": "Deleting selected questions...",
     "Edit": "Edit",
-    "EditAnswers": "Edit Answers",
     "Generated": "Generated",
     "ManageQuestions": "Manage Questions",
-    "NoQuestionsCreatedYet": "No questions have been created yet",
     "NoQuestionsDescription": "You dont have any questions yet. Add any question to your profile.",
-    "QuestionText": "Question Text",
     "Reload": "Reload",
     "SelectDeselectAll": "Select/deselect all",
     "SelectQuestion": "Select question",
     "SuccessfullyDeletedSelectedQuestions": "Successfully deleted selected questions"
   },
   "ManageTopicsListCard": {
-    "AddNewTopic": "Add New Topic",
-    "Author": "Author",
     "Back": "Back",
     "CannotDeleteSelectedTopics": "Cannot delete selected topics",
     "CannotMakeSelectedTopicsPublic": "Cannot make selected topics public",
     "CannotResetPublicStatusForSelectedTopics": "Cannot reset public status for selected topics",
     "CannotUpdateTopicPublicStatus": "Cannot update topic public status",
-    "Categories": "Categories",
     "ConfirmDeleteTopics": "Confirm delete topics",
     "ConfirmDeleteTopicsMessage": "Do you confirm deleting {count, plural, =0 {no topics} =1 {# selected topic} other {# selected topics}}?",
     "Delete": "Delete",
@@ -1019,24 +1001,19 @@
     "Edit": "Edit",
     "EditQuestions": "Edit Questions",
     "ErrorLoadingTopicsData": "Error loading available topics data",
-    "Keywords": "Keywords",
-    "Language": "Language",
     "MakingSelectedTopicsPublic": "Making selected topics public...",
     "MarkSelectedAsPrivate": "Mark Selected as Private",
     "MarkSelectedAsPublic": "Mark Selected as Public",
-    "No": "No",
     "NoTopicsFound": "No topics found",
     "NoTopicsFoundDescription": "Change filters to allow displaying topics (if there are any), or create your own ones.",
     "Public": "Public",
-    "Questions": "Questions",
     "Reload": "Reload",
     "ResettingPublicStatusForSelectedTopics": "Resetting public status for selected topics...",
     "SelectDeselectAll": "Select/deselect all",
     "SelectTopic": "Select topic",
     "SuccessfullyDeletedSelectedTopics": "Successfully deleted selected topics",
     "SuccessfullyMadeSelectedTopicsPublic": "Successfully made selected topics public",
-    "SuccessfullyResetPublicStatusForSelectedTopics": "Successfully reset public status for selected topics",
-    "TopicName": "Topic Name"
+    "SuccessfullyResetPublicStatusForSelectedTopics": "Successfully reset public status for selected topics"
   },
   "ManageTopicsPageModalsWrapper": {
     "RequestedTopicNotExists": "The requested topic does not exist."
@@ -1477,9 +1454,6 @@
     "UnlimitedUser": "a UNLIMITED user"
   },
   "ViewAnswerCard": {
-    "AddNewAnswer": "Add New Answer",
-    "DeleteAnswer": "Delete Answer",
-    "GenerateAnswers": "Generate Answers",
     "ViewAnswer": "View Answer"
   },
   "ViewAnswerContentSummary": {
@@ -1521,8 +1495,6 @@
     "ViewCategory": "View Category"
   },
   "ViewQuestionCard": {
-    "AddNewQuestion": "Add New Question",
-    "DeleteQuestion": "Delete Question",
     "ViewQuestion": "View Question"
   },
   "ViewQuestionContentSummary": {
@@ -1531,7 +1503,6 @@
     "AnswersCount": "Answers",
     "Author": "Author",
     "Created": "Created",
-    "GenerateAnswers": "Generate Answers",
     "ManageAnswers": "Manage Answers",
     "ManageTopic": "Manage Topic",
     "Modified": "Modified",
@@ -1562,12 +1533,9 @@
     "YouAreTheAuthor": "You're the author"
   },
   "ViewTopicPage": {
-    "AddNewQuestion": "Add New Question",
     "Back": "Back",
     "CannotUpdateTopicData": "Cannot update topic data",
-    "DeleteTopic": "Delete Topic",
     "Edit": "Edit",
-    "NoTopicFound": "No topic found",
     "Questions": "Questions",
     "Reload": "Reload",
     "ViewTopic": "View Topic"

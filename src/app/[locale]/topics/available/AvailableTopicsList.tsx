@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSession } from 'next-auth/react';
 
 import { getAbcHashString, getRandomHashString } from '@/lib/helpers/strings';
 import { TPropsWithClassName } from '@/lib/types';
@@ -8,9 +9,10 @@ import { Link } from '@/i18n/routing';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
+import { useSignInModalContext } from '@/components/modals';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
-import { myTopicsRoute, rootAliasRoute } from '@/config';
+import { myTopicsRoute, rootAliasRoute, TRoutePath, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
@@ -24,6 +26,54 @@ const sessionSaveScrollHash = getRandomHashString();
 interface TProps extends TPropsWithClassName {
   availableTopicsQuery: ReturnType<typeof useAvailableTopicsByScope>;
   manageScope: TTopicsManageScopeId;
+}
+
+function AddTopicBlock() {
+  const t = useT();
+  const addTopicRoute = `${myTopicsRoute}/add` as TRoutePath;
+  const { showSignInModal } = useSignInModalContext();
+  const {
+    data: sessionData,
+    // status: sessionStatus,
+  } = useSession();
+  const user = sessionData?.user;
+  // const isAdmin = user?.role === 'ADMIN';
+
+  return user?.id ? (
+    <div className="flex items-center justify-center">
+      <Link
+        href={addTopicRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+      >
+        <Icons.Plus className="size-5" />
+        {t('AddNewTopic')}
+      </Link>
+    </div>
+  ) : (
+    <div
+      className={cn(
+        isDev && '__AvailableTopicsList_Info', // DEBUG
+        'flex items-center gap-2 rounded-md border border-theme/10 p-2',
+      )}
+    >
+      <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+      <p className="content-text flex-1 text-sm">
+        {t.rich('UnauthorizedUsersCantAddTopicMessage', {
+          SigninLink: (chunks) => (
+            <Link
+              onClick={(ev) => {
+                ev.preventDefault();
+                showSignInModal();
+              }}
+              href={welcomeAliasRoute}
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
+    </div>
+  );
 }
 
 export function AvailableTopicsList(props: TProps) {
@@ -97,7 +147,7 @@ export function AvailableTopicsList(props: TProps) {
                 className={cn(buttonVariants({ variant: 'default' }), 'flex gap-2')}
               >
                 <Icons.Topics className="hidden size-4 opacity-50 sm:flex" />
-                <span>{t('AvailableTopicsList.ManageOrCreateYourOwnTopics')}</span>
+                <span>{t('ManageOrCreateYourOwnTopics')}</span>
               </Link>
             </>
           }
@@ -134,6 +184,7 @@ export function AvailableTopicsList(props: TProps) {
       {allTopics.map((topic) => (
         <AvailableTopicsListItem key={topic.id} topic={topic} />
       ))}
+      <AddTopicBlock />
     </ScrollAreaInfinite>
   );
 }

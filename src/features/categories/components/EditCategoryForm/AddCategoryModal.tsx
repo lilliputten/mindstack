@@ -73,9 +73,7 @@ export function AddCategoryModal(props: TProps) {
   /** Should the modal be visible? */
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
-  const dialogTitle = suggestionMode
-    ? t('AddCategoryModal.SuggestDialogTitle')
-    : t('AddCategoryModal.DialogTitle');
+  const dialogTitle = suggestionMode ? t('SuggestNewCategory') : t('AddNewCategory');
   useModalTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 

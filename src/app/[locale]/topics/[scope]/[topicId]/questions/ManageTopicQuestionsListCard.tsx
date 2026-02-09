@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
@@ -53,6 +54,34 @@ export interface TManageTopicQuestionsListCardProps {
 }
 
 const useDarkHeader = true;
+
+function AddQuestionBlock(props: { topicId: TTopicId }) {
+  const { topicId } = props;
+  const t = useT();
+  const { manageScope } = useManageTopicsStore();
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const addQuestionRoute = `${questionsListRoutePath}/add` as TRoutePath;
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
+
+  if (!user?.id) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center justify-center">
+      <Link
+        href={addQuestionRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+      >
+        <Icons.Plus className="size-5" />
+        {t('AddNewQuestion')}
+      </Link>
+    </div>
+  );
+}
 
 function QuestionsTableHeader({
   selectedQuestions,
@@ -108,7 +137,7 @@ function QuestionsTableHeader({
           />
         </TableHead>
         <TableHead id="no" className="max-w-2 truncate text-right max-sm:hidden">
-          {t('ManageTopicsListCard.No')}
+          {t('NN')}
         </TableHead>
         {/*isDev && (
           <TableHead id="questionId" className="truncate max-sm:hidden">
@@ -116,10 +145,10 @@ function QuestionsTableHeader({
           </TableHead>
         )*/}
         <TableHead id="text" className="truncate">
-          {t('ManageTopicQuestionsListCard.QuestionText')}
+          {t('QuestionText')}
         </TableHead>
         <TableHead id="answers" className="max-w-2 truncate max-sm:hidden">
-          {t('ManageTopicQuestionsListCard.Answers')}
+          {t('Answers')}
         </TableHead>
         <TableHead id="isGenerated" className="truncate max-lg:hidden">
           {t('ManageTopicQuestionsListCard.Generated')}
@@ -277,8 +306,8 @@ function QuestionsTableRow(props: TQuestionsTableRowProps) {
           <Link
             href={`${questionRoutePath}/answers` as TRoutePath}
             className={cn(buttonVariants({ size: 'icon', variant: 'ghost' }), 'size-9 shrink-0')}
-            aria-label={t('ManageTopicQuestionsListCard.EditAnswers')}
-            title={t('ManageTopicQuestionsListCard.EditAnswers')}
+            aria-label={t('EditAnswers')}
+            title={t('EditAnswers')}
           >
             <Icons.Answers className="size-5" />
           </Link>
@@ -399,7 +428,7 @@ export function QuestionsTableContent(
       <PageEmpty
         className="size-full flex-1"
         icon={Icons.Questions}
-        title={t('ManageTopicQuestionsListCard.NoQuestionsCreatedYet')}
+        title={t('NoQuestionsCreatedYet')}
         description={t('ManageTopicQuestionsListCard.NoQuestionsDescription')}
         framed={false}
         showAIInfo
@@ -414,7 +443,7 @@ export function QuestionsTableContent(
               )}
             >
               <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
-              <span className="truncate">{t('ManageTopicQuestionsListCard.AddNewQuestion')}</span>
+              <span className="truncate">{t('AddNewQuestion')}</span>
             </Link>
             <Link
               href={`${questionsListRoutePath}/generate` as TRoutePath}
@@ -481,6 +510,7 @@ export function QuestionsTableContent(
           ))}
         </TableBody>
       </Table>
+      <AddQuestionBlock topicId={topicId} />
     </ScrollAreaInfinite>
   );
 }
@@ -591,7 +621,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       },
       {
         id: 'Add New Question',
-        content: t('ManageTopicQuestionsListCard.AddNewQuestion'),
+        content: t('AddNewQuestion'),
         icon: Icons.Add,
         visibleFor: 'xl',
         // onClick: handleAddQuestion,

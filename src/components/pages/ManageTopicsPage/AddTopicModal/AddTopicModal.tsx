@@ -54,7 +54,8 @@ export function AddTopicModal() {
     goBack();
   }, [goBack]);
 
-  useModalTitle(t('AddTopicModal.ModalTitle'), shouldBeVisible);
+  const title = t('AddNewTopic');
+  useModalTitle(title, shouldBeVisible);
 
   const addTopicMutation = useMutation<TAvailableTopic, Error, TNewTopic>({
     mutationFn: addNewTopic,
@@ -124,9 +125,9 @@ export function AddTopicModal() {
             'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
           )}
         >
-          <DialogTitle className="DialogTitle">{t('AddTopicModal.DialogTitle')}</DialogTitle>
+          <DialogTitle className="DialogTitle">{title}</DialogTitle>
           <DialogDescription aria-hidden="true" hidden>
-            {t('AddTopicModal.DialogDescription')}
+            {title}
           </DialogDescription>
         </div>
         <ScrollArea

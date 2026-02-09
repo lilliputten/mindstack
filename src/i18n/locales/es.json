@@ -1,5 +1,9 @@
 {
   "AccessDeniedError": "Acceso denegado",
+  "AddNewAnswer": "Agregar Nueva Respuesta",
+  "AddNewCategory": "Agregar Nueva Categoría",
+  "AddNewQuestion": "Agregar Nueva Pregunta",
+  "AddNewTopic": "Agregar Nuevo Tema",
   "AddTopic": "Agregar Tema",
   "AiClientTypeHint": "Seleccione un proveedor de IA para generar los datos",
   "AiClientTypeLabel": "Proveedor de IA",
@@ -28,14 +32,20 @@
   "CurrentProgress": "Progreso actual",
   "CurrentSessionRatio": "Relación de sesión actual",
   "Delete": "Eliminar",
+  "DeleteAnswer": "Eliminar Respuesta",
+  "DeleteQuestion": "Eliminar Pregunta",
+  "DeleteTopic": "Eliminar Tema",
   "Deleting": "Eliminando",
   "Description": "Descripción",
   "Edit": "Editar",
+  "EditAnswer": "Editar Respuesta",
+  "EditAnswers": "Editar Respuestas",
   "EditTopic": "Editar tema",
   "Expected": "Esperado",
   "ExtraLimitsErrorText": "<PricesLink>Consulta</PricesLink> las condiciones de tu plan tarifario.",
   "Finish": "Finalizar",
   "FinishedAt": "Terminado en",
+  "GenerateAnswers": "Generar Respuestas",
   "GenerateQuestions": "Generar Preguntas",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
@@ -43,20 +53,25 @@
   "HIDDEN": "Oculto",
   "Hide": "Ocultar",
   "Image": "Imagen",
-  "Keywords": "Palabras Clave",
+  "Keywords": "Palabras clave",
   "Language": "Idioma",
   "LastActivity": "Última actividad",
   "LegalOwnerName": "Igor A. Lilliputten",
+  "ManageOrCreateYourOwnTopics": "Gestionar o crear tus propios temas",
   "ManageTopics": "Administrar temas",
   "Modified": "Modificado",
   "NN": "№",
   "Name": "Nombre",
   "NavigationMenu": "Menú de navegación",
   "No": "No",
+  "NoAnswerFound": "No se encontró respuesta",
   "NoAnswersHaveBeenCreatedYet": "Aún no se han creado respuestas",
   "NoCategoriesAvailable": "No hay categorías disponibles",
   "NoFiltersApplied": "No hay filtros aplicados",
+  "NoQuestionFound": "No se encontró pregunta",
   "NoQuestions": "Sin preguntas",
+  "NoQuestionsCreatedYet": "Aún no se han creado preguntas",
+  "NoTopicFound": "No se encontró tema",
   "NoTopics": "Sin temas",
   "NoTopicsAvailable": "No hay temas disponibles",
   "NoWorkoutsAvailable": "No hay entrenamientos disponibles",
@@ -68,11 +83,13 @@
   "Properties": "Propiedades",
   "Public": "Público",
   "Question": "Pregunta",
+  "QuestionText": "Texto de la Pregunta",
   "Questions": "Preguntas",
   "QuestionsCount": "Cantidad de preguntas",
   "ReasonCode": "Código de razón",
   "Refresh": "Refrescar",
   "Reload": "Recargar",
+  "ReloadDataFromServer": "Recargar los datos del servidor",
   "Reset": "Reiniciar",
   "ResetChanges": "Restablecer cambios",
   "ResetToDefaults": "Restablecer los valores predeterminados",
@@ -87,6 +104,7 @@
   "StartTraining": "Iniciar Entrenamiento",
   "StartedAt": "Iniciado en",
   "Status": "Estado",
+  "SuggestNewCategory": "Sugerir Nueva Categoría",
   "Timeline": "Cronología",
   "ToTraining": "Al entrenamiento",
   "Topic": "Tema",
@@ -99,6 +117,7 @@
   "Training": "Entrenamiento",
   "TrainingStatus": "Estado del entrenamiento",
   "Trainings": "Entrenamientos",
+  "UnauthorizedUsersCantAddTopicMessage": "<SigninLink>Los usuarios autorizados</SigninLink> pueden agregar temas propios y públicos.",
   "UnknownError": "Error Desconocido",
   "UnknownTopic": "Tema desconocido",
   "Unlimited": "Ilimitado",
@@ -147,10 +166,8 @@
   },
   "AddCategoryModal": {
     "CantSaveCategory": "No se puede guardar la categoría",
-    "DialogTitle": "Agregar Nueva Categoría",
     "ForbiddenSuggestionMessage": "Para mantener la calidad, limitamos la frecuencia con la que puedes sugerir nuevas categorías. \nInténtelo de nuevo dentro de {time}.",
     "ForbiddenSuggestionTitle": "Se ha alcanzado el límite de ofertas para nuevas categorías.",
-    "SuggestDialogTitle": "Sugerir Nueva Categoría",
     "UnauthorizedUserMessage": "Sólo los usuarios autorizados pueden agregar categorías.",
     "UnauthorizedUserTitle": "Usuario no autorizado"
   },
@@ -184,9 +201,6 @@
     "TopicName": "Nombre del Tema"
   },
   "AddTopicModal": {
-    "DialogDescription": "Agregar Diálogo de Tema",
-    "DialogTitle": "Agregar Tema",
-    "ModalTitle": "Agregar un Tema",
     "ToastError": "No se puede crear el nuevo tema",
     "ToastLoading": "Creando nuevo tema...",
     "ToastSuccess": "Se creó exitosamente el nuevo tema \"{name}\""
@@ -300,7 +314,6 @@
     "ManageCategories": "Administrar categorías",
     "ManageYourCategoriesAction": "Administra tus categorías",
     "NoCategoriesExplanation": "No hay categorías disponibles. \nCambie la configuración del filtro.",
-    "SuggestNewCategory": "Sugerir nueva categoría",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Usuarios autorizados</SigninLink> pueden sugerir nuevas categorías."
   },
   "AvailableTopics": {
@@ -363,8 +376,7 @@
     "ShowOnlyMyTopicsHint": "Mostrar solo mis propios temas."
   },
   "AvailableTopicsList": {
-    "ChangeFiltersText": "Cambia los filtros para permitir mostrar temas públicos (si los hay), o crea los tuyos propios.",
-    "ManageOrCreateYourOwnTopics": "Gestionar o crear tus propios temas"
+    "ChangeFiltersText": "Cambia los filtros para permitir mostrar temas públicos (si los hay), o crea los tuyos propios."
   },
   "AvailableTopicsListPage": {
     "AvailableTopicsHeading": "Temas Disponibles",
@@ -569,20 +581,9 @@
     "ToastSuccess": "Se eliminó exitosamente el tema \"{name}\""
   },
   "EditAnswerCard": {
-    "AddNewAnswer": "Agregar Nueva Respuesta",
-    "AddNewQuestion": "Agregar Nueva Pregunta",
     "CannotSaveAnswerData": "No se pueden guardar los datos de la respuesta",
     "CannotUpdateAnswerData": "No se pueden actualizar los datos de la respuesta",
-    "DeleteAnswer": "Eliminar Respuesta",
-    "EditAnswer": "Editar Respuesta",
-    "GenerateAnswers": "Generar Respuestas",
-    "NoAnswerFound": "No se encontró respuesta",
-    "NoQuestionFound": "No se encontró pregunta",
-    "NoTopicFound": "No se encontró tema",
     "Reload": "Recargar",
-    "ReloadDataFromServer": "Recargar los datos del servidor",
-    "ResetChanges": "Restablecer cambios",
-    "Save": "Guardar",
     "SavingAnswerData": "Guardando los datos de la respuesta...",
     "SuccessfullySavedAnswer": "Respuesta guardada exitosamente"
   },
@@ -643,19 +644,13 @@
     "SavingData": "Guardando datos de categoría..."
   },
   "EditQuestionCard": {
-    "AddNewQuestion": "Agregar Nueva Pregunta",
     "Back": "Atrás",
     "CannotSaveQuestionData": "No se pueden guardar los datos de la pregunta",
     "CannotUpdateQuestionData": "No se pueden actualizar los datos de la pregunta",
-    "DeleteQuestion": "Eliminar Pregunta",
     "EditQuestionProperties": "Editar Propiedades de la Pregunta",
     "ItShouldBeAPositiveNumber": "Debe ser un número positivo.",
     "MinimalValueShouldBeLessThanMaximal": "Un valor mínimo debe ser menor que el máximo.",
-    "NoQuestionFound": "No se encontró pregunta",
-    "NoTopicFound": "No se encontró tema",
-    "Reload": "Recargar",
     "ReloadDataFromServer": "Recargar los datos del servidor",
-    "ResetChanges": "Restablecer cambios",
     "Save": "Guardar",
     "SavingQuestionData": "Guardando los datos de la pregunta...",
     "SuccessfullySavedQuestion": "Pregunta guardada exitosamente"
@@ -736,9 +731,6 @@
     "UseDebugDataLabel": "¿Usar datos de depuración?"
   },
   "GenerateAnswersModal": {
-    "DialogDescription": "Generar Diálogo de Respuestas",
-    "DialogTitle": "Generar Respuestas",
-    "ModalTitle": "Generar Respuestas",
     "NoQuestionIdDefined": "No se ha definido ningún ID de pregunta",
     "ToastErrorAnswers": "No se pueden agregar respuestas",
     "ToastErrorData": "No se pueden recuperar los datos generados por IA",
@@ -953,7 +945,6 @@
     "UpdatedBy": "Actualizado Por"
   },
   "ManageTopicQuestionAnswersListCard": {
-    "AddNewAnswer": "Agregar Nueva Respuesta",
     "Cancel": "Cancelar",
     "CannotDeleteSelectedAnswers": "No se pueden eliminar las respuestas seleccionadas",
     "ConfirmDeleteSelectedAnswers": "Confirmar eliminación de respuestas seleccionadas",
@@ -962,14 +953,11 @@
     "DeleteSelected": "Eliminar Seleccionadas",
     "Deleting": "Eliminando",
     "DeletingSelectedAnswers": "Eliminando respuestas seleccionadas...",
-    "GenerateAnswers": "Generar Respuestas",
     "NoAnswersDescription": "No tienes ninguna respuesta aún. Agrega alguna respuesta a tu perfil.",
     "SelectedAnswersCount": "Cantidad de respuestas seleccionadas: {count}.",
     "SuccessfullyDeletedSelectedAnswers": "Respuestas seleccionadas eliminadas exitosamente"
   },
   "ManageTopicQuestionsListCard": {
-    "AddNewQuestion": "Agregar Nueva Pregunta",
-    "Answers": "Respuestas",
     "Back": "Atrás",
     "Cancel": "Cancelar",
     "CannotDeleteSelectedQuestions": "No se pueden eliminar las preguntas seleccionadas",
@@ -981,26 +969,20 @@
     "Deleting": "Eliminando",
     "DeletingSelectedQuestions": "Eliminando preguntas seleccionadas...",
     "Edit": "Editar",
-    "EditAnswers": "Editar Respuestas",
     "Generated": "Generado",
     "ManageQuestions": "Gestionar Preguntas",
-    "NoQuestionsCreatedYet": "Aún no se han creado preguntas",
     "NoQuestionsDescription": "Aún no tienes preguntas. Agrega alguna pregunta a tu perfil.",
-    "QuestionText": "Texto de la Pregunta",
     "Reload": "Recargar",
     "SelectDeselectAll": "Seleccionar/deseleccionar todo",
     "SelectQuestion": "Seleccionar pregunta",
     "SuccessfullyDeletedSelectedQuestions": "Preguntas seleccionadas eliminadas exitosamente"
   },
   "ManageTopicsListCard": {
-    "AddNewTopic": "Agregar Nuevo Tema",
-    "Author": "Autor",
     "Back": "Atrás",
     "CannotDeleteSelectedTopics": "No se pueden eliminar los temas seleccionados",
     "CannotMakeSelectedTopicsPublic": "No se pueden hacer públicos los temas seleccionados",
     "CannotResetPublicStatusForSelectedTopics": "No se puede restablecer el estado público de los temas seleccionados",
     "CannotUpdateTopicPublicStatus": "No se puede actualizar el estado público del tema",
-    "Categories": "Categorías",
     "ConfirmDeleteTopics": "Confirmar eliminación de temas",
     "ConfirmDeleteTopicsMessage": "¿Confirmas eliminar {count, plural, =0 {ningún tema} =1 {# tema seleccionado} other {# temas seleccionados}}?",
     "Delete": "Eliminar",
@@ -1010,24 +992,19 @@
     "Edit": "Editar",
     "EditQuestions": "Editar Preguntas",
     "ErrorLoadingTopicsData": "Error al cargar los datos de temas disponibles",
-    "Keywords": "Palabras clave",
-    "Language": "Idioma",
     "MakingSelectedTopicsPublic": "Haciendo públicos los temas seleccionados...",
     "MarkSelectedAsPrivate": "Marcar Seleccionados como Privados",
     "MarkSelectedAsPublic": "Marcar Seleccionados como Públicos",
-    "No": "No",
     "NoTopicsFound": "No se encontraron temas",
     "NoTopicsFoundDescription": "Cambia los filtros para permitir mostrar temas (si los hay), o crea los tuyos propios.",
     "Public": "Público",
-    "Questions": "Preguntas",
     "Reload": "Recargar",
     "ResettingPublicStatusForSelectedTopics": "Restableciendo estado público de los temas seleccionados...",
     "SelectDeselectAll": "Seleccionar/deseleccionar todo",
     "SelectTopic": "Seleccionar tema",
     "SuccessfullyDeletedSelectedTopics": "Temas seleccionados eliminados exitosamente",
     "SuccessfullyMadeSelectedTopicsPublic": "Temas seleccionados hechos públicos exitosamente",
-    "SuccessfullyResetPublicStatusForSelectedTopics": "Estado público de temas seleccionados restablecido exitosamente",
-    "TopicName": "Nombre del Tema"
+    "SuccessfullyResetPublicStatusForSelectedTopics": "Estado público de temas seleccionados restablecido exitosamente"
   },
   "ManageTopicsPageModalsWrapper": {
     "RequestedTopicNotExists": "El tema solicitado no existe."
@@ -1468,9 +1445,6 @@
     "UnlimitedUser": "un usuario ILIMITADO"
   },
   "ViewAnswerCard": {
-    "AddNewAnswer": "Agregar Nueva Respuesta",
-    "DeleteAnswer": "Eliminar Respuesta",
-    "GenerateAnswers": "Generar Respuestas",
     "ViewAnswer": "Ver Respuesta"
   },
   "ViewAnswerContentSummary": {
@@ -1512,8 +1486,6 @@
     "ViewCategory": "Ver categoría"
   },
   "ViewQuestionCard": {
-    "AddNewQuestion": "Agregar Nueva Pregunta",
-    "DeleteQuestion": "Eliminar Pregunta",
     "ViewQuestion": "Ver Pregunta"
   },
   "ViewQuestionContentSummary": {
@@ -1522,7 +1494,6 @@
     "AnswersCount": "Respuestas",
     "Author": "Autor",
     "Created": "Creado",
-    "GenerateAnswers": "Generar Respuestas",
     "ManageAnswers": "Gestionar Respuestas",
     "ManageTopic": "Gestionar Tema",
     "Modified": "Modificado",
@@ -1553,12 +1524,9 @@
     "YouAreTheAuthor": "Eres el autor"
   },
   "ViewTopicPage": {
-    "AddNewQuestion": "Agregar Nueva Pregunta",
     "Back": "Atrás",
     "CannotUpdateTopicData": "No se pueden actualizar los datos del tema",
-    "DeleteTopic": "Eliminar Tema",
     "Edit": "Editar",
-    "NoTopicFound": "No se encontró tema",
     "Questions": "Preguntas",
     "Reload": "Recargar",
     "ViewTopic": "Ver Tema"

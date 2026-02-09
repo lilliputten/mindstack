@@ -28,16 +28,15 @@ interface TEditAnswerPageHolderProps {
 export function EditAnswerPageHolder(props: TEditAnswerPageHolderProps) {
   const { topicId, questionId, answerId } = props;
   const t = useT();
-  // const { manageScope } = useManageTopicsStore();
 
   if (!topicId) {
-    throw new Error(t('EditAnswerCard.NoTopicFound'));
+    throw new Error(t('NoTopicFound'));
   }
   if (!questionId) {
-    throw new Error(t('EditAnswerCard.NoQuestionFound'));
+    throw new Error(t('NoQuestionFound'));
   }
   if (!answerId) {
-    throw new Error(t('EditAnswerCard.NoAnswerFound'));
+    throw new Error(t('NoAnswerFound'));
   }
 
   const availableTopicQuery = useAvailableTopicById({ id: topicId });
@@ -89,13 +88,13 @@ export function EditAnswerPageHolder(props: TEditAnswerPageHolderProps) {
   }
 
   if (!topic) {
-    throw new Error(t('EditAnswerCard.NoTopicFound'));
+    throw new Error(t('NoTopicFound'));
   }
   if (!question) {
-    throw new Error(t('EditAnswerCard.NoQuestionFound'));
+    throw new Error(t('NoQuestionFound'));
   }
   if (!answer) {
-    throw new Error(t('EditAnswerCard.NoAnswerFound'));
+    throw new Error(t('NoAnswerFound'));
   }
 
   return (

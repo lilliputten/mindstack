@@ -83,10 +83,10 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
   } = availableQuestionQuery;
 
   if (!topic) {
-    throw new Error(t('EditQuestionCard.NoTopicFound'));
+    throw new Error(t('NoTopicFound'));
   }
   if (!question) {
-    throw new Error(t('EditQuestionCard.NoQuestionFound'));
+    throw new Error(t('NoQuestionFound'));
   }
 
   const [isPending, startTransition] = React.useTransition();
@@ -242,16 +242,14 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       {
         id: 'Back',
         content: t('Back'),
-        // variant: 'ghost',
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: goBack,
       },
       {
         id: 'Reload',
-        content: t('EditQuestionCard.Reload'),
+        content: t('Reload'),
         title: t('EditQuestionCard.ReloadDataFromServer'),
-        // variant: 'ghost',
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: availableQuestionQuery.isRefetching,
@@ -259,8 +257,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Reset',
-        content: t('EditQuestionCard.ResetChanges'),
-        // variant: 'ghost',
+        content: t('ResetChanges'),
         icon: Icons.Close,
         visibleFor: 'lg',
         onClick: () => form.reset(),
@@ -268,18 +265,15 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       },
       {
         id: 'Add New Question',
-        content: t('EditQuestionCard.AddNewQuestion'),
-        // variant: 'success',
+        content: t('AddNewQuestion'),
         icon: Icons.Add,
-        // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
       },
       {
         id: 'Delete Question',
-        content: t('EditQuestionCard.DeleteQuestion'),
+        content: t('DeleteQuestion'),
         variant: 'destructive',
         icon: Icons.Trash,
-        // visibleFor: 'lg',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/delete?questionId=${questionId}`),
       },
       {
