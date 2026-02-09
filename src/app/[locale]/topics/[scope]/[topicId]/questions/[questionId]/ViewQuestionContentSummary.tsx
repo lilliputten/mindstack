@@ -94,10 +94,10 @@ export function ViewQuestionContentSummary(props: TProps) {
               'flex items-center gap-2',
               (!aiGenerationsAllowed || aiGenerationsLoading) && 'disabled',
             )}
-            title={t('ViewQuestionContentSummary.GenerateAnswers')}
+            title={t('GenerateAnswers')}
           >
             <Icons.WandSparkles className="size-4 opacity-50" />
-            <span>{t('ViewQuestionContentSummary.GenerateAnswers')}</span>
+            <span>{t('GenerateAnswers')}</span>
           </Link>
         </div>
       </div>

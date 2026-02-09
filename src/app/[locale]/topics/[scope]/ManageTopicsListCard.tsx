@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
@@ -24,12 +25,13 @@ import {
 } from '@/components/ui/Table';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { useSignInModalContext } from '@/components/modals';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
-import { rootAliasRoute, TRoutePath } from '@/config';
+import { myTopicsRoute, rootAliasRoute, TRoutePath, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsNamespaces } from '@/contexts/TopicsContext';
 import { useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
@@ -65,6 +67,54 @@ interface TTopicsTableContentProps extends TManageTopicsListCardProps {
 type TMemo = { allTopics: TAvailableTopic[] };
 
 const useDarkHeader = true;
+
+function AddTopicBlock() {
+  const t = useT();
+  const addTopicRoute = `${myTopicsRoute}/add` as TRoutePath;
+  const { showSignInModal } = useSignInModalContext();
+  const {
+    data: sessionData,
+    // status: sessionStatus,
+  } = useSession();
+  const user = sessionData?.user;
+  // const isAdmin = user?.role === 'ADMIN';
+
+  return user?.id ? (
+    <div className="flex items-center justify-center">
+      <Link
+        href={addTopicRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+      >
+        <Icons.Plus className="size-5" />
+        {t('AddNewTopic')}
+      </Link>
+    </div>
+  ) : (
+    <div
+      className={cn(
+        isDev && '__AvailableTopicsList_Info', // DEBUG
+        'flex items-center gap-2 rounded-md border border-theme/10 p-2',
+      )}
+    >
+      <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+      <p className="content-text flex-1 text-sm">
+        {t.rich('UnauthorizedUsersCantAddTopicMessage', {
+          SigninLink: (chunks) => (
+            <Link
+              onClick={(ev) => {
+                ev.preventDefault();
+                showSignInModal();
+              }}
+              href={welcomeAliasRoute}
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
+    </div>
+  );
+}
 
 function TopicsTableHeader({
   isAdminMode,
@@ -132,24 +182,24 @@ function TopicsTableHeader({
           </TableHead>
           )*/}
         <TableHead id="name" className="truncate">
-          {t('ManageTopicsListCard.TopicName')}
+          {t('TopicName')}
         </TableHead>
         <TableHead id="categories" className="truncate max-md:hidden">
-          {t('ManageTopicsListCard.Categories')}
+          {t('Categories')}
         </TableHead>
         <TableHead id="questions" className="truncate max-md:hidden">
-          {t('ManageTopicsListCard.Questions')}
+          {t('Questions')}
         </TableHead>
         {isAdminMode && (
           <TableHead id="topicUser" className="truncate max-lg:hidden">
-            {t('ManageTopicsListCard.Author')}
+            {t('Author')}
           </TableHead>
         )}
         <TableHead id="language" className="truncate max-xl:hidden">
-          {t('ManageTopicsListCard.Language')}
+          {t('Language')}
         </TableHead>
         <TableHead id="keywords" className="truncate max-xl:hidden">
-          {t('ManageTopicsListCard.Keywords')}
+          {t('Keywords')}
         </TableHead>
         <TableHead id="isPublic" className="truncate max-md:hidden">
           {t('ManageTopicsListCard.Public')}
@@ -574,6 +624,7 @@ export function TopicsTableContent(props: TTopicsTableContentProps) {
           ))}
         </TableBody>
       </Table>
+      <AddTopicBlock />
     </ScrollAreaInfinite>
   );
 }
@@ -780,7 +831,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Add',
-        content: t('ManageTopicsListCard.AddNewTopic'),
+        content: t('AddNewTopic'),
         icon: Icons.Add,
         visibleFor: 'md',
         // onClick: handleAddTopic,

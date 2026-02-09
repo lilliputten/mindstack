@@ -66,14 +66,14 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Add New Answer',
-        content: t('ViewAnswerCard.AddNewAnswer'),
+        content: t('AddNewAnswer'),
         icon: Icons.Add,
         visibleFor: 'xl',
         href: `${answersListRoutePath}/add`,
       },
       {
         id: 'Generate Answers',
-        content: t('ViewAnswerCard.GenerateAnswers'),
+        content: t('GenerateAnswers'),
         icon: Icons.WandSparkles,
         visibleFor: 'xl',
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
@@ -81,7 +81,7 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
       },
       {
         id: 'Delete Answer',
-        content: t('ViewAnswerCard.DeleteAnswer'),
+        content: t('DeleteAnswer'),
         icon: Icons.Trash,
         visibleFor: 'xl',
         href: `${answersListRoutePath}/delete?answerId=${answer.id}&from=ViewAnswerCard`,

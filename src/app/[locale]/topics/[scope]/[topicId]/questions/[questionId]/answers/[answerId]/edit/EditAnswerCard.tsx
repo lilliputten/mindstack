@@ -71,10 +71,10 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
   const { answer } = availableAnswerQuery;
 
   if (!topic) {
-    throw new Error(t('EditAnswerCard.NoTopicFound'));
+    throw new Error(t('NoTopicFound'));
   }
   if (!question) {
-    throw new Error(t('EditAnswerCard.NoQuestionFound'));
+    throw new Error(t('NoQuestionFound'));
   }
   if (!answer) {
     throw new Error(t('EditAnswerCard.NoAnswerFound'));
@@ -228,7 +228,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Save',
-        content: t('EditAnswerCard.Save'),
+        content: t('Save'),
         variant: 'success',
         icon: Icons.Check,
         visibleFor: 'md',
@@ -239,7 +239,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       {
         id: 'Reload',
         content: t('EditAnswerCard.Reload'),
-        title: t('EditAnswerCard.ReloadDataFromServer'),
+        title: t('ReloadDataFromServer'),
         icon: Icons.Refresh,
         visibleFor: 'xl',
         pending: availableAnswerQuery.isRefetching,
@@ -247,7 +247,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Add New Question',
-        content: t('EditAnswerCard.AddNewQuestion'),
+        content: t('AddNewQuestion'),
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${questionsListRoutePath}/add`),
@@ -261,27 +261,27 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
       },
       {
         id: 'Add New Answer',
-        content: t('EditAnswerCard.AddNewAnswer'),
+        content: t('AddNewAnswer'),
         icon: Icons.Add,
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
       },
       {
         id: 'Generate Answers',
-        content: t('EditAnswerCard.GenerateAnswers'),
+        content: t('GenerateAnswers'),
         icon: Icons.WandSparkles,
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
       },
       {
         id: 'Reset',
-        content: t('EditAnswerCard.ResetChanges'),
+        content: t('ResetChanges'),
         icon: Icons.Close,
         onClick: () => form.reset(),
         hidden: !form.formState.isDirty,
       },
       {
         id: 'Delete Answer',
-        content: t('EditAnswerCard.DeleteAnswer'),
+        content: t('DeleteAnswer'),
         variant: 'destructive',
         icon: Icons.Trash,
         onClick: () => goToTheRoute(`${answersListRoutePath}/delete?answerId=${answer.id}`),
@@ -316,7 +316,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
   return (
     <>
       <DashboardHeader
-        heading={t('EditAnswerCard.EditAnswer')}
+        heading={t('EditAnswer')}
         className={cn(
           isDev && '__EditAnswerCard_DashboardHeader', // DEBUG
           'mx-6',

@@ -84,13 +84,13 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
       },
       {
         id: 'Add New Question',
-        content: t('ViewQuestionCard.AddNewQuestion'),
+        content: t('AddNewQuestion'),
         icon: Icons.Add,
         href: `${questionsListRoutePath}/add`,
       },
       {
         id: 'Delete Question',
-        content: t('ViewQuestionCard.DeleteQuestion'),
+        content: t('DeleteQuestion'),
         icon: Icons.Trash,
         href: `${questionsListRoutePath}/delete?questionId=${question.id}&from=ViewQuestionCard`,
       },

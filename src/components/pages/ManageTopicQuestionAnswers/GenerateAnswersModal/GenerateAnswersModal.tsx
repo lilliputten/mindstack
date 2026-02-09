@@ -115,7 +115,8 @@ export function GenerateAnswersModal() {
   } = availableAnswersQuery;
   const isAnswersPending = !isAnswersFetched || isAnswersLoading;
 
-  useModalTitle(t('GenerateAnswersModal.ModalTitle'), shouldBeVisible);
+  const title = t('GenerateAnswers');
+  useModalTitle(title, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // const generateAnswersMutation = useMutation<TGeneratedAnswers, Error, TFormData>({
@@ -321,9 +322,9 @@ export function GenerateAnswersModal() {
           'flex flex-col border-b bg-theme px-6 py-4 text-theme-foreground',
         )}
       >
-        <DialogTitle className="DialogTitle">{t('GenerateAnswersModal.DialogTitle')}</DialogTitle>
+        <DialogTitle className="DialogTitle">{title}</DialogTitle>
         <DialogDescription aria-hidden="true" hidden>
-          {t('GenerateAnswersModal.DialogDescription')}
+          {title}
         </DialogDescription>
       </div>
       <div

@@ -1,5 +1,9 @@
 {
   "AccessDeniedError": "Доступ запрещен",
+  "AddNewAnswer": "Добавить новый ответ",
+  "AddNewCategory": "Добавить новую категорию",
+  "AddNewQuestion": "Добавить новый вопрос",
+  "AddNewTopic": "Добавить новую тему",
   "AddTopic": "Добавить тему",
   "AiClientTypeHint": "Выберите AI провайдера для генерации данных",
   "AiClientTypeLabel": "AI Провайдер",
@@ -28,13 +32,19 @@
   "CurrentProgress": "Текущий прогресс",
   "CurrentSessionRatio": "Текущий счёт",
   "Delete": "Удалить",
+  "DeleteAnswer": "Удалить ответ",
+  "DeleteQuestion": "Удалить вопрос",
+  "DeleteTopic": "Удалить тему",
   "Deleting": "Удаление",
   "Description": "Описание",
   "Edit": "Редактировать",
+  "EditAnswer": "Редактировать ответ",
+  "EditAnswers": "Редактировать ответы",
   "EditTopic": "Редактировать тему",
   "ExtraLimitsErrorText": "<PricesLink>Проверьте</PricesLink> условия вашего тарифного плана.",
   "Finish": "Завершить",
   "FinishedAt": "Завершено в",
+  "GenerateAnswers": "Генерировать ответы",
   "GenerateQuestions": "Генерировать вопросы",
   "GenerationMode": "Режим генерации",
   "GoBack": "Назад",
@@ -46,16 +56,21 @@
   "Language": "Язык",
   "LastActivity": "Последняя активность",
   "LegalOwnerName": "Михеев И.А.",
+  "ManageOrCreateYourOwnTopics": "Управлять или создавать свои собственные темы",
   "ManageTopics": "Управление темами",
   "Modified": "Изменено",
   "NN": "№",
   "Name": "Название",
   "NavigationMenu": "Меню навигации",
-  "No": "Нет",
+  "No": "Номер",
+  "NoAnswerFound": "Ответ не найден",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
   "NoCategoriesAvailable": "Нет доступных категорий",
   "NoFiltersApplied": "Фильтры не применены",
+  "NoQuestionFound": "Вопрос не найден",
   "NoQuestions": "Нет вопросов",
+  "NoQuestionsCreatedYet": "Вопросы ещё не созданы",
+  "NoTopicFound": "Тема не найдена",
   "NoTopics": "Нет тем",
   "NoTopicsAvailable": "Нет доступных тем",
   "NoWorkoutsAvailable": "Нет доступных тренировок",
@@ -66,11 +81,13 @@
   "Properties": "Характеристики",
   "Public": "Публично",
   "Question": "Вопрос",
+  "QuestionText": "Текст вопроса",
   "Questions": "Вопросы",
   "QuestionsCount": "Количество вопросов",
   "ReasonCode": "Код причины",
   "Refresh": "Обновить",
   "Reload": "Обновить",
+  "ReloadDataFromServer": "Перезагрузить данные с сервера",
   "Reset": "Сбросить",
   "ResetChanges": "Сбросить изменения",
   "ResetToDefaults": "Настройки по умолчанию",
@@ -85,6 +102,7 @@
   "StartTraining": "Начать тренировку",
   "StartedAt": "Начато в",
   "Status": "Статус",
+  "SuggestNewCategory": "Предложить новую категорию",
   "Timeline": "Хронология",
   "ToTraining": "К тренировке",
   "Topic": "Тема",
@@ -97,6 +115,7 @@
   "Training": "Тренировка",
   "TrainingStatus": "Статус тренировки",
   "Trainings": "Тренировки",
+  "UnauthorizedUsersCantAddTopicMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут добавлять свои собственные и общедоступные темы.",
   "UnknownError": "Неизвестная ошибка",
   "UnknownTopic": "Неизвестная тема",
   "Unlimited": "Не ограничено",
@@ -143,10 +162,8 @@
   },
   "AddCategoryModal": {
     "CantSaveCategory": "Невозможно сохранить категорию",
-    "DialogTitle": "Добавить новую категорию",
     "ForbiddenSuggestionMessage": "Чтобы поддерживать качество, мы ограничиваем частоту предложения новых категорий. \nПожалуйста, повторите попытку позже. Период ожидания: {time}.",
     "ForbiddenSuggestionTitle": "Достигнут лимит предложений новых категорий",
-    "SuggestDialogTitle": "Предложить новую категорию",
     "UnauthorizedUserMessage": "Только авторизованные пользователи могут добавлять категории.",
     "UnauthorizedUserTitle": "Неавторизованный пользователь"
   },
@@ -180,9 +197,6 @@
     "TopicName": "Название темы"
   },
   "AddTopicModal": {
-    "DialogDescription": "Добавить диалог темы",
-    "DialogTitle": "Добавить тему",
-    "ModalTitle": "Добавить тему",
     "ToastError": "Невозможно создать новую тему",
     "ToastLoading": "Создание новой темы...",
     "ToastSuccess": "Новая тема \"{name}\" успешно создана"
@@ -300,7 +314,6 @@
     "ManageCategories": "Управление категориями",
     "ManageYourCategoriesAction": "Редактировать свои категории",
     "NoCategoriesExplanation": "Нет доступных категорий. Измените настройки фильтров.",
-    "SuggestNewCategory": "Предложить новую категорию",
     "UnauthorizedUserSuggestionMessage": "<SigninLink>Авторизованные пользователи</SigninLink> могут предлагать новые категории."
   },
   "AvailableTopics": {
@@ -363,8 +376,7 @@
     "ShowOnlyMyTopicsHint": "Показывать только мои собственные темы."
   },
   "AvailableTopicsList": {
-    "ChangeFiltersText": "Измените фильтры, чтобы разрешить отображение публичных тем (если они есть), или создайте свои собственные.",
-    "ManageOrCreateYourOwnTopics": "Управлять или создавать свои собственные темы"
+    "ChangeFiltersText": "Измените фильтры, чтобы разрешить отображение публичных тем (если они есть), или создайте свои собственные."
   },
   "AvailableTopicsListPage": {
     "AvailableTopicsHeading": "Доступные темы",
@@ -569,20 +581,9 @@
     "ToastSuccess": "Тема \"{name}\" успешно удалена"
   },
   "EditAnswerCard": {
-    "AddNewAnswer": "Добавить новый ответ",
-    "AddNewQuestion": "Добавить новый вопрос",
     "CannotSaveAnswerData": "Не удаётся сохранить данные ответа",
     "CannotUpdateAnswerData": "Не удаётся обновить данные ответа",
-    "DeleteAnswer": "Удалить ответ",
-    "EditAnswer": "Редактировать ответ",
-    "GenerateAnswers": "Генерировать ответы",
-    "NoAnswerFound": "Ответ не найден",
-    "NoQuestionFound": "Вопрос не найден",
-    "NoTopicFound": "Тема не найдена",
     "Reload": "Обновить",
-    "ReloadDataFromServer": "Перезагрузить данные с сервера",
-    "ResetChanges": "Сбросить изменения",
-    "Save": "Сохранить",
     "SavingAnswerData": "Сохранение данных ответа...",
     "SuccessfullySavedAnswer": "Ответ успешно сохранён"
   },
@@ -644,19 +645,13 @@
     "SavingData": "Сохранение данных категории..."
   },
   "EditQuestionCard": {
-    "AddNewQuestion": "Добавить новый вопрос",
     "Back": "Назад",
     "CannotSaveQuestionData": "Не удаётся сохранить данные вопроса",
     "CannotUpdateQuestionData": "Не удаётся обновить данные вопроса",
-    "DeleteQuestion": "Удалить вопрос",
     "EditQuestionProperties": "Редактировать свойства вопроса",
     "ItShouldBeAPositiveNumber": "Это должно быть положительным числом.",
     "MinimalValueShouldBeLessThanMaximal": "Минимальное значение должно быть меньше максимального.",
-    "NoQuestionFound": "Вопрос не найден",
-    "NoTopicFound": "Тема не найдена",
-    "Reload": "Обновить",
     "ReloadDataFromServer": "Перезагрузить данные с сервера",
-    "ResetChanges": "Сбросить изменения",
     "Save": "Сохранить",
     "SavingQuestionData": "Сохранение данных вопроса...",
     "SuccessfullySavedQuestion": "Вопрос успешно сохранён"
@@ -737,9 +732,6 @@
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateAnswersModal": {
-    "DialogDescription": "Генерировать диалог ответов",
-    "DialogTitle": "Генерировать ответы",
-    "ModalTitle": "Генерировать ответы",
     "NoQuestionIdDefined": "Идентификатор вопроса не задан",
     "ToastErrorAnswers": "Невозможно добавить ответы",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
@@ -954,7 +946,6 @@
     "UpdatedBy": "Обновлено"
   },
   "ManageTopicQuestionAnswersListCard": {
-    "AddNewAnswer": "Добавить новый ответ",
     "Cancel": "Отмена",
     "CannotDeleteSelectedAnswers": "Не удаётся удалить выбранные ответы",
     "ConfirmDeleteSelectedAnswers": "Подтвердить удаление выбранных ответов",
@@ -963,14 +954,11 @@
     "DeleteSelected": "Удалить выбранные",
     "Deleting": "Удаление",
     "DeletingSelectedAnswers": "Удаление выбранных ответов...",
-    "GenerateAnswers": "Генерировать ответы",
     "NoAnswersDescription": "У вас еще нет ответов. Добавьте любой ответ в свой профиль.",
     "SelectedAnswersCount": "Количество выбранных ответов: {count}.",
     "SuccessfullyDeletedSelectedAnswers": "Выбранные ответы успешно удалены"
   },
   "ManageTopicQuestionsListCard": {
-    "AddNewQuestion": "Добавить новый вопрос",
-    "Answers": "Ответы",
     "Back": "Назад",
     "Cancel": "Отмена",
     "CannotDeleteSelectedQuestions": "Не удаётся удалить выбранные вопросы",
@@ -982,26 +970,20 @@
     "Deleting": "Удаление",
     "DeletingSelectedQuestions": "Удаление выбранных вопросов...",
     "Edit": "Редактировать",
-    "EditAnswers": "Редактировать ответы",
     "Generated": "Сгенерировано",
     "ManageQuestions": "Управление вопросами",
-    "NoQuestionsCreatedYet": "Вопросы ещё не созданы",
     "NoQuestionsDescription": "У вас ещё нет вопросов. Добавьте любой вопрос в свой профиль.",
-    "QuestionText": "Текст вопроса",
     "Reload": "Обновить",
     "SelectDeselectAll": "Выбрать/отменить всё",
     "SelectQuestion": "Выбрать вопрос",
     "SuccessfullyDeletedSelectedQuestions": "Выбранные вопросы успешно удалены"
   },
   "ManageTopicsListCard": {
-    "AddNewTopic": "Добавить новую тему",
-    "Author": "Автор",
     "Back": "Назад",
     "CannotDeleteSelectedTopics": "Не удаётся удалить выбранные темы",
     "CannotMakeSelectedTopicsPublic": "Не удаётся сделать выбранные темы публичными",
     "CannotResetPublicStatusForSelectedTopics": "Не удаётся сбросить публичный статус выбранных тем",
     "CannotUpdateTopicPublicStatus": "Не удаётся обновить публичный статус темы",
-    "Categories": "Категории",
     "ConfirmDeleteTopics": "Подтвердить удаление тем",
     "ConfirmDeleteTopicsMessage": "Подтверждаете удаление {count, plural, =0 {ни одной темы} =1 {# выбранной темы} few {# выбранных тем} other {# выбранных тем}}?",
     "Delete": "Удалить",
@@ -1011,24 +993,19 @@
     "Edit": "Редактировать",
     "EditQuestions": "Редактировать вопросы",
     "ErrorLoadingTopicsData": "Ошибка загрузки данных доступных тем",
-    "Keywords": "Ключевые слова",
-    "Language": "Язык",
     "MakingSelectedTopicsPublic": "Делаем выбранные темы публичными...",
     "MarkSelectedAsPrivate": "Отметить выбранные как приватные",
     "MarkSelectedAsPublic": "Отметить выбранные как публичные",
-    "No": "Номер",
     "NoTopicsFound": "Темы не найдены",
     "NoTopicsFoundDescription": "Измените фильтры, чтобы разрешить отображение тем (если они есть), или создайте свои собственные.",
     "Public": "Публичная",
-    "Questions": "Вопросы",
     "Reload": "Обновить",
     "ResettingPublicStatusForSelectedTopics": "Сброс публичного статуса выбранных тем...",
     "SelectDeselectAll": "Выбрать/отменить всё",
     "SelectTopic": "Выбрать тему",
     "SuccessfullyDeletedSelectedTopics": "Выбранные темы успешно удалены",
     "SuccessfullyMadeSelectedTopicsPublic": "Выбранные темы успешно сделаны публичными",
-    "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем успешно сброшен",
-    "TopicName": "Название темы"
+    "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем успешно сброшен"
   },
   "ManageTopicsPageModalsWrapper": {
     "RequestedTopicNotExists": "Запрошенная тема не существует."
@@ -1469,9 +1446,6 @@
     "UnlimitedUser": "UNLIMITED пользователь"
   },
   "ViewAnswerCard": {
-    "AddNewAnswer": "Добавить новый ответ",
-    "DeleteAnswer": "Удалить ответ",
-    "GenerateAnswers": "Генерировать ответы",
     "ViewAnswer": "Просмотр ответа"
   },
   "ViewAnswerContentSummary": {
@@ -1513,8 +1487,6 @@
     "ViewCategory": "Просмотр категории"
   },
   "ViewQuestionCard": {
-    "AddNewQuestion": "Добавить новый вопрос",
-    "DeleteQuestion": "Удалить вопрос",
     "ViewQuestion": "Просмотр вопроса"
   },
   "ViewQuestionContentSummary": {
@@ -1523,7 +1495,6 @@
     "AnswersCount": "Ответов",
     "Author": "Автор",
     "Created": "Создано",
-    "GenerateAnswers": "Генерировать ответы",
     "ManageAnswers": "Управление ответами",
     "ManageTopic": "Управление темой",
     "Modified": "Изменено",
@@ -1554,12 +1525,9 @@
     "YouAreTheAuthor": "Вы автор"
   },
   "ViewTopicPage": {
-    "AddNewQuestion": "Добавить новый вопрос",
     "Back": "Назад",
     "CannotUpdateTopicData": "Не удаётся обновить данные темы",
-    "DeleteTopic": "Удалить тему",
     "Edit": "Редактировать",
-    "NoTopicFound": "Тема не найдена",
     "Questions": "Вопросы",
     "Reload": "Обновить",
     "ViewTopic": "Просмотр темы"

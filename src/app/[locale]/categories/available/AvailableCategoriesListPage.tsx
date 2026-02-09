@@ -44,7 +44,7 @@ export function AvailableCategoriesListPage(props: TProps) {
       [
         {
           id: 'SuggestNewCategory',
-          content: t('AvailableCategoriesList.SuggestNewCategory'),
+          content: t('SuggestNewCategory'),
           variant: 'ghost',
           icon: Icons.Plus,
           visibleFor: 'lg',

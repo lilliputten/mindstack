@@ -12,7 +12,7 @@ import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { useSignInModalContext } from '@/components/modals';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
-import { manageCategoriesRoute, rootAliasRoute, startAliasRoute, TRoutePath } from '@/config';
+import { manageCategoriesRoute, rootAliasRoute, TRoutePath, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useCategoriesFiltersContext } from '@/features/categories/contexts';
 import { useAvailableCategories } from '@/features/categories/query-hooks';
@@ -27,12 +27,57 @@ interface TProps extends TPropsWithClassName {
   availableCategoriesQuery: ReturnType<typeof useAvailableCategories>;
 }
 
+function AddCategoryBlock() {
+  const t = useT();
+  const { showSignInModal } = useSignInModalContext();
+  const {
+    data: sessionData,
+    // status: sessionStatus,
+  } = useSession();
+  const user = sessionData?.user;
+  // const isAdmin = user?.role === 'ADMIN';
+
+  return user?.id ? (
+    <div className="flex items-center justify-center">
+      <Link
+        href={'/categories/available/suggest' as TRoutePath}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+      >
+        <Icons.Plus className="size-5" />
+        {t('SuggestNewCategory')}
+      </Link>
+    </div>
+  ) : (
+    <div
+      className={cn(
+        isDev && '__AvailableCategoriesList_Info', // DEBUG
+        'flex items-center gap-2 rounded-md border border-theme/10 p-2',
+      )}
+    >
+      <Icons.Info className="size-6 flex-shrink-0 text-theme" />
+      <p className="content-text flex-1 text-sm">
+        {t.rich('AvailableCategoriesList.UnauthorizedUserSuggestionMessage', {
+          SigninLink: (chunks) => (
+            <Link
+              onClick={(ev) => {
+                ev.preventDefault();
+                showSignInModal();
+              }}
+              href={welcomeAliasRoute}
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
+    </div>
+  );
+}
+
 export function AvailableCategoriesList(props: TProps) {
   const t = useT();
 
   const { className, availableCategoriesQuery } = props;
-
-  const { showSignInModal } = useSignInModalContext();
 
   const {
     data: sessionData,
@@ -147,41 +192,7 @@ export function AvailableCategoriesList(props: TProps) {
       {allCategories.map((category) => (
         <AvailableCategoriesListItem key={category.id} category={category} />
       ))}
-      {user?.id ? (
-        <div className="flex items-center justify-center">
-          <Link
-            href={'/categories/available/suggest' as TRoutePath}
-            className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
-          >
-            <Icons.Plus className="size-5" />
-            {t('AvailableCategoriesList.SuggestNewCategory')}
-          </Link>
-        </div>
-      ) : (
-        <div
-          className={cn(
-            isDev && '__AvailableCategoriesList_Info', // DEBUG
-            'flex items-center gap-2 rounded-md border border-theme/10 p-2',
-          )}
-        >
-          <Icons.Info className="size-6 flex-shrink-0 text-theme" />
-          <p className="content-text flex-1 text-sm">
-            {t.rich('AvailableCategoriesList.UnauthorizedUserSuggestionMessage', {
-              SigninLink: (chunks) => (
-                <Link
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    showSignInModal();
-                  }}
-                  href={startAliasRoute}
-                >
-                  {chunks}
-                </Link>
-              ),
-            })}
-          </p>
-        </div>
-      )}
+      <AddCategoryBlock />
     </ScrollAreaInfinite>
   );
 }

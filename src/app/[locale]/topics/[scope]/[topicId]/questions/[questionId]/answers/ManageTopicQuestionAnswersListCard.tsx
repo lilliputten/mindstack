@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
@@ -58,6 +59,34 @@ export interface TManageTopicQuestionAnswersListCardProps {
 const useDarkHeader = true;
 
 const truncateLongMarkdownTextsTo = 200;
+
+function AddAnswerBlock(props: { topicId: TTopicId }) {
+  const { topicId } = props;
+  const t = useT();
+  const { manageScope } = useManageTopicsStore();
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const answersListRoutePath = `${topicRoutePath}/answers`;
+  const addAnswerRoute = `${answersListRoutePath}/add` as TRoutePath;
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
+
+  if (!user?.id) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center justify-center">
+      <Link
+        href={addAnswerRoute}
+        className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+      >
+        <Icons.Plus className="size-5" />
+        {t('AddNewAnswer')}
+      </Link>
+    </div>
+  );
+}
 
 function AnswersTableHeader({
   // isAdminMode,
@@ -350,11 +379,6 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
 
   const goBack = useGoBack(questionsListRoutePath);
 
-  // const user = useSessionUser();
-  // const isLogged = !!user;
-  // const isAdmin = user?.role === 'ADMIN';
-  // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
-
   const {
     allAnswers,
     hasAnswers,
@@ -437,13 +461,11 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
                 buttonVariants({ variant: 'theme' }),
                 'content-truncate flex items-center gap-2',
               )}
-              aria-label={t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
-              title={t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
+              aria-label={t('AddNewAnswer')}
+              title={t('AddNewAnswer')}
             >
               <Icons.Add className="hidden size-4 opacity-50 sm:flex" />
-              <span className="truncate">
-                {t('ManageTopicQuestionAnswersListCard.AddNewAnswer')}
-              </span>
+              <span className="truncate">{t('AddNewAnswer')}</span>
             </Link>
             <Link
               href={`${answersListRoutePath}/generate` as TRoutePath}
@@ -451,13 +473,11 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
                 buttonVariants({ variant: 'secondary' }),
                 'content-truncate flex items-center gap-2',
               )}
-              aria-label={t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
-              title={t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
+              aria-label={t('GenerateAnswers')}
+              title={t('GenerateAnswers')}
             >
               <Icons.WandSparkles className="hidden size-4 opacity-50 sm:flex" />
-              <span className="truncate">
-                {t('ManageTopicQuestionAnswersListCard.GenerateAnswers')}
-              </span>
+              <span className="truncate">{t('GenerateAnswers')}</span>
             </Link>
           </>
         }
@@ -510,6 +530,7 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
           ))}
         </TableBody>
       </Table>
+      <AddAnswerBlock topicId={topicId} />
     </ScrollAreaInfinite>
   );
 }
@@ -648,14 +669,14 @@ export function ManageTopicQuestionAnswersListCard(
       },
       {
         id: 'Add New Answer',
-        content: t('ManageTopicQuestionAnswersListCard.AddNewAnswer'),
+        content: t('AddNewAnswer'),
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
       },
       {
         id: 'Generate Answers',
-        content: t('ManageTopicQuestionAnswersListCard.GenerateAnswers'),
+        content: t('GenerateAnswers'),
         icon: Icons.WandSparkles,
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
