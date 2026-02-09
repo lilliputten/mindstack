@@ -6,7 +6,7 @@ import {
   myTopicsRoute,
   recentTrainingsRoute,
   rootCategoriesRoute,
-  // welcomeAliasRoute,
+  settingsRoute,
 } from './routesConfig';
 
 export type SiteMenu = {
@@ -36,6 +36,11 @@ export const siteMenu: SiteMenu = {
       titleId: 'Trainings',
       icon: Icons.Rocket,
       href: recentTrainingsRoute,
+    },
+    {
+      titleId: 'Settings',
+      icon: Icons.Settings,
+      href: settingsRoute,
     },
     /* // UNUSED
     {
