@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { CategoryOrderByWithRelationInputSchema } from '@/generated/prisma';
+import { CategoryOrderByWithRelationInputSchema, CategoryStatusSchema } from '@/generated/prisma';
 
 import { threeStateSchema } from '@/components/ui/ThreeStateField';
 import { isDev } from '@/config';
@@ -40,10 +40,15 @@ export const orderBySelectSchema = z.enum(orderBySelectOptions);
 
 export type TCategoryOrderBy = z.infer<typeof CategoryOrderByWithRelationInputSchema>;
 
+export const filtersDataSchemaStatus = z.enum([
+  'ANY',
+  ...CategoryStatusSchema.options, //'PUBLIC', 'SUGGESTED', 'HIDDEN'
+]);
+export type TFiltersDataSchemaStatus = z.infer<typeof filtersDataSchemaStatus>;
 export const filtersDataSchema = z.object({
   searchText: z.string().max(maxSearchTextLength).optional(),
   // searchLang: z.string().max(maxSearchTextLength).optional(),
-  status: z.enum(['PUBLIC', 'SUGGESTED', 'HIDDEN']).optional(),
+  status: filtersDataSchemaStatus.optional(),
   hasImage: threeStateSchema,
   hasTopics: threeStateSchema,
   orderBySelect: orderBySelectSchema.optional(),

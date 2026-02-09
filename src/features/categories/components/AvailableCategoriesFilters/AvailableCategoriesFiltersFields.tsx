@@ -3,8 +3,6 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-import { CategoryStatusSchema } from '@/generated/prisma';
-
 import { TPropsWithChildren, TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -23,6 +21,7 @@ import { FormHint } from '@/components/blocks/FormHint';
 import * as Images from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
+  filtersDataSchemaStatus,
   getFilterFieldName,
   getFiltersLabelValueString,
   maxSearchTextLength,
@@ -65,7 +64,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
   const hasTopicsKey = React.useId();
   const orderBySelectKey = React.useId();
 
-  const statusOptions = CategoryStatusSchema.options;
+  const statusOptions = filtersDataSchemaStatus.options; // CategoryStatusSchema.options;
 
   return (
     <div
@@ -80,7 +79,10 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
           name="searchText"
           control={form.control}
           render={({ field }) => (
-            <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
+            <FormItem
+              data-testid="searchTextKey"
+              className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}
+            >
               <Label className="truncate" htmlFor={searchTextKey}>
                 {getFilterFieldName('searchText', tTexts)}
               </Label>
@@ -189,9 +191,6 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                       />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">
-                        {t('AvailableCategoriesFiltersFields.AllStatuses')}
-                      </SelectItem>
                       {statusOptions.map((status) => (
                         <SelectItem key={status} value={status}>
                           {getFiltersLabelValueString('status', status, tTexts)}

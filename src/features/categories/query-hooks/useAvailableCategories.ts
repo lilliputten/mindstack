@@ -30,6 +30,8 @@ import {
   TGetAvailableCategoriesResults,
 } from '@/features/categories/types';
 
+import { TFiltersDataSchemaStatus } from '../contexts/CategoriesFiltersContext/CategoriesFiltersTypes';
+
 const itemsLimit = defaultItemsLimit;
 const staleTime = defaultStaleTime;
 
@@ -89,6 +91,10 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         const result = await Promise.race([
           getAvailableCategories({
             ...queryProps,
+            status:
+              (queryProps.status as TFiltersDataSchemaStatus) !== 'ANY'
+                ? queryProps.status
+                : undefined,
             skip: pageParam as number,
             take: all ? undefined : itemsLimit,
           }),
