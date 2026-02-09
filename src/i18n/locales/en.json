@@ -319,6 +319,7 @@
     "TrainingInfo": "Show Trainig Info"
   },
   "AvailableTopicsFilterTexts": {
+    "AnyLanguage": "Any",
     "Ignore": "Ignore",
     "Label-CategoryIds": "Categories",
     "Label-HasActiveWorkouts": "Active workouts",
@@ -357,7 +358,7 @@
     "DisplayTopicsWithActiveWorkoutsHint": "Display topics with or without active trainings.",
     "DisplayTopicsWithQuestionsHint": "Display topics with or without created questions.",
     "DisplayTopicsWithStatsHint": "Display topics with or without collected progress statistics data.",
-    "SearchForLanguageHint": "Search for language code or name (eg: <code>en</code> or <code>Engl</code>).",
+    "SearchForLanguageHint": "Search for language code or name (eg: <code>en</code> or <code>Engl</code>, or use a dash symbol (<code>-</code>) to search for any language, otherwise it'll be search for the current system language by default).",
     "SearchForLanguagePlaceholder": "Search for language...",
     "SearchForTextHint": "Search for text in name, description or keywords.",
     "SearchForTextPlaceholder": "Search for text...",

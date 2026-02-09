@@ -315,6 +315,7 @@
     "TrainingInfo": "Mostrar información de formación"
   },
   "AvailableTopicsFilterTexts": {
+    "AnyLanguage": "Cualquier",
     "Ignore": "Ignorar",
     "Label-CategoryIds": "Categorías",
     "Label-HasActiveWorkouts": "Entrenamientos Activos",
@@ -351,7 +352,7 @@
     "DisplayTopicsWithActiveWorkoutsHint": "Mostrar temas con o sin entrenamientos activos.",
     "DisplayTopicsWithQuestionsHint": "Mostrar temas con o sin preguntas creadas.",
     "DisplayTopicsWithStatsHint": "Mostrar temas con o sin datos de estadísticas de progreso recopiladas.",
-    "SearchForLanguageHint": "Busca código de idioma o nombre (por ejemplo: <code>en</code> o <code>Engl</code>).",
+    "SearchForLanguageHint": "Busque el código o nombre del idioma (por ejemplo: <code>en</code> o <code>Engl</code>, o utilice un símbolo de guión (<code>-</code>) para buscar cualquier idioma; de lo contrario, se buscará el idioma actual del sistema de forma predeterminada).",
     "SearchForLanguagePlaceholder": "Buscar idioma...",
     "SearchForTextHint": "Busca texto en el nombre, descripción o palabras clave.",
     "SearchForTextPlaceholder": "Buscar texto...",
