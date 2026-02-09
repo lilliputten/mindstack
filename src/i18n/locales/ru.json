@@ -315,6 +315,7 @@
     "TrainingInfo": "Показать информацию о тренировке"
   },
   "AvailableTopicsFilterTexts": {
+    "AnyLanguage": "Любой",
     "Ignore": "Игнорировать",
     "Label-CategoryIds": "Категории",
     "Label-HasActiveWorkouts": "Активные тренировки",
@@ -351,7 +352,7 @@
     "DisplayTopicsWithActiveWorkoutsHint": "Отображать темы с активными тренировками или без.",
     "DisplayTopicsWithQuestionsHint": "Отображать темы с вопросами или без.",
     "DisplayTopicsWithStatsHint": "Отображать темы с или без собранных данных статистики прогресса.",
-    "SearchForLanguageHint": "Поиск кода языка или названия (например: <code>en</code> или <code>Engl</code>).",
+    "SearchForLanguageHint": "Поиск по коду или названию языка (например: <code>en</code> или <code>Engl</code> или используйте символ дефиса(<code>-</code>) для поиска любого языка, в противном случае по умолчанию будет выполняться поиск текущего языка системы).",
     "SearchForLanguagePlaceholder": "Поиск по языку...",
     "SearchForTextHint": "Поиск текста в названии, описании или ключевых словах.",
     "SearchForTextPlaceholder": "Поиск текста...",

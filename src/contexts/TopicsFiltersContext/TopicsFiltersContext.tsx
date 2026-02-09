@@ -47,8 +47,12 @@ function compareWithDefaults(
   const cmp1 = prepareObjectToLossyCompare(defaultFiltersData);
   const cmp2 = prepareObjectToLossyCompare(filtersData);
   if (ignoreOnlyMy) {
-    delete cmp1?.showOnlyMyTopics;
-    delete cmp2?.showOnlyMyTopics;
+    if (Object.prototype.hasOwnProperty.call(cmp1, 'showOnlyMyTopics')) {
+      delete cmp1.showOnlyMyTopics;
+    }
+    if (Object.prototype.hasOwnProperty.call(cmp2, 'showOnlyMyTopics')) {
+      delete cmp2.showOnlyMyTopics;
+    }
   }
   return deepCompare(cmp1, cmp2);
 }
@@ -88,6 +92,9 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
       ...filtersDataDefaults,
       ...augmentDefaults,
     };
+    if (ignoreOnlyMy) {
+      delete filtersData.showOnlyMyTopics;
+    }
     if (!isSettingsReady || !settings) {
       return filtersData;
     }
@@ -96,7 +103,7 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
       showOnlyMyTopics: !!settings.showOnlyMyTopics,
       searchLang: settings.langCode,
     } satisfies TFiltersData;
-  }, [settings, augmentDefaults, isSettingsReady]);
+  }, [settings, augmentDefaults, isSettingsReady, ignoreOnlyMy]);
   memo.defaultFiltersData = defaultFiltersData;
 
   const form = useForm<TFiltersData>({
@@ -116,11 +123,12 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           filtersData = { ...filtersData };
           delete filtersData.showOnlyMyTopics;
         }
+        const realData = { ...filtersData };
         // Compare data with defaults (fuzzy)
-        const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData);
+        const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData, ignoreOnlyMy);
         setError(undefined);
         try {
-          await applyFilters(filtersData);
+          await applyFilters(realData);
           form.reset(filtersData);
           setFiltersData(filtersData);
           setOnDefaults(isDefaults);

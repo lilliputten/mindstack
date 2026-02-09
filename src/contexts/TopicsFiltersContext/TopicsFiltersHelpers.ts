@@ -47,7 +47,7 @@ export function getFiltersDataRawValueString(
   opts: TFiltersDataValueStringOptions,
 ) {
   const { specific, t } = opts;
-  const origValue = String(value);
+  const origValue = value != null ? String(value) : '';
   const shape = filtersDataSchema.shape;
   const field = shape[fieldId];
   const baseField = getBaseField(field);
@@ -102,21 +102,18 @@ export function getFiltersDataValueString(
   return getFiltersDataRawValueString(fieldId, value, opts);
 }
 
-export function getActiveFilterIds(filtersData?: TFiltersData) {
-  if (!filtersData) {
-    return [];
-  }
-  const activeItems = Object.entries(filtersData)
-    .map(([id, value]) => {
-      const fieldId = id as TFiltersDataKey;
+export function getActiveFilterIds(filtersData?: TFiltersData): TFiltersDataKey[] {
+  const ids = (filtersData ? Object.keys(filtersData) : []) as TFiltersDataKey[];
+  const activeIds = ids
+    .map((id) => {
+      const value = filtersData?.[id];
       if (value == null) {
         return null;
-      }
-      if (typeof value === 'string' && !value.trim()) {
+      } else if (typeof value === 'string' && !value.trim()) {
         return null;
       }
       const shape = filtersDataSchema.shape;
-      const field = shape[fieldId];
+      const field = shape[id];
       const baseField = getBaseField(field);
       const isBoolean = baseField instanceof z.ZodBoolean;
       if (isBoolean && !value) {
@@ -124,8 +121,12 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
       }
       return id;
     })
-    .filter(Boolean) as TFiltersDataKey[];
-  return activeItems;
+    .filter(Boolean);
+  // NOTE: searchLang is a permanent field, due to these specific cases: '-' -- for all languages, and the empty value -- for locale default
+  if (!activeIds.includes('searchLang')) {
+    activeIds.unshift('searchLang');
+  }
+  return activeIds as TFiltersDataKey[];
 }
 
 export function convertAvailableFiltersToParams(
@@ -138,5 +139,6 @@ export function convertAvailableFiltersToParams(
     hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
     hasQuestions: hasQuestions != null ? hasQuestions : undefined,
     orderBy: orderBySelect ? orderByMap[orderBySelect] : undefined,
+    searchLang: filtersData.searchLang !== '-' ? filtersData.searchLang : undefined,
   };
 }
