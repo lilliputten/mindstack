@@ -20,6 +20,11 @@ export async function sendLoggingMessage(
   text: string,
   opts: TLoggingMessageOptions = {},
 ) {
+  const parseMode = opts.parseMode || 'Markdown';
+  // Take care of those often case with '[...]' log titles for markdown parse mode (it can be eaten)
+  if (title.startsWith('[') && parseMode.toLowerCase().startsWith('markdown')) {
+    title = '\\' + title;
+  }
   try {
     const bot = opts.bot || getBot();
     let firstMsg: Message.TextMessage | undefined;
@@ -46,7 +51,7 @@ export async function sendLoggingMessage(
         link_preview_options: {
           is_disabled: !opts.enablePreviews,
         },
-        parse_mode: opts.parseMode || 'Markdown',
+        parse_mode: parseMode,
       });
       if (!firstMsg) {
         firstMsg = msg;

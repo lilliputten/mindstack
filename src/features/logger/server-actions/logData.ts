@@ -4,7 +4,7 @@ import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/he
 import { headers } from 'next/headers';
 
 import { debugObj } from '@/lib/debug';
-import { formatDateTag, getErrorText, unixEOLs } from '@/lib/helpers';
+import { getErrorText, unixEOLs } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
@@ -39,69 +39,61 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   const ipCity = allHeaders['x-vercel-ip-city']?.replace(/%20/g, ' ');
   const intlLocale = allHeaders['x-next-intl-locale'];
   const now = new Date();
-  const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
-  // const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
+  // const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
+  const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
   const dataToSend: Record<string, unknown> = {
-    versionInfo,
-    dateTag,
-    // dateISO,
-    isProd: !isDev,
-    // PUBLIC_URL,
+    path: rewrittenPath,
     host,
+    tz: ipTimezone,
     referer,
-    matchedPath,
-    rewrittenPath,
-    intlLocale,
-    clientIp,
-    userAgent,
-    ipTimezone,
-    ipContinent,
-    ipCountry,
-    ipCity,
-    ipLatLon:
+    ip: clientIp,
+    continent: ipContinent,
+    country: ipCountry,
+    cyty: ipCity,
+    coords:
       [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined, // 55.6784 37.2652
+    matchedPath,
+    locale: intlLocale,
+    agent: userAgent,
+    version: versionInfo,
+    date: dateISO,
+    prod: !isDev,
     // allHeaders,
     user,
   };
   if (opts.level) {
     dataToSend.level = opts.level;
   }
-  const infoStr = debugObj(dataToSend);
+  // const infoStr = debugObj(dataToSend);
+  const combinedData = { ...dataToSend, ...data };
   let dataStr = '';
   if (data) {
     try {
-      dataStr = debugObj(data);
+      dataStr = debugObj(combinedData);
     } catch (error) {
       const message = 'Error parsing log data';
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       // eslint-disable-next-line no-console
-      console.error('[logData]', comboMsg, {
+      console.error('[logData]', idMsg, comboMsg, {
         error,
+        dataToSend,
         data,
-        infoStr,
       });
       debugger; // eslint-disable-line no-debugger
       dataStr = comboMsg;
     }
   }
-  const detailsStr =
-    // '```\n' +
-    [infoStr, dataStr]
-      .filter(Boolean)
-      .map((s) => s.trim())
-      .join('\n');
-  // + '\n```'; // .replace(/^/gm, '  ');
   // Show a message in console if the flag specified
   if (opts.level) {
     if (opts.level === 'error') {
       // eslint-disable-next-line no-console
-      console.error(infoStr, detailsStr);
+      console.error(idMsg, dataStr);
     } else {
       // eslint-disable-next-line no-console
-      console.log(infoStr, detailsStr);
+      console.log(idMsg, dataStr);
     }
   }
-  return await sendLoggingMessage(idMsg, unixEOLs(detailsStr), { ...opts });
+  return await sendLoggingMessage(idMsg, unixEOLs(dataStr), opts);
 }
