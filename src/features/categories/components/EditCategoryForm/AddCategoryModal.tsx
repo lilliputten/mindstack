@@ -174,7 +174,7 @@ export function AddCategoryModal(props: TProps) {
           // extraActions={extraActions}
           border={false}
         />
-      ) : nextSuggestionDelay ? (
+      ) : /* NOTE: It's allowed to add categories only once in a period */ nextSuggestionDelay ? (
         <PageError
           className={cn(
             isDev && '__AddCategoryModal_SuggestionError', // DEBUG

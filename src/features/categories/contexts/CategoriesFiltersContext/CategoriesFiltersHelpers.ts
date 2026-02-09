@@ -147,6 +147,7 @@ export function convertAvailableFiltersToParams(
     hasImage,
     hasTopics,
     orderBySelect,
+    status,
     /* // NOTE: Date filtering is not used yet
      * minCreatedAt,
      * maxCreatedAt,
@@ -160,6 +161,7 @@ export function convertAvailableFiltersToParams(
     hasImage: hasImage != null ? hasImage : undefined,
     hasTopics: hasTopics != null ? hasTopics : undefined,
     orderBy: orderBySelect ? orderByMap[orderBySelect] : undefined,
+    status: status === 'ANY' ? undefined : status,
     /* // NOTE: Date filtering is not used yet
      * minCreatedAt: minCreatedAt ? minCreatedAt : undefined,
      * maxCreatedAt: maxCreatedAt ? maxCreatedAt : undefined,

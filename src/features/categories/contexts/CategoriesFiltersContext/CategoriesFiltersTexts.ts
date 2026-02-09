@@ -18,6 +18,7 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
     false: 'WithoutTopics',
   },
   status: {
+    ANY: 'Status-Any',
     PUBLIC: 'Status-Public',
     SUGGESTED: 'Status-Suggested',
     HIDDEN: 'Status-Hidden',
