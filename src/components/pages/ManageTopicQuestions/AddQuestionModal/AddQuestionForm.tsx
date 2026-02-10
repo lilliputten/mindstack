@@ -15,11 +15,14 @@ import { Label } from '@/components/ui/Label';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
+import { BusySplash, SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { pricingAliasRoute } from '@/config';
+import { pricingAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { TNewQuestion, TQuestion } from '@/features/questions/types';
+import { TNewQuestion, TQuestion, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
+import { useGoToTheRoute } from '@/hooks';
+import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { maxTextLength, minTextLength } from '../constants';
 
@@ -31,6 +34,7 @@ export interface TAddQuestionFormProps {
   className?: string;
   isPending?: boolean;
   topicId: TTopicId;
+  addedQuestionId?: TQuestionId;
 }
 
 export interface TFormData {
@@ -38,8 +42,18 @@ export interface TFormData {
 }
 
 export function AddQuestionForm(props: TAddQuestionFormProps) {
-  const { className, handleAddQuestion, handleClose, isPending, topicId } = props;
+  const { className, handleAddQuestion, handleClose, isPending, topicId, addedQuestionId } = props;
+  const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
+
+  const { manageScope } = useManageTopicsStore();
+
+  // Calculate paths...
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+
+  const goToTheRoute = useGoToTheRoute();
 
   const formSchema = React.useMemo(
     () =>
@@ -68,9 +82,18 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
   // Focus the first field (should it be used with a languages list?)
   React.useEffect(() => setFocus('text'), [setFocus]);
 
-  const { isDirty, isValid } = formState;
+  const {
+    isDirty,
+    isValid,
+    isSubmitSuccessful, // boolean;
+    isSubmitting, // boolean;
+    isLoading, // boolean;
+  } = formState;
+  // const isSubmitSuccessful = true; // DEBUG
 
-  const isSubmitEnabled = !isPending && isDirty && isValid;
+  const isBusy = isGoingOut || isSubmitting || isLoading || isPending;
+  const isSubmitEnabled = !isBusy && isDirty && isValid;
+  // const isSubmitEnabled = !isPending && isDirty && isValid;
 
   const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
 
@@ -127,7 +150,11 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
           className,
         )}
       >
-        {limitsError ? (
+        {isSubmitSuccessful ? (
+          <SuccessSplash title={t('AddQuestionForm.SuccessfullySavedTitle')} className="px-6">
+            {t('CanCloseDialog')}
+          </SuccessSplash>
+        ) : limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
@@ -177,24 +204,70 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
             <div className="flex flex-col justify-between"></div>
           </>
         )}
+
         {/* Actions */}
-        <div className="flex w-full gap-4">
+        <div
+          className={cn(
+            isDev && '__AddQuestionForm_Actions', // DEBUG
+            'flex w-full gap-4',
+            isSubmitSuccessful && 'justify-center',
+          )}
+        >
           {!limitsError && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
               disabled={!isSubmitEnabled}
-              className="gap-2"
+              className={cn(
+                isDev && '__AddQuestionForm_SaveButton', // DEBUG
+                'gap-2',
+                isSubmitSuccessful && 'hidden',
+              )}
             >
               <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
               <span>{buttonText}</span>
             </Button>
           )}
-          <Button variant="ghost" onClick={onClose} className="gap-2">
+          {/* Show a button "Go to the created question". TODO: Use `router.replace`? */}
+          {isSubmitSuccessful && addedQuestionId && (
+            <Button
+              className="flex gap-2"
+              // Go to the route by replacing the current (`.../add`) route
+              onClick={() => goToTheRoute(`${questionsListRoutePath}/${addedQuestionId}`, true)}
+              variant={!isGoingOut ? 'theme' : 'ghost'}
+              disabled={isBusy}
+            >
+              <Link
+                href={`${questionsListRoutePath}/${addedQuestionId}` as TRoutePath}
+                className={cn(
+                  'flex gap-2',
+                  // buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
+                  // isBusy && 'disabled',
+                )}
+                onClick={() => setIsGoingOut(true)}
+              >
+                <Icons.ArrowRight className="size-4" />
+                <span>{t('AddQuestionForm.GoToCreatedQuestion')}</span>
+              </Link>
+            </Button>
+          )}
+          <Button
+            variant={isSubmitSuccessful && !addedQuestionId ? 'theme' : 'ghost'}
+            onClick={onClose}
+            className="gap-2"
+          >
             <Icons.Close className="size-4" />
-            <span>{t('Cancel')}</span>
+            <span>{isSubmitSuccessful ? t('Close') : t('Cancel')}</span>
           </Button>
         </div>
+
+        {/* LoadingSplash */}
+        <BusySplash
+          className={cn(
+            isDev && '__AddQuestionForm_LoadingSplash', // DEBUG
+          )}
+          isBusy={isBusy}
+        />
       </form>
     </FormProvider>
   );

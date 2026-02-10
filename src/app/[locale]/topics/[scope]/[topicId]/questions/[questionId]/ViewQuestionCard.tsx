@@ -83,27 +83,47 @@ export function ViewQuestionCard(props: TViewQuestionCardProps) {
         href: `${questionsListRoutePath}/${question.id}/answers`,
       },
       {
-        id: 'Add New Question',
+        id: 'AddNewQuestion',
         content: t('AddNewQuestion'),
         icon: Icons.Add,
         href: `${questionsListRoutePath}/add`,
       },
       {
-        id: 'Delete Question',
+        id: 'DeleteQuestion',
         content: t('DeleteQuestion'),
         icon: Icons.Trash,
         href: `${questionsListRoutePath}/delete?questionId=${question.id}&from=ViewQuestionCard`,
       },
       {
-        id: 'Start Training',
+        id: 'AddNewTopic',
+        content: t('AddNewTopic'),
+        icon: Icons.Add,
+        href: `${topicsListRoutePath}/add`,
+      },
+      {
+        id: 'GoToTheTopic',
+        content: t('GoToTheTopic'),
+        icon: Icons.ArrowRight,
+        href: topicRoutePath,
+      },
+      {
+        id: 'ToTraining',
         content: t('ToTraining'),
         icon: Icons.Rocket,
-        visibleFor: 'md',
         href: `${availableTopicsRoute}/${topicId}/workout`,
         hidden: !allowedTraining,
       },
     ],
-    [t, goBack, allowedTraining, topicId, questionsListRoutePath, question.id],
+    [
+      t,
+      goBack,
+      questionsListRoutePath,
+      question.id,
+      topicsListRoutePath,
+      topicRoutePath,
+      topicId,
+      allowedTraining,
+    ],
   );
 
   const breadcrumbs = useQuestionsBreadcrumbsItems({

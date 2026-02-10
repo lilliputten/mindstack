@@ -13,13 +13,11 @@ import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
-import { useSettings } from '@/contexts/SettingsContext';
 import { addNewAnswer } from '@/features/answers/actions';
-import { TAvailableAnswer, TNewAnswer } from '@/features/answers/types';
+import { TAnswerId, TAvailableAnswer, TNewAnswer } from '@/features/answers/types';
 import {
   useAvailableAnswers,
   useGoBack,
-  useGoToTheRoute,
   useMediaQuery,
   useModalTitle,
   useUpdateModalVisibility,
@@ -37,8 +35,9 @@ const urlRegExp = new RegExp(idToken + urlQuestionToken + idToken + urlPostfix +
 export function AddAnswerModal() {
   const { manageScope } = useManageTopicsStore();
   const [isVisible, setVisible] = React.useState(true);
+  const [addedAnswerId, setAddedAnswerId] = React.useState<TAnswerId | undefined>();
 
-  const { jumpToNewEntities } = useSettings();
+  // const { jumpToNewEntities } = useSettings();
   const t = useT();
 
   const pathname = usePathname();
@@ -58,7 +57,7 @@ export function AddAnswerModal() {
 
   const { isMobile } = useMediaQuery();
 
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(answersListRoutePath);
 
   const hideModal = React.useCallback(() => {
@@ -75,6 +74,7 @@ export function AddAnswerModal() {
   const addAnswerMutation = useMutation<TAvailableAnswer, Error, TNewAnswer>({
     mutationFn: addNewAnswer,
     onSuccess: (addedAnswer) => {
+      // TODO: Issue #66: Verify all react-query invalidation
       // Add the created item to the cached react-query data
       availableAnswersQuery.addNewAnswer(addedAnswer, true);
       // Invalidate all other queries...
@@ -85,14 +85,20 @@ export function AddAnswerModal() {
         ['available-questions-for-topic', topicId],
       ].map(makeQueryKeyPrefix);
       invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
-      // Close modal and navigate
-      setVisible(false);
-      if (jumpToNewEntities) {
-        const continueUrl = `${answersListRoutePath}/${addedAnswer.id}`;
-        goToTheRoute(continueUrl, true);
-      } else {
-        goBack();
-      }
+
+      // Set finished status (set a created record id to show the final dialog)...
+      setAddedAnswerId(addedAnswer.id);
+
+      /* // XXX: It's not used now: see addedAnswerId and jump to button in the `AddAnswerForm`. See also `jumpToNewEntities` (is it used somewhere?).
+       * // Close modal and navigate
+       * setVisible(false);
+       * if (jumpToNewEntities) {
+       *   const continueUrl = `${answersListRoutePath}/${addedAnswer.id}`;
+       *   goToTheRoute(continueUrl, true);
+       * } else {
+       *   goBack();
+       * }
+       */
     },
     onError: (error, newAnswer) => {
       const details = error instanceof APIError ? error.details : null;
@@ -126,14 +132,19 @@ export function AddAnswerModal() {
     // throw new Error('Cannot parse topic id from the modal url.');
   }
 
+  const isPending = /* isFinished || */ addAnswerMutation.isPending;
+
   return (
     <Modal
       isVisible={isVisible}
       hideModal={hideModal}
       className={cn(
         isDev && '__AddAnswerModal', // DEBUG
+        // 'flex flex-col gap-0 text-theme-foreground',
+        // addAnswerMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
         'flex flex-col gap-0 text-theme-foreground',
-        addAnswerMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        !isMobile && 'max-h-[90%]',
+        isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
       <div
@@ -158,7 +169,9 @@ export function AddAnswerModal() {
           className="flex flex-col p-6 text-foreground"
           handleClose={hideModal}
           isPending={addAnswerMutation.isPending}
+          topicId={topicId}
           questionId={questionId}
+          addedAnswerId={addedAnswerId}
         />
       </ScrollArea>
     </Modal>

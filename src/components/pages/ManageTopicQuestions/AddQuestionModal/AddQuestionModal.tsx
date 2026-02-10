@@ -14,16 +14,9 @@ import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
-import { useSettings } from '@/contexts/SettingsContext';
 import { addNewQuestion } from '@/features/questions/actions';
-import { TNewQuestion, TQuestion } from '@/features/questions/types';
-import {
-  useGoBack,
-  useGoToTheRoute,
-  useMediaQuery,
-  useModalTitle,
-  useUpdateModalVisibility,
-} from '@/hooks';
+import { TNewQuestion, TQuestion, TQuestionId } from '@/features/questions/types';
+import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddQuestionForm } from './AddQuestionForm';
@@ -35,8 +28,9 @@ const urlTopicIdRegExp = new RegExp(idToken + urlPostfix + '$');
 export function AddQuestionModal() {
   const { manageScope } = useManageTopicsStore();
   const [isVisible, setVisible] = React.useState(false);
+  const [addedQuestionId, setAddedQuestionId] = React.useState<TQuestionId | undefined>();
 
-  const { jumpToNewEntities } = useSettings();
+  // const { jumpToNewEntities } = useSettings();
   const t = useT();
 
   const pathname = usePathname();
@@ -50,7 +44,7 @@ export function AddQuestionModal() {
 
   const { isMobile } = useMediaQuery();
 
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(questionsListRoutePath);
 
   const hideModal = React.useCallback(() => {
@@ -67,6 +61,7 @@ export function AddQuestionModal() {
   const addQuestionMutation = useMutation<TQuestion, Error, TNewQuestion>({
     mutationFn: addNewQuestion,
     onSuccess: (addedQuestion) => {
+      // TODO: Issue #66: Verify all react-query invalidation
       // Add the created item to the cached react-query data
       availableQuestionsQuery.addNewQuestion(addedQuestion, true);
       // Invalidate all other queries...
@@ -77,15 +72,21 @@ export function AddQuestionModal() {
         ['available-topics'],
       ].map(makeQueryKeyPrefix);
       invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
-      // Close modal and navigate
-      setVisible(false);
-      if (jumpToNewEntities) {
-        const returnUrl = `${questionsListRoutePath}/${addedQuestion.id}`;
-        // setTimeout(() => goToTheRoute(returnUrl, true), 100);
-        goToTheRoute(returnUrl, true);
-      } else {
-        goBack();
-      }
+
+      // Set finished status (set a created record id to show the final dialog)...
+      setAddedQuestionId(addedQuestion.id);
+
+      /* // XXX: It's not used now: see addedQuestionId and jump to button in the `AddQuestionForm`. See also `jumpToNewEntities` (is it used somewhere?).
+       * // Close modal and navigate
+       * setVisible(false);
+       * if (jumpToNewEntities) {
+       *   const returnUrl = `${questionsListRoutePath}/${addedQuestion.id}`;
+       *   // setTimeout(() => goToTheRoute(returnUrl, true), 100);
+       *   goToTheRoute(returnUrl, true);
+       * } else {
+       *   goBack();
+       * }
+       */
     },
     onError: (error, newQuestion) => {
       const details = error instanceof APIError ? error.details : null;
@@ -118,6 +119,8 @@ export function AddQuestionModal() {
     return null;
   }
 
+  const isPending = /* isFinished || */ addQuestionMutation.isPending;
+
   return (
     <Modal
       isVisible={isVisible}
@@ -125,7 +128,8 @@ export function AddQuestionModal() {
       className={cn(
         isDev && '__AddQuestionModal', // DEBUG
         'flex flex-col gap-0 text-theme-foreground',
-        addQuestionMutation.isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        !isMobile && 'max-h-[90%]',
+        isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
       <div
@@ -149,8 +153,9 @@ export function AddQuestionModal() {
           handleAddQuestion={handleAddQuestion}
           className="flex flex-col p-6 text-foreground"
           handleClose={hideModal}
-          isPending={addQuestionMutation.isPending}
+          isPending={isPending}
           topicId={topicId}
+          addedQuestionId={addedQuestionId}
         />
       </ScrollArea>
     </Modal>

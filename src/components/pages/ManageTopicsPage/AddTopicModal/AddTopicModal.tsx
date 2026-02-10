@@ -52,12 +52,15 @@ export function AddTopicModal() {
   const addTopicMutation = useMutation<TAvailableTopic, Error, TNewTopic>({
     mutationFn: addNewTopic,
     onSuccess: (addedTopic) => {
+      // TODO: Issue #66: Verify all react-query invalidation
       // Add the created item to the cached react-query data
       availableTopicsQuery.addNewTopic(addedTopic, true);
       // Invalidate all other keys...
       availableTopicsQuery.invalidateAllKeysExcept([availableTopicsQuery.queryKey]);
-      // Going out of here...
+
+      // Set finished status (set a created record id to show the final dialog)...
       setAddedTopicId(addedTopic.id);
+
       /* // XXX: It's not used now: see addedTopicId and jump to button in the `AddTopicForm`. See also `jumpToNewEntities` (is it used somewhere?).
        * if (jumpToNewEntities) {
        *   // Navigate to the edit page after successful creation
