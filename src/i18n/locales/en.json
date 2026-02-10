@@ -198,10 +198,13 @@
     "CannotCreateTopic": "Topic Creation Error",
     "CategoriesHint": "Select one or a few categories for the topic. You can edit this parameter later.",
     "CategoriesLabel": "Categories",
+    "GoToCreatedTopic": "Go to created topic",
     "IsPublicHint": "Public topics can be viewed and used by other users.",
     "IsPublicLabel": "Is the topic public?",
     "NamePlaceholder": "Name",
     "SelectCategoriesPlaceholder": "Select categories",
+    "SuccessfullySavedMessage": "You can now close the dialog.",
+    "SuccessfullySavedTitle": "The topic is saved!",
     "TopicName": "Topic Name"
   },
   "AddTopicModal": {
@@ -591,7 +594,6 @@
   "EditAnswerCard": {
     "CannotSaveAnswerData": "Cannot save answer data",
     "CannotUpdateAnswerData": "Cannot update answer data",
-    "Reload": "Reload",
     "SavingAnswerData": "Saving the answer data...",
     "SuccessfullySavedAnswer": "Successfully saved the answer"
   },
@@ -609,14 +611,12 @@
   },
   "EditCategoryForm": {
     "AllNamesEmptyError": "At least one name field must be filled across all translations",
-    "CancelText": "Cancel",
     "CategoryDescriptionHint": "A category description. This text can be used by users for navigation and search.",
     "CategoryNameHint": "A category name. It's good if it's a unique value.",
     "CategoryPropertiesInstruction": "Please enter the properties of the category (name, description, keywords) for all or only one of the application languages.",
     "CategorySavedSuccessfully": "Successfully saved category data",
     "CategorySaving": "Saving category data...",
     "CategorySavingError": "Cannot save category data",
-    "CloseText": "Close",
     "DescriptionWithLocale": "Description ({locale})",
     "EnterCategoryDescriptionPlaceholder": "Enter category description",
     "EnterCategoryNamePlaceholder": "Enter category name",
@@ -638,8 +638,8 @@
     "SelectStatusPlaceholder": "Select status",
     "StatusLabel": "Status",
     "SubmitFormError": "Failed to submit form data",
-    "SuccessfullySavedMessage": "The category has been successfully saved. You can now close this dialog.",
-    "SuccessfullySavedTitle": "Successfully saved!",
+    "SuccessfullySavedMessage": "You can now close the dialog.",
+    "SuccessfullySavedTitle": "The category is saved!",
     "SuggestNewCategory": "Suggest New Category",
     "SuggestedOption": "Suggested",
     "UploadImageError": "Failed to upload image"
@@ -1007,7 +1007,6 @@
     "NoTopicsFound": "No topics found",
     "NoTopicsFoundDescription": "Change filters to allow displaying topics (if there are any), or create your own ones.",
     "Public": "Public",
-    "Reload": "Reload",
     "ResettingPublicStatusForSelectedTopics": "Resetting public status for selected topics...",
     "SelectDeselectAll": "Select/deselect all",
     "SelectTopic": "Select topic",
@@ -1537,7 +1536,6 @@
     "CannotUpdateTopicData": "Cannot update topic data",
     "Edit": "Edit",
     "Questions": "Questions",
-    "Reload": "Reload",
     "ViewTopic": "View Topic"
   },
   "Workout": {

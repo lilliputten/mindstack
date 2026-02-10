@@ -194,10 +194,13 @@
     "CannotCreateTopic": "Error de creación del tema",
     "CategoriesHint": "Seleccione una o algunas categorías para el tema. \nPuede editar este parámetro más tarde.",
     "CategoriesLabel": "Categorías",
+    "GoToCreatedTopic": "Ir al tema creado",
     "IsPublicHint": "Los temas públicos pueden ser vistos y utilizados por otros usuarios.",
     "IsPublicLabel": "¿Es público el tema?",
     "NamePlaceholder": "Nombre",
     "SelectCategoriesPlaceholder": "Seleccionar categorías",
+    "SuccessfullySavedMessage": "Ahora puede cerrar el cuadro de diálogo.",
+    "SuccessfullySavedTitle": "¡El tema está guardado!",
     "TopicName": "Nombre del Tema"
   },
   "AddTopicModal": {
@@ -583,7 +586,6 @@
   "EditAnswerCard": {
     "CannotSaveAnswerData": "No se pueden guardar los datos de la respuesta",
     "CannotUpdateAnswerData": "No se pueden actualizar los datos de la respuesta",
-    "Reload": "Recargar",
     "SavingAnswerData": "Guardando los datos de la respuesta...",
     "SuccessfullySavedAnswer": "Respuesta guardada exitosamente"
   },
@@ -601,14 +603,12 @@
   },
   "EditCategoryForm": {
     "AllNamesEmptyError": "Al menos un campo de nombre debe estar lleno en todas las traducciones",
-    "CancelText": "Cancelar",
     "CategoryDescriptionHint": "Una descripción de categoría. Este texto puede ser usado por los usuarios para navegar y buscar.",
     "CategoryNameHint": "Un nombre de categoría. Es bueno si es un valor único.",
     "CategoryPropertiesInstruction": "Por favor ingresa las propiedades de la categoría (nombre, descripción, palabras clave) para todos o solo uno de los idiomas de la aplicación.",
     "CategorySavedSuccessfully": "Datos de categoría guardados correctamente",
     "CategorySaving": "Guardando datos de categoría...",
     "CategorySavingError": "No se pueden guardar los datos de la categoría",
-    "CloseText": "Cerrar",
     "DescriptionWithLocale": "Descripción ({locale})",
     "EnterCategoryDescriptionPlaceholder": "Ingresa la descripción de la categoría",
     "EnterCategoryNamePlaceholder": "Ingresa el nombre de la categoría",
@@ -630,8 +630,8 @@
     "SelectStatusPlaceholder": "Seleccionar estado",
     "StatusLabel": "Estado",
     "SubmitFormError": "Error al enviar los datos del formulario",
-    "SuccessfullySavedMessage": "La categoría ha sido guardada exitosamente. Ahora puedes cerrar este diálogo.",
-    "SuccessfullySavedTitle": "¡Guardado exitosamente!",
+    "SuccessfullySavedMessage": "Ahora puede cerrar el cuadro de diálogo.",
+    "SuccessfullySavedTitle": "¡La categoría está guardada!",
     "SuggestedOption": "Sugerido",
     "UploadImageError": "Error al subir la imagen"
   },
@@ -998,7 +998,6 @@
     "NoTopicsFound": "No se encontraron temas",
     "NoTopicsFoundDescription": "Cambia los filtros para permitir mostrar temas (si los hay), o crea los tuyos propios.",
     "Public": "Público",
-    "Reload": "Recargar",
     "ResettingPublicStatusForSelectedTopics": "Restableciendo estado público de los temas seleccionados...",
     "SelectDeselectAll": "Seleccionar/deseleccionar todo",
     "SelectTopic": "Seleccionar tema",
@@ -1528,7 +1527,6 @@
     "CannotUpdateTopicData": "No se pueden actualizar los datos del tema",
     "Edit": "Editar",
     "Questions": "Preguntas",
-    "Reload": "Recargar",
     "ViewTopic": "Ver Tema"
   },
   "Workout": {

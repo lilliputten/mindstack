@@ -799,14 +799,14 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
       },
       {
         id: 'Reload',
-        content: t('ManageTopicsListCard.Reload'),
+        content: t('Reload'),
         icon: Icons.Refresh,
         visibleFor: 'lg',
         pending: isRefetching,
         onClick: handleReload,
       },
       {
-        id: 'Mark Public',
+        id: 'MarkSelectedAsPublic',
         content: t('ManageTopicsListCard.MarkSelectedAsPublic'),
         icon: Icons.Eye,
         hidden: !selectedTopics.size,
@@ -814,7 +814,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         onClick: handleMakeSelectedPublic,
       },
       {
-        id: 'Mark Private',
+        id: 'MarkSelectedAsPrivate',
         content: t('ManageTopicsListCard.MarkSelectedAsPrivate'),
         icon: Icons.EyeOff,
         hidden: !selectedTopics.size,
@@ -822,7 +822,7 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         onClick: handleResetSelectedPublic,
       },
       {
-        id: 'Delete Selected',
+        id: 'DeleteSelected',
         content: t('ManageTopicsListCard.DeleteSelected'),
         icon: Icons.Trash,
         hidden: !selectedTopics.size,
@@ -830,11 +830,10 @@ export function ManageTopicsListCard(props: TManageTopicsListCardProps) {
         onClick: handleShowDeleteConfirm,
       },
       {
-        id: 'Add',
+        id: 'AAddNewTopicd',
         content: t('AddNewTopic'),
         icon: Icons.Add,
         visibleFor: 'md',
-        // onClick: handleAddTopic,
         href: `${topicsListRoutePath}/add`,
       },
     ],

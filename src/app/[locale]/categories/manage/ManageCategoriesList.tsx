@@ -10,7 +10,7 @@ import { getAbcHashString, getRandomHashString, truncateString } from '@/lib/hel
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
@@ -36,11 +36,9 @@ import { useCategoriesFiltersContext } from '@/features/categories/contexts/Cate
 import { getCategoryName } from '@/features/categories/helpers';
 import { useAvailableCategories } from '@/features/categories/query-hooks/useAvailableCategories';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
-import { useGoBack } from '@/hooks';
+import { useGoBack, useSessionData } from '@/hooks';
 
 import { ContentSkeletonTable } from './ContentSkeleton';
-
-// const __showId = false;
 
 const sessionSaveScrollHash = getRandomHashString();
 
@@ -57,6 +55,29 @@ interface TCategoriesTableContentProps extends TManageCategoriesListProps {
 type TMemo = { allCategories: TAvailableCategory[] };
 
 const useDarkHeader = true;
+
+function AddCategoryBlock() {
+  const t = useT();
+  const { user } = useSessionData();
+
+  if (!user?.id) {
+    return null;
+  }
+
+  return (
+    user?.id && (
+      <div className="flex items-center justify-center">
+        <Link
+          href={'/categories/manage/add' as TRoutePath}
+          className={cn(buttonVariants({ variant: 'theme' }), 'flex w-full gap-2')}
+        >
+          <Icons.Plus className="size-5" />
+          {t('AddNewCategory')}
+        </Link>
+      </div>
+    )
+  );
+}
 
 function CategoriesTableHeader({
   selectedCategories,
@@ -114,26 +135,12 @@ function CategoriesTableHeader({
         <TableHead id="no" className="truncate text-right max-lg:hidden" title={t('NN')}>
           {t('NN')}
         </TableHead>
-        {/*__showId && isDev && (
-          <TableHead id="categoryId" className="truncate max-xl:hidden" title="ID">
-            ID
-          </TableHead>
-          )*/}
         <TableHead id="image" className="text-center" title={t('ManageCategoriesList.Image')}>
           <Icons.ImageIcon className="mx-auto size-5" />
         </TableHead>
         <TableHead id="name" className="truncate" title={t('ManageCategoriesList.CategoryName')}>
           {t('ManageCategoriesList.CategoryName')}
         </TableHead>
-        {/*
-        <TableHead
-          id="description"
-          className="max-w-48 truncate max-lg:hidden"
-          title={t('ManageCategoriesList.Description')}
-        >
-          {t('ManageCategoriesList.Description')}
-        </TableHead>
-        */}
         <TableHead id="status" className="truncate max-md:hidden" title={t('Status')}>
           {t('Status')}
         </TableHead>
@@ -201,14 +208,6 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
       <TableCell id="no" className="truncate text-right opacity-50 max-lg:hidden">
         <div className="truncate">{idx + 1}</div>
       </TableCell>
-      {/*__showId && isDev && (
-        <TableCell id="categoryId" className="max-w-6 truncate max-xl:hidden" title={category.id}>
-          <div className="truncate opacity-50">
-            <span className="mr-[2px] opacity-30">#</span>
-            {category.id}
-          </div>
-        </TableCell>
-        )*/}
       <TableCell id="image" className="text-center">
         {category.imageUrl ? (
           <Icons.ImageIcon className="mx-auto size-5 text-green-600" />
@@ -224,14 +223,6 @@ function CategoriesTableRow(props: TCategoriesTableRowProps) {
           {truncateString(getCategoryName(category, locale, t), 40)}
         </Link>
       </TableCell>
-      {/*
-      <TableCell
-        id="description"
-        className="max-w-48 truncate max-lg:hidden"
-      >
-        {truncateMarkdown(getCategoryDescription(category, locale, t), 60)}
-      </TableCell>
-      */}
       <TableCell id="status" className="truncate max-md:hidden">
         {t(category.status)}
       </TableCell>
@@ -473,6 +464,7 @@ export function CategoriesTableContent(props: TCategoriesTableContentProps) {
           ))}
         </TableBody>
       </Table>
+      <AddCategoryBlock />
     </ScrollAreaInfinite>
   );
 }

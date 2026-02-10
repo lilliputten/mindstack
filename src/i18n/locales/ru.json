@@ -190,10 +190,13 @@
     "CannotCreateTopic": "Ошибка создания темы",
     "CategoriesHint": "Выберите одну или несколько категорий для темы. Вы можете изменить этот параметр позже.",
     "CategoriesLabel": "Категории",
+    "GoToCreatedTopic": "Перейти к созданной теме",
     "IsPublicHint": "Публичные темы могут просматриваться и использоваться другими пользователями.",
     "IsPublicLabel": "Публичная ли тема?",
     "NamePlaceholder": "Название",
     "SelectCategoriesPlaceholder": "Выберите категории",
+    "SuccessfullySavedMessage": "Теперь вы можете закрыть диалог.",
+    "SuccessfullySavedTitle": "Тема сохранена!",
     "TopicName": "Название темы"
   },
   "AddTopicModal": {
@@ -583,7 +586,6 @@
   "EditAnswerCard": {
     "CannotSaveAnswerData": "Не удаётся сохранить данные ответа",
     "CannotUpdateAnswerData": "Не удаётся обновить данные ответа",
-    "Reload": "Обновить",
     "SavingAnswerData": "Сохранение данных ответа...",
     "SuccessfullySavedAnswer": "Ответ успешно сохранён"
   },
@@ -601,14 +603,12 @@
   },
   "EditCategoryForm": {
     "AllNamesEmptyError": "Хотя бы одно поле имени должно быть заполнено во всех переводах",
-    "CancelText": "Отмена",
     "CategoryDescriptionHint": "Описание категории. Этот текст может использоваться пользователями для навигации и поиска.",
     "CategoryNameHint": "Название категории. Желательно, чтобы это было уникальное значение.",
     "CategoryPropertiesInstruction": "Пожалуйста, введите свойства категории (название, описание, ключевые слова) для всех или только одного из языков приложения.",
     "CategorySavedSuccessfully": "Данные категории успешно сохранены",
     "CategorySaving": "Сохранение данных категории...",
     "CategorySavingError": "Невозможно сохранить данные категории",
-    "CloseText": "Закрыть",
     "DescriptionWithLocale": "Описание ({locale})",
     "EnterCategoryDescriptionPlaceholder": "Введите описание категории",
     "EnterCategoryNamePlaceholder": "Введите название категории",
@@ -630,8 +630,8 @@
     "SelectStatusPlaceholder": "Выберите статус",
     "StatusLabel": "Статус",
     "SubmitFormError": "Не удалось отправить данные формы",
-    "SuccessfullySavedMessage": "Категория была успешно сохранена. Теперь вы можете закрыть этот диалог.",
-    "SuccessfullySavedTitle": "Сохранено!",
+    "SuccessfullySavedMessage": "Теперь вы можете закрыть диалог.",
+    "SuccessfullySavedTitle": "Категория сохранена!",
     "SuggestNewCategory": "Предложить новую категорию",
     "SuggestedOption": "Предложенная",
     "UploadImageError": "Не удалось загрузить изображение"
@@ -999,7 +999,6 @@
     "NoTopicsFound": "Темы не найдены",
     "NoTopicsFoundDescription": "Измените фильтры, чтобы разрешить отображение тем (если они есть), или создайте свои собственные.",
     "Public": "Публичная",
-    "Reload": "Обновить",
     "ResettingPublicStatusForSelectedTopics": "Сброс публичного статуса выбранных тем...",
     "SelectDeselectAll": "Выбрать/отменить всё",
     "SelectTopic": "Выбрать тему",
@@ -1529,7 +1528,6 @@
     "CannotUpdateTopicData": "Не удаётся обновить данные темы",
     "Edit": "Редактировать",
     "Questions": "Вопросы",
-    "Reload": "Обновить",
     "ViewTopic": "Просмотр темы"
   },
   "Workout": {
