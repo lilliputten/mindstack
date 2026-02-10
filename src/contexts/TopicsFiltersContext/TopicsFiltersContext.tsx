@@ -3,12 +3,14 @@
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { ErrorLike } from '@/lib/errors';
 import { deepCompare, getErrorText, prepareObjectToLossyCompare } from '@/lib/helpers';
 import { updateUrlParamsWithSchema } from '@/lib/helpers/urls';
+import { TLocale } from '@/i18n';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { TSettings } from '@/features/settings/types';
 
@@ -76,6 +78,8 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
   const [error, setError] = React.useState<ErrorLike>();
   const [filtersData, setFiltersData] = React.useState<TFiltersData | undefined>();
 
+  const locale = useLocale() as TLocale;
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -123,7 +127,12 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           filtersData = { ...filtersData };
           delete filtersData.showOnlyMyTopics;
         }
-        const realData = { ...filtersData };
+        const { searchLang } = filtersData;
+        const realData = {
+          ...filtersData,
+          // NOTE: Uses current locale if `searchLang` is empty, don't filter for language if equals '-'
+          searchLang: searchLang === '-' ? undefined : !searchLang ? locale : searchLang,
+        };
         // Compare data with defaults (fuzzy)
         const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData, ignoreOnlyMy);
         setError(undefined);
@@ -172,7 +181,17 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
         }
       });
     },
-    [ignoreOnlyMy, memo, applyFilters, form, storeId, searchParams, router, defaultFiltersData],
+    [
+      ignoreOnlyMy,
+      locale,
+      memo,
+      applyFilters,
+      form,
+      storeId,
+      searchParams,
+      defaultFiltersData,
+      router,
+    ],
   );
   memo.applyFiltersData = applyFiltersData;
 

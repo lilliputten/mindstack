@@ -82,7 +82,7 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
         category,
         creator,
       };
-      const __idMsg = '[mindstack:createCategory] 📊';
+      const __idMsg = '[createCategory] 📊';
       logJsonData(__idMsg, null, __debugData);
     }
 

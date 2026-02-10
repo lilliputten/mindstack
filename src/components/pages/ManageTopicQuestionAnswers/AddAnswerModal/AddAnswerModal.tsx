@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { useSettings } from '@/contexts/SettingsContext';
 import { addNewAnswer } from '@/features/answers/actions';
@@ -147,13 +148,19 @@ export function AddAnswerModal() {
           {t('AddAnswerModal.DialogDescription')}
         </DialogDescription>
       </div>
-      <AddAnswerForm
-        handleAddAnswer={handleAddAnswer}
-        className="flex flex-col p-6 text-foreground"
-        handleClose={hideModal}
-        isPending={addAnswerMutation.isPending}
-        questionId={questionId}
-      />
+      <ScrollArea
+        className={cn(
+          isDev && '__AddAnswerModal_Scroll', // DEBUG
+        )}
+      >
+        <AddAnswerForm
+          handleAddAnswer={handleAddAnswer}
+          className="flex flex-col p-6 text-foreground"
+          handleClose={hideModal}
+          isPending={addAnswerMutation.isPending}
+          questionId={questionId}
+        />
+      </ScrollArea>
     </Modal>
   );
 }
