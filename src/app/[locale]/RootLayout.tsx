@@ -1,6 +1,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/react';
 import { SessionProvider } from 'next-auth/react';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
@@ -115,7 +116,7 @@ export async function RootLayout(props: TRootLayoutProps) {
         */}
         {/* Runs before any interactive/hydration code to update user settings to avoid content flash */}
         <Script
-          id="layoyut-init-theme"
+          id="layout-init-theme"
           strategy="beforeInteractive"
           src="/static/layout-init-theme.js"
         />
@@ -189,6 +190,7 @@ export async function RootLayout(props: TRootLayoutProps) {
             </EnvContextRoot>
           </SessionProvider>
         </ReactQueryClientProvider>
+        {!isDev && <Analytics />}
       </body>
     </html>
   );
