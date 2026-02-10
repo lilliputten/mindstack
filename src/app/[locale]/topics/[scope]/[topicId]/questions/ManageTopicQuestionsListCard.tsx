@@ -612,7 +612,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         onClick: handleReload,
       },
       {
-        id: 'Delete Selected',
+        id: 'DeleteSelected',
         content: t('ManageTopicQuestionsListCard.DeleteSelected'),
         icon: Icons.Trash,
         hidden: !selectedQuestions.size,
@@ -620,31 +620,36 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         onClick: handleShowDeleteSelectedConfirm,
       },
       {
-        id: 'Add New Question',
+        id: 'AddNewQuestion',
         content: t('AddNewQuestion'),
         icon: Icons.Add,
         visibleFor: 'xl',
-        // onClick: handleAddQuestion,
-        /* // WRONG! -- This causes a mystic NextJS error: Functions cannot be
-         * // passed directly to Client Components unless you explicitly expose it
-         * // by marking it with "use server". Or maybe you meant to call this
-         * // function rather than return it.
-         * href: `${topicRoutePath}/add`,
-         */
         href: `${topicRoutePath}/questions/add`,
       },
       {
-        id: 'Generate Questions',
+        id: 'GenerateQuestions',
         content: t('GenerateQuestions'),
         icon: Icons.WandSparkles,
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         href: `${questionsListRoutePath}/generate`,
       },
       {
-        id: 'Start Training',
+        id: 'AddNewTopic',
+        content: t('AddNewTopic'),
+        icon: Icons.Add,
+        // visibleFor: 'xl',
+        href: `${topicsListRoutePath}/add`,
+      },
+      {
+        id: 'GoToTheTopic',
+        content: t('GoToTheTopic'),
+        icon: Icons.ArrowRight,
+        href: topicRoutePath,
+      },
+      {
+        id: 'ToTraining',
         content: t('ToTraining'),
         icon: Icons.Rocket,
-        visibleFor: 'md',
         href: `${availableTopicsRoute}/${topicId}/workout`,
         hidden: !allowedTraining,
       },
@@ -661,6 +666,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
       aiGenerationsAllowed,
       aiGenerationsLoading,
       questionsListRoutePath,
+      topicsListRoutePath,
       topicId,
       allowedTraining,
     ],

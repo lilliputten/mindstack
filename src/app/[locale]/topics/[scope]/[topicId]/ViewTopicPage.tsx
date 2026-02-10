@@ -175,8 +175,9 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
           isDev && '__ViewTopicPage_DashboardHeader', // DEBUG
           'mx-6',
         )}
-        breadcrumbs={breadcrumbs}
         actions={actions}
+        breadcrumbs={breadcrumbs}
+        inactiveLastBreadcrumb
       />
       <Card
         className={cn(

@@ -91,6 +91,7 @@ export function AddCategoryModal(props: TProps) {
     onSuccess: (_savedCategory) => {
       setSaved(true);
 
+      // TODO: Issue #66: Verify all react-query invalidation
       const invalidatePrefixes = [
         ['available-categories'],
         // Invalidate the most recent suggested category queries when in suggestion mode

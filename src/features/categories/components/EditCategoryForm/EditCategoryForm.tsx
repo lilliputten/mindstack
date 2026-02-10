@@ -351,8 +351,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
       >
         {isSubmitSuccessful ? (
           <SuccessSplash title={t('EditCategoryForm.SuccessfullySavedTitle')} className="px-6">
-            {t('EditCategoryForm.SuccessfullySavedMessage')}
-            {/* The dialog will be closed automatically. */}
+            {t('CanCloseDialog')}
           </SuccessSplash>
         ) : (
           <ScrollArea

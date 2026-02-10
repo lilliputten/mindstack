@@ -9,7 +9,7 @@ import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } fro
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
-import { Button, buttonVariants } from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -21,6 +21,7 @@ import * as Icons from '@/components/shared/Icons';
 import { pricingAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TNewTopic, TTopic, TTopicId } from '@/features/topics/types';
+import { useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { maxNameLength, minNameLength } from '../constants';
@@ -44,12 +45,16 @@ export interface TFormData {
 }
 
 function AddTopicFormComponent(props: TAddTopicFormProps) {
-  const { className, handleAddTopic, handleClose, addedTopicId, isPending, hasStabilized } = props;
+  const { className, handleAddTopic, handleClose, isPending, hasStabilized, addedTopicId } = props;
   const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
 
   const { manageScope } = useManageTopicsStore();
+
+  // Calculate paths...
   const routePath = `/topics/${manageScope}`;
+
+  const goToTheRoute = useGoToTheRoute();
 
   const formSchema = React.useMemo(
     () =>
@@ -96,6 +101,9 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
     isDirty, // boolean;
     // errors, // FieldErrors<TFieldValues>;
     isValid, // boolean;
+
+    // \<\(isSubmitSuccessful\|isSubmitting\|isLoading\)\>
+
     isSubmitSuccessful, // boolean;
     isSubmitting, // boolean;
     isLoading, // boolean;
@@ -169,7 +177,7 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
       >
         {isSubmitSuccessful ? (
           <SuccessSplash title={t('AddTopicForm.SuccessfullySavedTitle')} className="px-6">
-            {t('AddTopicForm.SuccessfullySavedMessage')}
+            {t('CanCloseDialog')}
             {/* The dialog will be closed automatically. */}
           </SuccessSplash>
         ) : limitsError ? (
@@ -271,20 +279,28 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
               <span>{buttonText}</span>
             </Button>
           )}
-          {/* Show a button "Go the created topic" */}
+          {/* Show a button "Go to the created topic". TODO: Use `router.replace`? */}
           {isSubmitSuccessful && addedTopicId && (
-            <Link
-              href={`${routePath}/${addedTopicId}` as TRoutePath}
-              className={cn(
-                buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
-                'flex gap-2',
-                isBusy && 'disabled',
-              )}
-              onClick={() => setIsGoingOut(true)}
+            <Button
+              className="flex gap-2"
+              // Go to the route by replacing the current (`.../add`) route
+              onClick={() => goToTheRoute(`${routePath}/${addedTopicId}`, true)}
+              variant={!isGoingOut ? 'theme' : 'ghost'}
+              disabled={isBusy}
             >
-              <Icons.ArrowRight className="size-4" />
-              <span>{t('AddTopicForm.GoToCreatedTopic')}</span>
-            </Link>
+              <Link
+                href={`${routePath}/${addedTopicId}` as TRoutePath}
+                className={cn(
+                  'flex gap-2',
+                  // buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
+                  // isBusy && 'disabled',
+                )}
+                onClick={() => setIsGoingOut(true)}
+              >
+                <Icons.ArrowRight className="size-4" />
+                <span>{t('AddTopicForm.GoToCreatedTopic')}</span>
+              </Link>
+            </Button>
           )}
           <Button
             variant={isSubmitSuccessful && !addedTopicId ? 'theme' : 'ghost'}

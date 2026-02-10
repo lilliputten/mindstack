@@ -72,31 +72,41 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         data-testid="__ViewTopicContentSummary_Section_Questions"
         className="content-truncate flex flex-col gap-4"
       >
-        <h3 className="content-truncate text-lg font-semibold">{t('Questions')}</h3>
-        <div className="flex flex-wrap gap-2">
-          {!!topic._count?.questions && (
-            <span className="flex items-center gap-2">
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h3 className="content-truncate text-lg font-semibold">{t('Questions')}</h3>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`${routePath}/${topic.id}/questions` as TRoutePath}
+              className={cn(
+                buttonVariants({ variant: 'ghost' }),
+                'flex items-center gap-2 truncate',
+              )}
+            >
               <Icons.Questions className="size-4 shrink-0 opacity-50" />
-              <span>
-                {t('ViewTopicContentSummary.QuestionsCount')}: {topic._count.questions}
-              </span>
-            </span>
-          )}
-          <Link
-            href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
-            className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2 truncate')}
-          >
-            <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">{t('GenerateQuestions')}</span>
-          </Link>
-          <Link
-            href={`${routePath}/${topic.id}/questions` as TRoutePath}
-            className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2 truncate')}
-          >
-            <Icons.Edit className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">{t('ViewTopicContentSummary.ManageQuestions')}</span>
-          </Link>
+              <span className="truncate">{t('GoToTheQuestions')}</span>
+            </Link>
+            <Link
+              href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
+              className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2 truncate')}
+            >
+              <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
+              <span className="truncate">{t('GenerateQuestions')}</span>
+            </Link>
+          </div>
         </div>
+        {!!topic._count?.questions && (
+          <div className="flex flex-wrap gap-2 text-sm">
+            <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
+              <Icons.Questions className="size-4 shrink-0 opacity-50" />
+              <span className="truncate">
+                <span className="truncate opacity-50">
+                  {t('ViewTopicContentSummary.QuestionsCount')}:
+                </span>{' '}
+                <span className="truncate">{topic._count.questions}</span>
+              </span>
+            </Badge>
+          </div>
+        )}
       </div>
 
       {/* Categories */}
@@ -225,14 +235,6 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         <h3 className="content-truncate text-lg font-semibold">{t('Author')}</h3>
         <div className="content-truncate flex items-center gap-2 text-sm">
           <SmallUserBlock user={topic.user} className="truncate" />
-          {/*isOwner ? (
-            <>
-              <Icons.ShieldCheck className="size-4 opacity-50 opacity-50" />
-              <span>{t('ViewTopicContentSummary.YouAreTheAuthor')}</span>
-            </>
-          ) : (
-            topic.user && <SmallUserBlock user={topic.user} />
-          )*/}
         </div>
       </div>
     </div>

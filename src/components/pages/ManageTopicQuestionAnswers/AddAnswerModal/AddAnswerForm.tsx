@@ -16,11 +16,15 @@ import { Switch } from '@/components/ui/Switch';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
+import { BusySplash, SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { pricingAliasRoute } from '@/config';
+import { pricingAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { TAnswer, TNewAnswer } from '@/features/answers/types';
+import { TAnswer, TAnswerId, TNewAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
+import { TTopicId } from '@/features/topics';
+import { useGoToTheRoute } from '@/hooks';
+import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { maxTextLength, minTextLength } from '../constants';
 
@@ -31,7 +35,9 @@ export interface TAddAnswerFormProps {
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
+  topicId: TTopicId;
   questionId: TQuestionId;
+  addedAnswerId?: TAnswerId;
 }
 
 export interface TFormData {
@@ -40,8 +46,22 @@ export interface TFormData {
 }
 
 export function AddAnswerForm(props: TAddAnswerFormProps) {
-  const { className, handleAddAnswer, handleClose, isPending, questionId } = props;
+  const { className, handleAddAnswer, handleClose, isPending, topicId, questionId, addedAnswerId } =
+    props;
+  const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
+
+  const { manageScope } = useManageTopicsStore();
+
+  // Calculate paths...
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
+  const answersListRoutePath = `${questionRoutePath}/answers`;
+  // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
+
+  const goToTheRoute = useGoToTheRoute();
 
   const formSchema = React.useMemo(
     () =>
@@ -72,9 +92,18 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
   // Focus the first field (should it be used with a languages list?)
   React.useEffect(() => setFocus('text'), [setFocus]);
 
-  const { isDirty, isValid } = formState;
+  const {
+    isDirty,
+    isValid,
+    isSubmitSuccessful, // boolean;
+    isSubmitting, // boolean;
+    isLoading, // boolean;
+  } = formState;
+  // const isSubmitSuccessful = true; // DEBUG
 
-  const isSubmitEnabled = !isPending && isDirty && isValid;
+  const isBusy = isGoingOut || isSubmitting || isLoading || isPending;
+  const isSubmitEnabled = !isBusy && isDirty && isValid;
+  // const isSubmitEnabled = !isPending && isDirty && isValid;
 
   const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
 
@@ -132,7 +161,11 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
           className,
         )}
       >
-        {limitsError ? (
+        {isSubmitSuccessful ? (
+          <SuccessSplash title={t('AddAnswerForm.SuccessfullySavedTitle')} className="px-6">
+            {t('CanCloseDialog')}
+          </SuccessSplash>
+        ) : limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
@@ -202,24 +235,70 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
             <div className="flex flex-col justify-between"></div>
           </>
         )}
+
         {/* Actions */}
-        <div className="flex w-full gap-4">
+        <div
+          className={cn(
+            isDev && '__AddAnswerForm_Actions', // DEBUG
+            'flex w-full gap-4',
+            isSubmitSuccessful && 'justify-center',
+          )}
+        >
           {!limitsError && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
               disabled={!isSubmitEnabled}
-              className="gap-2"
+              className={cn(
+                isDev && '__AddAnswerForm_SaveButton', // DEBUG
+                'gap-2',
+                isSubmitSuccessful && 'hidden',
+              )}
             >
               <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
               <span>{buttonText}</span>
             </Button>
           )}
-          <Button variant="ghost" onClick={onClose} className="gap-2">
-            <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
-            <span>{t('Cancel')}</span>
+          {/* Show a button "Go to the created answer". TODO: Use `router.replace`? */}
+          {isSubmitSuccessful && addedAnswerId && (
+            <Button
+              className="flex gap-2"
+              // Go to the route by replacing the current (`.../add`) route
+              onClick={() => goToTheRoute(`${answersListRoutePath}/${addedAnswerId}`, true)}
+              variant={!isGoingOut ? 'theme' : 'ghost'}
+              disabled={isBusy}
+            >
+              <Link
+                href={`${answersListRoutePath}/${addedAnswerId}` as TRoutePath}
+                className={cn(
+                  'flex gap-2',
+                  // buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
+                  // isBusy && 'disabled',
+                )}
+                onClick={() => setIsGoingOut(true)}
+              >
+                <Icons.ArrowRight className="size-4" />
+                <span>{t('AddAnswerForm.GoToCreatedAnswer')}</span>
+              </Link>
+            </Button>
+          )}
+          <Button
+            variant={isSubmitSuccessful && !addedAnswerId ? 'theme' : 'ghost'}
+            onClick={onClose}
+            className="gap-2"
+          >
+            <Icons.Close className="size-4" />
+            <span>{isSubmitSuccessful ? t('Close') : t('Cancel')}</span>
           </Button>
         </div>
+
+        {/* LoadingSplash */}
+        <BusySplash
+          className={cn(
+            isDev && '__AddAnswerForm_LoadingSplash', // DEBUG
+          )}
+          isBusy={isBusy}
+        />
       </form>
     </FormProvider>
   );

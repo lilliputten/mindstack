@@ -28,7 +28,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
 import * as Icons from '@/components/shared/Icons';
-import { TRoutePath } from '@/config';
+import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { deleteAnswers, updateAnswer } from '@/features/answers/actions';
@@ -573,6 +573,9 @@ export function ManageTopicQuestionAnswersListCard(
     throw new Error('No topic found');
   }
 
+  const questionsCount = topic?._count?.questions;
+  const allowedTraining = !!questionsCount;
+
   const {
     question,
     // isFetched: isQuestionFetched,
@@ -664,7 +667,7 @@ export function ManageTopicQuestionAnswersListCard(
         onClick: () => refetchAnswers(),
       },
       {
-        id: 'Delete Selected',
+        id: 'DeleteSelected',
         content: t('ManageTopicQuestionAnswersListCard.DeleteSelected'),
         icon: Icons.Trash,
         hidden: !selectedAnswers.size,
@@ -672,21 +675,53 @@ export function ManageTopicQuestionAnswersListCard(
         onClick: handleShowDeleteSelectedConfirm,
       },
       {
-        id: 'Add New Answer',
+        id: 'AddNewAnswer',
         content: t('AddNewAnswer'),
         icon: Icons.Add,
         visibleFor: 'xl',
         onClick: () => goToTheRoute(`${answersListRoutePath}/add`),
       },
       {
-        id: 'Generate Answers',
+        id: 'GenerateAnswers',
         content: t('GenerateAnswers'),
         icon: Icons.WandSparkles,
         disabled: !aiGenerationsAllowed || aiGenerationsLoading,
         onClick: () => goToTheRoute(`${answersListRoutePath}/generate`),
       },
+      {
+        id: 'AddNewQuestion',
+        content: t('AddNewQuestion'),
+        icon: Icons.Add,
+        href: `${topicRoutePath}/questions/add`,
+      },
+      {
+        id: 'GoToTheQuestion',
+        content: t('GoToTheQuestion'),
+        icon: Icons.ArrowRight,
+        href: questionRoutePath,
+      },
+      {
+        id: 'AddNewTopic',
+        content: t('AddNewTopic'),
+        icon: Icons.Add,
+        href: `${topicsListRoutePath}/add`,
+      },
+      {
+        id: 'GoToTheTopic',
+        content: t('GoToTheTopic'),
+        icon: Icons.ArrowRight,
+        href: topicRoutePath,
+      },
+      {
+        id: 'ToTraining',
+        content: t('ToTraining'),
+        icon: Icons.Rocket,
+        href: `${availableTopicsRoute}/${topicId}/workout`,
+        hidden: !allowedTraining,
+      },
     ],
     [
+      t,
       goBack,
       isAnswersRefetching,
       selectedAnswers.size,
@@ -694,10 +729,14 @@ export function ManageTopicQuestionAnswersListCard(
       handleShowDeleteSelectedConfirm,
       aiGenerationsAllowed,
       aiGenerationsLoading,
+      topicRoutePath,
+      topicsListRoutePath,
+      questionRoutePath,
+      topicId,
+      allowedTraining,
       refetchAnswers,
       goToTheRoute,
       answersListRoutePath,
-      t,
     ],
   );
 
