@@ -1,6 +1,5 @@
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { APIError } from '@/lib/types/api';
@@ -43,6 +42,7 @@ import {
   useAvailableTopicById,
   useGoBack,
   useGoToTheRoute,
+  useSessionData,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -60,16 +60,20 @@ const useDarkHeader = true;
 
 const truncateLongMarkdownTextsTo = 200;
 
-function AddAnswerBlock(props: { topicId: TTopicId }) {
-  const { topicId } = props;
+function AddAnswerBlock(props: { topicId: TTopicId; questionId: TQuestionId }) {
+  const { topicId, questionId } = props;
   const t = useT();
   const { manageScope } = useManageTopicsStore();
   const topicsListRoutePath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
-  const answersListRoutePath = `${topicRoutePath}/answers`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
+  const answersListRoutePath = `${questionRoutePath}/answers`;
+  // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
+
   const addAnswerRoute = `${answersListRoutePath}/add` as TRoutePath;
-  const { data: sessionData } = useSession();
-  const user = sessionData?.user;
+
+  const { user } = useSessionData();
 
   if (!user?.id) {
     return null;
@@ -530,7 +534,7 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
           ))}
         </TableBody>
       </Table>
-      <AddAnswerBlock topicId={topicId} />
+      <AddAnswerBlock topicId={topicId} questionId={questionId} />
     </ScrollAreaInfinite>
   );
 }

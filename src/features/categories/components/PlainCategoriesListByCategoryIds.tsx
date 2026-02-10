@@ -16,6 +16,8 @@ interface TProps {
   className?: string;
 }
 
+// TODO: Include optional (by parameter) category links to the dedicated category page, see Issue #66.
+
 export function PlainCategoriesListByCategoryIds(props: TProps) {
   const { categoryIds, className } = props;
   const locale = useLocale() as TLocale;

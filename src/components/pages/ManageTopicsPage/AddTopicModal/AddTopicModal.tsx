@@ -14,16 +14,9 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { SkeletonPopup } from '@/components/ui/SkeletonPopup';
 import { StableMountWrapper } from '@/components/hoc/withStableMount';
 import { isDev } from '@/constants';
-import { useSettings } from '@/contexts/SettingsContext';
 import { addNewTopic } from '@/features/topics/actions/addNewTopic';
-import { TAvailableTopic, TNewTopic } from '@/features/topics/types';
-import {
-  useAvailableTopicsByScope,
-  useGoBack,
-  useGoToTheRoute,
-  useMediaQuery,
-  useModalTitle,
-} from '@/hooks';
+import { TAvailableTopic, TNewTopic, TTopicId } from '@/features/topics/types';
+import { useAvailableTopicsByScope, useGoBack, useMediaQuery, useModalTitle } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';
@@ -34,10 +27,9 @@ const urlPostfix = '/add';
 export function AddTopicModal() {
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
-  const [isFinished, setFinished] = React.useState(false);
+  const [addedTopicId, setAddedTopicId] = React.useState<TTopicId | undefined>();
   const { isMobile } = useMediaQuery();
 
-  const { jumpToNewEntities } = useSettings();
   const t = useT();
 
   const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
@@ -47,7 +39,7 @@ export function AddTopicModal() {
   /** Should the modal be visible? */
   const shouldBeVisible = pathname?.endsWith(urlPostfix);
 
-  const goToTheRoute = useGoToTheRoute();
+  // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(routePath);
 
   const hideModal = React.useCallback(() => {
@@ -65,13 +57,15 @@ export function AddTopicModal() {
       // Invalidate all other keys...
       availableTopicsQuery.invalidateAllKeysExcept([availableTopicsQuery.queryKey]);
       // Going out of here...
-      setFinished(true);
-      if (jumpToNewEntities) {
-        // Navigate to the edit page after successful creation
-        goToTheRoute(`${routePath}/${addedTopic.id}`, true);
-      } else {
-        goBack();
-      }
+      setAddedTopicId(addedTopic.id);
+      /* // XXX: It's not used now: see addedTopicId and jump to button in the `AddTopicForm`. See also `jumpToNewEntities` (is it used somewhere?).
+       * if (jumpToNewEntities) {
+       *   // Navigate to the edit page after successful creation
+       *   goToTheRoute(`${routePath}/${addedTopic.id}`, true);
+       * } else {
+       *   goBack();
+       * }
+       */
     },
     onError: (error, newTopic) => {
       const message = t('AddTopicModal.ToastError');
@@ -104,7 +98,7 @@ export function AddTopicModal() {
     return null;
   }
 
-  const isPending = isFinished || addTopicMutation.isPending;
+  const isPending = /* isFinished || */ addTopicMutation.isPending;
 
   return (
     <Suspense fallback={<SkeletonPopup />}>
@@ -148,6 +142,7 @@ export function AddTopicModal() {
                   className="p-8 text-foreground"
                   handleClose={hideModal}
                   isPending={isPending}
+                  addedTopicId={addedTopicId}
                 />
               );
             }}

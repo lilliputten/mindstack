@@ -26,7 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Textarea } from '@/components/ui/Textarea';
 import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
-import { ImageUpload, SuccessSplash } from '@/components/shared';
+import { BusySplash, ImageUpload, SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { deleteCategoryImage } from '@/features/categories/actions/deleteCategoryImage';
@@ -333,7 +333,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
     ev.preventDefault();
   };
 
-  const isBusy = isSubmitting || isLoading || isPending; /* || isUploading */
+  const isBusy = isSubmitting || isLoading || isPending;
   const isSubmitEnabled = !isBusy && isDirty && isValid;
 
   const SaveIcon = !isLoading ? Icons.Save : Icons.Spinner;
@@ -656,27 +656,17 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
             onClick={handleCloseForm}
             className="gap-2"
           >
-            <span>
-              {isSubmitSuccessful
-                ? t('EditCategoryForm.CloseText')
-                : t('EditCategoryForm.CancelText')}
-            </span>
+            <span>{isSubmitSuccessful ? t('Close') : t('Cancel')}</span>
           </Button>
         </div>
 
         {/* LoadingSplash */}
-        <div
+        <BusySplash
           className={cn(
             isDev && '__EditCategoryForm_LoadingSplash', // DEBUG
-            'absolute',
-            'inset-0 flex flex-col items-center justify-center gap-4 transition',
-            'my-2 bg-background',
-            'opacity-50',
-            !isBusy && 'pointer-events-none opacity-0',
           )}
-        >
-          <Icons.Spinner className="size-16 animate-spin text-theme" />
-        </div>
+          isBusy={isBusy}
+        />
       </form>
     </FormProvider>
   );

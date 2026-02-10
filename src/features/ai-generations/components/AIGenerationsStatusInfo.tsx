@@ -74,44 +74,45 @@ export function AIGenerationsStatusInfo(props: TProps) {
     <div
       className={cn(
         isDev && '__AIGenerationsStatusInfo', // DEBUG
-        'flex',
-        'flex-wrap',
-        'items-center',
-        'gap-4',
-        'gap-y-1',
+        'flex flex-wrap items-center gap-4 gap-y-1',
+        'content-truncate',
         'rounded-md',
+        'text-sm',
         showFrame && 'border',
         showFrame && 'border-theme-600/5',
         showFrame && 'bg-theme-600/5',
         showFrame && 'p-3',
         showFrame && 'py-2',
-        'text-sm',
-        // 'opacity-50',
         className,
       )}
     >
       {/* Available Generations */}
       {isUnlimited ? (
-        <span className={cn('flex items-center gap-1 text-green-600')}>
+        <span className="content-truncate flex items-center gap-1 text-green-600">
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
-          <span>{t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')}</span>
+          <span className="content-truncate">
+            {t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')}
+          </span>
         </span>
       ) : allowed ? (
-        <span className={cn('flex items-center gap-1 text-green-600')}>
+        <span className="content-truncate flex items-center gap-1 text-green-600">
           <Icons.CircleCheck className="mr-1 size-4 opacity-50" />
-          <span>
+          <span className="content-truncate">
             {t('AIGenerationsStatusInfo.AvailableAIGenerations', { availableGenerations })}
           </span>
         </span>
       ) : (
-        <span className={cn('flex items-center gap-1')}>
+        <span className="content-truncate flex items-center gap-1">
           <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-          <span>
-            <span className="font-semibold text-red-500">
+          <span className="content-truncate">
+            <span className="content-truncate font-semibold text-red-500">
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
             </span>{' '}
             Please{' '}
-            <Link href={welcomeAliasRoute} className="text-theme-500 hover:underline">
+            <Link
+              href={welcomeAliasRoute}
+              className="content-truncate text-theme-500 hover:underline"
+            >
               {t('AIGenerationsStatusInfo.CheckYourUsagePlan')}
             </Link>
             .

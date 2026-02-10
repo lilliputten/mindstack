@@ -1,9 +1,26 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.08, 19:23
+ @changed 2026.02.10, 04:51
 -->
 
 # CHANGELOG
+
+## Minor changes: Enhanced UI, filtering, and content management features - 2026.02.10
+
+- Updated logging to display important data first
+- Added a new 'Settings' menu to the top navigation
+- Implemented default topic filtering using the current locale language
+- Added a special dash ("-") filter value to search across all languages
+- Improved the handling of the 'ANY' status for category filters
+- Added "Add new" buttons to the topics, questions, and answers management pages
+- Optimized various translation strings
+- Added a final confirmation modal splash for the add topic process
+- Added a button to navigate directly to a newly created topic
+- Refactored the layout of the topic properties page (ViewTopicContentSummary)
+- Added the AddCategoryBlock to the ManageCategoriesList
+- Updated the adaptive layout of the AIGenerationsStatusInfo component
+- Extracted a reusable BusySplash waiting component
+- Added a more functional MediumCategoriesListByCategoryIds block (with icons and links)
 
 ## Minor changes - 2026.02.08
 

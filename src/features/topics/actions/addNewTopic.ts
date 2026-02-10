@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
-import { TNewTopic, TTopic } from '@/features/topics/types';
+import { TAvailableTopic, TNewTopic } from '@/features/topics/types';
 import {
   checkTopicsLimit,
   TContentLimitStatus,
@@ -15,6 +15,8 @@ import {
 interface TOptions {
   noDebug?: boolean;
 }
+
+// TODO: Reuse the params from `getAvailableTopics` (`TGetAvailableTopicsParams`)
 
 export async function addNewTopic(params: TNewTopic & TOptions) {
   const { noDebug, ...newTopic } = params;
@@ -49,18 +51,30 @@ export async function addNewTopic(params: TNewTopic & TOptions) {
      */
     const data: Prisma.TopicCreateArgs['data'] = { ...topicData, userId };
 
+    const include: Prisma.TopicInclude = {
+      _count: { select: { questions: true } },
+    };
+
     // Link categories if provided using Prisma's nested write
     if (categoryIds?.length) {
       data.categories = {
         connect: categoryIds.map((id) => ({ id })),
       };
+      include.categories = true;
     }
 
     const addedTopic = await prisma.topic.create({
       data,
+      include,
     });
 
-    return addedTopic as TTopic;
+    const topic = addedTopic as TAvailableTopic;
+
+    if (topic.categories) {
+      topic.categoryIds = topic.categories.map(({ id }) => id);
+    }
+
+    return topic;
   } catch (error) {
     if (!noDebug) {
       // eslint-disable-next-line no-console

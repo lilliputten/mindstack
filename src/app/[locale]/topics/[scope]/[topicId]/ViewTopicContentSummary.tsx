@@ -16,8 +16,9 @@ import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
+import { MediumCategoriesListByCategoryIds } from '@/features/categories/components';
 import { SmallUserBlock } from '@/features/users';
-import { useAvailableTopicById, useSessionUser } from '@/hooks';
+import { useAvailableTopicById } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TProps {
@@ -28,7 +29,6 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
   const { manageScope } = useManageTopicsStore();
   const routePath = `/topics/${manageScope}`;
   const format = useFormatter();
-  const user = useSessionUser();
   const t = useT();
 
   const { topic } = availableTopicQuery;
@@ -38,13 +38,16 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     throw new Error(t('ViewTopicContentSummary.NoTopicLoaded'));
   }
 
-  const isOwner = !!topic.userId && topic.userId === user?.id;
+  // const user = useSessionUser();
+  // const isOwner = !!topic.userId && topic.userId === user?.id;
+
+  const categoryIds = topic.categoryIds || topic.categories?.map(({ id }) => id);
 
   return (
     <div
       className={cn(
         isDev && '__ViewTopicContentSummary', // DEBUG
-        'mx-6 flex w-full flex-col gap-4',
+        'content-truncate mx-6 flex w-full flex-col gap-4',
       )}
     >
       <AIGenerationsStatusInfo />
@@ -55,9 +58,11 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           data-testid="__ViewTopicContentSummary_Section_TopicDescription"
           className="flex flex-col gap-4"
         >
-          <h3 className="text-lg font-semibold">{t('ViewTopicContentSummary.Description')}</h3>
-          <div className="rounded-lg bg-slate-500/10 p-4">
-            <MarkdownText>{topic.description}</MarkdownText>
+          <h3 className="content-truncate text-lg font-semibold">
+            {t('ViewTopicContentSummary.Description')}
+          </h3>
+          <div className="content-truncate rounded-lg bg-slate-500/10 p-4">
+            <MarkdownText className="content-truncate">{topic.description}</MarkdownText>
           </div>
         </div>
       )}
@@ -65,9 +70,9 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       {/* Topic Questions */}
       <div
         data-testid="__ViewTopicContentSummary_Section_Questions"
-        className="flex flex-col gap-4"
+        className="content-truncate flex flex-col gap-4"
       >
-        <h3 className="text-lg font-semibold">{t('Questions')}</h3>
+        <h3 className="content-truncate text-lg font-semibold">{t('Questions')}</h3>
         <div className="flex flex-wrap gap-2">
           {!!topic._count?.questions && (
             <span className="flex items-center gap-2">
@@ -79,31 +84,47 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           )}
           <Link
             href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
-            className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2')}
+            className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2 truncate')}
           >
             <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
-            <span>{t('GenerateQuestions')}</span>
+            <span className="truncate">{t('GenerateQuestions')}</span>
           </Link>
           <Link
             href={`${routePath}/${topic.id}/questions` as TRoutePath}
-            className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2')}
+            className={cn(buttonVariants({ variant: 'theme' }), 'flex items-center gap-2 truncate')}
           >
             <Icons.Edit className="size-4 shrink-0 opacity-50" />
-            <span>{t('ViewTopicContentSummary.ManageQuestions')}</span>
+            <span className="truncate">{t('ViewTopicContentSummary.ManageQuestions')}</span>
           </Link>
         </div>
       </div>
 
+      {/* Categories */}
+      {!!categoryIds?.length && (
+        <div
+          data-testid="__ViewTopicContentSummary_Section_Categories"
+          className="content-truncate flex flex-col gap-4"
+        >
+          <h3 className="content-truncate text-lg font-semibold">{t('Categories')}</h3>
+          <MediumCategoriesListByCategoryIds
+            className="flex-wrap gap-4 gap-y-2"
+            categoryIds={categoryIds}
+          />
+        </div>
+      )}
+
       {/* Topic Properties */}
       <div
         data-testid="__ViewTopicContentSummary_Section_Properties"
-        className="flex flex-col gap-4"
+        className="content-truncate flex flex-col gap-4"
       >
-        <h3 className="text-lg font-semibold">{t('ViewTopicContentSummary.Properties')}</h3>
-        <div className="flex flex-wrap gap-2">
+        <h3 className="content-truncate text-lg font-semibold">
+          {t('ViewTopicContentSummary.Properties')}
+        </h3>
+        <div className="content-truncate flex flex-wrap gap-2">
           <Badge
             variant={topic.isPublic ? 'success' : 'outline'}
-            className="flex gap-2 px-2 py-1"
+            className="flex gap-2 truncate px-2 py-1"
             title={t('Availability')}
           >
             {topic.isPublic ? (
@@ -111,25 +132,31 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             ) : (
               <Icons.EyeOff className="size-4 shrink-0 opacity-50" />
             )}
-            {topic.isPublic
-              ? t('ViewTopicContentSummary.Public')
-              : t('ViewTopicContentSummary.Private')}
+            <span className="truncate">
+              {topic.isPublic
+                ? t('ViewTopicContentSummary.Public')
+                : t('ViewTopicContentSummary.Private')}
+            </span>
           </Badge>
           {topic.langName && (
             <Badge
               variant="outline"
-              className="flex items-center gap-1 px-2 py-1"
+              className="flex items-center gap-1 truncate px-2 py-1"
               title={t('Language')}
             >
               <Icons.Languages className="size-4 shrink-0 opacity-50" />
-              <LanguageName langName={topic.langName} langCode={topic.langCode} />
+              <LanguageName
+                langName={topic.langName}
+                langCode={topic.langCode}
+                className="truncate"
+              />
             </Badge>
           )}
           {topic.answersCountRandom && topic.answersCountMin && topic.answersCountMax && (
             <Badge variant="secondary" className="flex items-center gap-1 px-2 py-1">
               <Icons.Hash className="size-4 shrink-0 opacity-50" />
               {t('ViewTopicContentSummary.RandomAnswers')}: {topic.answersCountMin}-
-              {topic.answersCountMax}
+              <span className="truncate">{topic.answersCountMax}</span>
             </Badge>
           )}
         </div>
@@ -139,16 +166,18 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       {topic.keywords && (
         <div
           data-testid="__ViewTopicContentSummary_Section_Keywords"
-          className="flex flex-col gap-4"
+          className="content-truncate flex flex-col gap-4"
         >
-          <h3 className="text-lg font-semibold">{t('ViewTopicContentSummary.Keywords')}</h3>
-          <div className="flex flex-wrap gap-1">
+          <h3 className="content-truncate text-lg font-semibold">
+            {t('ViewTopicContentSummary.Keywords')}
+          </h3>
+          <div className="content-truncate flex flex-wrap gap-1">
             {topic.keywords
               .split(',')
               .map((s) => s.trim())
               .filter(Boolean)
               .map((keyword, idx) => (
-                <span key={idx} className="rounded-sm bg-theme-700/10 px-2 text-sm">
+                <span key={idx} className="truncate rounded-sm bg-theme-700/10 px-2 text-sm">
                   {keyword}
                 </span>
               ))}
@@ -159,36 +188,51 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
       <Separator />
 
       {/* Timestamps */}
-      <div data-testid="__ViewTopicContentSummary_Section_Timeline" className="flex flex-col gap-4">
-        <h3 className="text-lg font-semibold">{t('Timeline')}</h3>
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Timeline"
+        className="content-truncate flex flex-col gap-4"
+      >
+        <h3 className="content-truncate text-lg font-semibold">{t('Timeline')}</h3>
         <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <Icons.CalendarDays className="size-4 text-muted-foreground opacity-50" />
-            <span className="text-muted-foreground">{t('Created')}:</span>
-            <span>{getFormattedRelativeDate(format, topic.createdAt)}</span>
+          <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+            <span className="flex gap-2 truncate opacity-50">
+              <Icons.CalendarDays className="size-4 shrink-0" />
+              <span className="truncate">{t('Created')}:</span>
+            </span>
+            <span className="content-truncate">
+              {getFormattedRelativeDate(format, topic.createdAt)}
+            </span>
           </div>
           {!!compareDates(topic.updatedAt, topic.createdAt) && (
-            <div className="flex items-center gap-2">
-              <Icons.Edit className="size-4 text-muted-foreground opacity-50" />
-              <span className="text-muted-foreground">{t('Modified')}:</span>
-              <span>{getFormattedRelativeDate(format, topic.updatedAt)}</span>
+            <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+              <span className="flex gap-2 truncate opacity-50">
+                <Icons.Edit className="size-4 shrink-0" />
+                <span className="truncate">{t('Modified')}:</span>
+              </span>
+              <span className="content-truncate">
+                {getFormattedRelativeDate(format, topic.updatedAt)}
+              </span>
             </div>
           )}
         </div>
       </div>
 
       {/* Author Info */}
-      <div data-testid="__ViewTopicContentSummary_Section_Author" className="flex flex-col gap-4">
-        <h3 className="text-lg font-semibold">{t('Author')}</h3>
-        <div className="flex items-center gap-2 text-sm">
-          {isOwner ? (
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Author"
+        className="content-truncate flex flex-col gap-4"
+      >
+        <h3 className="content-truncate text-lg font-semibold">{t('Author')}</h3>
+        <div className="content-truncate flex items-center gap-2 text-sm">
+          <SmallUserBlock user={topic.user} className="truncate" />
+          {/*isOwner ? (
             <>
-              <Icons.ShieldCheck className="size-4 text-muted-foreground opacity-50" />
+              <Icons.ShieldCheck className="size-4 opacity-50 opacity-50" />
               <span>{t('ViewTopicContentSummary.YouAreTheAuthor')}</span>
             </>
           ) : (
             topic.user && <SmallUserBlock user={topic.user} />
-          )}
+          )*/}
         </div>
       </div>
     </div>

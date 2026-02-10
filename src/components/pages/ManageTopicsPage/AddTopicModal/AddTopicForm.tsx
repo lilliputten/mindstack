@@ -9,17 +9,19 @@ import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } fro
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
+import { BusySplash, SuccessSplash } from '@/components/shared';
 import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
-import { pricingAliasRoute } from '@/config';
+import { pricingAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { TNewTopic, TTopic } from '@/features/topics/types';
+import { TNewTopic, TTopic, TTopicId } from '@/features/topics/types';
+import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { maxNameLength, minNameLength } from '../constants';
 
@@ -32,6 +34,7 @@ export interface TAddTopicFormProps {
   isPending?: boolean;
   hasStabilized?: boolean;
   isMounted?: boolean;
+  addedTopicId?: TTopicId;
 }
 
 export interface TFormData {
@@ -41,8 +44,12 @@ export interface TFormData {
 }
 
 function AddTopicFormComponent(props: TAddTopicFormProps) {
-  const { className, handleAddTopic, handleClose, isPending, hasStabilized } = props;
+  const { className, handleAddTopic, handleClose, addedTopicId, isPending, hasStabilized } = props;
+  const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
+
+  const { manageScope } = useManageTopicsStore();
+  const routePath = `/topics/${manageScope}`;
 
   const formSchema = React.useMemo(
     () =>
@@ -89,9 +96,14 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
     isDirty, // boolean;
     // errors, // FieldErrors<TFieldValues>;
     isValid, // boolean;
+    isSubmitSuccessful, // boolean;
+    isSubmitting, // boolean;
+    isLoading, // boolean;
   } = formState;
+  // const isSubmitSuccessful = true; // DEBUG
 
-  const isSubmitEnabled = !isPending && isDirty && isValid;
+  const isBusy = isGoingOut || isSubmitting || isLoading || isPending;
+  const isSubmitEnabled = !isBusy && isDirty && isValid;
 
   const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
 
@@ -155,7 +167,12 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
           className,
         )}
       >
-        {limitsError ? (
+        {isSubmitSuccessful ? (
+          <SuccessSplash title={t('AddTopicForm.SuccessfullySavedTitle')} className="px-6">
+            {t('AddTopicForm.SuccessfullySavedMessage')}
+            {/* The dialog will be closed automatically. */}
+          </SuccessSplash>
+        ) : limitsError ? (
           <div
             data-error-id={limitsError}
             className={cn(
@@ -232,23 +249,60 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
         )}
 
         {/* Actions */}
-        <div className="flex w-full gap-4">
+        <div
+          className={cn(
+            isDev && '__AddTopicForm_Actions', // DEBUG
+            'flex w-full gap-4',
+            isSubmitSuccessful && 'justify-center',
+          )}
+        >
           {!limitsError && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
               disabled={!isSubmitEnabled}
-              className="gap-2"
+              className={cn(
+                isDev && '__AddTopicForm_SaveButton', // DEBUG
+                'gap-2',
+                isSubmitSuccessful && 'hidden',
+              )}
             >
               <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
               <span>{buttonText}</span>
             </Button>
           )}
-          <Button variant="ghost" onClick={onClose} className="gap-2">
+          {/* Show a button "Go the created topic" */}
+          {isSubmitSuccessful && addedTopicId && (
+            <Link
+              href={`${routePath}/${addedTopicId}` as TRoutePath}
+              className={cn(
+                buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
+                'flex gap-2',
+                isBusy && 'disabled',
+              )}
+              onClick={() => setIsGoingOut(true)}
+            >
+              <Icons.ArrowRight className="size-4" />
+              <span>{t('AddTopicForm.GoToCreatedTopic')}</span>
+            </Link>
+          )}
+          <Button
+            variant={isSubmitSuccessful && !addedTopicId ? 'theme' : 'ghost'}
+            onClick={onClose}
+            className="gap-2"
+          >
             <Icons.Close className="size-4" />
-            <span>{t('Cancel')}</span>
+            <span>{isSubmitSuccessful ? t('Close') : t('Cancel')}</span>
           </Button>
         </div>
+
+        {/* LoadingSplash */}
+        <BusySplash
+          className={cn(
+            isDev && '__AddTopicForm_LoadingSplash', // DEBUG
+          )}
+          isBusy={isBusy}
+        />
       </form>
     </FormProvider>
   );
