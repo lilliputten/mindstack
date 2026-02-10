@@ -1,58 +1,24 @@
 'use client';
 
 import React from 'react';
-import { ExtendedUser } from '@/@types/next-auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 
 import { defaultAIGenerationTemperature } from '@/config/env';
-import {
-  aiClientTypes,
-  AiClientTypeSchema,
-  defaultAiClientType,
-} from '@/lib/ai/types/TAiClientType';
+import { defaultAiClientType } from '@/lib/ai/types/TAiClientType';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { FormControl, FormField, FormItem, FormMessage, FormProvider } from '@/components/ui/Form';
-import { Label } from '@/components/ui/Label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/Select';
-import { Slider } from '@/components/ui/Slider';
-import { Switch } from '@/components/ui/Switch';
-import { Textarea } from '@/components/ui/Textarea';
-import { FormHint } from '@/components/blocks/FormHint';
+import { FormProvider } from '@/components/ui/Form';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
-import { maxAnswersToGeneration } from '@/features/ai-generations/constants';
-import {
-  answersGenerationTypes,
-  answersGenerationTypeTextIds,
-  generateQuestionAnswersParamsSchema,
-} from '@/features/ai/types/GenerateAnswersTypes';
+import { answersGenerationTypes } from '@/features/ai/types/GenerateAnswersTypes';
 import { TQuestionId } from '@/features/questions/types';
+import { useSessionData } from '@/hooks';
 
-const formSchema = generateQuestionAnswersParamsSchema
-  .pick({
-    debugData: true,
-    answersGenerationType: true,
-    answersCountMin: true,
-    answersCountMax: true,
-    extraText: true,
-  })
-  .extend({
-    clientType: AiClientTypeSchema.default(defaultAiClientType),
-    temperature: z.number().min(0).max(1).default(defaultAIGenerationTemperature),
-  });
-
-export type TFormData = z.infer<typeof formSchema>;
+import { GenerateAnswersFormFields } from './GenerateAnswersFormFields';
+import { formSchema, TFormData } from './types';
 
 export interface TGenerateAnswersFormProps {
   handleGenerateAnswers: (p: TFormData) => Promise<unknown>;
@@ -60,7 +26,6 @@ export interface TGenerateAnswersFormProps {
   className?: string;
   isPending?: boolean;
   questionId: TQuestionId; // Is it required here?
-  user?: ExtendedUser;
   error?: string;
 }
 
@@ -71,9 +36,12 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
     handleClose,
     isPending,
     // questionId,
-    user,
     error,
   } = props;
+  const {
+    user,
+    // loading: isSessionLoading,
+  } = useSessionData();
   const isAdmin = user?.role === 'ADMIN';
   const t = useT();
 
@@ -118,13 +86,6 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
     ev.preventDefault();
   };
 
-  const generationTypeKey = React.useId();
-  const answersCountKey = React.useId();
-  const extraTextKey = React.useId();
-  const debugDataKey = React.useId();
-  const clientTypeKey = React.useId();
-  const temperatureKey = React.useId();
-
   const Icon = isPending ? Icons.Spinner : Icons.Check;
   const buttonText = isPending
     ? t('GenerateAnswersForm.GeneratingButtonText')
@@ -147,155 +108,7 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
           </div>
         )}
         <AIGenerationsStatusInfo />
-        {__useDebugData && (
-          <FormField
-            name="debugData"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex w-full flex-col gap-4">
-                <Label className="m-0" htmlFor={debugDataKey}>
-                  {t('GenerateAnswersForm.UseDebugDataLabel')}
-                </Label>
-                <FormControl>
-                  <Switch
-                    id={debugDataKey}
-                    checked={!!field.value}
-                    onCheckedChange={field.onChange}
-                    className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
-                  />
-                </FormControl>
-                <FormHint>{t('GenerateAnswersForm.DebugDataHint')}</FormHint>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-
-        {/* AI Client Type */}
-        <FormField
-          name="clientType"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={clientTypeKey}>
-                {t('AiClientTypeLabel')}
-              </Label>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id={clientTypeKey}>
-                    <SelectValue placeholder={t('AiClientTypeLabel')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {aiClientTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormHint>{t('AiClientTypeHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Temperature */}
-        <FormField
-          name="temperature"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0 flex gap-2" htmlFor={temperatureKey}>
-                <span className="truncate">{t('AiGenerationTemperature')}</span>
-                <span className="text-normal opacity-50">({field.value.toFixed(1)})</span>
-              </Label>
-              <FormControl>
-                <Slider
-                  id={temperatureKey}
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  value={[field.value]}
-                  onValueChange={(value) => field.onChange(value[0])}
-                />
-              </FormControl>
-              <FormHint>{t('GenerateAnswersForm.TemperatureHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="answersGenerationType"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={generationTypeKey}>
-                {t('GenerateAnswersForm.GenerationTypeLabel')}
-              </Label>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id={generationTypeKey}>
-                    <SelectValue placeholder={t('GenerateAnswersForm.GenerationTypePlaceholder')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {answersGenerationTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {t(answersGenerationTypeTextIds[type])}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormHint>{t('GenerateAnswersForm.GenerationTypeHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormItem className="flex w-full flex-col gap-4">
-          <Label className="m-0" htmlFor={answersCountKey}>
-            {t('GenerateAnswersForm.AnswersCountLabelPrefix')} {form.watch('answersCountMin')} -{' '}
-            {form.watch('answersCountMax')}
-          </Label>
-          <FormControl>
-            <Slider
-              id={answersCountKey}
-              min={1}
-              max={maxAnswersToGeneration}
-              step={1}
-              // minStepsBetweenThumbs={0}
-              value={[form.watch('answersCountMin'), form.watch('answersCountMax')]}
-              onValueChange={(value) => {
-                form.setValue('answersCountMin', value[0]);
-                form.setValue('answersCountMax', value[1]);
-              }}
-            />
-          </FormControl>
-          <FormHint>{t('GenerateAnswersForm.AnswersCountHint')}</FormHint>
-          <FormMessage />
-        </FormItem>
-        <FormField
-          name="extraText"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-4">
-              <Label className="m-0" htmlFor={extraTextKey}>
-                {t('GenerateAnswersForm.ExtraInstructionsLabel')}
-              </Label>
-              <FormControl>
-                <Textarea
-                  id={extraTextKey}
-                  className="flex-1"
-                  placeholder={t('GenerateAnswersForm.ExtraInstructionsPlaceholder')}
-                  rows={3}
-                  {...field}
-                />
-              </FormControl>
-              <FormHint>{t('GenerateAnswersForm.ExtraInstructionsHint')}</FormHint>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <GenerateAnswersFormFields form={form} />
         <div className="flex flex-col justify-between"></div>
         {/* Actions */}
         <div className="flex w-full gap-4">

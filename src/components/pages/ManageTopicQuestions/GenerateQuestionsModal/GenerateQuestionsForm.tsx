@@ -219,7 +219,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   onValueChange={(value) => field.onChange(value[0])}
                 />
               </FormControl>
-              <FormHint>{t('GenerateQuestionsForm.TemperatureHint')}</FormHint>
+              <FormHint>{t('AiGenerationTemperatureHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}

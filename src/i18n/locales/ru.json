@@ -8,6 +8,7 @@
   "AiClientTypeHint": "Выберите AI провайдера для генерации данных",
   "AiClientTypeLabel": "AI Провайдер",
   "AiGenerationTemperature": "Температура AI генерации",
+  "AiGenerationTemperatureHint": "Выберите температуру генерации, от 0 до 1 (меньше -- более предсказуемая генерация, больше -- более вариантивная).",
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
   "Answers": "Ответы",
@@ -764,7 +765,6 @@
     "GenerationTypePlaceholder": "Выберите тип генерации",
     "QuestionsCountHint": "Количество вопросов для генерации (минимум-максимум).",
     "QuestionsCountLabelPrefix": "Количество вопросов:",
-    "TemperatureHint": "Выберите температуру генерации, от 0 до 1 (меньше -- более предсказуемая генерация, больше -- более вариантивная).",
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {

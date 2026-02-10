@@ -3,7 +3,6 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
@@ -32,11 +31,13 @@ import {
   useGoToTheRoute,
   useMediaQuery,
   useModalTitle,
+  useSessionData,
   useUpdateModalVisibility,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-import { GenerateAnswersForm, TFormData } from './GenerateAnswersForm';
+import { GenerateAnswersForm } from './GenerateAnswersForm';
+import { TFormData } from './types';
 
 // Url example: /en/topics/my/[topicId]/questions/[questionId]/answers/generate
 const urlPostfix = '/answers/generate';
@@ -65,8 +66,7 @@ export function GenerateAnswersModal() {
   // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
   const shouldBeVisible = !!match;
 
-  const session = useSession();
-  const isSessionLoading = session.status === 'loading';
+  const { loading: isSessionLoading } = useSessionData();
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -300,7 +300,7 @@ export function GenerateAnswersModal() {
   }
 
   const areMutationsPending = generateAnswersMutation.isPending || addAnswersMutation.isPending;
-  const isOverallPending = isAnswersPending || isQuestionPending || areMutationsPending;
+  const isBusy = isSessionLoading || isAnswersPending || isQuestionPending || areMutationsPending;
 
   return (
     <Modal
@@ -312,7 +312,7 @@ export function GenerateAnswersModal() {
         'text-theme-foreground',
         !isMobile && 'max-h-[90%]',
         // isQuestionPending && 'border border-red-500', // ???
-        isOverallPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        isBusy && '[&>*]:pointer-events-none [&>*]:opacity-50',
       )}
     >
       <div
@@ -346,12 +346,12 @@ export function GenerateAnswersModal() {
               handleClose={hideModal}
               isPending={areMutationsPending}
               questionId={questionId}
-              user={session.data?.user}
+              // user={user}
               error={error}
             />
           </ScrollArea>
         )}
-        <WaitingSplash show={isOverallPending} />
+        <WaitingSplash show={isBusy} />
       </div>
     </Modal>
   );

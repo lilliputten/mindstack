@@ -10,6 +10,7 @@
   "AiClientTypeHint": "Select an AI provider to generate the data",
   "AiClientTypeLabel": "AI Provider",
   "AiGenerationTemperature": "AI Generation Temperature",
+  "AiGenerationTemperatureHint": "Select the generation temperature, from 0 to 1 (less is more predictable generation, more is more variable).",
   "AllowedToGenerate": "Allowed to generate",
   "Answer": "Answer",
   "Answers": "Answers",
@@ -772,7 +773,6 @@
     "GenerationTypePlaceholder": "Select generation type",
     "QuestionsCountHint": "Count of questions to generate (minimum - maximum).",
     "QuestionsCountLabelPrefix": "Questions Count:",
-    "TemperatureHint": "Select the generation temperature, from 0 to 1 (less is more predictable generation, more is more variable).",
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateQuestionsModal": {
