@@ -1346,7 +1346,7 @@
     "ThemeHint": "Select the application theme.",
     "ThemeLabel": "Application theme",
     "ThemePlaceholder": "Select theme…",
-    "TopicsLanguageHint": "Specify a language if you want to see the topics only for this specific language.",
+    "TopicsLanguageHint": "Specify a language if you want to see the topics only for this specific language. Otherwise topics will be displayed in the current application language by default, or you'll be able to change language parameter in the search filters.",
     "TopicsLanguageLabel": "Topics language",
     "TopicsLanguagePlaceholder": "Select language"
   },

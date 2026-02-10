@@ -138,7 +138,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
                 : t('ViewTopicContentSummary.Private')}
             </span>
           </Badge>
-          {topic.langName && (
+          {(topic.langName || topic.langCode) && (
             <Badge
               variant="outline"
               className="flex items-center gap-1 truncate px-2 py-1"

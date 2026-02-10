@@ -73,6 +73,7 @@ export function AvailableTopicsListWrapper() {
     async (filtersData: TApplyFiltersData) => {
       const filtersParams = convertAvailableFiltersToParams(filtersData);
       setFiltersParams(filtersParams);
+      // TODO: Invalidate proper react-query keys, Issue #66
       queryClient.removeQueries({ queryKey });
       if (isDev) {
         await new Promise((r) => setTimeout(r, 500));

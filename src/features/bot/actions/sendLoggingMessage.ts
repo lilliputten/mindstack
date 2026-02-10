@@ -27,12 +27,14 @@ export async function sendLoggingMessage(
   }
   try {
     const bot = opts.bot || getBot();
-    let firstMsg: Message.TextMessage | undefined;
-    // Send large messages splitted
+    // Send large messages by chunks
     const limit = tgMessageLimit - title.length - 20; // Keep slightly below the limit for safety
     const partsCount = Math.ceil(text.length / limit);
-    for (let i = 0, count = 1; i < text.length; i += limit, count++) {
-      const part = text.substring(i, i + limit);
+    let firstMsg: Message.TextMessage | undefined;
+    let len = 0;
+    let count = 1;
+    do {
+      const part = text.substring(len, len + limit);
       const titleStr = [
         // Compose title...
         partsCount > 1 && `\`[${count}/${partsCount}]\``,
@@ -56,7 +58,9 @@ export async function sendLoggingMessage(
       if (!firstMsg) {
         firstMsg = msg;
       }
-    }
+      count++;
+      len += limit;
+    } while (len < text.length);
     return firstMsg;
   } catch (error) {
     const errMsg = getErrorText(error);

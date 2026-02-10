@@ -41,7 +41,7 @@ export async function sendUserAIRequest(
     opts,
     messages,
   };
-  const __idMsg = '[mindstack:sendUserAIRequest] ℹ️ AI API request: Sending';
+  const __idMsg = '[sendUserAIRequest] ℹ️ AI API request: Sending';
   // eslint-disable-next-line no-console
   console.log(__idMsg, { user, ...__debugData });
   await logJsonData(__idMsg, { opts }, __debugData);
@@ -72,7 +72,7 @@ export async function sendUserAIRequest(
       queryData,
       generationRecord,
     };
-    const __idMsg = '[mindstack:sendUserAIRequest] 🆗 AI API request: Success';
+    const __idMsg = '[sendUserAIRequest] 🆗 AI API request: Success';
     // eslint-disable-next-line no-console
     console.log(__idMsg, { ...__debugData, user });
     await logJsonData(__idMsg, { opts, generationRecord }, __debugData);

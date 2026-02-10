@@ -1337,7 +1337,7 @@
     "ThemeHint": "Seleccionar el tema de la aplicación.",
     "ThemeLabel": "Tema de la aplicación",
     "ThemePlaceholder": "Seleccionar tema…",
-    "TopicsLanguageHint": "Especifique un idioma si desea ver solo los temas en este idioma específico.",
+    "TopicsLanguageHint": "Especifique un idioma si desea ver los temas solo para este idioma específico. \nDe lo contrario, los temas se mostrarán en el idioma actual de la aplicación de forma predeterminada o podrá cambiar el parámetro de idioma en los filtros de búsqueda.",
     "TopicsLanguageLabel": "Idioma de los temas",
     "TopicsLanguagePlaceholder": "Seleccionar idioma"
   },

@@ -12,6 +12,7 @@ import { useT } from '@/i18n';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import { Modal } from '@/components/ui/Modal';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { useSettings } from '@/contexts/SettingsContext';
 import { addNewQuestion } from '@/features/questions/actions';
@@ -139,13 +140,19 @@ export function AddQuestionModal() {
           {t('AddQuestionModal.DialogDescription')}
         </DialogDescription>
       </div>
-      <AddQuestionForm
-        handleAddQuestion={handleAddQuestion}
-        className="flex flex-col p-6 text-foreground"
-        handleClose={hideModal}
-        isPending={addQuestionMutation.isPending}
-        topicId={topicId}
-      />
+      <ScrollArea
+        className={cn(
+          isDev && '__AddQuestionModal_Scroll', // DEBUG
+        )}
+      >
+        <AddQuestionForm
+          handleAddQuestion={handleAddQuestion}
+          className="flex flex-col p-6 text-foreground"
+          handleClose={hideModal}
+          isPending={addQuestionMutation.isPending}
+          topicId={topicId}
+        />
+      </ScrollArea>
     </Modal>
   );
 }
