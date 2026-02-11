@@ -82,10 +82,10 @@ export function HeroSection() {
           )}
         >
           <Image
-            src="/static/landing/features/14.jpg"
+            src="/static/landing/features/14clean.jpg"
             alt={t('Landing.HeroSection.Title')}
             fill
-            className="object-cover"
+            className="bg-theme-500/20 object-cover"
             priority
           />
         </div>

@@ -26,7 +26,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
         )}
       >
         <Image
-          src="/static/landing/features/14.jpg"
+          src="/static/landing/features/14clean.jpg"
           alt={t('Landing.HeroSection.Title')}
           fill
           className="object-cover"

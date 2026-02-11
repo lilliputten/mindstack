@@ -41,7 +41,7 @@ export function FeatureCard({
       )}
     >
       <div className={cn('relative w-full overflow-hidden rounded-lg', imageAspectRatio)}>
-        <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
+        <Image src={imageSrc} alt={imageAlt} fill className="bg-theme-500/20 object-cover" />
       </div>
       <div className={cn(contentMaxWidth)}>
         <h3 className="content-truncate mb-3 mt-0 text-xl font-semibold text-theme">{title}</h3>
