@@ -39,7 +39,7 @@ Core Features
 
 - **Two algorithms**: n-gram histogram intersection and cosine similarity.
 - **Multi-language support**: Optimized and tested for English, Russian, and Spanish.
-- **Fully supports languages**: *de, en, es, fr, it, nl, ru*. The resulting list depends on the intersection of the languages supported by `stemmers` (*ar, da, nl, en, fi, fr, de, el, hu, it, pt, ro, ru, es, sw, ta, tr*) and `stopwords` (*de, en, es, fr, it, nl, ru*) modules.
+- **Fully supports languages**: _de, en, es, fr, it, nl, ru_. The resulting list depends on the intersection of the languages supported by `stemmers` (_ar, da, nl, en, fi, fr, de, el, hu, it, pt, ro, ru, es, sw, ta, tr_) and `stopwords` (_de, en, es, fr, it, nl, ru_) modules.
 - **Performance optimized**: Benchmarks show 0.1-3ms for n-gram and 0.2-8ms for token comparisons.
 - **Configurable**: Adjustable n-gram sizes and preprocessing options.
 

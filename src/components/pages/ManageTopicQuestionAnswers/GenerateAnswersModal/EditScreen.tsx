@@ -56,19 +56,25 @@ export function EditScreen(props: TProps) {
       {
         /* Is saving */ isSaving ? (
           <BusySplashWithInfo title={t('GenerateAnswersModal.SavingAnswersTitle')} className="px-6">
-            <span className="content-truncate">{t('GenerateAnswersModal.AnswersAreSavingNow')}</span>
+            <span className="content-truncate">
+              {t('GenerateAnswersModal.AnswersAreSavingNow')}
+            </span>
           </BusySplashWithInfo>
         ) : /* Error */ error || !generatedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
             <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}</span>
+            <span className="text-red-500">
+              {error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}
+            </span>
           </div>
         ) : !generatedAnswers?.length ? (
           <ErrorSplash className="px-6" title={t('GenerateAnswersModal.AnswersToEditTitle')} />
         ) : (
           <div className="conent-truncate mb-2 flex flex-col gap-4 px-6">
             <h3 className="content-truncate text-center text-lg font-semibold text-theme">
-              {t('GenerateAnswersModal.EditAnswersCount', { generatedAnswersCount: generatedAnswers.length })}
+              {t('GenerateAnswersModal.EditAnswersCount', {
+                generatedAnswersCount: generatedAnswers.length,
+              })}
             </h3>
             {/* Display preview of the added answers */}
             <PreviewAnswers

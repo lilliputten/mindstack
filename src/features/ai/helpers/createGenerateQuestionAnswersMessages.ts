@@ -32,8 +32,8 @@ export function createGenerateQuestionAnswersMessages(params: TGenerateQuestionA
     .join('\n');
 
   const answerFieldsText = [
-    `- "text" with the answer text in plain text or strict markdown markup (in the same language as the question),`,
-    `- "explanation" the reason why this answer is correct or incorrect (markdown allowed),`,
+    `- "text" with the answer text,`,
+    `- "explanation" the reason why this answer is correct or incorrect,`,
     `- "isCorrect" as a boolean indicating if it is the correct answer.`,
   ].join('\n');
 
@@ -51,7 +51,8 @@ export function createGenerateQuestionAnswersMessages(params: TGenerateQuestionA
       : `The language of the answers must be derived from the language of the question and the topic.`,
     `Answers should be clear, educational, and relevant to the question.`,
     `Return ONLY a valid JSON object with an "answers" field containing a list of answer objects and an "answersCount" field with a totally generated answers count.`,
-    `It's possible to use strict markdown markdown in answer texts and explanations.`,
+    `It's possible to use limited markdown (for code, bold, emphasis, links, lists, etc, don't use headings) in answer texts and explanations.`,
+    `Don't use any html tags. Use normal newlines instead of <br>.`,
     `Don't wrap the response in the markdwon code quotes (\`\`\`), return raw json.`,
     `Don't add any content (like notes) outside the JSON object.`,
     getAnswersGenerationQuery(answersGenerationType),

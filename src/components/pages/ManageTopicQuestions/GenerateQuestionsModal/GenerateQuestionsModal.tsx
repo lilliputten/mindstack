@@ -91,8 +91,9 @@ export function GenerateQuestionsModal() {
     includeQuestions: true,
     includeQuestionsCount: true,
   });
-  const { topic, isFetched, isLoading } = availableTopicQuery;
-  const isTopicPending = !isFetched || isLoading;
+  const { topic, isFetched, isFetching } = availableTopicQuery;
+  // TODO: Add check for availableTopicQuery request timout handling (and for all react-query hooks, in general; and for abort, too)
+  const isTopicPending = !isFetched || isFetching;
 
   const questions = topic?.questions;
 
@@ -288,8 +289,16 @@ export function GenerateQuestionsModal() {
     return null;
   }
 
+  // TODO:
   const areMutationsPending = generateQuestionsMutation.isPending || addQuestionsMutation.isPending;
-  const isOverallPending = isTopicPending || areMutationsPending;
+  const isBusy = isTopicPending || areMutationsPending;
+  console.log('[GenerateQuestionsModal]', {
+    areMutationsPending,
+    addQuestionsMutation_isPending: addQuestionsMutation.isPending,
+    generateQuestionsMutation_isPending: generateQuestionsMutation.isPending,
+    isBusy,
+    isTopicPending,
+  });
 
   return (
     <Modal
@@ -299,7 +308,8 @@ export function GenerateQuestionsModal() {
         isDev && '__GenerateQuestionsModal',
         'flex flex-col gap-0 text-theme-foreground',
         !isMobile && 'max-h-[90%]',
-        isOverallPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        // isBusy && '[&>*]:pointer-events-none',
+        isBusy && '[&>*]:opacity-50',
       )}
     >
       <div
@@ -339,7 +349,7 @@ export function GenerateQuestionsModal() {
             />
           </ScrollArea>
         )}
-        <WaitingSplash show={isOverallPending} />
+        <WaitingSplash show={isBusy} />
       </div>
     </Modal>
   );

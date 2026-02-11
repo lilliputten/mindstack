@@ -18,6 +18,9 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
     return undefined;
   }
 
+  // Some models try tro use `<br>` as newlines.
+  rawContent = rawContent.replace(/<br>/g, '\n');
+
   // NOTE: Cloudflare might return this: ```json\n{...}\n```
   // NOTE: Sometimes it's possible to have some content before ```json from Cloudflare
   const mdStart = '```json';

@@ -35,8 +35,8 @@ export function createGenerateTopicQuestionsMessages(
   };
 
   const answerFieldsText = [
-    `- "text" with the answer text in plain text or strict markdown markup (in the same language as the question),`,
-    `- "explanation" the reason why this answer is correct or incorrect (markdown allowed),`,
+    `- "text" with the answer text,`,
+    `- "explanation" the reason why this answer is correct or incorrect,`,
     `- "isCorrect" as a boolean indicating if it is the correct answer.`,
   ].join('\n');
 
@@ -56,7 +56,8 @@ export function createGenerateTopicQuestionsMessages(
     `Questions should be clear, educational, and relevant to the topic.`,
     `Return ONLY a valid JSON object with a "questions" field containing a list of question objects and a "questionsCount" field with a totally generated questions count.`,
     `For each question, generate answers list (as well-formed JSON objects) in an "answers" field, and an "answersCount" field containing a list of answer objects.`,
-    `It's possible to use strict markdown markup in question texts, answer texts and explanations.`,
+    `It's possible to use limited markdown (for code, bold, emphasis, links, lists, etc, don't use headings) markup in question texts, answer texts and explanations.`,
+    `Don't use any html tags. Use normal newlines instead of <br>.`,
     `Don't wrap the response in the markdwon code quotes (\`\`\`), return raw json.`,
     `Don't add any content (like notes) outside the JSON object.`,
     getAnswersGenerationQuery(answersGenerationType),

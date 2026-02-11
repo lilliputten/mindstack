@@ -304,7 +304,9 @@ export function GenerateAnswersModal() {
         setGeneratedAnswers(newAnswers);
       } catch (error) {
         const isAborted = (error as Error).name === 'AbortError';
-        const message = isAborted ? t('GenerateAnswersModal.GenerationAborted') : t('GenerateAnswersModal.GenerationErrorOccured');
+        const message = isAborted
+          ? t('GenerateAnswersModal.GenerationAborted')
+          : t('GenerateAnswersModal.GenerationErrorOccured');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         generateAnswersMutation.reset();
@@ -409,7 +411,9 @@ export function GenerateAnswersModal() {
       // return savedAnswers;
     } catch (error) {
       const isAborted = (error as Error).name === 'AbortError';
-      const message = isAborted ? t('GenerateAnswersModal.SavingAnswersAborted') : t('GenerateAnswersModal.SavingAnswersErrorOccured');
+      const message = isAborted
+        ? t('GenerateAnswersModal.SavingAnswersAborted')
+        : t('GenerateAnswersModal.SavingAnswersErrorOccured');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       saveAnswersMutation.reset();

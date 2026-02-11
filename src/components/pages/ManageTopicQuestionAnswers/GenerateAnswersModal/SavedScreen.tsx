@@ -59,7 +59,9 @@ export function SavedScreen(props: TProps) {
         ) : /* Error */ error || !savedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
             <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}</span>
+            <span className="text-red-500">
+              {error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}
+            </span>
           </div>
         ) : (
           <SuccessSplash
@@ -68,7 +70,9 @@ export function SavedScreen(props: TProps) {
             contentClassName="conent-truncate flex flex-col gap-4"
           >
             <h3 className="content-truncate text-lg font-semibold text-theme">
-              {t('GenerateAnswersModal.SavedAnswersCount', { savedAnswersCount: savedAnswers.length })}
+              {t('GenerateAnswersModal.SavedAnswersCount', {
+                savedAnswersCount: savedAnswers.length,
+              })}
             </h3>
             {/* Display preview of the added answers */}
             <PreviewAnswers

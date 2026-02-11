@@ -58,12 +58,16 @@ export function GeneratedScreen(props: TProps) {
       {
         /* Is generating */ isGenerating ? (
           <BusySplashWithInfo title={t('GenerateAnswersModal.GeneratingAnswers')} className="px-6">
-            <span className="content-truncate">{t('GenerateAnswersModal.GeneratingAnswersInfo')}</span>
+            <span className="content-truncate">
+              {t('GenerateAnswersModal.GeneratingAnswersInfo')}
+            </span>
           </BusySplashWithInfo>
         ) : /* Error */ error || !generatedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
             <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}</span>
+            <span className="text-red-500">
+              {error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}
+            </span>
           </div>
         ) : !generatedAnswers?.length ? (
           <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersGenerated')} />
@@ -74,7 +78,9 @@ export function GeneratedScreen(props: TProps) {
             contentClassName="conent-truncate flex flex-col gap-4"
           >
             <h3 className="content-truncate text-lg font-semibold text-theme">
-              {t('GenerateAnswersModal.GeneratedAnswersCount', { generatedAnswersCount: generatedAnswers.length })}
+              {t('GenerateAnswersModal.GeneratedAnswersCount', {
+                generatedAnswersCount: generatedAnswers.length,
+              })}
             </h3>
             {/* Display preview of the added answers */}
             <PreviewAnswers
