@@ -3,6 +3,7 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
 
+import { generateArray } from '@/lib/helpers';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -11,6 +12,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
@@ -18,8 +20,9 @@ import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { MediumCategoriesListByCategoryIds } from '@/features/categories/components';
 import { SmallUserBlock } from '@/features/users';
-import { useAvailableTopicById } from '@/hooks';
+import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
+import { PreviewQuestions } from '@/widgets/questions';
 
 interface TProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
@@ -32,6 +35,17 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
   const t = useT();
 
   const { topic } = availableTopicQuery;
+
+  const topicId = topic?.id;
+
+  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const {
+    allQuestions,
+    // queryKey: availableQuestionsQueryKey,
+    // queryProps: availableQuestionsQueryProps,
+    isFetching: isQuestionsFetching,
+    isFetched: isQuestionsFetched,
+  } = availableQuestionsQuery;
 
   // Check if query is actually being invalidated
   if (!topic) {
@@ -73,7 +87,12 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         className="content-truncate flex flex-col gap-4"
       >
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="content-truncate text-lg font-semibold">{t('Questions')}</h3>
+          <h3 className="content-truncate flex gap-2 text-lg">
+            <span className="truncate font-semibold">{t('Questions')}</span>
+            {!!topic._count?.questions && (
+              <span className="truncate opacity-50">({topic._count.questions})</span>
+            )}
+          </h3>
           <div className="flex flex-wrap gap-2">
             <Link
               href={`${routePath}/${topic.id}/questions` as TRoutePath}
@@ -94,7 +113,18 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             </Link>
           </div>
         </div>
-        {!!topic._count?.questions && (
+        <div className="content-truncate flex flex-wrap gap-2">
+          {isQuestionsFetching || !isQuestionsFetched ? (
+            generateArray(topic._count?.questions || 3).map((n) => (
+              <Skeleton key={n} className="h-5 w-full" />
+            ))
+          ) : !allQuestions.length ? (
+            <p className="text-sm opacity-50">No questions created yet</p>
+          ) : (
+            <PreviewQuestions questions={allQuestions} />
+          )}
+        </div>
+        {/*!!topic._count?.questions && (
           <div className="flex flex-wrap gap-2 text-sm">
             <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
               <Icons.Questions className="size-4 shrink-0 opacity-50" />
@@ -106,7 +136,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
               </span>
             </Badge>
           </div>
-        )}
+          )*/}
       </div>
 
       {/* Categories */}

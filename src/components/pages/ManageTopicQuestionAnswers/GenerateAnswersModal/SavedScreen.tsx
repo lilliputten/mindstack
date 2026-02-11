@@ -8,8 +8,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TAvailableAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
-
-import { PreviewAnswers } from './PreviewAnswers';
+import { PreviewAnswers } from '@/widgets/answers';
 
 export interface TProps {
   handleClose?: () => void;

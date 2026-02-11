@@ -125,8 +125,7 @@ export function GenerateQuestionsModal() {
        * });
        */
       const messages = createGenerateTopicQuestionsMessages(params);
-      /*
-       * // DEBUG
+      /* // DEBUG
        * const __debugMessagesStr = messages.map(({ content }) => content).join('\n\n');
        * console.log('[GenerateQuestionsModal:generateQuestionsMutation] Created messages', {
        *   __debugMessagesStr,

@@ -133,6 +133,8 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
     ? t('GenerateQuestionsForm.GeneratingButtonText')
     : t('GenerateQuestionsForm.GenerateButtonText');
 
+  const { questionsCountMin, questionsCountMax, answersCountMin, answersCountMax } = form.watch();
+
   return (
     <FormProvider {...form}>
       <form
@@ -156,14 +158,16 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
                   {t('GenerateQuestionsForm.UseDebugDataLabel')}
                 </Label>
                 <FormControl>
-                  <Switch
-                    id={debugDataKey}
-                    checked={!!field.value}
-                    onCheckedChange={field.onChange}
-                    className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
-                  />
+                  <div className="flex w-full items-center gap-2">
+                    <Switch
+                      id={debugDataKey}
+                      checked={!!field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
+                    />
+                    <FormHint>{t('GenerateQuestionsForm.DebugDataHint')}</FormHint>
+                  </div>
                 </FormControl>
-                <FormHint>{t('GenerateQuestionsForm.DebugDataHint')}</FormHint>
                 <FormMessage />
               </FormItem>
             )}
@@ -255,8 +259,10 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
         />
         <FormItem className="flex w-full flex-col gap-4">
           <Label className="m-0" htmlFor={questionsCountKey}>
-            {t('GenerateQuestionsForm.QuestionsCountLabelPrefix')} {form.watch('questionsCountMin')}{' '}
-            - {form.watch('questionsCountMax')}
+            {t('GenerateQuestionsForm.QuestionsCountLabelPrefix')}{' '}
+            {questionsCountMin === questionsCountMax
+              ? questionsCountMin
+              : `${questionsCountMin}-${questionsCountMax}`}
           </Label>
           <FormControl>
             <Slider
@@ -264,7 +270,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
               min={1}
               max={maxQuestionsToGeneration}
               step={1}
-              value={[form.watch('questionsCountMin'), form.watch('questionsCountMax')]}
+              value={[questionsCountMin, questionsCountMax]}
               onValueChange={(value) => {
                 form.setValue('questionsCountMin', value[0]);
                 form.setValue('questionsCountMax', value[1]);
@@ -305,8 +311,10 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
         />
         <FormItem className="flex w-full flex-col gap-4">
           <Label className="m-0" htmlFor={answersCountKey}>
-            {t('GenerateQuestionsForm.AnswersCountLabelPrefix')} {form.watch('answersCountMin')} -{' '}
-            {form.watch('answersCountMax')}
+            {t('GenerateQuestionsForm.AnswersCountLabelPrefix')}{' '}
+            {answersCountMin === answersCountMax
+              ? answersCountMin
+              : `${answersCountMin}-${answersCountMax}`}
           </Label>
           <FormControl>
             <Slider
@@ -314,7 +322,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
               min={1}
               max={maxAnswersToGeneration}
               step={1}
-              value={[form.watch('answersCountMin'), form.watch('answersCountMax')]}
+              value={[answersCountMin, answersCountMax]}
               onValueChange={(value) => {
                 form.setValue('answersCountMin', value[0]);
                 form.setValue('answersCountMax', value[1]);

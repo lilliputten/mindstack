@@ -9,7 +9,6 @@ import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
-import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
@@ -23,8 +22,9 @@ import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { SmallUserBlock } from '@/features/users';
 import { useUserById } from '@/features/users/query-hooks';
-import { useSessionUser } from '@/hooks';
+import { useAvailableAnswers, useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
+import { PreviewAnswers } from '@/widgets/answers';
 
 interface TProps {
   topic: TAvailableTopic;
@@ -41,10 +41,21 @@ export function ViewQuestionContentSummary(props: TProps) {
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
+  const questionId = question.id;
+
   const t = useT();
 
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
+
+  const availableAnswersQuery = useAvailableAnswers({ questionId });
+  const {
+    allAnswers,
+    // queryKey: availableAnswersQueryKey,
+    // queryProps: availableAnswersQueryProps,
+    isFetching: isAnswersFetching,
+    isFetched: isAnswersFetched,
+  } = availableAnswersQuery;
 
   const questionTextContent = (
     <div
@@ -74,8 +85,11 @@ export function ViewQuestionContentSummary(props: TProps) {
       className="flex flex-col gap-4"
     >
       <div className="content-truncate flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="content-truncate text-lg font-semibold">
-          {t('ViewQuestionContentSummary.Answers')}
+        <h3 className="content-truncate flex gap-2 text-lg">
+          <span className="truncate font-semibold">{t('ViewQuestionContentSummary.Answers')}</span>
+          {!!question._count?.answers && (
+            <span className="truncate opacity-50">({question._count.answers})</span>
+          )}
         </h3>
         <div className="content-truncate flex flex-wrap gap-2">
           <Link
@@ -106,6 +120,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           </Link>
         </div>
       </div>
+      {/*
       <div className="content-truncate flex flex-wrap gap-2">
         <Badge variant="outline" className="flex items-center gap-2 truncate px-2 py-1">
           <Icons.Answers className="size-4 shrink-0 opacity-50" />
@@ -120,7 +135,6 @@ export function ViewQuestionContentSummary(props: TProps) {
             <span className="truncate">{t('ViewQuestionContentSummary.NoAnswersYet')}</span>
           )}
         </Badge>
-
         {question.answersCountRandom && question.answersCountMin && question.answersCountMax && (
           <Badge
             variant="outline"
@@ -132,6 +146,18 @@ export function ViewQuestionContentSummary(props: TProps) {
               {question.answersCountMax}
             </span>
           </Badge>
+        )}
+      </div>
+      */}
+      <div className="content-truncate flex flex-wrap gap-2">
+        {isAnswersFetching || !isAnswersFetched ? (
+          generateArray(question._count?.answers || 3).map((n) => (
+            <Skeleton key={n} className="h-5 w-full" />
+          ))
+        ) : !allAnswers.length ? (
+          <p className="text-sm opacity-50">No answers created yet</p>
+        ) : (
+          <PreviewAnswers answers={allAnswers} />
         )}
       </div>
     </div>

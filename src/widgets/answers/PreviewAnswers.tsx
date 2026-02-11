@@ -5,11 +5,11 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 
-type TAnswerShape = Partial<Pick<Answer, 'id' | 'text' | 'isCorrect'>>;
+type TMinimalAnswerShape = Partial<Pick<Answer, 'id' | 'text' | 'isCorrect'>>;
 
 interface TProps {
   className?: string;
-  answers?: TAnswerShape[];
+  answers?: TMinimalAnswerShape[];
 }
 
 export function PreviewAnswers(props: TProps) {

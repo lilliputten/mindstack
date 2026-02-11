@@ -80,7 +80,7 @@ export function useAvailableTopicById(props: TUseAvailableTopicByIdProps) {
         throw new Error(humanMsg);
       }
     },
-    enabled: !isCached, // Disable query if already cached
+    enabled: !!topicId && !isCached, // Disable query if already cached
   });
 
   return {

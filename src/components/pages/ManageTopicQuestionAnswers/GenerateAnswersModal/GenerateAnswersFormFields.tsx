@@ -61,14 +61,16 @@ export function GenerateAnswersFormFields(props: TGenerateAnswersFormFieldsProps
                 {t('GenerateAnswersForm.UseDebugDataLabel')}
               </Label>
               <FormControl>
-                <Switch
-                  id={debugDataKey}
-                  checked={!!field.value}
-                  onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
-                />
+                <div className="flex w-full items-center gap-2">
+                  <Switch
+                    id={debugDataKey}
+                    checked={!!field.value}
+                    onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-red-500 data-[state=checked]:hover:bg-red-600"
+                  />
+                  <FormHint>{t('GenerateAnswersForm.DebugDataHint')}</FormHint>
+                </div>
               </FormControl>
-              <FormHint>{t('GenerateAnswersForm.DebugDataHint')}</FormHint>
               <FormMessage />
             </FormItem>
           )}

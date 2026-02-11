@@ -42,6 +42,9 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   // const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
   const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
+  const coords =
+    [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined; // 55.6784 37.2652
+  const location = [ipCity, ipCountry, ipContinent, coords].filter(Boolean).join(', ');
   const dataToSend: Record<string, unknown> = {
     isDev,
     path: rewrittenPath,
@@ -49,11 +52,8 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     tz: ipTimezone,
     referer,
     ip: clientIp !== '::1' ? clientIp : undefined,
-    locale: [intlLocale, ipCountry && `(${ipCountry})`].filter(Boolean).join(' '),
-    city: ipCity,
-    continent: ipContinent,
-    coords:
-      [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined, // 55.6784 37.2652
+    location,
+    locale: intlLocale,
     agent: userAgent,
     version: versionInfo,
     date: dateISO,

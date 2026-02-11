@@ -71,7 +71,7 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
     >({
       queryKey,
       staleTime, // Data validity period
-      enabled,
+      enabled: !!topicId && enabled,
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
         const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
