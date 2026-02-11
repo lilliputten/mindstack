@@ -43,7 +43,8 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
   const dataToSend: Record<string, unknown> = {
-    path: [rewrittenPath, matchedPath && `(${matchedPath})`].filter(Boolean).join(' '),
+    isDev,
+    path: rewrittenPath,
     host,
     tz: ipTimezone,
     referer,
@@ -56,7 +57,7 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     agent: userAgent,
     version: versionInfo,
     date: dateISO,
-    prod: !isDev,
+    matchedPath,
     // allHeaders,
     user,
   };
@@ -66,7 +67,7 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   // const infoStr = debugObj(dataToSend);
   const combinedData = { ...dataToSend, ...data };
   let dataStr = '';
-  if (data) {
+  if (combinedData) {
     try {
       dataStr = debugObj(combinedData);
     } catch (error) {

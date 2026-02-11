@@ -739,13 +739,14 @@
     "UseDebugDataLabel": "¿Usar datos de depuración?"
   },
   "GenerateAnswersModal": {
+    "AddingAnswers": "Agregando respuestas generadas...",
+    "AnswersAdded": "Se agregaron exitosamente nuevas respuestas",
+    "AnswersAddingError": "Error al agregar respuestas",
+    "AnswersGenerated": "Se recuperaron exitosamente los datos generados por IA",
+    "AnswersGenerationError": "No se pueden recuperar los datos generados por IA",
+    "GeneratingAnswers": "Generando respuestas...",
     "NoQuestionIdDefined": "No se ha definido ningún ID de pregunta",
-    "ToastErrorAnswers": "No se pueden agregar respuestas",
-    "ToastErrorData": "No se pueden recuperar los datos generados por IA",
-    "ToastLoadingAnswers": "Agregando nuevas respuestas...",
-    "ToastLoadingData": "Recuperando datos generados por IA...",
-    "ToastSuccessAnswers": "Se agregaron exitosamente nuevas respuestas",
-    "ToastSuccessData": "Se recuperaron exitosamente los datos generados por IA"
+    "Title": "Generación de respuestas"
   },
   "GenerateQuestionsForm": {
     "AnswersCountHint": "Recuento de respuestas a generar para cada pregunta (mínimo - máximo).",
@@ -777,7 +778,7 @@
     "ToastSuccessQuestions": "Se agregaron exitosamente nuevas preguntas"
   },
   "ImageUpload": {
-    "CategoryImagePreview": "Vista previa de imagen",
+    "ImagePreview": "Vista previa de imagen",
     "RemoveImage": "Quitar imagen",
     "SelectImage": "Seleccionar imagen"
   },

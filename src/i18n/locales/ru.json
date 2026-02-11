@@ -740,13 +740,14 @@
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateAnswersModal": {
+    "AddingAnswers": "Добавление сгенерированных ответов...",
+    "AnswersAdded": "Новые ответы успешно добавлены",
+    "AnswersAddingError": "Ошибка при добавлении ответов",
+    "AnswersGenerated": "Данные, сгенерированные ИИ, успешно получены",
+    "AnswersGenerationError": "Невозможно получить данные, сгенерированные ИИ",
+    "GeneratingAnswers": "Генерация ответов...",
     "NoQuestionIdDefined": "Идентификатор вопроса не задан",
-    "ToastErrorAnswers": "Невозможно добавить ответы",
-    "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
-    "ToastLoadingAnswers": "Добавление новых ответов...",
-    "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
-    "ToastSuccessAnswers": "Новые ответы успешно добавлены",
-    "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены"
+    "Title": "Генерация ответов"
   },
   "GenerateQuestionsForm": {
     "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
@@ -778,7 +779,7 @@
     "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
   },
   "ImageUpload": {
-    "CategoryImagePreview": "Предварительный просмотр изображения",
+    "ImagePreview": "Предварительный просмотр изображения",
     "RemoveImage": "Удалить изображение",
     "SelectImage": "Выбрать изображение"
   },

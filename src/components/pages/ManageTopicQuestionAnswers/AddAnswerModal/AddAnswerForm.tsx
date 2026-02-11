@@ -146,10 +146,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
   const textKey = React.useId();
   const isCorrectKey = React.useId();
 
-  const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending
-    ? t('AddAnswerForm.AddingButtonText')
-    : t('AddAnswerForm.AddButtonText');
+  const SubmitIcon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
@@ -244,7 +241,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
             isSubmitSuccessful && 'justify-center',
           )}
         >
-          {!limitsError && (
+          {!limitsError && !isSubmitSuccessful && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
@@ -252,11 +249,13 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
               className={cn(
                 isDev && '__AddAnswerForm_SaveButton', // DEBUG
                 'gap-2',
-                isSubmitSuccessful && 'hidden',
+                // isSubmitSuccessful && 'hidden',
               )}
             >
-              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
-              <span>{buttonText}</span>
+              <SubmitIcon className={cn('size-4', isBusy && 'animate-spin')} />{' '}
+              <span>
+                {isBusy ? t('AddAnswerForm.AddingButtonText') : t('AddAnswerForm.AddButtonText')}
+              </span>
             </Button>
           )}
           {/* Show a button "Go to the created answer". TODO: Use `router.replace`? */}

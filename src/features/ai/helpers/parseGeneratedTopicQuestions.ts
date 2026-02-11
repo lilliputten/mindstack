@@ -46,17 +46,19 @@ function dropEmptyQuestionsAndAnswers(data?: TQuestionsAndAnswers) {
 }
 
 export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGeneratedQuestion[] {
+  /** Plain json string from the queryData filed `content` */
   let rawContent: MessageContent | undefined;
+  /** Parsed json data */
   let rawData: unknown;
 
   try {
     rawContent = queryData.content;
     // DEBUG: Temporarily monitoring AI generation
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedTopicQuestions] Step 1: Got raw content', {
       rawContent,
       queryData,
     });
-    debugger;
     if (typeof rawContent !== 'string') {
       throw new Error(
         `Received unexpected result type instead of json string: ${typeof rawContent}`,
@@ -64,32 +66,30 @@ export function parseGeneratedTopicQuestions(queryData: TAITextQueryData): TGene
     }
     rawData = parseDangerousJson(rawContent);
     // DEBUG: Temporarily monitoring AI generation
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedTopicQuestions] Step 2: Got parsed raw json data', {
       rawData,
     });
-    debugger;
     // Remove empty questions/answers data
     const cleanedData = dropEmptyQuestionsAndAnswers(rawData as TQuestionsAndAnswers);
     // DEBUG: Temporarily monitoring AI generation
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedTopicQuestions] Step 3: Got cleaned up data', {
       cleanedData,
     });
-    debugger;
     // TODO: Drop invalid questions ande answers?
     if (!cleanedData) {
       throw new Error('Got an invalid (empty) json object');
     }
     const validatedData: TGeneratedQuestions = generatedQuestionsSchema.parse(cleanedData);
     // DEBUG: Show parsed data
+    // eslint-disable-next-line no-console
     console.log('[parseGeneratedTopicQuestions] Step 4 (final): Got validated data', {
       validatedData,
-      // rawData,
-      // rawContent,
-      // queryData,
     });
     return validatedData.questions;
   } catch (error) {
-    const message = '❌ Can not parse generated topic questions';
+    const message = '❌ Can not parse generated questions';
     const details = getErrorText(error);
     const comboMsg = [message, details].filter(Boolean).join(': ');
     const __debugData = {

@@ -93,7 +93,6 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
 
   const isBusy = isGoingOut || isSubmitting || isLoading || isPending;
   const isSubmitEnabled = !isBusy && isDirty && isValid;
-  // const isSubmitEnabled = !isPending && isDirty && isValid;
 
   const [limitsError, setLimitsError] = React.useState<TContentLimitErrorCode | undefined>();
 
@@ -135,10 +134,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
 
   const textKey = React.useId();
 
-  const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending
-    ? t('AddQuestionForm.AddingButtonText')
-    : t('AddQuestionForm.AddButtonText');
+  const SubmitIcon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
@@ -213,7 +209,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
             isSubmitSuccessful && 'justify-center',
           )}
         >
-          {!limitsError && (
+          {!limitsError && !isSubmitSuccessful && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
@@ -221,11 +217,15 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
               className={cn(
                 isDev && '__AddQuestionForm_SaveButton', // DEBUG
                 'gap-2',
-                isSubmitSuccessful && 'hidden',
+                // isSubmitSuccessful && 'hidden',
               )}
             >
-              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
-              <span>{buttonText}</span>
+              <SubmitIcon className={cn('size-4', isBusy && 'animate-spin')} />{' '}
+              <span>
+                {isBusy
+                  ? t('AddQuestionForm.AddingButtonText')
+                  : t('AddQuestionForm.AddButtonText')}
+              </span>
             </Button>
           )}
           {/* Show a button "Go to the created question". TODO: Use `router.replace`? */}

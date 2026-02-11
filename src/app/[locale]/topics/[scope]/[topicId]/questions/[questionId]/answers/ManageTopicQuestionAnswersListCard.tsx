@@ -474,7 +474,7 @@ export function AnswersTableContent(props: TAnswersTableContentProps & { classNa
             <Link
               href={`${answersListRoutePath}/generate` as TRoutePath}
               className={cn(
-                buttonVariants({ variant: 'secondary' }),
+                buttonVariants({ variant: 'gr1' }),
                 'content-truncate flex items-center gap-2',
               )}
               aria-label={t('GenerateAnswers')}

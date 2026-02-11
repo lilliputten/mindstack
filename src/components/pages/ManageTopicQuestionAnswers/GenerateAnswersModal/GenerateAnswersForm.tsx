@@ -21,27 +21,23 @@ import { GenerateAnswersFormFields } from './GenerateAnswersFormFields';
 import { formSchema, TFormData } from './types';
 
 export interface TGenerateAnswersFormProps {
-  handleGenerateAnswers: (p: TFormData) => Promise<unknown>;
+  startGeneratingAnswers: (p: TFormData) => Promise<unknown>;
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
   questionId: TQuestionId; // Is it required here?
-  error?: string;
 }
 
 export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
   const {
     className,
-    handleGenerateAnswers,
+    startGeneratingAnswers,
     handleClose,
     isPending,
     // questionId,
-    error,
   } = props;
-  const {
-    user,
-    // loading: isSessionLoading,
-  } = useSessionData();
+  const { user, loading: isSessionLoading } = useSessionData();
+  const [isLeaving, setLeaving] = React.useState(false);
   const isAdmin = user?.role === 'ADMIN';
   const t = useT();
 
@@ -70,26 +66,29 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
 
   const { formState, handleSubmit } = form;
 
-  const { isValid } = formState;
+  const {
+    // isDirty, // Not required here
+    // isSubmitSuccessful, // NOTE: Using `generatedAnswers` instead of
+    isValid,
+    isSubmitting, // boolean;
+    isLoading, // boolean;
+  } = formState;
 
-  const isSubmitEnabled = !isPending && isValid;
+  const isBusy = isLeaving || isSessionLoading || isSubmitting || isLoading || isPending;
+  const isSubmitEnabled = !isBusy && isValid;
 
   const onSubmit = handleSubmit((formData) => {
     // const { generationType, answersCountMin, answersCountMax, extraText } = formData;
-    handleGenerateAnswers(formData);
+    startGeneratingAnswers(formData);
   });
 
   const onClose = (ev: React.MouseEvent) => {
+    setLeaving(true);
     if (handleClose) {
       handleClose();
     }
     ev.preventDefault();
   };
-
-  const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending
-    ? t('GenerateAnswersForm.GeneratingButtonText')
-    : t('GenerateAnswersForm.GenerateButtonText');
 
   return (
     <FormProvider {...form}>
@@ -97,34 +96,56 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
         onSubmit={onSubmit}
         className={cn(
           isDev && '__GenerateAnswersForm', // DEBUG
-          'flex w-full flex-col gap-4',
+          'flex w-full flex-col gap-6',
           className,
         )}
       >
-        {error && (
-          <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
-            <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error}</span>
-          </div>
-        )}
         <AIGenerationsStatusInfo />
         <GenerateAnswersFormFields form={form} />
-        <div className="flex flex-col justify-between"></div>
+
         {/* Actions */}
-        <div className="flex w-full gap-4">
+        <div
+          className={cn(
+            isDev && '__GenerateAnswersForm_Actions', // DEBUG
+            'content-truncate flex w-full flex-wrap gap-2',
+            // isSplashDisplaying && 'justify-center',
+          )}
+        >
           <Button
             type="submit"
-            variant={isSubmitEnabled ? 'secondary' : 'disabled'}
+            variant={isSubmitEnabled ? 'success' : 'ghost'}
             disabled={!isSubmitEnabled}
-            className="gap-2"
+            className={cn(
+              isDev && '__GenerateAnswersForm_SaveButton', // DEBUG
+              'content-truncate gap-2',
+            )}
           >
-            <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
+            <Icons.Check className={cn('size-4 shrink-0')} />{' '}
+            <span className="truncate">
+              {isBusy
+                ? t('GenerateAnswersForm.GeneratingButtonText')
+                : t('GenerateAnswersForm.GenerateButtonText')}
+            </span>
           </Button>
-          <Button variant="ghost" onClick={onClose} className="gap-2">
-            <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
-            <span>{t('Cancel')}</span>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="content-truncate gap-2"
+            disabled={isPending}
+          >
+            <Icons.Close className="size-4 shrink-0" />
+            <span className="truncate">{t('Close')}</span>
           </Button>
         </div>
+
+        {/* LoadingSplash
+        <BusySplash
+          className={cn(
+            isDev && '__GenerateAnswersForm_LoadingSplash', // DEBUG
+          )}
+          isBusy={isBusy}
+        />
+        */}
       </form>
     </FormProvider>
   );

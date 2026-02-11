@@ -748,13 +748,14 @@
     "UseDebugDataLabel": "Use debug data?"
   },
   "GenerateAnswersModal": {
+    "AddingAnswers": "Adding generated answers...",
+    "AnswersAdded": "Successfully added new answers",
+    "AnswersAddingError": "Adding answers error",
+    "AnswersGenerated": "Successfully retrieved AI generated data",
+    "AnswersGenerationError": "Can not retrieve AI generated data",
+    "GeneratingAnswers": "Generating answers...",
     "NoQuestionIdDefined": "No question ID defined",
-    "ToastErrorAnswers": "Cannot add answers",
-    "ToastErrorData": "Can not retrieve AI generated data",
-    "ToastLoadingAnswers": "Adding new answers...",
-    "ToastLoadingData": "Retrieving AI generated data...",
-    "ToastSuccessAnswers": "Successfully added new answers",
-    "ToastSuccessData": "Successfully retrieved AI generated data"
+    "Title": "Answers Generation"
   },
   "GenerateQuestionsForm": {
     "AnswersCountHint": "Count of answers to generate for each question (minimum - maximum).",
@@ -786,7 +787,7 @@
     "ToastSuccessQuestions": "Successfully added new questions"
   },
   "ImageUpload": {
-    "CategoryImagePreview": "Image Preview",
+    "ImagePreview": "Image Preview",
     "RemoveImage": "Remove Image",
     "SelectImage": "Select Image"
   },

@@ -1,6 +1,4 @@
-'use client';
-
-import * as z from 'zod';
+import z from 'zod';
 
 import { defaultAIGenerationTemperature } from '@/config/env';
 import { AiClientTypeSchema, defaultAiClientType } from '@/lib/ai/types/TAiClientType';

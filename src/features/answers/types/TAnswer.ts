@@ -10,6 +10,7 @@ export type TAnswerData = Omit<TAnswerReal, 'createdAt' | 'updatedAt'>;
 
 export type TAnswerId = TAnswer['id'];
 
+/** Only text and questionId are required fields */
 export type TNewAnswer = Partial<Answer> & Pick<Answer, 'text' | 'questionId'>;
 
 /** User fields to include with a flag `iGetAvailableQuestionsParamsSchema.ncludeUser` */

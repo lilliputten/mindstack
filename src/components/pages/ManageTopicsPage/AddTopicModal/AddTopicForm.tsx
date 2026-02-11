@@ -160,10 +160,7 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
   const nameKey = React.useId();
   const isPublicKey = React.useId();
 
-  const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending
-    ? t('AddTopicForm.AddingButtonText')
-    : t('AddTopicForm.AddButtonText');
+  const SubmitIcon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
@@ -264,7 +261,7 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
             isSubmitSuccessful && 'justify-center',
           )}
         >
-          {!limitsError && (
+          {!limitsError && !isSubmitSuccessful && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
@@ -272,11 +269,13 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
               className={cn(
                 isDev && '__AddTopicForm_SaveButton', // DEBUG
                 'gap-2',
-                isSubmitSuccessful && 'hidden',
+                // isSubmitSuccessful && 'hidden',
               )}
             >
-              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
-              <span>{buttonText}</span>
+              <SubmitIcon className={cn('size-4', isBusy && 'animate-spin')} />{' '}
+              <span>
+                {isBusy ? t('AddTopicForm.AddingButtonText') : t('AddTopicForm.AddButtonText')}
+              </span>
             </Button>
           )}
           {/* Show a button "Go to the created topic". TODO: Use `router.replace`? */}

@@ -25,10 +25,12 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
   const jsonStart = rawContent.indexOf(mdStart);
   // OLD APPROACH: if (rawContent.startsWith(mdStart) && rawContent.endsWith(mdEnd)) ...
   if (jsonStart !== -1) {
-    rawContent = rawContent.substring(jsonStart + mdStart.length).trim();
-    if (rawContent.endsWith(mdEnd)) {
-      rawContent = rawContent.substring(rawContent.length - mdEnd.length).trim();
+    rawContent = rawContent.substring(jsonStart + mdStart.length);
+    const lastIndex = rawContent.lastIndexOf(mdEnd);
+    if (lastIndex !== -1) {
+      rawContent = rawContent.substring(0, lastIndex);
     }
+    rawContent = rawContent.trim();
   }
 
   return rawContent;
