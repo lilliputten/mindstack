@@ -745,9 +745,35 @@
     "AnswersAddingError": "Ошибка при добавлении ответов",
     "AnswersGenerated": "Данные, сгенерированные ИИ, успешно получены",
     "AnswersGenerationError": "Невозможно получить данные, сгенерированные ИИ",
+    "AnswersSaved": "Ответы сохранены",
+    "AnswersGeneratedStatus": "Ответы сгенерированы",
+    "BackToForm": "Вернуться к форме",
+    "EditTheData": "Редактировать данные",
+    "EditingAnswers": "Редактирование ответов",
+    "ErrorOccured": "Произошла ошибка",
     "GeneratingAnswers": "Генерация ответов...",
+    "GeneratingAnswersInfo": "Ответы генерируются прямо сейчас.",
+    "NoAnswersHasBeenSaved": "Ответы не были сохранены",
+    "NoAnswersGenerated": "Ответы не сгенерированы",
     "NoQuestionIdDefined": "Идентификатор вопроса не задан",
-    "Title": "Генерация ответов"
+    "OperationAborted": "Операция отменена",
+    "Preparing": "Подготовка...",
+    "SaveAnswers": "Сохранить ответы",
+    "SavedAnswersCount": "Сохранено {savedAnswersCount} ответов:",
+    "SavingAnswersInfo": "Ответы сохраняются прямо сейчас.",
+    "SavingAnswersTitle": "Сохранение ответов...",
+    "Title": "Генерация ответов",
+    "AnswersAlreadyGeneratedTitle": "Ответы уже сгенерированы",
+    "AnswersAlreadySavedTitle": "Ответы уже сохранены",
+    "AnswersToEditTitle": "Нет ответов для редактирования",
+    "EditAnswersCount": "Редактировать {generatedAnswersCount} ответов:",
+    "GenerationAborted": "Генерация отменена",
+    "GenerationErrorOccured": "Произошла ошибка генерации",
+    "GeneratedAnswersCount": "Сгенерировано {generatedAnswersCount} ответов:",
+    "NoAnswersGeneratedError": "Ответы не сгенерированы",
+    "SavingAnswersAborted": "Сохранение ответов отменено",
+    "SavingAnswersErrorOccured": "Произошла ошибка сохранения ответов",
+    "AnswersAreSavingNow": "Ответы сохраняются прямо сейчас."
   },
   "GenerateQuestionsForm": {
     "AnswersCountHint": "Количество ответов, которые необходимо сгенерировать для каждого вопроса (минимум – максимум).",
@@ -815,7 +841,7 @@
         "Question": "Могу ли я использовать MindStack для изучения программирования?"
       },
       "LearningTechniques": {
-        "Answer": "Мы объединяем интервальное повторение, активное воспроизведение и перемежающуюся практику — все это доказанные когнитивной наукой методы для улучшения долгосрочного запоминания.",
+        "Answer": "Мы о��ъединяем интервальное повторение, активное воспроизведение и перемежающуюся практику — все это доказанные когнитивной наукой методы для улучшения долгосрочного запоминания.",
         "Question": "Какие методы обучения использует MindStack?"
       },
       "MobileApp": {

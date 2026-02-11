@@ -57,24 +57,24 @@ export function GeneratedScreen(props: TProps) {
     >
       {
         /* Is generating */ isGenerating ? (
-          <BusySplashWithInfo title="Generating answers..." className="px-6">
-            <span className="content-truncate">Answers are generating now.</span>
+          <BusySplashWithInfo title={t('GenerateAnswersModal.GeneratingAnswers')} className="px-6">
+            <span className="content-truncate">{t('GenerateAnswersModal.GeneratingAnswersInfo')}</span>
           </BusySplashWithInfo>
         ) : /* Error */ error || !generatedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
             <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error || 'No answers has been saved'}</span>
+            <span className="text-red-500">{error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}</span>
           </div>
         ) : !generatedAnswers?.length ? (
-          <ErrorSplash className="px-6" title="No answers generated" />
+          <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersGenerated')} />
         ) : (
           <SuccessSplash
-            title="Answers Already Generated"
+            title={t('GenerateAnswersModal.AnswersAlreadyGeneratedTitle')}
             className="px-6"
             contentClassName="conent-truncate flex flex-col gap-4"
           >
             <h3 className="content-truncate text-lg font-semibold text-theme">
-              Generated {generatedAnswers.length} answers:
+              {t('GenerateAnswersModal.GeneratedAnswersCount', { generatedAnswersCount: generatedAnswers.length })}
             </h3>
             {/* Display preview of the added answers */}
             <PreviewAnswers
@@ -108,7 +108,7 @@ export function GeneratedScreen(props: TProps) {
                   disabled={isBusy}
                 >
                   <Icons.Save className="size-4 shrink-0" />
-                  <span className="truncate">Save answers</span>
+                  <span className="truncate">{t('GenerateAnswersModal.SaveAnswers')}</span>
                 </Button>
               )
             }
@@ -124,7 +124,7 @@ export function GeneratedScreen(props: TProps) {
                   disabled={isBusy}
                 >
                   <Icons.Edit className="size-4 shrink-0" />
-                  <span className="truncate">Edit the data</span>
+                  <span className="truncate">{t('GenerateAnswersModal.EditTheData')}</span>
                 </Button>
               )
             }
@@ -135,7 +135,7 @@ export function GeneratedScreen(props: TProps) {
         {backToForm && (
           <Button variant="ghost" onClick={backToForm} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">Back to form</span>
+            <span className="truncate">{t('GenerateAnswersModal.BackToForm')}</span>
           </Button>
         )}
         {/* Close */}

@@ -152,11 +152,11 @@ export function GenerateAnswersModal() {
 
   // TODO: Use different titles depending on the current status
   const title = isEditing
-    ? 'Editing answers'
+    ? t('GenerateAnswersModal.EditingAnswers')
     : savedAnswers
-      ? 'Answers saved'
+      ? t('GenerateAnswersModal.AnswersSaved')
       : generatedAnswers
-        ? 'Answers generated'
+        ? t('GenerateAnswersModal.AnswersGeneratedStatus')
         : t('GenerateAnswersModal.Title');
   useModalTitle(title, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
@@ -280,7 +280,7 @@ export function GenerateAnswersModal() {
           isGenerated: true,
         }));
         if (!newAnswers || !newAnswers.length) {
-          throw new Error('No answers generated');
+          throw new Error(t('GenerateAnswersModal.NoAnswersGeneratedError'));
         }
         /* console.log('[GenerateAnswersModal:retrieveAndParse] Done', {
          *   newAnswers,
@@ -304,7 +304,7 @@ export function GenerateAnswersModal() {
         setGeneratedAnswers(newAnswers);
       } catch (error) {
         const isAborted = (error as Error).name === 'AbortError';
-        const message = isAborted ? 'Generation aborted' : 'Generation error occured';
+        const message = isAborted ? t('GenerateAnswersModal.GenerationAborted') : t('GenerateAnswersModal.GenerationErrorOccured');
         const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         generateAnswersMutation.reset();
@@ -409,7 +409,7 @@ export function GenerateAnswersModal() {
       // return savedAnswers;
     } catch (error) {
       const isAborted = (error as Error).name === 'AbortError';
-      const message = isAborted ? 'Saving answers aborted' : 'Saving answers error occured';
+      const message = isAborted ? t('GenerateAnswersModal.SavingAnswersAborted') : t('GenerateAnswersModal.SavingAnswersErrorOccured');
       const details = getErrorText(error);
       const comboMsg = [message, details].filter(Boolean).join(': ');
       saveAnswersMutation.reset();
@@ -528,10 +528,10 @@ export function GenerateAnswersModal() {
           )*/}
 
           {isSessionLoading ? (
-            <BusySplashWithInfo title="Preparing..." className="p-6" />
+            <BusySplashWithInfo title={t('GenerateAnswersModal.Preparing')} className="p-6" />
           ) : error ? (
             <PageError
-              title="Error occured"
+              title={t('GenerateAnswersModal.ErrorOccured')}
               error={error}
               extraActions={
                 <Button onClick={hideModal} className="content-truncate flex gap-2">
@@ -542,7 +542,7 @@ export function GenerateAnswersModal() {
             />
           ) : /* isAborted && !isSubmited ? ( // Sho 'aborted' status: apparently, isn't required
             <PageError
-              title="Operation aborted"
+              title={t('GenerateAnswersModal.OperationAborted')}
               // error={error}
               extraActions={
                 <Button onClick={hideModal} className="content-truncate flex gap-2">
@@ -572,7 +572,7 @@ export function GenerateAnswersModal() {
               generatedAnswers={generatedAnswers}
               saveAnswers={() => {
                 if (!generatedAnswers?.length) {
-                  toast.error('No generated answers to edit');
+                  toast.error(t('GenerateAnswersModal.NoAnswersGenerated'));
                 } else {
                   setEditing(true);
                 }

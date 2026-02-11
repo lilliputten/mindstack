@@ -53,22 +53,22 @@ export function SavedScreen(props: TProps) {
     >
       {
         /* Is adding */ isSaving ? (
-          <BusySplashWithInfo title="Saving answers..." className="px-6">
-            <span className="content-truncate">Answers are being saving now.</span>
+          <BusySplashWithInfo title={t('GenerateAnswersModal.SavingAnswersTitle')} className="px-6">
+            <span className="content-truncate">{t('GenerateAnswersModal.SavingAnswersInfo')}</span>
           </BusySplashWithInfo>
         ) : /* Error */ error || !savedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
             <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error || 'No answers has been saved'}</span>
+            <span className="text-red-500">{error || t('GenerateAnswersModal.NoAnswersHasBeenSaved')}</span>
           </div>
         ) : (
           <SuccessSplash
-            title="Answers Already Saved"
+            title={t('GenerateAnswersModal.AnswersAlreadySavedTitle')}
             className="px-6"
             contentClassName="conent-truncate flex flex-col gap-4"
           >
             <h3 className="content-truncate text-lg font-semibold text-theme">
-              Saved {savedAnswers.length} answers:
+              {t('GenerateAnswersModal.SavedAnswersCount', { savedAnswersCount: savedAnswers.length })}
             </h3>
             {/* Display preview of the added answers */}
             <PreviewAnswers
@@ -91,7 +91,7 @@ export function SavedScreen(props: TProps) {
         {backToForm && (
           <Button variant="ghost" onClick={backToForm} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">Back to form</span>
+            <span className="truncate">{t('GenerateAnswersModal.BackToForm')}</span>
           </Button>
         )}
         {/* Close */}
