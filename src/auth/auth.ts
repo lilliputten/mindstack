@@ -62,6 +62,12 @@ export const nextAuthApp = NextAuth({
     // signOut: '/auth/signout',
   },
   callbacks: {
+    /**
+     * Handles user sign-in authentication with provider validation and logging
+     *
+     * @param params - Sign-in parameters containing user, account, profile, and credentials
+     * @returns Returns true on successful sign-in, redirect URL for email provider rejection, or throws error for nodemailer rejection
+     */
     async signIn(params) {
       const {
         user,
@@ -104,7 +110,7 @@ export const nextAuthApp = NextAuth({
       // DEBUG: Log user sign-in event
       try {
         // Prepare user data for logging/monitoring
-        const logData = {
+        const __logData = {
           userId: user.id,
           email: user.email,
           name: user.name,
@@ -113,22 +119,22 @@ export const nextAuthApp = NextAuth({
           provider,
           credentials,
           providerAccountId: account?.providerAccountId,
+          user,
         };
-        const extraData = {
+        const __extraData = {
           user,
           account,
         };
         // Log the user data for analytics or monitoring
         // This follows project conventions for structured logging
         const __idMsg = '[auth:signIn] User signed in';
-        logJsonData(__idMsg, logData, extraData);
+        logJsonData(__idMsg, __logData, __extraData);
         // eslint-disable-next-line no-console
         console.log(__idMsg, {
-          ...logData,
-          ...extraData,
+          ...__logData,
+          ...__extraData,
         });
       } catch (error) {
-        // Follow project's error logging conventions
         // eslint-disable-next-line no-console
         console.error('[auth:signIn:error]', 'Failed to log data', {
           error,
@@ -141,6 +147,14 @@ export const nextAuthApp = NextAuth({
       return true;
     },
 
+    /**
+     * Updates the session with user information from the JWT token
+     *
+     * @param params - Session callback parameters
+     * @param params.token - JWT token containing user data
+     * @param params.session - Current session object
+     * @returns Updated session object with user information
+     */
     async session(params) {
       const { token, session } = params;
       const user = session.user;
@@ -162,10 +176,44 @@ export const nextAuthApp = NextAuth({
       return session;
     },
 
+    /**
+     * Processes JWT token, updating it with user information
+     *
+     * @param params - JWT processing parameters
+     * @param params.token - Current JWT token
+     * @param params.trigger - Trigger reason (e.g. 'signUp')
+     * @returns Updated JWT token containing user information
+     */
     async jwt(params) {
       const token = params.token as JWT;
       const { trigger } = params;
       const isNewUser = trigger === 'signUp';
+
+      // DEBUG: Log new user sign-up
+      if (isNewUser) {
+        try {
+          const __logData = {
+            params,
+          };
+          const __extraData = {
+            params,
+          };
+          const __idMsg = '[auth:jwt] New user signed up';
+          logJsonData(__idMsg, __logData, __extraData);
+          // eslint-disable-next-line no-console
+          console.log(__idMsg, {
+            ...__logData,
+            ...__extraData,
+          });
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('[auth:jwt:error]', 'Failed to log data', {
+            error,
+            params,
+          });
+          debugger; // eslint-disable-line no-debugger
+        }
+      }
 
       if (!token.sub) {
         return token;

@@ -46,7 +46,6 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined; // 55.6784 37.2652
   const location = [ipCity, ipCountry, ipContinent, coords].filter(Boolean).join(', ');
   const dataToSend: Record<string, unknown> = {
-    isDev,
     path: rewrittenPath,
     host,
     tz: ipTimezone,
@@ -60,6 +59,7 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
     matchedPath,
     // allHeaders,
     user,
+    mode: isDev ? 'dev' : undefined,
   };
   if (opts.level) {
     dataToSend.level = opts.level;

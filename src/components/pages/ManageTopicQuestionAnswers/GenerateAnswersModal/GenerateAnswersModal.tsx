@@ -38,6 +38,7 @@ import {
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
+import { EditScreen } from './EditScreen';
 import { GenerateAnswersForm } from './GenerateAnswersForm';
 import { GeneratedScreen } from './GeneratedScreen';
 import { SavedScreen } from './SavedScreen';
@@ -52,30 +53,38 @@ const urlRegExp = new RegExp(idToken + urlQuestionToken + idToken + urlPostfix +
 /** A debug data file id */
 const debugDataId: TAIQuerDebugDataId = 'answers-query-data-01';
 
+/** Show debug data to test ansers editing */
+const __debugEdit = isDev && false;
+const __debugGeneratedAnswers: TNewAnswer[] | undefined = __debugEdit
+  ? [
+      // DEBUG: Test data
+      {
+        questionId: 'cmlgsuq5i0005nvikvocydif7',
+        text: 'Answer _markdown_ text',
+        explanation: 'Explanation markdown text...',
+        isCorrect: false,
+        isGenerated: true,
+      },
+      {
+        questionId: 'cmlgsuq5i0005nvikvocydif7',
+        text: '**Second answer** with much longer text for test purposes and visual issues detection',
+        explanation: 'Explanation markdown text...',
+        isCorrect: true,
+        isGenerated: true,
+      },
+    ]
+  : undefined;
+
 export function GenerateAnswersModal() {
   const { manageScope } = useManageTopicsStore();
   const [isVisible, setVisible] = React.useState(true);
   const [error, setError] = React.useState<string | undefined>();
 
-  const [isCorrecting, setCorrecting] = React.useState(false);
+  const [isEditing, setEditing] = React.useState<boolean>(__debugEdit);
 
-  const [generatedAnswers, setGeneratedAnswers] = React.useState<TNewAnswer[] | undefined>(/*[
-    // DEBUG: Test data
-    {
-      questionId: 'cmlgsuq5i0005nvikvocydif7',
-      text: 'Answer _markdown_ text',
-      explanation: 'Explanation markdown text...',
-      isCorrect: false,
-      isGenerated: true,
-    },
-    {
-      questionId: 'cmlgsuq5i0005nvikvocydif7',
-      text: '**Second answer** with much longer text for test purposes and visual issues detection',
-      explanation: 'Explanation markdown text...',
-      isCorrect: true,
-      isGenerated: true,
-    },
-    ]*/);
+  const [generatedAnswers, setGeneratedAnswers] = React.useState<TNewAnswer[] | undefined>(
+    __debugGeneratedAnswers,
+  );
 
   // Already added to the database answers
   const [savedAnswers, setSavedAnswers] = React.useState<TAvailableAnswer[] | undefined>();
@@ -87,7 +96,7 @@ export function GenerateAnswersModal() {
   const [isSubmited, setSubmited] = React.useState(false);
 
   // Has been aborted with `abortControllerRef`?
-  const [isAborted, setAborted] = React.useState(false);
+  const [_isAborted, setAborted] = React.useState(false);
   const abortControllerRef = React.useRef<AbortController | null>(null);
 
   const pathname = usePathname();
@@ -142,7 +151,13 @@ export function GenerateAnswersModal() {
   const isAnswersPending = !isAnswersFetched || isAnswersFetching;
 
   // TODO: Use different titles depending on the current status
-  const title = t('GenerateAnswersModal.Title');
+  const title = isEditing
+    ? 'Editing answers'
+    : savedAnswers
+      ? 'Answers saved'
+      : generatedAnswers
+        ? 'Answers generated'
+        : t('GenerateAnswersModal.Title');
   useModalTitle(title, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
@@ -443,7 +458,7 @@ export function GenerateAnswersModal() {
   const backToForm = React.useCallback(() => {
     resetOperations();
     // Reset state in order to show the form
-    setCorrecting(false);
+    setEditing(false);
     setGeneratedAnswers(undefined);
     setSavedAnswers(undefined);
     // Reset form submited status
@@ -525,7 +540,7 @@ export function GenerateAnswersModal() {
                 </Button>
               }
             />
-          ) : isAborted && !isSubmited ? (
+          ) : /* isAborted && !isSubmited ? ( // Sho 'aborted' status: apparently, isn't required
             <PageError
               title="Operation aborted"
               // error={error}
@@ -536,7 +551,7 @@ export function GenerateAnswersModal() {
                 </Button>
               }
             />
-          ) : saveAnswersMutation.isPending || savedAnswers ? (
+          ) : */ saveAnswersMutation.isPending || savedAnswers ? (
             // Final screen
             <SavedScreen
               className="px-6"
@@ -546,9 +561,23 @@ export function GenerateAnswersModal() {
               questionId={questionId}
               savedAnswers={savedAnswers}
             />
-          ) : generatedAnswers && isCorrecting ? (
+          ) : generatedAnswers && isEditing ? (
             // Verify generated answers
-            <div className="m-12 text-center">Correcting answers</div>
+            <EditScreen
+              className="px-6"
+              handleClose={hideModal}
+              backToForm={backToForm}
+              // isSaving={saveAnswersMutation.isPending}
+              questionId={questionId}
+              generatedAnswers={generatedAnswers}
+              saveAnswers={() => {
+                if (!generatedAnswers?.length) {
+                  toast.error('No generated answers to edit');
+                } else {
+                  setEditing(true);
+                }
+              }}
+            />
           ) : generateAnswersMutation.isPending || generatedAnswers ? (
             // Final screen
             <GeneratedScreen
@@ -559,13 +588,15 @@ export function GenerateAnswersModal() {
               questionId={questionId}
               generatedAnswers={generatedAnswers}
               saveAnswers={saveGeneratedAnswers}
-              correctAnswers={() => {
-                if (!generatedAnswers?.length) {
-                  toast.error('No generated answers to correct');
-                } else {
-                  setCorrecting(true);
-                }
-              }}
+              /* // TODO: Issue #80: Implement simple answers editing
+               * editAnswers={() => {
+               *   if (!generatedAnswers?.length) {
+               *     toast.error('No generated answers to edit');
+               *   } else {
+               *     setEditing(true);
+               *   }
+               * }}
+               */
             />
           ) : !isSubmited ? (
             // Generate form
