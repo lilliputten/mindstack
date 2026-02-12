@@ -131,6 +131,7 @@ export function GenerateAnswersModal() {
   });
   const {
     question,
+    // queryKey: questionQueryKey,
     isFetched: isQuestionFetched,
     isFetching: isQuestionFetching,
   } = availableQuestionQuery;
@@ -144,6 +145,7 @@ export function GenerateAnswersModal() {
   });
   const {
     allAnswers: answers,
+    queryKey: answersQueryKey, // For `queryClient.cancelQueries({ queryKey: answersQueryKey })`
     isFetching: isAnswersFetching,
     isFetched: isAnswersFetched,
     // error: answersError,
@@ -243,7 +245,7 @@ export function GenerateAnswersModal() {
     },
   });
 
-  const retrieveAndParse = React.useCallback(
+  const generateCallback = React.useCallback(
     async (formData: TFormData) => {
       try {
         if (!questionId) {
@@ -252,7 +254,7 @@ export function GenerateAnswersModal() {
         }
         // Form has been submitted
         setSubmited(true);
-        /* console.log('[GenerateAnswersModal:retrieveAndParse] Start', {
+        /* console.log('[GenerateAnswersModal:generateCallback] Start', {
          *   formData,
          *   questionId,
          * });
@@ -264,13 +266,13 @@ export function GenerateAnswersModal() {
           // error: t('GenerateAnswersModal.AnswersGenerationError'),
         });
         const queryData = await queryPromise;
-        /* console.log('[GenerateAnswersModal:retrieveAndParse] Got generated query data', {
+        /* console.log('[GenerateAnswersModal:generateCallback] Got generated query data', {
          *   queryData,
          * });
          */
         // Parsing answers...
         const answers = parseGeneratedQuestionAnswers(queryData);
-        /* console.log('[GenerateAnswersModal:retrieveAndParse] Got parsed answers', {
+        /* console.log('[GenerateAnswersModal:generateCallback] Got parsed answers', {
          *   answers,
          * });
          */
@@ -282,7 +284,7 @@ export function GenerateAnswersModal() {
         if (!newAnswers || !newAnswers.length) {
           throw new Error(t('GenerateAnswersModal.NoAnswersGeneratedError'));
         }
-        /* console.log('[GenerateAnswersModal:retrieveAndParse] Done', {
+        /* console.log('[GenerateAnswersModal:generateCallback] Done', {
          *   newAnswers,
          * });
          */
@@ -295,7 +297,7 @@ export function GenerateAnswersModal() {
           formData,
         };
         const message = 'Parsed generated answers';
-        const __idMsg = '[GenerateAnswersModal:retrieveAndParse] 🆗 ' + message;
+        const __idMsg = '[GenerateAnswersModal:generateCallback] 🆗 ' + message;
         // eslint-disable-next-line no-console
         console.log(__idMsg, __debugData);
         logJsonData(__idMsg, { formData, questionId }, __debugData);
@@ -312,13 +314,13 @@ export function GenerateAnswersModal() {
         generateAnswersMutation.reset();
         if (isAborted) {
           // eslint-disable-next-line no-console
-          console.warn('[GenerateAnswersModal:retrieveAndParse] Aborted:', comboMsg, {
+          console.warn('[GenerateAnswersModal:generateCallback] Aborted:', comboMsg, {
             details,
             error,
           });
         } else {
           // eslint-disable-next-line no-console
-          console.error('[GenerateAnswersModal:retrieveAndParse] ❌', comboMsg, {
+          console.error('[GenerateAnswersModal:generateCallback] ❌', comboMsg, {
             details,
             error,
           });
@@ -373,7 +375,7 @@ export function GenerateAnswersModal() {
     },
   });
 
-  const saveGeneratedAnswers = React.useCallback(async () => {
+  const saveCallback = React.useCallback(async () => {
     try {
       if (!questionId) {
         throw new Error(t('GenerateAnswersModal.NoQuestionIdDefined'));
@@ -382,7 +384,7 @@ export function GenerateAnswersModal() {
         throw new Error('No answers has been generated');
       }
       const newAnswers: TNewAnswer[] = generatedAnswers;
-      /* console.log('[GenerateAnswersModal:saveGeneratedAnswers] Start', {
+      /* console.log('[GenerateAnswersModal:saveCallback] Start', {
        *   newAnswers,
        * });
        */
@@ -393,7 +395,7 @@ export function GenerateAnswersModal() {
         // error: t('GenerateAnswersModal.AnswersAddingError'),
       });
       const savedAnswers = await addAnswersPromise;
-      /* console.log('[GenerateAnswersModal:saveGeneratedAnswers] Answers added', {
+      /* console.log('[GenerateAnswersModal:saveCallback] Answers added', {
        *   savedAnswers,
        * });
        */
@@ -419,13 +421,13 @@ export function GenerateAnswersModal() {
       saveAnswersMutation.reset();
       if (isAborted) {
         // eslint-disable-next-line no-console
-        console.warn('[GenerateAnswersModal:saveGeneratedAnswers] Aborted:', comboMsg, {
+        console.warn('[GenerateAnswersModal:saveCallback] Aborted:', comboMsg, {
           details,
           error,
         });
       } else {
         // eslint-disable-next-line no-console
-        console.error('[GenerateAnswersModal:saveGeneratedAnswers] ❌', comboMsg, {
+        console.error('[GenerateAnswersModal:saveCallback] ❌', comboMsg, {
           details,
           error,
         });
@@ -591,7 +593,7 @@ export function GenerateAnswersModal() {
               isGenerating={generateAnswersMutation.isPending}
               questionId={questionId}
               generatedAnswers={generatedAnswers}
-              saveAnswers={saveGeneratedAnswers}
+              saveAnswers={saveCallback}
               /* // TODO: Issue #80: Implement simple answers editing
                * editAnswers={() => {
                *   if (!generatedAnswers?.length) {
@@ -605,7 +607,7 @@ export function GenerateAnswersModal() {
           ) : !isSubmited ? (
             // Generate form
             <GenerateAnswersForm
-              startGeneratingAnswers={retrieveAndParse}
+              startGeneratingAnswers={generateCallback}
               className="px-6"
               handleClose={hideModal}
               isPending={isBusy}
