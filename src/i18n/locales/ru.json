@@ -83,6 +83,7 @@
   "Ok": "Хорошо",
   "PUBLIC": "Общее",
   "PageNotFound": "Страница не найдена",
+  "Please": "Пожалуйста",
   "Private": "Приватно",
   "Properties": "Характеристики",
   "Public": "Публично",
@@ -192,7 +193,7 @@
     "ModalTitle": "Добавить вопрос",
     "ToastError": "Невозможно создать новый вопрос",
     "ToastLoading": "Создание нового вопроса...",
-    "ToastSuccess": "Новый вопрос успешно создан."
+    "ToastSuccess": "Новый вопрос создан."
   },
   "AddTopicForm": {
     "AddButtonText": "Добавить",
@@ -211,7 +212,7 @@
   "AddTopicModal": {
     "ToastError": "Невозможно создать новую тему",
     "ToastLoading": "Создание новой темы...",
-    "ToastSuccess": "Новая тема \"{name}\" успешно создана"
+    "ToastSuccess": "Новая тема \"{name}\" создана"
   },
   "AnswersGenerationTypeTexts": {
     "CORRECT": "Только правильные ответы",
@@ -474,7 +475,7 @@
   },
   "Bot": {
     "SelectLanguage": "Выбрать язык",
-    "accountCreated": "✅ Акаунт успешно создан.",
+    "accountCreated": "✅ Акаунт создан.",
     "canNotCreateAccount": "❌ Ошибка созданию учётной записи.",
     "checkingStatus": "Проверка статуса в приложении...",
     "creatingAccount": "Создание акаунта...",
@@ -538,7 +539,7 @@
     "TogglePanel": "Переключить панель"
   },
   "DeleteAccountModal": {
-    "AccountDeletedSuccessfully": "Аккаунт успешно удален!",
+    "AccountDeletedSuccessfully": "Аккаунт удален!",
     "CannotDeleteAccount": "Ошибка удаления аккаунта",
     "ConfirmDeleteAccount": "Подтвердить удаление аккаунта",
     "DeleteAccount": "Удалить аккаунт",
@@ -557,12 +558,12 @@
     "ModalTitle": "Удалить ответ?",
     "ToastError": "Невозможно удалить ответ.",
     "ToastLoading": "Удаление ответа...",
-    "ToastSuccess": "Ответ успешно удален."
+    "ToastSuccess": "Ответ удален."
   },
   "DeleteCategoryModal": {
     "CannotDeleteCategory": "Невозможно удалить категорию",
     "CategoryDeleted": "Категория удалена",
-    "CategoryDeletedContent": "Категория была успешно удалена. Диалоговое окно будет закрыто автоматически.",
+    "CategoryDeletedContent": "Категория была удалена. Диалоговое окно будет закрыто автоматически.",
     "CategoryDeletedTitle": "Категория была удалена",
     "ConfirmDeleteContent": "Вы уверены, что хотите удалить категорию \"{categoryName}\"?",
     "DeletingCategory": "Удаление категории",
@@ -579,7 +580,7 @@
     "ModalTitle": "Удалить вопрос",
     "ToastError": "Невозможно удалить вопрос.",
     "ToastLoading": "Удаление вопроса...",
-    "ToastSuccess": "Вопрос успешно удален."
+    "ToastSuccess": "Вопрос удален."
   },
   "DeleteTopicModal": {
     "CancelButtonText": "Отмена",
@@ -590,13 +591,13 @@
     "ModalTitle": "Удалить тему?",
     "ToastError": "Невозможно удалить тему \"{name}\"",
     "ToastLoading": "Удаление темы \"{name}\"",
-    "ToastSuccess": "Тема \"{name}\" успешно удалена"
+    "ToastSuccess": "Тема \"{name}\" удалена"
   },
   "EditAnswerCard": {
     "CannotSaveAnswerData": "Не удаётся сохранить данные ответа",
     "CannotUpdateAnswerData": "Не удаётся обновить данные ответа",
     "SavingAnswerData": "Сохранение данных ответа...",
-    "SuccessfullySavedAnswer": "Ответ успешно сохранён"
+    "SuccessfullySavedAnswer": "Ответ сохранён"
   },
   "EditAnswerFormFields": {
     "AnswerText": "Текст ответа",
@@ -615,7 +616,7 @@
     "CategoryDescriptionHint": "Описание категории. Этот текст может использоваться пользователями для навигации и поиска.",
     "CategoryNameHint": "Название категории. Желательно, чтобы это было уникальное значение.",
     "CategoryPropertiesInstruction": "Пожалуйста, введите свойства категории (название, описание, ключевые слова) для всех или только одного из языков приложения.",
-    "CategorySavedSuccessfully": "Данные категории успешно сохранены",
+    "CategorySavedSuccessfully": "Данные категории сохранены",
     "CategorySaving": "Сохранение данных категории...",
     "CategorySavingError": "Невозможно сохранить данные категории",
     "DescriptionWithLocale": "Описание ({locale})",
@@ -647,7 +648,7 @@
   "EditCategoryModal": {
     "CannotSaveCategory": "Невозможно сохранить категорию",
     "DataSaveError": "Невозможно сохранить данные категории",
-    "DataSaved": "Категория \"{name}\" успешно сохранена",
+    "DataSaved": "Категория \"{name}\" сохранена",
     "DialogTitle": "Редактировать категорию",
     "ErrorLoadingCategoriesData": "Ошибка загрузки данных категории",
     "SavingData": "Сохранение данных категории..."
@@ -662,7 +663,7 @@
     "ReloadDataFromServer": "Перезагрузить данные с сервера",
     "Save": "Сохранить",
     "SavingQuestionData": "Сохранение данных вопроса...",
-    "SuccessfullySavedQuestion": "Вопрос успешно сохранён"
+    "SuccessfullySavedQuestion": "Вопрос сохранён"
   },
   "EditQuestionCardHolder": {
     "TheQuestionHasBeenRemoved": "Вопрос был удален"
@@ -709,7 +710,7 @@
     "ReloadDataFromServer": "Перезагрузить данные с сервера",
     "ResetFormFieldsToOriginalValues": "Сбросить поля формы к исходным значениям",
     "SavingTopicData": "Сохранение данных темы...",
-    "SuccessfullySavedTheTopic": "Тема успешно сохранена"
+    "SuccessfullySavedTheTopic": "Тема сохранена"
   },
   "EmailSignInForm": {
     "ContactAdminMessage": "Свяжитесь с администратором через страницу \"Контакты\".",
@@ -741,12 +742,12 @@
   },
   "GenerateAnswersModal": {
     "AddingAnswers": "Добавление сгенерированных ответов...",
-    "AnswersAdded": "Новые ответы успешно добавлены",
+    "AnswersAdded": "Новые ответы добавлены",
     "AnswersAddingError": "Ошибка при добавлении ответов",
     "AnswersAlreadyGeneratedTitle": "Ответы уже сгенерированы",
     "AnswersAlreadySavedTitle": "Ответы уже сохранены",
     "AnswersAreSavingNow": "Ответы сохраняются прямо сейчас.",
-    "AnswersGenerated": "Данные, сгенерированные ИИ, успешно получены",
+    "AnswersGenerated": "Данные, сгенерированные ИИ, получены",
     "AnswersGeneratedStatus": "Ответы сгенерированы",
     "AnswersGenerationError": "Невозможно получить данные, сгенерированные ИИ",
     "AnswersSaved": "Ответы сохранены",
@@ -795,14 +796,34 @@
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {
+    "BackToForm": "Вернуться к форме",
     "DialogTitle": "Генерация вопросов",
+    "EditQuestionsCount": "Редактировать {generatedQuestionsCount} вопросов:",
+    "EditingQuestions": "Редактирование вопросов",
+    "ErrorOccured": "Произошла ошибка",
+    "GenerationAborted": "Генерация прервана",
+    "GenerationErrorOccured": "Произошла ошибка генерации",
+    "NoQuestionsGenerated": "Вопросы не сгенерированы",
+    "NoQuestionsGeneratedError": "Вопросы не сгенерированы",
+    "NoQuestionsHasBeenSaved": "Вопросы не были сохранены",
     "NoTopicIdDefined": "Идентификатор темы не определен",
+    "Preparing": "Подготовка...",
+    "QuestionsAlreadySavedTitle": "Вопросы уже сохранены",
+    "QuestionsAreSavingNow": "Вопросы сохраняются.",
+    "QuestionsGeneratedStatus": "Вопросы сгенерированы",
+    "QuestionsSaved": "Вопросы сохранены",
+    "QuestionsToEditTitle": "Нет вопросов для редактирования",
+    "SaveQuestions": "Сохранить вопросы",
+    "SavedQuestionsCount": "Сохранено {savedQuestionsCount} вопросов:",
+    "SavingQuestionsAborted": "Сохранение вопросов прервано",
+    "SavingQuestionsErrorOccured": "Произошла ошибка сохранения вопросов",
+    "SavingQuestionsTitle": "Сохранение вопросов...",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastErrorQuestions": "Невозможно добавить вопросы",
     "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
     "ToastLoadingQuestions": "Добавление новых вопросов...",
-    "ToastSuccessData": "Данные, сгенерированные ИИ, успешно получены",
-    "ToastSuccessQuestions": "Новые вопросы успешно добавлены"
+    "ToastSuccessData": "Данные, сгенерированные ИИ, получены",
+    "ToastSuccessQuestions": "Новые вопросы добавлены"
   },
   "ImageUpload": {
     "ImagePreview": "Предварительный просмотр изображения",
@@ -841,7 +862,7 @@
         "Question": "Могу ли я использовать MindStack для изучения программирования?"
       },
       "LearningTechniques": {
-        "Answer": "Мы о��ъединяем интервальное повторение, активное воспроизведение и перемежающуюся практику — все это доказанные когнитивной наукой методы для улучшения долгосрочного запоминания.",
+        "Answer": "Мы объединяем интервальное повторение, активное воспроизведение и перемежающуюся практику — все это доказанные когнитивной наукой методы для улучшения долгосрочного запоминания.",
         "Question": "Какие методы обучения использует MindStack?"
       },
       "MobileApp": {
@@ -972,9 +993,9 @@
     "ResettingPublicStatusForSelectedCategories": "Сброс публичного статуса выбранных категорий...",
     "SelectCategory": "Выбрать категорию",
     "SelectDeselectAll": "Выбрать/отменить всё",
-    "SuccessfullyDeletedSelectedCategories": "Выбранные категории успешно удалены",
-    "SuccessfullyMadeSelectedCategoriesPublic": "Выбранные категории успешно сделаны публичными",
-    "SuccessfullyResetPublicStatusForSelectedCategories": "Публичный статус выбранных категорий успешно сброшен",
+    "SuccessfullyDeletedSelectedCategories": "Выбранные категории удалены",
+    "SuccessfullyMadeSelectedCategoriesPublic": "Выбранные категории сделаны публичными",
+    "SuccessfullyResetPublicStatusForSelectedCategories": "Публичный статус выбранных категорий сброшен",
     "TopicsCount": "Количество тем",
     "UpdatedAt": "Обновлено",
     "UpdatedBy": "Обновлено"
@@ -990,7 +1011,7 @@
     "DeletingSelectedAnswers": "Удаление выбранных ответов...",
     "NoAnswersDescription": "У вас еще нет ответов. Добавьте любой ответ в свой профиль.",
     "SelectedAnswersCount": "Количество выбранных ответов: {count}.",
-    "SuccessfullyDeletedSelectedAnswers": "Выбранные ответы успешно удалены"
+    "SuccessfullyDeletedSelectedAnswers": "Выбранные ответы удалены"
   },
   "ManageTopicQuestionsListCard": {
     "Back": "Назад",
@@ -1010,7 +1031,7 @@
     "Reload": "Обновить",
     "SelectDeselectAll": "Выбрать/отменить всё",
     "SelectQuestion": "Выбрать вопрос",
-    "SuccessfullyDeletedSelectedQuestions": "Выбранные вопросы успешно удалены"
+    "SuccessfullyDeletedSelectedQuestions": "Выбранные вопросы удалены"
   },
   "ManageTopicsListCard": {
     "Back": "Назад",
@@ -1036,9 +1057,9 @@
     "ResettingPublicStatusForSelectedTopics": "Сброс публичного статуса выбранных тем...",
     "SelectDeselectAll": "Выбрать/отменить всё",
     "SelectTopic": "Выбрать тему",
-    "SuccessfullyDeletedSelectedTopics": "Выбранные темы успешно удалены",
-    "SuccessfullyMadeSelectedTopicsPublic": "Выбранные темы успешно сделаны публичными",
-    "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем успешно сброшен"
+    "SuccessfullyDeletedSelectedTopics": "Выбранные темы удалены",
+    "SuccessfullyMadeSelectedTopicsPublic": "Выбранные темы сделаны публичными",
+    "SuccessfullyResetPublicStatusForSelectedTopics": "Публичный статус выбранных тем сброшен"
   },
   "ManageTopicsPageModalsWrapper": {
     "RequestedTopicNotExists": "Запрошенная тема не существует."
@@ -1270,7 +1291,7 @@
     "OtherOptionsText": "Если вы хотите выбрать другие варианты подписки, перейдите на <PricingLink>страницу цен</PricingLink> или <ContactsLink>свяжитесь с нами</ContactsLink> в случае возникновения каких-либо проблем.",
     "PayWithInternationalCard": "Оплатить <PriceText></PriceText> международной картой",
     "PayWithRussianCard": "Оплатить <PriceText></PriceText> российской картой",
-    "PaymentCreated": "Платеж успешно создан",
+    "PaymentCreated": "Платеж создан",
     "PaymentCreatingError": "Ошибка создания платежа",
     "PaymentIsCreating": "Платеж создается",
     "RussianBankCard": "Российская банковская карта",
@@ -1294,7 +1315,7 @@
     "Congratulations": "Поздравляем!",
     "NewFeatures": "Новые доступные функции",
     "StartWorking": "Начните работать с темами",
-    "SubscriptionUpgraded": "Ваша подписка была успешно повышена до плана <strong>{grade}</strong>.",
+    "SubscriptionUpgraded": "Ваша подписка была повышена до плана <strong>{grade}</strong>.",
     "ViewPlans": "Посмотреть другие планы подписки",
     "WelcomeTo": "Добро пожаловать в {plan}!"
   },

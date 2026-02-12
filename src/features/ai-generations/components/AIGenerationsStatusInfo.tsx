@@ -108,7 +108,7 @@ export function AIGenerationsStatusInfo(props: TProps) {
             <span className="content-truncate font-semibold text-red-500">
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
             </span>{' '}
-            Please{' '}
+            {t('Please')}{' '}
             <Link
               href={welcomeAliasRoute}
               className="content-truncate text-theme-500 hover:underline"

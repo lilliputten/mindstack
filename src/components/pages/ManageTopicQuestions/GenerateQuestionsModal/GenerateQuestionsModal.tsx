@@ -313,7 +313,7 @@ export function GenerateQuestionsModal() {
         throw new Error(t('GenerateQuestionsModal.NoTopicIdDefined'));
       }
       if (!generatedQuestions?.length) {
-        throw new Error('No questions has been generated');
+        throw new Error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
       }
 
       const addQuestionsPromise = saveQuestionsMutation.mutateAsync(generatedQuestions);
@@ -500,7 +500,7 @@ export function GenerateQuestionsModal() {
               // TODO: Issue #80: Implement simple questions editing
               editQuestions={() => {
                 if (!generatedQuestions?.length) {
-                  toast.error('No generated questions to edit');
+                  toast.error(t('GenerateQuestionsModal.NoQuestionsGenerated'));
                 } else {
                   setEditing(true);
                 }
