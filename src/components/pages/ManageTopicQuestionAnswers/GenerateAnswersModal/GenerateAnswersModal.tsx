@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
@@ -123,12 +123,7 @@ export function GenerateAnswersModal() {
   // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(answersListRoutePath);
 
-  const availableQuestionQuery = useAvailableQuestionById({
-    id: questionId || '',
-    // includeTopic: true,
-    // includeAnswers: true,
-    // includeAnswersCount: true,
-  });
+  const availableQuestionQuery = useAvailableQuestionById({ id: questionId || '' });
   const {
     question,
     // queryKey: questionQueryKey,
@@ -138,21 +133,17 @@ export function GenerateAnswersModal() {
   const isQuestionPending = !isQuestionFetched || isQuestionFetching;
 
   // Fetch answers using dedicated hook
-  const availableAnswersQuery = useAvailableAnswers({
-    itemsLimit: null,
-    questionId,
-    // enabled: !!questionId,
-  });
+  const availableAnswersQuery = useAvailableAnswers({ itemsLimit: null, questionId });
   const {
     allAnswers: answers,
-    queryKey: answersQueryKey, // For `queryClient.cancelQueries({ queryKey: answersQueryKey })`
+    // queryKey: answersQueryKey, // For `queryClient.cancelQueries({ queryKey: answersQueryKey })`
     isFetching: isAnswersFetching,
     isFetched: isAnswersFetched,
     // error: answersError,
   } = availableAnswersQuery;
   const isAnswersPending = !isAnswersFetched || isAnswersFetching;
 
-  // TODO: Use different titles depending on the current status
+  // Using different titles depending on the current status
   const title = isEditing
     ? t('GenerateAnswersModal.EditingAnswers')
     : savedAnswers
@@ -196,25 +187,7 @@ export function GenerateAnswersModal() {
         })),
       };
       const { debugData } = formData;
-      /* // DEBUG
-       * console.log('[GenerateAnswersModal:generateAnswersMutation] Start', {
-       *   debugData,
-       *   formData,
-       *   params,
-       *   topic,
-       *   question,
-       *   answers,
-       * });
-       */
       const messages = createGenerateQuestionAnswersMessages(params);
-      /* // DEBUG
-       * const __debugMessagesStr = messages.map(({ content }) => content).join('\n\n');
-       * console.log('[GenerateAnswersModal:generateAnswersMutation] Created messages', {
-       *   __debugMessagesStr,
-       *   messages,
-       *   params,
-       * });
-       */
       const queryData: TAITextQueryData = await userAIRequest(messages, {
         topicId,
         debugData: debugData ? debugDataId : undefined,
@@ -233,11 +206,6 @@ export function GenerateAnswersModal() {
         toast.warning(message);
         throw new DOMException(message, 'AbortError');
       }
-      /* console.log('[GenerateAnswersModal:generateAnswersMutation] Generated query data', {
-       *   // content: queryData?.content,
-       *   queryData,
-       * });
-       */
       return queryData;
     },
     onSettled: () => {
@@ -254,11 +222,6 @@ export function GenerateAnswersModal() {
         }
         // Form has been submitted
         setSubmited(true);
-        /* console.log('[GenerateAnswersModal:generateCallback] Start', {
-         *   formData,
-         *   questionId,
-         * });
-         */
         const queryPromise = generateAnswersMutation.mutateAsync(formData);
         toast.promise(queryPromise, {
           loading: t('GenerateAnswersModal.GeneratingAnswers'),
@@ -266,16 +229,8 @@ export function GenerateAnswersModal() {
           // error: t('GenerateAnswersModal.AnswersGenerationError'),
         });
         const queryData = await queryPromise;
-        /* console.log('[GenerateAnswersModal:generateCallback] Got generated query data', {
-         *   queryData,
-         * });
-         */
         // Parsing answers...
         const answers = parseGeneratedQuestionAnswers(queryData);
-        /* console.log('[GenerateAnswersModal:generateCallback] Got parsed answers', {
-         *   answers,
-         * });
-         */
         const newAnswers: TNewAnswer[] | undefined = answers?.map((answer) => ({
           ...answer,
           questionId,
@@ -284,10 +239,6 @@ export function GenerateAnswersModal() {
         if (!newAnswers || !newAnswers.length) {
           throw new Error(t('GenerateAnswersModal.NoAnswersGeneratedError'));
         }
-        /* console.log('[GenerateAnswersModal:generateCallback] Done', {
-         *   newAnswers,
-         * });
-         */
 
         // Log the operation
         const __debugData = {
@@ -384,10 +335,6 @@ export function GenerateAnswersModal() {
         throw new Error('No answers has been generated');
       }
       const newAnswers: TNewAnswer[] = generatedAnswers;
-      /* console.log('[GenerateAnswersModal:saveCallback] Start', {
-       *   newAnswers,
-       * });
-       */
       const addAnswersPromise = saveAnswersMutation.mutateAsync(newAnswers);
       toast.promise(addAnswersPromise, {
         loading: t('GenerateAnswersModal.AddingAnswers'),
@@ -395,10 +342,6 @@ export function GenerateAnswersModal() {
         // error: t('GenerateAnswersModal.AnswersAddingError'),
       });
       const savedAnswers = await addAnswersPromise;
-      /* console.log('[GenerateAnswersModal:saveCallback] Answers added', {
-       *   savedAnswers,
-       * });
-       */
 
       setSavedAnswers(savedAnswers);
 
@@ -439,20 +382,30 @@ export function GenerateAnswersModal() {
   }, [saveAnswersMutation, generatedAnswers, queryClient, questionId, t]);
 
   const resetOperations = React.useCallback(() => {
-    /* console.log('[GenerateAnswersModal:resetOperations]', {
-     *   abortControllerRef_current: abortControllerRef.current,
-     *   generateAnswersMutation_isPending: generateAnswersMutation.isPending,
-     *   saveAnswersMutation_isPending: saveAnswersMutation.isPending,
-     * });
-     */
     abortControllerRef.current?.abort();
+    // Cancel all react-queries with a single command
+    queryClient.cancelQueries({
+      queryKey: [
+        // All used query keys...
+        availableAnswersQuery.queryKey,
+        availableQuestionQuery.queryKey,
+      ].filter(Boolean),
+    });
+    // Reset mutations
     if (generateAnswersMutation.isPending) {
       generateAnswersMutation.reset();
     }
     if (saveAnswersMutation.isPending) {
       saveAnswersMutation.reset();
     }
-  }, [abortControllerRef, saveAnswersMutation, generateAnswersMutation]);
+  }, [
+    abortControllerRef,
+    saveAnswersMutation,
+    generateAnswersMutation,
+    queryClient,
+    availableAnswersQuery,
+    availableQuestionQuery,
+  ]);
 
   /** Hide modal & canecl all pending operations */
   const hideModal = React.useCallback(() => {

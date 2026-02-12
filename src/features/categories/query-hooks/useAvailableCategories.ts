@@ -80,13 +80,6 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
   const queryFn = React.useCallback(
     async ({ pageParam = 0 }: { pageParam?: number; signal?: AbortSignal }) => {
       try {
-        /* console.log('[useAvailableCategories:queryFn] start', traceId, keyId, {
-         *   queryKey,
-         *   enabled,
-         *   queryProps,
-         *   memo,
-         * });
-         */
         // TODO: To throw an exception if not `memo.mounted` set?
         const result = await Promise.race([
           getAvailableCategories({
@@ -101,14 +94,6 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
           // To kill hanged out queries, and start it over
           new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
         ]);
-        /* console.log('[useAvailableCategories:queryFn] done', traceId, keyId, {
-         *   result,
-         *   queryKey,
-         *   enabled,
-         *   queryProps,
-         *   memo,
-         * });
-         */
         return result;
       } catch (error) {
         if (error === 'timeout') {
@@ -146,15 +131,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         throw error;
       }
     },
-    [
-      // enabled,
-      // keyId,
-      // queryKey,
-      all,
-      memo,
-      queryProps,
-      traceId,
-    ],
+    [all, memo, queryProps, traceId],
   );
 
   const query = useInfiniteQuery<
@@ -200,20 +177,8 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
       return () => {
         memo.mounted = false;
         const { isFetching } = query;
-        /* console.log('[useAvailableCategories:unmount]', traceId, keyId, {
-         *   isFetching,
-         *   memo,
-         * });
-         */
         // NOTE: Trying to prevent stucking on permanent isFetching state on fast simultaneous unmounts (in dialog popups)
         if (isFetching) {
-          /* console.log('[useAvailableCategories:unmount:CLEANUP]', traceId, keyId, {
-           *   isFetching,
-           *   queryKey,
-           *   queryClient,
-           *   query,
-           * });
-           */
           // 1. IMMEDIATELY cancel pending requests
           queryClient.cancelQueries({ queryKey, exact: true });
           // 2. RESET to idle state (stops isLoading)

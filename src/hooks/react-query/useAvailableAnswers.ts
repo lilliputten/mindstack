@@ -11,8 +11,8 @@ import {
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { APIError } from '@/lib/types/api';
 import { TAllUsedKeys, TAvailableAnswersResultsQueryData } from '@/lib/types/react-query';
+import { getErrorText } from '@/lib/helpers';
 import {
   addNewItemToQueryCache,
   deleteItemFromQueryCache,
@@ -35,6 +35,12 @@ const staleTime = defaultStaleTime;
 interface TUseAvailableAnswersProps extends Omit<TGetAvailableAnswersParams, 'skip' | 'take'> {
   enabled?: boolean;
   itemsLimit?: number | null;
+  traceId?: string;
+}
+
+interface TMemo {
+  query?: UseInfiniteQueryResult<TAvailableAnswersResultsQueryData, Error>;
+  mounted?: boolean;
 }
 
 /** Collection of the all used query keys (mb, already invalidated).
@@ -46,7 +52,7 @@ interface TUseAvailableAnswersProps extends Omit<TGetAvailableAnswersParams, 'sk
 const allUsedKeys: TAllUsedKeys = {};
 
 export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
-  const { enabled, questionId, ...queryProps } = props;
+  const { enabled, questionId, traceId, ...queryProps } = props;
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
@@ -59,7 +65,64 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
     () => ['available-answers-for-question', questionId, queryUrlHash],
     [questionId, queryUrlHash],
   );
-  allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
+  const keyId = stringifyQueryKey(queryKey);
+  allUsedKeys[keyId] = queryKey;
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  const queryFn = React.useCallback(
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
+      try {
+        const result = await Promise.race([
+          getAvailableAnswers({
+            ...queryProps,
+            questionId,
+            skip: pageParam,
+            take:
+              queryProps.itemsLimit == null
+                ? undefined
+                : queryProps.itemsLimit || defaultItemsLimit,
+          }),
+          // Timeout to prevent hanging queries
+          new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+        ]);
+        return result;
+      } catch (error) {
+        if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableAnswers:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+        } else if (!memo.mounted) {
+          const message = 'Query failed while unmounted. Probably, that is not an error.';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableAnswers:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+        } else {
+          const message = t('UseAvailableAnswers.CannotLoadAnswersData');
+          const details = getErrorText(error);
+          // eslint-disable-next-line no-console
+          console.error('[useAvailableAnswers:queryFn]', traceId, message, {
+            traceId,
+            details,
+            error,
+            pageParam,
+            memo,
+            queryProps,
+          });
+          toast.error(message);
+        }
+        throw error;
+      }
+    },
+    [memo, queryProps, questionId, t, traceId],
+  );
 
   const query: UseInfiniteQueryResult<TAvailableAnswersResultsQueryData, Error> = useInfiniteQuery<
     TGetAvailableAnswersResults,
@@ -76,35 +139,27 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
       const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
       return loadedCount < lastPage.totalCount ? loadedCount : undefined;
     },
-    queryFn: async (params) => {
-      const { pageParam = 0 } = params;
-      try {
-        // OPTION 1: Using server function
-        const results = await getAvailableAnswers({
-          ...queryProps,
-          questionId,
-          skip: pageParam,
-          take:
-            queryProps.itemsLimit == null ? undefined : queryProps.itemsLimit || defaultItemsLimit,
-        });
-        return results;
-      } catch (error) {
-        const details = error instanceof APIError ? error.details : null;
-        const message = t('UseAvailableAnswers.CannotLoadAnswersData');
-        // eslint-disable-next-line no-console
-        console.error('[useAvailableAnswers:queryFn]', message, {
-          details,
-          error,
-          pageParam,
-          // url,
-        });
-        // eslint-disable-next-line no-debugger
-        debugger;
-        toast.error(message);
-        throw error;
-      }
-    },
+    queryFn,
   });
+  memo.query = query;
+
+  // Handle component mount/unmount
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        // Cleanup pending requests on unmount
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient, traceId, keyId]);
 
   // Derived data...
 
@@ -189,19 +244,33 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
    * promise
    */
 
-  return {
-    ...query,
-    // Derived data...
+  return React.useMemo(() => {
+    return {
+      ...query,
+      // Derived data...
+      routePath,
+      queryProps,
+      queryKey,
+      allUsedKeys,
+      allAnswers,
+      hasAnswers: !!allAnswers.length, // !!query.data?.pages[0]?.totalCount,
+      // Helpers...
+      addNewAnswer,
+      deleteAnswer,
+      updateAnswer,
+      invalidateAllKeysExcept,
+      queryUrlHash,
+    };
+  }, [
+    query,
     routePath,
     queryProps,
     queryKey,
-    allUsedKeys,
     allAnswers,
-    hasAnswers: !!allAnswers.length, // !!query.data?.pages[0]?.totalCount,
-    // Helpers...
     addNewAnswer,
     deleteAnswer,
     updateAnswer,
     invalidateAllKeysExcept,
-  };
+    queryUrlHash,
+  ]);
 }
