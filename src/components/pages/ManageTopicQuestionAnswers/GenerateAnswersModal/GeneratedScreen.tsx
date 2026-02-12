@@ -12,7 +12,7 @@ import { PreviewAnswers } from '@/widgets/answers';
 
 export interface TProps {
   handleClose?: () => void;
-  backToForm?: () => void;
+  startOverCallback?: () => void;
   className?: string;
   questionId: TQuestionId; // Is it required here?
   error?: string;
@@ -26,7 +26,7 @@ export function GeneratedScreen(props: TProps) {
   const {
     className,
     handleClose,
-    backToForm,
+    startOverCallback,
     // questionId,
     error,
     isGenerating,
@@ -58,9 +58,9 @@ export function GeneratedScreen(props: TProps) {
       {
         /* Is generating */ isGenerating ? (
           <BusySplashWithInfo title={t('GenerateAnswersModal.GeneratingAnswers')} className="px-6">
-            <span className="content-truncate">
+            {/* <span className="content-truncate">
               {t('GenerateAnswersModal.GeneratingAnswersInfo')}
-            </span>
+            </span> */}
           </BusySplashWithInfo>
         ) : /* Error */ error || !generatedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
@@ -70,7 +70,7 @@ export function GeneratedScreen(props: TProps) {
             </span>
           </div>
         ) : !generatedAnswers?.length ? (
-          <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersGenerated')} />
+          <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersGeneratedError')} />
         ) : (
           <SuccessSplash
             title={t('GenerateAnswersModal.AnswersAlreadyGeneratedTitle')}
@@ -138,10 +138,10 @@ export function GeneratedScreen(props: TProps) {
         )}
 
         {/* Return to the form */}
-        {backToForm && (
-          <Button variant="ghost" onClick={backToForm} className="content-truncate gap-2">
+        {startOverCallback && (
+          <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">{t('GenerateAnswersModal.BackToForm')}</span>
+            <span className="truncate">{t('GenerateAnswersModal.StartOver')}</span>
           </Button>
         )}
         {/* Close */}

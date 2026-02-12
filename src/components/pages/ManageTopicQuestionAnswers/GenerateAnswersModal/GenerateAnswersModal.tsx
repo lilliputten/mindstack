@@ -16,6 +16,8 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { BusySplashWithInfo, PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
+import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import {
   createGenerateQuestionAnswersMessages,
   parseGeneratedQuestionAnswers,
@@ -89,6 +91,12 @@ export function GenerateAnswersModal() {
   // Already added to the database answers
   const [savedAnswers, setSavedAnswers] = React.useState<TAvailableAnswer[] | undefined>();
 
+  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const {
+    allowed: isAiAllowed, // boolean
+    loading: aiStatusLoading, // boolean
+  } = aiGenerationsStatusQuery;
+
   const userAIRequest = useUserAIRequest();
 
   const t = useT();
@@ -107,6 +115,7 @@ export function GenerateAnswersModal() {
   const shouldBeVisible = !!match;
 
   const { loading: isSessionLoading } = useSessionData();
+  const isPreparing = isSessionLoading || aiStatusLoading;
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -414,7 +423,7 @@ export function GenerateAnswersModal() {
     goBack();
   }, [goBack, resetOperations]);
 
-  const backToForm = React.useCallback(() => {
+  const startOverCallback = React.useCallback(() => {
     resetOperations();
     // Reset state in order to show the form
     setEditing(false);
@@ -430,7 +439,7 @@ export function GenerateAnswersModal() {
   }
 
   const areMutationsPending = generateAnswersMutation.isPending || saveAnswersMutation.isPending;
-  const isBusy = isSessionLoading || isAnswersPending || isQuestionPending || areMutationsPending;
+  const isBusy = isPreparing || isQuestionPending || isAnswersPending || areMutationsPending;
 
   return (
     <Modal
@@ -486,12 +495,23 @@ export function GenerateAnswersModal() {
             </div>
           )*/}
 
-          {isSessionLoading ? (
+          {isPreparing ? (
             <BusySplashWithInfo title={t('GenerateAnswersModal.Preparing')} className="p-6" />
           ) : error ? (
             <PageError
               title={t('GenerateAnswersModal.ErrorOccured')}
               error={error}
+              extraActions={
+                <Button onClick={hideModal} className="content-truncate flex gap-2">
+                  <Icons.Close className="size-4 shrink-0" />
+                  <span className="truncate">{t('Close')}</span>
+                </Button>
+              }
+            />
+          ) : !isAiAllowed ? (
+            <PageError
+              title={t('NoAiGenrationsAvailable')}
+              explanation={<AIGenerationsStatusInfo className="justify-center" />}
               extraActions={
                 <Button onClick={hideModal} className="content-truncate flex gap-2">
                   <Icons.Close className="size-4 shrink-0" />
@@ -515,7 +535,7 @@ export function GenerateAnswersModal() {
             <SavedScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               isSaving={saveAnswersMutation.isPending}
               questionId={questionId}
               savedAnswers={savedAnswers}
@@ -525,13 +545,13 @@ export function GenerateAnswersModal() {
             <EditScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               // isSaving={saveAnswersMutation.isPending}
               questionId={questionId}
               generatedAnswers={generatedAnswers}
               saveAnswers={() => {
                 if (!generatedAnswers?.length) {
-                  toast.error(t('GenerateAnswersModal.NoAnswersGenerated'));
+                  toast.error(t('GenerateAnswersModal.NoAnswersGeneratedError'));
                 } else {
                   setEditing(true);
                 }
@@ -542,7 +562,7 @@ export function GenerateAnswersModal() {
             <GeneratedScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               isGenerating={generateAnswersMutation.isPending}
               questionId={questionId}
               generatedAnswers={generatedAnswers}

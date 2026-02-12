@@ -12,7 +12,7 @@ import { PreviewAnswers } from '@/widgets/answers';
 
 export interface TProps {
   handleClose?: () => void;
-  backToForm?: () => void;
+  startOverCallback?: () => void;
   className?: string;
   questionId: TQuestionId; // Is it required here?
   error?: string;
@@ -25,7 +25,7 @@ export function EditScreen(props: TProps) {
   const {
     className,
     handleClose,
-    backToForm,
+    startOverCallback,
     // questionId,
     error,
     isSaving,
@@ -113,10 +113,10 @@ export function EditScreen(props: TProps) {
         )}
 
         {/* Return to the form */}
-        {backToForm && (
-          <Button variant="ghost" onClick={backToForm} className="content-truncate gap-2">
+        {startOverCallback && (
+          <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">{t('GenerateAnswersModal.BackToForm')}</span>
+            <span className="truncate">{t('GenerateAnswersModal.StartOver')}</span>
           </Button>
         )}
         {/* Close */}

@@ -20,7 +20,7 @@
   "AverageSuccessRate": "Средний рейтинг",
   "Back": "Назад",
   "CanCloseDialog": "Теперь вы можете закрыть диалог.",
-  "Cancel": "Отмена",
+  "Cancel": "Отменить",
   "Categories": "Категории",
   "Category": "Категория",
   "ChangeFilters": "Изменить фильтры",
@@ -69,6 +69,7 @@
   "Name": "Название",
   "NavigationMenu": "Меню навигации",
   "No": "Номер",
+  "NoAiGenrationsAvailable": "Нет доступных ИИ генераций",
   "NoAnswerFound": "Ответ не найден",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
   "NoCategoriesAvailable": "Нет доступных категорий",
@@ -179,7 +180,7 @@
   "AddQuestionForm": {
     "AddButtonText": "Добавить",
     "AddingButtonText": "Добавление",
-    "CancelButtonText": "Отмена",
+    "CancelButtonText": "Отменить",
     "CannotCreateQuestion": "Ошибка создания вопроса",
     "GoToCreatedQuestion": "К созданному вопросу",
     "QuestionText": "Текст вопроса",
@@ -550,7 +551,7 @@
     "confirmPattern": "подтвердить удаление аккаунта"
   },
   "DeleteAnswerModal": {
-    "CancelButtonText": "Отмена",
+    "CancelButtonText": "Отменить",
     "ConfirmButtonBusyText": "Удаление",
     "ConfirmButtonText": "Удалить",
     "DialogContent": "Подтверждаете удаление ответа?",
@@ -572,7 +573,7 @@
     "NotFoundCategoryTitle": "Не удается найти категорию для удаления"
   },
   "DeleteQuestionModal": {
-    "CancelButtonText": "Отмена",
+    "CancelButtonText": "Отменить",
     "ConfirmButtonBusyText": "Удаление",
     "ConfirmButtonText": "Удалить",
     "DialogContent": "Подтверждаете удаление вопроса?",
@@ -583,7 +584,7 @@
     "ToastSuccess": "Вопрос удален."
   },
   "DeleteTopicModal": {
-    "CancelButtonText": "Отмена",
+    "CancelButtonText": "Отменить",
     "ConfirmButtonBusyText": "Удаление",
     "ConfirmButtonText": "Удалить",
     "DialogContent": "Подтверждаете удаление темы \"{topicName}\"?",
@@ -752,7 +753,6 @@
     "AnswersGenerationError": "Невозможно получить данные, сгенерированные ИИ",
     "AnswersSaved": "Ответы сохранены",
     "AnswersToEditTitle": "Нет ответов для редактирования",
-    "BackToForm": "Вернуться к форме",
     "EditAnswersCount": "Редактировать {generatedAnswersCount} ответов:",
     "EditTheData": "Редактировать данные",
     "EditingAnswers": "Редактирование ответов",
@@ -762,7 +762,6 @@
     "GeneratingAnswersInfo": "Ответы генерируются прямо сейчас.",
     "GenerationAborted": "Генерация отменена",
     "GenerationErrorOccured": "Произошла ошибка генерации",
-    "NoAnswersGenerated": "Ответы не сгенерированы",
     "NoAnswersGeneratedError": "Ответы не сгенерированы",
     "NoAnswersHasBeenSaved": "Ответы не были сохранены",
     "NoQuestionIdDefined": "Идентификатор вопроса не задан",
@@ -774,6 +773,7 @@
     "SavingAnswersErrorOccured": "Произошла ошибка сохранения ответов",
     "SavingAnswersInfo": "Ответы сохраняются прямо сейчас.",
     "SavingAnswersTitle": "Сохранение ответов...",
+    "StartOver": "Начать сначала",
     "Title": "Генерация ответов"
   },
   "GenerateQuestionsForm": {
@@ -796,18 +796,21 @@
     "UseDebugDataLabel": "Использовать отладочные данные?"
   },
   "GenerateQuestionsModal": {
-    "BackToForm": "Вернуться к форме",
     "DialogTitle": "Генерация вопросов",
     "EditQuestionsCount": "Редактировать {generatedQuestionsCount} вопросов:",
+    "EditTheData": "Редактировать вопросы",
     "EditingQuestions": "Редактирование вопросов",
     "ErrorOccured": "Произошла ошибка",
+    "GeneratedQuestionsCount": "Сгенерировано {generatedQuestionsCount} вопросов:",
+    "GeneratingQuestions": "Генерация вопросов...",
+    "GeneratingQuestionsInfo": "Вопросы генерируются прямо сейчас.",
     "GenerationAborted": "Генерация прервана",
     "GenerationErrorOccured": "Произошла ошибка генерации",
-    "NoQuestionsGenerated": "Вопросы не сгенерированы",
     "NoQuestionsGeneratedError": "Вопросы не сгенерированы",
     "NoQuestionsHasBeenSaved": "Вопросы не были сохранены",
     "NoTopicIdDefined": "Идентификатор темы не определен",
     "Preparing": "Подготовка...",
+    "QuestionsAlreadyGeneratedTitle": "Вопросы уже сгенерированы",
     "QuestionsAlreadySavedTitle": "Вопросы уже сохранены",
     "QuestionsAreSavingNow": "Вопросы сохраняются.",
     "QuestionsGeneratedStatus": "Вопросы сгенерированы",
@@ -817,7 +820,9 @@
     "SavedQuestionsCount": "Сохранено {savedQuestionsCount} вопросов:",
     "SavingQuestionsAborted": "Сохранение вопросов прервано",
     "SavingQuestionsErrorOccured": "Произошла ошибка сохранения вопросов",
+    "SavingQuestionsInfo": "Вопросы сейчас сохраняются...",
     "SavingQuestionsTitle": "Сохранение вопросов...",
+    "StartOver": "Начать сначала",
     "ToastErrorData": "Невозможно получить данные, сгенерированные ИИ",
     "ToastErrorQuestions": "Невозможно добавить вопросы",
     "ToastLoadingData": "Получение данных, сгенерированных ИИ...",
@@ -1001,7 +1006,7 @@
     "UpdatedBy": "Обновлено"
   },
   "ManageTopicQuestionAnswersListCard": {
-    "Cancel": "Отмена",
+    "Cancel": "Отменить",
     "CannotDeleteSelectedAnswers": "Не удаётся удалить выбранные ответы",
     "ConfirmDeleteSelectedAnswers": "Подтвердить удаление выбранных ответов",
     "ConfirmDeleteSelectedAnswersMessage": "Подтверждаете удаление выбранных ответов?",
@@ -1015,7 +1020,7 @@
   },
   "ManageTopicQuestionsListCard": {
     "Back": "Назад",
-    "Cancel": "Отмена",
+    "Cancel": "Отменить",
     "CannotDeleteSelectedQuestions": "Не удаётся удалить выбранные вопросы",
     "CannotUpdateQuestionGeneratedStatus": "Не удаётся обновить статус генерации вопроса",
     "ConfirmDeleteQuestions": "Подтвердить удаление вопросов",

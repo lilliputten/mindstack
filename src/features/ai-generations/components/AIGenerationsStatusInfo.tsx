@@ -89,21 +89,21 @@ export function AIGenerationsStatusInfo(props: TProps) {
       {/* Available Generations */}
       {isUnlimited ? (
         <span className="content-truncate flex items-center gap-1 text-green-600">
-          <Icons.CircleCheck className="mr-1 size-4 shrink-0 opacity-50" />
+          <Icons.CircleCheck className="mr-1 inline size-4 shrink-0 opacity-50" />
           <span className="content-truncate">
             {t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')}
           </span>
         </span>
       ) : allowed ? (
-        <span className="content-truncate flex items-center gap-1 text-green-600">
-          <Icons.CircleCheck className="mr-1 size-4 shrink-0 opacity-50" />
+        <span className="content-truncate inline text-green-600">
+          <Icons.CircleCheck className="mr-1 inline size-4 shrink-0 opacity-50" />
           <span className="content-truncate">
             {t('AIGenerationsStatusInfo.AvailableAIGenerations', { availableGenerations })}
           </span>
         </span>
       ) : (
-        <span className="content-truncate flex items-center gap-1">
-          <Icons.Warning className="mr-1 size-4 shrink-0 text-red-500 opacity-50" />
+        <span className="content-truncate inline gap-1">
+          <Icons.Warning className="mr-1 inline size-4 shrink-0 text-red-500 opacity-50" />
           <span className="content-truncate">
             <span className="content-truncate font-semibold text-red-500">
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
@@ -122,8 +122,8 @@ export function AIGenerationsStatusInfo(props: TProps) {
 
       {/* Used Generations */}
       {!!usedGenerations && (
-        <span className="flex items-center gap-1" title={t('UsedGenerations')}>
-          <Icons.LineChart className="mr-1 size-4 shrink-0 opacity-50" />
+        <span className="inline" title={t('UsedGenerations')}>
+          <Icons.LineChart className="mr-1 inline size-4 shrink-0 opacity-50" />
           {t('AIGenerationsStatusInfo.UsedGenerationsText', { usedGenerations })}
         </span>
       )}

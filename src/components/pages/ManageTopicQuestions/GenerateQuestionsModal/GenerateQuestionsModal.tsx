@@ -3,7 +3,6 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
@@ -17,6 +16,8 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { BusySplashWithInfo, PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
+import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
+import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import {
   createGenerateTopicQuestionsMessages,
   parseGeneratedTopicQuestions,
@@ -35,6 +36,7 @@ import {
   useGoBack,
   useMediaQuery,
   useModalTitle,
+  useSessionData,
   useUpdateModalVisibility,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
@@ -90,6 +92,12 @@ export function GenerateQuestionsModal() {
   const [_isAborted, setAborted] = React.useState(false);
   const abortControllerRef = React.useRef<AbortController | null>(null);
 
+  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const {
+    allowed: isAiAllowed, // boolean
+    loading: aiStatusLoading, // boolean
+  } = aiGenerationsStatusQuery;
+
   const userAIRequest = useUserAIRequest();
 
   const t = useT();
@@ -101,8 +109,8 @@ export function GenerateQuestionsModal() {
   // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
   const shouldBeVisible = !!match;
 
-  const session = useSession();
-  const isSessionLoading = session.status === 'loading';
+  const { loading: isSessionLoading } = useSessionData();
+  const isPreparing = isSessionLoading || aiStatusLoading;
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -126,6 +134,8 @@ export function GenerateQuestionsModal() {
   const isTopicPending = !isFetched || isFetching;
 
   const questions = topic?.questions;
+
+  // TODO: Add `useAvailableQuestions` to fetch required questions (for `existedQuestions` and for new questions comparing in the editor screen)?
 
   // Using different titles depending on the current status
   const title = isEditing
@@ -383,7 +393,7 @@ export function GenerateQuestionsModal() {
     availableTopicQuery,
   ]);
 
-  const backToForm = React.useCallback(() => {
+  const startOverCallback = React.useCallback(() => {
     resetOperations();
     // Reset state in order to show the form
     setEditing(false);
@@ -406,7 +416,7 @@ export function GenerateQuestionsModal() {
 
   const areMutationsPending =
     generateQuestionsMutation.isPending || saveQuestionsMutation.isPending;
-  const isBusy = isTopicPending || areMutationsPending;
+  const isBusy = isPreparing || isTopicPending || areMutationsPending;
 
   return (
     <Modal
@@ -448,7 +458,7 @@ export function GenerateQuestionsModal() {
             '[&>div]:!flex [&>div]:my-6 [&>div]:gap-6 [&>div]:flex-col [&>div]:flex-1',
           )}
         >
-          {isSessionLoading ? (
+          {isPreparing ? (
             <BusySplashWithInfo title={t('GenerateQuestionsModal.Preparing')} className="p-6" />
           ) : error ? (
             <PageError
@@ -461,12 +471,23 @@ export function GenerateQuestionsModal() {
                 </Button>
               }
             />
+          ) : !isAiAllowed ? (
+            <PageError
+              title={t('NoAiGenrationsAvailable')}
+              explanation={<AIGenerationsStatusInfo className="justify-center" />}
+              extraActions={
+                <Button onClick={hideModal} className="content-truncate flex gap-2">
+                  <Icons.Close className="size-4 shrink-0" />
+                  <span className="truncate">{t('Close')}</span>
+                </Button>
+              }
+            />
           ) : saveQuestionsMutation.isPending || savedQuestions ? (
             // Final screen
             <SavedScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               isSaving={saveQuestionsMutation.isPending}
               topicId={topicId}
               savedQuestions={savedQuestions}
@@ -476,12 +497,12 @@ export function GenerateQuestionsModal() {
             <EditScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               topicId={topicId}
               generatedQuestions={generatedQuestions}
               saveQuestions={() => {
                 if (!generatedQuestions?.length) {
-                  toast.error(t('GenerateQuestionsModal.NoQuestionsGenerated'));
+                  toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
                 } else {
                   setEditing(true);
                 }
@@ -492,19 +513,20 @@ export function GenerateQuestionsModal() {
             <GeneratedScreen
               className="px-6"
               handleClose={hideModal}
-              backToForm={backToForm}
+              startOverCallback={startOverCallback}
               isGenerating={generateQuestionsMutation.isPending}
               topicId={topicId}
               generatedQuestions={generatedQuestions}
               saveQuestions={saveCallback}
-              // TODO: Issue #80: Implement simple questions editing
-              editQuestions={() => {
-                if (!generatedQuestions?.length) {
-                  toast.error(t('GenerateQuestionsModal.NoQuestionsGenerated'));
-                } else {
-                  setEditing(true);
-                }
-              }}
+              /* // TODO: Issue #80: Implement simple questions editing
+               * editQuestions={() => {
+               *   if (!generatedQuestions?.length) {
+               *     toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
+               *   } else {
+               *     setEditing(true);
+               *   }
+               * }}
+               */
             />
           ) : !isSubmited ? (
             // Generate form

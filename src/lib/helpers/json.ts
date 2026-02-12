@@ -55,7 +55,7 @@ export function parseDangerousJson(rawContent?: string, noDebug?: boolean) {
         rawContent,
         error,
       });
-      debugger; // eslint-disable-line no-debugger
+      // debugger; // eslint-disable-line no-debugger
     }
 
     try {
@@ -69,7 +69,7 @@ export function parseDangerousJson(rawContent?: string, noDebug?: boolean) {
           rawContent,
           error,
         });
-        debugger; // eslint-disable-line no-debugger
+        // debugger; // eslint-disable-line no-debugger
       }
     }
 

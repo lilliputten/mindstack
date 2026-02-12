@@ -12,7 +12,7 @@ import { PreviewAnswers } from '@/widgets/answers';
 
 export interface TProps {
   handleClose?: () => void;
-  backToForm?: () => void;
+  startOverCallback?: () => void;
   className?: string;
   questionId: TQuestionId; // Is it required here?
   error?: string;
@@ -24,7 +24,7 @@ export function SavedScreen(props: TProps) {
   const {
     className,
     handleClose,
-    backToForm,
+    startOverCallback,
     // questionId,
     error,
     isSaving,
@@ -54,7 +54,7 @@ export function SavedScreen(props: TProps) {
       {
         /* Is adding */ isSaving ? (
           <BusySplashWithInfo title={t('GenerateAnswersModal.SavingAnswersTitle')} className="px-6">
-            <span className="content-truncate">{t('GenerateAnswersModal.SavingAnswersInfo')}</span>
+            {/* <span className="content-truncate">{t('GenerateAnswersModal.SavingAnswersInfo')}</span> */}
           </BusySplashWithInfo>
         ) : /* Error */ error || !savedAnswers ? (
           <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
@@ -92,10 +92,10 @@ export function SavedScreen(props: TProps) {
         )}
       >
         {/* Return to the form */}
-        {backToForm && (
-          <Button variant="ghost" onClick={backToForm} className="content-truncate gap-2">
+        {startOverCallback && (
+          <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">{t('GenerateAnswersModal.BackToForm')}</span>
+            <span className="truncate">{t('GenerateAnswersModal.StartOver')}</span>
           </Button>
         )}
         {/* Close */}
