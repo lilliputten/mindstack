@@ -11,6 +11,7 @@
   "AiGenerationTemperatureHint": "Выберите температуру генерации, от 0 до 1 (меньше -- более предсказуемая генерация, больше -- более вариантивная).",
   "AllowedToGenerate": "Разрешено генерировать",
   "Answer": "Ответ",
+  "AnswerNotFound": "Ответ не найден",
   "Answers": "Ответы",
   "Apply": "Применить",
   "AuthenticationError": "Ошибка аутентификации",
@@ -89,6 +90,7 @@
   "Properties": "Характеристики",
   "Public": "Публично",
   "Question": "Вопрос",
+  "QuestionNotFound": "Вопрос не найден",
   "QuestionText": "Текст вопроса",
   "Questions": "Вопросы",
   "QuestionsCount": "Количество вопросов",
@@ -104,6 +106,7 @@
   "Save": "Сохранить",
   "SelectAnswer": "Выбрать ответ",
   "SelectDeselectAll": "Выбрать/отменить всё",
+  "SettingsPageNotFound": "Страница настроек не найдена",
   "ShowMenu": "Показать меню",
   "Skip": "Пропустить",
   "Start": "Начать",
@@ -116,6 +119,7 @@
   "Topic": "Тема",
   "TopicLanguage": "Язык темы",
   "TopicName": "Название темы",
+  "TopicNotFound": "Тема не найдена",
   "Topics": "Темы",
   "TopicsCount": "Количество тем",
   "Total": "Всего",
@@ -1117,13 +1121,7 @@
     "Settings": "Настройки",
     "SignOut": "Выйти"
   },
-  "NotFoundPages": {
-    "WrongAnswerComponentRequested": "Запрошен неправильный компонент ответа",
-    "WrongQuestionComponentRequested": "Запрошен неправильный компонент вопроса",
-    "WrongSettingsPageComponentRequested": "Запрошен неправильный компонент страницы настроек",
-    "WrongTopicComponentRequested": "Запрошен неправильный компонент темы",
-    "WrongTopicsPageRequested": "Запрошена неправильная страница тем"
-  },
+  "NotFoundPages": {},
   "Pages": {
     "AllTopicsDescription": "Темы всех пользователей",
     "AllTopicsTitle": "Все темы",

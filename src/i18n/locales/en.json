@@ -13,6 +13,7 @@
   "AiGenerationTemperatureHint": "Select the generation temperature, from 0 to 1 (less is more predictable generation, more is more variable).",
   "AllowedToGenerate": "Allowed to generate",
   "Answer": "Answer",
+  "AnswerNotFound": "Answer not found",
   "Answers": "Answers",
   "Apply": "Apply",
   "AuthenticationError": "Authentication error",
@@ -93,6 +94,7 @@
   "Properties": "Properties",
   "Public": "Public",
   "Question": "Question",
+  "QuestionNotFound": "Question not found",
   "QuestionText": "Question Text",
   "Questions": "Questions",
   "QuestionsCount": "Questions count",
@@ -108,6 +110,7 @@
   "Save": "Save",
   "SelectAnswer": "Select answer",
   "SelectDeselectAll": "Select/deselect all",
+  "SettingsPageNotFound": "Settings page not found",
   "ShowMenu": "Show menu",
   "Skip": "Skip",
   "SpacedRepetition": "Spaced Repetition",
@@ -121,6 +124,7 @@
   "Topic": "Topic",
   "TopicLanguage": "Topic language",
   "TopicName": "Topic Name",
+  "TopicNotFound": "Topic not found",
   "Topics": "Topics",
   "TopicsCount": "Topics Count",
   "Total": "Total",
@@ -1125,13 +1129,7 @@
     "Settings": "Settings",
     "SignOut": "Sign Out"
   },
-  "NotFoundPages": {
-    "WrongAnswerComponentRequested": "Wrong answer component requested",
-    "WrongQuestionComponentRequested": "Wrong question component requested",
-    "WrongSettingsPageComponentRequested": "Wrong settings page component requested",
-    "WrongTopicComponentRequested": "Wrong topic component requested",
-    "WrongTopicsPageRequested": "Wrong topics page requested"
-  },
+  "NotFoundPages": {},
   "Pages": {
     "AllTopicsDescription": "Topics by all users",
     "AllTopicsTitle": "All Topics",

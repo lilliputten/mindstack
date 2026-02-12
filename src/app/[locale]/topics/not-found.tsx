@@ -3,8 +3,7 @@
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
-import * as Icons from '@/components/shared/Icons';
+import { NotFoundScreen } from '@/components/pages/shared/NotFoundScreen';
 import { isDev } from '@/constants';
 
 // TODO: Force 404 status code for the response
@@ -26,8 +25,8 @@ export default function NotFound() {
           isDev && '__NotFoundPage_Screen', // DEBUG
           'w-full',
         )}
-        icon={Icons.Topics}
-        title={t('NotFoundPages.WrongTopicsPageRequested')}
+        iconId="Topics"
+        title={t('TopicNotFound')}
       />
     </PageWrapper>
   );

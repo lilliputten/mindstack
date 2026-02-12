@@ -1,8 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
-import * as Icons from '@/components/shared/Icons';
+import { NotFoundScreen } from '@/components/pages/shared';
 import { isDev } from '@/constants';
 
 export const dynamic = 'force-dynamic';
@@ -27,8 +26,8 @@ export default function NotFound() {
           isDev && '__TopicNotFoundPage_Screen', // DEBUG
           'w-full',
         )}
-        icon={Icons.Topics}
-        title={t('NotFoundPages.WrongTopicComponentRequested')}
+        iconId="Topics"
+        title={t('TopicNotFound')}
       />
     </PageWrapper>
   );

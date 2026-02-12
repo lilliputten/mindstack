@@ -11,6 +11,7 @@
   "AiGenerationTemperatureHint": "Seleccione la temperatura de generación, de 0 a 1 (menos es una generación más predecible, más es más variable).",
   "AllowedToGenerate": "Permitido generar",
   "Answer": "Respuesta",
+  "AnswerNotFound": "Respuesta no encontrada",
   "Answers": "Respuestas",
   "Apply": "Aplicar",
   "AuthenticationError": "Error de autenticación",
@@ -91,6 +92,7 @@
   "Properties": "Propiedades",
   "Public": "Público",
   "Question": "Pregunta",
+  "QuestionNotFound": "Pregunta no encontrada",
   "QuestionText": "Texto de la Pregunta",
   "Questions": "Preguntas",
   "QuestionsCount": "Cantidad de preguntas",
@@ -106,6 +108,7 @@
   "Save": "Guardar",
   "SelectAnswer": "Seleccionar respuesta",
   "SelectDeselectAll": "Seleccionar/deseleccionar todo",
+  "SettingsPageNotFound": "Página de configuración no encontrada",
   "ShowMenu": "Mostrar menú",
   "Skip": "Omitir",
   "Start": "Iniciar",
@@ -118,6 +121,7 @@
   "Topic": "Tema",
   "TopicLanguage": "Idioma del tema",
   "TopicName": "Nombre del Tema",
+  "TopicNotFound": "Tema no encontrado",
   "Topics": "Temas",
   "TopicsCount": "Cantidad de Temas",
   "Total": "Total",
@@ -1112,13 +1116,7 @@
     "Settings": "Configuración",
     "SignOut": "Cerrar Sesión"
   },
-  "NotFoundPages": {
-    "WrongAnswerComponentRequested": "Componente de respuesta incorrecto solicitado",
-    "WrongQuestionComponentRequested": "Componente de pregunta incorrecto solicitado",
-    "WrongSettingsPageComponentRequested": "Componente de página de configuración incorrecto solicitado",
-    "WrongTopicComponentRequested": "Componente de tema incorrecto solicitado",
-    "WrongTopicsPageRequested": "Página de temas incorrecta solicitada"
-  },
+  "NotFoundPages": {},
   "Pages": {
     "AllTopicsDescription": "Temas de todos los usuarios",
     "AllTopicsTitle": "Todos los Temas",
