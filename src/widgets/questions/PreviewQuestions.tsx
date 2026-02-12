@@ -4,9 +4,10 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TAvailableQuestion } from '@/features/questions/types';
 
-type TMinimalQuestionShape = Partial<
-  Pick<TAvailableQuestion, 'id' | 'text' | '_count' | 'answers'>
->;
+interface TMinimalQuestionShape
+  extends Partial<Pick<TAvailableQuestion, 'id' | 'text' | '_count'>> {
+  answers?: unknown[]; // Just to count answers
+}
 
 interface TProps {
   className?: string;

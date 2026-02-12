@@ -36,13 +36,13 @@ export async function sendUserAIRequest(
     await new Promise((r) => setTimeout(r, 1000));
   }
 
-  // Check if user is allowed to perform generations
-  await checkAllowedAIGenerations();
-
   const user = await getCurrentUser();
   if (!user) {
     throw new AIGenerationError('UNATHORIZED');
   }
+
+  // Check if user is allowed to perform generations
+  await checkAllowedAIGenerations();
 
   const __debugData = {
     opts,

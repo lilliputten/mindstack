@@ -21,7 +21,7 @@ import { GenerateAnswersFormFields } from './GenerateAnswersFormFields';
 import { formSchema, TFormData } from './types';
 
 export interface TGenerateAnswersFormProps {
-  startGeneratingAnswers: (p: TFormData) => Promise<unknown>;
+  generateCallback: (p: TFormData) => Promise<unknown>;
   handleClose?: () => void;
   className?: string;
   isPending?: boolean;
@@ -31,7 +31,7 @@ export interface TGenerateAnswersFormProps {
 export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
   const {
     className,
-    startGeneratingAnswers,
+    generateCallback,
     handleClose,
     isPending,
     // questionId,
@@ -79,7 +79,7 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
 
   const onSubmit = handleSubmit((formData) => {
     // const { generationType, answersCountMin, answersCountMax, extraText } = formData;
-    startGeneratingAnswers(formData);
+    generateCallback(formData);
   });
 
   const onClose = (ev: React.MouseEvent) => {
@@ -123,7 +123,7 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
             <Icons.Check className={cn('size-4 shrink-0')} />{' '}
             <span className="truncate">
               {isBusy
-                ? t('GenerateAnswersForm.GeneratingButtonText')
+                ? t('GenerateAnswersForm.PreparingButtonText')
                 : t('GenerateAnswersForm.GenerateButtonText')}
             </span>
           </Button>

@@ -59,14 +59,14 @@ const __debugGeneratedAnswers: TNewAnswer[] | undefined = __debugEdit
   ? [
       // DEBUG: Test data
       {
-        questionId: 'cmlgsuq5i0005nvikvocydif7',
+        questionId: 'xxx',
         text: 'Answer _markdown_ text',
         explanation: 'Explanation markdown text...',
         isCorrect: false,
         isGenerated: true,
       },
       {
-        questionId: 'cmlgsuq5i0005nvikvocydif7',
+        questionId: 'yyy',
         text: '**Second answer** with much longer text for test purposes and visual issues detection',
         explanation: 'Explanation markdown text...',
         isCorrect: true,
@@ -560,7 +560,7 @@ export function GenerateAnswersModal() {
           ) : !isSubmited ? (
             // Generate form
             <GenerateAnswersForm
-              startGeneratingAnswers={generateCallback}
+              generateCallback={generateCallback}
               className="px-6"
               handleClose={hideModal}
               isPending={isBusy}
