@@ -256,7 +256,7 @@ export function WorkoutTopicGo() {
 
   const breadcrumbs = useTopicsBreadcrumbsItems({
     scope: manageScope,
-    topic: topic,
+    topic: topic || undefined,
     lastItem: {
       content: t('WorkoutTopic.Training'),
       // link: isWorkoutInProgress ? questionsContext.routePath : undefined,

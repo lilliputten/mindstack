@@ -28,16 +28,20 @@ import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import { getAvailableQuestions } from '@/features/questions/actions/getAvailableQuestions';
 import { TAvailableQuestion, TQuestionId } from '@/features/questions/types';
 
-const staleTime = defaultStaleTime;
-
-// TODO: Register all the query keys
-
 interface TUseAvailableQuestionsProps extends Omit<TGetAvailableQuestionsParams, 'skip' | 'take'> {
   enabled?: boolean;
   itemsLimit?: number | null;
+  traceId?: string;
 }
 
-/** Collection of the all used query keys (mb, already invalidated).
+interface TMemo {
+  query?: UseInfiniteQueryResult<TAvailableQuestionsResultsQueryData, Error>;
+  mounted?: boolean;
+}
+
+const staleTime = defaultStaleTime;
+
+/** Collection of the all used query keys (may already be invalidated).
  *
  * TODO:
  * - Use `QueryCache.subscribe` to remove invalidated keys?
@@ -46,20 +50,65 @@ interface TUseAvailableQuestionsProps extends Omit<TGetAvailableQuestionsParams,
 const allUsedKeys: TAllUsedKeys = {};
 
 export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
-  const { enabled = true, topicId, ...queryProps } = props;
+  const { enabled = true, topicId, traceId, ...queryProps } = props;
   const queryClient = useQueryClient();
-  // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
-
   const t = useT();
 
-  /* Use partrial query url as a part of the query key */
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  /* Use partial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
   const queryKey = React.useMemo<QueryKey>(
     () => ['available-questions-for-topic', topicId, queryUrlHash],
     [topicId, queryUrlHash],
   );
-  allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
+  const keyId = stringifyQueryKey(queryKey);
+  allUsedKeys[keyId] = queryKey;
+
+  const queryFn = React.useCallback(
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
+      try {
+        const result = await Promise.race([
+          getAvailableQuestions({
+            ...queryProps,
+            topicId,
+            skip: pageParam,
+            take:
+              queryProps.itemsLimit == null
+                ? undefined
+                : queryProps.itemsLimit || defaultItemsLimit,
+          }),
+          new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+        ]);
+        return result;
+      } catch (error) {
+        if (!memo.mounted) {
+          const message = 'Query failed while unmounted. Probably, that is not an error.';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableQuestions:queryFn]', traceId, message, { pageParam, topicId });
+        } else if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableQuestions:queryFn]', traceId, message, { pageParam, topicId });
+        } else {
+          const details = error instanceof APIError ? error.details : null;
+          const message = t('UseAvailableQuestions.CannotLoadQuestionsData');
+          // eslint-disable-next-line no-console
+          console.error('[useAvailableQuestions:queryFn]', traceId, message, {
+            details,
+            error,
+            pageParam,
+            topicId,
+          });
+          debugger; // eslint-disable-line no-debugger
+          toast.error(message);
+        }
+        throw error;
+      }
+    },
+    [memo, queryProps, topicId, t, traceId],
+  );
 
   const query: UseInfiniteQueryResult<TAvailableQuestionsResultsQueryData, Error> =
     useInfiniteQuery<
@@ -77,153 +126,88 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
         const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
         return loadedCount < lastPage.totalCount ? loadedCount : undefined;
       },
-      queryFn: async (params) => {
-        const { pageParam = 0 } = params;
-        try {
-          // OPTION 1: Using server function
-          const results = await getAvailableQuestions({
-            ...queryProps,
-            topicId,
-            skip: pageParam,
-            take:
-              queryProps.itemsLimit == null
-                ? undefined
-                : queryProps.itemsLimit || defaultItemsLimit,
-          });
-          return results;
-          /* // OPTION 2: Using route api fetch
-           * const paginationHash = composeUrlQuery({ skip: pageParam, take: itemsLimit });
-           * const baseUrl = `/api/questions`;
-           * const url = appendUrlQueries(baseUrl, queryUrlHash, paginationHash);
-           * const results = await handleApiResponse<TGetAvailableQuestionsResults>(fetch(url), {
-           *   onInvalidateKeys: invalidateKeys,
-           *   debugDetails: {
-           *     initiator: 'useAvailableTopics',
-           *     action: 'getAvailableTopics',
-           *     pageParam,
-           *   },
-           * });
-           * if (!results.ok || !results.data) {
-           *   throw new Error('No data returned');
-           * }
-           * return results.data;
-           */
-        } catch (error) {
-          const details = error instanceof APIError ? error.details : null;
-          const message = t('UseAvailableQuestions.CannotLoadQuestionsData');
-          // eslint-disable-next-line no-console
-          console.error('[useAvailableQuestions:queryFn]', message, {
-            details,
-            error,
-            pageParam,
-            // url,
-          });
-          // eslint-disable-next-line no-debugger
-          debugger;
-          toast.error(message);
-          throw error;
-        }
-      },
+      queryFn,
     });
+  memo.query = query;
+
+  // Handle component mount/unmount
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
 
   // Derived data...
-
   const allQuestions = React.useMemo(
     () => getUnqueItemsList<TAvailableQuestion>(query.data?.pages),
     [query.data?.pages],
   );
 
   // Incapsulated helpers...
-
-  /** Add new question record to the pages data
-   * @param {TAvailableQuestion} newQuestion - Record to add
-   * @param {boolean} toStart - Add the new item to the beginning of the existing items. TODO: Determine default behavior by `orderBy`?
-   */
   const addNewQuestion = React.useCallback(
     (newQuestion: TAvailableQuestion, toStart?: boolean) =>
       addNewItemToQueryCache<TAvailableQuestion>(queryClient, queryKey, newQuestion, toStart),
     [queryClient, queryKey],
   );
 
-  /** Delete the specified question (by id) from the pages data.
-   * @param {TQuestionId} questionIdToDelete - Assuming question has a unique id of string or number type
-   */
   const deleteQuestion = React.useCallback(
     (questionIdToDelete: TQuestionId) =>
       deleteItemFromQueryCache<TAvailableQuestion>(queryClient, queryKey, questionIdToDelete),
     [queryClient, queryKey],
   );
 
-  /** Delete the specified question (by id) from the pages data.
-   * @param {TQuestionId} questionIdToDelete - Assuming question has a unique id of string or number type
-   */
   const updateQuestion = React.useCallback(
     (updatedQuestion: TAvailableQuestion) =>
       updateItemInQueryCache<TAvailableQuestion>(queryClient, queryKey, updatedQuestion),
     [queryClient, queryKey],
   );
 
-  /** Invalidate all used keys, except optional specified ones
-   * @param {QueryKey[]} [excludeKeys] -- The list of keys to exclude from the invalidation
-   */
   const invalidateAllKeysExcept = React.useCallback(
     (excludeKeys?: QueryKey[]) =>
       invalidateAllUsedKeysExcept(queryClient, excludeKeys, allUsedKeys),
     [queryClient],
   );
 
-  /* // List of query properties:
-   * status
-   * error
-   * data
-   * isLoading
-   * isError
-   * isPending
-   * isLoadingError
-   * isRefetchError
-   * isSuccess
-   * isPlaceholderData
-   * fetchNextPage
-   * fetchPreviousPage
-   * hasNextPage
-   * hasPreviousPage
-   * isFetchNextPageError
-   * isFetchingNextPage
-   * isFetchPreviousPageError
-   * isFetchingPreviousPage
-   * dataUpdatedAt
-   * errorUpdatedAt
-   * failureCount
-   * failureReason
-   * errorUpdateCount
-   * isFetched
-   * isFetchedAfterMount
-   * isFetching
-   * isInitialLoading
-   * isPaused
-   * isRefetching
-   * isStale
-   * isEnabled
-   * refetch
-   * fetchStatus
-   * promise
-   */
-
-  return {
-    ...query,
-    // Derived data...
-    routePath,
-    queryProps,
-    queryKey,
-    allUsedKeys,
-    allQuestions,
-    hasQuestions: !!allQuestions.length, // !!query.data?.pages[0]?.totalCount,
-    // Helpers...
-    addNewQuestion,
-    deleteQuestion,
-    updateQuestion,
-    invalidateAllKeysExcept,
-  };
+  return React.useMemo(
+    () => ({
+      ...query,
+      // Derived data...
+      routePath,
+      queryProps,
+      queryKey,
+      queryUrlHash,
+      allUsedKeys,
+      allQuestions,
+      hasQuestions: !!allQuestions.length,
+      // Helpers...
+      addNewQuestion,
+      deleteQuestion,
+      updateQuestion,
+      invalidateAllKeysExcept,
+    }),
+    [
+      query,
+      routePath,
+      queryProps,
+      queryKey,
+      queryUrlHash,
+      allQuestions,
+      addNewQuestion,
+      deleteQuestion,
+      updateQuestion,
+      invalidateAllKeysExcept,
+    ],
+  );
 }
 
 /* // UNUSED?

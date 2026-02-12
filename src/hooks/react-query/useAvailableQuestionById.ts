@@ -14,6 +14,12 @@ import { TAvailableQuestion } from '@/features/questions/types';
 interface TUseAvailableQuestionByIdProps extends TGetAvailableQuestionByIdParams {
   /** availableQuestionsQueryKey - A query key from `useAvailableQuestions` */
   availableQuestionsQueryKey?: QueryKey;
+  traceId?: string;
+}
+
+interface TMemo {
+  query?: ReturnType<typeof useQuery>;
+  mounted?: boolean;
 }
 
 const staleTime = defaultStaleTime;
@@ -21,7 +27,9 @@ const staleTime = defaultStaleTime;
 /** Get question data from cached `useAvailableQuestions` query data or fetch it now */
 export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) {
   const queryClient = useQueryClient();
-  const { availableQuestionsQueryKey, id: questionId, ...queryProps } = props;
+  const { availableQuestionsQueryKey, id: questionId, traceId, ...queryProps } = props;
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
@@ -45,66 +53,83 @@ export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) 
   const isCached = !!cachedQuestion;
   const enabled = !!questionId && !isCached; // Disable query if no ID or already cached
 
-  // Only fetch if the question is not cached
-  const query = useQuery<TAvailableQuestion>({
-    queryKey,
-    staleTime, // Data validity period
-    queryFn: async (_params) => {
-      // const url = appendUrlQueries(`/api/questions/${questionId}`, queryUrlHash);
-      try {
-        /* // OPTION 1: Using route api fetch
-         * const result = await handleApiResponse<TAvailableQuestion>(fetch(url), {
-         *   onInvalidateKeys: invalidateKeys,
-         *   debugDetails: {
-         *     initiator: 'useAvailableQuestionById',
-         *     action: 'getAvailableQuestionById',
-         *     url,
-         *     queryProps,
-         *     questionId,
-         *   },
-         * });
-         * return result.data as TAvailableQuestion;
-         */
-        // OPTION 2: Using server function
-        const result = await getAvailableQuestionById({ id: questionId, ...queryProps });
-        return result;
-      } catch (error) {
+  const queryFn = React.useCallback(async () => {
+    try {
+      const result = await Promise.race([
+        getAvailableQuestionById({ id: questionId, ...queryProps }),
+        new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+      ]);
+
+      return result;
+    } catch (error) {
+      if (!memo.mounted) {
+        const message = 'Query failed while unmounted. Probably, that is not an error.';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableQuestionById:queryFn]', traceId, message, {
+          queryHash,
+          questionId,
+        });
+      } else if (error === 'timeout') {
+        const message = 'Query has been timed out and will be started over';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableQuestionById:queryFn]', traceId, message, {
+          queryHash,
+          questionId,
+        });
+      } else {
         const details = error instanceof APIError ? error.details : null;
         const message = 'Cannot load question data';
         // eslint-disable-next-line no-console
-        console.error('[useAvailableQuestionById:queryFn]', message, {
+        console.error('[useAvailableQuestionById:queryFn]', traceId, message, {
           queryHash,
           queryKey,
           details,
           error,
           queryProps,
-          // url,
         });
-        // eslint-disable-next-line no-debugger
-        debugger;
+        debugger; // eslint-disable-line no-debugger
         toast.error(message);
         throw error;
       }
-    },
+      return null;
+    }
+  }, [questionId, queryProps, queryHash, queryKey, traceId, memo]);
+
+  // Only fetch if the question is not cached
+  const query = useQuery<TAvailableQuestion | null>({
+    queryKey,
+    staleTime, // Data validity period
+    queryFn,
     enabled, // Disable query if no ID or already cached
   });
 
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
+
   return React.useMemo(() => {
-    /* console.log('[useAvailableQuestionById:DEBUG]', queryHash, {
-     *   // enabled,
-     *   queryKey,
-     *   isCached,
-     *   isLoading: query.isLoading,
-     *   query: { ...query },
-     * });
-     */
     return {
       ...query,
       questionId,
       queryKey,
+      queryUrlHash,
       isLoading: query.isLoading,
       question: cachedQuestion ?? query.data,
       isCached,
     };
-  }, [cachedQuestion, isCached, query, queryKey, questionId]);
+  }, [cachedQuestion, isCached, query, queryKey, queryUrlHash, questionId]);
 }

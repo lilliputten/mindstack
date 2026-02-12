@@ -208,7 +208,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
     availableQuestionQuery
       .refetch()
       .then((res) => {
-        const question: TAvailableQuestion | undefined = res.data;
+        const question: TAvailableQuestion | undefined | null = res.data;
         if (question) {
           // Convert question to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
           const cleanedQuestion = removeNullUndefinedValues(

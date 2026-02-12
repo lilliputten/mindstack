@@ -77,7 +77,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     throw new Error(t('NoQuestionFound'));
   }
   if (!answer) {
-    throw new Error(t('EditAnswerCard.NoAnswerFound'));
+    throw new Error(t('NoAnswerFound'));
   }
 
   // Calculate paths...
@@ -189,7 +189,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     availableAnswerQuery
       .refetch()
       .then((res) => {
-        const answer: TAvailableAnswer | undefined = res.data;
+        const answer: TAvailableAnswer | undefined | null = res.data;
         if (answer) {
           // Convert answer to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
           const cleanedAnswer = removeNullUndefinedValues(

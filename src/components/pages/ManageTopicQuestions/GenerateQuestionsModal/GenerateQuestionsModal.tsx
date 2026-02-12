@@ -292,13 +292,6 @@ export function GenerateQuestionsModal() {
   // TODO:
   const areMutationsPending = generateQuestionsMutation.isPending || addQuestionsMutation.isPending;
   const isBusy = isTopicPending || areMutationsPending;
-  console.log('[GenerateQuestionsModal]', {
-    areMutationsPending,
-    addQuestionsMutation_isPending: addQuestionsMutation.isPending,
-    generateQuestionsMutation_isPending: generateQuestionsMutation.isPending,
-    isBusy,
-    isTopicPending,
-  });
 
   return (
     <Modal

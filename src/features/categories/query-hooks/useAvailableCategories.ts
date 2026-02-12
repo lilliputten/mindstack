@@ -38,7 +38,7 @@ const staleTime = defaultStaleTime;
 /** Collection of all used query keys (may already be invalidated).
  * NOTE: QueryKeys are stored with stringified keys.
  */
-const allUsedKeys: TAllUsedKeys = {};
+const allUsedKeys: TAllUsedKeys = {}; // TODO: Use WeakMap?
 
 type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' | 'take'> & {
   traceId?: string;
@@ -96,16 +96,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         ]);
         return result;
       } catch (error) {
-        if (error === 'timeout') {
-          const message = 'Query has been timed out and will be started over';
-          // eslint-disable-next-line no-console
-          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
-            pageParam,
-            memo,
-            queryProps,
-          });
-          // NOTE: No user warnings for timeouts
-        } else if (!memo.mounted) {
+        if (!memo.mounted) {
           const message = 'Query failed while unmounted. Probably, that is not an error.';
           // eslint-disable-next-line no-console
           console.warn('[useAvailableCategories:queryFn]', traceId, message, {
@@ -114,6 +105,15 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
             queryProps,
           });
           // NOTE: No user warnings for problems when unmounted
+        } else if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+          // NOTE: No user warnings for timeouts
         } else {
           const message = 'Cannot load categories data';
           const details = getErrorText(error);
@@ -127,15 +127,16 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
             queryProps,
           });
           toast.error(message);
+          throw error;
         }
-        throw error;
+        return null;
       }
     },
     [all, memo, queryProps, traceId],
   );
 
   const query = useInfiniteQuery<
-    TGetAvailableCategoriesResults,
+    TGetAvailableCategoriesResults | null,
     Error,
     InfiniteData<TGetAvailableCategoriesResults>,
     QueryKey,
@@ -170,10 +171,6 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     const query = memo.query;
     if (query) {
       memo.mounted = true;
-      /* console.log('[useAvailableCategories:mount]', traceId, keyId, {
-       *   memo,
-       * });
-       */
       return () => {
         memo.mounted = false;
         const { isFetching } = query;
@@ -188,7 +185,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         }
       };
     }
-  }, [memo, queryKey, queryClient, traceId, keyId]);
+  }, [memo, queryKey, queryClient, traceId]);
 
   const allCategories = React.useMemo(
     () => getUnqueItemsList(query.data?.pages),

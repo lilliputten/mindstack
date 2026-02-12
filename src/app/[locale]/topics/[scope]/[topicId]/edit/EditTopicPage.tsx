@@ -185,7 +185,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     availableTopicQuery
       .refetch()
       .then((res) => {
-        const topic: TAvailableTopic | undefined = res.data;
+        const topic: TAvailableTopic | undefined | null = res.data;
         if (topic) {
           const cleanedTopic = removeNullUndefinedValues(topic);
           const convertedTopic = topicFormDataSchema.parse(cleanedTopic);

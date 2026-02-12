@@ -53,9 +53,12 @@ const allUsedKeys: TAllUsedKeys = {};
 
 export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
   const { enabled, questionId, traceId, ...queryProps } = props;
-  const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
+
+  const queryClient = useQueryClient();
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
 
   const t = useT();
 
@@ -68,53 +71,35 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
   const keyId = stringifyQueryKey(queryKey);
   allUsedKeys[keyId] = queryKey;
 
-  const memo = React.useMemo<TMemo>(() => ({}), []);
-
   const queryFn = React.useCallback(
     async ({ pageParam = 0 }: { pageParam?: number }) => {
       try {
+        const take =
+          queryProps.itemsLimit == null ? undefined : queryProps.itemsLimit || defaultItemsLimit;
+
         const result = await Promise.race([
-          getAvailableAnswers({
-            ...queryProps,
-            questionId,
-            skip: pageParam,
-            take:
-              queryProps.itemsLimit == null
-                ? undefined
-                : queryProps.itemsLimit || defaultItemsLimit,
-          }),
-          // Timeout to prevent hanging queries
+          getAvailableAnswers({ ...queryProps, questionId, skip: pageParam, take }),
           new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
         ]);
         return result;
       } catch (error) {
-        if (error === 'timeout') {
-          const message = 'Query has been timed out and will be started over';
+        if (!memo.mounted) {
           // eslint-disable-next-line no-console
-          console.warn('[useAvailableAnswers:queryFn]', traceId, message, {
+          console.warn('[useAvailableAnswers:queryFn]', traceId, 'Query failed while unmounted', {
             pageParam,
-            memo,
-            queryProps,
           });
-        } else if (!memo.mounted) {
-          const message = 'Query failed while unmounted. Probably, that is not an error.';
+        } else if (error === 'timeout') {
           // eslint-disable-next-line no-console
-          console.warn('[useAvailableAnswers:queryFn]', traceId, message, {
+          console.warn('[useAvailableAnswers:queryFn]', traceId, 'Query timeout', {
             pageParam,
-            memo,
-            queryProps,
           });
         } else {
           const message = t('UseAvailableAnswers.CannotLoadAnswersData');
-          const details = getErrorText(error);
           // eslint-disable-next-line no-console
-          console.error('[useAvailableAnswers:queryFn]', traceId, message, {
+          console.error('[useAvailableAnswers:queryFn]', message, {
             traceId,
-            details,
-            error,
+            error: getErrorText(error),
             pageParam,
-            memo,
-            queryProps,
           });
           toast.error(message);
         }
@@ -159,7 +144,7 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
         }
       };
     }
-  }, [memo, queryKey, queryClient, traceId, keyId]);
+  }, [memo, queryKey, queryClient, traceId]);
 
   // Derived data...
 
