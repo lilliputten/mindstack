@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { BusySplash, BusySplashWithInfo, ErrorSplash, SuccessSplash } from '@/components/shared';
+import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewQuestion } from '@/features/questions/types';
@@ -11,12 +11,11 @@ import { TTopicId } from '@/features/topics/types';
 import { PreviewQuestions } from '@/widgets/questions';
 
 export interface TProps {
-  handleClose?: () => void;
   startOverCallback?: () => void;
+  handleCancel?: () => void;
   className?: string;
   topicId: TTopicId; // Is it required here?
-  error?: string;
-  isGenerating?: boolean;
+  isSaving?: boolean;
   generatedQuestions?: TNewQuestion[];
   saveQuestions?: () => unknown;
   editQuestions?: () => unknown;
@@ -25,99 +24,97 @@ export interface TProps {
 export function GeneratedScreen(props: TProps) {
   const {
     className,
-    handleClose,
     startOverCallback,
+    handleCancel,
     // topicId,
-    error,
-    isGenerating,
+    isSaving,
     generatedQuestions,
     saveQuestions,
     editQuestions,
   } = props;
-  const [isLeaving, setLeaving] = React.useState(false);
   const t = useT();
 
-  const isBusy = isLeaving || isGenerating;
-
-  const onClose = (ev: React.MouseEvent) => {
-    setLeaving(true);
-    if (handleClose) {
-      handleClose();
-    }
-    ev.preventDefault();
-  };
+  const CancelIcon = isSaving ? Icons.X : Icons.Undo2;
 
   return (
     <div
       className={cn(
         isDev && '__GeneratedScreen', // DEBUG
-        'flex w-full flex-col gap-4',
+        'flex w-full flex-col gap-6',
         className,
       )}
     >
-      {
-        /* Is generating */ isGenerating ? (
-          <BusySplashWithInfo
-            title={t('GenerateQuestionsModal.GeneratingQuestions')}
-            className="px-6"
-          >
-            {/* <span className="content-truncate">
-              {t('GenerateQuestionsModal.GeneratingQuestionsInfo')}
-            </span> */}
-          </BusySplashWithInfo>
-        ) : /* Error */ error || !generatedQuestions ? (
-          <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
-            <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">
-              {error || t('GenerateQuestionsModal.NoQuestionsHasBeenSaved')}
-            </span>
-          </div>
-        ) : !generatedQuestions?.length ? (
-          <ErrorSplash className="px-6" title={t('XXX')} />
-        ) : (
-          <SuccessSplash
-            title={t('GenerateQuestionsModal.QuestionsAlreadyGeneratedTitle')}
-            className="px-6"
-            contentClassName="conent-truncate flex flex-col gap-4"
-          >
-            <h3 className="content-truncate text-lg font-semibold text-theme">
-              {t('GenerateQuestionsModal.GeneratedQuestionsCount', {
-                generatedQuestionsCount: generatedQuestions.length,
-              })}
-            </h3>
-            {/* Display preview of the added questions */}
-            <PreviewQuestions
-              questions={generatedQuestions}
-              className="content-truncate flex flex-col gap-2 text-sm"
+      <div
+        className={cn(
+          isDev && '__GeneratedScreen_Wrapper', // DEBUG
+          'relative transition',
+        )}
+      >
+        <div
+          className={cn(
+            isDev && '__GeneratedScreen_WrapperContent', // DEBUG
+            'flex w-full flex-col justify-center gap-4',
+            'min-h-24',
+            isSaving && 'opacity-20',
+          )}
+        >
+          {!generatedQuestions?.length ? (
+            <ErrorSplash
+              className="px-6"
+              title={t('GenerateQuestionsModal.NoQuestionsGenerated')}
             />
-          </SuccessSplash>
-        )
-      }
+          ) : (
+            <div className="conent-truncate flex flex-col gap-4">
+              <h3 className="content-truncate flex items-center gap-4 text-xl font-semibold text-theme">
+                <Icons.WandSparkles className="shring-0 size-8 text-green-500" />
+                <span className="content-truncate flex-1">
+                  {t('GenerateQuestionsModal.GeneratedQuestionsCount', {
+                    count: generatedQuestions.length,
+                  })}
+                  :
+                </span>
+              </h3>
+              {/* Display preview of the added questions */}
+              <PreviewQuestions
+                questions={generatedQuestions}
+                className="content-truncate flex flex-col gap-2 overflow-hidden text-sm"
+              />
+            </div>
+          )}
+        </div>
+        {/* Generating splash */}
+        <BusySplashWithInfo
+          title={t('GenerateQuestionsModal.SavingQuestions')}
+          className={cn(
+            isDev && '__GeneratedScreen_BusySplash', // DEBUG
+            'absolute',
+          )}
+          isBusy={isSaving}
+        />
+      </div>
 
       {/* Actions */}
       <div
         className={cn(
           isDev && '__GeneratedScreen_Actions', // DEBUG
           'content-truncate flex w-full flex-wrap gap-2',
-          'justify-center',
         )}
       >
         {/* Options for generated questions... */}
-        {!isGenerating && !!generatedQuestions?.length && (
+        {!isSaving && !!generatedQuestions?.length && (
           <>
             {
               /* Option 1: saveQuestions */ !!saveQuestions && (
                 <Button
                   className="content-truncate flex gap-2"
                   onClick={() => {
-                    setLeaving(true);
                     saveQuestions();
                   }}
-                  variant={!isLeaving ? 'theme' : 'ghost'}
-                  disabled={isBusy}
+                  variant={!isSaving ? 'success' : 'ghost'}
+                  disabled={isSaving}
                 >
                   <Icons.Save className="size-4 shrink-0" />
-                  <span className="truncate">{t('GenerateQuestionsModal.SaveQuestions')}</span>
+                  <span className="truncate">{t('Save')}</span>
                 </Button>
               )
             }
@@ -126,11 +123,10 @@ export function GeneratedScreen(props: TProps) {
                 <Button
                   className="content-truncate flex gap-2"
                   onClick={() => {
-                    setLeaving(true);
                     editQuestions();
                   }}
-                  variant={!isLeaving ? 'theme' : 'ghost'}
-                  disabled={isBusy}
+                  variant={!isSaving ? 'theme' : 'ghost'}
+                  disabled={isSaving}
                 >
                   <Icons.Edit className="size-4 shrink-0" />
                   <span className="truncate">{t('GenerateQuestionsModal.EditTheData')}</span>
@@ -141,26 +137,26 @@ export function GeneratedScreen(props: TProps) {
         )}
 
         {/* Return to the form */}
-        {startOverCallback && (
+        {!isSaving && startOverCallback && (
           <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
-            <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">{t('GenerateQuestionsModal.StartOver')}</span>
+            <CancelIcon className="size-4 shrink-0" />
+            <span className="truncate">{isSaving ? t('Cancel') : t('StartOver')}</span>
           </Button>
         )}
-        {/* Close */}
-        <Button variant="ghost" onClick={onClose} className="content-truncate gap-2">
-          <Icons.Close className="size-4 shrink-0" />
-          <span className="truncate">{isGenerating ? t('Cancel') : t('Close')}</span>
-        </Button>
-      </div>
-
-      {/* LoadingSplash */}
-      <BusySplash
-        className={cn(
-          isDev && '__GeneratedScreen_LoadingSplash', // DEBUG
+        {isSaving && handleCancel && (
+          <Button
+            variant="ghost"
+            onClick={(ev) => {
+              ev.preventDefault();
+              handleCancel();
+            }}
+            className="content-truncate gap-2"
+          >
+            <Icons.Close className="size-4 shrink-0" />
+            <span className="truncate">{t('Cancel')}</span>
+          </Button>
         )}
-        isBusy={isBusy && !isGenerating}
-      />
+      </div>
     </div>
   );
 }

@@ -15,7 +15,8 @@ export function BusySplash({ isBusy, className, noAbsolute }: TProps) {
         isDev && '__BusySplash_LoadingSplash', // DEBUG
         !noAbsolute && 'absolute',
         'inset-0 flex flex-col items-center justify-center gap-4 transition',
-        'my-2 bg-background',
+        'my-2',
+        // 'bg-background',
         'opacity-50',
         !isBusy && 'pointer-events-none opacity-0',
         className,

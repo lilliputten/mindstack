@@ -15,6 +15,7 @@ import { sendAiTextQuery } from './sendAiTextQuery';
 
 export interface TAIRequestOptions extends TAIQueryOptions {
   topicId?: string;
+  // signal?: AbortSignal;
 }
 
 const __dev = isDev ? '\\[dev]' : '';

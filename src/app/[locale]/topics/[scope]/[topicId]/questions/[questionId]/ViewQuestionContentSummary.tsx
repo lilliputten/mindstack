@@ -38,7 +38,9 @@ export function ViewQuestionContentSummary(props: TProps) {
   const format = useFormatter();
   const user = useSessionUser();
   const isLogged = !!user;
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewQuestionContentSummary',
+  });
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
 
   const questionId = question.id;

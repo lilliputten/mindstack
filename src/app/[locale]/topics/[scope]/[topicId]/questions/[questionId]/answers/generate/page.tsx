@@ -1,3 +1,5 @@
+// TODO: Re-export GenerateAnswersPage
+
 import { TAwaitedLocaleProps } from '@/i18n/types';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 
@@ -10,5 +12,10 @@ type TAwaitedProps = TAwaitedLocaleProps<{
 }>;
 
 export default function AddAnswerModalPage({ params }: TAwaitedProps) {
-  return <ManageTopicQuestionAnswersPage showGenerateModal={true} params={params} />;
+  return (
+    <ManageTopicQuestionAnswersPage
+      //  showGenerateModal={true}
+      params={params}
+    />
+  );
 }

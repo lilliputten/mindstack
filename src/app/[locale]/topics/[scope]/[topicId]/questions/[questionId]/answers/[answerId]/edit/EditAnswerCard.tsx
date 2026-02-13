@@ -183,7 +183,9 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     [answer, t, queryClient, availableAnswersQuery, form],
   );
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewAnswerCard',
+  });
 
   const handleReload = React.useCallback(() => {
     availableAnswerQuery

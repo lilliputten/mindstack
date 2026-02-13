@@ -14,15 +14,21 @@ interface TTopicsListProps {
   topicId: TTopicId;
   questionId: TQuestionId;
   showAddModal?: boolean;
-  showGenerateModal?: boolean;
+  // showGenerateModal?: boolean;
   deleteAnswerId?: TAnswerId;
   editAnswerId?: TAnswerId;
 }
 
 export function ManageTopicQuestionAnswersPageModalsWrapper(props: TTopicsListProps) {
   const { manageScope } = useManageTopicsStore();
-  const { topicId, questionId, showGenerateModal, showAddModal, deleteAnswerId, editAnswerId } =
-    props;
+  const {
+    topicId,
+    questionId,
+    // showGenerateModal,
+    showAddModal,
+    deleteAnswerId,
+    editAnswerId,
+  } = props;
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -34,15 +40,17 @@ export function ManageTopicQuestionAnswersPageModalsWrapper(props: TTopicsListPr
 
   const goToTheRoute = useGoToTheRoute();
 
-  // GenerateAnswers Modal
-  const openGenerateAnswersModal = React.useCallback(() => {
-    goToTheRoute(`${answersListRoutePath}/generate`);
-  }, [answersListRoutePath, goToTheRoute]);
-  React.useEffect(() => {
-    if (showGenerateModal) {
-      openGenerateAnswersModal();
-    }
-  }, [showGenerateModal, openGenerateAnswersModal]);
+  /*
+   * // GenerateAnswers Modal
+   * const openGenerateAnswersModal = React.useCallback(() => {
+   *   goToTheRoute(`${answersListRoutePath}/generate`);
+   * }, [answersListRoutePath, goToTheRoute]);
+   * React.useEffect(() => {
+   *   if (showGenerateModal) {
+   *     openGenerateAnswersModal();
+   *   }
+   * }, [showGenerateModal, openGenerateAnswersModal]);
+   */
 
   // Add Answer Modal
   const openAddAnswerModal = React.useCallback(() => {

@@ -5,6 +5,8 @@ export * from './EmptyPlaceholder';
 export * from './ErrorPlaceHolder';
 export * from './ErrorSplash';
 export * from './ExternalLink';
+export * from './FormColumns';
+export * from './FormSection';
 export * from './GenericSkeleton';
 export * from './IconTypes';
 export * from './Icons';

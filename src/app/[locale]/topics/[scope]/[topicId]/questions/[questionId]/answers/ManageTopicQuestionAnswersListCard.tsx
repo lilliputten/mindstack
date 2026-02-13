@@ -582,7 +582,7 @@ export function ManageTopicQuestionAnswersListCard(
     // isLoading: isQuestionLoading,
   } = availableQuestionQuery;
   if (!question) {
-    throw new Error('No question found');
+    throw new Error('Requested question not found');
   }
 
   const goToTheRoute = useGoToTheRoute();
@@ -647,7 +647,9 @@ export function ManageTopicQuestionAnswersListCard(
     setShowDeleteSelectedConfirm(false);
   }, []);
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ManageTopicQuestionsListCard',
+  });
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [

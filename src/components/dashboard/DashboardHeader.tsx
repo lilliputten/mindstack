@@ -62,7 +62,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
           )}
         >
           {heading && (
-            <h1 className="content-truncate text-gr2 font-heading text-2xl">
+            <h1 className="content-truncate font-heading text-2xl text-triadic2">
               <span className="text-gr2 truncate">{heading}</span>
             </h1>
           )}

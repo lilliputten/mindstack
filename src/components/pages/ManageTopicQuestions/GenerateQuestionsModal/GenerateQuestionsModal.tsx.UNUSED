@@ -10,10 +10,8 @@ import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/reac
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
-import { Modal } from '@/components/ui/Modal';
 import { ScrollArea } from '@/components/ui/ScrollArea';
-import { BusySplashWithInfo, PageError } from '@/components/shared';
+import { PageError } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
@@ -35,12 +33,13 @@ import {
   useAvailableTopicById,
   useGoBack,
   useMediaQuery,
-  useModalTitle,
+  useDocumentTitle,
   useSessionData,
   useUpdateModalVisibility,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
+import { InnerContentSkeleton } from './ContentSkeleton';
 import { EditScreen } from './EditScreen';
 import { GeneratedScreen } from './GeneratedScreen';
 import { GenerateQuestionsForm } from './GenerateQuestionsForm';
@@ -57,12 +56,12 @@ const urlRegExp = new RegExp(urlTopicsToken + idToken + '/' + idToken + urlPostf
 const debugDataId: TAIQuerDebugDataId = 'questions-query-data-05';
 
 /** Show debug data to test questions editing */
-const __debugEdit = isDev && false;
-const __debugGeneratedQuestions: TNewQuestion[] | undefined = __debugEdit
+const __debugGenerated = isDev && true;
+const __debugGeneratedQuestions: TNewQuestion[] | undefined = __debugGenerated
   ? [
       // DEBUG: Test data
       {
-        topicId: 'xxx',
+        topicId: 'debugTopicId',
         text: 'Sample generated question',
         answers: [
           {
@@ -82,7 +81,7 @@ export function GenerateQuestionsModal() {
   const [isVisible, setVisible] = React.useState(true);
   const [error, setError] = React.useState<string | undefined>();
 
-  const [isEditing, setEditing] = React.useState<boolean>(__debugEdit);
+  const [isEditing, setEditing] = React.useState<boolean>(__debugGenerated);
   const [generatedQuestions, setGeneratedQuestions] = React.useState<TNewQuestion[] | undefined>(
     __debugGeneratedQuestions,
   );
@@ -94,8 +93,8 @@ export function GenerateQuestionsModal() {
 
   const aiGenerationsStatusQuery = useAIGenerationsStatus();
   const {
-    allowed: isAiAllowed, // boolean
-    loading: aiStatusLoading, // boolean
+    allowed: aiGenerationsAllowed, // boolean
+    loading: aiGenerationsLoading, // boolean
   } = aiGenerationsStatusQuery;
 
   const userAIRequest = useUserAIRequest();
@@ -106,11 +105,10 @@ export function GenerateQuestionsModal() {
   const match = pathname.match(urlRegExp);
   const topicId = match?.[2];
 
-  // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
   const shouldBeVisible = !!match;
 
   const { loading: isSessionLoading } = useSessionData();
-  const isPreparing = isSessionLoading || aiStatusLoading;
+  const isPreparing = isSessionLoading || aiGenerationsLoading;
 
   // Calculate paths...
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -146,7 +144,7 @@ export function GenerateQuestionsModal() {
         ? t('GenerateQuestionsModal.QuestionsGeneratedStatus')
         : t('GenerateQuestionsModal.DialogTitle');
 
-  useModalTitle(title, shouldBeVisible);
+  useDocumentTitle(title, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const generateQuestionsMutation = useMutation({
@@ -418,7 +416,7 @@ export function GenerateQuestionsModal() {
     generateQuestionsMutation.isPending || saveQuestionsMutation.isPending;
   const isBusy = isPreparing || isTopicPending || areMutationsPending;
 
-  return (
+  /*
     <Modal
       isVisible={isVisible}
       hideModal={hideModal}
@@ -449,97 +447,99 @@ export function GenerateQuestionsModal() {
           'text-foreground',
         )}
       >
-        <ScrollArea
-          className={cn(isDev && '__GenerateQuestionsModal_Scroll')}
-          viewportClassName={cn(
-            isDev && '__GenerateQuestionsModal_ScrollViewport',
-            'flex flex-1 flex-col',
-            '[&>div]:relative',
-            '[&>div]:!flex [&>div]:my-6 [&>div]:gap-6 [&>div]:flex-col [&>div]:flex-1',
-          )}
-        >
-          {isPreparing ? (
-            <BusySplashWithInfo title={t('GenerateQuestionsModal.Preparing')} className="p-6" />
-          ) : error ? (
-            <PageError
-              title={t('GenerateQuestionsModal.ErrorOccured')}
-              error={error}
-              extraActions={
-                <Button onClick={hideModal} className="content-truncate flex gap-2">
-                  <Icons.Close className="size-4 shrink-0" />
-                  <span className="truncate">{t('Close')}</span>
-                </Button>
-              }
-            />
-          ) : !isAiAllowed ? (
-            <PageError
-              title={t('NoAiGenrationsAvailable')}
-              explanation={<AIGenerationsStatusInfo className="justify-center" />}
-              extraActions={
-                <Button onClick={hideModal} className="content-truncate flex gap-2">
-                  <Icons.Close className="size-4 shrink-0" />
-                  <span className="truncate">{t('Close')}</span>
-                </Button>
-              }
-            />
-          ) : saveQuestionsMutation.isPending || savedQuestions ? (
-            // Final screen
-            <SavedScreen
-              className="px-6"
-              handleClose={hideModal}
-              startOverCallback={startOverCallback}
-              isSaving={saveQuestionsMutation.isPending}
-              topicId={topicId}
-              savedQuestions={savedQuestions}
-            />
-          ) : generatedQuestions && isEditing ? (
-            // Verify generated questions
-            <EditScreen
-              className="px-6"
-              handleClose={hideModal}
-              startOverCallback={startOverCallback}
-              topicId={topicId}
-              generatedQuestions={generatedQuestions}
-              saveQuestions={() => {
-                if (!generatedQuestions?.length) {
-                  toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
-                } else {
-                  setEditing(true);
-                }
-              }}
-            />
-          ) : generateQuestionsMutation.isPending || generatedQuestions ? (
-            // Final screen
-            <GeneratedScreen
-              className="px-6"
-              handleClose={hideModal}
-              startOverCallback={startOverCallback}
-              isGenerating={generateQuestionsMutation.isPending}
-              topicId={topicId}
-              generatedQuestions={generatedQuestions}
-              saveQuestions={saveCallback}
-              /* // TODO: Issue #80: Implement simple questions editing
-               * editQuestions={() => {
-               *   if (!generatedQuestions?.length) {
-               *     toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
-               *   } else {
-               *     setEditing(true);
-               *   }
-               * }}
-               */
-            />
-          ) : !isSubmited ? (
-            // Generate form
-            <GenerateQuestionsForm
-              generateCallback={generateCallback}
-              className="px-6"
-              handleClose={hideModal}
-              isPending={isBusy}
-              topicId={topicId}
-            />
-          ) : null}
-        </ScrollArea>
       </div>
     </Modal>
+   */
+  return (
+    <ScrollArea
+      className={cn(isDev && '__GenerateQuestionsModal_Scroll')}
+      viewportClassName={cn(
+        isDev && '__GenerateQuestionsModal_ScrollViewport',
+        'flex flex-1 flex-col',
+        '[&>div]:relative',
+        '[&>div]:!flex [&>div]:gap-6 [&>div]:flex-col [&>div]:flex-1',
+      )}
+    >
+      {false || isPreparing ? (
+        <InnerContentSkeleton className="px-6" />
+      ) : error ? (
+        <PageError
+          title={t('GenerateQuestionsModal.ErrorOccured')}
+          error={error}
+          extraActions={
+            <Button onClick={hideModal} className="content-truncate flex gap-2">
+              <Icons.Close className="size-4 shrink-0" />
+              <span className="truncate">{t('Close')}</span>
+            </Button>
+          }
+        />
+      ) : !aiGenerationsAllowed ? (
+        <PageError
+          title={t('NoAiGenrationsAvailable')}
+          explanation={<AIGenerationsStatusInfo className="justify-center" />}
+          extraActions={
+            <Button onClick={hideModal} className="content-truncate flex gap-2">
+              <Icons.Close className="size-4 shrink-0" />
+              <span className="truncate">{t('Close')}</span>
+            </Button>
+          }
+        />
+      ) : saveQuestionsMutation.isPending || savedQuestions ? (
+        // Final screen
+        <SavedScreen
+          className="px-6"
+          handleClose={hideModal}
+          startOverCallback={startOverCallback}
+          isSaving={saveQuestionsMutation.isPending}
+          topicId={topicId}
+          savedQuestions={savedQuestions}
+        />
+      ) : generatedQuestions && isEditing ? (
+        // Verify generated questions
+        <EditScreen
+          className="px-6"
+          handleClose={hideModal}
+          startOverCallback={startOverCallback}
+          topicId={topicId}
+          generatedQuestions={generatedQuestions}
+          saveQuestions={() => {
+            if (!generatedQuestions?.length) {
+              toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
+            } else {
+              setEditing(true);
+            }
+          }}
+        />
+      ) : generateQuestionsMutation.isPending || generatedQuestions ? (
+        // Final screen
+        <GeneratedScreen
+          className="px-6"
+          handleClose={hideModal}
+          startOverCallback={startOverCallback}
+          isGenerating={generateQuestionsMutation.isPending}
+          topicId={topicId}
+          generatedQuestions={generatedQuestions}
+          saveQuestions={saveCallback}
+          /* // TODO: Issue #80: Implement simple questions editing
+           * editQuestions={() => {
+           *   if (!generatedQuestions?.length) {
+           *     toast.error(t('GenerateQuestionsModal.NoQuestionsGeneratedError'));
+           *   } else {
+           *     setEditing(true);
+           *   }
+           * }}
+           */
+        />
+      ) : !isSubmited ? (
+        // Generate form
+        <GenerateQuestionsForm
+          generateCallback={generateCallback}
+          className="px-6"
+          handleClose={hideModal}
+          isPending={isBusy}
+          topicId={topicId}
+        />
+      ) : null}
+    </ScrollArea>
   );
 }

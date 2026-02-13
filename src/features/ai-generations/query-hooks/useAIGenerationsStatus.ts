@@ -23,11 +23,10 @@ export const aiGenerationsStatusQueryKey: QueryKey = ['ai-generations-status'];
 export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const queryClient = useQueryClient();
+  const [mounted, setMounted] = React.useState(false);
 
-  // Extract queryKey to React memo
-  const queryKey = React.useMemo<QueryKey>(() => ['ai-generations-status'], []);
+  const queryKey = aiGenerationsStatusQueryKey; // React.useMemo<QueryKey>(() => ['ai-generations-status'], []);
 
-  // Extract queryFn to React useCallback
   const queryFn = React.useCallback(async (): Promise<TAIGenerationsStatus | undefined | null> => {
     try {
       const result = await Promise.race([
@@ -79,6 +78,7 @@ export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
     queryKey,
     staleTime,
     queryFn,
+    enabled: mounted,
   });
 
   memo.query = query;
@@ -87,14 +87,16 @@ export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
     const query = memo.query;
     if (query) {
       memo.mounted = true;
+      setMounted(true);
       return () => {
         memo.mounted = false;
+        setMounted(false);
         const { isFetching } = query;
         if (isFetching) {
           // Cleanup pending requests on unmount
           queryClient.cancelQueries({ queryKey, exact: true });
-          queryClient.resetQueries({ queryKey, exact: true });
-          queryClient.removeQueries({ queryKey, exact: true });
+          // queryClient.resetQueries({ queryKey, exact: true });
+          // queryClient.removeQueries({ queryKey, exact: true });
         }
       };
     }

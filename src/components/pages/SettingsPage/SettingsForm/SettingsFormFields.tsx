@@ -10,7 +10,6 @@ import {
   systemThemeIds,
   TSystemThemeId,
 } from '@/config/themes';
-import { TPropsWithChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { localeNames, localesList, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
@@ -25,7 +24,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { LanguageName } from '@/components/shared';
+import { FormColumns, FormSection, LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TSettings } from '@/features/settings/types';
@@ -42,19 +41,6 @@ interface TSettingsFormFieldsProps {
   form: UseFormReturn<TSettingsFormData>;
   className?: string;
   selectLanguage: (ev: React.MouseEvent) => void;
-}
-
-function FormSection({ children }: TPropsWithChildren) {
-  return (
-    <div
-      className={cn(
-        isDev && '__SettingsFormFields_FormSection', // DEBUG
-        'flex w-full flex-1 flex-col gap-6 py-2 md:w-[45%]',
-      )}
-    >
-      {children}
-    </div>
-  );
 }
 
 export function SettingsFormFields(props: TSettingsFormFieldsProps) {
@@ -90,10 +76,10 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
   );
 
   return (
-    <div
+    <FormColumns
       className={cn(
         isDev && '__SettingsFormFields', // DEBUG
-        'flex w-full flex-col gap-6 px-8 md:flex-row',
+        'px-6',
         className,
       )}
     >
@@ -391,6 +377,6 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
           }}
         />
       </FormSection>
-    </div>
+    </FormColumns>
   );
 }

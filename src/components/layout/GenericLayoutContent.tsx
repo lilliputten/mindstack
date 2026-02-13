@@ -87,6 +87,7 @@ export function GenericLayoutContent(props: TGenericLayoutContentProps) {
             isDev && '__GenericLayout_ContentContainer', // DEBUG
             'relative flex size-full flex-1',
             'single-child',
+            'overflow-hidden',
           )}
         >
           {children}

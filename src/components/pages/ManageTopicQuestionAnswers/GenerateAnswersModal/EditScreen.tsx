@@ -116,7 +116,7 @@ export function EditScreen(props: TProps) {
         {startOverCallback && (
           <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
             <Icons.ArrowLeft className="size-4 shrink-0" />
-            <span className="truncate">{t('GenerateAnswersModal.StartOver')}</span>
+            <span className="truncate">{t('StartOver')}</span>
           </Button>
         )}
         {/* Close */}

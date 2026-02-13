@@ -19,6 +19,7 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { defaultLocale, localesList, TAwaitedLocaleProps, TLocale } from '@/i18n';
+import { RouteChangeProvider } from '@/hooks/next-router/RouteChangeContext';
 import { Toaster } from '@/components/ui/Toaster';
 import { GenericLayout } from '@/components/layout/GenericLayout';
 import { SignInModalProvider } from '@/components/modals';
@@ -134,61 +135,63 @@ export async function RootLayout(props: TRootLayoutProps) {
         data-layout="clippable" // Default layout mode, could casue flickering
       >
         <ReactQueryClientProvider>
-          <SessionProvider>
-            <EnvContextRoot>
-              <CustomNextIntlClientProvider
-                locale={locale}
-                messages={messages}
-                // onError={handleIntlError}
-              >
-                <ThemeProvider
-                  attribute="class"
-                  defaultTheme="system"
-                  enableSystem
-                  disableTransitionOnChange
-                  storageKey="app-theme"
+          <RouteChangeProvider>
+            <SessionProvider>
+              <EnvContextRoot>
+                <CustomNextIntlClientProvider
+                  locale={locale}
+                  messages={messages}
+                  // onError={handleIntlError}
                 >
-                  <SignInModalProvider>
-                    {/* NOTE: The toaster should be located before the main content */}
-                    <Toaster
-                      // @see https://sonner.emilkowal.ski/toaster#api-reference
-                      expand
-                      richColors
-                      closeButton
-                      // theme="dark"
-                      // invert?: boolean;
-                      // theme?: 'light' | 'dark' | 'system';
-                      // position?: Position;
-                      // hotkey?: string[];
-                      // richColors?: boolean;
-                      // expand?: boolean;
-                      // duration?: number;
-                      // gap?: number;
-                      // visibleToasts?: number;
-                      // closeButton?: boolean;
-                      // toastOptions?: ToastOptions;
-                      // className?: string;
-                      // style?: React.CSSProperties;
-                      // offset?: Offset;
-                      // mobileOffset?: Offset;
-                      // dir?: 'rtl' | 'ltr' | 'auto';
-                      // swipeDirections?: SwipeDirection[];
-                      // icons?: ToastIcons;
-                      // containerAriaLabel?: string;
-                      // pauseWhenPageIsHidden?: boolean;
-                    />
-                    <SettingsContextProvider user={user}>
-                      <GenericLayout>
-                        {/* Core content */}
-                        {children}
-                      </GenericLayout>
-                    </SettingsContextProvider>
-                    <TailwindIndicator />
-                  </SignInModalProvider>
-                </ThemeProvider>
-              </CustomNextIntlClientProvider>
-            </EnvContextRoot>
-          </SessionProvider>
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                    storageKey="app-theme"
+                  >
+                    <SignInModalProvider>
+                      {/* NOTE: The toaster should be located before the main content */}
+                      <Toaster
+                        // @see https://sonner.emilkowal.ski/toaster#api-reference
+                        expand
+                        richColors
+                        closeButton
+                        // theme="dark"
+                        // invert?: boolean;
+                        // theme?: 'light' | 'dark' | 'system';
+                        // position?: Position;
+                        // hotkey?: string[];
+                        // richColors?: boolean;
+                        // expand?: boolean;
+                        // duration?: number;
+                        // gap?: number;
+                        // visibleToasts?: number;
+                        // closeButton?: boolean;
+                        // toastOptions?: ToastOptions;
+                        // className?: string;
+                        // style?: React.CSSProperties;
+                        // offset?: Offset;
+                        // mobileOffset?: Offset;
+                        // dir?: 'rtl' | 'ltr' | 'auto';
+                        // swipeDirections?: SwipeDirection[];
+                        // icons?: ToastIcons;
+                        // containerAriaLabel?: string;
+                        // pauseWhenPageIsHidden?: boolean;
+                      />
+                      <SettingsContextProvider user={user}>
+                        <GenericLayout>
+                          {/* Core content */}
+                          {children}
+                        </GenericLayout>
+                      </SettingsContextProvider>
+                      <TailwindIndicator />
+                    </SignInModalProvider>
+                  </ThemeProvider>
+                </CustomNextIntlClientProvider>
+              </EnvContextRoot>
+            </SessionProvider>
+          </RouteChangeProvider>
         </ReactQueryClientProvider>
         {!isDev && <Analytics />}
       </body>

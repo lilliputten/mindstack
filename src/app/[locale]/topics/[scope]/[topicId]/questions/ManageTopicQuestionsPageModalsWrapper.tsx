@@ -12,7 +12,7 @@ import { ManageTopicQuestionsPageHolder } from './ManageTopicQuestionsPageHolder
 interface TTopicsListProps {
   topicId: TTopicId;
   showAddModal?: boolean;
-  showGenerateModal?: boolean;
+  // showGenerateModal?: boolean;
   deleteQuestionId?: TQuestionId;
   editQuestionId?: TQuestionId;
   editAnswersQuestionId?: TQuestionId;
@@ -22,7 +22,7 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
   const {
     topicId,
     showAddModal,
-    showGenerateModal,
+    // showGenerateModal,
     deleteQuestionId,
     editQuestionId,
     editAnswersQuestionId,
@@ -45,15 +45,17 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
     }
   }, [showAddModal, openAddQuestionModal]);
 
-  // Generate Questions Modal
-  const openGenerateQuestionsModal = React.useCallback(() => {
-    goToTheRoute(`${questionsListRoutePath}/generate`);
-  }, [goToTheRoute, questionsListRoutePath]);
-  React.useEffect(() => {
-    if (showGenerateModal) {
-      openGenerateQuestionsModal();
-    }
-  }, [showGenerateModal, openGenerateQuestionsModal]);
+  /*
+   * // Generate Questions Modal
+   * const openGenerateQuestionsModal = React.useCallback(() => {
+   *   goToTheRoute(`${questionsListRoutePath}/generate`);
+   * }, [goToTheRoute, questionsListRoutePath]);
+   * React.useEffect(() => {
+   *   if (showGenerateModal) {
+   *     openGenerateQuestionsModal();
+   *   }
+   * }, [showGenerateModal, openGenerateQuestionsModal]);
+   */
 
   // Delete Question Modal
   const openDeleteQuestionModal = React.useCallback(

@@ -24,7 +24,7 @@ export function AIGenerationsStatusInfo(props: TProps) {
   const { className, noFrame } = props;
   const showFrame = !noFrame;
 
-  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const aiGenerationsStatusQuery = useAIGenerationsStatus({ traceId: 'AIGenerationsStatusInfo' });
 
   const {
     // Core properties...

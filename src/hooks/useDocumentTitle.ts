@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function useModalTitle(title: string, isVisible: boolean = true) {
+export function useDocumentTitle(title: string, isVisible: boolean = true) {
   React.useEffect(() => {
     if (isVisible) {
       const originalTitle = document.title;

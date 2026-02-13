@@ -16,7 +16,7 @@ import { StableMountWrapper } from '@/components/hoc/withStableMount';
 import { isDev } from '@/constants';
 import { addNewTopic } from '@/features/topics/actions/addNewTopic';
 import { TAvailableTopic, TNewTopic, TTopicId } from '@/features/topics/types';
-import { useAvailableTopicsByScope, useGoBack, useMediaQuery, useModalTitle } from '@/hooks';
+import { useAvailableTopicsByScope, useDocumentTitle, useGoBack, useMediaQuery } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddTopicForm } from './AddTopicForm';
@@ -47,7 +47,7 @@ export function AddTopicModal() {
   }, [goBack]);
 
   const title = t('AddNewTopic');
-  useModalTitle(title, shouldBeVisible);
+  useDocumentTitle(title, shouldBeVisible);
 
   const addTopicMutation = useMutation<TAvailableTopic, Error, TNewTopic>({
     mutationFn: addNewTopic,

@@ -11,7 +11,12 @@ import { useT } from '@/i18n';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteAnswer } from '@/features/answers/actions';
 import { TAnswerId, TAvailableAnswer } from '@/features/answers/types';
-import { useAvailableAnswers, useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import {
+  useAvailableAnswers,
+  useDocumentTitle,
+  useGoBack,
+  useUpdateModalVisibility,
+} from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { topicAnswerDeletedEventId } from './constants';
@@ -69,7 +74,7 @@ export function DeleteAnswerModal(props: TDeleteAnswerModalProps) {
 
   const queryClient = useQueryClient();
 
-  useModalTitle(t('DeleteAnswerModal.ModalTitle'), shouldBeVisible);
+  useDocumentTitle(t('DeleteAnswerModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   // Change a browser title

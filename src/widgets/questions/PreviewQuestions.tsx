@@ -38,13 +38,21 @@ export function PreviewQuestions(props: TProps) {
           <div key={id} className="content-truncate flex gap-2 text-left">
             <div
               className={cn(
+                'mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full',
+                'bg-theme-500/50 opacity-20',
+              )}
+            >
+              <Icon className="size-3 text-white" />
+            </div>
+            <MarkdownText className="content-truncate flex-1">{text}</MarkdownText>
+            <div
+              className={cn(
                 'mt-0.5 flex h-4 w-8 shrink-0 items-center justify-center rounded-md',
                 'bg-theme-500/50 text-xs text-white opacity-50',
               )}
             >
               {count ? <span className="truncate">{count}</span> : <Icon className="size-3" />}
             </div>
-            <MarkdownText className="content-truncate flex-1">{text}</MarkdownText>
           </div>
         );
       })}

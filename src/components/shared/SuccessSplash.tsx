@@ -26,7 +26,8 @@ export function SuccessSplash({
       className={cn(
         isDev && '__SuccessSplash', // DEBUG
         'inset-0 flex flex-col items-center justify-center gap-4 transition',
-        'my-2 bg-background transition',
+        'my-2 transition',
+        // 'bg-background',
         isInactive && 'pointer-events-none opacity-0',
         className,
       )}

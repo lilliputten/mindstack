@@ -530,6 +530,20 @@
     max-width: 100%;
   }
 
+  // Sonner toast fixups
+  [data-sonner-toast] {
+    // Hide close buttons for 'loading' toasts, as they can't handle `onDismiss` actions
+    &[data-type="loading"] [data-close-button="true"],
+    // Hide cancel buttons for 'non-loading' toasts (they'll be used only for cancel pending operations)
+    &:not([data-type="loading"]) [data-button][data-cancel="true"] {
+      display: none;
+    }
+    // Stylize cancel button
+    &[data-styled='true'] [data-button][data-cancel='true'] {
+      @apply bg-theme-500/20 text-foreground hover:opacity-80;
+    }
+  }
+
   // Define themes (from global variables `$themes` and `$defaultTheme`, see definitions in the `src/config/themeColors.ts`)
   @include defineAllThemes($themes, $defaultTheme);
   // Define all theme colors to use in scss

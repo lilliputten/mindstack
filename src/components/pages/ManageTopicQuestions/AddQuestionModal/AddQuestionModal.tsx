@@ -16,7 +16,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/constants';
 import { addNewQuestion } from '@/features/questions/actions';
 import { TNewQuestion, TQuestion, TQuestionId } from '@/features/questions/types';
-import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useDocumentTitle, useGoBack, useMediaQuery, useUpdateModalVisibility } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { AddQuestionForm } from './AddQuestionForm';
@@ -55,7 +55,7 @@ export function AddQuestionModal() {
   const availableQuestionsQuery = useAvailableQuestions({ topicId });
   const queryClient = useQueryClient();
 
-  useModalTitle(t('AddQuestionModal.ModalTitle'), shouldBeVisible);
+  useDocumentTitle(t('AddQuestionModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addQuestionMutation = useMutation<TQuestion, Error, TNewQuestion>({

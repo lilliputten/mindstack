@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormProvider } from '@/components/ui/Form';
+import { BusySplashWithInfo } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
@@ -23,16 +24,15 @@ import { formSchema, TFormData } from './types';
 
 export interface TGenerateQuestionsFormProps {
   generateCallback: (p: TFormData) => Promise<unknown>;
-  handleClose?: () => void;
   className?: string;
   isPending?: boolean;
+  isGenerating?: boolean;
+  handleCancel?: () => void;
   topicId: TTopicId;
-  // user?: ExtendedUser;
-  error?: string;
 }
 
 export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
-  const { className, generateCallback, handleClose, isPending, error } = props;
+  const { className, generateCallback, isPending, isGenerating, handleCancel } = props;
   const t = useT();
 
   const { user } = useSessionData();
@@ -71,48 +71,74 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
     generateCallback(formData);
   });
 
-  const onClose = (ev: React.MouseEvent) => {
-    if (handleClose) {
-      handleClose();
-    }
-    ev.preventDefault();
-  };
-
   const Icon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
       <form
         onSubmit={onSubmit}
-        className={cn(isDev && '__GenerateQuestionsForm', 'flex w-full flex-col gap-4', className)}
-      >
-        {error && (
-          <div className="flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm">
-            <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-            <span className="text-red-500">{error}</span>
-          </div>
+        className={cn(
+          isDev && '__GenerateQuestionsForm', // DEBUG
+          'flex w-full flex-col gap-4',
+          className,
         )}
-        <AIGenerationsStatusInfo />
-        <GenerateQuestionsFormFields form={form} />
+      >
+        <div
+          className={cn(
+            isDev && '__GenerateQuestionsForm_Wrapper', // DEBUG
+            'relative transition',
+          )}
+        >
+          <div
+            className={cn(
+              isDev && '__GenerateQuestionsForm_WrapperContent', // DEBUG
+              'flex w-full flex-col gap-4',
+              isGenerating && 'opacity-20',
+            )}
+          >
+            <AIGenerationsStatusInfo />
+            <GenerateQuestionsFormFields form={form} />
+          </div>
+          {/* Generating splash */}
+          <BusySplashWithInfo
+            title="Generating questions..."
+            className={cn(
+              isDev && '__GenerateQuestionsForm_BusySplash', // DEBUG
+              'absolute',
+            )}
+            isBusy={isGenerating}
+          />
+        </div>
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-2">
           <Button
             type="submit"
-            variant={isSubmitEnabled ? 'secondary' : 'disabled'}
+            variant={isSubmitEnabled ? 'success' : 'disabled'}
             disabled={!isSubmitEnabled}
             className="gap-2"
           >
             <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
             <span>
-              {isPending
-                ? t('GenerateQuestionsForm.PreparingButtonText')
-                : t('GenerateQuestionsForm.GenerateButtonText')}
+              {isGenerating
+                ? t('GenerateQuestionsForm.GeneratingButtonText')
+                : isPending
+                  ? t('GenerateQuestionsForm.PreparingButtonText')
+                  : t('GenerateQuestionsForm.GenerateButtonText')}
             </span>
           </Button>
-          <Button variant="ghost" onClick={onClose} className="gap-2">
-            <Icons.Close className="hidden size-4 opacity-50 sm:flex" />
-            <span>{t('Cancel')}</span>
-          </Button>
+          {isGenerating && (
+            <Button
+              variant="ghost"
+              onClick={(ev) => {
+                ev.preventDefault();
+                handleCancel?.();
+              }}
+              className="gap-2"
+            >
+              <Icons.X className="hidden size-4 opacity-50 sm:flex" />
+              <span>{t('Cancel')}</span>
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>

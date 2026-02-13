@@ -5,7 +5,7 @@ export * from './useIntersectionObserver';
 export * from './useLocalStorage';
 export * from './useLockBody';
 export * from './useMediaQuery';
-export * from './useModalTitle';
+export * from './useDocumentTitle';
 export * from './useMounted';
 export * from './useRouteWithLocalePrefix';
 export * from './useScroll';

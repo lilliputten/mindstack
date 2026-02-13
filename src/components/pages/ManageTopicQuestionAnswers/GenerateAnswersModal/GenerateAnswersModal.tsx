@@ -32,9 +32,9 @@ import { logJsonData } from '@/features/logger/server-actions';
 import {
   useAvailableAnswers,
   useAvailableQuestionById,
+  useDocumentTitle,
   useGoBack,
   useMediaQuery,
-  useModalTitle,
   useSessionData,
   useUpdateModalVisibility,
 } from '@/hooks';
@@ -91,7 +91,7 @@ export function GenerateAnswersModal() {
   // Already added to the database answers
   const [savedAnswers, setSavedAnswers] = React.useState<TAvailableAnswer[] | undefined>();
 
-  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const aiGenerationsStatusQuery = useAIGenerationsStatus({ traceId: 'GenerateAnswersModal' });
   const {
     allowed: isAiAllowed, // boolean
     loading: aiStatusLoading, // boolean
@@ -160,7 +160,7 @@ export function GenerateAnswersModal() {
       : generatedAnswers
         ? t('GenerateAnswersModal.AnswersGeneratedStatus')
         : t('GenerateAnswersModal.Title');
-  useModalTitle(title, shouldBeVisible);
+  useDocumentTitle(title, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const generateAnswersMutation = useMutation({

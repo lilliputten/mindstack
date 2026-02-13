@@ -9,7 +9,7 @@ import { useT } from '@/i18n';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteTopic } from '@/features/topics/actions/deleteTopic';
 import { TAvailableTopic, TTopic, TTopicId } from '@/features/topics/types';
-import { useAvailableTopicsByScope, useGoBack, useModalTitle } from '@/hooks';
+import { useAvailableTopicsByScope, useDocumentTitle, useGoBack } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TDeleteTopicModalProps {
@@ -40,7 +40,7 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
     [topicId, availableTopics.allTopics],
   );
 
-  useModalTitle(t('DeleteTopicModal.ModalTitle'));
+  useDocumentTitle(t('DeleteTopicModal.ModalTitle'));
 
   const deleteTopicMutation = useMutation<TAvailableTopic, Error, TTopic>({
     mutationFn: deleteTopic,

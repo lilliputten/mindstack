@@ -1,4 +1,3 @@
-export default function NoSkeletonForModalSlots() {
-  // No skeletons for modal slots!
-  return null;
-}
+import { ContentSkeleton } from '@/components/pages/ManageTopicQuestions/GenerateQuestionsModal/ContentSkeleton';
+
+export default ContentSkeleton;

@@ -407,7 +407,9 @@ export function QuestionsTableContent(
     });
   }, [memo, setSelectedQuestions]);
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ManageTopicsListCard:QuestionsTableContent',
+  });
 
   if (!isQuestionsFetched) {
     return (
@@ -592,7 +594,9 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
     setShowDeleteSelectedConfirm(false);
   }, []);
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ManageTopicQuestionsListCard:ManageTopicQuestionsListCard',
+  });
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [

@@ -17,9 +17,9 @@ import { addNewAnswer } from '@/features/answers/actions';
 import { TAnswerId, TAvailableAnswer, TNewAnswer } from '@/features/answers/types';
 import {
   useAvailableAnswers,
+  useDocumentTitle,
   useGoBack,
   useMediaQuery,
-  useModalTitle,
   useUpdateModalVisibility,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
@@ -68,7 +68,7 @@ export function AddAnswerModal() {
   const availableAnswersQuery = useAvailableAnswers({ questionId });
   const queryClient = useQueryClient();
 
-  useModalTitle(t('AddAnswerModal.ModalTitle'), shouldBeVisible);
+  useDocumentTitle(t('AddAnswerModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const addAnswerMutation = useMutation<TAvailableAnswer, Error, TNewAnswer>({
