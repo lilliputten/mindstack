@@ -11,7 +11,7 @@ const generatedQuestionSchema = QuestionSchema.pick({ text: true }).extend(
 export type TGeneratedQuestion = z.infer<typeof generatedQuestionSchema>;
 export const generatedQuestionsSchema = z.object({
   questions: z.array(generatedQuestionSchema),
-  questionsCount: z.number(),
+  questionsCount: z.number().optional(),
 });
 export type TGeneratedQuestions = z.infer<typeof generatedQuestionsSchema>;
 

@@ -9,17 +9,18 @@ import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
 
-import { GenerateQuestionsPageWrapper } from './GenerateQuestionsPageWrapper';
+import { GenerateAnswersPageWrapper } from './GenerateAnswersPageWrapper';
 
 type TAwaitedProps = TAwaitedLocaleProps<{
   scope: TTopicsManageScopeId;
   topicId: string;
+  questionId: string;
 }>;
 
 export async function generateMetadata({ params }: TAwaitedProps) {
   const { locale } = await params;
   const t = await getT({ locale });
-  const title = t('Pages.EditQuestionPropertiesTitle');
+  const title = t('GenerateAnswersModal.Title');
   return constructMetadata({
     locale,
     title,
@@ -27,28 +28,30 @@ export async function generateMetadata({ params }: TAwaitedProps) {
   });
 }
 
-export async function GenerateQuestionsPage({ params }: TAwaitedProps) {
-  const { scope, topicId } = await params;
+export async function GenerateAnswersPage({ params }: TAwaitedProps) {
+  const { scope, topicId, questionId } = await params;
 
   const t = await getT();
 
   if (!topicId) {
     return <PageError error={t('TopicNotFound')} />;
   }
+  if (!questionId) {
+    return <PageError error={t('QuestionNotFound')} />;
+  }
 
   return (
     <PageWrapper
       className={cn(
-        isDev && '__GenerateQuestionsPageWrapper', // DEBUG
+        isDev && '__GenerateAnswersPageWrapper', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__GenerateQuestionsPageWrapper_Inner', // DEBUG
+        isDev && '__GenerateAnswersPageWrapper_Inner', // DEBUG
         'w-full rounded-lg gap-6 py-6',
       )}
       limitWidth
-      // vPadded
     >
-      <GenerateQuestionsPageWrapper scope={scope} topicId={topicId} />
+      <GenerateAnswersPageWrapper scope={scope} topicId={topicId} questionId={questionId} />
     </PageWrapper>
   );
 }

@@ -25,8 +25,6 @@ export function SavedScreen(props: TProps) {
   const [isLeaving, setLeaving] = React.useState(false);
   const t = useT();
 
-  const isBusy = isLeaving;
-
   const topicsListRoutePath = `/topics/${scope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
   const questionsListRoutePath = `${topicRoutePath}/questions`;
@@ -69,7 +67,7 @@ export function SavedScreen(props: TProps) {
                 setLeaving(true);
               }}
               variant={!isLeaving ? 'success' : 'ghost'}
-              disabled={isBusy}
+              disabled={isLeaving}
             >
               <Link
                 href={questionsListRoutePath as TRoutePath}
@@ -95,7 +93,7 @@ export function SavedScreen(props: TProps) {
         className={cn(
           isDev && '__SavedScreen_LoadingSplash', // DEBUG
         )}
-        isBusy={isBusy}
+        isBusy={isLeaving}
       />
     </div>
   );

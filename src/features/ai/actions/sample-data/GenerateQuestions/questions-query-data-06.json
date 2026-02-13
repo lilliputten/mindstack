@@ -1,0 +1,24 @@
+{
+  "content": "{\n  \"questionsCount\": 1,\n  \"questions\": [\n    {\n      \"text\": \"Which of the following accurately describes the flow of tasks in the JavaScript event loop, considering both microtasks and macrotasks?\" ,\n      \"answers\": [\n        {\n          \"text\": \"Microtasks are executed before macrotasks.\",\n          \"explanation\": \"This statement is true because microtasks, such as those from Promises and setImmediate, are processed first within each cycle of the event loop before macrotasks, such as setTimeout and I/O operations.\",\n          \"isCorrect\": true\n        },\n        {\n          \"text\": \"Macrotasks are always executed before microtasks.\",\n          \"explanation\": \"This statement is false because microtasks are processed before macrotasks in each event loop cycle.\",\n          \"isCorrect\": false\n        },\n        {\n          \"text\": \"Tasks are processed in random order without any specific priority.\",\n          \"explanation\": \"This statement is false because there is a defined order of task processing based on their type (microtasks vs macrotasks).\",\n          \"isCorrect\": false\n        },\n        {\n          \"text\": \"All tasks are processed sequentially in the same order they were created.\",\n          \"explanation\": \"This statement is false because tasks are not processed sequentially; rather, they are managed through the event loop and its queues.\",\n          \"isCorrect\": false\n        }\n      ]\n    }\n  ]\n}",
+  "additional_kwargs": {},
+  "response_metadata": {
+    "tokenUsage": {
+      "input_tokens": 681,
+      "output_tokens": 301,
+      "total_tokens": 982
+    },
+    "finish_reason": "stop",
+    "xHeaders": {
+      "xRequestID": "cb5a0438-b65d-42ed-851e-63a1bef1c233",
+      "xSessionID": "787c0cdc-c4d5-40d8-8fab-55254a2c842b"
+    }
+  },
+  "id": "cb5a0438-b65d-42ed-851e-63a1bef1c233",
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 681,
+    "output_tokens": 301,
+    "total_tokens": 982
+  }
+}

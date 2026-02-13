@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import { useRouter as useNextRouter } from 'next/navigation';
 
 export interface RouteChangeContextType {
@@ -62,12 +62,4 @@ export function RouteChangeProvider({ children }: { children: React.ReactNode })
       {children}
     </RouteChangeContext.Provider>
   );
-}
-
-export function useRouteChanging() {
-  const context = useContext(RouteChangeContext);
-  if (!context) {
-    throw new Error('useRouteChanging must be used within RouteChangeProvider');
-  }
-  return context;
 }

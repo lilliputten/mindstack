@@ -1,68 +1,36 @@
 'use client';
 
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
-import { defaultAIGenerationTemperature } from '@/config/env';
-import { defaultAiClientType } from '@/lib/ai/types/TAiClientType';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormProvider } from '@/components/ui/Form';
+import { BusySplashWithInfo } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
-import { answersGenerationTypes } from '@/features/ai/types/GenerateAnswersTypes';
 import { TQuestionId } from '@/features/questions/types';
-import { useSessionData } from '@/hooks';
+import { TTopicId } from '@/features/topics';
 
 import { GenerateAnswersFormFields } from './GenerateAnswersFormFields';
-import { formSchema, TFormData } from './types';
+import { TFormData } from './types';
 
 export interface TGenerateAnswersFormProps {
+  form: UseFormReturn<TFormData>;
   generateCallback: (p: TFormData) => Promise<unknown>;
-  handleClose?: () => void;
   className?: string;
   isPending?: boolean;
+  isGenerating?: boolean;
+  handleCancel?: () => void;
+  topicId: TTopicId;
   questionId: TQuestionId; // Is it required here?
 }
 
 export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
-  const {
-    className,
-    generateCallback,
-    handleClose,
-    isPending,
-    // questionId,
-  } = props;
-  const { user, loading: isSessionLoading } = useSessionData();
-  const [isLeaving, setLeaving] = React.useState(false);
-  const isAdmin = user?.role === 'ADMIN';
+  const { form, className, generateCallback, isPending, isGenerating, handleCancel } = props;
   const t = useT();
-
-  const __useDebugData = isDev || isAdmin;
-
-  const defaultValues: TFormData = React.useMemo(
-    () => ({
-      debugData: __useDebugData,
-      answersGenerationType: answersGenerationTypes[0],
-      answersCountMin: isDev ? 1 : 2,
-      answersCountMax: isDev ? 1 : 6,
-      extraText: '',
-      clientType: defaultAiClientType,
-      temperature: defaultAIGenerationTemperature,
-    }),
-    [__useDebugData],
-  );
-
-  // @see https://react-hook-form.com/docs/useform
-  const form = useForm<TFormData>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    resolver: zodResolver(formSchema),
-    defaultValues,
-  });
 
   const { formState, handleSubmit } = form;
 
@@ -70,25 +38,18 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
     // isDirty, // Not required here
     // isSubmitSuccessful, // NOTE: Using `generatedAnswers` instead of
     isValid,
-    isSubmitting, // boolean;
-    isLoading, // boolean;
+    // isSubmitting, // boolean;
+    // isLoading, // boolean;
   } = formState;
 
-  const isBusy = isLeaving || isSessionLoading || isSubmitting || isLoading || isPending;
+  const isBusy = /* isSubmitting || isLoading || */ isPending;
   const isSubmitEnabled = !isBusy && isValid;
 
   const onSubmit = handleSubmit((formData) => {
-    // const { generationType, answersCountMin, answersCountMax, extraText } = formData;
     generateCallback(formData);
   });
 
-  const onClose = (ev: React.MouseEvent) => {
-    setLeaving(true);
-    if (handleClose) {
-      handleClose();
-    }
-    ev.preventDefault();
-  };
+  const Icon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
@@ -100,52 +61,69 @@ export function GenerateAnswersForm(props: TGenerateAnswersFormProps) {
           className,
         )}
       >
-        <AIGenerationsStatusInfo />
-        <GenerateAnswersFormFields form={form} />
+        <div
+          className={cn(
+            isDev && '__GenerateAnswersForm_Wrapper', // DEBUG
+            'relative transition',
+          )}
+        >
+          <div
+            className={cn(
+              isDev && '__GenerateAnswersForm_WrapperContent', // DEBUG
+              'flex w-full flex-col gap-4',
+              isGenerating && 'opacity-20',
+            )}
+          >
+            <AIGenerationsStatusInfo />
+            <GenerateAnswersFormFields form={form} />
+          </div>
+          {/* Generating splash */}
+          <BusySplashWithInfo
+            title={t('GenerateAnswersModal.GeneratingAnswers')}
+            className={cn(
+              isDev && '__GenerateAnswersForm_BusySplash', // DEBUG
+              'absolute',
+            )}
+            isBusy={isGenerating}
+          />
+        </div>
 
         {/* Actions */}
         <div
           className={cn(
             isDev && '__GenerateAnswersForm_Actions', // DEBUG
             'content-truncate flex w-full flex-wrap gap-2',
-            // isSplashDisplaying && 'justify-center',
           )}
         >
           <Button
             type="submit"
-            variant={isSubmitEnabled ? 'success' : 'ghost'}
+            variant={isSubmitEnabled ? 'success' : 'disabled'}
             disabled={!isSubmitEnabled}
-            className={cn(
-              isDev && '__GenerateAnswersForm_SaveButton', // DEBUG
-              'content-truncate gap-2',
-            )}
+            className="gap-2"
           >
-            <Icons.Check className={cn('size-4 shrink-0')} />{' '}
-            <span className="truncate">
-              {isBusy
-                ? t('GenerateAnswersForm.PreparingButtonText')
-                : t('GenerateAnswersForm.GenerateButtonText')}
+            <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
+            <span>
+              {isGenerating
+                ? t('GenerateQuestionsForm.GeneratingButtonText')
+                : isPending
+                  ? t('GenerateQuestionsForm.PreparingButtonText')
+                  : t('GenerateQuestionsForm.GenerateButtonText')}
             </span>
           </Button>
-          <Button
-            variant="ghost"
-            onClick={onClose}
-            className="content-truncate gap-2"
-            disabled={isPending}
-          >
-            <Icons.Close className="size-4 shrink-0" />
-            <span className="truncate">{t('Close')}</span>
-          </Button>
-        </div>
-
-        {/* LoadingSplash
-        <BusySplash
-          className={cn(
-            isDev && '__GenerateAnswersForm_LoadingSplash', // DEBUG
+          {isGenerating && (
+            <Button
+              variant="ghost"
+              onClick={(ev) => {
+                ev.preventDefault();
+                handleCancel?.();
+              }}
+              className="gap-2"
+            >
+              <Icons.X className="hidden size-4 opacity-50 sm:flex" />
+              <span>{t('Cancel')}</span>
+            </Button>
           )}
-          isBusy={isBusy}
-        />
-        */}
+        </div>
       </form>
     </FormProvider>
   );

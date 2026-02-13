@@ -29,6 +29,7 @@ interface TBreadcrumbsProps {
   inactiveLast?: boolean;
   isLoading?: boolean;
 }
+
 export function useAnswersBreadcrumbsItems(props: TBreadcrumbsProps) {
   const { scope, topic, question, answer, lastItem, isLoading } = props;
   const t = useT();

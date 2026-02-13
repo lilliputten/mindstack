@@ -15,7 +15,7 @@ const _generatedAnswerSchemaSharp = AnswerSchema.pick({
 export type TGeneratedAnswer = z.infer<typeof generatedAnswerSchema>;
 export const generatedAnswersSchema = z.object({
   answers: z.array(generatedAnswerSchema).optional(),
-  answersCount: z.number(),
+  answersCount: z.number().optional(),
 });
 export type TGeneratedAnswers = z.infer<typeof generatedAnswersSchema>;
 

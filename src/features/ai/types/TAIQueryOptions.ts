@@ -14,6 +14,7 @@ export type TAIQuerDebugDataId =
   | 'questions-query-data-03'
   | 'questions-query-data-04'
   | 'questions-query-data-05'
+  | 'questions-query-data-06'
   | boolean;
 
 export interface TAIQueryOptions {

@@ -9,7 +9,8 @@ import {
 import { GigaChatCallOptions } from 'langchain-gigachat';
 
 import { defaultAIGenerationTemperature } from '@/config/env';
-import { defaultAiClientType, getAiClient } from '@/lib/ai';
+import { getAiClient } from '@/lib/ai/server-actions';
+import { defaultAiClientType } from '@/lib/ai/types';
 import { getErrorText } from '@/lib/helpers';
 import { isDev } from '@/constants';
 
@@ -23,6 +24,8 @@ async function getDebugDataContent(debugData: TAIQuerDebugDataId) {
   switch (debugData) {
     case 'answers-query-data-01':
       return await import('./sample-data/GenerateQuestions/answers-query-data-01.json');
+    case 'questions-query-data-06':
+      return await import('./sample-data/GenerateQuestions/questions-query-data-06.json');
     case 'questions-query-data-05':
       return await import('./sample-data/GenerateQuestions/questions-query-data-05.json');
     case 'questions-query-data-04':

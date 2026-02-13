@@ -483,18 +483,6 @@ export function GenerateAnswersModal() {
             '[&>div]:!flex [&>div]:my-6 [&>div]:gap-6 [&>div]:flex-col [&>div]:flex-1',
           )}
         >
-          {/* Small error box: error && (
-            <div
-              className={cn(
-                isDev && '__GenerateAnswersModal_error', // DEBUG
-                'mx-6 flex items-center gap-1 rounded-md border border-red-500/20 bg-red-500/20 p-3 py-2 text-sm',
-              )}
-            >
-              <Icons.Warning className="mr-1 size-4 text-red-500 opacity-50" />
-              <span className="text-red-500">{error}</span>
-            </div>
-          )*/}
-
           {isPreparing ? (
             <BusySplashWithInfo title={t('GenerateAnswersModal.Preparing')} className="p-6" />
           ) : error ? (
@@ -519,18 +507,7 @@ export function GenerateAnswersModal() {
                 </Button>
               }
             />
-          ) : /* isAborted && !isSubmited ? ( // Sho 'aborted' status: apparently, isn't required
-            <PageError
-              title={t('GenerateAnswersModal.OperationAborted')}
-              // error={error}
-              extraActions={
-                <Button onClick={hideModal} className="content-truncate flex gap-2">
-                  <Icons.Close className="size-4 shrink-0" />
-                  <span className="truncate">{t('Close')}</span>
-                </Button>
-              }
-            />
-          ) : */ saveAnswersMutation.isPending || savedAnswers ? (
+          ) : saveAnswersMutation.isPending || savedAnswers ? (
             // Final screen
             <SavedScreen
               className="px-6"
