@@ -95,8 +95,8 @@ export function NavUserBlock(props: TNavUserBlockProps) {
             className={cn(
               isDev && '__NavUserBlock_UserAvatar', // DEBUG
               className,
-              'shrink-0 truncate rounded-full bg-theme-700/25',
-              // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
+              'shrink-0 rounded-full bg-theme-700/25',
+              // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role with a border
               onSidebar && 'flex',
             )}
           />
