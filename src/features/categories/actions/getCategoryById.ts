@@ -32,7 +32,7 @@ export async function getCategoryById(params: TGetCategoryByIdParams & TOptions)
     }
     // Always include translations for the current locale and topics count
     if (includeTopicsCount) {
-      include._count = { select: { topics: true } };
+      include._count = { select: { topics: { where: { isPublic: true } } } };
     }
 
     const category = await prisma.category.findUnique({
