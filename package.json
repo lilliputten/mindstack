@@ -167,6 +167,9 @@
     "prettier-plugin-tailwindcss": "^0.6.13",
     "pretty-quick": "^4.0.0",
     "raw-loader": "^4.0.2",
+    "react-cosmos": "^7.1.1",
+    "react-cosmos-core": "^7.1.1",
+    "react-cosmos-next": "^7.1.1",
     "rimraf": "^6.0.1",
     "sass": "^1.81.0",
     "stylelint": "^16.21.1",
@@ -227,6 +230,8 @@
     "test-watch": "echo --Run tests in a watch mode-- && jest --watch",
     "test-ci": "echo --Run tests in a CI mode-- && jest --ci",
     "vercel-clean": "vercel remove --safe --yes mind-stack-trainer",
+    "cosmos": "cosmos --expose-imports",
+    "cosmos-export": "cosmos-export --expose-imports",
     "scripts-help": "echo --List all available script commands-- && npm-package-user-scripts-list"
   }
 }

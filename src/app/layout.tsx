@@ -2,8 +2,8 @@ type TRootLayoutProps = {
   children: React.ReactNode;
 };
 
-async function RootLayout({ children }: TRootLayoutProps) {
+async function ZeroLayout({ children }: TRootLayoutProps) {
   return <>{children}</>;
 }
 
-export default RootLayout;
+export default ZeroLayout;
