@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 import { categoryImageAllowedTypes } from '@/features/categories/constants';
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { PageError } from '@/components/shared/PageError';
 import { availableCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';

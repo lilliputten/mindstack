@@ -10,7 +10,7 @@ import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';

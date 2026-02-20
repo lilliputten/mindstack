@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 import { TAvailableQuestion } from '@/features/questions/types';
 

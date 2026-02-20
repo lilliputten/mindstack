@@ -1317,7 +1317,8 @@
     "TelegramStarsOptionAvailable": "This option is temporarily unavailable (it will be available later if you log in with a Telegram account).",
     "UpgradeMessage": "You are upgrading from <strong>{currentGrade}</strong> to <strong>{requestedGrade}</strong> ({period})",
     "UpgradePriceInfo": "You will only be charged the difference between the subscription plans.",
-    "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}"
+    "UpgradePriceInfoWithDifference": "Upgrade price difference: <CurrencySign></CurrencySign>{priceDifference}",
+    "YoureToPay": "You're to Pay"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Can't calculate prices for a \"{subscriptionType}\" subscription type",

@@ -19,7 +19,7 @@ import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
 import { NavUserAuthButton } from '@/components/layout/NavAuthButton';
 import { NavLocaleSwitcherBlock } from '@/components/layout/NavLocaleSwitcherBlock';
 import { NavModeToggleBlock } from '@/components/layout/NavModeToggleBlock';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
 

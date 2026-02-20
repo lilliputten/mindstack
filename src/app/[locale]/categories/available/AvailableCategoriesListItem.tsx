@@ -7,7 +7,7 @@ import { TLocale, useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { availableTopicsRoute, manageCategoriesRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { CategoryHeader, CategoryProperties } from '@/features/categories/components';

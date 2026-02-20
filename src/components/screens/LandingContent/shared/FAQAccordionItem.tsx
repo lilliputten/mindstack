@@ -4,7 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 
 interface FAQAccordionItemProps {

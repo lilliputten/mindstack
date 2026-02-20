@@ -26,7 +26,7 @@ import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { PageError } from '@/components/shared/PageError';
 import { allTopicsRoute, manageCategoriesRoute, rootAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { topicQuestionDeletedEventId } from '@/components/pages/ManageTopicQuestions/DeleteQuestionModal';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 import { TQuestionId } from '@/features/questions/types';

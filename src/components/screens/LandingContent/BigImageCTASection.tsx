@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev, startAliasRoute } from '@/config';
 
 export function BigImageCTASection() {

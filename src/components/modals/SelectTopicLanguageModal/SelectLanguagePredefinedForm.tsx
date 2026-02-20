@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-// import * as Icons from '@/components/shared/Icons';
+// import { Icons } from '@/components/shared';
 import { Icons, LanguageName } from '@/components/shared';
 import { isDev } from '@/config';
 import { predefinedLanguages } from '@/constants/languages';

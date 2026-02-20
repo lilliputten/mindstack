@@ -1,8 +1,8 @@
 import { TPropsWithClassName, TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { Icons } from '@/components/shared';
 import { EmptyPlaceholder } from '@/components/shared/EmptyPlaceholder';
-import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev } from '@/config';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';

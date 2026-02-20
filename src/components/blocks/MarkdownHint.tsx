@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useT } from '@/i18n';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 
 export function MarkdownHint() {
   const t = useT();

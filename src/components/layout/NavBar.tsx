@@ -10,7 +10,7 @@ import { NavUserAuthButton } from '@/components/layout/NavAuthButton';
 import { NavBarBrand } from '@/components/layout/NavBarBrand';
 import { NavLocaleSwitcher } from '@/components/layout/NavLocaleSwitcher';
 import { NavModeToggle } from '@/components/layout/NavModeToggle';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 
 interface NavBarProps {

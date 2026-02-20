@@ -6,7 +6,7 @@ import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
 import { Button, ButtonProps } from '@/components/ui/Button';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { IconProps, TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev, TRoutePath } from '@/config';
 

@@ -17,7 +17,7 @@ import { Card } from '@/components/ui/Card';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { maxTextLength, minTextLength } from '@/components/pages/ManageTopicQuestions/constants';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 import { updateQuestion } from '@/features/questions/actions';
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';

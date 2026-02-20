@@ -3,7 +3,7 @@
 Import as:
 
 ```
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 ```
 
 Data definitions at:

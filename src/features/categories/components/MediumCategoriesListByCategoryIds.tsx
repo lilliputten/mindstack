@@ -6,7 +6,7 @@ import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 
 import { getCategoryName } from '../helpers';

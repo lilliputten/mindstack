@@ -1310,7 +1310,8 @@
     "TelegramStarsOptionAvailable": "Эта опция временно недоступна (она будет доступна позже, если вы войдете под учетной записью Telegram).",
     "UpgradeMessage": "Вы обновляете версию с <strong>{currentGrade</strong> до <strong>{requestedGrade</strong> ({ period})",
     "UpgradePriceInfo": "С вас будет взиматься только разница между планами",
-    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}"
+    "UpgradePriceInfoWithDifference": "Разница в цене за обновление: <CurrencySign></CurrencySign>{priceDifference}",
+    "YoureToPay": "Вы платите"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "Не удается рассчитать цены для типа подписки \"{subscriptionType}\"",

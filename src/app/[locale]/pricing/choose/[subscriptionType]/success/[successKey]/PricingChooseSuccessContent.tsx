@@ -10,7 +10,7 @@ import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 import {
   ensurePaidableSubscriptionType,

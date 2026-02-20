@@ -24,8 +24,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { FormColumns, FormSection, LanguageName } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
+import { FormColumns, FormSection, Icons, LanguageName } from '@/components/shared';
 import { isDev } from '@/constants';
 import { TSettings } from '@/features/settings/types';
 

@@ -5,7 +5,7 @@ import React from 'react';
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev } from '@/constants';
 

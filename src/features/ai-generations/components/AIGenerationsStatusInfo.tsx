@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Skeleton } from '@/components/ui/Skeleton';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { PageError } from '@/components/shared/PageError';
 import { welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';

@@ -4,7 +4,7 @@ import React from 'react';
 import { useLocale } from 'next-intl';
 
 import { TLocale, useT } from '@/i18n';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { getCategoryKeywords } from '@/features/categories/helpers';
 import { TAvailableCategory } from '@/features/categories/types';
 

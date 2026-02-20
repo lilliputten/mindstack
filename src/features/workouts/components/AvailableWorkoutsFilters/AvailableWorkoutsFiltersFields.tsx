@@ -20,9 +20,8 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
-import { LanguageName } from '@/components/shared';
+import { Icons, LanguageName } from '@/components/shared';
 import { CategorySelect } from '@/components/shared/CategorySelect';
-import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import {
   getFilterFieldName,

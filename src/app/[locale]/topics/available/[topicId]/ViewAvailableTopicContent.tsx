@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageEmpty } from '@/components/pages/shared';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';

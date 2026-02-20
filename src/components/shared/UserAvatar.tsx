@@ -3,7 +3,7 @@ import { ExtendedUser } from '@/@types/next-auth';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Avatar, AvatarFallback, AvatarImage, AvatarProps } from '@/components/ui/Avatar';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 
 interface UserAvatarProps extends AvatarProps {

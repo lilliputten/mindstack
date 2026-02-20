@@ -19,8 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/Table';
 import { PageEmpty } from '@/components/pages/shared';
-import { PageError, ShowTimeSince } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
+import { Icons, PageError, ShowTimeSince } from '@/components/shared';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TopicBriefInfo } from '@/features/topics';

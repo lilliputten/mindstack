@@ -7,7 +7,7 @@ import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { cn } from '@/lib/utils';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 
 interface MarkdownProps {
   children: string;

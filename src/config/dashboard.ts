@@ -1,5 +1,5 @@
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 
 import {
   aboutAliasRoute,

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 
 interface TScrollAreaInfiniteProps extends React.ComponentProps<typeof ScrollArea> {

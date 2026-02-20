@@ -13,7 +13,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { SettingsForm } from '@/components/pages/SettingsPage/SettingsForm';
 import { TSettingsFormData } from '@/components/pages/SettingsPage/SettingsForm/types';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';

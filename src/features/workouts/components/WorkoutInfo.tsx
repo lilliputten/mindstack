@@ -6,7 +6,7 @@ import { useFormatter } from 'next-intl';
 import { getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 import { TWorkoutData } from '@/features/workouts/types';
 

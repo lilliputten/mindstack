@@ -6,7 +6,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev, rootAliasRoute } from '@/config';
 
 type TProps = {

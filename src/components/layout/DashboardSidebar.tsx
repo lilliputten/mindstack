@@ -15,7 +15,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { ProjectSwitcher } from '@/components/dashboard/ProjectSwitcher';
 import { UpgradeCard } from '@/components/dashboard/UpgradeCard';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/constants';
 import { useMediaMinDevices } from '@/hooks';
 

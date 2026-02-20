@@ -27,7 +27,7 @@ import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { PageEmpty } from '@/components/pages/shared';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';

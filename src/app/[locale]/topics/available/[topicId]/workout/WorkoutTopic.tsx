@@ -10,7 +10,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes } from '@/contexts/TopicsContext';

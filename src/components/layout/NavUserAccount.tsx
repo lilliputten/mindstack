@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { isDev } from '@/constants';
 

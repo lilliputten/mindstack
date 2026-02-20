@@ -1308,7 +1308,8 @@
     "TelegramStarsOptionAvailable": "Esta opción no está disponible temporalmente (estará disponible más adelante si inicia sesión con una cuenta de Telegram).",
     "UpgradeMessage": "Estás actualizando de <strong>{currentGrade}</strong> a <strong>{requestedGrade}</strong> ({period})",
     "UpgradePriceInfo": "Sólo se te cobrará la diferencia entre los planes de suscripción.",
-    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}"
+    "UpgradePriceInfoWithDifference": "Diferencia de precio de actualización: <CurrencySign></CurrencySign>{priceDifference}",
+    "YoureToPay": "Tienes que pagar"
   },
   "PricingChooseRoute": {
     "CannotCalculatePrices": "No se pueden calcular precios para el tipo de suscripción \"{subscriptionType}\"",

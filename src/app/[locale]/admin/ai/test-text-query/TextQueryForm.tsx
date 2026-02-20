@@ -13,7 +13,7 @@ import { FormProvider } from '@/components/ui/Form';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
-import * as Icons from '@/components/shared/Icons';
+import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 import { fetchGigaChatAvailableTokens } from '@/features/ai/actions';
 import { sendAiTextQuery } from '@/features/ai/actions/sendAiTextQuery';
