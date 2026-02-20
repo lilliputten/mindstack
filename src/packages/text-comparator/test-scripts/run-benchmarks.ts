@@ -6,7 +6,7 @@ import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 
 import * as similarity from '../index';
-import { TextSimilarity } from '../TextSimilarity';
+import { TextComprarator } from '../TextComprarator';
 
 async function main() {
   const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -27,20 +27,20 @@ async function main() {
   };
 
   // XXX: Use cached optimized text instances
-  const textSimilarityCache = new Map<string, TextSimilarity>();
-  function getCachedTextSimilarity(locale: string) {
+  const textSimilarityCache = new Map<string, TextComprarator>();
+  function getCachedTextComprarator(locale: string) {
     const langId = similarity.getLanguageId(locale);
 
     if (textSimilarityCache.has(langId)) {
-      return textSimilarityCache.get(langId) as TextSimilarity;
+      return textSimilarityCache.get(langId) as TextComprarator;
     }
-    const textSimilarity = new TextSimilarity({ lang: langId });
+    const textSimilarity = new TextComprarator({ lang: langId });
     textSimilarityCache.set(langId, textSimilarity);
     return textSimilarity;
   }
 
   console.time('Initialization');
-  const promises = ['en', 'es', 'ru'].map((lang) => getCachedTextSimilarity(lang).awaitedInit());
+  const promises = ['en', 'es', 'ru'].map((lang) => getCachedTextComprarator(lang).awaitedInit());
   await Promise.all(promises);
   console.timeEnd('Initialization');
 
@@ -49,7 +49,7 @@ async function main() {
   const results = [];
 
   for (const lang of ['en', 'es', 'ru'] as const) {
-    const textSimilarity = getCachedTextSimilarity(lang);
+    const textSimilarity = getCachedTextComprarator(lang);
     for (const size of [100, 500, 2000, 5000]) {
       const text1 = generateText(size, lang);
       const text2 = generateText(size, lang);

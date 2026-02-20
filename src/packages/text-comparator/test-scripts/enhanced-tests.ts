@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { compareNGrams, compareTokens, getLanguageId } from '../helpers';
-import { TextSimilarity } from '../TextSimilarity';
+import { TextComprarator } from '../TextComprarator';
 import { enhancedTestCases } from './enhancedTestCases';
 
 const defaultEllipsis = '…';
@@ -24,20 +24,20 @@ async function enhancedTests() {
   const results = [];
 
   // XXX: Use cached optimized text instances
-  const textSimilarityCache = new Map<string, TextSimilarity>();
-  function getCachedTextSimilarity(locale: string) {
+  const textSimilarityCache = new Map<string, TextComprarator>();
+  function getCachedTextComprarator(locale: string) {
     const langId = getLanguageId(locale);
 
     if (textSimilarityCache.has(langId)) {
-      return textSimilarityCache.get(langId) as TextSimilarity;
+      return textSimilarityCache.get(langId) as TextComprarator;
     }
-    const textSimilarity = new TextSimilarity({ lang: langId });
+    const textSimilarity = new TextComprarator({ lang: langId });
     textSimilarityCache.set(langId, textSimilarity);
     return textSimilarity;
   }
 
   console.time('Initialization');
-  const promises = ['en', 'es', 'ru'].map((lang) => getCachedTextSimilarity(lang).awaitedInit());
+  const promises = ['en', 'es', 'ru'].map((lang) => getCachedTextComprarator(lang).awaitedInit());
   await Promise.all(promises);
   console.timeEnd('Initialization');
 
@@ -82,7 +82,7 @@ async function enhancedTests() {
       locale: test.locale,
     };
 
-    const textSimilarity = getCachedTextSimilarity(test.locale); // new TextSimilarity({ lang: test.locale });
+    const textSimilarity = getCachedTextComprarator(test.locale); // new TextComprarator({ lang: test.locale });
     // const stemmer = textSimilarity.getStemmerSync();
 
     /* // UNUSED: R&D test cases
@@ -98,38 +98,38 @@ async function enhancedTests() {
      * testResults.wordOrder = wordOrder.combinedSimilarity(test.str1, test.str2);
      * const endTimeWordOrder = performance.now();
      * testResults.wordOrderTime = endTimeWordOrder - startTimeWordOrder;
-     * // 6. OptimizedTextSimilarity
-     * // const optimizedTextSimilarity = getCachedOptimizedTextSimilarity(test.locale);
+     * // 6. OptimizedTextComprarator
+     * // const optimizedTextComprarator = getCachedOptimizedTextComprarator(test.locale);
      * const startTimeOptimized = performance.now();
-     * const optimizedTextSimilarity = new OptimizedTextSimilarity(test.locale);
-     * testResults.optimizedSimilarity = optimizedTextSimilarity.nGramSimilarity(test.str1, test.str2);
+     * const optimizedTextComprarator = new OptimizedTextComprarator(test.locale);
+     * testResults.optimizedSimilarity = optimizedTextComprarator.nGramSimilarity(test.str1, test.str2);
      * const endTimeOptimized = performance.now();
      * testResults.optimizedSimilarityTime = endTimeOptimized - startTimeOptimized;
      */
 
     // 7. Text similarity (Ngrams)
-    const startTimeTextSimilarityNgrams = performance.now();
+    const startTimeTextCompraratorNgrams = performance.now();
     const ngrams1 = textSimilarity.getTextNGramsSync(test.str1);
     const ngrams2 = textSimilarity.getTextNGramsSync(test.str2);
     testResults.textSimilarityNgrams = compareNGrams(ngrams1, ngrams2);
     // const ngrams1 = textSimilarity.getTextNgramsSync(test.str1);
     // const ngrams2 = textSimilarity.getTextNgramsSync(test.str2);
     // testResults.textSimilarityNgrams = compareNgramsWithCosine(ngrams1, ngrams2);
-    const endTimeTextSimilarityNgrams = performance.now();
+    const endTimeTextCompraratorNgrams = performance.now();
     testResults.textSimilarityNgramsTime =
-      endTimeTextSimilarityNgrams - startTimeTextSimilarityNgrams;
+      endTimeTextCompraratorNgrams - startTimeTextCompraratorNgrams;
 
     // 8. Text similarity (Tokens)
-    const startTimeTextSimilarityTokens = performance.now();
+    const startTimeTextCompraratorTokens = performance.now();
     // const ngrams1 = textSimilarity.getTextNGramsSync(test.str1);
     // const ngrams2 = textSimilarity.getTextNGramsSync(test.str2);
     // testResults.textSimilarity = compareNGrams(ngrams1, ngrams2);
     const tokens1 = textSimilarity.getTextTokensSync(test.str1);
     const tokens2 = textSimilarity.getTextTokensSync(test.str2);
     testResults.textSimilarityTokens = compareTokens(tokens1, tokens2);
-    const endTimeTextSimilarityTokens = performance.now();
+    const endTimeTextCompraratorTokens = performance.now();
     testResults.textSimilarityTokensTime =
-      endTimeTextSimilarityTokens - startTimeTextSimilarityTokens;
+      endTimeTextCompraratorTokens - startTimeTextCompraratorTokens;
 
     // Display results
     console.log('Results:');

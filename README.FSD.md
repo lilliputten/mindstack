@@ -1,5 +1,10 @@
 #fsd #project #structure #layers
 
+TODO:
+
+- Define the strict project structure.
+- Add fsd linters.
+
 Layers:
 
 - App — everything that makes the app run — routing, entrypoints, global styles, providers.

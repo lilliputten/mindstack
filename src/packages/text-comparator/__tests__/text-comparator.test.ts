@@ -105,7 +105,7 @@ describe('Text Similarity Comparators', () => {
     afterAll(() => {
       const outputPath = join(
         dirname(fileURLToPath(import.meta.url)),
-        'text-similarity-comparators.test-results.json',
+        'text-comparator.test-results.json',
       );
       writeFileSync(outputPath, JSON.stringify(benchmarkResults, null, 2));
     });

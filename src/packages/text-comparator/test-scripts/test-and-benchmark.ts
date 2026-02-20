@@ -46,11 +46,7 @@ async function main() {
   const projectRoot = join(__dirname, '../../../../');
 
   console.log('Running unit tests...');
-  const testResult = runCommand(
-    'pnpm',
-    ['test', 'text-similarity-comparators.test.ts'],
-    projectRoot,
-  );
+  const testResult = runCommand('pnpm', ['test', 'text-comparator.test.ts'], projectRoot);
 
   if (!testResult.success) {
     console.error('Unit tests failed:');

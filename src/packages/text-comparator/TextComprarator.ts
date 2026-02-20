@@ -9,12 +9,12 @@ const defaultN = 2;
 /** The minimal compare result which can mean that the similar texts have been compared */
 export const similarTreshold = 0.25;
 
-export interface TTextSimilarityOptions extends TStemmerOptions {
+export interface TTextCompraratorOptions extends TStemmerOptions {
   lang?: string;
   n?: number;
 }
 
-export class TextSimilarity {
+export class TextComprarator {
   #lang: string = defaultLanguage;
   #n: number = defaultN;
   #stemmerOpts: TStemmerOptions = defaultStemmerOptions;
@@ -23,11 +23,11 @@ export class TextSimilarity {
   #stopwordsPromise?: Promise<TStopwords>;
   #stopwords?: TStopwords;
 
-  constructor(opts?: TTextSimilarityOptions) {
+  constructor(opts?: TTextCompraratorOptions) {
     this.updateOptions(opts);
   }
 
-  updateOptions(opts?: TTextSimilarityOptions) {
+  updateOptions(opts?: TTextCompraratorOptions) {
     const { lang, n, ...stemmerOpts } = opts || {};
     this.#stemmerOpts = { ...this.#stemmerOpts, ...stemmerOpts };
     if (n != undefined) {

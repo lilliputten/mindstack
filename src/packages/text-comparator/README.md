@@ -2,7 +2,7 @@
 
 This package provides two text similarity comparison algorithms: n-gram histogram intersection and cosine similarity.
 
-The main component to prepare data is `TextSimilarity` (`TextSimilarity.ts`).
+The main component to prepare data is `TextComprarator` (`TextComprarator.ts`).
 
 And two main comparators (in the `helpers.ts` module) are:
 
@@ -78,13 +78,13 @@ Russian and Spanish would show similar patterns but with slightly higher memory 
 ### Running Tests
 
 ```bash
-pnpm test src/packages/text-similarity/__tests__/text-similarity-comparators.test.ts
+pnpm test src/packages/text-comparator/__tests__/text-comparator.test.ts
 ```
 
 ### Running Benchmarks
 
 ```bash
-pnpm exec tsx src/packages/text-similarity/test-scripts/run-benchmarks.ts
+pnpm exec tsx src/packages/text-comparator/test-scripts/run-benchmarks.ts
 ```
 
 ### Test Structure
@@ -100,5 +100,5 @@ The test suite includes:
 
 Benchmark and test results are automatically saved to:
 
-- `src/packages/text-similarity/test-scripts/run-benchmarks-results.json`
-- `src/packages/text-similarity/__tests__/text-similarity-comparators.test-results.json`
+- `src/packages/text-comparator/test-scripts/run-benchmarks-results.json`
+- `src/packages/text-comparator/__tests__/text-comparator.test-results.json`
