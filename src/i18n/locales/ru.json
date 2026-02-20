@@ -1108,7 +1108,8 @@
     "Settings": "Настройки",
     "Support": "Поддержка",
     "TestAiTextQuery": "Тест ИИ",
-    "WelcomePage": "Приветствие"
+    "WelcomePage": "Приветствие",
+    "UiDemoPage": "UI демо"
   },
   "NavLocaleSwitcher": {
     "label": "Сменить язык"

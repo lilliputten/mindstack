@@ -1106,7 +1106,8 @@
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
-    "WelcomePage": "¡Bienvenido!"
+    "WelcomePage": "¡Bienvenido!",
+    "UiDemoPage": "Demostración de UI"
   },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma"

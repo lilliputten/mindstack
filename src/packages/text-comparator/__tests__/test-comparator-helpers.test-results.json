@@ -1,0 +1,74 @@
+[
+  {
+    "language": "EN",
+    "size": 100,
+    "ngramTime": 0.052700000000186265,
+    "cosineTime": 0.038499999998748535
+  },
+  {
+    "language": "EN",
+    "size": 500,
+    "ngramTime": 0.03180000000065775,
+    "cosineTime": 0.04750000000058208
+  },
+  {
+    "language": "EN",
+    "size": 2000,
+    "ngramTime": 0.054200000000491855,
+    "cosineTime": 0.35570000000006985
+  },
+  {
+    "language": "EN",
+    "size": 5000,
+    "ngramTime": 0.06199999999989814,
+    "cosineTime": 0.4966999999996915
+  },
+  {
+    "language": "ES",
+    "size": 100,
+    "ngramTime": 0.0319999999992433,
+    "cosineTime": 0.019800000000032014
+  },
+  {
+    "language": "ES",
+    "size": 500,
+    "ngramTime": 0.03889999999955762,
+    "cosineTime": 0.04069999999956053
+  },
+  {
+    "language": "ES",
+    "size": 2000,
+    "ngramTime": 0.03390000000035798,
+    "cosineTime": 0.11329999999907159
+  },
+  {
+    "language": "ES",
+    "size": 5000,
+    "ngramTime": 0.0319999999992433,
+    "cosineTime": 0.3026999999983673
+  },
+  {
+    "language": "RU",
+    "size": 100,
+    "ngramTime": 0.024400000000241562,
+    "cosineTime": 0.015800000001036096
+  },
+  {
+    "language": "RU",
+    "size": 500,
+    "ngramTime": 0.03690000000096916,
+    "cosineTime": 0.03349999999954889
+  },
+  {
+    "language": "RU",
+    "size": 2000,
+    "ngramTime": 0.03389999999853899,
+    "cosineTime": 0.10750000000007276
+  },
+  {
+    "language": "RU",
+    "size": 5000,
+    "ngramTime": 0.03410000000076252,
+    "cosineTime": 0.2481999999999971
+  }
+]

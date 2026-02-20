@@ -78,13 +78,13 @@ Russian and Spanish would show similar patterns but with slightly higher memory 
 ### Running Tests
 
 ```bash
-pnpm test src/packages/text-comparator/__tests__/text-comparator.test.ts
+pnpm test src/packages/test-comparator-helpers/__tests__/test-comparator-helpers.test.ts
 ```
 
 ### Running Benchmarks
 
 ```bash
-pnpm exec tsx src/packages/text-comparator/test-scripts/run-benchmarks.ts
+pnpm exec tsx src/packages/test-comparator-helpers/test-scripts/run-benchmarks.ts
 ```
 
 ### Test Structure
@@ -100,5 +100,5 @@ The test suite includes:
 
 Benchmark and test results are automatically saved to:
 
-- `src/packages/text-comparator/test-scripts/run-benchmarks-results.json`
-- `src/packages/text-comparator/__tests__/text-comparator.test-results.json`
+- `src/packages/test-comparator-helpers/test-scripts/run-benchmarks-results.json`
+- `src/packages/test-comparator-helpers/__tests__/test-comparator-helpers.test-results.json`

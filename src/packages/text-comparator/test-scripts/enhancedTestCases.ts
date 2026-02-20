@@ -18,7 +18,7 @@ export const enhancedTestCases = [
       naturalStemming: 0.0, // Zero - completely different languages
       cosineTFIDF: 0.0, // Zero - no shared tokens
       wordOrder: 0.0, // Zero - different character sets
-      textSimilarity: 0.0, // Zero - completely different languages and scripts
+      textCmp: 0.0, // Zero - completely different languages and scripts
     },
   },
 
@@ -36,7 +36,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.9, // High similarity
       wordOrder: 0.7, // Different word order affects
       optimizedSimilarity: 0.25,
-      textSimilarity: 0.92, // High similarity despite word form differences
+      textCmp: 0.92, // High similarity despite word form differences
     },
   },
 
@@ -54,7 +54,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.8,
       wordOrder: 0.65,
       optimizedSimilarity: 0.45,
-      textSimilarity: 0.68, // Moderate similarity despite verb form differences
+      textCmp: 0.68, // Moderate similarity despite verb form differences
     },
   },
 
@@ -72,7 +72,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.45, // Different words
       wordOrder: 0.3,
       optimizedSimilarity: 0.35,
-      textSimilarity: 0.42, // Lower due to synonym/paraphrase challenge
+      textCmp: 0.42, // Lower due to synonym/paraphrase challenge
     },
   },
 
@@ -90,7 +90,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.85, // Same word set
       wordOrder: 0.6, // Lower due to order change
       optimizedSimilarity: 0.65,
-      textSimilarity: 0.9, // High similarity - same words different order
+      textCmp: 0.9, // High similarity - same words different order
     },
   },
 
@@ -109,7 +109,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.75,
       wordOrder: 0.7,
       optimizedSimilarity: 0.5,
-      textSimilarity: 0.72, // Moderate for stem matching
+      textCmp: 0.72, // Moderate for stem matching
     },
   },
 
@@ -127,7 +127,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.85, // "проблему" and "проблемы" are forms
       wordOrder: 0.8,
       optimizedSimilarity: 0.6,
-      textSimilarity: 0.85, // High for stem matching
+      textCmp: 0.85, // High for stem matching
     },
   },
 
@@ -162,7 +162,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.8,
       wordOrder: 0.65,
       optimizedSimilarity: 0.55,
-      textSimilarity: 0.82, // High for rephrased content
+      textCmp: 0.82, // High for rephrased content
     },
   },
 
@@ -197,7 +197,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.55, // Should recognize some shared concepts
       wordOrder: 0.3,
       optimizedSimilarity: 0.3,
-      textSimilarity: 0.48, // Low for different but related word choice
+      textCmp: 0.48, // Low for different but related word choice
     },
   },
 
@@ -215,7 +215,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.75,
       wordOrder: 0.7,
       optimizedSimilarity: 0.6,
-      textSimilarity: 0.75,
+      textCmp: 0.75,
     },
   },
 
@@ -233,7 +233,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.8,
       wordOrder: 0.8,
       optimizedSimilarity: 0.65,
-      textSimilarity: 0.82,
+      textCmp: 0.82,
     },
   },
 
@@ -251,7 +251,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.9,
       wordOrder: 0.9,
       optimizedSimilarity: 0.75,
-      textSimilarity: 0.8,
+      textCmp: 0.8,
     },
   },
 
@@ -269,7 +269,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.7,
       wordOrder: 0.5,
       optimizedSimilarity: 0.55,
-      textSimilarity: 0.68,
+      textCmp: 0.68,
     },
   },
 
@@ -287,7 +287,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.7,
       wordOrder: 0.65,
       optimizedSimilarity: 0.55,
-      textSimilarity: 0.7,
+      textCmp: 0.7,
     },
   },
 
@@ -305,7 +305,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.85,
       wordOrder: 0.7,
       optimizedSimilarity: 0.6,
-      textSimilarity: 0.8,
+      textCmp: 0.8,
     },
   },
 
@@ -323,7 +323,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.75,
       wordOrder: 0.8,
       optimizedSimilarity: 0.6,
-      textSimilarity: 0.75,
+      textCmp: 0.75,
     },
   },
 
@@ -341,7 +341,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.8,
       wordOrder: 0.7,
       optimizedSimilarity: 0.65,
-      textSimilarity: 0.8,
+      textCmp: 0.8,
     },
   },
 
@@ -359,7 +359,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.75,
       wordOrder: 0.6,
       optimizedSimilarity: 0.65,
-      textSimilarity: 0.78,
+      textCmp: 0.78,
     },
   },
 
@@ -377,7 +377,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.85,
       wordOrder: 0.8,
       optimizedSimilarity: 0.7,
-      textSimilarity: 0.85,
+      textCmp: 0.85,
     },
   },
 
@@ -395,7 +395,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.7,
       wordOrder: 0.7,
       optimizedSimilarity: 0.6,
-      textSimilarity: 0.75,
+      textCmp: 0.75,
     },
   },
 
@@ -413,7 +413,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.6,
       wordOrder: 0.55,
       optimizedSimilarity: 0.55,
-      textSimilarity: 0.65,
+      textCmp: 0.65,
     },
   },
 
@@ -431,7 +431,7 @@ export const enhancedTestCases = [
       cosineTFIDF: 0.85,
       wordOrder: 0.85,
       optimizedSimilarity: 0.75,
-      textSimilarity: 0.88,
+      textCmp: 0.88,
     },
   },
 ];

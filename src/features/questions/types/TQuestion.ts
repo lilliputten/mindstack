@@ -24,6 +24,10 @@ export type TNewQuestion = Partial<Question> &
       explanation?: string | null;
     }>;
   };
+export interface TNewOrOldQuestion extends TNewQuestion {
+  id?: Question['id'];
+  _count?: { answers: number };
+}
 
 /** NOTE: It's possible to extend the type in the future */
 export interface TAvailableQuestion extends TQuestion {

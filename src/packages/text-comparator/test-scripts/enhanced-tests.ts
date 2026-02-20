@@ -24,16 +24,16 @@ async function enhancedTests() {
   const results = [];
 
   // XXX: Use cached optimized text instances
-  const textSimilarityCache = new Map<string, TextComprarator>();
+  const textCmpCache = new Map<string, TextComprarator>();
   function getCachedTextComprarator(locale: string) {
     const langId = getLanguageId(locale);
 
-    if (textSimilarityCache.has(langId)) {
-      return textSimilarityCache.get(langId) as TextComprarator;
+    if (textCmpCache.has(langId)) {
+      return textCmpCache.get(langId) as TextComprarator;
     }
-    const textSimilarity = new TextComprarator({ lang: langId });
-    textSimilarityCache.set(langId, textSimilarity);
-    return textSimilarity;
+    const textCmp = new TextComprarator({ lang: langId });
+    textCmpCache.set(langId, textCmp);
+    return textCmp;
   }
 
   console.time('Initialization');
@@ -72,18 +72,18 @@ async function enhancedTests() {
        * optimizedSimilarityTime?: number;
        */
       // 7.
-      textSimilarityNgrams?: number;
-      textSimilarityNgramsTime?: number;
+      textCmpNgrams?: number;
+      textCmpNgramsTime?: number;
       // 8.
-      textSimilarityTokens?: number;
-      textSimilarityTokensTime?: number;
+      textCmpTokens?: number;
+      textCmpTokensTime?: number;
     } = {
       test: test.name,
       locale: test.locale,
     };
 
-    const textSimilarity = getCachedTextComprarator(test.locale); // new TextComprarator({ lang: test.locale });
-    // const stemmer = textSimilarity.getStemmerSync();
+    const textCmp = getCachedTextComprarator(test.locale); // new TextComprarator({ lang: test.locale });
+    // const stemmer = textCmp.getStemmerSync();
 
     /* // UNUSED: R&D test cases
      * // 3. Natural with Stemming
@@ -109,27 +109,25 @@ async function enhancedTests() {
 
     // 7. Text similarity (Ngrams)
     const startTimeTextCompraratorNgrams = performance.now();
-    const ngrams1 = textSimilarity.getTextNGramsSync(test.str1);
-    const ngrams2 = textSimilarity.getTextNGramsSync(test.str2);
-    testResults.textSimilarityNgrams = compareNGrams(ngrams1, ngrams2);
-    // const ngrams1 = textSimilarity.getTextNgramsSync(test.str1);
-    // const ngrams2 = textSimilarity.getTextNgramsSync(test.str2);
-    // testResults.textSimilarityNgrams = compareNgramsWithCosine(ngrams1, ngrams2);
+    const ngrams1 = textCmp.getTextNGramsSync(test.str1);
+    const ngrams2 = textCmp.getTextNGramsSync(test.str2);
+    testResults.textCmpNgrams = compareNGrams(ngrams1, ngrams2);
+    // const ngrams1 = textCmp.getTextNgramsSync(test.str1);
+    // const ngrams2 = textCmp.getTextNgramsSync(test.str2);
+    // testResults.textCmpNgrams = compareNgramsWithCosine(ngrams1, ngrams2);
     const endTimeTextCompraratorNgrams = performance.now();
-    testResults.textSimilarityNgramsTime =
-      endTimeTextCompraratorNgrams - startTimeTextCompraratorNgrams;
+    testResults.textCmpNgramsTime = endTimeTextCompraratorNgrams - startTimeTextCompraratorNgrams;
 
     // 8. Text similarity (Tokens)
     const startTimeTextCompraratorTokens = performance.now();
-    // const ngrams1 = textSimilarity.getTextNGramsSync(test.str1);
-    // const ngrams2 = textSimilarity.getTextNGramsSync(test.str2);
-    // testResults.textSimilarity = compareNGrams(ngrams1, ngrams2);
-    const tokens1 = textSimilarity.getTextTokensSync(test.str1);
-    const tokens2 = textSimilarity.getTextTokensSync(test.str2);
-    testResults.textSimilarityTokens = compareTokens(tokens1, tokens2);
+    // const ngrams1 = textCmp.getTextNGramsSync(test.str1);
+    // const ngrams2 = textCmp.getTextNGramsSync(test.str2);
+    // testResults.textCmp = compareNGrams(ngrams1, ngrams2);
+    const tokens1 = textCmp.getTextTokensSync(test.str1);
+    const tokens2 = textCmp.getTextTokensSync(test.str2);
+    testResults.textCmpTokens = compareTokens(tokens1, tokens2);
     const endTimeTextCompraratorTokens = performance.now();
-    testResults.textSimilarityTokensTime =
-      endTimeTextCompraratorTokens - startTimeTextCompraratorTokens;
+    testResults.textCmpTokensTime = endTimeTextCompraratorTokens - startTimeTextCompraratorTokens;
 
     // Display results
     console.log('Results:');
@@ -150,10 +148,10 @@ async function enhancedTests() {
      * );
      */
     console.log(
-      `  7. ${pad('Text Similarity (Ngrams):', column1width)} ${pad(testResults.textSimilarityNgrams.toFixed(2), 6)} expected: ${pad(test.expected?.textSimilarity?.toFixed(2) || 'N/A', 6)} elapsed: ${pad(testResults.textSimilarityNgramsTime.toFixed(2) + 'ms', 8)}`,
+      `  7. ${pad('Text Similarity (Ngrams):', column1width)} ${pad(testResults.textCmpNgrams.toFixed(2), 6)} expected: ${pad(test.expected?.textCmp?.toFixed(2) || 'N/A', 6)} elapsed: ${pad(testResults.textCmpNgramsTime.toFixed(2) + 'ms', 8)}`,
     );
     console.log(
-      `  8. ${pad('Text Similarity (Tokens):', column1width)} ${pad(testResults.textSimilarityTokens.toFixed(2), 6)} expected: ${pad(test.expected?.textSimilarity?.toFixed(2) || 'N/A', 6)} elapsed: ${pad(testResults.textSimilarityTokensTime.toFixed(2) + 'ms', 8)}`,
+      `  8. ${pad('Text Similarity (Tokens):', column1width)} ${pad(testResults.textCmpTokens.toFixed(2), 6)} expected: ${pad(test.expected?.textCmp?.toFixed(2) || 'N/A', 6)} elapsed: ${pad(testResults.textCmpTokensTime.toFixed(2) + 'ms', 8)}`,
     );
 
     console.log('\n---');
