@@ -67,7 +67,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           </div>
           {/* Generating splash */}
           <BusySplashWithInfo
-            title="Generating questions..."
+            title={t('GeneratingQuestionsWaiting')}
             className={cn(
               isDev && '__GenerateQuestionsForm_BusySplash', // DEBUG
               'absolute',

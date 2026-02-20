@@ -26,17 +26,31 @@ export async function logJsonData(
 
     for (const objId of keys) {
       const data = jsonObjects[objId];
-      let jsonString: string | undefined;
+      if (data == undefined || data === '') {
+        continue;
+      }
+      let contentString: string | undefined;
       try {
-        jsonString = data == undefined ? 'null' : JSON.stringify(data, null, 2) || 'null';
-        const buffer = Buffer.from(jsonString, 'utf-8');
-        const filename = `${objId}.json`;
-        mediaItems.push({
-          type: 'document',
-          media: new InputFile(buffer, filename),
-          // caption: filename,
-          // parse_mode: undefined,
-        } satisfies InputMediaDocument);
+        if (typeof data === 'string') {
+          const buffer = Buffer.from(data, 'utf-8');
+          const filename = `${objId}.txt`;
+          mediaItems.push({
+            type: 'document',
+            media: new InputFile(buffer, filename),
+            // caption: filename,
+            // parse_mode: undefined,
+          } satisfies InputMediaDocument);
+        } else {
+          contentString = data == undefined ? 'null' : JSON.stringify(data, null, 2) || 'null';
+          const buffer = Buffer.from(contentString, 'utf-8');
+          const filename = `${objId}.json`;
+          mediaItems.push({
+            type: 'document',
+            media: new InputFile(buffer, filename),
+            // caption: filename,
+            // parse_mode: undefined,
+          } satisfies InputMediaDocument);
+        }
       } catch (error) {
         const message = `${objId}: Error sending the data for the data entry '${objId}' of type '${typeof data}'.`;
         const details = getErrorText(error);
@@ -55,6 +69,8 @@ export async function logJsonData(
         console.error('[logJsonData]', comboMsg, {
           error,
           data,
+          contentString,
+          mediaItems,
         });
         debugger; // eslint-disable-line no-debugger
         mediaItems.push({

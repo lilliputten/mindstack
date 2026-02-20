@@ -62,9 +62,9 @@ export function DashboardHeader(props: DashboardHeaderProps) {
           )}
         >
           {heading && (
-            <h1 className="content-truncate font-heading text-2xl text-triadic2">
+            <h1 className="truncate font-heading text-2xl text-triadic2">
               {/* XXX 2026.02.20, 18:37: Testing text clipping approaches */}
-              <span className="text-gr2">{heading}</span>
+              <span className="text-gr2 truncate">{heading}</span>
             </h1>
           )}
           {text && <div className="truncate text-base opacity-50">{text}</div>}

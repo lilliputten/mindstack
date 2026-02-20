@@ -54,6 +54,7 @@
   "FinishedAt": "Finished at",
   "GenerateAnswers": "Generate Answers",
   "GenerateQuestions": "Generate Questions",
+  "GeneratingQuestionsWaiting": "Generating questions...",
   "Generation": "Generation",
   "GenerationMode": "Generation mode",
   "GoBack": "Go Back",

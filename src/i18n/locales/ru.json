@@ -51,6 +51,7 @@
   "FinishedAt": "Завершено в",
   "GenerateAnswers": "Генерировать ответы",
   "GenerateQuestions": "Генерировать вопросы",
+  "GeneratingQuestionsWaiting": "Генерация вопросов...",
   "Generation": "Генерация",
   "GenerationMode": "Режим генерации",
   "GoBack": "Назад",

@@ -52,6 +52,7 @@
   "FinishedAt": "Terminado en",
   "GenerateAnswers": "Generar Respuestas",
   "GenerateQuestions": "Generar Preguntas",
+  "GeneratingQuestionsWaiting": "Generando preguntas...",
   "Generation": "Generación",
   "GenerationMode": "Modo de generación",
   "GoBack": "Volver",
