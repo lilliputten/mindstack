@@ -74,7 +74,7 @@ export function GeneratedScreen(props: TGeneratedScreenProps) {
               {/* Display preview of the added answers */}
               <PreviewAnswers
                 answers={generatedAnswers}
-                className="content-truncate flex flex-col gap-2 overflow-hidden text-sm"
+                className="content-truncate flex w-full flex-col gap-2 overflow-hidden text-sm"
               />
             </div>
           )}

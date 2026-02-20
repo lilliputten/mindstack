@@ -37,7 +37,7 @@ export function PreviewAnswers(props: TProps) {
           <div key={id} className="content-truncate flex gap-2 text-left">
             <div
               className={cn(
-                'mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full',
+                'mt-1.5 flex size-4 shrink-0 items-center justify-center rounded-full',
                 isCorrect ? 'bg-green-500' : 'bg-theme-500/50 opacity-20',
               )}
             >

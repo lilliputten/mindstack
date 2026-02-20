@@ -120,7 +120,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           ) : !allQuestions.length ? (
             <p className="text-sm opacity-50">No questions created yet</p>
           ) : (
-            <PreviewQuestions questions={allQuestions} />
+            <PreviewQuestions className="w-full" questions={allQuestions} />
           )}
         </div>
         {/*!!topic._count?.questions && (

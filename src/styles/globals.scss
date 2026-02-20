@@ -531,6 +531,10 @@
     text-overflow: ellipsis;
   }
 
+  .content-fit {
+    overflow: hidden;
+    max-width: 100%;
+  }
   .content-truncate {
     overflow: hidden;
     text-overflow: ellipsis;

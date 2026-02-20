@@ -51,7 +51,7 @@ export function SavedScreen(props: TSavedScreenProps) {
         {/* Display preview of the added answers */}
         <PreviewAnswers
           answers={savedAnswers}
-          className="content-truncate flex flex-col gap-2 text-sm"
+          className="content-truncate flex w-full flex-col gap-2 text-sm"
         />
       </div>
 

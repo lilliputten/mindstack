@@ -159,7 +159,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         ) : !allAnswers.length ? (
           <p className="text-sm opacity-50">No answers created yet</p>
         ) : (
-          <PreviewAnswers answers={allAnswers} />
+          <PreviewAnswers className="w-full" answers={allAnswers} />
         )}
       </div>
     </div>
