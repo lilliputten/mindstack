@@ -1,7 +1,24 @@
-import { nextCosmosPage, nextCosmosStaticParams } from 'react-cosmos-next';
+import { NextCosmosParams } from 'react-cosmos-next/dist/nextTypes';
 
-import * as cosmosImports from '../../../../../cosmos.imports';
+import CosmosPageClient from './CosmosPageClient';
 
-export const generateStaticParams = nextCosmosStaticParams(cosmosImports);
+const isDev = process.env.NODE_ENV === 'development';
 
-export default nextCosmosPage(cosmosImports);
+export const generateStaticParams = async () => {
+  if (!isDev) {
+    return [];
+  }
+  const { nextCosmosStaticParams } = await import('react-cosmos-next');
+  const cosmosImports = await import('../../../../../cosmos.imports');
+  return nextCosmosStaticParams(cosmosImports);
+};
+
+export default function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<NextCosmosParams>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  return <CosmosPageClient params={params} searchParams={searchParams} />;
+}

@@ -9,4 +9,7 @@ src/generated
 # Sample data: AI generated results (including broken)
 src/features/ai/actions/sample-data
 
+# cosmos
+cosmos.imports.ts
+
 **/*.mdx

@@ -57,6 +57,7 @@ export default [
       '.next/**',
       'src/generated/prisma/**',
       'coverage',
+      'cosmos.imports.ts',
       '*~',
     ],
   },
