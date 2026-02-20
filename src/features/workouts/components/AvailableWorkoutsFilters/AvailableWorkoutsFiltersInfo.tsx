@@ -1,11 +1,13 @@
 'use client';
 
 import React from 'react';
+import { useLocale } from 'next-intl';
 
 import { truncateString } from '@/lib/helpers';
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
+import { LanguageName } from '@/components/shared';
 import { isDev } from '@/config';
 import { useCategoryNames } from '@/features/categories/hooks';
 import {
@@ -30,7 +32,10 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
   const tTexts = useT('AvailableWorkoutsFilterTexts');
 
   const activeFilterIds = getActiveFilterIds(filtersData);
+
   const { categoryNames, isLoading: isCategoryNamesLoading } = useCategoryNames();
+
+  const locale = useLocale() as TLocale;
 
   if (!activeFilterIds.length) {
     return null;
@@ -48,21 +53,24 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
   const renderItems = activeFilterIds
     .map((id) => {
       const val = convertedData?.[id];
-      // Temporarily don't use `searchText` and `searchLang` for local mode: Required loading & caching topics data for local filtering
-      if (isLocal && (id === 'searchText' || id === 'searchLang')) {
-        return;
+      if (id != 'langCode') {
+        if (id === 'langName' || val == undefined || (Array.isArray(val) && !val.length)) {
+          return;
+        }
+        if (id === 'categoryIds' && !convertedData?.categoryNames?.length) {
+          return;
+        }
       }
-      if (id === 'adminMode' && !val) {
+      // Temporarily don't use `searchText` and `langCode` (?) for local mode: Required loading & caching topics data for local filtering
+      if (isLocal && id === 'searchText') {
         return;
-      }
-      if (id === 'categoryIds' && !convertedData?.categoryNames?.length) {
-        return undefined;
       }
       const { showOnlyValue, value } = getFiltersDataValueString(id, {
         filtersData: convertedData,
         specific: true,
         t: tTexts,
       });
+      const content = truncateString(value, maxValueLength);
       return (
         <span
           key={id}
@@ -78,11 +86,23 @@ export function AvailableWorkoutsFiltersInfo(props: TProps) {
           )}
         >
           {!showOnlyValue && (
-            <>
-              <span className="opacity-50">{getFilterFieldName(id, tTexts)}:</span>{' '}
-            </>
+            <span className="mr-1 opacity-50">{getFilterFieldName(id, tTexts)}:</span>
           )}
+          {/*
           <span>{truncateString(value, maxValueLength)}</span>
+          */}
+          {id === 'langCode' ? (
+            value === '-' ? (
+              tTexts('AnyLanguage')
+            ) : (
+              <LanguageName
+                langCode={val && typeof val === 'string' ? val : locale}
+                langName={convertedData?.langName}
+              />
+            )
+          ) : (
+            <span>{content}</span>
+          )}{' '}
         </span>
       );
     })

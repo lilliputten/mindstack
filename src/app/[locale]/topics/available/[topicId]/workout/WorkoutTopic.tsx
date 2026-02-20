@@ -94,7 +94,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
         icon: Icons.Activity,
         visibleFor: 'sm',
         disabled: !allowedTraining,
-        onClick: handleResumeWorkout, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
+        onClick: handleStart, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
       },
       {
         id: 'ManageTopic',
@@ -113,7 +113,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       workout?.finished,
       workout?.started,
       allowedTraining,
-      handleResumeWorkout,
+      handleStart,
       allowedEdit,
       user,
       goToTheRoute,

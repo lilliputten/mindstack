@@ -10,10 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
+import { SelectTopicLanguageModal } from '@/components/modals/SelectTopicLanguageModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 
+import { TSelectTopicLanguageData } from '../../types';
 import { AvailableTopicsFiltersFields } from './AvailableTopicsFiltersFields';
 import { AvailableTopicsFiltersInfo } from './AvailableTopicsFiltersInfo';
 
@@ -39,6 +41,32 @@ export function AvailableTopicsFilters(props: TProps) {
     // Options...
     ignoreOnlyMy,
   } = useTopicsFiltersContext();
+
+  const [isSelectLanguageVisible, setShowSelectLanguage] = React.useState<boolean | undefined>();
+  const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
+
+  const handleSelectedLanguage = React.useCallback(
+    ({ langCode, langName, langCustom }: TSelectTopicLanguageData) => {
+      // Update the form fields
+      const opts = {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      };
+      form.setValue('langCode', langCode, opts);
+      form.setValue('langName', langName, opts);
+      form.setValue('langCustom', langCustom, opts);
+    },
+    [form],
+  );
+  const setAnyLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: '-', langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
+  const resetLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: undefined, langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
@@ -166,7 +194,12 @@ export function AvailableTopicsFilters(props: TProps) {
                       'flex flex-col gap-4',
                     )}
                   >
-                    <AvailableTopicsFiltersFields form={form} ignoreOnlyMy={ignoreOnlyMy} />
+                    <AvailableTopicsFiltersFields
+                      form={form}
+                      ignoreOnlyMy={ignoreOnlyMy}
+                      selectLanguage={() => setShowSelectLanguage(true)}
+                      resetLanguage={resetLanguage}
+                    />
                   </div>
                   <div
                     className={cn(
@@ -216,6 +249,16 @@ export function AvailableTopicsFilters(props: TProps) {
                 </form>
               </FormProvider>
             </ScrollArea>
+            <SelectTopicLanguageModal
+              isVisible={isSelectLanguageVisible}
+              langCode={langCode}
+              langName={langName}
+              langCustom={langCustom}
+              handleHide={() => setShowSelectLanguage(false)}
+              handleSelect={handleSelectedLanguage}
+              setAnyLanguage={setAnyLanguage}
+              resetLanguage={resetLanguage}
+            />
           </CardContent>
         )}
       </Card>

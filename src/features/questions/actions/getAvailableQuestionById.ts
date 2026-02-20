@@ -74,6 +74,7 @@ export async function getAvailableQuestionById(params: TGetAvailableQuestionById
       // eslint-disable-next-line no-console
       console.error('[getAvailableQuestionById] catch', {
         error,
+        params,
       });
       debugger; // eslint-disable-line no-debugger
     }

@@ -183,14 +183,14 @@ export function AvailableWorkoutsList(props: TProps) {
         <div
           className={cn(
             isDev && '__AvailableWorkoutsList_BrowseButton', // DEBUG
-            'flex items-center justify-center',
+            'flex w-full items-center justify-center',
           )}
         >
           <Link
             href={availableTopicsRoute}
             className={cn(
               buttonVariants({ variant: 'outline' }),
-              'content-truncate flex items-center gap-2',
+              'content-truncate flex w-full items-center gap-2',
             )}
           >
             <Icons.Plus className="size-4 shrink-0" />

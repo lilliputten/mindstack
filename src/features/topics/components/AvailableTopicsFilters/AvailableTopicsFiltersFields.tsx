@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
+import { LanguageName } from '@/components/shared';
 import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
@@ -34,6 +35,8 @@ import {
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
   ignoreOnlyMy?: boolean;
+  selectLanguage: () => void;
+  resetLanguage: () => void;
 }
 
 function FormSection({ children }: TPropsWithChildren) {
@@ -50,14 +53,14 @@ function FormSection({ children }: TPropsWithChildren) {
 }
 
 export function AvailableTopicsFiltersFields(props: TProps) {
-  const { className, form, ignoreOnlyMy } = props;
+  const { className, form, ignoreOnlyMy, selectLanguage, resetLanguage } = props;
   // See texts aimed to be translated in the `src/contexts/TopicsFiltersContext/TopicsFiltersTexts.ts`
   const tTexts = useT('AvailableTopicsFilterTexts');
   const t = useT();
 
   // Used keys
   const searchTextKey = React.useId();
-  const searchLangKey = React.useId();
+  const langCodeKey = React.useId();
   const hasWorkoutStatsKey = React.useId();
   const hasActiveWorkoutsKey = React.useId();
   const hasQuestionsKey = React.useId();
@@ -127,12 +130,13 @@ export function AvailableTopicsFiltersFields(props: TProps) {
             </FormItem>
           )}
         />
+        {/* searchLang
         <FormField
-          name="searchLang"
+          name="langCode"
           control={form.control}
           render={({ field }) => (
             <FormItem className={cn('flex w-full flex-col gap-2', !field.value && 'opacity-50')}>
-              <Label htmlFor={searchLangKey}>{getFilterFieldName('searchLang', tTexts)}</Label>
+              <Label htmlFor={langCodeKey}>{getFilterFieldName('langCode', tTexts)}</Label>
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input
@@ -169,6 +173,75 @@ export function AvailableTopicsFiltersFields(props: TProps) {
               <FormMessage />
             </FormItem>
           )}
+        />
+        */}
+        {/* langCode */}
+        <FormField
+          name="langCode"
+          control={form.control}
+          render={() => {
+            const [langCode, langName, langCustom] = form.watch([
+              'langCode',
+              'langName',
+              'langCustom',
+            ]);
+            return (
+              <FormItem
+                className={cn(
+                  'flex w-full flex-col gap-2',
+                  // !field.value && 'opacity-50',
+                )}
+              >
+                <Label htmlFor={langCodeKey}>{getFilterFieldName('langCode', tTexts)}</Label>
+                <Button
+                  id={langCodeKey}
+                  variant="ghostForm"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    selectLanguage();
+                  }}
+                  className="flex w-full justify-stretch gap-4 text-left"
+                >
+                  <span className="flex-1 truncate">
+                    {langCode === '-' ? (
+                      t('AnyLanguage')
+                    ) : langCode || langName ? (
+                      <LanguageName langCode={langCode} langName={langName} />
+                    ) : (
+                      t('AppLanguage')
+                    )}
+                  </span>
+                  {langCustom && (
+                    <span className="opacity-50">
+                      <Icons.Edit className="size-3" />
+                    </span>
+                  )}
+                  {langCode === '-' && (
+                    <span className="opacity-50">
+                      <Icons.Asterisk className="size-5" />
+                    </span>
+                  )}
+                  {(langCode || langName) && (
+                    <Icons.Close
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        resetLanguage();
+                      }}
+                      className="size-4"
+                    />
+                  )}
+                </Button>
+                <FormHint className="MarkdownText">
+                  {t.rich('AvailableTopicsFiltersFields.SearchForLanguageHint', {
+                    code: (chunks) => <code>{chunks}</code>,
+                  })}
+                </FormHint>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
         {!ignoreOnlyMy && (
           <FormField

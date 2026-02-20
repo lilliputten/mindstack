@@ -11,7 +11,10 @@ export const AvailableTopicsFiltersSchema = GetAvailableTopicsParamsSchema.pick(
   hasWorkoutStats: true as const,
   hasActiveWorkouts: true as const,
   hasQuestions: true as const,
-  searchLang: true as const,
+  // searchLang: true as const,
+  langCode: true as const,
+  langName: true as const,
+  // langCustom: true as const,
   categoryIds: true as const, // Adding categoryIds filter
 });
 export type TAvailableTopicsFiltersParams = z.infer<typeof AvailableTopicsFiltersSchema>;
@@ -32,7 +35,10 @@ export const orderBySelectSchema = z.enum(orderBySelectOptions);
 
 export const filtersDataSchema = z.object({
   searchText: z.string().max(maxSearchTextLength).optional(),
-  searchLang: z.string().max(maxSearchTextLength).optional(),
+  // searchLang: z.string().max(maxSearchTextLength).optional(),
+  langCode: z.string().optional(),
+  langName: z.string().optional(),
+  langCustom: z.boolean().optional(),
   showOnlyMyTopics: AvailableTopicsFiltersSchema.shape.showOnlyMyTopics,
   hasWorkoutStats: threeStateSchema,
   hasActiveWorkouts: threeStateSchema,
@@ -46,7 +52,10 @@ export type TFiltersDataKey = keyof TFiltersData;
 
 export const filtersDataDefaults: TFiltersData = {
   searchText: '',
-  searchLang: '',
+  // searchLang: '',
+  langCode: '',
+  langName: '',
+  // langCustom: false,
   showOnlyMyTopics: false,
   hasWorkoutStats: null,
   hasActiveWorkouts: null,

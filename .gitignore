@@ -48,7 +48,7 @@ next-env.d.ts
 /src/generated/prisma
 
 # Cosmos
-cosmos.imports.ts
+# cosmos.imports.ts
 .cosmos-export
 
 # Temporariy, swap & ignored files

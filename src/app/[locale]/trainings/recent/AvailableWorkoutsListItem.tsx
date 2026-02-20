@@ -8,10 +8,11 @@ import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { LanguageName, ShowTimeSince } from '@/components/shared';
+import { ShowTimeSince } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
+import { TopicProperties } from '@/features/topics/components/TopicProperties';
 import { TUserTopicWorkout } from '@/features/workouts/types';
 import { useAvailableTopicById, useSessionData } from '@/hooks';
 
@@ -37,7 +38,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     startedAt,
     finishedAt,
     workoutStats,
-    questionsCount,
+    // questionsCount,
   } = workout;
 
   if (isDev) {
@@ -74,20 +75,34 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
 
   // Workout detail items
   const detailItems = [
-    (isTopicBusy || topic?.langName || topic?.langCode) && (
-      <span key="language" className="flex items-center gap-1">
-        <Icons.Languages className="size-4 opacity-50" />
-        <span className="truncate">
-          {isTopicBusy ? (
-            <Skeleton className="h-4 w-12" />
-          ) : (
-            <LanguageName langCode={topic?.langCode} langName={topic?.langName} />
-          )}
-        </span>
-      </span>
-    ),
+    isTopicBusy ? (
+      <>
+        <Skeleton className="h-4 w-20 max-w-full" />
+        <Skeleton className="h-4 w-20 max-w-full" />
+      </>
+    ) : topic ? (
+      <TopicProperties
+        key="TopicProperties"
+        topic={topic}
+        showDates={false}
+        showAuthor={false}
+        omitExtraDetails
+      />
+    ) : null,
+    // (isTopicBusy || topic?.langName || topic?.langCode) && (
+    //   <span key="language" className="content-truncate flex items-center gap-1">
+    //     <Icons.Languages className="size-4 opacity-50" />
+    //     <span className="truncate">
+    //       {isTopicBusy ? (
+    //         <Skeleton className="h-4 w-12" />
+    //       ) : (
+    //         <LanguageName langCode={topic?.langCode} langName={topic?.langName} />
+    //       )}
+    //     </span>
+    //   </span>
+    // ),
     isActive && startedAt && (
-      <div className="flex items-center gap-1">
+      <div className="content-truncate flex items-center gap-1">
         <Icons.Clock className="size-4 opacity-50" />
         <span className="truncate">
           {t('AvailableWorkoutsListItem.TrainingDuration')}: <ShowTimeSince date={startedAt} />
@@ -95,7 +110,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
       </div>
     ),
     isActive && workout.stepIndex !== undefined && workout.questionsCount && (
-      <div className="flex items-center gap-1">
+      <div className="content-truncate flex items-center gap-1">
         <Icons.Footprints className="size-4 opacity-50" />
         <span className="truncate">
           {t('AvailableWorkoutsListItem.ProgressInfo', {
@@ -127,7 +142,7 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
     >
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between gap-4 max-sm:flex-col-reverse">
-          <div className="content-truncate flex flex-1 flex-col gap-2">
+          <div className="content-truncate flex flex-1 flex-col gap-2 max-sm:w-full">
             <CardTitle className="content-truncate text-base sm:text-lg">
               <Link href={topicRoute} className="content-truncate hover:underline">
                 {isTopicBusy ? (
@@ -183,10 +198,12 @@ export function AvailableWorkoutsListItem(props: TAvailableWorkoutsListItemProps
               </span>
               <span className="truncate font-medium">{workoutStatsCount}</span>
             </div>
+            {/*
             <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('QuestionsCount')}:</span>
               <span className="truncate font-medium">{questionsCount}</span>
             </div>
+            */}
             <div className="content-truncate flex flex-wrap items-center gap-1">
               <span className="truncate opacity-50">{t('AverageSuccessRate')}:</span>
               <span className="truncate font-medium">{Math.round(averageRatio)}%</span>

@@ -44,7 +44,6 @@ export function SettingsPage(props: TSettingsPageProps) {
   const [isReLoading, startReLoading] = React.useTransition();
   const [isReloadConfirmModalVisible, setReloadConfirmModalVisible] = React.useState(false);
   const t = useT();
-  const formSchema = React.useMemo(() => settingsSchema, []);
   const [isUserReady, setIsUserReady] = React.useState<boolean>(false);
 
   const goBack = useGoBack(rootAliasRoute);
@@ -53,7 +52,7 @@ export function SettingsPage(props: TSettingsPageProps) {
   const form = useForm<TSettingsFormData>({
     mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
     criteriaMode: 'all', // Display all validation errors or one at a time.
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(settingsSchema),
     values: settings,
   });
 

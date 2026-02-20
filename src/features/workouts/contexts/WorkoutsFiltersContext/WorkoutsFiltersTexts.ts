@@ -44,7 +44,8 @@ export const filterFieldNames: Record<TFiltersDataKey, string> = {
   hasActiveWorkouts: 'Label-HasActiveWorkouts',
   langCode: 'Label-LangCode',
   langName: 'Label-LangName',
-  searchLang: 'Label-SearchLang',
+  langCustom: 'Label-LangCustom', // ???
+  // searchLang: 'Label-SearchLang',
   minStarted: 'Label-MinStarted',
   maxStarted: 'Label-MaxStarted',
   minFinished: 'Label-MinFinished',

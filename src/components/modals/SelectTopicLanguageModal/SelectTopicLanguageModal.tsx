@@ -22,13 +22,47 @@ import { SelectLanguagePredefinedForm } from './SelectLanguagePredefinedForm';
 
 interface TSelectTopicLanguageModalProps extends TTopicLanguageData {
   topicId?: TTopicId;
+  isVisible?: boolean;
+  // Handlers...
+  handleSelect?: (data: TSelectTopicLanguageData) => void;
+  handleHide?: () => void;
+  setAnyLanguage?: () => void;
+  resetLanguage?: () => void;
 }
 
 export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) {
-  const { langCode, langName, langCustom, topicId } = props;
+  const {
+    langCode,
+    langName,
+    langCustom,
+    topicId,
+    isVisible: defaultVisible = false,
+    // Handlers...
+    handleSelect,
+    handleHide,
+    setAnyLanguage,
+    resetLanguage,
+  } = props;
+
+  const [isVisible, setVisible] = React.useState<boolean | undefined>(defaultVisible);
+
+  React.useEffect(() => {
+    setVisible(defaultVisible);
+  }, [defaultVisible]);
+
   const router = useRouter();
-  const hideModal = React.useCallback(() => router.back(), [router]);
+
+  const hideModal = React.useCallback(() => {
+    setVisible(false);
+    if (handleHide) {
+      handleHide();
+    } else {
+      router.back();
+    }
+  }, [handleHide, router]);
+
   const { isMobile } = useMediaQuery();
+
   const t = useT();
 
   // Change a browser title
@@ -43,26 +77,34 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
   const selectLanguage = React.useCallback(
     (selectedLanguage: TTopicLanguageData) => {
       // Dispatch a custom event with the selected language data
-      const topicLang: TSelectTopicLanguageData = { topicId, ...selectedLanguage };
-      const event = new CustomEvent<TSelectTopicLanguageData>(selectTopicEventName, {
-        detail: topicLang,
-        bubbles: true,
-      });
-      window.dispatchEvent(event);
+      const data: TSelectTopicLanguageData = { topicId, ...selectedLanguage };
+      if (handleSelect) {
+        handleSelect(data);
+      } else {
+        const event = new CustomEvent<TSelectTopicLanguageData>(selectTopicEventName, {
+          detail: data,
+          bubbles: true,
+        });
+        window.dispatchEvent(event);
+      }
       // Close the modal
       hideModal();
     },
-    [hideModal, topicId],
+    [handleSelect, hideModal, topicId],
   );
+
+  if (isVisible == undefined) {
+    return null;
+  }
 
   return (
     <Modal
-      isVisible
+      isVisible={isVisible}
       hideModal={hideModal}
       className={cn(
         isDev && '__SelectTopicLanguageModal', // DEBUG
         'gap-0 text-white',
-        // isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        'flex flex-col',
       )}
     >
       <div
@@ -70,6 +112,7 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
           isDev && '__SelectTopicLanguageModal_Header', // DEBUG
           !isMobile && 'max-h-[90vh]',
           'flex flex-col border-b bg-theme px-8 py-4 text-theme-foreground',
+          'w-full overflow-hidden',
         )}
       >
         <DialogTitle className="DialogTitle">
@@ -97,16 +140,22 @@ export function SelectTopicLanguageModal(props: TSelectTopicLanguageModalProps) 
           </TabsList>
           <TabsContent className="TabsContent" value="Predefined">
             <SelectLanguagePredefinedForm
-              selectLanguage={selectLanguage}
               langCode={langCode}
               langName={langName}
+              selectLanguage={selectLanguage}
+              hideModal={hideModal}
+              setAnyLanguage={setAnyLanguage}
+              resetLanguage={resetLanguage}
             />
           </TabsContent>
           <TabsContent className="TabsContent" value="Custom">
             <SelectLanguageCustomForm
-              selectLanguage={selectLanguage}
               langCode={langCode}
               langName={langName}
+              selectLanguage={selectLanguage}
+              hideModal={hideModal}
+              setAnyLanguage={setAnyLanguage}
+              resetLanguage={resetLanguage}
             />
           </TabsContent>
         </Tabs>

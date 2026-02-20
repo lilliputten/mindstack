@@ -1,3 +1,5 @@
+import * as Icons from './Icons';
+
 export * from './BusySplash';
 export * from './BusySplashWithInfo';
 export * from './ContentFooter';
@@ -9,7 +11,7 @@ export * from './FormColumns';
 export * from './FormSection';
 export * from './GenericSkeleton';
 export * from './IconTypes';
-export * from './Icons';
+// export * from './Icons';
 export * from './ImageUpload';
 export * from './LanguageName';
 export * from './MaxWidthWrapper';
@@ -18,3 +20,5 @@ export * from './ScrollableLayout';
 export * from './ShowTimeSince';
 export * from './SuccessSplash';
 export * from './UserAvatar';
+
+export { Icons };

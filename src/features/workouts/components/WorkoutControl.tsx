@@ -101,7 +101,7 @@ export function WorkoutControl(props: TWorkoutControlProps) {
     >
       <p
         className={cn(
-          isDev && '__WorkoutControl_Info', // DEBUG
+          isDev && '__WorkoutControl_WorkoutStateDetails', // DEBUG
           'content-truncate text-center text-sm',
         )}
       >

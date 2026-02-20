@@ -6,7 +6,7 @@ interface TOptions {
 
 /**
  * Parses URL query parameters using the filters data schema
- * @param searchParamsString - The URL search parameters string (e.g., "?searchLang=en&categoryIds=cat1,cat2")
+ * @param searchParamsString - The URL search parameters string (e.g., "?langCode=en&categoryIds=cat1,cat2")
  * @returns Partial<TFiltersData> with parsed parameters or empty object if parsing fails
  */
 export function parseUrlFilters(

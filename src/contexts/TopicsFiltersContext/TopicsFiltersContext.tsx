@@ -105,7 +105,9 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
     return {
       ...filtersData,
       showOnlyMyTopics: !!settings.showOnlyMyTopics,
-      searchLang: settings.langCode,
+      // searchLang: settings.langCode,
+      langCode: settings.langCode,
+      langName: settings.langName,
     } satisfies TFiltersData;
   }, [settings, augmentDefaults, isSettingsReady, ignoreOnlyMy]);
   memo.defaultFiltersData = defaultFiltersData;
@@ -127,11 +129,17 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
           filtersData = { ...filtersData };
           delete filtersData.showOnlyMyTopics;
         }
-        const { searchLang } = filtersData;
+        const {
+          // searchLang,
+          langCode,
+          langName,
+        } = filtersData;
         const realData = {
           ...filtersData,
           // NOTE: Uses current locale if `searchLang` is empty, don't filter for language if equals '-'
-          searchLang: searchLang === '-' ? undefined : !searchLang ? locale : searchLang,
+          // searchLang: searchLang === '-' ? undefined : !searchLang ? locale : searchLang,
+          langCode: langCode === '-' ? undefined : !langCode ? locale : langCode,
+          langName: langCode && langCode !== '-' && langName ? langName : undefined,
         };
         // Compare data with defaults (fuzzy)
         const isDefaults = compareWithDefaults(memo.defaultFiltersData, filtersData, ignoreOnlyMy);
@@ -256,7 +264,9 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
       const trimmedFiltersData: TFiltersData = {
         ...filtersData,
         searchText: filtersData.searchText?.trim() || '',
-        searchLang: filtersData.searchLang?.trim() || '',
+        // searchLang: filtersData.searchLang?.trim() || '',
+        langCode: filtersData.langCode?.trim() || '',
+        langName: filtersData.langName?.trim() || '',
       };
       if (ignoreOnlyMy) {
         delete trimmedFiltersData.showOnlyMyTopics;

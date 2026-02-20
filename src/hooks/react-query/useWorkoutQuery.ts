@@ -248,7 +248,12 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
   const startWorkout = React.useCallback(() => {
     const { questionIds } = memo;
     const workout = memo.workout
-      ? { ...memo.workout, questionsOrder: shuffleQuestionsStr(questionIds) }
+      ? {
+          ...memo.workout,
+          // Update questions count each time
+          questionsCount: questionIds?.length || 0,
+          questionsOrder: shuffleQuestionsStr(questionIds),
+        }
       : createNewWorkoutData();
     const now = new Date();
     const updatedWorkout: TWorkoutData = {

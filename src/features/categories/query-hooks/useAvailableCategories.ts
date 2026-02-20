@@ -156,10 +156,10 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const loadedCount = (allPages as TGetResults<TAvailableCategory>[]).reduce(
-        (acc, page) => acc + page.items.length,
+        (acc, page) => acc + (page?.items.length || 0),
         0,
       );
-      return loadedCount < (lastPage as TGetResults<TAvailableCategory>).totalCount
+      return loadedCount < (lastPage as TGetResults<TAvailableCategory>)?.totalCount
         ? loadedCount
         : undefined;
     },

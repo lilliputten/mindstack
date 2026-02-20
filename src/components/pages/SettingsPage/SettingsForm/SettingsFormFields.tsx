@@ -40,11 +40,12 @@ interface TSettingsFormFieldsProps {
   onCancel?: (ev: React.MouseEvent) => void;
   form: UseFormReturn<TSettingsFormData>;
   className?: string;
-  selectLanguage: (ev: React.MouseEvent) => void;
+  selectLanguage: () => void;
+  resetLanguage: () => void;
 }
 
 export function SettingsFormFields(props: TSettingsFormFieldsProps) {
-  const { className, form, selectLanguage } = props;
+  const { className, form, selectLanguage, resetLanguage } = props;
 
   const t = useT();
 
@@ -60,15 +61,15 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
   const themeKey = React.useId();
   const langCodeKey = React.useId();
 
-  // Reset language
-  const resetLang = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    const opts = { shouldDirty: true, shouldValidate: true };
-    form.setValue('langCode', undefined, opts);
-    form.setValue('langName', undefined, opts);
-    form.setValue('langCustom', undefined, opts);
-  };
+  // // Reset language
+  // const resetLang = (ev: React.MouseEvent) => {
+  //   ev.preventDefault();
+  //   ev.stopPropagation();
+  //   const opts = { shouldDirty: true, shouldValidate: true };
+  //   form.setValue('langCode', undefined, opts);
+  //   form.setValue('langName', undefined, opts);
+  //   form.setValue('langCustom', undefined, opts);
+  // };
 
   const extendedLocaleNames = React.useMemo<Record<string, string>>(
     () => ({ ...localeNames, auto: t('SettingsFormFields.AutoOption') }),
@@ -353,11 +354,17 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
-                  onClick={selectLanguage}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    selectLanguage();
+                  }}
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langCode || langName ? (
+                    {langCode === '-' ? (
+                      t('AnyLanguage')
+                    ) : langCode || langName ? (
                       <LanguageName langCode={langCode} langName={langName} />
                     ) : (
                       <>{t('SettingsFormFields.SelectLanguageButton')}</>
@@ -368,7 +375,21 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
                       <Icons.Edit className="size-3" />
                     </span>
                   )}
-                  {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
+                  {langCode === '-' && (
+                    <span className="opacity-50">
+                      <Icons.Asterisk className="size-5" />
+                    </span>
+                  )}
+                  {(langCode || langName) && (
+                    <Icons.Close
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        resetLanguage();
+                      }}
+                      className="size-4"
+                    />
+                  )}
                 </Button>
                 <FormHint>{t('SettingsFormFields.TopicsLanguageHint')}</FormHint>
                 <FormMessage />

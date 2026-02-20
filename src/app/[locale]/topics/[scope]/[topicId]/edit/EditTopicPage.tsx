@@ -15,6 +15,7 @@ import { useT } from '@/i18n';
 import { Card } from '@/components/ui/Card';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { SelectTopicLanguageModal } from '@/components/modals/SelectTopicLanguageModal';
 import {
   maxNameLength,
   maxTextLength,
@@ -26,10 +27,7 @@ import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { updateTopic } from '@/features/topics/actions';
 import { useTopicsBreadcrumbsItems } from '@/features/topics/components/TopicsBreadcrumbs';
 import { TAvailableTopic, TTopicId } from '@/features/topics/types';
-import {
-  selectTopicEventName,
-  TSelectTopicLanguageData,
-} from '@/features/topics/types/TSelectTopicLanguageData';
+import { TSelectTopicLanguageData } from '@/features/topics/types/TSelectTopicLanguageData';
 import {
   useAvailableTopicById,
   useAvailableTopicsByScope,
@@ -181,6 +179,9 @@ export function EditTopicPage(props: TEditTopicPageProps) {
 
   const isSubmitEnabled = !isPending && isDirty && isValid;
 
+  const [isSelectLanguageVisible, setShowSelectLanguage] = React.useState<boolean | undefined>();
+  const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
+
   const handleReload = React.useCallback(() => {
     availableTopicQuery
       .refetch()
@@ -299,39 +300,60 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     goToTheRoute(url);
   }, [goToTheRoute, routePath, topic]);
 
-  // Listen for the select language modal custom event
-  React.useEffect(() => {
-    const handleLanguageSelected = (event: CustomEvent<TSelectTopicLanguageData>) => {
-      const { langCode, langName, langCustom, topicId } = event.detail;
-      // Make sure the event is for this topic
-      if (topicId === topic.id) {
-        // Update the form fields
-        const opts = { shouldDirty: true, shouldValidate: true };
-        form.setValue('langCode', langCode, opts);
-        form.setValue('langName', langName, opts);
-        form.setValue('langCustom', langCustom, opts);
-      }
-    };
-    window.addEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
-    return () => {
-      window.removeEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
-    };
-  }, [topic, form]);
-
-  // Select language modal trigger
-  const selectLanguage = React.useCallback(
-    (ev: React.MouseEvent) => {
-      ev.preventDefault();
-      const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
-      const params = new URLSearchParams();
-      if (langCode) params.append('langCode', langCode);
-      if (langName) params.append('langName', langName);
-      if (langCustom) params.append('langCustom', String(langCustom));
-      const url = `${routePath}/${topic.id}/edit/select-language?${params.toString()}`;
-      goToTheRoute(url);
+  // // Listen for the select language modal custom event
+  // React.useEffect(() => {
+  //   const handleLanguageSelected = (event: CustomEvent<TSelectTopicLanguageData>) => {
+  //     const { langCode, langName, langCustom, topicId } = event.detail;
+  //     // Make sure the event is for this topic
+  //     if (topicId === topic.id) {
+  //       // Update the form fields
+  //       const opts = { shouldDirty: true, shouldValidate: true };
+  //       form.setValue('langCode', langCode, opts);
+  //       form.setValue('langName', langName, opts);
+  //       form.setValue('langCustom', langCustom, opts);
+  //     }
+  //   };
+  //   window.addEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
+  //   return () => {
+  //     window.removeEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
+  //   };
+  // }, [topic, form]);
+  // // Select language modal trigger
+  // const selectLanguage = React.useCallback(
+  //   (ev: React.MouseEvent) => {
+  //     ev.preventDefault();
+  //     const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
+  //     const params = new URLSearchParams();
+  //     if (langCode) params.append('langCode', langCode);
+  //     if (langName) params.append('langName', langName);
+  //     if (langCustom) params.append('langCustom', String(langCustom));
+  //     const url = `${routePath}/${topic.id}/edit/select-language?${params.toString()}`;
+  //     goToTheRoute(url);
+  //   },
+  //   [form, topic, routePath, goToTheRoute],
+  // );
+  const handleSelectedLanguage = React.useCallback(
+    ({ langCode, langName, langCustom }: TSelectTopicLanguageData) => {
+      // Update the form fields
+      const opts = {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      };
+      form.setValue('langCode', langCode, opts);
+      form.setValue('langName', langName, opts);
+      form.setValue('langCustom', langCustom, opts);
     },
-    [form, topic, routePath, goToTheRoute],
+    [form],
   );
+  const setAnyLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: '-', langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
+  const resetLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: undefined, langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -416,8 +438,19 @@ export function EditTopicPage(props: TEditTopicPageProps) {
           form={form}
           handleFormSubmit={handleFormSubmit}
           handleCancel={handleCancel}
-          selectLanguage={selectLanguage}
+          selectLanguage={() => setShowSelectLanguage(true)}
+          resetLanguage={resetLanguage}
           isPending={isPending}
+        />
+        <SelectTopicLanguageModal
+          isVisible={isSelectLanguageVisible}
+          langCode={langCode}
+          langName={langName}
+          langCustom={langCustom}
+          handleHide={() => setShowSelectLanguage(false)}
+          handleSelect={handleSelectedLanguage}
+          setAnyLanguage={setAnyLanguage}
+          resetLanguage={resetLanguage}
         />
       </Card>
     </>

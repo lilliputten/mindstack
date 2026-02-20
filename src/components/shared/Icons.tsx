@@ -23,6 +23,8 @@ export const {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Asterisk,
+  Ban,
   BookMarked,
   BookOpen,
   BookOpenCheck,

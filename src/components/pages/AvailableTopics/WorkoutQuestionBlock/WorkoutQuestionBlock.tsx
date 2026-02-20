@@ -4,10 +4,13 @@ import React from 'react';
 import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
-import { useT } from '@/i18n';
+import { Link, useT } from '@/i18n';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
+import { buttonVariants } from '@/components/ui/Button';
 import { WorkoutQuestion } from '@/components/pages/AvailableTopics/WorkoutQuestion/WorkoutQuestion';
+import { Icons } from '@/components/shared';
 import { PageError } from '@/components/shared/PageError';
+import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { useAvailableAnswers } from '@/hooks';
@@ -24,7 +27,7 @@ export function WorkoutQuestionBlock() {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const workoutContext = useWorkoutContext();
   const {
-    // topicId,
+    topicId,
     workout,
     questionOrderedIds,
     saveResultAndGoNext,
@@ -173,7 +176,17 @@ export function WorkoutQuestionBlock() {
   if (!question) {
     return (
       <PageError
-        error={t('WorkoutQuestion.NotFoundQuestion', { questionId })}
+        error={t('WorkoutQuestion.NotFoundQuestion')}
+        explanation={t('WorkoutQuestion.NotFoundQuestionExplanation', { questionId })}
+        extraActions={
+          <Link
+            href={`${availableTopicsRoute}/${topicId}/workout` as TRoutePath}
+            className={cn(buttonVariants({ variant: 'theme' }), 'content-truncate flex gap-2')}
+          >
+            <Icons.Rocket className="size-4 shrink-0" />
+            <span className="truncate">{t('ToTraining')}</span>
+          </Link>
+        }
         padded={false}
         border={false}
       />

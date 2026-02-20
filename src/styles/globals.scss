@@ -242,7 +242,14 @@
     // min-width: auto !important;
     min-width: var(--radix-popper-anchor-width) !important;
     max-width: var(--radix-popper-available-width);
-    // max-width: var(--radix-popper-anchor-width);
+    // Trying to limite the height of the popover on small screens to fit all the elements
+    &,
+    & > [role='dialog'],
+    & > [role='dialog'] > div,
+    & > [role='listbox'],
+    & > [role='listbox'] > div {
+      max-height: min(50dvh, var(--radix-popper-available-height));
+    }
   }
 }
 

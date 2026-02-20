@@ -132,7 +132,7 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
     staleTime, // Data validity period
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
+      const loadedCount = allPages.reduce((acc, page) => acc + (page?.items.length || 0), 0);
       return loadedCount < lastPage.totalCount ? loadedCount : undefined;
     },
     queryFn,

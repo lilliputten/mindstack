@@ -2,10 +2,10 @@ import { parseUrlFilters } from '../parseUrlFilters';
 
 // Test the URL parsing helper function directly
 describe('parseUrlFilters Function', () => {
-  it('should parse searchLang parameter from URL', () => {
-    const result = parseUrlFilters('?searchLang=en');
+  it('should parse langCode parameter from URL', () => {
+    const result = parseUrlFilters('?langCode=en');
 
-    expect(result.searchLang).toBe('en');
+    expect(result.langCode).toBe('en');
   });
 
   it('should parse categoryIds parameter from URL', () => {
@@ -15,9 +15,9 @@ describe('parseUrlFilters Function', () => {
   });
 
   it('should parse multiple parameters from URL', () => {
-    const result = parseUrlFilters('?searchLang=es&categoryIds=cat1,cat2&searchText=test');
+    const result = parseUrlFilters('?langCode=es&categoryIds=cat1,cat2&searchText=test');
 
-    expect(result.searchLang).toBe('es');
+    expect(result.langCode).toBe('es');
     expect(result.categoryIds).toEqual(['cat1', 'cat2']);
     expect(result.searchText).toBe('test');
   });

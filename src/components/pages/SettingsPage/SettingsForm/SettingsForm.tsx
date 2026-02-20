@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { UseFormReturn } from 'react-hook-form';
 
 import { getErrorText } from '@/lib/helpers';
@@ -9,10 +8,11 @@ import { removeNullUndefinedValues } from '@/lib/helpers/objects';
 import { cn } from '@/lib/utils';
 import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { SelectTopicLanguageModal } from '@/components/modals/SelectTopicLanguageModal';
 import { isDev } from '@/constants';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { settingsSchema, TSettings } from '@/features/settings/types';
-import { selectTopicEventName, TSelectTopicLanguageData } from '@/features/topics/types';
+import { TSelectTopicLanguageData } from '@/features/topics/types';
 import { TUserId } from '@/features/users/types/TUser';
 
 import { SettingsFormFields } from './SettingsFormFields';
@@ -28,41 +28,36 @@ interface TSettingsFormProps {
 export function SettingsForm(props: TSettingsFormProps) {
   const { form, settings, className, userId } = props;
   const { updateAndSaveSettings, inited, userInited } = useSettingsContext();
-  const router = useRouter();
   const [isPending, startTransition] = React.useTransition();
 
   // @see https://react-hook-form.com/docs/useform/formstate
   const { isDirty, isValid } = form.formState;
 
-  // Listen for the select language modal custom event
-  React.useEffect(() => {
-    const handleLanguageSelected = (event: CustomEvent<TSelectTopicLanguageData>) => {
-      const { langCode, langName, langCustom } = event.detail;
+  const [isSelectLanguageVisible, setShowSelectLanguage] = React.useState<boolean | undefined>();
+  const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
+
+  const handleSelectedLanguage = React.useCallback(
+    ({ langCode, langName, langCustom }: TSelectTopicLanguageData) => {
       // Update the form fields
-      const opts = { shouldDirty: true, shouldValidate: true };
+      const opts = {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      };
       form.setValue('langCode', langCode, opts);
       form.setValue('langName', langName, opts);
       form.setValue('langCustom', langCustom, opts);
-    };
-    window.addEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
-    return () => {
-      window.removeEventListener(selectTopicEventName, handleLanguageSelected as EventListener);
-    };
-  }, [form]);
-
-  // Select language modal trigger
-  const selectLanguage = React.useCallback(
-    (ev: React.MouseEvent) => {
-      ev.preventDefault();
-      const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
-      const params = new URLSearchParams();
-      if (langCode) params.append('langCode', langCode);
-      if (langName) params.append('langName', langName);
-      if (langCustom) params.append('langCustom', String(langCustom));
-      router.push(`/settings/select-language?${params.toString()}`);
     },
-    [form, router],
+    [form],
   );
+  const setAnyLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: '-', langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
+  const resetLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: undefined, langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
 
   const isReady = userId ? userInited : inited;
   const isSubmitEnabled = isReady && !isPending && isDirty && isValid;
@@ -116,10 +111,21 @@ export function SettingsForm(props: TSettingsFormProps) {
             isSubmitEnabled={isSubmitEnabled}
             isPending={isWaiting}
             onCancel={handleCancel}
-            selectLanguage={selectLanguage}
+            selectLanguage={() => setShowSelectLanguage(true)}
+            resetLanguage={resetLanguage}
           />
         </ScrollArea>
       </form>
+      <SelectTopicLanguageModal
+        isVisible={isSelectLanguageVisible}
+        langCode={langCode}
+        langName={langName}
+        langCustom={langCustom}
+        handleHide={() => setShowSelectLanguage(false)}
+        handleSelect={handleSelectedLanguage}
+        setAnyLanguage={setAnyLanguage}
+        resetLanguage={resetLanguage}
+      />
     </FormProvider>
   );
 }

@@ -18,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { LanguageName } from '@/components/shared';
-import * as Icons from '@/components/shared/Icons';
+// import * as Icons from '@/components/shared/Icons';
+import { Icons, LanguageName } from '@/components/shared';
+import { isDev } from '@/config';
 import { predefinedLanguages } from '@/constants/languages';
 import { TTopicLanguageData } from '@/features/topics/types';
 
@@ -30,14 +31,26 @@ interface TFormData {
 }
 
 interface TProps {
-  selectLanguage: (language: TTopicLanguageData) => void; //Promise<TSelectTopicLanguageData[]>;
   className?: string;
   langCode?: TLanguageId;
   langName?: string;
+  selectLanguage: (language: TTopicLanguageData) => void; //Promise<TSelectTopicLanguageData[]>;
+  // Handlers...
+  hideModal: () => void;
+  setAnyLanguage?: () => void;
+  resetLanguage?: () => void;
 }
 
 export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
-  const { className, selectLanguage, langCode } = props;
+  const {
+    className,
+    langCode,
+    // Handlers...
+    selectLanguage,
+    hideModal,
+    setAnyLanguage,
+    resetLanguage,
+  } = props;
   const t = useT();
   const languagesList = React.useMemo(() => [...predefinedLanguages], []);
   const formSchema = React.useMemo(
@@ -57,7 +70,7 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
 
   const form = useForm<TFormData>({
     // @see https://react-hook-form.com/docs/useform
-    mode: 'all', // Validation strategy before submitting behaviour.
+    mode: 'onChange', // Validation strategy before submitting behaviour.
     criteriaMode: 'all', // Display all validation errors or one at a time.
     resolver: zodResolver(formSchema),
     defaultValues, // Default values for the form.
@@ -105,30 +118,48 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
   const registerSelectField = register('id', { required: true });
 
   return (
-    <div className={cn(className, '__SelectLanguagePredefinedForm', 'py-2')}>
-      <p className="Text mb-4 text-[13px] text-muted-foreground">
+    <div
+      className={cn(
+        className,
+        isDev && '__SelectLanguagePredefinedForm', // DEBUG
+        'w-full py-2',
+      )}
+    >
+      <p
+        className={cn(
+          className,
+          isDev && '__SelectLanguagePredefinedForm_Text', // DEBUG
+          'mb-4 text-[13px] text-muted-foreground',
+        )}
+      >
         {t('SelectLanguagePredefinedForm.SelectLanguageText')}
       </p>
       <form onSubmit={onSubmit}>
         <div className="flex w-full flex-col items-center gap-4">
           <div className="flex w-full flex-col gap-4">
-            <Label className="-sr-only" htmlFor="id">
-              {t('SelectLanguagePredefinedForm.SelectLanguage')}
-            </Label>
+            <Label>{t('SelectLanguagePredefinedForm.SelectLanguage')}</Label>
             <Select
               {...registerSelectField}
               value={watch('id')}
               onValueChange={(value) =>
                 registerSelectField.onChange({ target: { name: 'id', value } })
               }
+              // open={true} // DEBUG
             >
               <SelectTrigger
-                className="SelectLanguagePredefinedForm__SelectTrigger flex-1"
+                className={cn(
+                  isDev && '__SelectLanguagePredefinedForm__SelectTrigger', // DEBUG
+                  'flex-1',
+                )}
                 aria-label="Language"
               >
                 <SelectValue placeholder={t('SelectLanguagePredefinedForm.SelectLanguage')} />
               </SelectTrigger>
-              <SelectContent className="SelectLanguagePredefinedForm__SelectContent">
+              <SelectContent
+                className={cn(
+                  isDev && '__SelectLanguagePredefinedForm__SelectContent', // DEBUG
+                )}
+              >
                 {languagesList.map(({ id, name }) => (
                   <SelectItem value={id} key={id} className="text-ellipsis">
                     <LanguageName langCode={id} langName={name} />
@@ -141,15 +172,52 @@ export const SelectLanguagePredefinedForm: React.FC<TProps> = (props) => {
               {t('SelectLanguagePredefinedForm.SelectLanguageFormTheList')}
             </p>
           </div>
-          <div className="flex w-full gap-4">
+          <div className="flex w-full flex-wrap gap-1">
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'default' : 'disabled'}
               disabled={!isSubmitEnabled}
               className="flex shrink-0 gap-2"
             >
-              <Icons.Check className="size-4" />
+              <Icons.Check className="size-4 shrink-0" />
               <span>{t('SelectLanguagePredefinedForm.Select')}</span>
+            </Button>
+            {setAnyLanguage && (
+              <Button
+                variant="ghost"
+                className="flex shrink-0 gap-2"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  setAnyLanguage();
+                }}
+              >
+                <Icons.Asterisk className="size-6 shrink-0" />
+                <span>{t('AnyLanguage')}</span>
+              </Button>
+            )}
+            {resetLanguage && (
+              <Button
+                variant="ghost"
+                className="flex shrink-0 gap-2"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  resetLanguage();
+                }}
+              >
+                <Icons.Ban className="size-4 shrink-0" />
+                <span>{t('Reset')}</span>
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              className="flex shrink-0 gap-2"
+              onClick={(ev) => {
+                ev.preventDefault();
+                hideModal();
+              }}
+            >
+              <Icons.X className="size-4 shrink-0" />
+              <span>{t('Close')}</span>
             </Button>
           </div>
         </div>
