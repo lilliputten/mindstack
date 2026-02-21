@@ -120,8 +120,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  webpack: (config, ctx) => {
-    const { isServer } = ctx;
+  webpack: (config, _ctx) => {
+    // const { isServer } = ctx;
+
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
@@ -136,27 +137,32 @@ const nextConfig: NextConfig = {
         config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
     }
 
-    const terserPlugin = config.optimization.minimizer.find(
-      (minimizer: { constructor: { name: string } }) =>
-        minimizer.constructor.name === 'TerserPlugin',
-    );
-
-    if (terserPlugin) {
-      // Modify Terser options to keep debugger statements
-      terserPlugin.options.terserOptions.compress.drop_debugger = false;
-      // Optionally, prevent console logs from being dropped
-      terserPlugin.options.terserOptions.compress.drop_console = false;
-    }
-
-    // Prevent Node.js modules from loading on client
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        path: false,
-        util: false,
-      };
-    }
+    /*
+     * const minimizers = config.optimization.minimizer;
+     * const terserPlugin = minimizers.find(
+     *   (minimizer: { constructor: { name: string } }) =>
+     *     minimizer.constructor.name === 'TerserPlugin',
+     * );
+     * if (terserPlugin) {
+     *   // @see https://webpack.js.org/plugins/terser-webpack-plugin/#terseroptions
+     *   // Modify Terser options to keep debugger statements
+     *   terserPlugin.options.terserOptions.compress.drop_debugger = false;
+     *   // Optionally, prevent console logs from being dropped
+     *   terserPlugin.options.terserOptions.compress.drop_console = false;
+     *   // terserPlugin.options.terserOptions.mangle = false;
+     * }
+     */
+    /*
+     * // Prevent Node.js modules from loading on client
+     * if (!isServer) {
+     *   config.resolve.fallback = {
+     *     ...config.resolve.fallback,
+     *     fs: false,
+     *     path: false,
+     *     util: false,
+     *   };
+     * }
+     */
 
     return config;
   },
@@ -182,8 +188,17 @@ const nextConfig: NextConfig = {
       bodySizeLimit: `${blobBodySizeLimitMb}mb`,
     },
   },
-  compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
+  compress: false, // !isDev, // In favor of xtunnel (it loses `gzip` header)
   reactStrictMode: false,
+  /* // DEBUG: Keep unminified code
+   * productionBrowserSourceMaps: true,
+   * swcMinify: false,
+   * swcMinifyDebugOptions: {
+   *   mangle: {
+   *     reserved: ['self', 'global'],
+   *   },
+   * },
+   */
 };
 
 export default withNextIntl(nextConfig);
