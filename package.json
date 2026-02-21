@@ -6,7 +6,7 @@
   "license": "MIT",
   "version": "0.1.3",
   "timestamp": "2026.02.20 18:59:58 +0300",
-  "changed": "2026.02.05, 17:24",
+  "changed": "2026.02.21, 05:16",
   "private": false,
   "main": "src/app/page.tsx",
   "lint-staged": {
@@ -223,7 +223,7 @@
     "prisma-db-push-all-UNUSED": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",
     "prisma-studio": "echo --Run database explorer-- && prisma studio",
     "husky-init": "husky init",
-    "postinstall": "echo --Apply migrations, invoke custom migrates first-- && next telemetry disable && npm-run-all prisma-generate prisma-migrate",
+    "postinstall": "echo --Apply migrations, invoke custom migrates first, initialize multilingual-stemmer wasm modules-- && next telemetry disable && npm-run-all prisma-generate prisma-migrate copy-multilingual-stemmer",
     "prepare": "husky",
     "test": "echo --Run tests-- && jest",
     "test-update-snapshots": "echo --Run tests and update snapshots-- && jest --updateSnapshot",
@@ -232,6 +232,7 @@
     "vercel-clean": "vercel remove --safe --yes mind-stack-trainer",
     "cosmos": "cosmos --expose-imports",
     "cosmos-export": "cosmos-export --expose-imports",
+    "copy-multilingual-stemmer": "tsx scripts/copy-multilingual-stemmer.ts",
     "scripts-help": "echo --List all available script commands-- && npm-package-user-scripts-list"
   }
 }

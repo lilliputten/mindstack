@@ -1,3 +1,5 @@
+'use client';
+
 import { getLanguageId, getNGramsSimple, getTextTokens } from './helpers';
 import { defaultStemmerOptions, getCachedStemmer, TStemmerOptions } from './stemmers';
 import { getCachedStopwords } from './stopwords';

@@ -1,23 +1,33 @@
+import React from 'react';
+
 import { cn } from '@/lib/utils';
+import { TLocale } from '@/i18n';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Icons } from '@/components/shared';
 import { isDev } from '@/config';
 import { TNewOrOldQuestion } from '@/features/questions/types';
 
-import { HeadlessComparator } from '../HeadlessComparator';
+import { HeadlessComparator, TRenderItemProps } from '../HeadlessComparator';
 
 const topicId = 'test-topic';
 
-const items: TNewOrOldQuestion[] = [
+type T = TNewOrOldQuestion;
+
+const items: T[] = [
   {
+    id: '__new1',
+    isNew: true,
     topicId,
     text: 'Specific question',
   },
   {
+    id: '__new2',
+    isNew: true,
     topicId,
     text: 'Which of the following accurately describes the flow of tasks in the JavaScript event loop',
   },
   {
+    id: 'old1',
     topicId,
     text: 'Which of the following accurately describes the flow of tasks in the JavaScript event loop, considering both microtasks and macrotasks?',
     answers: [
@@ -37,9 +47,9 @@ const items: TNewOrOldQuestion[] = [
   },
 ];
 
-function RenderItem({ item, idx }: { item: TNewOrOldQuestion; idx?: number }) {
+function RenderItem({ className, item }: TRenderItemProps<T>) {
   const {
-    id = String(idx),
+    id, // Required unique id
     text = '', // "Question markdown text",
     _count,
     answers,
@@ -47,7 +57,15 @@ function RenderItem({ item, idx }: { item: TNewOrOldQuestion; idx?: number }) {
   const Icon = Icons.Dot;
   const count = answers?.length || _count?.answers;
   return (
-    <div key={id} className="content-truncate flex gap-4 text-left">
+    <div
+      key={id}
+      className={cn(
+        isDev && '__RenderItem', // DEBUG
+        'content-truncate flex gap-4 text-left',
+        className,
+      )}
+    >
+      {/*
       <div
         className={cn(
           'mt-1.5 flex size-4 shrink-0 items-center justify-center rounded-full',
@@ -56,6 +74,7 @@ function RenderItem({ item, idx }: { item: TNewOrOldQuestion; idx?: number }) {
       >
         <Icon className="size-3 text-white" />
       </div>
+      */}
       <MarkdownText className="content-truncate flex-1">{text}</MarkdownText>
       <div
         className={cn(
@@ -71,18 +90,37 @@ function RenderItem({ item, idx }: { item: TNewOrOldQuestion; idx?: number }) {
 
 interface TProps {
   className?: string;
+  // Locale for comparator
+  locale?: TLocale;
+  // Compare using ngrams for large texts or with just tokens otherwise
+  largeTexts?: boolean;
+}
+
+function getItemText(item: T) {
+  return item.text;
 }
 
 export function HeadlessComparatorDemo(props: TProps) {
-  const { className } = props;
+  const {
+    className,
+    // Locale for comparator
+    locale = 'en',
+    // Compare using ngrams for large texts or with just tokens otherwise
+    largeTexts = false,
+  } = props;
+
   return (
-    <HeadlessComparator<TNewOrOldQuestion>
+    <HeadlessComparator
       className={cn(
         isDev && '__HeadlessComparatorDemo', // DEBUG
         className,
       )}
+      locale={locale}
+      largeTexts={largeTexts}
       items={items}
+      getItemText={getItemText}
       RenderItem={RenderItem}
+      isReady
     />
   );
 }

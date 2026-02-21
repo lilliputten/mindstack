@@ -57,8 +57,11 @@ export default [
       '.next/**',
       'src/generated/prisma/**',
       'coverage',
+      // react-cosmos
       'cosmos.imports.ts',
-      '*~',
+      // Hard-copied multilingual-stemmer
+      'src/packages/text-comparator/multilingual-stemmer/**',
+      '**/*~',
     ],
   },
 

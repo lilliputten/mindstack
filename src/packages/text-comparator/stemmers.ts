@@ -1,9 +1,12 @@
+'use client';
+
 /*! NOTE: Dynamically imports
  * - multilingual-stemmer
+ * @see https://www.npmjs.com/package/multilingual-stemmer
+ *
+ * NOTE: Currently it supports only client-side WASM dynamic import. See fixes in the `next.config.ts`
  */
-
-import { Stemmer } from 'multilingual-stemmer';
-
+import { Languages, Stemmer } from './multilingual-stemmer-wasm';
 import { TStemmer } from './types';
 
 /** Cached stemmer objects, per language */
@@ -49,6 +52,15 @@ export const defaultStemmerOptions: TStemmerDefinedOptions = {
   failbackToEnglish: true,
 };
 
+// [>* Lazy-load the WASM module - only once <]
+// const wasmInitPromise: Promise<typeof import('multilingual-stemmer')> | null = null;
+//
+// async function initializeWasm() {
+//   if (wasmInitPromise) return wasmInitPromise;
+//   wasmInitPromise = import('multilingual-stemmer');
+//   return wasmInitPromise;
+// }
+
 async function dynamicallyGetStemmer(lang: string, opts: TStemmerOptions = {}): Promise<TStemmer> {
   const {
     // Extend default options
@@ -83,7 +95,8 @@ async function dynamicallyGetStemmer(lang: string, opts: TStemmerOptions = {}): 
    * }
    */
 
-  const { Languages } = await import('multilingual-stemmer');
+  // Initialize WASM module before creating Stemmer instance
+  await Stemmer.init();
 
   const languageMap = {
     ar: Languages.Arabic,

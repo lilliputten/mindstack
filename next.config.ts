@@ -120,7 +120,8 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  webpack: (config, _ctx) => {
+  webpack: (config, ctx) => {
+    const { isServer } = ctx;
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
@@ -147,6 +148,16 @@ const nextConfig: NextConfig = {
       terserPlugin.options.terserOptions.compress.drop_console = false;
     }
 
+    // Prevent Node.js modules from loading on client
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        util: false,
+      };
+    }
+
     return config;
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md'],
@@ -167,7 +178,6 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['multilingual-stemmer'],
     serverActions: {
       bodySizeLimit: `${blobBodySizeLimitMb}mb`,
     },
