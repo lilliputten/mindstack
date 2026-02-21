@@ -4,6 +4,7 @@ import * as Icons from '@/components/shared/Icons';
 import {
   aboutAliasRoute,
   adminAiTestTextQueryRoute,
+  adminUiDemoRoute,
   adminBotControlRoute,
   allTopicsRoute,
   availableCategoriesRoute,
@@ -47,6 +48,7 @@ export const dashboardLinks: SidebarNavItem[] = [
     items: [
       { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'BotControl' },
       { href: adminAiTestTextQueryRoute, icon: Icons.BotMessageSquare, titleId: 'TestAiTextQuery' },
+      { href: adminUiDemoRoute, icon: Icons.Bug, titleId: 'TestUiDemoPage' },
     ],
   },
   {
