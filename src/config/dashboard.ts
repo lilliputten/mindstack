@@ -1,11 +1,10 @@
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 
 import {
   aboutAliasRoute,
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
-  adminUiDemoRoute,
   allTopicsRoute,
   availableCategoriesRoute,
   availableTopicsRoute,
@@ -23,7 +22,7 @@ import {
 
 // prettier-ignore
 export const dashboardLinks: SidebarNavItem[] = [
-  // Show translations in the namespace of `NavLinks.UiDemoPage`
+  // Show translations in the namespace of `NavLinks`
   {
     titleId: 'Application',
     items: [
@@ -48,7 +47,6 @@ export const dashboardLinks: SidebarNavItem[] = [
     items: [
       { href: adminBotControlRoute, icon: Icons.Bot, titleId: 'BotControl' },
       { href: adminAiTestTextQueryRoute, icon: Icons.BotMessageSquare, titleId: 'TestAiTextQuery' },
-      { href: adminUiDemoRoute, icon: Icons.Bug, titleId: 'UiDemoPage' },
     ],
   },
   {

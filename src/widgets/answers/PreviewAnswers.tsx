@@ -2,7 +2,7 @@ import { Answer } from '@/generated/prisma';
 
 import { cn } from '@/lib/utils';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 
 type TMinimalAnswerShape = Partial<Pick<Answer, 'id' | 'text' | 'isCorrect'>>;
@@ -37,7 +37,7 @@ export function PreviewAnswers(props: TProps) {
           <div key={id} className="content-truncate flex gap-2 text-left">
             <div
               className={cn(
-                'mt-1.5 flex size-4 shrink-0 items-center justify-center rounded-full',
+                'mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full',
                 isCorrect ? 'bg-green-500' : 'bg-theme-500/50 opacity-20',
               )}
             >

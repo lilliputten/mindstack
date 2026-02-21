@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/Table';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
 

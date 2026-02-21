@@ -1,4 +1,4 @@
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 
 export const systemThemeIds = ['light', 'dark', 'system'] as const;

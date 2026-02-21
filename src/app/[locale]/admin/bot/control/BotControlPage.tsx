@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/Badge';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 

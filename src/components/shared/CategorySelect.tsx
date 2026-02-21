@@ -20,7 +20,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { FormHint } from '@/components/blocks/FormHint';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getCategoryName } from '@/features/categories/helpers';
 import { useAllPublicCategories } from '@/features/categories/hooks';

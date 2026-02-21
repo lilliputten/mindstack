@@ -1,5 +1,5 @@
 import { MainNavItem } from '@/lib/types/site/NavItem';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 
 import {
   availableTopicsRoute,

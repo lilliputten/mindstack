@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { TLocale } from '@/i18n';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TNewOrOldQuestion } from '@/features/questions/types';
 

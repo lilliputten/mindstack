@@ -3,7 +3,8 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { BusySplash, Icons } from '@/components/shared';
+import { BusySplash } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
@@ -51,7 +52,7 @@ export function SavedScreen(props: TSavedScreenProps) {
         {/* Display preview of the added answers */}
         <PreviewAnswers
           answers={savedAnswers}
-          className="content-truncate flex w-full flex-col gap-2 text-sm"
+          className="content-truncate flex flex-col gap-2 text-sm"
         />
       </div>
 

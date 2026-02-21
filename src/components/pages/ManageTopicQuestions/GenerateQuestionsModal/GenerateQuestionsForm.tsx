@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormProvider } from '@/components/ui/Form';
-import { BusySplashWithInfo, Icons } from '@/components/shared';
+import { BusySplashWithInfo } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { TTopicId } from '@/features/topics/types';
@@ -67,7 +68,7 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
           </div>
           {/* Generating splash */}
           <BusySplashWithInfo
-            title={t('GeneratingQuestionsWaiting')}
+            title="Generating questions..."
             className={cn(
               isDev && '__GenerateQuestionsForm_BusySplash', // DEBUG
               'absolute',

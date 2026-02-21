@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
 import { rootAliasRoute, siteTitle } from '@/config';

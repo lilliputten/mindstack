@@ -19,7 +19,7 @@ import {
   minTextLength,
 } from '@/components/pages/ManageTopicQuestionAnswers/constants';
 import { topicAnswerDeletedEventId } from '@/components/pages/ManageTopicQuestionAnswers/DeleteAnswerModal';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { updateAnswer } from '@/features/answers/actions';

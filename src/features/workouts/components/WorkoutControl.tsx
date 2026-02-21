@@ -9,7 +9,7 @@ import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link } from '@/i18n/routing';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';

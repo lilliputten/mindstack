@@ -16,7 +16,8 @@ import { Button } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { BusySplash, Icons, PageError } from '@/components/shared';
+import { BusySplash, PageError } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, defaultAIGenerationTemperature } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
@@ -39,13 +40,7 @@ import { addMultipleQuestions, deleteQuestions } from '@/features/questions/acti
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';
 import { TAvailableQuestion, TNewQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
-import {
-  useAvailableQuestions,
-  useAvailableTopicById,
-  useDocumentTitle,
-  useGoBack,
-  useSessionData,
-} from '@/hooks';
+import { useAvailableTopicById, useDocumentTitle, useGoBack, useSessionData } from '@/hooks';
 
 import { ContentSkeleton, InnerContentSkeleton } from './ContentSkeleton';
 import { EditScreen } from './EditScreen';
@@ -180,19 +175,11 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
     includeQuestions: true,
     includeQuestionsCount: true,
   });
-  const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
+  const { topic, isFetched, isFetching } = availableTopicQuery;
   // TODO: Add check for availableTopicQuery request timout handling (and for all react-query hooks, in general; and for abort, too)
-  const isTopicPending = !isTopicFetched || isTopicFetching;
+  const isTopicPending = !isFetched || isFetching;
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
-  const {
-    allQuestions,
-    isFetching: isQuestionsFetching,
-    isFetched: isQuestionsFetched,
-  } = availableQuestionsQuery;
-  const isQuestionPending = !isQuestionsFetched || isQuestionsFetching;
-
-  const questionsCount = topic?._count?.questions || allQuestions.length;
+  const questionsCount = topic?._count?.questions;
   const allowedTraining = !!questionsCount;
 
   const goBack = useGoBack(topicsListRoutePath);
@@ -207,19 +194,9 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
   const queryClient = useQueryClient();
 
-  // TODO: Add `useAvailableQuestions` to fetch required questions (for `existedQuestions` and for new questions comparing in the editor screen)?
-  const questions = allQuestions; // topic?.questions;
+  const questions = topic?.questions;
 
-  /* console.log('[GenerateQuestionsPageWrapper:DEBUG]', {
-   *   topicId,
-   *   isTopicPending,
-   *   isQuestionPending,
-   *   allQuestions,
-   *   availableTopicQuery,
-   *   topic,
-   *   questions,
-   * });
-   */
+  // TODO: Add `useAvailableQuestions` to fetch required questions (for `existedQuestions` and for new questions comparing in the editor screen)?
 
   // Using different titles depending on the current status
   const title = React.useMemo(
@@ -499,7 +476,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
   const areMutationsPending =
     generateQuestionsMutation.isPending || saveQuestionsMutation.isPending;
-  const isBusy = isPreparing || isQuestionPending || isTopicPending || areMutationsPending;
+  const isBusy = isPreparing || isTopicPending || areMutationsPending;
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [

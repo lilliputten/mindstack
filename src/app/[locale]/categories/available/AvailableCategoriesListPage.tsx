@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { availableCategoriesRoute, manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { AvailableCategoriesFilters } from '@/features/categories/components/AvailableCategoriesFilters';

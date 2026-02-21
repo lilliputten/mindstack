@@ -5,7 +5,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Link, useT } from '@/i18n';
 import { buttonVariants } from '@/components/ui/Button';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, isDev, myTopicsRoute, TRoutePath } from '@/config';
 import { useLandingPageContext } from '@/contexts/LandingPageContext';
 import { useSessionData } from '@/hooks';

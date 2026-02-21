@@ -12,7 +12,7 @@ import {
   useSignInModalContext,
   // useDeleteAccountModalContext,
 } from '@/components/modals';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 
 import { NavUserAccount } from './NavUserAccount';

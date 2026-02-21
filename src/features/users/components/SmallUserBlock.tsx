@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 import { TUser } from '../types';

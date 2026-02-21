@@ -10,7 +10,7 @@ import { useT } from '@/i18n';
 import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds, topicsRoutes, TTopicsManageScopeId } from '@/contexts/TopicsContext';
@@ -180,7 +180,7 @@ export function TopicHeader(props: TTopicHeaderProps & TTopicHeaderOptions) {
         <div
           className={cn(
             isDev && '__TopicHeader_MainSection', // DEBUG
-            'content-truncate flex items-start gap-2 max-sm:flex-col-reverse',
+            'content-truncate flex flex-1 items-start gap-2 max-sm:flex-col-reverse',
           )}
         >
           <div

@@ -21,7 +21,7 @@ import {
   maxTextLength,
   minNameLength,
 } from '@/components/pages/ManageTopicsPage/constants';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { getUpdateTopicFromBroaderData } from '@/features/topics';
 import { updateTopic } from '@/features/topics/actions';

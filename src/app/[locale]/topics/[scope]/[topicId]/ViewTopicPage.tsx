@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';

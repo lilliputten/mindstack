@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';

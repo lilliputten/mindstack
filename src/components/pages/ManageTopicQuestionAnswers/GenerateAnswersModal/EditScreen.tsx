@@ -3,7 +3,8 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { BusySplashWithInfo, ErrorSplash, Icons } from '@/components/shared';
+import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TNewAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
@@ -63,7 +64,7 @@ export function EditScreen(props: TEditScreenProps) {
               {/* Display preview of the added answers */}
               <PreviewAnswers
                 answers={generatedAnswers}
-                className="content-truncate flex w-full flex-col gap-2 text-sm"
+                className="content-truncate flex flex-col gap-2 text-sm"
               />
             </div>
           )}

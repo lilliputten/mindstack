@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TTopicLanguageData } from '@/features/topics/types';
 

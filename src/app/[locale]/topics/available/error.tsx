@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { availableTopicsRoute } from '@/config';
 import { isDev } from '@/constants';

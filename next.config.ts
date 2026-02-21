@@ -137,33 +137,6 @@ const nextConfig: NextConfig = {
         config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
     }
 
-    /*
-     * const minimizers = config.optimization.minimizer;
-     * const terserPlugin = minimizers.find(
-     *   (minimizer: { constructor: { name: string } }) =>
-     *     minimizer.constructor.name === 'TerserPlugin',
-     * );
-     * if (terserPlugin) {
-     *   // @see https://webpack.js.org/plugins/terser-webpack-plugin/#terseroptions
-     *   // Modify Terser options to keep debugger statements
-     *   terserPlugin.options.terserOptions.compress.drop_debugger = false;
-     *   // Optionally, prevent console logs from being dropped
-     *   terserPlugin.options.terserOptions.compress.drop_console = false;
-     *   // terserPlugin.options.terserOptions.mangle = false;
-     * }
-     */
-    /*
-     * // Prevent Node.js modules from loading on client
-     * if (!isServer) {
-     *   config.resolve.fallback = {
-     *     ...config.resolve.fallback,
-     *     fs: false,
-     *     path: false,
-     *     util: false,
-     *   };
-     * }
-     */
-
     return config;
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md'],
@@ -184,6 +157,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    optimizePackageImports: ['multilingual-stemmer'],
     serverActions: {
       bodySizeLimit: `${blobBodySizeLimitMb}mb`,
     },

@@ -18,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-// import { Icons } from '@/components/shared';
-import { Icons, LanguageName } from '@/components/shared';
+import { LanguageName } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { predefinedLanguages } from '@/constants/languages';
 import { TTopicLanguageData } from '@/features/topics/types';

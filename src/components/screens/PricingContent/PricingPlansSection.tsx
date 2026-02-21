@@ -17,7 +17,7 @@ import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { CurrencySigns } from '@/components/currencies';
 import { useSignInModalContext } from '@/components/modals';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingChooseRoute, userStartAliasRoute } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
 import { localeCurrencies, stringifyPrice, TCurrencyPrices } from '@/features/currencies';

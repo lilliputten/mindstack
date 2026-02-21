@@ -1,4 +1,4 @@
-import * as Icons from './Icons';
+// import * as Icons from './Icons';
 
 export * from './BusySplash';
 export * from './BusySplashWithInfo';
@@ -21,4 +21,4 @@ export * from './ShowTimeSince';
 export * from './SuccessSplash';
 export * from './UserAvatar';
 
-export { Icons };
+// export { Icons };

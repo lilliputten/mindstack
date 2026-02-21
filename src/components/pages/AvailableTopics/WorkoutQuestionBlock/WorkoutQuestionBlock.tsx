@@ -8,7 +8,7 @@ import { Link, useT } from '@/i18n';
 import { useAvailableQuestionById } from '@/hooks/react-query/useAvailableQuestionById';
 import { buttonVariants } from '@/components/ui/Button';
 import { WorkoutQuestion } from '@/components/pages/AvailableTopics/WorkoutQuestion/WorkoutQuestion';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { availableTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';

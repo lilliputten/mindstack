@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/DropdownMenu';
 import { useDeleteAccountModalContext } from '@/components/modals';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { UserAvatar } from '@/components/shared/UserAvatar';
 import { settingsRoute } from '@/config';
 import { isDev } from '@/constants';

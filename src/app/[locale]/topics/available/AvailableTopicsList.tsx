@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ScrollAreaInfinite } from '@/components/ui/ScrollAreaInfinite';
 import { useSignInModalContext } from '@/components/modals';
 import { PageEmpty } from '@/components/pages/shared';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { myTopicsRoute, rootAliasRoute, TRoutePath, welcomeAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext/TopicsContextDefinitions';

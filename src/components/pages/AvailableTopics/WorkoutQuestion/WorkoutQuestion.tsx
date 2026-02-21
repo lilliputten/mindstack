@@ -6,7 +6,7 @@ import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { useWorkoutContext } from '@/contexts/WorkoutContext';
 import { TAvailableAnswer } from '@/features/answers/types';

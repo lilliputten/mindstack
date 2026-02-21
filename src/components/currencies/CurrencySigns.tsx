@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { TCurrencyType } from '@/features/currencies';
 
 type TSymbolItem = ({ className }: TPropsWithClassName) => React.JSX.Element;

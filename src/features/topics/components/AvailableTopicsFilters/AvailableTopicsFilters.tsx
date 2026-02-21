@@ -11,7 +11,7 @@ import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { SelectTopicLanguageModal } from '@/components/modals/SelectTopicLanguageModal';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { getActiveFilterIds, useTopicsFiltersContext } from '@/contexts/TopicsFiltersContext';
 

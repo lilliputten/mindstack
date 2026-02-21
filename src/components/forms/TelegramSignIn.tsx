@@ -8,7 +8,7 @@ import { TPropsWithClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
 

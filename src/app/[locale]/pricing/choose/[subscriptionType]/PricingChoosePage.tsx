@@ -8,7 +8,7 @@ import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Link, TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { contactsAliasRoute, isDev, pricingAliasRoute, tgUrlPrefix } from '@/config';
 import { useEnvContext } from '@/contexts/EnvContext';
 import {

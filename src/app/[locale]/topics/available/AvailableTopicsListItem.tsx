@@ -6,7 +6,7 @@ import { comparePathsWithoutLocalePrefix } from '@/i18n/helpers';
 import { Link, usePathname } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { allTopicsRoute, availableTopicsRoute, myTopicsRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { TopicsManageScopeIds } from '@/contexts/TopicsContext';

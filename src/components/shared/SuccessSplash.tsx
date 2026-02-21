@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 interface TProps {

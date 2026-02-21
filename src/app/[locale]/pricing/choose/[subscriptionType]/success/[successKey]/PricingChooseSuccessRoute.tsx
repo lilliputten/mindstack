@@ -25,7 +25,8 @@ import { getT, Link, TAwaitedLocaleProps } from '@/i18n';
 import { buttonVariants } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { Icons, PageError } from '@/components/shared';
+import { PageError } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { checkPayment, cleanStaleUserPayments, findUserPayment } from '@/features/payments';
 import {

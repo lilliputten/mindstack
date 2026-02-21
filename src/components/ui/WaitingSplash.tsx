@@ -4,7 +4,7 @@ import React from 'react';
 import { useTheme } from 'next-themes';
 
 import { cn } from '@/lib/utils';
-import { Icons } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 
 interface TWaitingSplashProps {
