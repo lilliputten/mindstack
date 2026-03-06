@@ -107,7 +107,7 @@ export function DashboardActions(props: DashboardActionsProps) {
           return (
             <DropdownMenuTrigger
               asChild
-              aria-label="Show Menu"
+              aria-label={t('ShowMenu')}
               className={cn(
                 isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
               )}
@@ -130,7 +130,7 @@ export function DashboardActions(props: DashboardActionsProps) {
                 )}
               >
                 <Icons.MenuVertical className="size-5 transition-all" />
-                <span className="sr-only">Show menu</span>
+                <span className="sr-only">{t('ShowMenu')}</span>
               </Button>
             </DropdownMenuTrigger>
           );

@@ -14,7 +14,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { HeadlessComparatorDemo } from '@/entities/HeadlessComparator/cosmos-fixtures/HeadlessComparatorDemo';
+import { HeadlessEditorDemo } from '@/entities/HeadlessEditor/cosmos-fixtures/HeadlessEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
@@ -201,11 +201,11 @@ export function UiDemoForm() {
           <div
             className={cn(
               isDev && '__UiDemoForm_UiDemoBlock', // DEBUG
-              'mx-6 shrink-0 p-6',
+              'mx-6 flex flex-1 flex-col overflow-hidden py-6',
               'rounded-md border border-dashed border-theme-500/20',
             )}
           >
-            <HeadlessComparatorDemo />
+            <HeadlessEditorDemo className="overflow-hidden" />
           </div>
           {(!showForm || !isMobile) && (
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />

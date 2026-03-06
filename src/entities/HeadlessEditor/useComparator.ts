@@ -2,16 +2,11 @@
 
 import React from 'react';
 
-import { cn } from '@/lib/utils';
 import { TLocale } from '@/i18n';
-import { Skeleton } from '@/components/ui/Skeleton';
-import { isDev } from '@/config';
 import { compareNGrams, compareTokens, TextComprarator } from '@/packages/text-comparator';
 import { SymmetricalTwoDimensionalWeakCache } from '@/shared/lib/objects';
 
-interface TCmpItemBase {
-  id: string;
-}
+import { TCmpItemBase, TCmpItemId } from './types';
 
 /** An array of token or ngram strings */
 // type TItemTokens = string[];
@@ -25,7 +20,6 @@ export interface TRenderItemProps<T> {
 }
 
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
-  className?: string;
   isReady: boolean;
 
   // Options...
@@ -38,7 +32,6 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   // Are comparator and other data ready?
   items: T[];
   getItemText: (item: T) => string;
-  RenderItem: (props: TRenderItemProps<T>) => JSX.Element | null;
 }
 
 interface TItemOverall {
@@ -47,11 +40,10 @@ interface TItemOverall {
   total: number;
 }
 
-export function HeadlessComparator<T extends TCmpItemBase, LargeTexts extends boolean>(
+export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean>(
   props: TProps<T, LargeTexts>,
 ) {
   const {
-    className,
     isReady: isOuterReady,
     /// Options...
     locale,
@@ -59,7 +51,6 @@ export function HeadlessComparator<T extends TCmpItemBase, LargeTexts extends bo
     // Items...
     items,
     getItemText,
-    RenderItem,
   } = props;
 
   // Comparator
@@ -144,12 +135,12 @@ export function HeadlessComparator<T extends TCmpItemBase, LargeTexts extends bo
     [comparedItemsCache, getItemTokens, compareItemTokens],
   );
 
-  // const overallCache = React.useMemo(() => new Map<T, TItemOverall>(), []);
+  // const overallComparedCache = React.useMemo(() => new Map<T, TItemOverall>(), []);
 
   // Effect:overall items comparsions
-  const overallCache = React.useMemo(() => {
+  const overallComparedCache = React.useMemo(() => {
     if (!isReady) return;
-    const overallCache = new Map<T, TItemOverall>();
+    const overallComparedCache = new Map<T, TItemOverall>();
     items.forEach((it) => {
       let count = 0;
       let total = 0;
@@ -164,48 +155,30 @@ export function HeadlessComparator<T extends TCmpItemBase, LargeTexts extends bo
         });
       const value = total ? total / items.length : 0;
       const overall: TItemOverall = { value, count, total };
-      overallCache.set(it, overall);
+      overallComparedCache.set(it, overall);
     });
-    return overallCache;
+    return overallComparedCache;
   }, [isReady, items, getComparedValue]);
 
-  const renderedItems = React.useMemo(() => {
-    return items.map((it) => {
-      const overall = overallCache?.get(it);
-      const value = overall?.value || 0;
-      const valueStr = value.toFixed(2);
-      const title = `${valueStr}/${overall?.count || 0}`;
-      return (
-        <div
-          key={it.id}
-          className={cn(
-            isDev && '__HeadlessComparator_Item', // DEBUG
-            'flex gap-2',
-          )}
-        >
-          {!isReady ? (
-            <Skeleton className="h-5 w-20" />
-          ) : (
-            <div className="shrink-0 truncate p-1 text-sm" title={title}>
-              <div className="box-border size-4 rounded-full border border-theme-500/20">
-                <div className="size-4 rounded-full bg-red-500" style={{ opacity: valueStr }} />
-              </div>
-            </div>
-          )}
-          <RenderItem className="flex-1" key={it.id} item={it} />
-        </div>
-      );
-    });
-  }, [isReady, items, overallCache, RenderItem]);
+  const itemsMap = React.useMemo(() => {
+    const map = new Map<TCmpItemId, T>();
+    items.forEach((it) => map.set(it.id, it));
+    return map;
+  }, [items]);
 
-  return (
-    <div
-      className={cn(
-        isDev && '__HeadlessComparator', // DEBUG
-        className,
-      )}
-    >
-      {renderedItems}
-    </div>
+  return React.useMemo(
+    () => ({
+      isComparatorReady,
+      getComparedValue,
+      overallComparedCache,
+      itemsMap,
+    }),
+    [
+      // All the items as dependencies
+      isComparatorReady,
+      getComparedValue,
+      overallComparedCache,
+      itemsMap,
+    ],
   );
 }

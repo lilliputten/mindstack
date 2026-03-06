@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { Question, TopicSchema } from '@/generated/prisma';
+import { Question, QuestionSchema, TopicSchema } from '@/generated/prisma';
 
 import { ExtendNullWithUndefined, ReplaceNullWithUndefined } from '@/lib/ts';
 import { TAvailableAnswer } from '@/features/answers/types';
@@ -16,7 +16,19 @@ export const IncludedTopicSelect = true;
 const _IncludedTopicSchema = TopicSchema; // .pick(IncludedTopicSelect);
 type TIncludedTopic = z.infer<typeof _IncludedTopicSchema>;
 
-export type TNewQuestion = Partial<Question> &
+const newAnswerSchema = z.object({
+  text: z.string(),
+  isCorrect: z.boolean().optional(),
+  explanation: z.string().nullable().optional(),
+});
+export const newQuestionSchema = QuestionSchema.partial().extend({
+  text: QuestionSchema.shape.text,
+  topicId: QuestionSchema.shape.topicId,
+  answers: newAnswerSchema.array().optional(),
+});
+
+export type TNewQuestion = z.infer<typeof newQuestionSchema>;
+export type _TNewQuestion = Partial<Question> &
   Pick<Question, 'text' | 'topicId'> & {
     answers?: Array<{
       text: string;

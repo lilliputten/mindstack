@@ -4,8 +4,8 @@ import * as Icons from '@/components/shared/Icons';
 import {
   aboutAliasRoute,
   adminAiTestTextQueryRoute,
-  adminUiDemoRoute,
   adminBotControlRoute,
+  adminUiDemoRoute,
   allTopicsRoute,
   availableCategoriesRoute,
   availableTopicsRoute,
