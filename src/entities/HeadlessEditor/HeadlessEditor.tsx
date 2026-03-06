@@ -8,16 +8,10 @@ import { Checkbox } from '@/components/ui/Checkbox';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
 
-import { TCmpItemBase, TCmpItemId } from './types';
+import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 import { useComparator } from './useComparator';
 
 const _showComparedValues = isDev && false;
-
-export interface TRenderItemProps<T> {
-  className?: string;
-  item: T;
-  updateItem?: (it: T) => void;
-}
 
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   className?: string;
@@ -37,10 +31,12 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   // Are comparator and other data ready?
   items: T[];
   getItemText: (item: T) => string;
-  RenderItem: (props: TRenderItemProps<T>) => JSX.Element | null;
+  RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
   updateItem?: (it: T) => void;
 
   // Items state...
+  updatedIds?: Set<TCmpItemId>;
+  // setUpdatedId?: (id: TCmpItemId) => void;
   selectedIds?: Set<TCmpItemId>;
   setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
   compareTargetId?: TCmpItemId;
@@ -95,6 +91,8 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     RenderItem,
     updateItem,
     // State...
+    updatedIds: externalUpdatedIds,
+    // setUpdatedId: setExternalUpdatedId,
     selectedIds: externalSelectedIds,
     setSelectedId: setExternalSelectedId,
     compareTargetId: externalCompareTargetId,
@@ -102,6 +100,22 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   } = props;
 
   const t = useT();
+
+  const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>(
+    externalUpdatedIds,
+  );
+
+  const handleUpdate = React.useCallback(
+    (it: T) => {
+      setUpdatedIds((updatedIds) => {
+        updatedIds = new Set(updatedIds);
+        updatedIds.add(it.id);
+        return updatedIds;
+      });
+      if (updateItem) updateItem(it);
+    },
+    [updateItem],
+  );
 
   // State: Local selected ids set
   const [selectedIds, setSelectedIds] = React.useState<Set<TCmpItemId> | undefined>(
@@ -214,7 +228,8 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
 
   const renderedItems = React.useMemo(() => {
     return items.map((it) => {
-      const { id } = it;
+      const { id, isNew } = it;
+      const isUpdated = updatedIds?.has(id);
       const { normalized, value, overallValue, overallCount, overallTotal } =
         getItemComparedValues(it);
       const isCompareTarget = compareTargetId && compareTargetId === id;
@@ -241,7 +256,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
             'content-truncate',
             'max-xs:flex-col',
             compact && 'flex-col',
-            'px-6 py-1',
+            'mx-6 rounded px-2 py-1',
+            'bg-theme-500/10',
+            !isNew && 'bg-background/50',
+            'border border-transparent',
+            isUpdated && 'border border-dashed border-green-500/50',
           )}
         >
           <div
@@ -304,7 +323,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
               </>
             )}
           </div>
-          <RenderItem className="flex-1" key={id} item={it} updateItem={updateItem} />
+          <RenderItem className="flex-1" key={id} item={it} updateItem={handleUpdate} />
         </div>
       );
     });
@@ -319,7 +338,8 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     items,
     selectedIds,
     t,
-    updateItem,
+    handleUpdate,
+    updatedIds,
   ]);
 
   return (

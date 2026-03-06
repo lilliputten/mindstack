@@ -14,11 +14,6 @@ type ItemTokens<LargeTexts extends boolean> = LargeTexts extends true
   ? Map<string, number>
   : string[];
 
-export interface TRenderItemProps<T> {
-  className?: string;
-  item: T;
-}
-
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   isReady: boolean;
 
