@@ -25,8 +25,6 @@ function getItemText(item: T) {
   return item.text;
 }
 
-// const HeadlessEditor = HeadlessEditorFactory<T>();
-
 export function HeadlessEditorDemo(props: TProps) {
   const {
     className,
@@ -36,14 +34,23 @@ export function HeadlessEditorDemo(props: TProps) {
     largeTexts = false,
   } = props;
 
-  const [items, setItems] = React.useState(() => demoQuestions);
+  const [onlyTargeted, setOnlyTargeted] = React.useState(false);
 
-  const updateItem = React.useCallback((it: T) => {
-    setItems((items) => {
-      const { id } = it;
-      return items.map((old) => (old.id === id ? it : old));
-    });
-  }, []);
+  const [items, setItems] = React.useState(() => demoQuestions);
+  const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId>>(new Set());
+
+  const updateItems = React.useCallback(
+    (its: T[]) => {
+      const newIds = new Map(its.map((item) => [item.id, item]));
+      const newUpdatedIds = new Set([...updatedIds, ...newIds.keys()]);
+      setUpdatedIds(newUpdatedIds);
+      setItems((items) => {
+        // const { id } = it;
+        return items.map((old) => newIds.get(old.id) ?? old);
+      });
+    },
+    [updatedIds],
+  );
 
   // State: Local selected ids set
   const [selectedIds, setSelectedIds] = React.useState<Set<TCmpItemId> | undefined>();
@@ -87,6 +94,14 @@ export function HeadlessEditorDemo(props: TProps) {
           <span className="truncate">Clear compare target</span>
         </Button>
         <Button
+          onClick={() => setOnlyTargeted((onlyTargeted) => !onlyTargeted)}
+          className="content-truncate flex items-center gap-2"
+          disabled={!compareTargetId}
+        >
+          <Icons.Target className="size-5 shrink-0" />
+          <span className="truncate">Show only targeted</span>
+        </Button>
+        <Button
           onClick={() => setSelectedIds(new Set(items.map(({ id }) => id)))}
           className="content-truncate flex items-center gap-2"
           disabled={selectedCount === items.length}
@@ -105,6 +120,7 @@ export function HeadlessEditorDemo(props: TProps) {
         <Button
           onClick={() => {
             setItems((items) => items.filter(({ id }) => !selectedIds?.has(id)));
+            // Update all other saved indices
             setSelectedIds(undefined);
           }}
           className="content-truncate flex items-center gap-2"
@@ -140,12 +156,15 @@ export function HeadlessEditorDemo(props: TProps) {
           items={items}
           getItemText={getItemText}
           RenderItem={CmpQuestion}
-          updateItem={updateItem}
+          // updateItem={updateItem}
+          updateItems={updateItems}
           // State...
+          updatedIds={updatedIds}
           selectedIds={selectedIds}
           setSelectedId={setSelectedId}
           compareTargetId={compareTargetId}
           setCompareTargetId={setCompareTargetId}
+          onlyTargeted={onlyTargeted}
         />
       </ScrollArea>
     </div>

@@ -1,6 +1,6 @@
 import { UniqueIdentifier } from '@dnd-kit/core';
 
-export type TCmpItemId = UniqueIdentifier; // string;
+export type TCmpItemId = UniqueIdentifier; // string | number
 export interface TCmpItemBase {
   id: TCmpItemId;
   isNew?: boolean;

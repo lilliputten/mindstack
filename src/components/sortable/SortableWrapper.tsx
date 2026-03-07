@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Active,
+  closestCenter,
   DndContext,
   DragEndEvent,
   MouseSensor,
@@ -44,7 +45,6 @@ export function SortableWrapper<T extends TSortableItemBase>(props: TProps<T>) {
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over: overItem } = event;
-    // TODO: Narrow the id type
     const moveId: T['id'] = active.id;
     const overId: T['id'] | undefined = overItem?.id;
     if (moveId && overId && moveId !== overId) {
@@ -59,6 +59,7 @@ export function SortableWrapper<T extends TSortableItemBase>(props: TProps<T>) {
       onDragStart={({ active }) => setActive(active)}
       onDragCancel={() => setActive(null)}
       onDragEnd={onDragEnd}
+      collisionDetection={closestCenter}
     >
       <SortableContext items={items}>
         {/* Items list */}

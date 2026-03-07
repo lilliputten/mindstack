@@ -14,9 +14,11 @@ import { isDev } from '@/config';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
 const _showComparedValues = isDev && false;
+const _showOrder = isDev && true;
 
 interface TProps<T extends TCmpItemBase> {
   className?: string;
+  _idx?: number;
 
   // Lifecylcle control...
   isReady: boolean;
@@ -48,6 +50,7 @@ interface TProps<T extends TCmpItemBase> {
 export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
   const {
     className,
+    _idx,
     // Lifecylcle control...
     isReady,
     isOverlay,
@@ -123,7 +126,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
       )}
       style={{
         // ...style,
-        transform: CSS.Translate.toString(transform),
+        transform: /* isDragging ? */ CSS.Translate.toString(transform),
         transition,
       }}
     >
@@ -135,6 +138,11 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         )}
         // title="Click to toggle the item comparison mode only with similar items"
       >
+        {_showOrder && (it.order != undefined || _idx != undefined) && (
+          <span className="text-sm font-thin opacity-30">
+            {[_idx != undefined ? `[${_idx}]` : undefined, it.order].filter(Boolean).join(' ')}
+          </span>
+        )}
         {false || !isReady ? (
           <>
             <Skeleton className="size-4" />

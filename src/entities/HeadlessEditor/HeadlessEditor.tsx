@@ -2,8 +2,10 @@
 
 import React from 'react';
 
+import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { TLocale } from '@/i18n';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
 
@@ -24,12 +26,14 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   largeTexts: LargeTexts;
   // Display in narrow layout
   compact?: boolean;
+  onlyTargeted?: boolean;
 
   // Items interface...
   items: T[];
   getItemText: (item: T) => string;
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
-  updateItem?: (it: T) => void;
+  // updateItem?: (it: T) => void;
+  updateItems?: (its: T[]) => void;
 
   // Items state...
   updatedIds?: Set<TCmpItemId>;
@@ -37,6 +41,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
   compareTargetId?: TCmpItemId;
   setCompareTargetId?: (id?: TCmpItemId) => void;
+  changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
 }
 
 /* // EXAMPLE 1: A simpler editor component implementation, without forwarded API handlers, controlled via regular data props and optional handlers:
@@ -71,6 +76,27 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
  *     );
  */
 
+/**
+ * Comparator function for sorting by 'order', with these rules:
+ * - Items with defined numeric 'order' come first (ascending).
+ * - Items without 'order' come after, maintaining their original relative order.
+ */
+export function compareByOrder<T extends TCmpItemBase>(a: T, b: T): number {
+  const aHasOrder = typeof a.order === 'number';
+  const bHasOrder = typeof b.order === 'number';
+
+  if (aHasOrder && bHasOrder) {
+    return a.order! - b.order!;
+  }
+  if (aHasOrder) {
+    return -1; // a comes before b
+  }
+  if (bHasOrder) {
+    return 1; // b comes before a
+  }
+  return 0; // maintain original relative order
+}
+
 export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
   props: TProps<T, LargeTexts>,
 ) {
@@ -81,33 +107,42 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     locale,
     largeTexts,
     compact,
+    onlyTargeted,
     // Items...
     items,
     getItemText,
     RenderItem,
-    updateItem,
+    updateItems,
     // State...
     updatedIds: externalUpdatedIds,
     selectedIds: externalSelectedIds,
     setSelectedId: setExternalSelectedId,
     compareTargetId: externalCompareTargetId,
     setCompareTargetId: setExternalCompareTargetId,
+    changeItemsOrder: changeExternalItemsOrder,
   } = props;
 
   const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>(
     externalUpdatedIds,
   );
+  React.useEffect(() => {
+    setUpdatedIds(externalUpdatedIds);
+  }, [externalUpdatedIds]);
+
+  const addUpdatedIds = React.useCallback((ids: TCmpItemId[]) => {
+    setUpdatedIds((updatedIds) => {
+      const initial = updatedIds ? [...updatedIds] : [];
+      const newIds = new Set(initial.concat(ids));
+      return newIds;
+    });
+  }, []);
 
   const handleUpdate = React.useCallback(
     (it: T) => {
-      setUpdatedIds((updatedIds) => {
-        updatedIds = new Set(updatedIds);
-        updatedIds.add(it.id);
-        return updatedIds;
-      });
-      if (updateItem) updateItem(it);
+      if (updateItems) updateItems([it]);
+      else addUpdatedIds([it.id]);
     },
-    [updateItem],
+    [updateItems, addUpdatedIds],
   );
 
   // State: Local selected ids set
@@ -220,7 +255,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   );
 
   const RenderEditorItem = React.useCallback(
-    ({ item: it, isOverlay }: { item: T; isOverlay?: boolean }) => {
+    ({ _idx, item: it, isOverlay }: { _idx?: number; item: T; isOverlay?: boolean }) => {
       const { normalized, value, overallValue, overallCount, overallTotal } =
         getItemComparedValues(it);
       return (
@@ -228,6 +263,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           className={cn(
             isDev && '__HeadlessEditor_Item', // DEBUG
           )}
+          _idx={_idx}
           // Lifecylcle control...
           isReady={isReady}
           isOverlay={isOverlay}
@@ -266,29 +302,89 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     ],
   );
 
-  const renderedItems = React.useMemo(() => {
-    return items.map((it) => {
-      const { id } = it;
-      return <RenderEditorItem key={id} item={it} />;
+  // Ordered items list...
+  const [orderedItems, setOrderedItems] = React.useState<T[] | undefined>();
+  const displayingItems = React.useMemo(() => {
+    if (!compareTargetId || !onlyTargeted) {
+      return orderedItems;
+    }
+    const compareTarget = itemsMap.get(compareTargetId);
+    if (!compareTarget) {
+      return orderedItems;
+    }
+    return orderedItems?.filter((it) => {
+      const value = getComparedValue(compareTarget, it);
+      return value && value >= 0.01;
     });
-  }, [RenderEditorItem, items]);
+  }, [compareTargetId, onlyTargeted, orderedItems, itemsMap, getComparedValue]);
+  console.log('XXX', {
+    displayingItems,
+    orderedItems,
+  });
+  React.useEffect(() => {
+    const orderedItems = [...items];
+    orderedItems.sort(compareByOrder);
+    setOrderedItems(orderedItems);
+  }, [items]);
 
   const changeItemsOrder = React.useCallback(
     (moveId: TCmpItemId, overId: TCmpItemId) => {
-      // TODO: Implement items re-ordering
-      console.log('[changeItemsOrder]', {
-        moveId,
-        overId,
-        items,
+      if (changeExternalItemsOrder) {
+        return changeExternalItemsOrder(moveId, overId);
+      }
+
+      if (!orderedItems) return;
+
+      const list = [...orderedItems];
+      const oldIndex = list.findIndex((i) => i.id === moveId);
+      const newIndex = list.findIndex((i) => i.id === overId);
+
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+
+      // Remove & insert
+      const [moved] = list.splice(oldIndex, 1);
+      list.splice(newIndex, 0, moved);
+
+      const start = Math.min(oldIndex, newIndex);
+      const end = Math.max(oldIndex, newIndex);
+
+      const updatedItems: T[] = [];
+
+      const reOrderedItems = list.map((item, idx) => {
+        const no = idx + 1;
+        if ((idx >= start && idx <= end) || (idx < start && item.order !== no)) {
+          const updated = { ...item, order: no };
+          updatedItems.push(updated);
+          return updated;
+        }
+        return item;
       });
+
+      if (updateItems) updateItems(updatedItems);
+      else addUpdatedIds(updatedItems.map(({ id }) => id));
+
+      setOrderedItems(reOrderedItems);
     },
-    [items],
+    [changeExternalItemsOrder, orderedItems, updateItems, addUpdatedIds],
   );
+
+  const itemsCount = items.length;
+
+  const renderedItems = React.useMemo(() => {
+    if (!isReady || !displayingItems) {
+      return generateArray(itemsCount || 5).map((idx) => (
+        <Skeleton key={idx} className="h-9 w-full" />
+      ));
+    }
+    return displayingItems.map((it, idx) => {
+      return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
+    });
+  }, [isReady, RenderEditorItem, displayingItems, itemsCount]);
 
   return (
     <SortableWrapper
       // isPending={isPending}
-      items={items}
+      items={displayingItems || []}
       RenderItem={RenderEditorItem}
       changeItemsOrder={changeItemsOrder}
     >

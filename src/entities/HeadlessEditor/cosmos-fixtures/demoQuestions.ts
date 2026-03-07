@@ -15,12 +15,14 @@ export const demoQuestions: T[] = [
   },
   {
     id: '__new1',
+    order: 1,
     isNew: true,
     topicId,
     text: 'Following accurately describes',
   },
   {
     id: '__new2',
+    order: 2,
     isNew: true,
     topicId,
     text: 'Which of the following accurately describes the flow of tasks in the JavaScript event loop',

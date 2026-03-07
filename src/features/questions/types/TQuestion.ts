@@ -39,6 +39,7 @@ export type _TNewQuestion = Partial<Question> &
 export interface TNewOrOldQuestion extends TNewQuestion {
   id: Question['id'];
   isNew?: boolean;
+  order?: number;
   _count?: { answers: number };
 }
 
