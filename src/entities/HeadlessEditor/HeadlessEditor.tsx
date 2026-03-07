@@ -3,15 +3,13 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TLocale, useT } from '@/i18n';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { Skeleton } from '@/components/ui/Skeleton';
+import { TLocale } from '@/i18n';
+import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
 
+import { HeadlessEditorItem } from './HeadlessEditorItem';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 import { useComparator } from './useComparator';
-
-const _showComparedValues = isDev && false;
 
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   className?: string;
@@ -28,7 +26,6 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   compact?: boolean;
 
   // Items interface...
-  // Are comparator and other data ready?
   items: T[];
   getItemText: (item: T) => string;
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
@@ -36,7 +33,6 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   // Items state...
   updatedIds?: Set<TCmpItemId>;
-  // setUpdatedId?: (id: TCmpItemId) => void;
   selectedIds?: Set<TCmpItemId>;
   setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
   compareTargetId?: TCmpItemId;
@@ -92,14 +88,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     updateItem,
     // State...
     updatedIds: externalUpdatedIds,
-    // setUpdatedId: setExternalUpdatedId,
     selectedIds: externalSelectedIds,
     setSelectedId: setExternalSelectedId,
     compareTargetId: externalCompareTargetId,
     setCompareTargetId: setExternalCompareTargetId,
   } = props;
-
-  const t = useT();
 
   const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>(
     externalUpdatedIds,
@@ -226,155 +219,113 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     [compareTargetId, getComparedValue, itemsMap, overallComparedCache, compareMin, compareMax],
   );
 
-  const renderedItems = React.useMemo(() => {
-    return items.map((it) => {
-      const { id, isNew } = it;
-      const isUpdated = updatedIds?.has(id);
+  const RenderEditorItem = React.useCallback(
+    ({ item: it, isOverlay }: { item: T; isOverlay?: boolean }) => {
       const { normalized, value, overallValue, overallCount, overallTotal } =
         getItemComparedValues(it);
-      const isCompareTarget = compareTargetId && compareTargetId === id;
-      const hasOverallValue = overallValue >= 0.01;
-      const hasValue = value >= 0.01;
-      const infoStr = [
-        // Combine all info values...
-        overallValue.toFixed(2),
-        value.toFixed(2),
-        normalized.toFixed(2),
-        overallCount,
-        overallTotal.toFixed(2),
-      ].join(' ');
-      const infoTitle = hasOverallValue
-        ? t('Comparsion rate') + ': ' + infoStr
-        : t('The element is not involved in the comparison');
-      const hasSelected = selectedIds?.has(id);
       return (
-        <div
-          key={id}
+        <HeadlessEditorItem
           className={cn(
             isDev && '__HeadlessEditor_Item', // DEBUG
-            'flex items-start gap-2',
-            'content-truncate',
-            'max-xs:flex-col',
-            compact && 'flex-col',
-            'mx-6 rounded px-2 py-1',
-            'bg-theme-500/10',
-            !isNew && 'bg-background/50',
-            'border border-transparent',
-            isUpdated && 'border border-dashed border-green-500/50',
           )}
-        >
-          <div
-            className={cn(
-              isDev && '__HeadlessEditor_ItemControllers', // DEBUG
-              'flex shrink-0 items-center gap-2 text-sm',
-              'min-h-6',
-            )}
-            // title="Click to toggle the item comparison mode only with similar items"
-          >
-            {false || !isReady ? (
-              <>
-                <Skeleton className="size-4" />
-                <Skeleton className="size-4" />
-                {_showComparedValues && <Skeleton className="h-4 w-24" />}
-              </>
-            ) : (
-              <>
-                <Checkbox
-                  checked={hasSelected}
-                  aria-label={t('Select record')}
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    handleCheck(id);
-                  }}
-                />
-                <div
-                  aria-label={t('Comparsion indicator')}
-                  className={cn(
-                    isDev && '__HeadlessEditor_ItemCompareIcon', // DEBUG
-                    'box-content size-2.5 shrink-0 rounded-full p-[2px] transition',
-                    'border border-theme-500/50 bg-background',
-                    !hasOverallValue && 'border-theme-500/10',
-                    !!compareTargetId && hasValue && 'border-red-500/100',
-                    isCompareTarget && 'animate-pulse border-dashed border-red-500',
-                    hasOverallValue && 'cursor-pointer hover:ring-2 hover:ring-theme-500/50',
-                  )}
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    if (hasOverallValue) {
-                      handleCompareTargetId(id);
-                    }
-                  }}
-                  title={infoTitle}
-                >
-                  <div
-                    className={cn(
-                      isDev && '__HeadlessEditor_ItemCompareIcon', // DEBUG
-                      'size-full rounded-full bg-red-500',
-                      isCompareTarget && 'bg-red-500',
-                    )}
-                    style={{ opacity: isCompareTarget ? 1 : normalized.toFixed(2) }}
-                  />
-                </div>
-                {_showComparedValues && (
-                  <div className="truncate font-thin opacity-30">[{infoStr}]</div>
-                )}
-              </>
-            )}
-          </div>
-          <RenderItem className="flex-1" key={id} item={it} updateItem={handleUpdate} />
-        </div>
+          // Lifecylcle control...
+          isReady={isReady}
+          isOverlay={isOverlay}
+          // Display in narrow layout
+          compact={compact}
+          // Items interface...
+          item={it}
+          RenderItem={RenderItem}
+          updateItem={handleUpdate}
+          handleCheck={handleCheck}
+          handleCompareTargetId={handleCompareTargetId}
+          // Items state...
+          updatedIds={updatedIds}
+          selectedIds={selectedIds}
+          compareTargetId={compareTargetId}
+          // Other derived props
+          normalized={normalized}
+          value={value}
+          overallValue={overallValue}
+          overallCount={overallCount}
+          overallTotal={overallTotal}
+        />
       );
+    },
+    [
+      RenderItem,
+      compact,
+      compareTargetId,
+      getItemComparedValues,
+      handleCheck,
+      handleCompareTargetId,
+      isReady,
+      selectedIds,
+      handleUpdate,
+      updatedIds,
+    ],
+  );
+
+  const renderedItems = React.useMemo(() => {
+    return items.map((it) => {
+      const { id } = it;
+      return <RenderEditorItem key={id} item={it} />;
     });
-  }, [
-    RenderItem,
-    compact,
-    compareTargetId,
-    getItemComparedValues,
-    handleCheck,
-    handleCompareTargetId,
-    isReady,
-    items,
-    selectedIds,
-    t,
-    handleUpdate,
-    updatedIds,
-  ]);
+  }, [RenderEditorItem, items]);
+
+  const changeItemsOrder = React.useCallback(
+    (moveId: TCmpItemId, overId: TCmpItemId) => {
+      // TODO: Implement items re-ordering
+      console.log('[changeItemsOrder]', {
+        moveId,
+        overId,
+        items,
+      });
+    },
+    [items],
+  );
 
   return (
-    <div
-      className={cn(
-        isDev && '__HeadlessEditor', // DEBUG
-        'content-truncate flex flex-col gap-2',
-        className,
-      )}
+    <SortableWrapper
+      // isPending={isPending}
+      items={items}
+      RenderItem={RenderEditorItem}
+      changeItemsOrder={changeItemsOrder}
     >
-      {renderedItems}
-      {isDev /* DEBUG */ && (
-        <div
-          className={cn(
-            isDev && '__HeadlessEditor_DEBUG', // DEBUG
-            'flex flex-wrap gap-2 px-6 text-sm opacity-50',
-          )}
-        >
-          <span className="font-bold">DEBUG:</span>
-          <span>
-            <span className="opacity-50">count:</span> {items.length}
-          </span>
-          <span>
-            <span className="opacity-50">compareMin:</span> {compareMin.toFixed(2)}
-          </span>
-          <span>
-            <span className="opacity-50">compareMax:</span> {compareMax.toFixed(2)}
-          </span>
-          {!!compareTargetId && (
+      <div
+        className={cn(
+          isDev && '__HeadlessEditor', // DEBUG
+          'content-truncate flex flex-col gap-2',
+          'px-6',
+          className,
+        )}
+      >
+        {renderedItems}
+        {isDev /* DEBUG */ && (
+          <div
+            className={cn(
+              isDev && '__HeadlessEditor_DEBUG', // DEBUG
+              'flex flex-wrap gap-2 text-sm opacity-50',
+            )}
+          >
+            <span className="font-bold">DEBUG:</span>
             <span>
-              <span className="opacity-50">compareTargetId:</span> {compareTargetId}
+              <span className="opacity-50">count:</span> {items.length}
             </span>
-          )}
-        </div>
-      )}
-    </div>
+            <span>
+              <span className="opacity-50">compareMin:</span> {compareMin.toFixed(2)}
+            </span>
+            <span>
+              <span className="opacity-50">compareMax:</span> {compareMax.toFixed(2)}
+            </span>
+            {!!compareTargetId && (
+              <span>
+                <span className="opacity-50">compareTargetId:</span> {compareTargetId}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+    </SortableWrapper>
   );
 }

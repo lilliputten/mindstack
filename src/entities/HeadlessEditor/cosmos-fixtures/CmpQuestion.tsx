@@ -19,8 +19,8 @@ import { T } from './types';
 export function CmpQuestion(props: TCmpItemProps<T>) {
   const { className, item, updateItem } = props;
   const {
-    id, // Required unique id
-    text = '', // "Question markdown text",
+    id, // Required an unique id
+    text = '', // Question markdown text
     _count,
     answers,
   } = item;
@@ -62,7 +62,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       data-testid="__RenderItem"
       className={cn(
         isDev && '__RenderItem', // DEBUG
-        // 'content-truncate',
         'relative flex w-full items-start gap-2 text-left',
         className,
       )}
@@ -109,20 +108,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           </MarkdownText>
         )}
       </div>
-      {/*
-      {!isEditMode && (
-        <div
-          className={cn(
-            isDev && '__RenderItem_Info', // DEBUG
-            'mt-1.5',
-            'flex h-4 w-8 shrink-0 items-center justify-center rounded-md',
-            'bg-theme-500/50 text-xs text-white opacity-50',
-          )}
-        >
-          {count ? <span className="truncate">{count}</span> : <Icons.Dot className="size-3" />}
-        </div>
-      )}
-      */}
       <div
         className={cn(
           isDev && '__RenderItem_Extra', // DEBUG
