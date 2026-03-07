@@ -13,37 +13,6 @@ import { HeadlessEditorItem } from './HeadlessEditorItem';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 import { useComparator } from './useComparator';
 
-interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
-  className?: string;
-
-  // Lifecylcle control...
-  isReady: boolean;
-
-  // Options...
-  // Locale for comparator
-  locale: TLocale;
-  // Compare using ngrams for large texts or with just tokens otherwise
-  largeTexts: LargeTexts;
-  // Display in narrow layout
-  compact?: boolean;
-  onlyTargeted?: boolean;
-
-  // Items interface...
-  items: T[];
-  getItemText: (item: T) => string;
-  RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
-  // updateItem?: (it: T) => void;
-  updateItems?: (its: T[]) => void;
-
-  // Items state...
-  updatedIds?: Set<TCmpItemId>;
-  selectedIds?: Set<TCmpItemId>;
-  setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
-  compareTargetId?: TCmpItemId;
-  setCompareTargetId?: (id?: TCmpItemId) => void;
-  changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
-}
-
 /* // EXAMPLE 1: A simpler editor component implementation, without forwarded API handlers, controlled via regular data props and optional handlers:
  * export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
  *   props: TProps<T, LargeTexts>,
@@ -76,6 +45,41 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
  *     );
  */
 
+interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
+  className?: string;
+
+  // Lifecylcle control...
+  isReady: boolean;
+
+  // Options...
+  // Locale for comparator
+  locale: TLocale;
+  // Compare using ngrams for large texts or with just tokens otherwise
+  largeTexts: LargeTexts;
+  // Display in narrow layout
+  compact?: boolean;
+  filterTargeted?: boolean;
+  filterUpdated?: boolean;
+  filterSelected?: boolean;
+
+  // Items interface...
+  items: T[];
+  getItemText: (item: T) => string;
+  RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
+  // updateItem?: (it: T) => void;
+  updateItems?: (its: T[]) => void;
+  updateReordered?: (its: T[]) => void;
+
+  // Items state...
+  updatedIds?: Set<TCmpItemId>;
+  reorderedIds?: Set<TCmpItemId>;
+  selectedIds?: Set<TCmpItemId>;
+  setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
+  compareTargetId?: TCmpItemId;
+  setCompareTargetId?: (id?: TCmpItemId) => void;
+  changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
+}
+
 /**
  * Comparator function for sorting by 'order', with these rules:
  * - Items with defined numeric 'order' come first (ascending).
@@ -107,14 +111,18 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     locale,
     largeTexts,
     compact,
-    onlyTargeted,
+    filterTargeted,
+    filterUpdated,
+    filterSelected,
     // Items...
     items,
     getItemText,
     RenderItem,
     updateItems,
+    updateReordered,
     // State...
     updatedIds: externalUpdatedIds,
+    reorderedIds: externalReorderedIds,
     selectedIds: externalSelectedIds,
     setSelectedId: setExternalSelectedId,
     compareTargetId: externalCompareTargetId,
@@ -128,12 +136,23 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   React.useEffect(() => {
     setUpdatedIds(externalUpdatedIds);
   }, [externalUpdatedIds]);
-
   const addUpdatedIds = React.useCallback((ids: TCmpItemId[]) => {
     setUpdatedIds((updatedIds) => {
-      const initial = updatedIds ? [...updatedIds] : [];
-      const newIds = new Set(initial.concat(ids));
-      return newIds;
+      const initialLst = updatedIds ? [...updatedIds] : [];
+      return new Set([...initialLst, ...ids]);
+    });
+  }, []);
+
+  const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>(
+    externalReorderedIds,
+  );
+  React.useEffect(() => {
+    setReorderedIds(externalReorderedIds);
+  }, [externalReorderedIds]);
+  const addReorderedIds = React.useCallback((ids: TCmpItemId[]) => {
+    setReorderedIds((reorderedIds) => {
+      const initialLst = reorderedIds ? [...reorderedIds] : [];
+      return new Set([...initialLst, ...ids]);
     });
   }, []);
 
@@ -277,6 +296,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           handleCompareTargetId={handleCompareTargetId}
           // Items state...
           updatedIds={updatedIds}
+          reorderedIds={reorderedIds}
           selectedIds={selectedIds}
           compareTargetId={compareTargetId}
           // Other derived props
@@ -299,28 +319,71 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       selectedIds,
       handleUpdate,
       updatedIds,
+      reorderedIds,
     ],
   );
 
   // Ordered items list...
   const [orderedItems, setOrderedItems] = React.useState<T[] | undefined>();
-  const displayingItems = React.useMemo(() => {
-    if (!compareTargetId || !onlyTargeted) {
-      return orderedItems;
+
+  const filteredItems = React.useMemo(() => {
+    let filteredItems = orderedItems;
+    if (filterUpdated) {
+      if (!updatedIds?.size) {
+        return [];
+      }
+      filteredItems = filteredItems?.filter((it) => {
+        return updatedIds.has(it.id);
+      });
     }
-    const compareTarget = itemsMap.get(compareTargetId);
-    if (!compareTarget) {
-      return orderedItems;
+    if (filterSelected) {
+      if (!selectedIds?.size) {
+        return [];
+      }
+      filteredItems = filteredItems?.filter((it) => {
+        return selectedIds.has(it.id);
+      });
     }
-    return orderedItems?.filter((it) => {
-      const value = getComparedValue(compareTarget, it);
-      return value && value >= 0.01;
-    });
-  }, [compareTargetId, onlyTargeted, orderedItems, itemsMap, getComparedValue]);
-  console.log('XXX', {
-    displayingItems,
+    if (filterTargeted) {
+      const compareTarget = compareTargetId ? itemsMap.get(compareTargetId) : undefined;
+      filteredItems = filteredItems?.filter((it) => {
+        let value: number | undefined | null;
+        if (compareTarget) {
+          value = getComparedValue(compareTarget, it);
+        } else {
+          const overall = overallComparedCache?.get(it);
+          value = overall?.value;
+        }
+        return value && value >= 0.01;
+      });
+      //   if (compareTarget) {
+      //     filteredItems = filteredItems?.filter((it) => {
+      //       const value = getComparedValue(compareTarget, it);
+      //       return value && value >= 0.01;
+      //     });
+      //   }
+      // } else {
+      //   filteredItems = filteredItems?.filter((it) => {
+      //     const overall = overallComparedCache?.get(it);
+      //     const value = overall?.value;
+      //     return value && value >= 0.01;
+      //   });
+      // }
+    }
+    return filteredItems;
+  }, [
+    compareTargetId,
+    filterSelected,
+    filterTargeted,
+    filterUpdated,
+    getComparedValue,
+    itemsMap,
     orderedItems,
-  });
+    overallComparedCache,
+    selectedIds,
+    updatedIds,
+  ]);
+
   React.useEffect(() => {
     const orderedItems = [...items];
     orderedItems.sort(compareByOrder);
@@ -360,31 +423,31 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         return item;
       });
 
-      if (updateItems) updateItems(updatedItems);
-      else addUpdatedIds(updatedItems.map(({ id }) => id));
+      if (updateReordered) updateReordered(updatedItems);
+      else addReorderedIds(updatedItems.map(({ id }) => id));
 
       setOrderedItems(reOrderedItems);
     },
-    [changeExternalItemsOrder, orderedItems, updateItems, addUpdatedIds],
+    [changeExternalItemsOrder, orderedItems, updateReordered, addReorderedIds],
   );
 
   const itemsCount = items.length;
 
   const renderedItems = React.useMemo(() => {
-    if (!isReady || !displayingItems) {
+    if (!isReady || !filteredItems) {
       return generateArray(itemsCount || 5).map((idx) => (
-        <Skeleton key={idx} className="h-9 w-full" />
+        <Skeleton key={idx} className="h-8 w-full" />
       ));
     }
-    return displayingItems.map((it, idx) => {
+    return filteredItems.map((it, idx) => {
       return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
     });
-  }, [isReady, RenderEditorItem, displayingItems, itemsCount]);
+  }, [isReady, RenderEditorItem, filteredItems, itemsCount]);
 
   return (
     <SortableWrapper
       // isPending={isPending}
-      items={displayingItems || []}
+      items={filteredItems || []}
       RenderItem={RenderEditorItem}
       changeItemsOrder={changeItemsOrder}
     >

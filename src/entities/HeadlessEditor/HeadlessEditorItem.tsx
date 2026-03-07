@@ -14,7 +14,7 @@ import { isDev } from '@/config';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
 const _showComparedValues = isDev && false;
-const _showOrder = isDev && true;
+const _showOrder = isDev && false;
 
 interface TProps<T extends TCmpItemBase> {
   className?: string;
@@ -36,6 +36,7 @@ interface TProps<T extends TCmpItemBase> {
 
   // Items state...
   updatedIds?: Set<TCmpItemId>;
+  reorderedIds?: Set<TCmpItemId>;
   selectedIds?: Set<TCmpItemId>;
   compareTargetId?: TCmpItemId;
 
@@ -64,6 +65,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     handleCompareTargetId,
     // Items state...
     updatedIds,
+    reorderedIds,
     selectedIds,
     compareTargetId,
     // Other derived props
@@ -89,6 +91,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
   } = useSortable({ id });
 
   const isUpdated = updatedIds?.has(id);
+  const isReordered = reorderedIds?.has(id);
 
   const isCompareTarget = compareTargetId && compareTargetId === id;
   const hasOverallValue = overallValue >= 0.01;
@@ -119,6 +122,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         'rounded bg-theme-500/10',
         'border border-transparent',
         !isNew && 'bg-background/50',
+        // isReordered && 'border-dashed border-blue-500/50',
         isUpdated && 'border-dashed border-green-500/50',
         isDragging && 'opacity-0',
         isOverlay && 'bg-theme-500/50 ring-2',
@@ -143,28 +147,29 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
             {[_idx != undefined ? `[${_idx}]` : undefined, it.order].filter(Boolean).join(' ')}
           </span>
         )}
+        <span
+          className={cn(
+            isDev && '__DragHandle', // DEBUG
+            'opacity-50',
+            'transition-all',
+            'hover:opacity-100',
+            'text-foreground/20',
+            isReordered && 'text-theme-500',
+          )}
+          {...attributes}
+          {...listeners}
+          title={t('Drag Item')}
+        >
+          <Icons.GripVertical className="size-4 shrink-0" />
+        </span>
         {false || !isReady ? (
           <>
-            <Skeleton className="size-4" />
             {!!handleCheck && <Skeleton className="size-4" />}
             <Skeleton className="size-4" />
             {_showComparedValues && <Skeleton className="h-4 w-24" />}
           </>
         ) : (
           <>
-            <span
-              className={cn(
-                isDev && '__DragHandle', // DEBUG
-                'opacity-20',
-                'transition-all',
-                'hover:opacity-50',
-              )}
-              {...attributes}
-              {...listeners}
-              title={t('Drag Item')}
-            >
-              <Icons.GripVertical className="size-4 shrink-0" />
-            </span>
             {!!handleCheck && (
               <Checkbox
                 checked={hasSelected}
