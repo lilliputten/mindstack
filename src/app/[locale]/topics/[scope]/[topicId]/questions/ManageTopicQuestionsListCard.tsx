@@ -576,7 +576,6 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
   const handleDeleteSelected = React.useCallback(() => {
     const selectedIds = Array.from(selectedQuestions);
     if (selectedIds.length === 0) return;
-
     const promise = deleteSelectedMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
       loading: t('ManageTopicQuestionsListCard.DeletingSelectedQuestions'),

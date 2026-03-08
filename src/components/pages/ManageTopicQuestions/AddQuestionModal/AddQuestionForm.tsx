@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { pricingAliasRoute } from '@/config/routesConfig';
 import { ContentLimitError, getLocalizedLimitError, TContentLimitErrorCode } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -17,51 +18,32 @@ import { FormHint } from '@/components/blocks/FormHint';
 import { MarkdownHint } from '@/components/blocks/MarkdownHint';
 import { BusySplash, SuccessSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
-import { pricingAliasRoute, TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { TNewQuestion, TQuestion, TQuestionId } from '@/features/questions/types';
-import { TTopicId } from '@/features/topics/types';
-import { useGoToTheRoute } from '@/hooks';
-import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
+import { TNewQuestion } from '@/features/questions/types';
 
 import { maxTextLength, minTextLength } from '../constants';
 
-export type TAddQuestionParams = TNewQuestion;
+const formSchema = z.object({
+  text: z.string().min(minTextLength).max(maxTextLength),
+});
+export type TFormData = z.infer<typeof formSchema>;
+
+type TMinimalNewQuestion = Pick<TNewQuestion, 'text'>;
 
 export interface TAddQuestionFormProps {
-  handleAddQuestion: (p: TAddQuestionParams) => Promise<unknown>;
-  handleClose?: () => void;
+  handleAddQuestion: (p: TMinimalNewQuestion) => Promise<unknown>;
+  onClose?: () => void;
   className?: string;
   isPending?: boolean;
-  topicId: TTopicId;
-  addedQuestionId?: TQuestionId;
-}
-
-export interface TFormData {
-  text: TQuestion['text'];
+  closeImmediatelly?: boolean;
+  goToAddedQuestion?: () => void;
 }
 
 export function AddQuestionForm(props: TAddQuestionFormProps) {
-  const { className, handleAddQuestion, handleClose, isPending, topicId, addedQuestionId } = props;
+  const { className, handleAddQuestion, onClose, isPending, closeImmediatelly, goToAddedQuestion } =
+    props;
   const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
-
-  const { manageScope } = useManageTopicsStore();
-
-  // Calculate paths...
-  const topicsListRoutePath = `/topics/${manageScope}`;
-  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
-  const questionsListRoutePath = `${topicRoutePath}/questions`;
-
-  const goToTheRoute = useGoToTheRoute();
-
-  const formSchema = React.useMemo(
-    () =>
-      z.object({
-        text: z.string().min(minTextLength).max(maxTextLength),
-      }),
-    [],
-  );
 
   const defaultValues: TFormData = React.useMemo(() => {
     return {
@@ -89,7 +71,6 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
     isSubmitting, // boolean;
     isLoading, // boolean;
   } = formState;
-  // const isSubmitSuccessful = true; // DEBUG
 
   const isBusy = isGoingOut || isSubmitting || isLoading || isPending;
   const isSubmitEnabled = !isBusy && isDirty && isValid;
@@ -98,10 +79,13 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
 
   const onSubmit = handleSubmit((formData) => {
     const { text } = formData;
-    const newQuestion: TNewQuestion = { text, topicId, isGenerated: false };
+    const newQuestion: TMinimalNewQuestion = { text };
     return handleAddQuestion(newQuestion)
       .then(() => {
         setLimitsError(undefined);
+        if (closeImmediatelly) {
+          onClose?.();
+        }
       })
       .catch((error) => {
         const message = t('AddQuestionForm.CannotCreateQuestion');
@@ -125,13 +109,6 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
       });
   });
 
-  const onClose = (ev: React.MouseEvent) => {
-    if (handleClose) {
-      handleClose();
-    }
-    ev.preventDefault();
-  };
-
   const textKey = React.useId();
 
   const SubmitIcon = isPending ? Icons.Spinner : Icons.Check;
@@ -147,7 +124,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
         )}
       >
         {isSubmitSuccessful ? (
-          <SuccessSplash title={t('AddQuestionForm.SuccessfullySavedTitle')} className="px-6">
+          <SuccessSplash title={t('AddQuestionForm.QuestionAdded')} className="w-full px-6">
             {t('CanCloseDialog')}
           </SuccessSplash>
         ) : limitsError ? (
@@ -190,8 +167,7 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
                     />
                   </FormControl>
                   <FormHint>
-                    {t('AddQuestionForm.QuestionTextHint')}
-                    <MarkdownHint />
+                    {t('AddQuestionForm.QuestionTextHint')} <MarkdownHint />
                   </FormHint>
                   <FormMessage />
                 </FormItem>
@@ -229,31 +205,28 @@ export function AddQuestionForm(props: TAddQuestionFormProps) {
             </Button>
           )}
           {/* Show a button "Go to the created question". TODO: Use `router.replace`? */}
-          {isSubmitSuccessful && addedQuestionId && (
+          {isSubmitSuccessful && goToAddedQuestion && (
             <Button
               className="flex gap-2"
-              // Go to the route by replacing the current (`.../add`) route
-              onClick={() => goToTheRoute(`${questionsListRoutePath}/${addedQuestionId}`, true)}
+              onClick={() => {
+                setIsGoingOut(true);
+                goToAddedQuestion();
+              }}
               variant={!isGoingOut ? 'theme' : 'ghost'}
               disabled={isBusy}
             >
-              <Link
-                href={`${questionsListRoutePath}/${addedQuestionId}` as TRoutePath}
-                className={cn(
-                  'flex gap-2',
-                  // buttonVariants({ variant: !isGoingOut ? 'theme' : 'ghost' }),
-                  // isBusy && 'disabled',
-                )}
-                onClick={() => setIsGoingOut(true)}
-              >
-                <Icons.ArrowRight className="size-4" />
-                <span>{t('AddQuestionForm.GoToCreatedQuestion')}</span>
-              </Link>
+              <Icons.ArrowRight className="size-4" />
+              <span>{t('AddQuestionForm.GoToCreatedQuestion')}</span>
             </Button>
           )}
           <Button
-            variant={isSubmitSuccessful && !addedQuestionId ? 'theme' : 'ghost'}
-            onClick={onClose}
+            variant={isSubmitSuccessful ? 'theme' : 'ghost'}
+            onClick={(ev) => {
+              ev.preventDefault();
+              if (onClose) {
+                onClose();
+              }
+            }}
             className="gap-2"
           >
             <Icons.Close className="size-4" />

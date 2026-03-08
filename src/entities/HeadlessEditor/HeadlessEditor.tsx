@@ -157,7 +157,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   }, []);
   const removeFreshIds = React.useCallback((ids: Set<TCmpItemId>) => {
     setFreshIds((freshIds) => {
-      const initialLst = freshIds ? [...freshIds] : [];
+      const initialLst = freshIds ? freshIds.keys() : [];
       return new Set([...initialLst.filter((id) => !ids.has(id))]);
     });
   }, []);
@@ -171,10 +171,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     setUpdatedIds(externalUpdatedIds);
   }, [externalUpdatedIds]);
   const addUpdatedIds = React.useCallback((ids: TCmpItemId[]) => {
-    setUpdatedIds((updatedIds) => {
-      const initialLst = updatedIds ? [...updatedIds] : [];
-      return new Set([...initialLst, ...ids]);
-    });
+    setUpdatedIds((updatedIds = new Set()) => new Set([...updatedIds, ...ids]));
   }, []);
 
   // Reordered items...
@@ -186,10 +183,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     setReorderedIds(externalReorderedIds);
   }, [externalReorderedIds]);
   const addReorderedIds = React.useCallback((ids: TCmpItemId[]) => {
-    setReorderedIds((reorderedIds) => {
-      const initialLst = reorderedIds ? [...reorderedIds] : [];
-      return new Set([...initialLst, ...ids]);
-    });
+    setReorderedIds((reorderedIds = new Set()) => new Set([...reorderedIds, ...ids]));
   }, []);
 
   const handleUpdate = React.useCallback(
@@ -553,13 +547,19 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         )}
       >
         {/* Render skeletons or real items */}
-        {!isReady || !filteredItems
-          ? generateArray(items.length || 5).map((idx) => (
-              <Skeleton key={idx} className="h-8 w-full" />
-            ))
-          : filteredItems?.map((it, idx) => {
-              return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
-            })}
+        {!isReady || !filteredItems ? (
+          generateArray(items.length || 5).map((idx) => (
+            <Skeleton key={idx} className="h-8 w-full" />
+          ))
+        ) : !filteredItems?.length ? (
+          <div className="rounded border border-dashed p-6 text-center text-sm opacity-30">
+            No items to display
+          </div>
+        ) : (
+          filteredItems?.map((it, idx) => {
+            return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
+          })
+        )}
         {/* The bottommost element, required for scroll to the bottom on new items adding */}
         <div className="h-0 w-full" ref={bottomRef} />
         {__showDebug && (

@@ -24,7 +24,7 @@
   "Availability": "Availability",
   "AverageSuccessRate": "Average success rate",
   "Back": "Back",
-  "CanCloseDialog": "You can now close the dialog.",
+  "CanCloseDialog": "You can close the dialog.",
   "Cancel": "Cancel",
   "Categories": "Categories",
   "Category": "Category",
@@ -201,10 +201,10 @@
     "CancelButtonText": "Cancel",
     "CannotCreateQuestion": "Question Creation Error",
     "GoToCreatedQuestion": "To created question",
+    "QuestionAdded": "Question Added!",
     "QuestionText": "Question Text",
     "QuestionTextHint": "You'll be able to edit it later, as well as other question poroperties.",
-    "QuestionTextPlaceholder": "Text",
-    "SuccessfullySavedTitle": "The questuion is saved!"
+    "QuestionTextPlaceholder": "Text"
   },
   "AddQuestionModal": {
     "DialogDescription": "Add question dialog",
@@ -1115,8 +1115,8 @@
     "Settings": "Settings",
     "Support": "Support",
     "TestAiTextQuery": "Test AI Text Query",
-    "WelcomePage": "Welcome Page",
-    "UiDemoPage": "UI Demo"
+    "UiDemoPage": "UI Demo",
+    "WelcomePage": "Welcome Page"
   },
   "NavLocaleSwitcher": {
     "label": "Change language"

@@ -1,5 +1,5 @@
-import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions';
+import { AddQuestionModalPage } from '@/components/pages/ManageTopicQuestions';
 
-export default function AddQuestionModalPage() {
-  return <AddQuestionModal />;
+export default function AddQuestionModalPageWrapper() {
+  return <AddQuestionModalPage />;
 }

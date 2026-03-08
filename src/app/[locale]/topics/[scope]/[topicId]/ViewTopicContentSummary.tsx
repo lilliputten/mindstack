@@ -81,64 +81,6 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         </div>
       )}
 
-      {/* Topic Questions */}
-      <div
-        data-testid="__ViewTopicContentSummary_Section_Questions"
-        className="content-truncate flex flex-col gap-4"
-      >
-        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="content-truncate flex gap-2 text-lg">
-            <span className="truncate font-semibold">{t('Questions')}</span>
-            {!!topic._count?.questions && (
-              <span className="truncate opacity-50">({topic._count.questions})</span>
-            )}
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={`${routePath}/${topic.id}/questions` as TRoutePath}
-              className={cn(
-                buttonVariants({ variant: 'ghost' }),
-                'flex items-center gap-2 truncate',
-              )}
-            >
-              <Icons.Questions className="size-4 shrink-0 opacity-50" />
-              <span className="truncate">{t('GoToTheQuestions')}</span>
-            </Link>
-            <Link
-              href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
-              className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2 truncate')}
-            >
-              <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
-              <span className="truncate">{t('GenerateQuestions')}</span>
-            </Link>
-          </div>
-        </div>
-        <div className="content-truncate flex flex-wrap gap-2">
-          {isQuestionsFetching || !isQuestionsFetched ? (
-            generateArray(topic._count?.questions || 3).map((n) => (
-              <Skeleton key={n} className="h-5 w-full" />
-            ))
-          ) : !allQuestions.length ? (
-            <p className="text-sm opacity-50">No questions created yet</p>
-          ) : (
-            <PreviewQuestions questions={allQuestions} />
-          )}
-        </div>
-        {/*!!topic._count?.questions && (
-          <div className="flex flex-wrap gap-2 text-sm">
-            <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
-              <Icons.Questions className="size-4 shrink-0 opacity-50" />
-              <span className="truncate">
-                <span className="truncate opacity-50">
-                  {t('ViewTopicContentSummary.QuestionsCount')}:
-                </span>{' '}
-                <span className="truncate">{topic._count.questions}</span>
-              </span>
-            </Badge>
-          </div>
-          )*/}
-      </div>
-
       {/* Categories */}
       {!!categoryIds?.length && (
         <div
@@ -266,6 +208,66 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
         <div className="content-truncate flex items-center gap-2 text-sm">
           <SmallUserBlock user={topic.user} className="truncate" />
         </div>
+      </div>
+
+      <Separator />
+
+      {/* Topic Questions */}
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Questions"
+        className="content-truncate flex flex-col gap-4"
+      >
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h3 className="content-truncate flex gap-2 text-lg">
+            <span className="truncate font-semibold">{t('Questions')}</span>
+            {!!topic._count?.questions && (
+              <span className="truncate opacity-50">({topic._count.questions})</span>
+            )}
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`${routePath}/${topic.id}/questions` as TRoutePath}
+              className={cn(
+                buttonVariants({ variant: 'ghost' }),
+                'flex items-center gap-2 truncate',
+              )}
+            >
+              <Icons.Questions className="size-4 shrink-0 opacity-50" />
+              <span className="truncate">{t('GoToTheQuestions')}</span>
+            </Link>
+            <Link
+              href={`${routePath}/${topic.id}/questions/generate` as TRoutePath}
+              className={cn(buttonVariants({ variant: 'gr1' }), 'flex items-center gap-2 truncate')}
+            >
+              <Icons.WandSparkles className="size-4 shrink-0 opacity-50" />
+              <span className="truncate">{t('GenerateQuestions')}</span>
+            </Link>
+          </div>
+        </div>
+        <div className="content-truncate flex flex-wrap gap-2">
+          {isQuestionsFetching || !isQuestionsFetched ? (
+            generateArray(topic._count?.questions || 3).map((n) => (
+              <Skeleton key={n} className="h-5 w-full" />
+            ))
+          ) : !allQuestions.length ? (
+            <p className="text-sm opacity-50">No questions created yet</p>
+          ) : (
+            <PreviewQuestions className="w-full" questions={allQuestions} />
+          )}
+        </div>
+        {/*!!topic._count?.questions && (
+          <div className="flex flex-wrap gap-2 text-sm">
+            <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
+              <Icons.Questions className="size-4 shrink-0 opacity-50" />
+              <span className="truncate">
+                <span className="truncate opacity-50">
+                  {t('ViewTopicContentSummary.QuestionsCount')}:
+                </span>{' '}
+                <span className="truncate">{topic._count.questions}</span>
+              </span>
+            </Badge>
+          </div>
+          )*/}
       </div>
     </div>
   );

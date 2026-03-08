@@ -22,7 +22,7 @@
   "Availability": "Disponibilidad",
   "AverageSuccessRate": "Tasa de éxito promedio",
   "Back": "Atrás",
-  "CanCloseDialog": "Ahora puede cerrar el cuadro de diálogo.",
+  "CanCloseDialog": "Puede cerrar el cuadro de diálogo.",
   "Cancel": "Cancelar",
   "Categories": "Categorías",
   "Category": "Categoría",
@@ -197,10 +197,10 @@
     "CancelButtonText": "Cancelar",
     "CannotCreateQuestion": "Error al crear la pregunta",
     "GoToCreatedQuestion": "A la pregunta creada",
+    "QuestionAdded": "¡Pregunta agregada!",
     "QuestionText": "Texto de la Pregunta",
     "QuestionTextHint": "Podrás editarlo más tarde, así como otras propiedades de la pregunta.",
-    "QuestionTextPlaceholder": "Texto",
-    "SuccessfullySavedTitle": "¡La pregunta está guardada!"
+    "QuestionTextPlaceholder": "Texto"
   },
   "AddQuestionModal": {
     "DialogDescription": "Agregar diálogo de pregunta",
@@ -1106,8 +1106,8 @@
     "Settings": "Configuración",
     "Support": "Soporte",
     "TestAiTextQuery": "Prueba de Generación",
-    "WelcomePage": "¡Bienvenido!",
-    "UiDemoPage": "Demostración de UI"
+    "UiDemoPage": "Demostración de UI",
+    "WelcomePage": "¡Bienvenido!"
   },
   "NavLocaleSwitcher": {
     "label": "Cambiar idioma"

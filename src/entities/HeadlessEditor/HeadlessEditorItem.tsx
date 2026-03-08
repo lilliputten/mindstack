@@ -110,6 +110,8 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     ? t('Comparsion rate') + ': ' + infoStr
     : t('The element is not involved in the comparison');
 
+  const indicateFreshItemBackgroundOpacity = isAdded ? 10 : 0;
+
   return (
     <div
       ref={setNodeRef}
@@ -137,7 +139,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           transition,
           // NOTE: Set parameters for newly added (fresh) item animation. TODO: Extract to the tailwind configuration?
           '--indicate-fresh-item-duration': `${freshEffectTimeout}ms`,
-          '--indicate-fresh-item-background-opacity': `10%`, // Corresponding default `isAdded` background transparency, 10, see above
+          '--indicate-fresh-item-background-opacity': `${indicateFreshItemBackgroundOpacity}%`, // Corresponding default `isAdded` background transparency, 10, see above
         } as React.CSSProperties
       }
     >

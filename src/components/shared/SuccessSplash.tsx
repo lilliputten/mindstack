@@ -32,7 +32,7 @@ export function SuccessSplash({
         className,
       )}
     >
-      <Icons.CheckCircle className="mt-2 size-12 text-green-500" />
+      <Icons.CircleCheck className="mt-2 size-12 text-green-500" />
       <div className="content-truncate flex flex-col gap-4 text-center">
         {title && <h3 className="text-xl font-semibold text-green-500">{title}</h3>}
         {children && <div className={contentClassName}>{children}</div>}

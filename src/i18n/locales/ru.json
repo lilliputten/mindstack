@@ -22,7 +22,7 @@
   "Availability": "Доступность",
   "AverageSuccessRate": "Средний рейтинг",
   "Back": "Назад",
-  "CanCloseDialog": "Теперь вы можете закрыть диалог.",
+  "CanCloseDialog": "Вы можете закрыть диалог.",
   "Cancel": "Отменить",
   "Categories": "Категории",
   "Category": "Категория",
@@ -193,10 +193,10 @@
     "CancelButtonText": "Отменить",
     "CannotCreateQuestion": "Ошибка создания вопроса",
     "GoToCreatedQuestion": "К созданному вопросу",
+    "QuestionAdded": "Вопрос добавлен!",
     "QuestionText": "Текст вопроса",
     "QuestionTextHint": "Вы сможете редактировать его позже, а также другие свойства вопроса.",
-    "QuestionTextPlaceholder": "Текст",
-    "SuccessfullySavedTitle": "Вопрос сохранен!"
+    "QuestionTextPlaceholder": "Текст"
   },
   "AddQuestionModal": {
     "DialogDescription": "Добавить диалог вопроса",
@@ -1108,8 +1108,8 @@
     "Settings": "Настройки",
     "Support": "Поддержка",
     "TestAiTextQuery": "Тест ИИ",
-    "WelcomePage": "Приветствие",
-    "UiDemoPage": "UI демо"
+    "UiDemoPage": "UI демо",
+    "WelcomePage": "Приветствие"
   },
   "NavLocaleSwitcher": {
     "label": "Сменить язык"

@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TLocale } from '@/i18n';
+import { TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { ConfirmModal } from '@/components/modals/ConfirmModal';
+import {
+  AddQuestionModal,
+  TFormData as TAddQuestionFormData,
+} from '@/components/pages/ManageTopicQuestions/AddQuestionModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
@@ -34,6 +39,11 @@ export function HeadlessEditorDemo(props: TProps) {
     largeTexts = false,
   } = props;
 
+  const t = useT();
+
+  const [addQuestionModalVisible, setAddQuestionModalVisible] = React.useState(false);
+  const [showDeleteSelectedConfirm, setShowDeleteSelectedConfirm] = React.useState(false);
+
   const [filterTargeted, setFilterTargeted] = React.useState(false);
   const [filterUpdated, setFilterUpdated] = React.useState(false);
   const [filterAdded, setFilterAdded] = React.useState(false);
@@ -41,30 +51,21 @@ export function HeadlessEditorDemo(props: TProps) {
 
   const [items, setItems] = React.useState(() => demoQuestions);
   const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>();
+  const [deletedIds, setDeletedIds] = React.useState<Set<TCmpItemId> | undefined>();
   const [addedIds, setAddedIds] = React.useState<Set<TCmpItemId> | undefined>();
   const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>();
 
-  const updateItems = React.useCallback(
-    (its: T[]) => {
-      const newIdsMap = new Map(its.map((item) => [item.id, item]));
-      const initialLst = updatedIds ? [...updatedIds] : [];
-      const newUpdatedIds = new Set([...initialLst, ...newIdsMap.keys()]);
-      setUpdatedIds(newUpdatedIds);
-      setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
-    },
-    [updatedIds],
-  );
+  const updateItems = React.useCallback((its: T[]) => {
+    const newIdsMap = new Map(its.map((item) => [item.id, item]));
+    setUpdatedIds((updatedIds = new Set()) => new Set([...updatedIds, ...newIdsMap.keys()]));
+    setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
+  }, []);
 
-  const updateReordered = React.useCallback(
-    (its: T[]) => {
-      const newIdsMap = new Map(its.map((item) => [item.id, item]));
-      const initialLst = reorderedIds ? [...reorderedIds] : [];
-      const newReorderedIds = new Set([...initialLst, ...newIdsMap.keys()]);
-      setReorderedIds(newReorderedIds);
-      setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
-    },
-    [reorderedIds],
-  );
+  const updateReordered = React.useCallback((its: T[]) => {
+    const newIdsMap = new Map(its.map((item) => [item.id, item]));
+    setReorderedIds((reorderedIds = new Set()) => new Set([...reorderedIds, ...newIdsMap.keys()]));
+    setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
+  }, []);
 
   // State: Local selected ids set
   const [selectedIds, setSelectedIds] = React.useState<Set<TCmpItemId> | undefined>();
@@ -91,44 +92,73 @@ export function HeadlessEditorDemo(props: TProps) {
     });
     const hasId = (id: TCmpItemId) => existedKeys.has(id);
     const hasIdsSet = (ids?: Set<TCmpItemId>) => ids && new Set(ids.keys().filter(hasId));
+    // Actualize tracked id sets...
     setSelectedIds(hasIdsSet);
     setUpdatedIds(hasIdsSet);
     setReorderedIds(hasIdsSet);
-    // setAddedIds(hasIdsSet);
+    // Recreate added ids set...
     setAddedIds(
       new Set(items.filter(({ id, isNew }) => isNew || id.startsWith('__new')).map(({ id }) => id)),
     );
   }, [items]);
 
+  const restoreDefaults = React.useCallback(() => {
+    setItems(demoQuestions);
+    setUpdatedIds(undefined);
+    setDeletedIds(undefined);
+    setAddedIds(
+      new Set(
+        demoQuestions
+          .filter(({ id, isNew }) => isNew || id.startsWith('__new'))
+          .map(({ id }) => id),
+      ),
+    );
+  }, []);
+
   const selectedCount = selectedIds?.size || 0;
 
   const getUniqueNewId = React.useCallback(() => {
-    const existedKeys = new Set<TCmpItemId>(items.map(({ id }) => id));
-    let count = 1;
-    while (true) {
-      const id = `__new${count}`;
-      if (!existedKeys.has(id)) {
-        return id;
-      }
-      count++;
+    // Combine a set of used ids from deleted and actual ones...
+    const usedKeys = new Set([...(deletedIds ?? []), ...items.map(({ id }) => id)]);
+    let count = 0;
+    let id: string;
+    do {
+      // ...and find the first avaiable id...
+      id = `__new${++count}`;
+    } while (usedKeys.has(id));
+    return id;
+  }, [items, deletedIds]);
+
+  const addNewItem = React.useCallback(
+    (formData: TAddQuestionFormData) => {
+      const id = getUniqueNewId();
+      const newItem: T = {
+        id,
+        topicId: demoTopicId,
+        // text: `New item ${id}`,
+        ...formData,
+      };
+      setItems((items) => {
+        return items.concat(newItem);
+      });
+      setAddedIds((ids) => {
+        const newSet = new Set(ids);
+        newSet.add(id);
+        return newSet;
+      });
+    },
+    [getUniqueNewId],
+  );
+
+  const deleteSelected = React.useCallback(() => {
+    if (selectedIds?.size) {
+      // Add removed item ids to `deletedIds`
+      setDeletedIds((deletedIds = new Set()) => new Set([...deletedIds, ...selectedIds]));
+      // Delete items
+      setItems((items) => items.filter(({ id }) => !selectedIds?.has(id)));
+      setShowDeleteSelectedConfirm(false);
     }
-  }, [items]);
-  const addNewItem = React.useCallback(() => {
-    const id = getUniqueNewId();
-    const newItem: T = {
-      id,
-      text: `New item ${id}`,
-      topicId: demoTopicId,
-    };
-    setItems((items) => {
-      return items.concat(newItem);
-    });
-    setAddedIds((ids) => {
-      const newSet = new Set(ids);
-      newSet.add(id);
-      return newSet;
-    });
-  }, [getUniqueNewId]);
+  }, [selectedIds]);
 
   const actions = React.useMemo(
     () => [
@@ -146,7 +176,7 @@ export function HeadlessEditorDemo(props: TProps) {
         key="ShowCompared"
         onClick={() => setFilterTargeted((filterTargeted) => !filterTargeted)}
         className="content-truncate flex items-center gap-2"
-        variant={filterTargeted ? 'secondary' : 'outline'}
+        variant={filterTargeted ? 'secondary' : 'ghost'}
       >
         <Icons.Scale className="size-5 shrink-0 opacity-50" />
         <span className="truncate">Filter compared</span>
@@ -155,7 +185,7 @@ export function HeadlessEditorDemo(props: TProps) {
         key="ShowUpdated"
         onClick={() => setFilterUpdated((filterUpdated) => !filterUpdated)}
         className="content-truncate flex items-center gap-2"
-        variant={filterUpdated ? 'secondary' : 'outline'}
+        variant={filterUpdated ? 'secondary' : 'ghost'}
       >
         <Icons.Pencil className="size-4 shrink-0 opacity-50" />
         <span className="truncate">Filter updated</span>
@@ -164,7 +194,7 @@ export function HeadlessEditorDemo(props: TProps) {
         key="ShowAdded"
         onClick={() => setFilterAdded((filterAdded) => !filterAdded)}
         className="content-truncate flex items-center gap-2"
-        variant={filterAdded ? 'secondary' : 'outline'}
+        variant={filterAdded ? 'secondary' : 'ghost'}
       >
         <Icons.Asterisk className="size-5 shrink-0 opacity-50" />
         <span className="truncate">Filter added</span>
@@ -173,7 +203,7 @@ export function HeadlessEditorDemo(props: TProps) {
         key="ShowSelected"
         onClick={() => setFilterSelected((filterSelected) => !filterSelected)}
         className="content-truncate flex items-center gap-2"
-        variant={filterSelected ? 'secondary' : 'outline'}
+        variant={filterSelected ? 'secondary' : 'ghost'}
       >
         <Icons.CircleCheck className="size-4 shrink-0 opacity-50" />
         <span className="truncate">Filter selected</span>
@@ -200,7 +230,7 @@ export function HeadlessEditorDemo(props: TProps) {
       </Button>,
       <Button
         key="AddNew"
-        onClick={addNewItem}
+        onClick={() => setAddQuestionModalVisible(true)}
         className="content-truncate flex items-center gap-2"
         variant="success"
       >
@@ -209,17 +239,7 @@ export function HeadlessEditorDemo(props: TProps) {
       </Button>,
       <Button
         key="RestoreDefaults"
-        onClick={() => {
-          setItems(demoQuestions);
-          setUpdatedIds(undefined);
-          setAddedIds(
-            new Set(
-              demoQuestions
-                .filter(({ id, isNew }) => isNew || id.startsWith('__new'))
-                .map(({ id }) => id),
-            ),
-          );
-        }}
+        onClick={restoreDefaults}
         className="content-truncate flex items-center gap-2"
         variant="theme"
       >
@@ -228,9 +248,7 @@ export function HeadlessEditorDemo(props: TProps) {
       </Button>,
       <Button
         key="DeleteSelected"
-        onClick={() => {
-          setItems((items) => items.filter(({ id }) => !selectedIds?.has(id)));
-        }}
+        onClick={() => setShowDeleteSelectedConfirm(true)}
         className="content-truncate flex items-center gap-2"
         variant={selectedCount ? 'destructive' : 'ghost'}
         disabled={!selectedCount}
@@ -243,15 +261,14 @@ export function HeadlessEditorDemo(props: TProps) {
       </Button>,
     ],
     [
-      addNewItem,
       compareTargetId,
+      restoreDefaults,
       filterSelected,
       filterTargeted,
       filterUpdated,
       filterAdded,
       items,
       selectedCount,
-      selectedIds,
     ],
   );
 
@@ -314,6 +331,27 @@ export function HeadlessEditorDemo(props: TProps) {
           setCompareTargetId={setCompareTargetId}
         />
       </ScrollArea>
+      <AddQuestionModal
+        isVisible={addQuestionModalVisible}
+        onClose={() => setAddQuestionModalVisible(false)}
+        onDone={addNewItem}
+        closeImmediatelly
+      />
+      <ConfirmModal
+        dialogTitle={t('ManageTopicQuestionsListCard.ConfirmDeleteQuestions')}
+        confirmButtonVariant="destructive"
+        confirmButtonText={t('Delete')}
+        confirmButtonBusyText={t('ManageTopicQuestionsListCard.Deleting')}
+        cancelButtonText={t('Cancel')}
+        handleClose={() => setShowDeleteSelectedConfirm(false)}
+        handleConfirm={deleteSelected}
+        // isPending={deleteSelectedMutation.isPending}
+        isVisible={showDeleteSelectedConfirm}
+      >
+        {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
+          count: selectedCount,
+        })}
+      </ConfirmModal>
     </div>
   );
 }
