@@ -10,7 +10,7 @@ import { isDev } from '@/config';
 import { HeadlessEditor } from '../HeadlessEditor';
 import { TCmpItemId } from '../types';
 import { CmpQuestion } from './CmpQuestion';
-import { demoQuestions } from './demoQuestions';
+import { demoQuestions, demoTopicId } from './demoQuestions';
 import { T } from './types';
 
 interface TProps {
@@ -36,10 +36,12 @@ export function HeadlessEditorDemo(props: TProps) {
 
   const [filterTargeted, setFilterTargeted] = React.useState(false);
   const [filterUpdated, setFilterUpdated] = React.useState(false);
+  const [filterAdded, setFilterAdded] = React.useState(false);
   const [filterSelected, setFilterSelected] = React.useState(false);
 
   const [items, setItems] = React.useState(() => demoQuestions);
   const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>();
+  const [addedIds, setAddedIds] = React.useState<Set<TCmpItemId> | undefined>();
   const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>();
 
   const updateItems = React.useCallback(
@@ -81,7 +83,7 @@ export function HeadlessEditorDemo(props: TProps) {
     });
   }, []);
 
-  // Effect: Remove orphan ids...
+  // Effect: Remove orphan ids, update `addedIds`...
   React.useEffect(() => {
     const existedKeys = new Set<TCmpItemId>(items.map(({ id }) => id));
     setCompareTargetId((id) => {
@@ -92,9 +94,41 @@ export function HeadlessEditorDemo(props: TProps) {
     setSelectedIds(hasIdsSet);
     setUpdatedIds(hasIdsSet);
     setReorderedIds(hasIdsSet);
+    // setAddedIds(hasIdsSet);
+    setAddedIds(
+      new Set(items.filter(({ id, isNew }) => isNew || id.startsWith('__new')).map(({ id }) => id)),
+    );
   }, [items]);
 
   const selectedCount = selectedIds?.size || 0;
+
+  const getUniqueNewId = React.useCallback(() => {
+    const existedKeys = new Set<TCmpItemId>(items.map(({ id }) => id));
+    let count = 1;
+    while (true) {
+      const id = `__new${count}`;
+      if (!existedKeys.has(id)) {
+        return id;
+      }
+      count++;
+    }
+  }, [items]);
+  const addNewItem = React.useCallback(() => {
+    const id = getUniqueNewId();
+    const newItem: T = {
+      id,
+      text: `New item ${id}`,
+      topicId: demoTopicId,
+    };
+    setItems((items) => {
+      return items.concat(newItem);
+    });
+    setAddedIds((ids) => {
+      const newSet = new Set(ids);
+      newSet.add(id);
+      return newSet;
+    });
+  }, [getUniqueNewId]);
 
   const actions = React.useMemo(
     () => [
@@ -114,8 +148,8 @@ export function HeadlessEditorDemo(props: TProps) {
         className="content-truncate flex items-center gap-2"
         variant={filterTargeted ? 'secondary' : 'outline'}
       >
-        <Icons.Target className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Show compared</span>
+        <Icons.Scale className="size-5 shrink-0 opacity-50" />
+        <span className="truncate">Filter compared</span>
       </Button>,
       <Button
         key="ShowUpdated"
@@ -123,8 +157,17 @@ export function HeadlessEditorDemo(props: TProps) {
         className="content-truncate flex items-center gap-2"
         variant={filterUpdated ? 'secondary' : 'outline'}
       >
-        <Icons.CircleAlert className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Show updated</span>
+        <Icons.Pencil className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Filter updated</span>
+      </Button>,
+      <Button
+        key="ShowAdded"
+        onClick={() => setFilterAdded((filterAdded) => !filterAdded)}
+        className="content-truncate flex items-center gap-2"
+        variant={filterAdded ? 'secondary' : 'outline'}
+      >
+        <Icons.Asterisk className="size-5 shrink-0 opacity-50" />
+        <span className="truncate">Filter added</span>
       </Button>,
       <Button
         key="ShowSelected"
@@ -133,7 +176,7 @@ export function HeadlessEditorDemo(props: TProps) {
         variant={filterSelected ? 'secondary' : 'outline'}
       >
         <Icons.CircleCheck className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Show selected</span>
+        <span className="truncate">Filter selected</span>
       </Button>,
       <Button
         key="SelectAll"
@@ -156,6 +199,34 @@ export function HeadlessEditorDemo(props: TProps) {
         <span className="truncate">Select none</span>
       </Button>,
       <Button
+        key="AddNew"
+        onClick={addNewItem}
+        className="content-truncate flex items-center gap-2"
+        variant="success"
+      >
+        <Icons.Plus className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Add new</span>
+      </Button>,
+      <Button
+        key="RestoreDefaults"
+        onClick={() => {
+          setItems(demoQuestions);
+          setUpdatedIds(undefined);
+          setAddedIds(
+            new Set(
+              demoQuestions
+                .filter(({ id, isNew }) => isNew || id.startsWith('__new'))
+                .map(({ id }) => id),
+            ),
+          );
+        }}
+        className="content-truncate flex items-center gap-2"
+        variant="theme"
+      >
+        <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Restore defaults</span>
+      </Button>,
+      <Button
         key="DeleteSelected"
         onClick={() => {
           setItems((items) => items.filter(({ id }) => !selectedIds?.has(id)));
@@ -165,19 +236,26 @@ export function HeadlessEditorDemo(props: TProps) {
         disabled={!selectedCount}
       >
         <Icons.Trash className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Delete selected</span>
+        <span className="truncate">
+          Delete selected
+          {!!selectedCount && <span className="ml-1 font-thin opacity-50">({selectedCount})</span>}
+        </span>
       </Button>,
     ],
     [
+      addNewItem,
       compareTargetId,
       filterSelected,
       filterTargeted,
       filterUpdated,
+      filterAdded,
       items,
       selectedCount,
       selectedIds,
     ],
   );
+
+  // const viewportRef = React.useRef(null);
 
   return (
     <div
@@ -218,6 +296,7 @@ export function HeadlessEditorDemo(props: TProps) {
           // compact
           filterTargeted={filterTargeted}
           filterUpdated={filterUpdated}
+          filterAdded={filterAdded}
           filterSelected={filterSelected}
           // Items...
           items={items}
@@ -227,6 +306,7 @@ export function HeadlessEditorDemo(props: TProps) {
           updateReordered={updateReordered}
           // State...
           updatedIds={updatedIds}
+          addedIds={addedIds}
           reorderedIds={reorderedIds}
           selectedIds={selectedIds}
           setSelectedId={setSelectedId}

@@ -103,6 +103,7 @@ export const {
   Rocket,
   Rows3,
   Save,
+  Scale,
   Scan,
   ScanEye,
   Search,

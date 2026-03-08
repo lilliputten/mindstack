@@ -301,6 +301,42 @@
     @apply bg-gr-135 from-theme-400/50 to-theme-600/50;
   }
 
+  /* // TODO: Animate newly added ("fresh") `HeadlessEditor` items with a variable
+   * @property --indicate-fresh-bg-opacity {
+   *   syntax: '<number>';
+   *   inherits: false;
+   *   initial-value: 1;
+   * }
+   */
+  .indicate-fresh-item {
+    animation-name: indicate-fresh-item;
+    animation-duration: var(--indicate-fresh-item-duration, 1s);
+    animation-direction: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    /* // TODO: With a variable
+     * background-color: rgba(0 0 255 / var(--indicate-fresh-bg-opacity));
+     */
+    @keyframes indicate-fresh-item {
+      0% {
+        // --animate-fresh-bg-opacity: 1;
+        background-color: rgba(
+          var(--color-theme-500-RGB) / var(--indicate-fresh-item-background-opacity, 10%)
+        );
+      }
+      25% {
+        // --indicate-fresh-bg-opacity: 1;
+        background-color: green;
+      }
+      100% {
+        // --indicate-fresh-bg-opacity: 0.5;
+        background-color: rgba(
+          var(--color-theme-500-RGB) / var(--indicate-fresh-item-background-opacity, 10%)
+        );
+      }
+    }
+  }
+
   // gr0
   .bg-gr0 {
     @apply bg-gr-65 from-theme/15 to-theme/5;

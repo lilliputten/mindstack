@@ -1,6 +1,7 @@
 import { T } from './types';
 
 const topicId = 'test-topic';
+export const demoTopicId = topicId;
 
 export const demoQuestions: T[] = [
   {

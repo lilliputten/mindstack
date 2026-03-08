@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
+import { freshEffectTimeout, minCmpValue } from './constants';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
 const _showComparedValues = isDev && false;
@@ -18,26 +19,28 @@ const _showOrder = isDev && false;
 
 interface TProps<T extends TCmpItemBase> {
   className?: string;
-  _idx?: number;
+  _idx?: number; // DEBUG: Show idx to debug ordering, optional
 
   // Lifecylcle control...
   isReady: boolean;
   isOverlay?: boolean;
 
   // Display in narrow layout
-  compact?: boolean;
+  forceCompact?: boolean;
 
-  // Items interface...
+  // Item interface...
   item: T;
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
   updateItem?: (it: T) => void;
   handleCheck?: (id: T['id']) => void;
   handleCompareTargetId?: (id: T['id']) => void;
 
-  // Items state...
-  updatedIds?: Set<TCmpItemId>;
-  reorderedIds?: Set<TCmpItemId>;
-  selectedIds?: Set<TCmpItemId>;
+  // Item state...
+  isUpdated?: boolean;
+  isAdded?: boolean;
+  isFresh?: boolean;
+  isReordered?: boolean;
+  isSelected?: boolean;
   compareTargetId?: TCmpItemId;
 
   // Other derived props
@@ -56,17 +59,19 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     isReady,
     isOverlay,
     // Display in narrow layout
-    compact,
-    // Items interface...
+    forceCompact,
+    // Item interface...
     item: it,
     RenderItem,
     updateItem,
     handleCheck,
     handleCompareTargetId,
-    // Items state...
-    updatedIds,
-    reorderedIds,
-    selectedIds,
+    // Item state...
+    isUpdated,
+    isAdded,
+    isFresh,
+    isReordered,
+    isSelected,
     compareTargetId,
     // Other derived props
     normalized,
@@ -76,7 +81,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     overallTotal,
   } = props;
 
-  const { id, isNew } = it;
+  const { id } = it;
 
   const t = useT();
 
@@ -90,12 +95,9 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     transition,
   } = useSortable({ id });
 
-  const isUpdated = updatedIds?.has(id);
-  const isReordered = reorderedIds?.has(id);
-
   const isCompareTarget = compareTargetId && compareTargetId === id;
-  const hasOverallValue = overallValue >= 0.01;
-  const hasValue = value >= 0.01;
+  const hasOverallValue = overallValue >= minCmpValue;
+  const hasValue = value >= minCmpValue;
   const infoStr = [
     // Combine all info values...
     overallValue.toFixed(2),
@@ -107,32 +109,37 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
   const infoTitle = hasOverallValue
     ? t('Comparsion rate') + ': ' + infoStr
     : t('The element is not involved in the comparison');
-  const hasSelected = selectedIds?.has(id);
 
   return (
     <div
       ref={setNodeRef}
       className={cn(
         isDev && '__HeadlessEditorItem', // DEBUG
-        'flex items-start gap-2',
-        'content-truncate',
-        'max-xs:flex-col',
-        compact && 'flex-col',
-        'p-1',
-        'rounded bg-theme-500/10',
+        'content-truncate flex items-start gap-2 p-1',
+        'rounded',
+        'transition',
         'border border-transparent',
-        !isNew && 'bg-background/50',
-        // isReordered && 'border-dashed border-blue-500/50',
-        isUpdated && 'border-dashed border-green-500/50',
-        isDragging && 'opacity-0',
+        // Adaptive or forced compact mode...
+        'max-xs:flex-col',
+        forceCompact && 'flex-col',
+        isUpdated && 'border-dashed border-theme-500/40',
+        isAdded && 'border-dashed border-green-600/50',
+        isUpdated && 'bg-background/25',
+        isAdded && 'bg-theme/10',
+        isFresh && 'indicate-fresh-item',
+        isDragging && 'opacity-20',
         isOverlay && 'bg-theme-500/50 ring-2',
         className,
       )}
-      style={{
-        // ...style,
-        transform: /* isDragging ? */ CSS.Translate.toString(transform),
-        transition,
-      }}
+      style={
+        {
+          transform: /* isDragging ? */ CSS.Translate.toString(transform),
+          transition,
+          // NOTE: Set parameters for newly added (fresh) item animation. TODO: Extract to the tailwind configuration?
+          '--indicate-fresh-item-duration': `${freshEffectTimeout}ms`,
+          '--indicate-fresh-item-background-opacity': `10%`, // Corresponding default `isAdded` background transparency, 10, see above
+        } as React.CSSProperties
+      }
     >
       <div
         className={cn(
@@ -158,7 +165,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           )}
           {...attributes}
           {...listeners}
-          title={t('Drag Item')}
+          title={t('Drag item to reorder')}
         >
           <Icons.GripVertical className="size-4 shrink-0" />
         </span>
@@ -172,7 +179,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           <>
             {!!handleCheck && (
               <Checkbox
-                checked={hasSelected}
+                checked={isSelected}
                 aria-label={t('Select record')}
                 title={t('Select Item')}
                 onClick={(ev) => {
@@ -223,3 +230,9 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     </div>
   );
 }
+
+/* // NOTE: It's possible to use memoized component verison
+ * export const HeadlessEditorItem = React.memo(
+ *   HeadlessEditorItemComponent,
+ * ) as typeof HeadlessEditorItemComponent;
+ */

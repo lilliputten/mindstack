@@ -9,7 +9,10 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
 
+import { freshEffectTimeout, minCmpValue } from './constants';
+import { HeadlessEditorDebug } from './HeadlessEditorDebug';
 import { HeadlessEditorItem } from './HeadlessEditorItem';
+import { compareByOrder } from './helpers';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 import { useComparator } from './useComparator';
 
@@ -45,6 +48,8 @@ import { useComparator } from './useComparator';
  *     );
  */
 
+const __showDebug = isDev && true;
+
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   className?: string;
 
@@ -60,6 +65,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   compact?: boolean;
   filterTargeted?: boolean;
   filterUpdated?: boolean;
+  filterAdded?: boolean;
   filterSelected?: boolean;
 
   // Items interface...
@@ -72,38 +78,42 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   // Items state...
   updatedIds?: Set<TCmpItemId>;
+  addedIds?: Set<TCmpItemId>;
   reorderedIds?: Set<TCmpItemId>;
   selectedIds?: Set<TCmpItemId>;
+  // TODO: Use `setSelectedIds`
   setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
   compareTargetId?: TCmpItemId;
   setCompareTargetId?: (id?: TCmpItemId) => void;
   changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
 }
 
-/**
- * Comparator function for sorting by 'order', with these rules:
- * - Items with defined numeric 'order' come first (ascending).
- * - Items without 'order' come after, maintaining their original relative order.
- */
-export function compareByOrder<T extends TCmpItemBase>(a: T, b: T): number {
-  const aHasOrder = typeof a.order === 'number';
-  const bHasOrder = typeof b.order === 'number';
+type TTimeoutHandler = ReturnType<typeof setTimeout>;
 
-  if (aHasOrder && bHasOrder) {
-    return a.order! - b.order!;
-  }
-  if (aHasOrder) {
-    return -1; // a comes before b
-  }
-  if (bHasOrder) {
-    return 1; // b comes before a
-  }
-  return 0; // maintain original relative order
+interface TMemo<T extends TCmpItemBase> {
+  freshIds?: Set<TCmpItemId>;
+  addedIds?: Set<TCmpItemId>;
+  updatedIds?: Set<TCmpItemId>;
+  reorderedIds?: Set<TCmpItemId>;
+  selectedIds?: Set<TCmpItemId>;
+  compareTargetId?: TCmpItemId;
+  freshHandlers: Set<TTimeoutHandler>;
+  getItemComparedValues?: (it: T) => {
+    normalized: number;
+    value: number;
+    overallValue: number;
+    overallCount: number;
+    overallTotal: number;
+  };
 }
+const defaultMemo: TMemo<TCmpItemBase> = {
+  freshHandlers: new Set(),
+};
 
 export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
   props: TProps<T, LargeTexts>,
 ) {
+  const memo = React.useMemo<TMemo<T>>(() => defaultMemo, []);
   const {
     className,
     isReady: isOuterReady,
@@ -113,6 +123,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     compact,
     filterTargeted,
     filterUpdated,
+    filterAdded,
     filterSelected,
     // Items...
     items,
@@ -122,6 +133,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     updateReordered,
     // State...
     updatedIds: externalUpdatedIds,
+    addedIds,
     reorderedIds: externalReorderedIds,
     selectedIds: externalSelectedIds,
     setSelectedId: setExternalSelectedId,
@@ -129,10 +141,30 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     setCompareTargetId: setExternalCompareTargetId,
     changeItemsOrder: changeExternalItemsOrder,
   } = props;
+  memo.addedIds = addedIds;
 
+  // Freshly added items...
+  const [freshIds, setFreshIds] = React.useState<Set<TCmpItemId> | undefined>();
+  memo.freshIds = freshIds;
+  const addFreshIds = React.useCallback((ids: Set<TCmpItemId>) => {
+    setFreshIds((freshIds) => {
+      const initialLst = freshIds ? [...freshIds] : [];
+      const newFreshIds = new Set([...initialLst, ...ids]);
+      return newFreshIds;
+    });
+  }, []);
+  const removeFreshIds = React.useCallback((ids: Set<TCmpItemId>) => {
+    setFreshIds((freshIds) => {
+      const initialLst = freshIds ? [...freshIds] : [];
+      return new Set([...initialLst.filter((id) => !ids.has(id))]);
+    });
+  }, []);
+
+  // Updated items...
   const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>(
     externalUpdatedIds,
   );
+  memo.updatedIds = updatedIds;
   React.useEffect(() => {
     setUpdatedIds(externalUpdatedIds);
   }, [externalUpdatedIds]);
@@ -143,9 +175,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     });
   }, []);
 
+  // Reordered items...
   const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>(
     externalReorderedIds,
   );
+  memo.reorderedIds = reorderedIds;
   React.useEffect(() => {
     setReorderedIds(externalReorderedIds);
   }, [externalReorderedIds]);
@@ -168,6 +202,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const [selectedIds, setSelectedIds] = React.useState<Set<TCmpItemId> | undefined>(
     externalSelectedIds,
   );
+  memo.selectedIds = selectedIds;
   // Effect: Update from external ids set
   React.useEffect(() => {
     setSelectedIds(externalSelectedIds);
@@ -177,6 +212,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const [compareTargetId, setCompareTargetId] = React.useState<TCmpItemId | undefined>(
     externalCompareTargetId,
   );
+  memo.compareTargetId = compareTargetId;
   // Effect: Update selected target id from external one
   React.useEffect(() => {
     setCompareTargetId(externalCompareTargetId);
@@ -272,9 +308,23 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     },
     [compareTargetId, getComparedValue, itemsMap, overallComparedCache, compareMin, compareMax],
   );
+  memo.getItemComparedValues = getItemComparedValues;
 
   const RenderEditorItem = React.useCallback(
     ({ _idx, item: it, isOverlay }: { _idx?: number; item: T; isOverlay?: boolean }) => {
+      const {
+        addedIds,
+        updatedIds,
+        freshIds,
+        reorderedIds,
+        selectedIds,
+        compareTargetId,
+        getItemComparedValues,
+      } = memo;
+      if (!getItemComparedValues) {
+        return null;
+      }
+      const { id } = it;
       const { normalized, value, overallValue, overallCount, overallTotal } =
         getItemComparedValues(it);
       return (
@@ -282,22 +332,24 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           className={cn(
             isDev && '__HeadlessEditor_Item', // DEBUG
           )}
-          _idx={_idx}
+          _idx={_idx} // DEBUG: Show idx to debug ordering, optional
           // Lifecylcle control...
           isReady={isReady}
           isOverlay={isOverlay}
-          // Display in narrow layout
-          compact={compact}
+          // Display in a narrow layout
+          forceCompact={compact}
           // Items interface...
           item={it}
           RenderItem={RenderItem}
           updateItem={handleUpdate}
           handleCheck={handleCheck}
           handleCompareTargetId={handleCompareTargetId}
-          // Items state...
-          updatedIds={updatedIds}
-          reorderedIds={reorderedIds}
-          selectedIds={selectedIds}
+          // Item state...
+          isUpdated={updatedIds?.has(id)}
+          isAdded={addedIds?.has(id)}
+          isFresh={freshIds?.has(id)}
+          isReordered={reorderedIds?.has(id)}
+          isSelected={selectedIds?.has(id)}
           compareTargetId={compareTargetId}
           // Other derived props
           normalized={normalized}
@@ -309,17 +361,20 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       );
     },
     [
+      // addedIds,
+      // compareTargetId,
+      // freshIds,
+      // getItemComparedValues, // Use memo
+      // reorderedIds,
+      // selectedIds,
+      // updatedIds,
       RenderItem,
       compact,
-      compareTargetId,
-      getItemComparedValues,
       handleCheck,
       handleCompareTargetId,
-      isReady,
-      selectedIds,
       handleUpdate,
-      updatedIds,
-      reorderedIds,
+      isReady,
+      memo,
     ],
   );
 
@@ -334,6 +389,14 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       }
       filteredItems = filteredItems?.filter((it) => {
         return updatedIds.has(it.id);
+      });
+    }
+    if (filterAdded) {
+      if (!addedIds?.size) {
+        return [];
+      }
+      filteredItems = filteredItems?.filter((it) => {
+        return addedIds.has(it.id);
       });
     }
     if (filterSelected) {
@@ -354,25 +417,14 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           const overall = overallComparedCache?.get(it);
           value = overall?.value;
         }
-        return value && value >= 0.01;
+        return value && value >= minCmpValue;
       });
-      //   if (compareTarget) {
-      //     filteredItems = filteredItems?.filter((it) => {
-      //       const value = getComparedValue(compareTarget, it);
-      //       return value && value >= 0.01;
-      //     });
-      //   }
-      // } else {
-      //   filteredItems = filteredItems?.filter((it) => {
-      //     const overall = overallComparedCache?.get(it);
-      //     const value = overall?.value;
-      //     return value && value >= 0.01;
-      //   });
-      // }
     }
     return filteredItems;
   }, [
+    addedIds,
     compareTargetId,
+    filterAdded,
     filterSelected,
     filterTargeted,
     filterUpdated,
@@ -384,11 +436,55 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     updatedIds,
   ]);
 
+  // A ref for the bottommost element, required for scroll to the bottom on new items adding, see an effect below
+  const bottomRef = React.useRef<HTMLDivElement>(null);
+
+  // Effect: Sort items and initiate animation of newly added (fresh) items...
   React.useEffect(() => {
-    const orderedItems = [...items];
-    orderedItems.sort(compareByOrder);
-    setOrderedItems(orderedItems);
-  }, [items]);
+    const newItems = [...items];
+    // Sort items according to order properties...
+    newItems.sort(compareByOrder);
+    setOrderedItems((oldItems) => {
+      // Find newly added (fresh) items...
+      let freshIdsSet: Set<TCmpItemId> | undefined;
+      if (oldItems) {
+        // Compare new and old (if existed)...
+        const oldIdsSet = new Set(oldItems.map(({ id }) => id));
+        const newIdsSet = new Set(newItems.map(({ id }) => id));
+        freshIdsSet = newIdsSet.difference(oldIdsSet);
+      } else {
+        // Or find "new" items from the inital set...
+        freshIdsSet = new Set(
+          newItems
+            .filter(({ id, isNew }) => isNew || String(id).startsWith('__new'))
+            .map(({ id }) => id),
+        );
+      }
+      // ...And animate them, if found...
+      if (freshIdsSet?.size) {
+        addFreshIds(freshIdsSet);
+        const handler = setTimeout(() => {
+          removeFreshIds(freshIdsSet);
+          memo.freshHandlers.delete(handler);
+        }, freshEffectTimeout + 100);
+        memo.freshHandlers.add(handler);
+        requestAnimationFrame(() => {
+          bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+      return newItems;
+    });
+  }, [memo, bottomRef, items, addFreshIds, removeFreshIds]);
+
+  // Clear all hanged tiemout handlers on unmount
+  React.useEffect(() => {
+    return () => {
+      memo.freshHandlers.keys().forEach((handler) => {
+        clearTimeout(handler);
+        memo.freshHandlers.delete(handler);
+      });
+    };
+  }, [memo]);
 
   const changeItemsOrder = React.useCallback(
     (moveId: TCmpItemId, overId: TCmpItemId) => {
@@ -431,19 +527,6 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     [changeExternalItemsOrder, orderedItems, updateReordered, addReorderedIds],
   );
 
-  const itemsCount = items.length;
-
-  const renderedItems = React.useMemo(() => {
-    if (!isReady || !filteredItems) {
-      return generateArray(itemsCount || 5).map((idx) => (
-        <Skeleton key={idx} className="h-8 w-full" />
-      ));
-    }
-    return filteredItems.map((it, idx) => {
-      return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
-    });
-  }, [isReady, RenderEditorItem, filteredItems, itemsCount]);
-
   return (
     <SortableWrapper
       // isPending={isPending}
@@ -456,33 +539,30 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           isDev && '__HeadlessEditor', // DEBUG
           'content-truncate flex flex-col gap-2',
           'px-6',
+          // 'py-3', // NOTE: It may be required to have a vertical space if we use a bounce animation for frehly added items
           className,
         )}
       >
-        {renderedItems}
-        {isDev /* DEBUG */ && (
-          <div
+        {/* Render skeletons or real items */}
+        {!isReady || !filteredItems
+          ? generateArray(items.length || 5).map((idx) => (
+              <Skeleton key={idx} className="h-8 w-full" />
+            ))
+          : filteredItems?.map((it, idx) => {
+              return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
+            })}
+        {/* The bottommost element, required for scroll to the bottom on new items adding */}
+        <div className="h-0 w-full" ref={bottomRef} />
+        {__showDebug && (
+          <HeadlessEditorDebug
             className={cn(
               isDev && '__HeadlessEditor_DEBUG', // DEBUG
-              'flex flex-wrap gap-2 text-sm opacity-50',
             )}
-          >
-            <span className="font-bold">DEBUG:</span>
-            <span>
-              <span className="opacity-50">count:</span> {items.length}
-            </span>
-            <span>
-              <span className="opacity-50">compareMin:</span> {compareMin.toFixed(2)}
-            </span>
-            <span>
-              <span className="opacity-50">compareMax:</span> {compareMax.toFixed(2)}
-            </span>
-            {!!compareTargetId && (
-              <span>
-                <span className="opacity-50">compareTargetId:</span> {compareTargetId}
-              </span>
-            )}
-          </div>
+            itemsCount={items.length}
+            compareMin={compareMin}
+            compareMax={compareMax}
+            compareTargetId={compareTargetId}
+          />
         )}
       </div>
     </SortableWrapper>
