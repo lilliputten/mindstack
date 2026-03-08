@@ -4,10 +4,10 @@
 
 import type { RendererConfig, UserModuleWrappers } from 'react-cosmos-core';
 
-import * as fixture0 from './src/components/ui/cosmos-fixtures/Button.fixture';
-import * as fixture1 from './src/components/ui/cosmos-fixtures/HelloWorld.fixture';
+import * as fixture0 from './src/components/ui/Button.fixture';
+import * as fixture1 from './src/entities/HeadlessEditor/demo/HeadlessEditorDemo.fixture';
 
-import * as decorator0 from './src/components/ui/cosmos-fixtures/cosmos.decorator';
+import * as decorator0 from './src/entities/HeadlessEditor/demo/cosmos.decorator';
 
 export const rendererConfig: RendererConfig = {
   "webSocketUrl": "ws://192.168.220.1:5000",
@@ -15,12 +15,12 @@ export const rendererConfig: RendererConfig = {
 };
 
 const fixtures = {
-  'src/components/ui/cosmos-fixtures/Button.fixture.tsx': { module: fixture0 },
-  'src/components/ui/cosmos-fixtures/HelloWorld.fixture.tsx': { module: fixture1 }
+  'src/components/ui/Button.fixture.tsx': { module: fixture0 },
+  'src/entities/HeadlessEditor/demo/HeadlessEditorDemo.fixture.tsx': { module: fixture1 }
 };
 
 const decorators = {
-  'src/components/ui/cosmos-fixtures/cosmos.decorator.tsx': { module: decorator0 }
+  'src/entities/HeadlessEditor/demo/cosmos.decorator.tsx': { module: decorator0 }
 };
 
 export const moduleWrappers: UserModuleWrappers = {

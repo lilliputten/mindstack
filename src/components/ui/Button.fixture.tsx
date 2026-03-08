@@ -2,7 +2,7 @@
 
 import { useFixtureSelect } from 'react-cosmos/client';
 
-import { Button, classOptions } from '@/components/ui/Button';
+import { Button, classOptions } from './Button';
 
 export default function ButtonFixture() {
   // const [variant] = useFixtureInput<TButtonVariants>('variant', 'theme');

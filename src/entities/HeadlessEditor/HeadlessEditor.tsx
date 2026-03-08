@@ -90,6 +90,14 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
 type TTimeoutHandler = ReturnType<typeof setTimeout>;
 
+interface TItemComparedValues {
+  normalized: number;
+  value: number;
+  overallValue: number;
+  overallCount: number;
+  overallTotal: number;
+}
+
 interface TMemo<T extends TCmpItemBase> {
   freshIds?: Set<TCmpItemId>;
   addedIds?: Set<TCmpItemId>;
@@ -98,13 +106,7 @@ interface TMemo<T extends TCmpItemBase> {
   selectedIds?: Set<TCmpItemId>;
   compareTargetId?: TCmpItemId;
   freshHandlers: Set<TTimeoutHandler>;
-  getItemComparedValues?: (it: T) => {
-    normalized: number;
-    value: number;
-    overallValue: number;
-    overallCount: number;
-    overallTotal: number;
-  };
+  getItemComparedValues?: (it: T) => TItemComparedValues;
 }
 const defaultMemo: TMemo<TCmpItemBase> = {
   freshHandlers: new Set(),
@@ -290,7 +292,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const isReady = isOuterReady && isComparatorReady;
 
   const getItemComparedValues = React.useCallback(
-    (it: T) => {
+    (it: T): TItemComparedValues => {
       const overall = overallComparedCache?.get(it);
       const overallCount = overall?.count || 0;
       const overallValue = overall?.value || 0;
@@ -304,7 +306,13 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       }
       const diam = compareMax - compareMin;
       const normalized = !value ? 0 : diam ? overallValue + (value - compareMin) / diam / 2 : 1;
-      return { normalized, value, overallValue, overallCount, overallTotal };
+      return {
+        normalized,
+        value,
+        overallValue,
+        overallCount,
+        overallTotal,
+      } satisfies TItemComparedValues;
     },
     [compareTargetId, getComparedValue, itemsMap, overallComparedCache, compareMin, compareMax],
   );
@@ -381,6 +389,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   // Ordered items list...
   const [orderedItems, setOrderedItems] = React.useState<T[] | undefined>();
 
+  // Propersly filtered data
   const filteredItems = React.useMemo(() => {
     let filteredItems = orderedItems;
     if (filterUpdated) {

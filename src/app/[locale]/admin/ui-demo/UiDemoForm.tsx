@@ -14,7 +14,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { HeadlessEditorDemo } from '@/entities/HeadlessEditor/cosmos-fixtures/HeadlessEditorDemo';
+import { HeadlessEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
