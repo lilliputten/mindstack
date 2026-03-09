@@ -1,28 +1,36 @@
+import { hourMs } from '@/constants';
+
+import { newItemIdPrefix } from '../constants';
 import { T } from './types';
 
 const topicId = 'test-topic';
 export const demoTopicId = topicId;
 
+const now = Date.now();
+
 export const demoQuestions: T[] = [
   {
     id: 'spec1',
     topicId,
-    text: 'Specific question',
+    text: 'Specific question (-1hr)',
+    createdAt: new Date(now - hourMs),
   },
   {
     id: 'spec2',
     topicId,
-    text: 'following accurately describes the flow',
+    text: 'following accurately describes the flow (-2hrs)',
+    createdAt: new Date(now - 2 * hourMs),
   },
   {
-    id: '__new1',
+    id: `${newItemIdPrefix}1`,
     order: 1,
     isNew: true,
     topicId,
-    text: 'Following accurately describes',
+    text: 'Following accurately describes (now)',
+    createdAt: new Date(now),
   },
   {
-    id: '__new2',
+    id: `${newItemIdPrefix}2`,
     order: 2,
     isNew: true,
     topicId,
@@ -53,7 +61,7 @@ export const demoQuestions: T[] = [
     text: 'Second comparison cluster',
   },
   {
-    id: '__new3',
+    id: `${newItemIdPrefix}3`,
     topicId,
     text: 'Another comparison cluster',
   },

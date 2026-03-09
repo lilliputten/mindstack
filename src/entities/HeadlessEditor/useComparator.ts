@@ -75,30 +75,31 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
     [],
   );
 
-  const computeItemTokens = React.useCallback<(it: T) => ItemTokens<LargeTexts> | null>(
-    (it: T) => {
+  const computeTextTokens = React.useCallback(
+    (text: string, useStopwords?: boolean) => {
       if (!comparator?.isInited) return null;
-      const text = getItemText(it);
       const tokens = largeTexts
-        ? comparator.getTextNGramsSync(text)
-        : comparator.getTextTokensSync(text);
+        ? comparator.getTextNGramsSync(text, useStopwords)
+        : comparator.getTextTokensSync(text, useStopwords);
       return tokens as ItemTokens<LargeTexts>;
     },
-    [largeTexts, comparator, getItemText],
+    [largeTexts, comparator],
   );
-  const getItemTokens = React.useCallback(
+
+  const getCachedItemTokens = React.useCallback(
     (it: T) => {
       const cached = itemTokensCache.has(it) && itemTokensCache.get(it);
       if (cached) {
         return cached;
       }
-      const tokens = computeItemTokens(it);
+      const text = getItemText(it);
+      const tokens = computeTextTokens(text);
       if (tokens) {
         itemTokensCache.set(it, tokens);
       }
       return tokens;
     },
-    [itemTokensCache, computeItemTokens],
+    [itemTokensCache, computeTextTokens, getItemText],
   );
   const compareItemTokens = React.useCallback(
     (tk1: ItemTokens<LargeTexts>, tk2: ItemTokens<LargeTexts>) => {
@@ -118,8 +119,8 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
       if (cached != undefined) {
         return cached;
       }
-      const tk1 = getItemTokens(it1);
-      const tk2 = getItemTokens(it2);
+      const tk1 = getCachedItemTokens(it1);
+      const tk2 = getCachedItemTokens(it2);
       if (!tk1 || !tk2) {
         return null;
       }
@@ -127,7 +128,7 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
       comparedItemsCache.set(it1, it2, value);
       return value;
     },
-    [comparedItemsCache, getItemTokens, compareItemTokens],
+    [comparedItemsCache, getCachedItemTokens, compareItemTokens],
   );
 
   // const overallComparedCache = React.useMemo(() => new Map<T, TItemOverall>(), []);
@@ -161,19 +162,14 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
     return map;
   }, [items]);
 
-  return React.useMemo(
-    () => ({
-      isComparatorReady,
-      getComparedValue,
-      overallComparedCache,
-      itemsMap,
-    }),
-    [
-      // All the items as dependencies
-      isComparatorReady,
-      getComparedValue,
-      overallComparedCache,
-      itemsMap,
-    ],
-  );
+  return {
+    comparator,
+    isComparatorReady,
+    computeTextTokens,
+    getCachedItemTokens,
+    compareItemTokens,
+    getComparedValue,
+    overallComparedCache,
+    itemsMap,
+  };
 }

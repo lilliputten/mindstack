@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { compareDates } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
@@ -11,11 +12,11 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions/AddQuestionModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { TQuestionId } from '@/features/questions/types';
+import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
 
 import { newItemIdPrefix } from '../constants';
 import { getUniqueIdForSet } from '../helpers';
-import { useHeadlessEditorState } from '../useHeadlessEditorState';
+import { TReorderModes, useHeadlessEditorState } from '../useHeadlessEditorState';
 import { CmpQuestion } from './CmpQuestion';
 import { demoQuestions, demoTopicId } from './demoQuestions';
 import { T } from './types';
@@ -31,6 +32,21 @@ interface TProps {
 function getItemText(item: T) {
   return item.text;
 }
+
+function reorderByDate(items: T[], _locale: TLocale) {
+  const itemDates = new WeakMap(items.map((item) => [item, item.createdAt]));
+  const reorderedItems = [...items].sort((aIt, bIt) => {
+    const a = itemDates.get(aIt);
+    const b = itemDates.get(bIt);
+    return compareDates(a, b);
+  });
+  return reorderedItems;
+}
+
+const reorderModes: TReorderModes<TNewOrOldQuestion> = {
+  date: { func: reorderByDate },
+  dateDesc: { func: reorderByDate, desc: true },
+};
 
 export function HeadlessEditorDemo(props: TProps) {
   const {
@@ -52,8 +68,8 @@ export function HeadlessEditorDemo(props: TProps) {
   const [filterUpdated, setFilterUpdated] = React.useState(false);
   const [filterAdded, setFilterAdded] = React.useState(false);
   const [filterSelected, setFilterSelected] = React.useState(false);
-  const [filterText, setFilterText] = React.useState<string>('follow');
-  const [filterTextExact, setFilterTextExact] = React.useState(true);
+  const [filterText, setFilterText] = React.useState<string | undefined>();
+  const [filterTextSmart, setFilterTextSmart] = React.useState(false);
 
   const {
     /// Data...
@@ -79,6 +95,7 @@ export function HeadlessEditorDemo(props: TProps) {
     restoreDefaults,
     addNewItem,
     deleteSelected,
+    reorderItems,
     /// Component...
     RenderHeadlessEditor,
   } = useHeadlessEditorState({
@@ -86,9 +103,11 @@ export function HeadlessEditorDemo(props: TProps) {
     /// Options...
     locale,
     largeTexts,
+    /// Reordering...
+    reorderModes,
     /// Filters...
     filterText,
-    filterTextExact,
+    filterTextSmart,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -212,6 +231,46 @@ export function HeadlessEditorDemo(props: TProps) {
         <span className="truncate">Add new</span>
       </Button>,
       <Button
+        key="ReorderByText"
+        onClick={() => reorderItems('abc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+      >
+        <Icons.ArrowDownAZ className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by text</span>
+      </Button>,
+      <Button
+        key="ReorderByTextDesc"
+        onClick={() => reorderItems('abcDesc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+      >
+        <Icons.ArrowUpAZ className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by text (desc)</span>
+      </Button>,
+      <Button
+        key="ReorderByDate"
+        onClick={() => reorderItems('date')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+      >
+        <Icons.ArrowDown10 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by date</span>
+      </Button>,
+      <Button
+        key="ReorderByDateDesc"
+        onClick={() => reorderItems('dateDesc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+      >
+        <Icons.ArrowUp10 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by date (desc)</span>
+      </Button>,
+      <Button
         key="UndoChanges"
         onClick={restoreDefaults}
         className="content-truncate flex items-center gap-2"
@@ -253,7 +312,7 @@ export function HeadlessEditorDemo(props: TProps) {
         <Input
           className="inline pr-11"
           placeholder="Filter by text"
-          value={filterText}
+          defaultValue={filterText}
           onChange={(ev) => {
             const { target } = ev;
             const value = target.value;
@@ -278,17 +337,17 @@ export function HeadlessEditorDemo(props: TProps) {
         )}
       </div>,
       <div
-        key="ExactTextFilter"
+        key="TextFilterSmart"
         className={cn('flex items-center gap-2', !filterText && 'disabled')}
       >
         <Checkbox
-          id="ExactTextFilter"
-          checked={filterTextExact}
+          id="TextFilterSmart"
+          defaultChecked={filterTextSmart}
           onCheckedChange={(checked) => {
-            setFilterTextExact(Boolean(checked));
+            setFilterTextSmart(Boolean(checked));
           }}
         />
-        <Label htmlFor="ExactTextFilter">Exact text filter</Label>
+        <Label htmlFor="TextFilterSmart">Smart text filter</Label>
       </div>,
     ],
     [
@@ -298,9 +357,10 @@ export function HeadlessEditorDemo(props: TProps) {
       filterSelected,
       filterTargeted,
       filterText,
-      filterTextExact,
+      filterTextSmart,
       filterUpdated,
       items,
+      reorderItems,
       restoreDefaults,
       saveDefaults,
       selectedCount,

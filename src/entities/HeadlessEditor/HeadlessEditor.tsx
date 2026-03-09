@@ -69,7 +69,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   /// Filters...
 
   filterText?: string;
-  filterTextExact?: boolean;
+  filterTextSmart?: boolean;
 
   filterTargeted?: boolean;
   filterUpdated?: boolean;
@@ -142,7 +142,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     forceCompact,
     // Filters...
     filterText,
-    filterTextExact,
+    filterTextSmart,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -164,6 +164,14 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     changeItemsOrder: changeExternalItemsOrder,
   } = props;
   memo.addedIds = addedIds;
+
+  /* // DEBUG: Detect excessive unmounts
+   * React.useEffect(() => {
+   *   return () => {
+   *     console.log('[HeadlessEditor:UNMOUNT]');
+   *   };
+   * }, []);
+   */
 
   // Freshly added items...
   const [freshIds, setFreshIds] = React.useState<Set<TCmpItemId> | undefined>();
@@ -249,7 +257,16 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     [setExternalCompareTargetId],
   );
 
-  const { isComparatorReady, getComparedValue, overallComparedCache, itemsMap } = useComparator({
+  const {
+    // comparator,
+    isComparatorReady,
+    computeTextTokens,
+    getCachedItemTokens,
+    compareItemTokens,
+    getComparedValue,
+    overallComparedCache,
+    itemsMap,
+  } = useComparator({
     isReady: isExternalReady,
     // Options...
     locale,
@@ -258,6 +275,18 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     items,
     getItemText,
   });
+
+  const filterTextOrToken = React.useMemo(() => {
+    if (!filterText) {
+      return undefined;
+    }
+    if (!filterTextSmart) {
+      return filterText.trim().toLowerCase();
+    } else if (isComparatorReady) {
+      const filterTextOrToken = computeTextTokens(filterText);
+      return filterTextOrToken;
+    }
+  }, [filterText, filterTextSmart, computeTextTokens, isComparatorReady]);
 
   const [compareMin, compareMax] = React.useMemo(() => {
     let min: number | undefined;
@@ -428,29 +457,31 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         return value && value >= minCmpValue;
       });
     }
-    const cmpText = filterText?.trim().toLowerCase();
-    if (cmpText) {
-      if (filterTextExact) {
-        console.log('[HeadlessEditor:filteredItems:filterText]', {
-          filterText,
-          filterTextExact,
-        });
+    if (filterTextOrToken) {
+      if (typeof filterTextOrToken === 'string') {
         filteredItems = filteredItems?.filter((it) => {
           const text = getItemText(it).trim().toLowerCase();
-          return text.includes(cmpText);
+          return text.includes(filterTextOrToken);
+        });
+      } else {
+        filteredItems = filteredItems?.filter((it) => {
+          const tokens = getCachedItemTokens(it);
+          const value = tokens ? compareItemTokens(tokens, filterTextOrToken) : 0;
+          return value;
         });
       }
     }
     return filteredItems;
   }, [
     addedIds,
+    compareItemTokens,
     compareTargetId,
     filterAdded,
     filterSelected,
     filterTargeted,
-    filterText,
-    filterTextExact,
+    filterTextOrToken,
     filterUpdated,
+    getCachedItemTokens,
     getComparedValue,
     getItemText,
     itemsMap,

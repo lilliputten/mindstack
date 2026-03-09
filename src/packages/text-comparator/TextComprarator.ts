@@ -84,18 +84,18 @@ export class TextComprarator {
     return [stemmer, stopwords];
   }
 
-  getTextTokensSync(text: string) {
+  getTextTokensSync(text: string, useStopwords: boolean = true) {
     const [stemmer] = this.getSyncDeps();
 
-    const tokens = getTextTokens(text, this.#stopwords);
+    const tokens = getTextTokens(text, useStopwords ? this.#stopwords : undefined);
 
     return tokens.map((token) => stemmer.stem(token)).filter(Boolean);
   }
 
-  getTextNGramsSync(text: string) {
+  getTextNGramsSync(text: string, useStopwords?: boolean) {
     this.getSyncDeps();
 
-    const tokens = this.getTextTokensSync(text);
+    const tokens = this.getTextTokensSync(text, useStopwords);
 
     const ngrams = getNGramsSimple(tokens, this.#n);
 

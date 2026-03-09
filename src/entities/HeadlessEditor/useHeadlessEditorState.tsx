@@ -9,11 +9,23 @@ import { HeadlessEditor } from './HeadlessEditor';
 import { getUniqueIdForSet } from './helpers';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
+type TReorderFunc<T extends TCmpItemBase> = (items: T[], locale: TLocale) => T[];
+interface TCustomReorder<T extends TCmpItemBase> {
+  func?: TReorderFunc<T>;
+  desc?: boolean;
+}
+
+export type TReorderModes<T extends TCmpItemBase> = Record<string, TCustomReorder<T>>;
+
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   /// Lifecylcle control...
 
   /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
   isReady?: boolean;
+
+  /// Reorder options
+
+  reorderModes?: TReorderModes<T>;
 
   /// Options...
 
@@ -25,7 +37,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   /// Filters...
 
   filterText?: string;
-  filterTextExact?: boolean;
+  filterTextSmart?: boolean;
 
   filterTargeted?: boolean;
   filterUpdated?: boolean;
@@ -56,6 +68,12 @@ interface TMemo<T extends TCmpItemBase> {
   reorderedIds?: Set<TCmpItemId>;
   selectedIds?: Set<TCmpItemId>;
   compareTargetId?: TCmpItemId;
+  filterText?: string;
+  filterTextSmart?: boolean;
+  filterTargeted?: boolean;
+  filterUpdated?: boolean;
+  filterAdded?: boolean;
+  filterSelected?: boolean;
 }
 
 export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extends boolean>(
@@ -66,9 +84,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     isReady,
     locale,
     largeTexts,
+    reorderModes,
     // forceCompact,
     filterText,
-    filterTextExact,
+    filterTextSmart,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -77,6 +96,12 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     getItemText,
     RenderItem,
   } = props;
+  memo.filterText = filterText;
+  memo.filterTextSmart = filterTextSmart;
+  memo.filterTargeted = filterTargeted;
+  memo.filterUpdated = filterUpdated;
+  memo.filterAdded = filterAdded;
+  memo.filterSelected = filterSelected;
 
   // Items data...
   const [items, setItems] = React.useState(() => defaultItems);
@@ -200,6 +225,62 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     }
   }, [selectedIds]);
 
+  const reorderByTextFunc = React.useCallback<TReorderFunc<T>>(
+    (items, locale) => {
+      const itemTexts = new WeakMap(items.map((item) => [item, getItemText(item)]));
+      const reorderedItems = [...items].sort((aIt, bIt) => {
+        const a = itemTexts.get(aIt)?.trim() || '';
+        const b = itemTexts.get(bIt)?.trim() || '';
+        // return a < b ? -1 : a > b ? 1 : 0;
+        return a.localeCompare(b, locale, {
+          // 'sensitivity: "base"' treats 'á', 'a' and 'A' as the same
+          // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#sensitivity
+          sensitivity: 'base',
+        });
+      });
+      return reorderedItems;
+    },
+    [getItemText],
+  );
+
+  const reorderWithFunc = React.useCallback(
+    (func: TReorderFunc<T>, desc?: boolean) => {
+      let reorderedItems = func(items, locale);
+      if (desc) {
+        reorderedItems = [...reorderedItems].reverse();
+      }
+      // Detect reordered items...
+      const newReorderedIds = new Set<T['id']>();
+      const newItems = reorderedItems.map((it, idx) => {
+        const order = idx + 1;
+        if (it.order !== order) {
+          it = { ...it, order };
+          newReorderedIds.add(it.id);
+        }
+        return it;
+      });
+      const reorderedCount = newReorderedIds.size;
+      // Update the data if reordering has occured...
+      if (reorderedCount) {
+        setReorderedIds(
+          (reorderedIds = new Set()) => new Set([...reorderedIds, ...newReorderedIds.keys()]),
+        );
+        setItems(newItems);
+      }
+    },
+    [items, locale],
+  );
+
+  const reorderItems = React.useCallback(
+    (reorderId?: string) => {
+      const mode = reorderId && reorderModes ? reorderModes[reorderId] : undefined;
+      const func = mode?.func || reorderByTextFunc;
+      const desc = mode?.desc ?? reorderId?.toLowerCase().endsWith('desc');
+      reorderWithFunc(func, desc);
+    },
+    [reorderWithFunc, reorderByTextFunc, reorderModes],
+  );
+
   const RenderHeadlessEditor = React.useCallback(
     (props: TRenderProps) => {
       const { className, forceCompact } = props;
@@ -211,6 +292,12 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         reorderedIds,
         selectedIds,
         updatedIds,
+        filterText,
+        filterTextSmart,
+        filterTargeted,
+        filterUpdated,
+        filterAdded,
+        filterSelected,
       } = memo;
       return (
         <HeadlessEditor
@@ -225,7 +312,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           largeTexts={largeTexts}
           forceCompact={forceCompact}
           filterText={filterText}
-          filterTextExact={filterTextExact}
+          filterTextSmart={filterTextSmart}
           filterTargeted={filterTargeted}
           filterUpdated={filterUpdated}
           filterAdded={filterAdded}
@@ -250,17 +337,17 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     [
       // addedIds,
       // compareTargetId,
+      // filterAdded,
+      // filterSelected,
+      // filterTargeted,
+      // filterText,
+      // filterTextSmart,
+      // filterUpdated,
       // items,
       // reorderedIds,
       // selectedIds,
       // updatedIds,
       RenderItem,
-      filterAdded,
-      filterSelected,
-      filterText,
-      filterTextExact,
-      filterTargeted,
-      filterUpdated,
       getItemText,
       isReady,
       largeTexts,
@@ -312,6 +399,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     restoreDefaults,
     addNewItem,
     deleteSelected,
+    reorderItems,
 
     /// Auxilliary helpers...
 

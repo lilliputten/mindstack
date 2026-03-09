@@ -19,9 +19,15 @@ import { IconProps, IconType } from './IconTypes';
 
 // Stock lucide icons...
 export const {
+  AArrowDown,
+  AArrowUp,
   Activity,
+  ArrowDown10,
+  ArrowDownAZ,
   ArrowLeft,
   ArrowRight,
+  ArrowUp10,
+  ArrowUpAZ,
   ArrowUpRight,
   Asterisk,
   Ban,
