@@ -537,6 +537,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                             <Input
                               id={`category-name-${locale}`}
                               type="text"
+                              className="w-full flex-1"
                               placeholder={t('EditCategoryForm.EnterCategoryNamePlaceholder', {
                                 locale,
                               })}
@@ -601,6 +602,7 @@ export function EditCategoryForm(props: TEditCategoryFormProps) {
                             <Input
                               id={`category-keywords-${locale}`}
                               type="text"
+                              className="w-full flex-1"
                               placeholder={t('EditCategoryForm.EnterKeywordsPlaceholder', {
                                 locale,
                               })}

@@ -137,6 +137,7 @@ export function SettingsFormFields(props: TSettingsFormFieldsProps) {
               <FormControl>
                 <Input
                   id={testInputKey}
+                  className="w-full flex-1"
                   placeholder="Test input"
                   {...field}
                   // onChange={(ev) => field.onChange(Number(ev.target.value) || '')}

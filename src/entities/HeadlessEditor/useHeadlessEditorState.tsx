@@ -24,6 +24,9 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   /// Filters...
 
+  filterText?: string;
+  filterTextExact?: boolean;
+
   filterTargeted?: boolean;
   filterUpdated?: boolean;
   filterAdded?: boolean;
@@ -64,6 +67,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     locale,
     largeTexts,
     // forceCompact,
+    filterText,
+    filterTextExact,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -219,6 +224,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           locale={locale}
           largeTexts={largeTexts}
           forceCompact={forceCompact}
+          filterText={filterText}
+          filterTextExact={filterTextExact}
           filterTargeted={filterTargeted}
           filterUpdated={filterUpdated}
           filterAdded={filterAdded}
@@ -250,6 +257,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       RenderItem,
       filterAdded,
       filterSelected,
+      filterText,
+      filterTextExact,
       filterTargeted,
       filterUpdated,
       getItemText,

@@ -89,7 +89,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Input
                   id={nameKey}
                   type="text"
-                  className="flex-1"
+                  className="w-full flex-1"
                   placeholder={t('EditTopicFormFields.TopicNamePlaceholder')}
                   {...field}
                 />
@@ -141,6 +141,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Input
                   id={keywordsKey}
                   type="text"
+                  className="w-full flex-1"
                   placeholder={t('EditTopicFormFields.KeywordsPlaceholder')}
                   {...field}
                 />
@@ -278,6 +279,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                     <Input
                       id={answersCountMinKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditTopicFormFields.MinimalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}
@@ -299,6 +301,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                     <Input
                       id={answersCountMaxKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditTopicFormFields.MaximalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}

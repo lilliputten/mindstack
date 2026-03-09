@@ -3,6 +3,9 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions/AddQuestionModal';
@@ -49,6 +52,8 @@ export function HeadlessEditorDemo(props: TProps) {
   const [filterUpdated, setFilterUpdated] = React.useState(false);
   const [filterAdded, setFilterAdded] = React.useState(false);
   const [filterSelected, setFilterSelected] = React.useState(false);
+  const [filterText, setFilterText] = React.useState<string>('follow');
+  const [filterTextExact, setFilterTextExact] = React.useState(true);
 
   const {
     /// Data...
@@ -82,6 +87,8 @@ export function HeadlessEditorDemo(props: TProps) {
     locale,
     largeTexts,
     /// Filters...
+    filterText,
+    filterTextExact,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -242,6 +249,47 @@ export function HeadlessEditorDemo(props: TProps) {
         <Icons.Save className="size-4 shrink-0 opacity-50" />
         <span className="truncate">Save</span>
       </Button>,
+      <div className="relative flex gap-2" key="FilterByText">
+        <Input
+          className="inline pr-11"
+          placeholder="Filter by text"
+          value={filterText}
+          onChange={(ev) => {
+            const { target } = ev;
+            const value = target.value;
+            setFilterText(value);
+          }}
+        />
+        {filterText && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => setFilterText('')}
+            className={cn(
+              'absolute right-0 top-1/2 -translate-y-1/2',
+              'rounded-sm',
+              'opacity-30 transition hover:opacity-50',
+            )}
+            title={t('AvailableWorkoutsFilters.ClearText')}
+          >
+            <Icons.Close className="size-4" />
+          </Button>
+        )}
+      </div>,
+      <div
+        key="ExactTextFilter"
+        className={cn('flex items-center gap-2', !filterText && 'disabled')}
+      >
+        <Checkbox
+          id="ExactTextFilter"
+          checked={filterTextExact}
+          onCheckedChange={(checked) => {
+            setFilterTextExact(Boolean(checked));
+          }}
+        />
+        <Label htmlFor="ExactTextFilter">Exact text filter</Label>
+      </div>,
     ],
     [
       addNewItem,
@@ -249,6 +297,8 @@ export function HeadlessEditorDemo(props: TProps) {
       filterAdded,
       filterSelected,
       filterTargeted,
+      filterText,
+      filterTextExact,
       filterUpdated,
       items,
       restoreDefaults,
@@ -256,6 +306,7 @@ export function HeadlessEditorDemo(props: TProps) {
       selectedCount,
       setCompareTargetId,
       setSelectedIds,
+      t,
       totalChangedCount,
     ],
   );
@@ -271,7 +322,7 @@ export function HeadlessEditorDemo(props: TProps) {
       <div
         className={cn(
           isDev && '__HeadlessEditorDemo_Actions', // DEBUG
-          'flex flex-wrap gap-1 px-6',
+          'flex flex-wrap gap-2 px-6',
         )}
       >
         {actions}

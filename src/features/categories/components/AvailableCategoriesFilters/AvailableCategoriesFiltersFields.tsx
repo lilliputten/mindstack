@@ -93,7 +93,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     placeholder={t('AvailableCategoriesFiltersFields.SearchForTextPlaceholder')}
                     {...field}
                     value={field.value || ''}
-                    className={cn('pr-11')}
+                    className="w-full pr-11"
                     maxLength={maxSearchTextLength}
                   />
                   {field.value && (
@@ -137,7 +137,7 @@ export function AvailableCategoriesFiltersFields(props: TProps) {
                     placeholder={t('AvailableCategoriesFiltersFields.SearchForLanguagePlaceholder')}
                     {...field}
                     value={field.value || ''}
-                    className={cn('pr-11')}
+                    className="w-full pr-11"
                     maxLength={maxSearchTextLength}
                   />
                   {field.value && (

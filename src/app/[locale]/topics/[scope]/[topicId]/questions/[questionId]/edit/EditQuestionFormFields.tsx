@@ -112,6 +112,7 @@ export function EditQuestionFormFields(props: TEditQuestionFormFieldsProps) {
                     <Input
                       id={answersCountMinKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditQuestionFormFields.MinimalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}
@@ -133,6 +134,7 @@ export function EditQuestionFormFields(props: TEditQuestionFormFieldsProps) {
                     <Input
                       id={answersCountMaxKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditQuestionFormFields.MaximalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}

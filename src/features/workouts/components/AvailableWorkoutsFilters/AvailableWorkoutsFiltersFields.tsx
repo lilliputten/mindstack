@@ -122,7 +122,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       placeholder={t('AvailableWorkoutsFilters.SearchForTextPlaceholder')}
                       {...field}
                       value={field.value || ''}
-                      className={cn('pr-11')}
+                      className="w-full pr-11"
                       maxLength={maxSearchTextLength}
                     />
                     {field.value && (
@@ -168,7 +168,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       placeholder={t('AvailableWorkoutsFilters.SearchLangPlaceholder')}
                       {...field}
                       value={field.value || ''}
-                      className={cn('pr-11')}
+                      className="w-full pr-11"
                     />
                     {field.value && (
                       <Button
@@ -448,7 +448,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -471,7 +471,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -498,7 +498,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -521,7 +521,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />

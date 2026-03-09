@@ -210,7 +210,7 @@ function AddTopicFormComponent(props: TAddTopicFormProps) {
                     <Input
                       id={nameKey}
                       type="text"
-                      className="flex-1"
+                      className="w-full flex-1"
                       placeholder={t('AddTopicForm.NamePlaceholder')}
                       {...field}
                       onChange={(ev) => field.onChange(ev)}

@@ -16,7 +16,7 @@ const Input = React.forwardRef<
         isDev && '__Input', // DEBUG
         'flex',
         'h-10',
-        'w-full',
+        // 'w-full',
         'rounded-md',
         'border',
         'border-input',

@@ -104,7 +104,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     placeholder={t('AvailableTopicsFiltersFields.SearchForTextPlaceholder')}
                     {...field}
                     value={field.value || ''}
-                    className={cn('pr-11')}
+                    className="w-full pr-11"
                     maxLength={maxSearchTextLength}
                   />
                   {field.value && (
@@ -144,7 +144,7 @@ export function AvailableTopicsFiltersFields(props: TProps) {
                     placeholder={t('AvailableTopicsFiltersFields.SearchForLanguagePlaceholder')}
                     {...field}
                     value={field.value || ''}
-                    className={cn('pr-11')}
+                    className="w-full pr-11"
                     maxLength={maxSearchTextLength}
                   />
                   {field.value && (

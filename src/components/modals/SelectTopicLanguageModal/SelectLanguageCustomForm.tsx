@@ -115,7 +115,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
           <div className="flex w-full flex-col gap-4">
             <Input
               id="id"
-              className="flex-1"
+              className="w-full flex-1"
               size={maxIdLength}
               placeholder={t('SelectLanguageCustomForm.LanguageCode')}
               // @see https://react-hook-form.com/docs/useform/register
@@ -126,7 +126,7 @@ export const SelectLanguageCustomForm: React.FC<TProps> = (props) => {
           <div className="flex w-full flex-col gap-4">
             <Input
               id="name"
-              className="flex-1"
+              className="w-full flex-1"
               size={maxNameLength}
               placeholder={t('SelectLanguageCustomForm.LanguageName')}
               // @see https://react-hook-form.com/docs/useform/register

@@ -68,6 +68,9 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   /// Filters...
 
+  filterText?: string;
+  filterTextExact?: boolean;
+
   filterTargeted?: boolean;
   filterUpdated?: boolean;
   filterAdded?: boolean;
@@ -137,6 +140,9 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     locale,
     largeTexts = false,
     forceCompact,
+    // Filters...
+    filterText,
+    filterTextExact,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -422,6 +428,19 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         return value && value >= minCmpValue;
       });
     }
+    const cmpText = filterText?.trim().toLowerCase();
+    if (cmpText) {
+      if (filterTextExact) {
+        console.log('[HeadlessEditor:filteredItems:filterText]', {
+          filterText,
+          filterTextExact,
+        });
+        filteredItems = filteredItems?.filter((it) => {
+          const text = getItemText(it).trim().toLowerCase();
+          return text.includes(cmpText);
+        });
+      }
+    }
     return filteredItems;
   }, [
     addedIds,
@@ -429,8 +448,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     filterAdded,
     filterSelected,
     filterTargeted,
+    filterText,
+    filterTextExact,
     filterUpdated,
     getComparedValue,
+    getItemText,
     itemsMap,
     orderedItems,
     overallComparedCache,
