@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/Checkbox';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/Select';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions/AddQuestionModal';
 import * as Icons from '@/components/shared/Icons';
@@ -43,9 +44,18 @@ function reorderByDate(items: T[], _locale: TLocale) {
   return reorderedItems;
 }
 
-const reorderModes: TReorderModes<TNewOrOldQuestion> = {
+const reorderModes = {
+  abc: {},
+  abcDesc: { desc: true },
   date: { func: reorderByDate },
   dateDesc: { func: reorderByDate, desc: true },
+} as const satisfies TReorderModes<TNewOrOldQuestion>;
+type TReorderKey = keyof typeof reorderModes;
+const reorderTitles: Record<TReorderKey, string> = {
+  abc: 'By text',
+  abcDesc: 'By text (descending)',
+  date: 'By date',
+  dateDesc: 'By date (descending)',
 };
 
 export function HeadlessEditorDemo(props: TProps) {
@@ -86,11 +96,11 @@ export function HeadlessEditorDemo(props: TProps) {
     setAddedIds,
     setReorderedIds,
     /// Indices (TODO: To use on save)...
-    // updatedIds,
     // deletedIds,
-    // addedIds,
     // reorderedIds,
+    addedIds,
     selectedIds,
+    updatedIds,
     /// Handlers...
     restoreDefaults,
     addNewItem,
@@ -143,132 +153,19 @@ export function HeadlessEditorDemo(props: TProps) {
     setReorderedIds(undefined);
   }, [items, setUpdatedIds, setDeletedIds, setAddedIds, setReorderedIds, setItems]);
 
-  const selectedCount = selectedIds?.size || 0;
-
   const actions = React.useMemo(
     () => [
+      // Basic data...
       <Button
-        key="ClearCompareTarget"
-        onClick={() => setCompareTargetId(undefined)}
+        key="SaveDefaults"
+        onClick={saveDefaults}
         className="content-truncate flex items-center gap-2"
-        variant={compareTargetId ? 'theme' : 'ghost'}
-        disabled={!compareTargetId}
+        variant={totalChangedCount ? 'success' : 'ghost'}
+        disabled={!totalChangedCount}
+        // size="sm"
       >
-        <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Clear compare target</span>
-      </Button>,
-      <Button
-        key="ShowCompared"
-        onClick={() => setFilterTargeted((filterTargeted) => !filterTargeted)}
-        className="content-truncate flex items-center gap-2"
-        variant={filterTargeted ? 'secondary' : 'ghost'}
-      >
-        <Icons.Scale className="size-5 shrink-0 opacity-50" />
-        <span className="truncate">Filter compared</span>
-      </Button>,
-      <Button
-        key="ShowUpdated"
-        onClick={() => setFilterUpdated((filterUpdated) => !filterUpdated)}
-        className="content-truncate flex items-center gap-2"
-        variant={filterUpdated ? 'secondary' : 'ghost'}
-      >
-        <Icons.Pencil className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Filter updated</span>
-      </Button>,
-      <Button
-        key="ShowAdded"
-        onClick={() => setFilterAdded((filterAdded) => !filterAdded)}
-        className="content-truncate flex items-center gap-2"
-        variant={filterAdded ? 'secondary' : 'ghost'}
-      >
-        <Icons.Asterisk className="size-5 shrink-0 opacity-50" />
-        <span className="truncate">Filter added</span>
-      </Button>,
-      <Button
-        key="ShowSelected"
-        onClick={() => setFilterSelected((filterSelected) => !filterSelected)}
-        className="content-truncate flex items-center gap-2"
-        variant={filterSelected ? 'secondary' : 'ghost'}
-      >
-        <Icons.CircleCheck className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Filter selected</span>
-      </Button>,
-      <Button
-        key="SelectAll"
-        onClick={() => setSelectedIds(new Set(items.map(({ id }) => id)))}
-        className="content-truncate flex items-center gap-2"
-        variant={selectedCount !== items.length ? 'theme' : 'ghost'}
-        disabled={selectedCount === items.length}
-      >
-        <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Select all</span>
-      </Button>,
-      <Button
-        key="SelectNone"
-        onClick={() => setSelectedIds(undefined)}
-        className="content-truncate flex items-center gap-2"
-        variant={selectedCount ? 'theme' : 'ghost'}
-        disabled={!selectedCount}
-      >
-        <Icons.Square className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Select none</span>
-      </Button>,
-      <Button
-        key="AddNew"
-        // onClick={() => setAddQuestionModalVisible(true)}
-        // XXX: Add an item without the dialog
-        onClick={() => {
-          const newItem = {
-            topicId: demoTopicId,
-            text: 'New item',
-          };
-          addNewItem(newItem);
-        }}
-        className="content-truncate flex items-center gap-2"
-        variant="success"
-      >
-        <Icons.Plus className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Add new</span>
-      </Button>,
-      <Button
-        key="ReorderByText"
-        onClick={() => reorderItems('abc')}
-        className="content-truncate flex items-center gap-2"
-        variant={items.length ? 'theme' : 'ghost'}
-        disabled={!items.length}
-      >
-        <Icons.ArrowDownAZ className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Reorder by text</span>
-      </Button>,
-      <Button
-        key="ReorderByTextDesc"
-        onClick={() => reorderItems('abcDesc')}
-        className="content-truncate flex items-center gap-2"
-        variant={items.length ? 'theme' : 'ghost'}
-        disabled={!items.length}
-      >
-        <Icons.ArrowUpAZ className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Reorder by text (desc)</span>
-      </Button>,
-      <Button
-        key="ReorderByDate"
-        onClick={() => reorderItems('date')}
-        className="content-truncate flex items-center gap-2"
-        variant={items.length ? 'theme' : 'ghost'}
-        disabled={!items.length}
-      >
-        <Icons.ArrowDown10 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Reorder by date</span>
-      </Button>,
-      <Button
-        key="ReorderByDateDesc"
-        onClick={() => reorderItems('dateDesc')}
-        className="content-truncate flex items-center gap-2"
-        variant={items.length ? 'theme' : 'ghost'}
-        disabled={!items.length}
-      >
-        <Icons.ArrowUp10 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Reorder by date (desc)</span>
+        <Icons.Save className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Save</span>
       </Button>,
       <Button
         key="UndoChanges"
@@ -286,33 +183,203 @@ export function HeadlessEditorDemo(props: TProps) {
         </span>
       </Button>,
       <Button
+        key="ClearCompareTarget"
+        onClick={() => setCompareTargetId(undefined)}
+        className="content-truncate flex items-center gap-2"
+        variant={compareTargetId ? 'theme' : 'ghost'}
+        disabled={!compareTargetId}
+      >
+        <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Clear compare target</span>
+      </Button>,
+      // Filters...
+      <div key="Filter" className="flex items-center text-sm font-bold opacity-50">
+        <span>Filter:</span>
+      </div>,
+      <Label key="FilterTargeted" className="ml-1 flex select-none items-center gap-2">
+        <Checkbox
+          defaultChecked={filterTargeted}
+          onCheckedChange={(checked) => setFilterTargeted(Boolean(checked))}
+        />
+        <span>Compared</span>
+      </Label>,
+      <Label key="FilterUpdated" className="ml-1 flex select-none items-center gap-2">
+        <Checkbox
+          defaultChecked={filterUpdated}
+          onCheckedChange={(checked) => setFilterUpdated(Boolean(checked))}
+        />
+        <span>
+          Updated
+          <span className="ml-1 font-thin opacity-50">({updatedIds?.size || 0})</span>
+        </span>
+      </Label>,
+      <Label key="FilterAdded" className="ml-1 flex select-none items-center gap-2">
+        <Checkbox
+          defaultChecked={filterAdded}
+          onCheckedChange={(checked) => setFilterAdded(Boolean(checked))}
+        />
+        <span>
+          Added
+          <span className="ml-1 font-thin opacity-50">({addedIds?.size || 0})</span>
+        </span>
+      </Label>,
+      <Label key="FilterSelected" className="ml-1 mr-2 flex select-none items-center gap-2">
+        <Checkbox
+          defaultChecked={filterSelected}
+          onCheckedChange={(checked) => setFilterSelected(Boolean(checked))}
+        />
+        <span>
+          Selected
+          <span className="ml-1 font-thin opacity-50">({selectedIds?.size || 0})</span>
+        </span>
+      </Label>,
+      <Button
+        key="SelectAll"
+        onClick={() =>
+          setSelectedIds((selectedIds) => {
+            return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
+          })
+        }
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+      >
+        {!selectedIds?.size ? (
+          <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
+        ) : (
+          <Icons.Square className="size-4 shrink-0 opacity-50" />
+        )}
+        <span className="truncate">{!selectedIds?.size ? 'Select all' : 'Deselect all'}</span>
+      </Button>,
+      /*
+      // Separated select all/select none
+      <Button
+        key="SelectAll"
+        onClick={() => setSelectedIds(new Set(items.map(({ id }) => id)))}
+        className="content-truncate flex items-center gap-2"
+        variant={selectedIds?.size !== items.length ? 'theme' : 'ghost'}
+        disabled={selectedIds?.size === items.length}
+        // size="sm"
+      >
+        <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Select all</span>
+      </Button>,
+      <Button
+        key="SelectNone"
+        onClick={() => setSelectedIds(undefined)}
+        className="content-truncate flex items-center gap-2"
+        variant={selectedIds?.size ? 'theme' : 'ghost'}
+        disabled={!selectedIds?.size}
+        // size="sm"
+      >
+        <Icons.Square className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Select none</span>
+      </Button>,
+      */
+      <Button
+        key="AddNew"
+        // onClick={() => setAddQuestionModalVisible(true)}
+        // XXX: Add an item without the dialog
+        onClick={() => {
+          const newItem = {
+            topicId: demoTopicId,
+            text: 'New item',
+          };
+          addNewItem(newItem);
+        }}
+        className="content-truncate flex items-center gap-2"
+        variant="success"
+        // size="sm"
+      >
+        <Icons.Plus className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Add new</span>
+      </Button>,
+      // Reorders...
+      <Select key="Reorder" onValueChange={reorderItems}>
+        <SelectTrigger
+          className={cn(
+            isDev && '__HeadlessEditorDemo__SelectReorder', // DEBUG
+            'flex-1',
+          )}
+        >
+          <span className="opacity-50">Reorder items</span>
+        </SelectTrigger>
+        <SelectContent>
+          {Object.entries(reorderTitles).map(([key, title]) => (
+            <SelectItem key={key} value={key}>
+              {title}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>,
+      /* // Separated reorder handlers...
+      <Button
+        key="ReorderByText"
+        onClick={() => reorderItems('abc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+        // size="sm"
+      >
+        <Icons.ArrowDownAZ className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by text</span>
+      </Button>,
+      <Button
+        key="ReorderByTextDesc"
+        onClick={() => reorderItems('abcDesc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+        // size="sm"
+      >
+        <Icons.ArrowUpAZ className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by text (desc)</span>
+      </Button>,
+      <Button
+        key="ReorderByDate"
+        onClick={() => reorderItems('date')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+        // size="sm"
+      >
+        <Icons.ArrowDown10 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by date</span>
+      </Button>,
+      <Button
+        key="ReorderByDateDesc"
+        onClick={() => reorderItems('dateDesc')}
+        className="content-truncate flex items-center gap-2"
+        variant={items.length ? 'theme' : 'ghost'}
+        disabled={!items.length}
+        // size="sm"
+      >
+        <Icons.ArrowUp10 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">Reorder by date (desc)</span>
+      </Button>,
+      */
+      <Button
         key="DeleteSelected"
         onClick={() => setDeleteSelectedConfirmVisible(true)}
         className="content-truncate flex items-center gap-2"
-        variant={selectedCount ? 'destructive' : 'ghost'}
-        disabled={!selectedCount}
+        variant={selectedIds?.size ? 'destructive' : 'ghost'}
+        disabled={!selectedIds?.size}
+        // size="sm"
       >
         <Icons.Trash className="size-4 shrink-0 opacity-50" />
         <span className="truncate">
           Delete selected
-          {!!selectedCount && <span className="ml-1 font-thin opacity-50">({selectedCount})</span>}
+          {!!selectedIds?.size && (
+            <span className="ml-1 font-thin opacity-50">({selectedIds.size})</span>
+          )}
         </span>
-      </Button>,
-      <Button
-        key="SaveDefaults"
-        onClick={saveDefaults}
-        className="content-truncate flex items-center gap-2"
-        variant={totalChangedCount ? 'success' : 'ghost'}
-        disabled={!totalChangedCount}
-      >
-        <Icons.Save className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Save</span>
       </Button>,
       <div className="relative flex gap-2" key="FilterByText">
         <Input
+          name="FilterByText"
           className="inline pr-11"
           placeholder="Filter by text"
-          defaultValue={filterText}
+          value={filterText || ''}
           onChange={(ev) => {
             const { target } = ev;
             const value = target.value;
@@ -336,22 +403,20 @@ export function HeadlessEditorDemo(props: TProps) {
           </Button>
         )}
       </div>,
-      <div
+      <Label
         key="TextFilterSmart"
-        className={cn('flex items-center gap-2', !filterText && 'disabled')}
+        className={cn('flex select-none items-center gap-2', !filterText && 'disabled')}
       >
         <Checkbox
-          id="TextFilterSmart"
           defaultChecked={filterTextSmart}
-          onCheckedChange={(checked) => {
-            setFilterTextSmart(Boolean(checked));
-          }}
+          onCheckedChange={(checked) => setFilterTextSmart(Boolean(checked))}
         />
-        <Label htmlFor="TextFilterSmart">Smart text filter</Label>
-      </div>,
+        Smart text filter
+      </Label>,
     ],
     [
       addNewItem,
+      addedIds,
       compareTargetId,
       filterAdded,
       filterSelected,
@@ -363,11 +428,12 @@ export function HeadlessEditorDemo(props: TProps) {
       reorderItems,
       restoreDefaults,
       saveDefaults,
-      selectedCount,
+      selectedIds,
       setCompareTargetId,
       setSelectedIds,
       t,
       totalChangedCount,
+      updatedIds,
     ],
   );
 
@@ -431,7 +497,7 @@ export function HeadlessEditorDemo(props: TProps) {
         isVisible={deleteSelectedConfirmVisible}
       >
         {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
-          count: selectedCount,
+          count: selectedIds?.size || 0,
         })}
       </ConfirmModal>
     </div>

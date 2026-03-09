@@ -29,7 +29,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
 
   const count = answers?.length || _count?.answers;
 
-  // const [editMode, setEditMode] = React.useState(false);
   const [editText, setEditText] = React.useState<string | undefined>();
   const isEditMode = editText != undefined;
   const isEdited = isEditMode && editText !== text;

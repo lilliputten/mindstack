@@ -71,6 +71,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   filterText?: string;
   filterTextSmart?: boolean;
 
+  /** Filter only compared items */
   filterTargeted?: boolean;
   filterUpdated?: boolean;
   filterAdded?: boolean;
