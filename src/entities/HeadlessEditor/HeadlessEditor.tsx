@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
 
-import { freshEffectTimeout, minCmpValue } from './constants';
+import { freshEffectTimeout, minCmpValue, newItemIdPrefix } from './constants';
 import { HeadlessEditorDebug } from './HeadlessEditorDebug';
 import { HeadlessEditorItem } from './HeadlessEditorItem';
 import { compareByOrder } from './helpers';
@@ -53,36 +53,50 @@ const __showDebug = isDev && true;
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   className?: string;
 
-  // Lifecylcle control...
-  isReady: boolean;
+  /// Lifecylcle control...
+  /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
+  isReady?: boolean;
 
-  // Options...
-  // Locale for comparator
+  /// Options...
+
+  /** Locale for comparator */
   locale: TLocale;
-  // Compare using ngrams for large texts or with just tokens otherwise
-  largeTexts: LargeTexts;
-  // Display in narrow layout
-  compact?: boolean;
+  /** Large texts support: To item textss using ngrams for large texts or with just tokens otherwise */
+  largeTexts?: LargeTexts;
+  /** Display in a narrow layout */
+  forceCompact?: boolean;
+
+  /// Filters...
+
   filterTargeted?: boolean;
   filterUpdated?: boolean;
   filterAdded?: boolean;
   filterSelected?: boolean;
 
   // Items interface...
+
+  /** Items list */
   items: T[];
+  /** A method to retrieve an items text to compare */
   getItemText: (item: T) => string;
+  /** Editor item rendering component */
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
-  // updateItem?: (it: T) => void;
+  /** Update items data */
   updateItems?: (its: T[]) => void;
+  /** Update reordered items */
   updateReordered?: (its: T[]) => void;
 
-  // Items state...
+  /// Tracking indices...
+
   updatedIds?: Set<TCmpItemId>;
   addedIds?: Set<TCmpItemId>;
   reorderedIds?: Set<TCmpItemId>;
   selectedIds?: Set<TCmpItemId>;
-  // TODO: Use `setSelectedIds`
-  setSelectedId?: (id: TCmpItemId, selected: boolean) => void;
+  // deletedIds?: Set<TCmpItemId>; // Is it required here?
+
+  /// Items state...
+
+  toggleSelectedId?: (id: TCmpItemId, selected: boolean) => void;
   compareTargetId?: TCmpItemId;
   setCompareTargetId?: (id?: TCmpItemId) => void;
   changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
@@ -118,11 +132,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const memo = React.useMemo<TMemo<T>>(() => defaultMemo, []);
   const {
     className,
-    isReady: isOuterReady,
+    isReady: isExternalReady = true,
     // Options...
     locale,
-    largeTexts,
-    compact,
+    largeTexts = false,
+    forceCompact,
     filterTargeted,
     filterUpdated,
     filterAdded,
@@ -138,7 +152,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     addedIds,
     reorderedIds: externalReorderedIds,
     selectedIds: externalSelectedIds,
-    setSelectedId: setExternalSelectedId,
+    toggleSelectedId: toggleExternalSelectedId,
     compareTargetId: externalCompareTargetId,
     setCompareTargetId: setExternalCompareTargetId,
     changeItemsOrder: changeExternalItemsOrder,
@@ -230,7 +244,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   );
 
   const { isComparatorReady, getComparedValue, overallComparedCache, itemsMap } = useComparator({
-    isReady: isOuterReady,
+    isReady: isExternalReady,
     // Options...
     locale,
     largeTexts,
@@ -262,12 +276,12 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     ];
   }, [compareTargetId, getComparedValue, items, itemsMap, overallComparedCache]);
 
-  const handleCheck = React.useCallback(
+  const toggleCheck = React.useCallback(
     (id: TCmpItemId) => {
       setSelectedIds((selectedIds) => {
         const isSelected = !!selectedIds?.has(id);
-        if (setExternalSelectedId) {
-          setExternalSelectedId(id, !isSelected);
+        if (toggleExternalSelectedId) {
+          toggleExternalSelectedId(id, !isSelected);
         } else {
           // NOTE: Create a new distinctive set: there definitely will be a change
           selectedIds = new Set(selectedIds);
@@ -280,10 +294,10 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         return selectedIds;
       });
     },
-    [setExternalSelectedId],
+    [toggleExternalSelectedId],
   );
 
-  const isReady = isOuterReady && isComparatorReady;
+  const isReady = isExternalReady && isComparatorReady;
 
   const getItemComparedValues = React.useCallback(
     (it: T): TItemComparedValues => {
@@ -339,12 +353,12 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           isReady={isReady}
           isOverlay={isOverlay}
           // Display in a narrow layout
-          forceCompact={compact}
+          forceCompact={forceCompact}
           // Items interface...
           item={it}
           RenderItem={RenderItem}
           updateItem={handleUpdate}
-          handleCheck={handleCheck}
+          toggleCheck={toggleCheck}
           handleCompareTargetId={handleCompareTargetId}
           // Item state...
           isUpdated={updatedIds?.has(id)}
@@ -362,22 +376,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         />
       );
     },
-    [
-      // addedIds,
-      // compareTargetId,
-      // freshIds,
-      // getItemComparedValues, // Use memo
-      // reorderedIds,
-      // selectedIds,
-      // updatedIds,
-      RenderItem,
-      compact,
-      handleCheck,
-      handleCompareTargetId,
-      handleUpdate,
-      isReady,
-      memo,
-    ],
+    [RenderItem, forceCompact, toggleCheck, handleCompareTargetId, handleUpdate, isReady, memo],
   );
 
   // Ordered items list...
@@ -459,7 +458,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         // Or find "new" items from the inital set...
         freshIdsSet = new Set(
           newItems
-            .filter(({ id, isNew }) => isNew || String(id).startsWith('__new'))
+            .filter(({ id, isNew }) => isNew || String(id).startsWith(newItemIdPrefix))
             .map(({ id }) => id),
         );
       }

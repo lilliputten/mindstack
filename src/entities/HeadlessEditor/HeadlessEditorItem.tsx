@@ -19,23 +19,29 @@ const _showOrder = isDev && false;
 
 interface TProps<T extends TCmpItemBase> {
   className?: string;
-  _idx?: number; // DEBUG: Show idx to debug ordering, optional
 
-  // Lifecylcle control...
+  /** DEBUG: Show idx to debug ordering, optional */
+  _idx?: number;
+
+  /// Lifecylcle control...
+
   isReady: boolean;
   isOverlay?: boolean;
 
-  // Display in narrow layout
+  /// Display in narrow layout
+
   forceCompact?: boolean;
 
-  // Item interface...
+  /// Item interface...
+
   item: T;
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
   updateItem?: (it: T) => void;
-  handleCheck?: (id: T['id']) => void;
+  toggleCheck?: (id: T['id']) => void;
   handleCompareTargetId?: (id: T['id']) => void;
 
-  // Item state...
+  /// Item state...
+
   isUpdated?: boolean;
   isAdded?: boolean;
   isFresh?: boolean;
@@ -43,7 +49,8 @@ interface TProps<T extends TCmpItemBase> {
   isSelected?: boolean;
   compareTargetId?: TCmpItemId;
 
-  // Other derived props
+  /// Other derived props
+
   normalized: number;
   value: number;
   overallValue: number;
@@ -64,7 +71,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     item: it,
     RenderItem,
     updateItem,
-    handleCheck,
+    toggleCheck,
     handleCompareTargetId,
     // Item state...
     isUpdated,
@@ -110,8 +117,6 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     ? t('Comparsion rate') + ': ' + infoStr
     : t('The element is not involved in the comparison');
 
-  const indicateFreshItemBackgroundOpacity = isAdded ? 10 : 0;
-
   return (
     <div
       ref={setNodeRef}
@@ -119,30 +124,55 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         isDev && '__HeadlessEditorItem', // DEBUG
         'content-truncate flex items-start gap-2 p-1',
         'rounded',
+        'relative',
         'transition',
         'border border-transparent',
         // Adaptive or forced compact mode...
         'max-xs:flex-col',
+        'hover:bg-theme-500/5',
         forceCompact && 'flex-col',
         isUpdated && 'border-dashed border-theme-500/40',
         isAdded && 'border-dashed border-green-600/50',
-        isUpdated && 'bg-background/25',
-        isAdded && 'bg-theme/10',
-        isFresh && 'indicate-fresh-item',
-        isDragging && 'opacity-20',
-        isOverlay && 'bg-theme-500/50 ring-2',
+        isUpdated && 'bg-background/25 hover:bg-background/30',
+        isAdded && 'bg-theme/10 hover:bg-theme/15',
+        isDragging && 'opacity-0',
+        isOverlay && 'z-5 bg-theme-500/50 ring-2 hover:bg-theme-500/50',
         className,
       )}
       style={
         {
-          transform: /* isDragging ? */ CSS.Translate.toString(transform),
+          transform: CSS.Translate.toString(transform),
           transition,
-          // NOTE: Set parameters for newly added (fresh) item animation. TODO: Extract to the tailwind configuration?
-          '--indicate-fresh-item-duration': `${freshEffectTimeout}ms`,
-          '--indicate-fresh-item-background-opacity': `${indicateFreshItemBackgroundOpacity}%`, // Corresponding default `isAdded` background transparency, 10, see above
         } as React.CSSProperties
       }
     >
+      {isSelected && (
+        <div
+          className={cn(
+            isDev && '__HeadlessEditorItem_SelectedBg', // DEBUG
+            'absolute inset-0 bg-theme-500/10',
+            'pointer-events-none z-[-1]',
+          )}
+        />
+      )}
+      {isFresh && (
+        <div
+          className={cn(
+            isDev && '__HeadlessEditorItem_IndicatorBg', // DEBUG
+            'indicate-item absolute inset-0',
+            'pointer-events-none z-[-1]',
+          )}
+          style={
+            {
+              // NOTE: Set parameters for newly added (fresh) item animation. TODO: Extract to the tailwind configuration?
+              '--indicate-item-duration': `${freshEffectTimeout}ms`,
+              '--indicate-item-background-color': isAdded
+                ? 'rgba(var(--color-green-500-RGB) / 50%)'
+                : 'rgba(var(--color-theme-500-RGB) / 40%)',
+            } as React.CSSProperties
+          }
+        />
+      )}
       <div
         className={cn(
           isDev && '__HeadlessEditorItem_Controllers', // DEBUG
@@ -173,21 +203,22 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         </span>
         {false || !isReady ? (
           <>
-            {!!handleCheck && <Skeleton className="size-4" />}
+            {!!toggleCheck && <Skeleton className="size-4" />}
             <Skeleton className="size-4" />
             {_showComparedValues && <Skeleton className="h-4 w-24" />}
           </>
         ) : (
           <>
-            {!!handleCheck && (
+            {!!toggleCheck && (
               <Checkbox
                 checked={isSelected}
                 aria-label={t('Select record')}
                 title={t('Select Item')}
+                className="bg-background/20"
                 onClick={(ev) => {
                   ev.preventDefault();
                   ev.stopPropagation();
-                  handleCheck(id);
+                  toggleCheck(id);
                 }}
               />
             )}
@@ -196,7 +227,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
               className={cn(
                 isDev && '__HeadlessEditorItem_CompareIcon', // DEBUG
                 'box-content size-2.5 shrink-0 rounded-full p-[2px] transition',
-                'border border-theme-500/50 bg-background/50',
+                'border border-theme-500/50 bg-background/20',
                 !hasOverallValue && 'border-theme-500/10',
                 !!compareTargetId && hasValue && 'border-red-500/100',
                 isCompareTarget && 'animate-pulse border-dashed border-red-500',
