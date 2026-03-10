@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TLocale } from '@/i18n';
 import { isDev } from '@/config';
 
 import { newItemIdPrefix } from './constants';
@@ -9,7 +8,7 @@ import { HeadlessEditor } from './HeadlessEditor';
 import { getUniqueIdForSet } from './helpers';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
-type TReorderFunc<T extends TCmpItemBase> = (items: T[], locale: TLocale) => T[];
+type TReorderFunc<T extends TCmpItemBase> = (items: T[], lang: string) => T[];
 interface TCustomReorder<T extends TCmpItemBase> {
   func?: TReorderFunc<T>;
   desc?: boolean;
@@ -22,6 +21,8 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
   isReady?: boolean;
+  /** Does the owner editor component have unsaved data? */
+  hasChanges?: boolean;
 
   /// Reorder options
 
@@ -29,8 +30,8 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   /// Options...
 
-  /** Locale for comparator */
-  locale: TLocale;
+  /** Language for the comparator */
+  lang: string;
   /** Large texts support: To item textss using ngrams for large texts or with just tokens otherwise */
   largeTexts?: LargeTexts;
 
@@ -82,7 +83,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   const memo = React.useMemo<TMemo<T>>(() => ({}), []);
   const {
     isReady,
-    locale,
+    hasChanges,
+    lang,
     largeTexts,
     reorderModes,
     // forceCompact,
@@ -178,6 +180,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     setItems(defaultItems);
     setUpdatedIds(undefined);
     setDeletedIds(undefined);
+    setReorderedIds(undefined);
+    // Recreate added ids list from the items...
     setAddedIds(
       new Set(
         defaultItems
@@ -226,13 +230,13 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   }, [selectedIds]);
 
   const reorderByTextFunc = React.useCallback<TReorderFunc<T>>(
-    (items, locale) => {
+    (items, lang) => {
       const itemTexts = new WeakMap(items.map((item) => [item, getItemText(item)]));
       const reorderedItems = [...items].sort((aIt, bIt) => {
         const a = itemTexts.get(aIt)?.trim() || '';
         const b = itemTexts.get(bIt)?.trim() || '';
         // return a < b ? -1 : a > b ? 1 : 0;
-        return a.localeCompare(b, locale, {
+        return a.localeCompare(b, lang, {
           // 'sensitivity: "base"' treats 'á', 'a' and 'A' as the same
           // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#sensitivity
           sensitivity: 'base',
@@ -245,7 +249,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
 
   const reorderWithFunc = React.useCallback(
     (func: TReorderFunc<T>, desc?: boolean) => {
-      let reorderedItems = func(items, locale);
+      let reorderedItems = func(items, lang);
       if (desc) {
         reorderedItems = [...reorderedItems].reverse();
       }
@@ -268,7 +272,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         setItems(newItems);
       }
     },
-    [items, locale],
+    [items, lang],
   );
 
   const reorderItems = React.useCallback(
@@ -280,6 +284,13 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     },
     [reorderWithFunc, reorderByTextFunc, reorderModes],
   );
+
+  const totalChangedCount = [
+    updatedIds?.size,
+    deletedIds?.size,
+    addedIds?.size,
+    reorderedIds?.size,
+  ].reduce((summ = 0, val = 0) => summ + val, 0);
 
   const RenderHeadlessEditor = React.useCallback(
     (props: TRenderProps) => {
@@ -307,8 +318,9 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           )}
           // Lifecylcle control...
           isReady={isReady}
+          hasChanges={hasChanges || !!totalChangedCount}
           // Options...
-          locale={locale}
+          lang={lang}
           largeTexts={largeTexts}
           forceCompact={forceCompact}
           filterText={filterText}
@@ -351,20 +363,15 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       getItemText,
       isReady,
       largeTexts,
-      locale,
+      lang,
       memo,
       toggleSelectedId,
       updateItems,
       updateReordered,
+      hasChanges,
+      totalChangedCount,
     ],
   );
-
-  const totalChangedCount = [
-    updatedIds?.size,
-    deletedIds?.size,
-    addedIds?.size,
-    reorderedIds?.size,
-  ].reduce((summ = 0, val = 0) => summ + val, 0);
 
   return {
     /// Data...

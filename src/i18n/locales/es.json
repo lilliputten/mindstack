@@ -1907,5 +1907,8 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulú"
+  },
+  "QuestionsEditor": {
+    "EditQuestions": "Editar preguntas"
   }
 }

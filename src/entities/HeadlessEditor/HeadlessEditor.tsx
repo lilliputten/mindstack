@@ -4,7 +4,6 @@ import React from 'react';
 
 import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { TLocale } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
@@ -56,11 +55,13 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   /// Lifecylcle control...
   /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
   isReady?: boolean;
+  /** Does the owner editor component have unsaved data? */
+  hasChanges?: boolean;
 
   /// Options...
 
   /** Locale for comparator */
-  locale: TLocale;
+  lang: string;
   /** Large texts support: To item textss using ngrams for large texts or with just tokens otherwise */
   largeTexts?: LargeTexts;
   /** Display in a narrow layout */
@@ -137,8 +138,9 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const {
     className,
     isReady: isExternalReady = true,
+    hasChanges,
     // Options...
-    locale,
+    lang,
     largeTexts = false,
     forceCompact,
     // Filters...
@@ -166,13 +168,12 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   } = props;
   memo.addedIds = addedIds;
 
-  /* // DEBUG: Detect excessive unmounts
-   * React.useEffect(() => {
-   *   return () => {
-   *     console.log('[HeadlessEditor:UNMOUNT]');
-   *   };
-   * }, []);
-   */
+  // DEBUG: Detect excessive unmounts
+  React.useEffect(() => {
+    return () => {
+      console.log('[HeadlessEditor:UNMOUNTED]');
+    };
+  }, []);
 
   // Freshly added items...
   const [freshIds, setFreshIds] = React.useState<Set<TCmpItemId> | undefined>();
@@ -270,7 +271,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   } = useComparator({
     isReady: isExternalReady,
     // Options...
-    locale,
+    lang,
     largeTexts,
     // Items...
     items,
@@ -388,6 +389,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           // Lifecylcle control...
           isReady={isReady}
           isOverlay={isOverlay}
+          hasChanges={hasChanges}
           // Display in a narrow layout
           forceCompact={forceCompact}
           // Items interface...
@@ -412,7 +414,16 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         />
       );
     },
-    [RenderItem, forceCompact, toggleCheck, handleCompareTargetId, handleUpdate, isReady, memo],
+    [
+      RenderItem,
+      forceCompact,
+      toggleCheck,
+      handleCompareTargetId,
+      handleUpdate,
+      isReady,
+      hasChanges,
+      memo,
+    ],
   );
 
   // Ordered items list...
@@ -593,7 +604,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       <div
         className={cn(
           isDev && '__HeadlessEditor', // DEBUG
-          'content-truncate flex flex-col gap-2',
+          'content-truncate flex flex-col gap-1',
           'px-6',
           // 'py-3', // NOTE: It may be required to have a vertical space if we use a bounce animation for frehly added items
           className,

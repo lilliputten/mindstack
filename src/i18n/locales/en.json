@@ -1916,5 +1916,8 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulu"
+  },
+  "QuestionsEditor": {
+    "EditQuestions": "Edit Questions"
   }
 }

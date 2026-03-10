@@ -1,3 +1,5 @@
+import { compareDates } from '@/lib/helpers';
+
 import { newItemIdPrefix } from './constants';
 import { TCmpItemBase, TCmpItemId } from './types';
 
@@ -31,4 +33,15 @@ export function getUniqueIdForSet(usedIds: Set<TCmpItemId>, prefix = newItemIdPr
     id = `${prefix}${++count}`;
   } while (usedIds.has(id));
   return id;
+}
+
+export type TDateOrderable = { createdAt?: Date; updatedAt?: Date };
+export function reorderByDate<T extends TDateOrderable>(items: T[], _lang: string) {
+  const itemDates = new WeakMap(items.map((item) => [item, item.createdAt || item.updatedAt]));
+  const reorderedItems = [...items].sort((aIt, bIt) => {
+    const a = itemDates.get(aIt);
+    const b = itemDates.get(bIt);
+    return compareDates(a, b);
+  });
+  return reorderedItems;
 }

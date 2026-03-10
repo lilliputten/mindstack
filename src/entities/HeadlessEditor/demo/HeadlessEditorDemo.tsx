@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { compareDates } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { TLocale, useT } from '@/i18n';
+import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Input } from '@/components/ui/Input';
@@ -16,7 +15,7 @@ import { isDev } from '@/config';
 import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
 
 import { newItemIdPrefix } from '../constants';
-import { getUniqueIdForSet } from '../helpers';
+import { getUniqueIdForSet, reorderByDate } from '../helpers';
 import { TReorderModes, useHeadlessEditorState } from '../useHeadlessEditorState';
 import { CmpQuestion } from './CmpQuestion';
 import { demoQuestions, demoTopicId } from './demoQuestions';
@@ -24,24 +23,14 @@ import { T } from './types';
 
 interface TProps {
   className?: string;
-  // Locale for comparator
-  locale?: TLocale;
+  // Language for comparator
+  lang?: string;
   // Compare using ngrams for large texts or with just tokens otherwise
   largeTexts?: boolean;
 }
 
 function getItemText(item: T) {
   return item.text;
-}
-
-function reorderByDate(items: T[], _locale: TLocale) {
-  const itemDates = new WeakMap(items.map((item) => [item, item.createdAt]));
-  const reorderedItems = [...items].sort((aIt, bIt) => {
-    const a = itemDates.get(aIt);
-    const b = itemDates.get(bIt);
-    return compareDates(a, b);
-  });
-  return reorderedItems;
 }
 
 const reorderModes = {
@@ -61,8 +50,8 @@ const reorderTitles: Record<TReorderKey, string> = {
 export function HeadlessEditorDemo(props: TProps) {
   const {
     className,
-    // Locale for comparator
-    locale = 'en',
+    // Language for comparator
+    lang = 'en',
     // Compare using ngrams for large texts or with just tokens otherwise
     largeTexts = false,
   } = props;
@@ -111,7 +100,7 @@ export function HeadlessEditorDemo(props: TProps) {
   } = useHeadlessEditorState({
     // isReady,
     /// Options...
-    locale,
+    lang,
     largeTexts,
     /// Reordering...
     reorderModes,
@@ -183,14 +172,14 @@ export function HeadlessEditorDemo(props: TProps) {
         </span>
       </Button>,
       <Button
-        key="ClearCompareTarget"
+        key="ResetCompareTarget"
         onClick={() => setCompareTargetId(undefined)}
         className="content-truncate flex items-center gap-2"
         variant={compareTargetId ? 'theme' : 'ghost'}
         disabled={!compareTargetId}
       >
         <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">Clear compare target</span>
+        <span className="truncate">Reset comparison target</span>
       </Button>,
       // Filters...
       <div key="Filter" className="flex items-center text-sm font-bold opacity-50">

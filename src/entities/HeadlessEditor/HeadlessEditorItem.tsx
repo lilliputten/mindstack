@@ -27,6 +27,8 @@ interface TProps<T extends TCmpItemBase> {
 
   isReady: boolean;
   isOverlay?: boolean;
+  /** Does the owner editor component have unsaved data? */
+  hasChanges?: boolean;
 
   /// Display in narrow layout
 
@@ -65,6 +67,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     // Lifecylcle control...
     isReady,
     isOverlay,
+    hasChanges,
     // Display in narrow layout
     forceCompact,
     // Item interface...
@@ -131,12 +134,10 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         'max-xs:flex-col',
         'hover:bg-theme-500/5',
         forceCompact && 'flex-col',
-        isUpdated && 'border-dashed border-theme-500/40',
-        isAdded && 'border-dashed border-green-600/50',
-        isUpdated && 'bg-background/25 hover:bg-background/30',
-        isAdded && 'bg-theme/10 hover:bg-theme/15',
-        isDragging && 'opacity-0',
-        isOverlay && 'z-5 bg-theme-500/50 ring-2 hover:bg-theme-500/50',
+        isUpdated && 'border-dashed border-theme-500/40 bg-theme/5 hover:bg-theme/10',
+        isAdded && 'border-dashed border-green-600/50 bg-theme/5 hover:bg-theme/10',
+        isDragging && 'pointer-events-none cursor-move border-theme-500/10',
+        isOverlay && 'z-5 cursor-move border-dashed border-theme-500/50 opacity-50', // bg-theme-500/10 hover:bg-theme-500/10',
         className,
       )}
       style={
@@ -146,6 +147,15 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         } as React.CSSProperties
       }
     >
+      {isDragging && (
+        <div
+          className={cn(
+            isDev && '__HeadlessEditorItem_SelectedBg', // DEBUG
+            'absolute inset-0 bg-theme-500/10',
+            'pointer-events-none z-[-1]',
+          )}
+        />
+      )}
       {isSelected && (
         <div
           className={cn(
@@ -178,6 +188,9 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           isDev && '__HeadlessEditorItem_Controllers', // DEBUG
           'flex shrink-0 items-center gap-2 text-sm',
           'min-h-6',
+          'transition',
+          // isDragging && 'opacity-0',
+          isOverlay && 'opacity-20',
         )}
         // title="Click to toggle the item comparison mode only with similar items"
       >
@@ -188,11 +201,12 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         )}
         <span
           className={cn(
-            isDev && '__DragHandle', // DEBUG
+            isDev && '__HeadlessEditorItem_DragHandle', // DEBUG
             'opacity-50',
             'transition-all',
             'hover:opacity-100',
             'text-foreground/20',
+            isOverlay && 'cursor-move',
             isReordered && 'text-theme-500',
           )}
           {...attributes}
@@ -211,10 +225,13 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           <>
             {!!toggleCheck && (
               <Checkbox
-                checked={isSelected}
+                checked={isSelected || false}
                 aria-label={t('Select record')}
                 title={t('Select Item')}
-                className="bg-background/20"
+                className={cn(
+                  isDev && '__HeadlessEditorItem_Checkbox', // DEBUG
+                  'bg-background/20',
+                )}
                 onClick={(ev) => {
                   ev.preventDefault();
                   ev.stopPropagation();
@@ -259,7 +276,19 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           </>
         )}
       </div>
-      <RenderItem className="flex-1" key={id} item={it} updateItem={updateItem} />
+      <RenderItem
+        className={cn(
+          isDev && '__HeadlessEditorItem_RenderItem', // DEBUG
+          'flex-1',
+          'transition',
+          // isDragging && 'opacity-0',
+          isOverlay && 'opacity-20',
+        )}
+        key={id}
+        item={it}
+        updateItem={updateItem}
+        hasChanges={hasChanges}
+      />
     </div>
   );
 }

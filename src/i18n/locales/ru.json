@@ -73,7 +73,7 @@
   "NN": "№",
   "Name": "Название",
   "NavigationMenu": "Меню навигации",
-  "No": "Номер",
+  "No": "Нет",
   "NoAiGenrationsAvailable": "Нет доступных генераций ИИ",
   "NoAnswerFound": "Ответ не найден",
   "NoAnswersHaveBeenCreatedYet": "Ответы еще не созданы",
@@ -1910,5 +1910,8 @@
     "Yoruba": "Йоруба",
     "Zhuang": "Чжуанский",
     "Zulu": "Зулусский"
+  },
+  "QuestionsEditor": {
+    "EditQuestions": "Редактировать вопросы"
   }
 }

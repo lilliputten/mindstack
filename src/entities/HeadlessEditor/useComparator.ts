@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import { TLocale } from '@/i18n';
 import { compareNGrams, compareTokens, TextComprarator } from '@/packages/text-comparator';
 import { SymmetricalTwoDimensionalWeakCache } from '@/shared/lib/objects';
 
@@ -19,7 +18,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   // Options...
   // Locale for comparator
-  locale: TLocale;
+  lang: string;
   // Compare using ngrams for large texts or with just tokens otherwise
   largeTexts: LargeTexts;
 
@@ -41,7 +40,7 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
   const {
     isReady: isOuterReady,
     /// Options...
-    locale,
+    lang,
     largeTexts,
     // Items...
     items,
@@ -53,10 +52,10 @@ export function useComparator<T extends TCmpItemBase, LargeTexts extends boolean
   const [isComparatorReady, setComparatorReady] = React.useState<boolean>(false);
   React.useEffect(() => {
     setComparatorReady(false);
-    const comparator = new TextComprarator({ lang: locale });
+    const comparator = new TextComprarator({ lang: lang });
     comparator.awaitedInit().then(() => setComparatorReady(true));
     setComparator(comparator);
-  }, [locale]);
+  }, [lang]);
 
   const isReady = isOuterReady && isComparatorReady;
   // const isBusy = !isReady;

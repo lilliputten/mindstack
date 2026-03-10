@@ -17,7 +17,12 @@ import { TCmpItemProps } from '../types';
 import { T } from './types';
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
-  const { className, item, updateItem } = props;
+  const {
+    className,
+    item,
+    updateItem,
+    // hasChanges,
+  } = props;
   const {
     id, // Required an unique id
     text = '', // Question markdown text
@@ -62,6 +67,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       className={cn(
         isDev && '__RenderItem', // DEBUG
         'relative flex w-full items-start gap-2 text-left',
+        // hasChanges && 'border border-red-500', // DEBUG
         className,
       )}
     >

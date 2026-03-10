@@ -12,6 +12,7 @@ import {
   ManageTopicQuestionsListCard,
   TManageTopicQuestionsListCardProps,
 } from './ManageTopicQuestionsListCard';
+import { QuestionsEditor } from './QuestionsEditor';
 
 type TManageTopicQuestionsPageHolderProps = Omit<
   TManageTopicQuestionsListCardProps,
@@ -42,19 +43,18 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     // includeQuestionsCount: availableTopicsQueryProps.includeQuestionsCount,
   });
 
-  const {
-    // topic,
-    isFetched: isTopicFetched,
-    isCached: isTopicCached,
-  } = availableTopicQuery;
-
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
-  const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
-
+  const { isFetched: isTopicFetched, isCached: isTopicCached } = availableTopicQuery;
   const isTopicReady = isTopicCached || isTopicFetched;
 
+  const availableQuestionsQuery = useAvailableQuestions({
+    topicId,
+    itemsLimit: null, // Take all questions, without paging
+  });
+  const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
+  const isQuestionsReady = isQuestionsFetched;
+
   // No data loaded yet - show skeleton
-  if (!isQuestionsFetched || !isTopicReady) {
+  if (!isQuestionsReady || !isTopicReady) {
     return (
       <div
         className={cn(
@@ -72,10 +72,20 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
   }
 
   return (
-    <ManageTopicQuestionsListCard
+    <QuestionsEditor
+      topicId={topicId}
       availableTopicQuery={availableTopicQuery}
       availableQuestionsQuery={availableQuestionsQuery}
-      {...props}
     />
   );
+
+  /* // Old table-based component
+  return (
+    <ManageTopicQuestionsListCard
+      topicId={topicId}
+      availableTopicQuery={availableTopicQuery}
+      availableQuestionsQuery={availableQuestionsQuery}
+    />
+  );
+  */
 }

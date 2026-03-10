@@ -120,12 +120,12 @@ export function DashboardActions(props: DashboardActionsProps) {
                   isDev && '__AllowedUsersPage_DropdownMenuToggle', // DEBUG
                   'active:bg-theme active:text-theme-foreground',
                   'ring-offset-background',
-                  'focus:ring-2',
+                  'focus:ring-1',
                   'focus:ring-ring',
-                  'focus:ring-offset-2',
+                  // 'focus:ring-offset-1',
                   'data-[state=open]:bg-theme/20',
                   'data-[state=open]:ring-2',
-                  'data-[state=open]:ring-offset-2',
+                  // 'data-[state=open]:ring-offset-1',
                   'data-[state=open]:ring-theme/50',
                 )}
               >
@@ -139,8 +139,14 @@ export function DashboardActions(props: DashboardActionsProps) {
           align="end"
           className={cn(
             isDev && '__DashboardActions_DropdownMenuContent', // DEBUG
-            'mt-2 rounded-lg bg-popover',
+            // 'mt-2',
+            'rounded-lg bg-popover',
             'flex w-full flex-col gap-1',
+            // 'px-1',
+          )}
+          viewportClassName={cn(
+            isDev && '__DashboardActions_DropdownMenuContent_Viewport', // DEBUG
+            // '[&>div]:py-1',
           )}
         >
           {menuActions}

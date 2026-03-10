@@ -96,13 +96,5 @@ export function ManageTopicQuestionsPageModalsWrapper(props: TTopicsListProps) {
     }
   }, [editAnswersQuestionId, openEditAnswersPage]);
 
-  return (
-    <ManageTopicQuestionsPageHolder
-      topicId={topicId}
-      // handleDeleteQuestion={openDeleteQuestionModal}
-      // handleEditQuestion={openEditQuestionCard}
-      // handleAddQuestion={openAddQuestionModal}
-      // handleEditAnswers={openEditAnswersPage}
-    />
-  );
+  return <ManageTopicQuestionsPageHolder topicId={topicId} />;
 }
