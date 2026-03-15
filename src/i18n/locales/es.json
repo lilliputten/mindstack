@@ -29,6 +29,7 @@
   "ChangeFilters": "Cambiar Filtros",
   "ClearChanges": "Limpiar cambios",
   "ClearText": "Borrar texto",
+  "ClickToHideSettings": "Haz clic para ocultar la configuración",
   "Close": "Cerrar",
   "Continue": "Continuar",
   "Created": "Creado",
@@ -42,10 +43,12 @@
   "DeleteTopic": "Eliminar Tema",
   "Deleting": "Eliminando",
   "Description": "Descripción",
+  "Displaying": "Mostrando",
   "Edit": "Editar",
   "EditAnswer": "Editar Respuesta",
   "EditAnswers": "Editar Respuestas",
   "EditTopic": "Editar tema",
+  "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización",
   "Expected": "Esperado",
   "ExtraLimitsErrorText": "<PricesLink>Consulta</PricesLink> las condiciones de tu plan tarifario.",
   "Finish": "Finalizar",
@@ -378,11 +381,7 @@
     "WithoutStatistics": "Sin Estadísticas",
     "Yes": "Sí"
   },
-  "AvailableTopicsFilters": {
-    "ClickToHideSettings": "Haz clic para ocultar la configuración",
-    "Displaying": "Mostrando",
-    "ExpandToChangeDisplaySettings": "Expande para cambiar la configuración de visualización"
-  },
+  "AvailableTopicsFilters": {},
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Selecciona una o más categorías para este tema.",
     "ChooseSortOrderHint": "Elige cómo ordenar la lista de temas.",
@@ -1351,6 +1350,9 @@
     "SignInModalIntroAuth": "Inicia sesión o regístrate para activar una suscripción.",
     "SignInModalIntroForBasic": "Para activar una suscripción básica, simplemente inicie sesión en el sistema."
   },
+  "QuestionsEditor": {
+    "EditQuestions": "Editar preguntas"
+  },
   "QuestionsGenerationTypes": {
     "BASIC": "Preguntas simples",
     "DETAILED": "Preguntas detalladas",
@@ -1907,8 +1909,5 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulú"
-  },
-  "QuestionsEditor": {
-    "EditQuestions": "Editar preguntas"
   }
 }

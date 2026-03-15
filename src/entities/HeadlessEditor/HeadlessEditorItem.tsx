@@ -30,9 +30,10 @@ interface TProps<T extends TCmpItemBase> {
   /** Does the owner editor component have unsaved data? */
   hasChanges?: boolean;
 
-  /// Display in narrow layout
-
+  /** Display in narrow layout */
   forceCompact?: boolean;
+  /** Show normalized value */
+  showNormalized?: boolean;
 
   /// Item interface...
 
@@ -68,8 +69,9 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     isReady,
     isOverlay,
     hasChanges,
-    // Display in narrow layout
+    // Options...
     forceCompact,
+    showNormalized,
     // Item interface...
     item: it,
     RenderItem,
@@ -108,11 +110,13 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
   const isCompareTarget = compareTargetId && compareTargetId === id;
   const hasOverallValue = overallValue >= minCmpValue;
   const hasValue = value >= minCmpValue;
+  const showValue = showNormalized ? normalized : value;
   const infoStr = [
     // Combine all info values...
-    overallValue.toFixed(2),
-    value.toFixed(2),
-    normalized.toFixed(2),
+    // overallValue.toFixed(2),
+    // value.toFixed(2),
+    // normalized.toFixed(2),
+    (showNormalized ? normalized : value).toFixed(2),
     overallCount,
     overallTotal.toFixed(2),
   ].join(' ');
@@ -267,7 +271,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
                   'size-full rounded-full bg-red-500',
                   isCompareTarget && 'bg-red-500',
                 )}
-                style={{ opacity: isCompareTarget ? 1 : normalized.toFixed(2) }}
+                style={{ opacity: isCompareTarget ? 1 : showValue.toFixed(2) }}
               />
             </div>
             {_showComparedValues && (

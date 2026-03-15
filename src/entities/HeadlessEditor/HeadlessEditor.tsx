@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 'use client';
 
 import React from 'react';
@@ -12,12 +14,12 @@ import { freshEffectTimeout, minCmpValue, newItemIdPrefix } from './constants';
 import { HeadlessEditorDebug } from './HeadlessEditorDebug';
 import { HeadlessEditorItem } from './HeadlessEditorItem';
 import { compareByOrder } from './helpers';
-import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
+import { TCmpItemBase, TCmpItemId, THeadlessEditorProps } from './types';
 import { useComparator } from './useComparator';
 
 /* // EXAMPLE 1: A simpler editor component implementation, without forwarded API handlers, controlled via regular data props and optional handlers:
  * export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
- *   props: TProps<T, LargeTexts>,
+ *   props: THeadlessEditorProps<T, LargeTexts>,
  * ) { ... }
  *
  * // EXAMPLE 2: A more complex implementation, with an external interface:
@@ -29,8 +31,8 @@ import { useComparator } from './useComparator';
  *   T extends TCmpItemBase,
  *   LargeTexts extends boolean = boolean,
  * >() {
- *   return React.forwardRef<TComparatorRef<T>, TProps<T, LargeTexts>>(function HeadlessEditor(
- *     props: TProps<T, LargeTexts>,
+ *   return React.forwardRef<TComparatorRef<T>, THeadlessEditorProps<T, LargeTexts>>(function HeadlessEditor(
+ *     props: THeadlessEditorProps<T, LargeTexts>,
  *     ref,
  *   ) {
  *     // ...
@@ -48,64 +50,6 @@ import { useComparator } from './useComparator';
  */
 
 const __showDebug = isDev && true;
-
-interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
-  className?: string;
-
-  /// Lifecylcle control...
-  /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
-  isReady?: boolean;
-  /** Does the owner editor component have unsaved data? */
-  hasChanges?: boolean;
-
-  /// Options...
-
-  /** Locale for comparator */
-  lang: string;
-  /** Large texts support: To item textss using ngrams for large texts or with just tokens otherwise */
-  largeTexts?: LargeTexts;
-  /** Display in a narrow layout */
-  forceCompact?: boolean;
-
-  /// Filters...
-
-  filterText?: string;
-  filterTextSmart?: boolean;
-
-  /** Filter only compared items */
-  filterTargeted?: boolean;
-  filterUpdated?: boolean;
-  filterAdded?: boolean;
-  filterSelected?: boolean;
-
-  // Items interface...
-
-  /** Items list */
-  items: T[];
-  /** A method to retrieve an items text to compare */
-  getItemText: (item: T) => string;
-  /** Editor item rendering component */
-  RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
-  /** Update items data */
-  updateItems?: (its: T[]) => void;
-  /** Update reordered items */
-  updateReordered?: (its: T[]) => void;
-
-  /// Tracking indices...
-
-  updatedIds?: Set<TCmpItemId>;
-  addedIds?: Set<TCmpItemId>;
-  reorderedIds?: Set<TCmpItemId>;
-  selectedIds?: Set<TCmpItemId>;
-  // deletedIds?: Set<TCmpItemId>; // Is it required here?
-
-  /// Items state...
-
-  toggleSelectedId?: (id: TCmpItemId, selected: boolean) => void;
-  compareTargetId?: TCmpItemId;
-  setCompareTargetId?: (id?: TCmpItemId) => void;
-  changeItemsOrder?: (moveId: TCmpItemId, overId: TCmpItemId) => void;
-}
 
 type TTimeoutHandler = ReturnType<typeof setTimeout>;
 
@@ -132,7 +76,7 @@ const defaultMemo: TMemo<TCmpItemBase> = {
 };
 
 export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
-  props: TProps<T, LargeTexts>,
+  props: THeadlessEditorProps<T, LargeTexts>,
 ) {
   const memo = React.useMemo<TMemo<T>>(() => defaultMemo, []);
   const {
@@ -143,6 +87,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     lang,
     largeTexts = false,
     forceCompact,
+    showNormalized,
     // Filters...
     filterText,
     filterTextSmart,
@@ -392,6 +337,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           hasChanges={hasChanges}
           // Display in a narrow layout
           forceCompact={forceCompact}
+          showNormalized={showNormalized}
           // Items interface...
           item={it}
           RenderItem={RenderItem}
@@ -417,12 +363,13 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     [
       RenderItem,
       forceCompact,
-      toggleCheck,
       handleCompareTargetId,
       handleUpdate,
-      isReady,
       hasChanges,
+      isReady,
       memo,
+      showNormalized,
+      toggleCheck,
     ],
   );
 
@@ -605,8 +552,6 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         className={cn(
           isDev && '__HeadlessEditor', // DEBUG
           'content-truncate flex flex-col gap-1',
-          'px-6',
-          // 'py-3', // NOTE: It may be required to have a vertical space if we use a bounce animation for frehly added items
           className,
         )}
       >

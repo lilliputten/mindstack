@@ -455,7 +455,7 @@ export function HeadlessEditorDemo(props: TProps) {
         <RenderHeadlessEditor
           className={cn(
             isDev && '__HeadlessEditorDemo_HeadlessEditor', // DEBUG
-            'w-full',
+            'w-full px-6',
           )}
           // forceCompact
         />

@@ -31,6 +31,7 @@
   "ChangeFilters": "Change Filters",
   "ClearChanges": "Clear Changes",
   "ClearText": "Clear text",
+  "ClickToHideSettings": "Click to hide settings",
   "Close": "Close",
   "Continue": "Continue",
   "Created": "Created",
@@ -44,10 +45,12 @@
   "DeleteTopic": "Delete Topic",
   "Deleting": "Deleting",
   "Description": "Description",
+  "Displaying": "Displaying",
   "Edit": "Edit",
   "EditAnswer": "Edit Answer",
   "EditAnswers": "Edit Answers",
   "EditTopic": "Edit Topic",
+  "ExpandToChangeDisplaySettings": "Expand to change display settings",
   "Expected": "Expected",
   "ExtraLimitsErrorText": "<PricesLink>Check</PricesLink> your tarif plan conditions.",
   "Finish": "Finish",
@@ -384,11 +387,7 @@
     "WithoutStatistics": "Without statistics",
     "Yes": "Yes"
   },
-  "AvailableTopicsFilters": {
-    "ClickToHideSettings": "Click to hide settings",
-    "Displaying": "Displaying",
-    "ExpandToChangeDisplaySettings": "Expand to change display settings"
-  },
+  "AvailableTopicsFilters": {},
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Select one or more categories for this topic.",
     "ChooseSortOrderHint": "Choose how to sort the topics list.",
@@ -1360,6 +1359,9 @@
     "SignInModalIntroAuth": "Sign in or sign up to activate a subscription.",
     "SignInModalIntroForBasic": "To activate a basic subscription, simply sign-in to the system."
   },
+  "QuestionsEditor": {
+    "EditQuestions": "Edit Questions"
+  },
   "QuestionsGenerationTypes": {
     "BASIC": "Simple Questions",
     "DETAILED": "Detailed Questions",
@@ -1916,8 +1918,5 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulu"
-  },
-  "QuestionsEditor": {
-    "EditQuestions": "Edit Questions"
   }
 }

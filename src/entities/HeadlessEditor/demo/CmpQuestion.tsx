@@ -84,7 +84,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       <div
         className={cn(
           isDev && '__RenderItem_Content', // DEBUG
-          'relative flex flex-1 flex-col gap-4 text-left',
+          'content-truncate relative flex flex-1 flex-col gap-4 text-left',
         )}
       >
         {isEditMode ? (
@@ -116,7 +116,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       <div
         className={cn(
           isDev && '__RenderItem_Extra', // DEBUG
-          'flex shrink-0 items-center justify-center gap-1',
+          'flex shrink-0 items-center justify-center gap-1 max-xs:flex-col',
         )}
       >
         {!!count && (

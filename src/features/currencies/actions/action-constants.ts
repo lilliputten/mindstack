@@ -25,7 +25,7 @@ export const initialRatios: Record<TCurrencyType, number> = {
 };
 
 /** Update ratios once per this amount of time */
-export const updateTimeout = hourMs * 8;
+export const updateTimeout = hourMs * 12;
 /** Time to allow currency fetching process, consider the currency to be
  * updating right now, if the update process has started within this period ago
  */

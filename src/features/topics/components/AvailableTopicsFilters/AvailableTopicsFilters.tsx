@@ -142,12 +142,12 @@ export function AvailableTopicsFilters(props: TProps) {
               <TooltipContent side="bottom" className="flex items-center gap-2 truncate">
                 {hasFilters ? (
                   <>
-                    {t('AvailableTopicsFilters.Displaying')}: {filtersInfo}
+                    {t('Displaying')}: {filtersInfo}
                   </>
                 ) : isExpanded ? (
-                  t('AvailableTopicsFilters.ClickToHideSettings')
+                  t('ClickToHideSettings')
                 ) : (
-                  t('AvailableTopicsFilters.ExpandToChangeDisplaySettings')
+                  t('ExpandToChangeDisplaySettings')
                 )}
               </TooltipContent>
             </Tooltip>

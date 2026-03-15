@@ -104,6 +104,8 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   // const [selectedQuestions, setSelectedQuestions] = React.useState<Set<TQuestionId>>(new Set());
   // const [showDeleteSelectedConfirm, setShowDeleteSelectedConfirm] = React.useState(false);
 
+  const [showNormalized, setShowNormalized] = React.useState(false);
+
   const [filterTargeted, setFilterTargeted] = React.useState(false);
   const [filterUpdated, setFilterUpdated] = React.useState(false);
   const [filterAdded, setFilterAdded] = React.useState(false);
@@ -140,13 +142,15 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     addNewItem,
     deleteSelected,
     reorderItems,
-    /// Component...
+    /// Components...
     RenderHeadlessEditor,
+    RenderHeadlessControls,
   } = useHeadlessEditorState({
     // isReady,
     /// Options...
     lang: questionsLocale,
     largeTexts,
+    showNormalized,
     /// Reordering...
     // reorderModes,
     /// Filters...
@@ -231,6 +235,14 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         // visibleFor: 'xl',
         hidden: !compareTargetId,
         onClick: () => setCompareTargetId(undefined),
+      },
+      {
+        id: 'ShowNormalizedComparsions',
+        content: showNormalized ? t('Show Real Comparsions') : t('Show Normalized Comparsions'),
+        icon: Icons.Scale,
+        // visibleFor: 'xl',
+        // hidden: !compareTargetId,
+        onClick: () => setShowNormalized((showNormalized) => !showNormalized),
       },
       {
         id: 'SelectAll',
@@ -400,25 +412,26 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       // topicsListRoutePath,
       aiGenerationsAllowed,
       aiGenerationsLoading,
-      compareTargetId,
-      setCompareTargetId,
       allowedTraining,
+      compareTargetId,
+      confirmActionCallback,
+      confirmGoToTheRouteCallback,
       goBack,
       handleReload,
-      confirmActionCallback,
       isRefetching,
-      setSelectedIds,
-      questionsListRoutePath,
-      confirmGoToTheRouteCallback,
       items,
-      selectedIds,
-      restoreDefaults,
-      totalChangedCount,
+      questionsListRoutePath,
       reorderItems,
       reorderTitles,
+      restoreDefaults,
+      selectedIds,
+      setCompareTargetId,
+      setSelectedIds,
+      showNormalized,
       t,
       topicId,
       topicRoutePath,
+      totalChangedCount,
     ],
   );
 
@@ -440,6 +453,12 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         inactiveLastBreadcrumb
       />
       {/* TODO: Put expandable controls panel here? */}
+      <RenderHeadlessControls
+        className={cn(
+          isDev && '__QuestionsEditor_RenderHeadlessControls', // DEBUG
+          'mx-6',
+        )}
+      />
       <ScrollArea
         // effectorData={allQuestions}
         // fetchNextPage={fetchNextPage}
@@ -451,7 +470,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         className={cn(
           isDev && '__QuestionsEditor_Scroll', // DEBUG
           'relative flex flex-1 flex-col overflow-hidden',
-          // 'mx-6',
         )}
         viewportClassName={cn(
           isDev && '__QuestionsEditor_Scroll_Viewport', // DEBUG
@@ -459,10 +477,9 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       >
         <RenderHeadlessEditor
           className={cn(
-            isDev && '__QuestionsEditor_HeadlessEditor', // DEBUG
-            'w-full',
+            isDev && '__QuestionsEditor_RenderHeadlessEditor', // DEBUG
+            'mx-6 w-full',
           )}
-          // forceCompact
         />
       </ScrollArea>
       {addQuestionModalVisible && (

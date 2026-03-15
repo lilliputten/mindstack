@@ -29,6 +29,7 @@
   "ChangeFilters": "Изменить фильтры",
   "ClearChanges": "Сбросить изменения",
   "ClearText": "Очистить текст",
+  "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
   "Close": "Закрыть",
   "Continue": "Продолжить",
   "Created": "Создано",
@@ -42,10 +43,12 @@
   "DeleteTopic": "Удалить тему",
   "Deleting": "Удаление",
   "Description": "Описание",
+  "Displaying": "Показывается",
   "Edit": "Редактировать",
   "EditAnswer": "Редактировать ответ",
   "EditAnswers": "Редактировать ответы",
   "EditTopic": "Редактировать тему",
+  "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения",
   "ExtraLimitsErrorText": "<PricesLink>Проверьте</PricesLink> условия вашего тарифного плана.",
   "Finish": "Завершить",
   "FinishedAt": "Завершено в",
@@ -378,11 +381,7 @@
     "WithoutStatistics": "Без статистики",
     "Yes": "Да"
   },
-  "AvailableTopicsFilters": {
-    "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
-    "Displaying": "Показывается",
-    "ExpandToChangeDisplaySettings": "Разверните, чтобы изменить настройки отображения"
-  },
+  "AvailableTopicsFilters": {},
   "AvailableTopicsFiltersFields": {
     "CategoriesHint": "Выберите одну или несколько категорий для этой темы.",
     "ChooseSortOrderHint": "Выберите способ сортировки списка тем.",
@@ -1353,6 +1352,9 @@
     "SignInModalIntroAuth": "Войдите или зарегистрируйтесь, чтобы подключить подписку.",
     "SignInModalIntroForBasic": "Для подключения базовой подписки просто авторизуйтесь в системе."
   },
+  "QuestionsEditor": {
+    "EditQuestions": "Редактировать вопросы"
+  },
   "QuestionsGenerationTypes": {
     "BASIC": "Простые вопросы",
     "DETAILED": "Подробные вопросы",
@@ -1910,8 +1912,5 @@
     "Yoruba": "Йоруба",
     "Zhuang": "Чжуанский",
     "Zulu": "Зулусский"
-  },
-  "QuestionsEditor": {
-    "EditQuestions": "Редактировать вопросы"
   }
 }
