@@ -4,8 +4,11 @@ import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
 
 import { newItemIdPrefix } from './constants';
-import { HeadlessControls } from './HeadlessControls';
 import { HeadlessEditor } from './HeadlessEditor';
+import {
+  HeadlessEditorControls,
+  THeadlessEditorControlsExternalProps,
+} from './HeadlessEditorControls';
 import { getUniqueIdForSet } from './helpers';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 
@@ -62,10 +65,6 @@ interface TRenderProps {
   className?: string;
   /** Display in a narrow layout */
   forceCompact?: boolean;
-}
-
-interface TControlsProps {
-  className?: string;
 }
 
 interface TMemo<T extends TCmpItemBase> {
@@ -301,9 +300,24 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     reorderedIds?.size,
   ].reduce((summ = 0, val = 0) => summ + val, 0);
 
-  const RenderHeadlessControls = React.useCallback(
-    (props: TControlsProps) => {
-      const { className } = props;
+  const RenderHeadlessEditorControls = React.useCallback(
+    (props: THeadlessEditorControlsExternalProps<T>) => {
+      const {
+        className,
+        // Reorder...
+        reorderTitles,
+        // Actions...
+        onSaveData,
+        onAddAction,
+        onDeleteAction,
+        // Filter setters...
+        setFilterTargeted,
+        setFilterUpdated,
+        setFilterAdded,
+        setFilterSelected,
+        setFilterText,
+        setFilterTextSmart,
+      } = props;
       const {
         // deletedIds,
         items,
@@ -320,18 +334,37 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         filterSelected,
       } = memo;
       return (
-        <HeadlessControls
+        <HeadlessEditorControls
           className={cn(
-            isDev && '__HeadlessEditorDemo_HeadlessControls', // DEBUG
+            isDev && '__HeadlessEditorDemo_HeadlessEditorControls', // DEBUG
             className,
           )}
+          // Reorder...
+          reorderItems={reorderItems}
+          reorderTitles={reorderTitles}
+          // Actions...
+          onSaveData={onSaveData}
+          onAddAction={onAddAction}
+          onDeleteAction={onDeleteAction}
+          // Filter setters...
+          setFilterTargeted={setFilterTargeted}
+          setFilterUpdated={setFilterUpdated}
+          setFilterAdded={setFilterAdded}
+          setFilterSelected={setFilterSelected}
+          setFilterText={setFilterText}
+          setFilterTextSmart={setFilterTextSmart}
           // Lifecylcle control...
           isReady={isReady}
-          hasChanges={hasChanges || !!totalChangedCount}
-          // Options...
-          lang={lang}
-          largeTexts={largeTexts}
-          showNormalized={showNormalized}
+          // Actions...
+          setCompareTargetId={setCompareTargetId}
+          setSelectedIds={setSelectedIds}
+          setUpdatedIds={setUpdatedIds}
+          setDeletedIds={setDeletedIds}
+          setAddedIds={setAddedIds}
+          setReorderedIds={setReorderedIds}
+          restoreDefaults={restoreDefaults}
+          // Calculated data...
+          totalChangedCount={totalChangedCount}
           // Filters...
           filterText={filterText}
           filterTextSmart={filterTextSmart}
@@ -341,35 +374,16 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           filterSelected={filterSelected}
           // Items...
           items={items || []}
-          getItemText={getItemText}
-          // RenderItem={RenderItem}
-          updateItems={updateItems}
-          updateReordered={updateReordered}
           // State...
           updatedIds={updatedIds}
           addedIds={addedIds}
           reorderedIds={reorderedIds}
           selectedIds={selectedIds}
-          toggleSelectedId={toggleSelectedId}
           compareTargetId={compareTargetId}
-          setCompareTargetId={setCompareTargetId}
         />
       );
     },
-    [
-      // RenderItem,
-      getItemText,
-      hasChanges,
-      isReady,
-      lang,
-      largeTexts,
-      showNormalized,
-      toggleSelectedId,
-      totalChangedCount,
-      updateItems,
-      updateReordered,
-      memo,
-    ],
+    [memo, isReady, totalChangedCount, restoreDefaults],
   );
 
   const RenderHeadlessEditor = React.useCallback(
@@ -498,7 +512,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     /// Components..
 
     RenderHeadlessEditor,
-    RenderHeadlessControls,
+    RenderHeadlessEditorControls,
 
     /* /// Internal setters and getters (not exposed)...
     updateItems,

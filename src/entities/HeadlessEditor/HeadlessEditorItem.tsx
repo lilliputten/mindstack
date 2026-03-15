@@ -117,9 +117,11 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     // value.toFixed(2),
     // normalized.toFixed(2),
     (showNormalized ? normalized : value).toFixed(2),
-    overallCount,
-    overallTotal.toFixed(2),
-  ].join(' ');
+    overallCount ? `(${overallCount + 1})` : '',
+    // overallTotal.toFixed(2),
+  ]
+    .filter(Boolean)
+    .join(' ');
   const infoTitle = hasOverallValue
     ? t('Comparsion rate') + ': ' + infoStr
     : t('The element is not involved in the comparison');

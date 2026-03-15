@@ -144,7 +144,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     reorderItems,
     /// Components...
     RenderHeadlessEditor,
-    RenderHeadlessControls,
+    RenderHeadlessEditorControls,
   } = useHeadlessEditorState({
     // isReady,
     /// Options...
@@ -192,14 +192,12 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     },
     [confirmActionCallback, goToTheRoute],
   );
+  const onSaveData = React.useCallback(() => {
+    debugger;
+  }, []);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
-      /* TODO:
-       * - Filters
-       * - Redorders
-       * - Implement save
-       */
       {
         id: 'Back',
         content: t('Back'),
@@ -215,9 +213,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         // pending: isSaving,
         hidden: !totalChangedCount,
         variant: 'success',
-        onClick: () => {
-          debugger;
-        },
+        onClick: onSaveData,
       },
       {
         id: 'UndoChanges',
@@ -412,6 +408,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       // topicsListRoutePath,
       aiGenerationsAllowed,
       aiGenerationsLoading,
+      onSaveData,
       allowedTraining,
       compareTargetId,
       confirmActionCallback,
@@ -453,18 +450,26 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         inactiveLastBreadcrumb
       />
       {/* TODO: Put expandable controls panel here? */}
-      <RenderHeadlessControls
+      <RenderHeadlessEditorControls
         className={cn(
-          isDev && '__QuestionsEditor_RenderHeadlessControls', // DEBUG
+          isDev && '__QuestionsEditor_RenderHeadlessEditorControls', // DEBUG
           'mx-6',
         )}
+        // Reorder...
+        reorderTitles={reorderTitles}
+        // Actions...
+        onAddAction={() => setAddQuestionModalVisible(true)}
+        onSaveData={onSaveData}
+        onDeleteAction={() => setDeleteSelectedConfirmVisible(true)}
+        // Filter setters...
+        setFilterTargeted={setFilterTargeted}
+        setFilterUpdated={setFilterUpdated}
+        setFilterAdded={setFilterAdded}
+        setFilterSelected={setFilterSelected}
+        setFilterText={setFilterText}
+        setFilterTextSmart={setFilterTextSmart}
       />
       <ScrollArea
-        // effectorData={allQuestions}
-        // fetchNextPage={fetchNextPage}
-        // isLoading={isQuestionsLoading}
-        // isFetchingNextPage={isFetchingNextPage}
-        // hasNextPage={hasNextPage}
         saveScrollKey="QuestionsEditor"
         saveScrollHash={saveScrollHash}
         className={cn(
