@@ -82,6 +82,8 @@ const __debugSavedQuestions: TAvailableQuestion[] | undefined = __debugSaved
       // DEBUG: Test data
       {
         id: 'zzz',
+        order: null,
+        extraQuery: null,
         topicId: 'cml6pgajf0001nvjsxuordxpm',
         text: 'Sample saved question',
         answersCountRandom: null,
@@ -92,6 +94,7 @@ const __debugSavedQuestions: TAvailableQuestion[] | undefined = __debugSaved
         answers: [
           {
             id: 'aaa',
+            order: null,
             questionId: 'zzz',
             createdAt: __now,
             updatedAt: __now,

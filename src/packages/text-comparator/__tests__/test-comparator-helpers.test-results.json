@@ -2,73 +2,73 @@
   {
     "language": "EN",
     "size": 100,
-    "ngramTime": 0.052700000000186265,
-    "cosineTime": 0.038499999998748535
+    "ngramTime": 0.04709999999977299,
+    "cosineTime": 0.03240000000005239
   },
   {
     "language": "EN",
     "size": 500,
-    "ngramTime": 0.03180000000065775,
-    "cosineTime": 0.04750000000058208
+    "ngramTime": 0.040500000000065484,
+    "cosineTime": 0.06109999999989668
   },
   {
     "language": "EN",
     "size": 2000,
-    "ngramTime": 0.054200000000491855,
-    "cosineTime": 0.35570000000006985
+    "ngramTime": 0.03790000000026339,
+    "cosineTime": 0.3692000000000917
   },
   {
     "language": "EN",
     "size": 5000,
-    "ngramTime": 0.06199999999989814,
-    "cosineTime": 0.4966999999996915
+    "ngramTime": 0.043800000000373984,
+    "cosineTime": 0.3851999999997133
   },
   {
     "language": "ES",
     "size": 100,
-    "ngramTime": 0.0319999999992433,
-    "cosineTime": 0.019800000000032014
+    "ngramTime": 0.01919999999972788,
+    "cosineTime": 0.015399999999317515
   },
   {
     "language": "ES",
     "size": 500,
-    "ngramTime": 0.03889999999955762,
-    "cosineTime": 0.04069999999956053
+    "ngramTime": 0.028100000000449654,
+    "cosineTime": 0.0352999999995518
   },
   {
     "language": "ES",
     "size": 2000,
-    "ngramTime": 0.03390000000035798,
-    "cosineTime": 0.11329999999907159
+    "ngramTime": 0.024699999999938882,
+    "cosineTime": 0.10709999999926367
   },
   {
     "language": "ES",
     "size": 5000,
-    "ngramTime": 0.0319999999992433,
-    "cosineTime": 0.3026999999983673
+    "ngramTime": 0.023899999999230204,
+    "cosineTime": 0.25529999999980646
   },
   {
     "language": "RU",
     "size": 100,
-    "ngramTime": 0.024400000000241562,
-    "cosineTime": 0.015800000001036096
+    "ngramTime": 0.020099999999729334,
+    "cosineTime": 0.011700000000018917
   },
   {
     "language": "RU",
     "size": 500,
-    "ngramTime": 0.03690000000096916,
-    "cosineTime": 0.03349999999954889
+    "ngramTime": 0.02790000000004511,
+    "cosineTime": 0.027199999999538704
   },
   {
     "language": "RU",
     "size": 2000,
-    "ngramTime": 0.03389999999853899,
-    "cosineTime": 0.10750000000007276
+    "ngramTime": 0.02550000000064756,
+    "cosineTime": 0.08719999999993888
   },
   {
     "language": "RU",
     "size": 5000,
-    "ngramTime": 0.03410000000076252,
-    "cosineTime": 0.2481999999999971
+    "ngramTime": 0.0261000000000422,
+    "cosineTime": 0.20390000000043074
   }
 ]

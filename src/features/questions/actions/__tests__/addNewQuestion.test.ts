@@ -27,6 +27,7 @@ describe('addNewQuestion', () => {
       subscriptionStartedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
+      lastSignedIn: null,
     });
   });
   it('should add question ID to empty questionsOrder', async () => {

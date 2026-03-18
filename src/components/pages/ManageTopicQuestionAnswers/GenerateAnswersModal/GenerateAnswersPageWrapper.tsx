@@ -87,6 +87,7 @@ const __debugSavedAnswers: TAvailableAnswer[] | undefined = __debugSaved
       // DEBUG: Test data
       {
         id: 'aaa',
+        order: undefined,
         questionId: 'zzz',
         createdAt: __now,
         updatedAt: __now,

@@ -43,6 +43,7 @@ describe('addNewTopic', () => {
       subscriptionStartedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
+      lastSignedIn: null,
     });
   });
 
