@@ -164,6 +164,8 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         answersCountMin: formData.answersCountMin,
         answersCountMax: formData.answersCountMax,
         isGenerated: formData.isGenerated,
+        order: undefined,
+        extraQuery: undefined,
       };
       startTransition(async () => {
         try {

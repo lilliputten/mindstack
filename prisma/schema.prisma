@@ -211,7 +211,7 @@ model Topic {
   isPublic Boolean? @map("is_public")
 
   // TODO: Issue #79: Default "extra" text to use for AI generation
-  extraQuery String @default("") @map("extra_query")
+  extraQuery String? @map("extra_query")
 
   langCode   String?  @map("lang_code")
   langName   String?  @map("lang_name")
@@ -247,7 +247,7 @@ model Question {
   isGenerated Boolean @default(false) @map("is_generated")
 
   // TODO: Issue #79: Default "extra" text to use for AI generation
-  extraQuery String @default("") @map("extra_query")
+  extraQuery String? @map("extra_query")
 
   answersCountRandom Boolean? @map("answers_count_random")
   answersCountMin    Int?     @map("answers_count_min")
