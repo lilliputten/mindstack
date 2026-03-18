@@ -4,7 +4,7 @@ export type TCmpItemId = UniqueIdentifier; // string | number
 export interface TCmpItemBase {
   id: TCmpItemId;
   isNew?: boolean;
-  order?: number;
+  order?: number | null; // According to Prisma optinal type
 }
 
 export interface TCmpItemProps<T> {
