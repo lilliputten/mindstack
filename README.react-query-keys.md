@@ -1,4 +1,4 @@
-// TODO: Issue #66: Verify all react-query invalidation
+// TODO: Issue #66: Verify all react-query invalidation (check `invalidatePrefixes` invocations)
 
 ['available-answers-for-question', questionId],
 ['available-categories'],

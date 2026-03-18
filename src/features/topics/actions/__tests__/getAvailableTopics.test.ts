@@ -244,15 +244,27 @@ describe('getAvailableTopics', () => {
       });
       [w1].forEach(({ userId, topicId }) => createdIds.push({ type: 'workout', userId, topicId }));
       mockedGetCurrentUser.mockResolvedValue(user1 as TUser);
-      const { items } = await getAvailableTopics({ includeWorkout: true, noDebug: true });
-      expect(items[0].userTopicWorkout).toBeDefined();
-      expect(items[0].userTopicWorkout).not.toBeFalsy();
-      // Verify that only the current user's workouts are returned
-      if (items[0].userTopicWorkout) {
-        expect(items[0].userTopicWorkout.length).toBeGreaterThan(0);
-        items[0].userTopicWorkout.forEach((workout) => {
-          expect(workout.userId).toBe(user1.id);
-        });
+      // Use a large take value to fetch all topics and avoid race conditions with parallel tests
+      const { items } = await getAvailableTopics({
+        includeWorkout: true,
+        noDebug: true,
+        take: undefined,
+      });
+
+      // Find the test topic by ID
+      const testTopic = items.find((item) => item.id === t1.id);
+      expect(testTopic).toBeDefined();
+
+      if (testTopic) {
+        expect(testTopic.userTopicWorkout).toBeDefined();
+        expect(testTopic.userTopicWorkout).not.toBeFalsy();
+        // Verify that only the current user's workouts are returned
+        if (testTopic.userTopicWorkout) {
+          expect(testTopic.userTopicWorkout.length).toBeGreaterThan(0);
+          testTopic.userTopicWorkout.forEach((workout) => {
+            expect(workout.userId).toBe(user1.id);
+          });
+        }
       }
     } finally {
       await cleanupDb(createdIds);
