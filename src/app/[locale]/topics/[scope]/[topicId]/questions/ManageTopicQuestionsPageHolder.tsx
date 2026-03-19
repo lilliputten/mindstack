@@ -12,7 +12,6 @@ import {
   ManageTopicQuestionsListCard,
   TManageTopicQuestionsListCardProps,
 } from './ManageTopicQuestionsListCard';
-import { QuestionsEditor } from './QuestionsEditor';
 
 type TManageTopicQuestionsPageHolderProps = Omit<
   TManageTopicQuestionsListCardProps,
@@ -48,7 +47,7 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
 
   const availableQuestionsQuery = useAvailableQuestions({
     topicId,
-    itemsLimit: null, // Take all questions, without paging
+    // itemsLimit: null, // Take all questions, without paging
   });
   const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
   const isQuestionsReady = isQuestionsFetched;
@@ -71,15 +70,17 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     );
   }
 
+  /* // New approach, via QuestionsEditor, moved to the Topic Card
   return (
     <QuestionsEditor
       topicId={topicId}
       availableTopicQuery={availableTopicQuery}
       availableQuestionsQuery={availableQuestionsQuery}
     />
-  );
+    );
+  */
 
-  /* // Old table-based component
+  // Old table-based component
   return (
     <ManageTopicQuestionsListCard
       topicId={topicId}
@@ -87,5 +88,4 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
       availableQuestionsQuery={availableQuestionsQuery}
     />
   );
-  */
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { UniqueIdentifier } from '@dnd-kit/core';
 
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
@@ -20,6 +21,8 @@ interface TCustomReorder<T extends TCmpItemBase> {
 
 export type TReorderModes<T extends TCmpItemBase> = Record<string, TCustomReorder<T>>;
 
+type TNew<T extends TCmpItemBase> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>;
+
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   /// Lifecylcle control...
 
@@ -40,6 +43,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   largeTexts?: LargeTexts;
   /** Show normalized values */
   showNormalized?: boolean;
+  setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
 
   /// Filters...
 
@@ -83,6 +87,56 @@ interface TMemo<T extends TCmpItemBase> {
   filterSelected?: boolean;
 }
 
+export interface THeadlessEditorState<
+  T extends TCmpItemBase,
+  // LargeTexts extends boolean = boolean,
+> {
+  /// Data...
+
+  items: T[];
+
+  /// State...
+
+  compareTargetId?: T['id'];
+  totalChangedCount: number;
+
+  /// Setters (AKA state controllers)...
+
+  setItems: React.Dispatch<React.SetStateAction<T[]>>;
+  setCompareTargetId: React.Dispatch<React.SetStateAction<T['id'] | undefined>>;
+  setSelectedIds: React.Dispatch<React.SetStateAction<Set<T['id']> | undefined>>;
+  setUpdatedIds: React.Dispatch<React.SetStateAction<Set<T['id']> | undefined>>;
+  setDeletedIds: React.Dispatch<React.SetStateAction<Set<T['id']> | undefined>>;
+  setAddedIds: React.Dispatch<React.SetStateAction<Set<T['id']> | undefined>>;
+  setReorderedIds: React.Dispatch<React.SetStateAction<Set<T['id']> | undefined>>;
+
+  /// Indices...
+
+  updatedIds: Set<T['id']> | undefined;
+  deletedIds: Set<T['id']> | undefined;
+  addedIds: Set<T['id']> | undefined;
+  reorderedIds: Set<T['id']> | undefined;
+  selectedIds: Set<T['id']> | undefined;
+
+  /// Handlers...
+
+  restoreDefaults: () => void;
+  addNewItem: (newBaseItem: TNew<T>) => void;
+  deleteSelected: () => void;
+  reorderItems: (reorderId?: string | undefined) => void;
+
+  /// Auxilliary helpers...
+
+  getUniqueNewId: () => T['id'];
+
+  /// Components..
+
+  RenderHeadlessEditor: (props: TRenderProps) => React.JSX.Element;
+  RenderHeadlessEditorControls: (
+    props: THeadlessEditorControlsExternalProps<T>,
+  ) => React.JSX.Element;
+}
+
 export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extends boolean>(
   props: TProps<T, LargeTexts>,
 ) {
@@ -92,7 +146,6 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     hasChanges,
     lang,
     largeTexts,
-    showNormalized,
 
     reorderModes,
     // forceCompact,
@@ -105,6 +158,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     defaultItems,
     getItemText,
     RenderItem,
+
+    // Normalized...
+    showNormalized,
+    setShowNormalized,
   } = props;
   memo.filterText = filterText;
   memo.filterTextSmart = filterTextSmart;
@@ -206,11 +263,9 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     return getUniqueIdForSet(usedIds);
   }, [items, deletedIds]);
 
-  type TNew = Omit<T, 'id'> & Partial<Pick<T, 'id'>>;
-
-  // Add new item handler (XXX!)
+  // Add new item handler
   const addNewItem = React.useCallback(
-    (newBaseItem: TNew) => {
+    (newBaseItem: TNew<T>) => {
       const newItem = {
         ...newBaseItem,
         id: newBaseItem.id || getUniqueNewId(),
@@ -293,12 +348,14 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     [reorderWithFunc, reorderByTextFunc, reorderModes],
   );
 
-  const totalChangedCount = [
-    updatedIds?.size,
-    deletedIds?.size,
-    addedIds?.size,
-    reorderedIds?.size,
-  ].reduce((summ = 0, val = 0) => summ + val, 0);
+  const totalChangedCount =
+    [
+      // Count all the 'changed' ids
+      updatedIds?.size,
+      deletedIds?.size,
+      addedIds?.size,
+      reorderedIds?.size,
+    ].reduce((summ = 0, val = 0) => summ + val, 0) || 0;
 
   const RenderHeadlessEditorControls = React.useCallback(
     (props: THeadlessEditorControlsExternalProps<T>) => {
@@ -380,10 +437,21 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           reorderedIds={reorderedIds}
           selectedIds={selectedIds}
           compareTargetId={compareTargetId}
+          // Normalized...
+          setShowNormalized={setShowNormalized}
+          showNormalized={showNormalized}
         />
       );
     },
-    [memo, isReady, totalChangedCount, restoreDefaults],
+    [
+      memo,
+      reorderItems,
+      isReady,
+      restoreDefaults,
+      totalChangedCount,
+      setShowNormalized,
+      showNormalized,
+    ],
   );
 
   const RenderHeadlessEditor = React.useCallback(
@@ -470,54 +538,100 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     ],
   );
 
-  return {
-    /// Data...
+  return React.useMemo<THeadlessEditorState<T>>(
+    () => ({
+      /// Data...
 
-    items,
+      items,
 
-    /// State...
+      /// State...
 
-    compareTargetId,
-    totalChangedCount,
+      compareTargetId,
+      totalChangedCount,
 
-    /// Setters (AKA state controllers)...
+      /// Setters (AKA state controllers)...
 
-    setItems,
-    setCompareTargetId,
-    setSelectedIds,
-    setUpdatedIds,
-    setDeletedIds,
-    setAddedIds,
-    setReorderedIds,
+      setItems,
+      setCompareTargetId,
+      setSelectedIds,
+      setUpdatedIds,
+      setDeletedIds,
+      setAddedIds,
+      setReorderedIds,
 
-    /// Indices...
+      /// Indices...
 
-    updatedIds,
-    deletedIds,
-    addedIds,
-    reorderedIds,
-    selectedIds,
+      updatedIds,
+      deletedIds,
+      addedIds,
+      reorderedIds,
+      selectedIds,
 
-    /// Handlers...
+      /// Handlers...
 
-    restoreDefaults,
-    addNewItem,
-    deleteSelected,
-    reorderItems,
+      restoreDefaults,
+      addNewItem,
+      deleteSelected,
+      reorderItems,
 
-    /// Auxilliary helpers...
+      /// Auxilliary helpers...
 
-    getUniqueNewId,
+      getUniqueNewId,
 
-    /// Components..
+      /// Components..
 
-    RenderHeadlessEditor,
-    RenderHeadlessEditorControls,
+      RenderHeadlessEditor,
+      RenderHeadlessEditorControls,
 
-    /* /// Internal setters and getters (not exposed)...
-    updateItems,
-    updateReordered,
-    toggleSelectedId,
-    */
-  };
+      /* /// Internal setters and getters (not exposed)...
+      updateItems,
+      updateReordered,
+      toggleSelectedId,
+      */
+    }),
+    [
+      /// Data...
+
+      items,
+
+      /// State...
+
+      compareTargetId,
+      totalChangedCount,
+
+      /// Setters (AKA state controllers)...
+
+      setItems,
+      setCompareTargetId,
+      setSelectedIds,
+      setUpdatedIds,
+      setDeletedIds,
+      setAddedIds,
+      setReorderedIds,
+
+      /// Indices...
+
+      updatedIds,
+      deletedIds,
+      addedIds,
+      reorderedIds,
+      selectedIds,
+
+      /// Handlers...
+
+      restoreDefaults,
+      addNewItem,
+      deleteSelected,
+      reorderItems,
+
+      /// Auxilliary helpers...
+
+      getUniqueNewId,
+
+      /// Components..
+
+      RenderHeadlessEditor,
+      RenderHeadlessEditorControls,
+    ],
+  );
 }

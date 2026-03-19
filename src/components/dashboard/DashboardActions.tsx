@@ -146,7 +146,7 @@ export function DashboardActions(props: DashboardActionsProps) {
           )}
           viewportClassName={cn(
             isDev && '__DashboardActions_DropdownMenuContent_Viewport', // DEBUG
-            // '[&>div]:py-1',
+            '[&>div]:gap-1',
           )}
         >
           {menuActions}

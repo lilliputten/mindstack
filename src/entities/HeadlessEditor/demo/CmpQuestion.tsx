@@ -10,27 +10,41 @@ import {
 } from '@/components/ui/DropdownMenu';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Textarea } from '@/components/ui/Textarea';
+import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
-import { isDev } from '@/config';
+import { isDev, TRoutePath } from '@/config';
+import { useGoBack, useGoToTheRoute } from '@/hooks';
+import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { TCmpItemProps } from '../types';
 import { T } from './types';
 
+/** Show edit button in the actions block or (otherwise) in the dropdown menu */
+const showEditAsAction = false;
+
 export function CmpQuestion(props: TCmpItemProps<T>) {
-  const {
-    className,
-    item,
-    updateItem,
-    // hasChanges,
-  } = props;
+  const { className, item, updateItem, hasChanges } = props;
   const {
     id, // Required an unique id
     text = '', // Question markdown text
     _count,
     answers,
+    topicId,
   } = item;
 
+  const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
+
   const t = useT();
+  const { manageScope } = useManageTopicsStore();
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
+  const questionsListRoutePath = `${topicRoutePath}/questions`;
+  const questionRoutePath = `${questionsListRoutePath}/${id}`;
+  // const answersListRoutePath = `${questionRoutePath}/answers`;
+  // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
+
+  // const goBack = useGoBack(topicRoutePath);
+  const goToTheRoute = useGoToTheRoute();
 
   const count = answers?.length || _count?.answers;
 
@@ -40,32 +54,134 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
 
   const [isDropdownOpen, setDropdownOpen] = React.useState(false);
 
+  const confirmActionCallback = React.useCallback(
+    (action: () => void) => {
+      return () => {
+        setDropdownOpen(false);
+        if (hasChanges) {
+          // Set the action for the dialog `handleConfirm` handler...
+          setConfirmAction(() => action);
+        } else {
+          // ...or invoke it immediatelly...
+          action();
+        }
+      };
+    },
+    [hasChanges],
+  );
+  const dropdownActionCallback = React.useCallback((action: () => void) => {
+    return () => {
+      setDropdownOpen(false);
+      action();
+    };
+  }, []);
+  const confirmGoToTheRouteCallback = React.useCallback(
+    (route: string) => {
+      return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
+    },
+    [confirmActionCallback, goToTheRoute],
+  );
+
+  const actionItems = React.useMemo(() => {
+    return [
+      !!count && (
+        <div
+          // TODO: Add a handler to expand answers section...
+          key="Answers"
+          className={cn(
+            isDev && '__CmpQuestion_Count', // DEBUG
+            'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
+            'bg-theme-500/10 text-xs text-white opacity-50',
+          )}
+          title={t('AnswersCount')}
+        >
+          <span className="truncate">{count}</span>
+        </div>
+      ),
+      // Edit action
+      !!updateItem && !isEditMode && showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant="ghost"
+          title={t('Edit')}
+          onClick={() => setEditText(text)}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+        </Button>
+      ),
+      isEditMode && (
+        <Button
+          key="Save"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant={isEdited ? 'success' : 'ghost'}
+          title={t('Save')}
+          disabled={!isEdited}
+          onClick={() => {
+            // Update an item with the new text...
+            if (updateItem) {
+              const newItem: T = { ...item, text: editText || '' };
+              updateItem(newItem);
+            }
+            setEditText(undefined);
+          }}
+        >
+          <Icons.Save className="size-4 shrink-0" />
+        </Button>
+      ),
+      isEditMode && (
+        <Button
+          key="CancelEditing"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant="ghost"
+          title={t('CancelEditing')}
+          onClick={() => setEditText(undefined)}
+        >
+          <Icons.X className="size-4 shrink-0" />
+        </Button>
+      ),
+    ].filter(Boolean);
+  }, [count, editText, isEditMode, isEdited, item, t, text, updateItem]);
+
   const menuItems = React.useMemo(() => {
     return [
-      /* // TODO: There will be a context menu
-       * !isEditMode && (
-       *   <Button
-       *     className="content-truncate flex items-center justify-start gap-2"
-       *     variant="theme"
-       *     onClick={() => {
-       *       setDropdownOpen(false);
-       *       setEditMode(true);
-       *     }}
-       *   >
-       *     <Icons.Edit className="size-3 shrink-0" />
-       *     <span className="truncate">{t('Edit')}</span>
-       *   </Button>
-       * ),
-       */
+      !!updateItem && !isEditMode && !showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant="ghost"
+          onClick={dropdownActionCallback(() => setEditText(text))}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+          <span className="truncate">{t('Edit')}</span>
+        </Button>
+      ),
+      <Button
+        key="GoToTheQuestion"
+        className="content-truncate flex items-center justify-start gap-2"
+        variant="ghost"
+        onClick={confirmGoToTheRouteCallback(questionRoutePath)}
+      >
+        <Icons.ChevronRight className="size-3 shrink-0" />
+        <span className="truncate">{t('Go to the question')}</span>
+      </Button>,
     ].filter(Boolean);
-  }, []);
+  }, [
+    isEditMode,
+    questionRoutePath,
+    t,
+    text,
+    updateItem,
+    confirmGoToTheRouteCallback,
+    dropdownActionCallback,
+  ]);
 
   return (
     <div
       data-item-id={id}
-      data-testid="__RenderItem"
+      data-testid="__CmpQuestion"
       className={cn(
-        isDev && '__RenderItem', // DEBUG
+        isDev && '__CmpQuestion', // DEBUG
         'relative flex w-full items-start gap-2 text-left',
         // hasChanges && 'border border-red-500', // DEBUG
         className,
@@ -83,8 +199,8 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       */}
       <div
         className={cn(
-          isDev && '__RenderItem_Content', // DEBUG
-          'content-truncate relative flex flex-1 flex-col gap-4 text-left',
+          isDev && '__CmpQuestion_Content', // DEBUG
+          'content-truncate relative flex flex-1 flex-col gap-4 rounded-md text-left',
         )}
       >
         {isEditMode ? (
@@ -97,14 +213,14 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
               setEditText(value);
             }}
             className={cn(
-              isDev && '__RenderItem_ContentInput', // DEBUG
+              isDev && '__CmpQuestion_ContentInput', // DEBUG
               'h-32 w-full',
             )}
           />
         ) : (
           <MarkdownText
             className={cn(
-              isDev && '__RenderItem_Text', // DEBUG
+              isDev && '__CmpQuestion_Text', // DEBUG
               'content-truncate',
               'w-full',
             )}
@@ -115,60 +231,11 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       </div>
       <div
         className={cn(
-          isDev && '__RenderItem_Extra', // DEBUG
+          isDev && '__CmpQuestion_Extra', // DEBUG
           'flex shrink-0 items-center justify-center gap-1 max-xs:flex-col',
         )}
       >
-        {!!count && (
-          <div
-            className={cn(
-              isDev && '__RenderItem_Count', // DEBUG
-              'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
-              'bg-theme-500/10 text-xs text-white opacity-50',
-            )}
-            title={t('AnswersCount')}
-          >
-            <span className="truncate">{count}</span>
-          </div>
-        )}
-        {!!updateItem && !isEditMode && (
-          <Button
-            className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-            variant="ghost"
-            title={t('Edit')}
-            onClick={() => setEditText(text)}
-          >
-            <Icons.Edit className="size-3.5 shrink-0" />
-          </Button>
-        )}
-        {isEditMode && (
-          <Button
-            className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-            variant={isEdited ? 'success' : 'ghost'}
-            title={t('Save')}
-            disabled={!isEdited}
-            onClick={() => {
-              // Update an item with the new text...
-              if (updateItem) {
-                const newItem: T = { ...item, text: editText || '' };
-                updateItem(newItem);
-              }
-              setEditText(undefined);
-            }}
-          >
-            <Icons.Save className="size-4 shrink-0" />
-          </Button>
-        )}
-        {isEditMode && (
-          <Button
-            className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-            variant="ghost"
-            title={t('CancelEditing')}
-            onClick={() => setEditText(undefined)}
-          >
-            <Icons.X className="size-4 shrink-0" />
-          </Button>
-        )}
+        {actionItems}
         {!!menuItems.length && (
           <DropdownMenu open={isDropdownOpen} onOpenChange={setDropdownOpen}>
             {(() => {
@@ -177,7 +244,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
                   asChild
                   aria-label="Show Menu"
                   className={cn(
-                    isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
+                    isDev && '__CmpQuestion_DropdownMenuTrigger', // DEBUG
                   )}
                 >
                   <Button
@@ -185,7 +252,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
                     variant="ghost"
                     title={t('ShowMenu')}
                     className={cn(
-                      isDev && '__AllowedUsersPage_DropdownMenuToggle', // DEBUG
+                      isDev && '__CmpQuestion_DropdownMenuToggle', // DEBUG
                       'size-6 p-0',
                       'active:bg-theme active:text-theme-foreground',
                       'ring-offset-background',
@@ -203,9 +270,13 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             <DropdownMenuContent
               align="end"
               className={cn(
-                isDev && '__DashboardActions_DropdownMenuContent', // DEBUG
+                isDev && '__CmpQuestion_DropdownMenuContent', // DEBUG
                 'mt-2 rounded-lg bg-popover',
                 'flex w-full flex-col gap-1',
+              )}
+              viewportClassName={cn(
+                isDev && '__CmpQuestion_DropdownMenuContentViewport', // DEBUG
+                '[&>div]:gap-1',
               )}
             >
               {menuItems}
@@ -213,6 +284,22 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           </DropdownMenu>
         )}
       </div>
+      {!!confirmAction && (
+        <ConfirmModal
+          isVisible // ={!!confirmAction}
+          dialogTitle={t('You have unsaved changes')}
+          confirmButtonVariant="destructive"
+          confirmButtonText={t('Yes')}
+          cancelButtonText={t('No')}
+          handleClose={() => setConfirmAction(undefined)}
+          handleConfirm={() => {
+            confirmAction?.();
+            setConfirmAction(undefined);
+          }}
+        >
+          {t('Are you sure you want to lose all your modified data?')}
+        </ConfirmModal>
+      )}
     </div>
   );
 }

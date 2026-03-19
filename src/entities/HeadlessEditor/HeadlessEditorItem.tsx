@@ -90,7 +90,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     value,
     overallValue,
     overallCount,
-    overallTotal,
+    // overallTotal,
   } = props;
 
   const { id } = it;

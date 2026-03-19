@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/Select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
@@ -18,18 +19,18 @@ import { TCmpItemBase, TCmpItemId } from './types';
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   extends Omit<
     THeadlessEditorProps<T, LargeTexts>,
+    // | 'showNormalized'
     | 'RenderItem'
     | 'changeItemsOrder'
     | 'className'
+    | 'forceCompact'
+    | 'getItemText'
+    | 'hasChanges'
     | 'lang'
     | 'largeTexts'
-    | 'forceCompact'
-    | 'showNormalized'
-    | 'getItemText'
+    | 'toggleSelectedId'
     | 'updateItems'
     | 'updateReordered'
-    | 'hasChanges'
-    | 'toggleSelectedId'
   > {
   // Actions...
   restoreDefaults: () => void;
@@ -41,9 +42,12 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   setReorderedIds: React.Dispatch<React.SetStateAction<Set<TCmpItemId> | undefined>>;
   // Calculated data...
   totalChangedCount?: number;
+  // Show normalized values
+  // showNormalized?: boolean;
+  setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-/** Options to pass from the reder point in the target component.
+/** Options to pass from the render point in the target component.
  * Ensure re-passing of these options in the `src/entities/HeadlessEditor/useHeadlessEditorState.tsx`.
  */
 export interface THeadlessEditorControlsExternalProps<_T extends TCmpItemBase> {
@@ -108,18 +112,21 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     // reorderedIds,
     selectedIds,
     compareTargetId,
+    // Show normalized values
+    showNormalized,
+    setShowNormalized,
   } = props;
 
   const t = useT();
 
-  const [isExpanded, setExpanded] = React.useState(true);
+  const [isExpanded, setExpanded] = React.useState(false);
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
   const HeaderIcon = !isReady ? Icons.Spinner : Icons.Settings2;
 
   const actions = [
-    // Basic data...
+    // Basic actions...
     onSaveData && !!totalChangedCount && (
       <Button
         key="SaveData"
@@ -153,18 +160,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
           )}
         </span>
-      </Button>
-    ),
-    !!setCompareTargetId && !!compareTargetId && (
-      <Button
-        key="ResetCompareTarget"
-        onClick={() => setCompareTargetId(undefined)}
-        className="content-truncate flex items-center gap-2"
-        variant={compareTargetId ? 'theme' : 'ghost'}
-        disabled={!compareTargetId}
-      >
-        <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('Reset comparison target')}</span>
       </Button>
     ),
     !!items.length && (
@@ -252,13 +247,13 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       <Icons.ChevronUp className="size-4 opacity-50" />
       <span className="truncate">{t('Hide')}</span>
     </Button>,
-  ];
+  ].filter(Boolean);
 
   const reorders = [
     // Reorders...
     !!items.length && !!reorderItems && !!reorderTitles && (
       <Label className="relative flex w-full items-center gap-2" key="Reorder">
-        <div className="shrink-0 truncate text-sm font-bold opacity-50">{t('Reorder Items')}:</div>
+        <div className="shrink-0 truncate text-sm font-bold opacity-50">{t('Reorder items')}:</div>
         <Select onValueChange={reorderItems}>
           <SelectTrigger
             className={cn(
@@ -278,7 +273,37 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         </Select>
       </Label>
     ),
-  ];
+  ].filter(Boolean);
+
+  const comparisons = [
+    <div key="ComparisonLabel" className="flex items-center text-sm font-bold opacity-50">
+      <span>Comparison:</span>
+    </div>,
+    !!setShowNormalized && (
+      <Label
+        key="ShowNormalizedComparsions"
+        className={cn('mx-2 flex select-none items-center gap-2')}
+      >
+        <Checkbox
+          defaultChecked={showNormalized || false}
+          onCheckedChange={() => setShowNormalized?.(!showNormalized)}
+        />
+        {t('Show normalized rates')}
+      </Label>
+    ),
+    !!setCompareTargetId && !!compareTargetId && (
+      <Button
+        key="ResetCompareTarget"
+        onClick={() => setCompareTargetId(undefined)}
+        className="content-truncate flex items-center gap-2"
+        variant={compareTargetId ? 'theme' : 'ghost'}
+        disabled={!compareTargetId}
+      >
+        <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">{t('Reset comparison target')}</span>
+      </Button>
+    ),
+  ].filter(Boolean);
 
   const filters = [
     // Filters...
@@ -322,12 +347,10 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         <span className="ml-1 font-thin opacity-50">({selectedIds?.size || 0})</span>
       </span>
     </Label>,
-  ];
+  ].filter(Boolean);
+
   const textFilters = [
     <Label className="relative flex gap-2" key="FilterByText">
-      {/*
-    <div className="relative flex gap-2">
-      */}
       <div key="Filter" className="flex items-center text-sm font-bold opacity-50">
         <span>Filter by text:</span>
       </div>
@@ -362,7 +385,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     </Label>,
     <Label
       key="TextFilterSmart"
-      className={cn('ml-2 flex select-none items-center gap-2', !filterText && 'disabled')}
+      className={cn('mx-2 flex select-none items-center gap-2', !filterText && 'disabled')}
     >
       <Checkbox
         defaultChecked={filterTextSmart}
@@ -370,40 +393,45 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       />
       {t('Smart text filter')}
     </Label>,
-  ];
+  ].filter(Boolean);
 
   return (
-    <Card
-      className={cn(
-        isDev && '__HeadlessEditorControls', // DEBUG
-        'flex flex-col',
-        'content-truncate flex flex-col gap-1',
-        !isExpanded && 'shrink-0',
-        !isReady && 'pointer-events-none opacity-50',
-        className,
-      )}
-    >
-      <CardHeader
+    <TooltipProvider delayDuration={0}>
+      <Card
         className={cn(
-          isDev && '__HeadlessEditorControls_Header', // DEBUG
-          'flex flex-row items-center justify-between space-y-0 p-0',
-          'shrink-0',
-          'overflow-hidden',
+          isDev && '__HeadlessEditorControls', // DEBUG
+          'flex flex-col',
+          'content-truncate flex flex-col gap-1',
+          !isExpanded && 'shrink-0',
+          !isReady && 'pointer-events-none opacity-50',
+          className,
         )}
       >
-        <CardTitle className="rounded-0 w-full">
-          <Button
-            variant={isExpanded ? 'ghost' : 'theme'}
-            onClick={() => setExpanded((isExpanded) => !isExpanded)}
-            className="flex w-full items-center gap-2 rounded-none"
-          >
-            <span className="flex flex-1 items-center gap-2 truncate">
-              <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
-              {/*controlsCaption*/}
-              {isExpanded ? t('Hide Controls') : t('Show Controls')}
-            </span>
-            <span className="flex items-center gap-2">
-              {/*
+        <CardHeader
+          className={cn(
+            isDev && '__HeadlessEditorControls_Header', // DEBUG
+            'flex flex-row items-center justify-between space-y-0 p-0',
+            'shrink-0',
+            'overflow-hidden',
+          )}
+        >
+          <CardTitle className="rounded-0 w-full">
+            <Tooltip key="AvailableTopicsFilters-Caption">
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isExpanded ? 'ghost' : 'theme'}
+                  onClick={() => setExpanded((isExpanded) => !isExpanded)}
+                  className="flex w-full items-center gap-2 rounded-none"
+                >
+                  <span className="flex flex-1 items-center gap-2 truncate">
+                    <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
+                    {/*controlsCaption*/}
+                    {isExpanded ? t('Hide Controls') : t('Show Controls')}
+                    {/*!!totalChangedCount && <span className="ml-1 font-thin opacity-50">*</span>*/}
+                    {!!totalChangedCount && <Icons.Asterisk className="size-4 opacity-50" />}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    {/*
                     {!onDefaults && (
                       <Button
                         type="button"
@@ -421,81 +449,102 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                       </Button>
                     )}
                     */}
-              <ToggleIcon className="size-4" />
-            </span>
-          </Button>
-        </CardTitle>
-      </CardHeader>
-      {isExpanded && (
-        <CardContent
-          className={cn(
-            isDev && '__HeadlessEditorControls_Content', // DEBUG
-            'overflow-hidden',
-            'flex flex-col',
-            'px-0',
-            'py-0',
-          )}
-        >
-          <ScrollArea
+                    <ToggleIcon className="size-4" />
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent
+                side={isExpanded ? 'top' : 'bottom'}
+                className="flex items-center gap-2 truncate"
+              >
+                {totalChangedCount ? t('Has unsaved changes') : t('No changes made')}
+              </TooltipContent>
+            </Tooltip>
+          </CardTitle>
+        </CardHeader>
+        {isExpanded && (
+          <CardContent
             className={cn(
-              isDev && '__HeadlessEditorControls_Scroll', // DEBUG
-            )}
-            viewportClassName={cn(
-              isDev && '__HeadlessEditorControls_ScrollViewport', // DEBUG
-              'flex py-6 flex-col flex-1',
-              '[&>div]:!flex [&>div]:flex-col [&>div]:gap-2 [&>div]:flex-1',
+              isDev && '__HeadlessEditorControls_Content', // DEBUG
+              'overflow-hidden',
+              'flex flex-col',
+              'px-0',
+              'py-0',
             )}
           >
-            {/* Filters... */}
-            {!!filters.length && (
-              <div
-                className={cn(
-                  isDev && '__HeadlessEditorControls_Filters', // DEBUG
-                  'content-truncate flex flex-wrap gap-1 px-6 py-2',
-                )}
-              >
-                {filters}
-              </div>
-            )}
+            <ScrollArea
+              className={cn(
+                isDev && '__HeadlessEditorControls_Scroll', // DEBUG
+              )}
+              viewportClassName={cn(
+                isDev && '__HeadlessEditorControls_ScrollViewport', // DEBUG
+                'flex py-6 flex-col flex-1',
+                '[&>div]:!flex [&>div]:flex-col [&>div]:gap-2 [&>div]:flex-1',
+              )}
+            >
+              {/* Filters... */}
+              {filters.length > 1 && (
+                <div
+                  className={cn(
+                    isDev && '__HeadlessEditorControls_Filters', // DEBUG
+                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                  )}
+                >
+                  {filters}
+                </div>
+              )}
 
-            {/* Text filters... */}
-            {!!textFilters.length && (
-              <div
-                className={cn(
-                  isDev && '__HeadlessEditorControls_TextFilters', // DEBUG
-                  'content-truncate flex flex-wrap gap-1 px-6 py-2',
-                )}
-              >
-                {textFilters}
-              </div>
-            )}
+              {/* Text filters... */}
+              {textFilters.length > 1 && (
+                <div
+                  className={cn(
+                    isDev && '__HeadlessEditorControls_TextFilters', // DEBUG
+                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                  )}
+                >
+                  {textFilters}
+                </div>
+              )}
 
-            {/* Reorders... */}
-            {!!reorders.length && (
-              <div
-                className={cn(
-                  isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                  'content-truncate flex flex-wrap gap-1 px-6 py-2',
-                )}
-              >
-                {reorders}
-              </div>
-            )}
+              {/* Reorders... */}
+              {reorders.length > 0 && (
+                <div
+                  className={cn(
+                    isDev && '__HeadlessEditorControls_Reorders', // DEBUG
+                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                  )}
+                >
+                  {reorders}
+                </div>
+              )}
 
-            {/* Actions... */}
-            {!!actions.length && (
-              <div
-                className={cn(
-                  isDev && '__HeadlessEditorControls_Actions', // DEBUG
-                  'content-truncate flex flex-wrap gap-1 px-6 py-2',
-                )}
-              >
-                {actions}
-              </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-      )}
-    </Card>
+              {/* Reorders... */}
+              {comparisons.length > 1 && (
+                <div
+                  className={cn(
+                    isDev && '__HeadlessEditorControls_Reorders', // DEBUG
+                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                  )}
+                >
+                  {comparisons}
+                </div>
+              )}
+
+              {/* Actions... */}
+              {!!actions.length && (
+                <div
+                  className={cn(
+                    isDev && '__HeadlessEditorControls_Actions', // DEBUG
+                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                  )}
+                >
+                  {actions}
+                </div>
+              )}
+            </ScrollArea>
+          </CardContent>
+        )}
+      </Card>
+    </TooltipProvider>
   );
 }

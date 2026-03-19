@@ -17,8 +17,11 @@ import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
+import { THeadlessEditorState } from '@/entities/HeadlessEditor';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { MediumCategoriesListByCategoryIds } from '@/features/categories/components';
+import { QuestionsEditor } from '@/features/questions/components/QuestionsEditor';
+import { TNewOrOldQuestion } from '@/features/questions/types';
 import { SmallUserBlock } from '@/features/users';
 import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
@@ -34,11 +37,14 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
   const format = useFormatter();
   const t = useT();
 
-  const { topic } = availableTopicQuery;
+  const { topic, isFetched: isTopicFetched } = availableTopicQuery;
 
   const topicId = topic?.id;
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({
+    topicId,
+    itemsLimit: null, // Take all questions, without paging
+  });
   const {
     allQuestions,
     // queryKey: availableQuestionsQueryKey,
@@ -46,6 +52,10 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     isFetching: isQuestionsFetching,
     isFetched: isQuestionsFetched,
   } = availableQuestionsQuery;
+
+  // const [headlessEditorState, setHeadlessEditorState] = React.useState<
+  //   THeadlessEditorState<TNewOrOldQuestion> | undefined
+  // >();
 
   // Check if query is actually being invalidated
   if (!topic) {
@@ -244,6 +254,17 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             </Link>
           </div>
         </div>
+        {!!topicId && isTopicFetched && isQuestionsFetched ? (
+          <QuestionsEditor
+            topicId={topicId}
+            availableTopicQuery={availableTopicQuery}
+            availableQuestionsQuery={availableQuestionsQuery}
+            // setHeadlessEditorState={setHeadlessEditorState}
+          />
+        ) : (
+          <Skeleton className="h-10 w-full" />
+        )}
+        {/*
         <div className="content-truncate flex flex-wrap gap-2">
           {isQuestionsFetching || !isQuestionsFetched ? (
             generateArray(topic._count?.questions || 3).map((n) => (
@@ -255,6 +276,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             <PreviewQuestions className="w-full" questions={allQuestions} />
           )}
         </div>
+        */}
         {/*!!topic._count?.questions && (
           <div className="flex flex-wrap gap-2 text-sm">
             <Badge variant="outline" className="flex items-center gap-2 px-2 py-1">
