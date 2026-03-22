@@ -57,6 +57,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
   // Create unique keys for labels
   const nameKey = React.useId();
   const descriptionKey = React.useId();
+  const extraQueryKey = React.useId();
   const isPublicKey = React.useId();
   const keywordsKey = React.useId();
   const langCodeKey = React.useId();
@@ -115,12 +116,37 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   id={descriptionKey}
                   className="flex-1"
                   placeholder={t('EditTopicFormFields.TopicDescriptionPlaceholder')}
-                  rows={5}
+                  rows={3}
                   {...field}
                 />
               </FormControl>
               <FormHint className="content-truncate">
                 {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
+              </FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* extraQuery */}
+        <FormField
+          name="extraQuery"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="truncate" htmlFor={extraQueryKey}>
+                {t('EditTopicFormFields.TopicExtraQuery')}
+              </Label>
+              <FormControl>
+                <Textarea
+                  id={extraQueryKey}
+                  className="flex-1"
+                  placeholder={t('EditTopicFormFields.TopicExtraQueryPlaceholder')}
+                  rows={3}
+                  {...field}
+                />
+              </FormControl>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.TopicExtraQueryHint')}
               </FormHint>
               <FormMessage />
             </FormItem>

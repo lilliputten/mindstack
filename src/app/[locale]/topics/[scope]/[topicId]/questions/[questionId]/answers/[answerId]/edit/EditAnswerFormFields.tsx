@@ -56,7 +56,7 @@ export function EditAnswerFormFields(props: TEditAnswerFormFieldsProps) {
                   id={textKey}
                   className="flex-1"
                   placeholder={t('EditAnswerFormFields.AnswerTextPlaceholder')}
-                  rows={5}
+                  rows={3}
                   {...field}
                 />
               </FormControl>
@@ -78,7 +78,7 @@ export function EditAnswerFormFields(props: TEditAnswerFormFieldsProps) {
                   id={explanationKey}
                   className="flex-1"
                   placeholder={t('EditAnswerFormFields.ExplanationPlaceholder')}
-                  rows={5}
+                  rows={3}
                   {...field}
                 />
               </FormControl>

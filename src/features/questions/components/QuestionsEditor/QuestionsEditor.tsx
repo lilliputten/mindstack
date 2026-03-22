@@ -298,7 +298,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       {!!confirmAction && (
         <ConfirmModal
           isVisible // ={!!confirmAction}
-          dialogTitle={t('You have unsaved changes')}
+          dialogTitle={t('YouHaveUnsavedChanges')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Yes')}
           cancelButtonText={t('No')}

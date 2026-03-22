@@ -13,6 +13,7 @@
   "Answer": "Ответ",
   "AnswerNotFound": "Ответ не найден",
   "Answers": "Ответы",
+  "AnswersCount": "Количество ответов",
   "AnyLanguage": "Любой язык",
   "AppLanguage": "Язык приложения",
   "Apply": "Применить",
@@ -24,6 +25,7 @@
   "Back": "Назад",
   "CanCloseDialog": "Вы можете закрыть диалог.",
   "Cancel": "Отменить",
+  "CancelEditing": "Отменить редактирование",
   "Categories": "Категории",
   "Category": "Категория",
   "ChangeFilters": "Изменить фильтры",
@@ -149,6 +151,7 @@
   "ViewTopic": "Просмотр темы",
   "ViewTraining": "Просмотр тренировки",
   "Yes": "Да",
+  "YouHaveUnsavedChanges": "У вас есть несохраненные изменения",
   "ago": "назад",
   "or": "или",
   "AIGenerationsStatusInfo": {
@@ -684,6 +687,9 @@
     "IsGeneratedHint": "Если вопрос был сгенерирован автоматически, то он может быть обновлён или удалён позже.",
     "MaximalQuestionsCount": "Максимальное количество вопросов",
     "MinimalQuestionsCount": "Минимальное количество вопросов",
+    "QuestionExtraQuery": "Дополнительный текст запроса генерации ИИ для вопроса",
+    "QuestionExtraQueryHint": "Дополнительный текст запроса генерации ИИ для вопроса. \nПростое текстовое поле.",
+    "QuestionExtraQueryPlaceholder": "Дополнительный промт для ИИ генерации",
     "QuestionText": "Текст вопроса",
     "QuestionTextHint": "Текст вопроса.",
     "QuestionTextPlaceholder": "Текст вопроса",
@@ -706,6 +712,9 @@
     "TopicDescription": "Описание темы",
     "TopicDescriptionHint": "Описание темы. Этот текст может использоваться как для генерации вопросов и ответов самой системой, так и пользователями для навигации и поиска.",
     "TopicDescriptionPlaceholder": "Описание темы",
+    "TopicExtraQuery": "Дополнительный промт для ИИ генерации",
+    "TopicExtraQueryHint": "Дополнительный текст запроса генерации ИИ по этой теме. \nПростое текстовое поле.",
+    "TopicExtraQueryPlaceholder": "Дополнительный запрос на создание ИИ",
     "TopicLanguage": "Язык темы",
     "TopicLanguageHint": "Необязательный предопределённый или пользовательский язык для темы.",
     "TopicName": "Название темы",
@@ -1078,7 +1087,7 @@
     "RequestedTopicNotExists": "Запрошенная тема не существует."
   },
   "MarkdownHint": {
-    "Content": "Этот текст поддерживает разметку markdown, посмотрите <MarkdownGuideLink>Руководство по Markdown</MarkdownGuideLink> для информации о синтаксисе."
+    "Content": "Этот текст поддерживает разметку markdown, смотрите <MarkdownGuideLink>руководство по markdown</MarkdownGuideLink> для информации о синтаксисе."
   },
   "NavAuthButton": {
     "Dashboard": "Панель",
@@ -1560,6 +1569,7 @@
     "AnswersCount": "Ответов",
     "Author": "Автор",
     "Created": "Создано",
+    "ExtraQuery": "Дополнительный промт для ИИ генерации",
     "Modified": "Изменено",
     "NoAnswersYet": "Пока нет ответов",
     "QuestionText": "Текст вопроса",
@@ -1574,6 +1584,7 @@
     "Author": "Автор",
     "Created": "Создано",
     "Description": "Описание",
+    "ExtraQuery": "Дополнительный промт для ИИ генерации",
     "Keywords": "Ключевые слова",
     "Modified": "Изменено",
     "NoTopicLoaded": "Тема не загружена",

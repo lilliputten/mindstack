@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormState } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -9,18 +10,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import { Textarea } from '@/components/ui/Textarea';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
-import { useGoBack, useGoToTheRoute } from '@/hooks';
+import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
+import { useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { TCmpItemProps } from '../types';
 import { T } from './types';
 
 /** Show edit button in the actions block or (otherwise) in the dropdown menu */
-const showEditAsAction = false;
+const showEditAsAction = true;
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
   const { className, item, updateItem, hasChanges } = props;
@@ -31,6 +32,10 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     answers,
     topicId,
   } = item;
+
+  React.useEffect(() => {
+    console.log('[CmpQuestion:DEBUG:item]', item);
+  }, [item]);
 
   const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
@@ -48,9 +53,23 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
 
   const count = answers?.length || _count?.answers;
 
-  const [editText, setEditText] = React.useState<string | undefined>();
-  const isEditMode = editText != undefined;
-  const isEdited = isEditMode && editText !== text;
+  // Item editing...
+  // const [form, setForm] = React.useState<UseFormReturn<TFormData> | undefined>();
+  const [isDirty, setIsDirty] = React.useState(false);
+  // const [isValid, setIsValid] = React.useState(false);
+
+  const setFormState = React.useCallback((formState: FormState<TFormData>) => {
+    setIsDirty(formState.isDirty);
+    // setIsValid(formState.isValid);
+  }, []);
+
+  const [viewInfo, setViewInfo] = React.useState(false);
+
+  // Data editing support...
+  const [editedItem, setEditedItem] = React.useState<T | undefined>();
+  // const [editText, setEditText] = React.useState<string | undefined>();
+  const isEditMode = editedItem != undefined;
+  const isEdited = isEditMode && isDirty; // editText !== text;
 
   const [isDropdownOpen, setDropdownOpen] = React.useState(false);
 
@@ -82,8 +101,59 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     [confirmActionCallback, goToTheRoute],
   );
 
+  const handleFormSubmit = React.useCallback(
+    (formData: TFormData) => {
+      const editedItem: T = {
+        ...item,
+        // id: item.id,
+        // topicId: item.topicId,
+        // order: undefined,
+        text: formData.text,
+        extraQuery: formData.extraQuery,
+        answersCountRandom: formData.answersCountRandom,
+        answersCountMin: formData.answersCountMin,
+        answersCountMax: formData.answersCountMax,
+        isGenerated: formData.isGenerated,
+      };
+      setEditedItem(editedItem);
+    },
+    [item],
+  );
+
   const actionItems = React.useMemo(() => {
     return [
+      // Save
+      isEditMode && (
+        <Button
+          key="Save"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant={isEdited ? 'success' : 'ghost'}
+          title={t('Save')}
+          disabled={!isEdited}
+          onClick={() => {
+            // Update an item with the new text...
+            if (updateItem) {
+              // const newItem: T = { ...item, text: editText || '' };
+              updateItem(editedItem);
+            }
+            setEditedItem(undefined);
+          }}
+        >
+          <Icons.Save className="size-4 shrink-0" />
+        </Button>
+      ),
+      // Cancel editing
+      isEditMode && (
+        <Button
+          key="CancelEditing"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant="ghost"
+          title={t('CancelEditing')}
+          onClick={() => setEditedItem(undefined)}
+        >
+          <Icons.X className="size-4 shrink-0" />
+        </Button>
+      ),
       !!count && (
         <div
           // TODO: Add a handler to expand answers section...
@@ -105,43 +175,23 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
           variant="ghost"
           title={t('Edit')}
-          onClick={() => setEditText(text)}
+          onClick={() => setEditedItem(item)}
         >
           <Icons.Edit className="size-3.5 shrink-0" />
         </Button>
       ),
-      isEditMode && (
-        <Button
-          key="Save"
-          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-          variant={isEdited ? 'success' : 'ghost'}
-          title={t('Save')}
-          disabled={!isEdited}
-          onClick={() => {
-            // Update an item with the new text...
-            if (updateItem) {
-              const newItem: T = { ...item, text: editText || '' };
-              updateItem(newItem);
-            }
-            setEditText(undefined);
-          }}
-        >
-          <Icons.Save className="size-4 shrink-0" />
-        </Button>
-      ),
-      isEditMode && (
-        <Button
-          key="CancelEditing"
-          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-          variant="ghost"
-          title={t('CancelEditing')}
-          onClick={() => setEditText(undefined)}
-        >
-          <Icons.X className="size-4 shrink-0" />
-        </Button>
-      ),
+      // View question info
+      <Button
+        key="ViewInfo"
+        className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+        variant={viewInfo ? 'theme' : 'ghost'}
+        title={t('ViewInfo')}
+        onClick={() => setViewInfo((viewInfo) => !viewInfo)}
+      >
+        <Icons.Info className="size-3.5 shrink-0" />
+      </Button>,
     ].filter(Boolean);
-  }, [count, editText, isEditMode, isEdited, item, t, text, updateItem]);
+  }, [count, editedItem, viewInfo, isEditMode, isEdited, item, t, updateItem]);
 
   const menuItems = React.useMemo(() => {
     return [
@@ -150,7 +200,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           key="Edit"
           className="content-truncate flex items-center justify-start gap-2"
           variant="ghost"
-          onClick={dropdownActionCallback(() => setEditText(text))}
+          onClick={dropdownActionCallback(() => setEditedItem(item))}
         >
           <Icons.Edit className="size-3.5 shrink-0" />
           <span className="truncate">{t('Edit')}</span>
@@ -163,17 +213,17 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         onClick={confirmGoToTheRouteCallback(questionRoutePath)}
       >
         <Icons.ChevronRight className="size-3 shrink-0" />
-        <span className="truncate">{t('Go to the question')}</span>
+        <span className="truncate">{t('GoToTheQuestion')}</span>
       </Button>,
     ].filter(Boolean);
   }, [
-    isEditMode,
-    questionRoutePath,
-    t,
-    text,
     updateItem,
-    confirmGoToTheRouteCallback,
+    isEditMode,
     dropdownActionCallback,
+    t,
+    confirmGoToTheRouteCallback,
+    questionRoutePath,
+    item,
   ]);
 
   return (
@@ -204,18 +254,17 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         )}
       >
         {isEditMode ? (
-          <Textarea
-            placeholder="Edit text"
-            value={editText}
-            onChange={(ev) => {
-              const { target } = ev;
-              const value = target.value || '';
-              setEditText(value);
-            }}
+          <EditQuestionForm
             className={cn(
-              isDev && '__CmpQuestion_ContentInput', // DEBUG
-              'h-32 w-full',
+              isDev && '__CmpQuestion_Form', // DEBUG
             )}
+            fieldsClassName="p-1"
+            question={item}
+            // setForm={setForm}
+            setFormState={setFormState}
+            handleFormSubmit={handleFormSubmit}
+            // noSections
+            // isPending={isPending}
           />
         ) : (
           <MarkdownText
@@ -287,7 +336,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       {!!confirmAction && (
         <ConfirmModal
           isVisible // ={!!confirmAction}
-          dialogTitle={t('You have unsaved changes')}
+          dialogTitle={t('YouHaveUnsavedChanges')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Yes')}
           cancelButtonText={t('No')}

@@ -3,7 +3,6 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
 
-import { generateArray } from '@/lib/helpers';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -17,15 +16,12 @@ import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
-import { THeadlessEditorState } from '@/entities/HeadlessEditor';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { MediumCategoriesListByCategoryIds } from '@/features/categories/components';
 import { QuestionsEditor } from '@/features/questions/components/QuestionsEditor';
-import { TNewOrOldQuestion } from '@/features/questions/types';
 import { SmallUserBlock } from '@/features/users';
 import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
-import { PreviewQuestions } from '@/widgets/questions';
 
 interface TProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
@@ -46,10 +42,10 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     itemsLimit: null, // Take all questions, without paging
   });
   const {
-    allQuestions,
+    // allQuestions,
     // queryKey: availableQuestionsQueryKey,
     // queryProps: availableQuestionsQueryProps,
-    isFetching: isQuestionsFetching,
+    // isFetching: isQuestionsFetching,
     isFetched: isQuestionsFetched,
   } = availableQuestionsQuery;
 
@@ -76,8 +72,21 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     >
       <AIGenerationsStatusInfo />
 
+      {/* Topic Name */}
+      {!!topic.name && (
+        <div
+          data-testid="__ViewTopicContentSummary_Section_TopicName"
+          className="flex flex-col gap-4"
+        >
+          <h3 className="content-truncate text-lg font-semibold">{t('Name')}</h3>
+          <div className="content-truncate rounded-lg bg-slate-500/10 p-4 text-sm">
+            {topic.name}
+          </div>
+        </div>
+      )}
+
       {/* Topic Description */}
-      {topic.description && (
+      {!!topic.description && (
         <div
           data-testid="__ViewTopicContentSummary_Section_TopicDescription"
           className="flex flex-col gap-4"
@@ -87,6 +96,21 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           </h3>
           <div className="content-truncate rounded-lg bg-slate-500/10 p-4">
             <MarkdownText className="content-truncate">{topic.description}</MarkdownText>
+          </div>
+        </div>
+      )}
+
+      {/* Topic Extra Query */}
+      {!!topic.extraQuery && (
+        <div
+          data-testid="__ViewTopicContentSummary_Section_TopicExtraQuery"
+          className="flex flex-col gap-4"
+        >
+          <h3 className="content-truncate text-lg font-semibold">
+            {t('ViewTopicContentSummary.ExtraQuery')}
+          </h3>
+          <div className="content-truncate rounded-lg bg-slate-500/10 p-4 text-sm">
+            {topic.extraQuery}
           </div>
         </div>
       )}

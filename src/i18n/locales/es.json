@@ -13,6 +13,7 @@
   "Answer": "Respuesta",
   "AnswerNotFound": "Respuesta no encontrada",
   "Answers": "Respuestas",
+  "AnswersCount": "Las respuestas cuentan",
   "AnyLanguage": "Cualquier idioma",
   "AppLanguage": "Idioma de la aplicación",
   "Apply": "Aplicar",
@@ -24,6 +25,7 @@
   "Back": "Atrás",
   "CanCloseDialog": "Puede cerrar el cuadro de diálogo.",
   "Cancel": "Cancelar",
+  "CancelEditing": "Cancelar edición",
   "Categories": "Categorías",
   "Category": "Categoría",
   "ChangeFilters": "Cambiar Filtros",
@@ -151,6 +153,7 @@
   "ViewTopic": "Ver tema",
   "ViewTraining": "Ver entrenamiento",
   "Yes": "Sí",
+  "YouHaveUnsavedChanges": "Tienes cambios sin guardar",
   "ago": "atrás",
   "butReceived": "pero recibido",
   "ifYouHaveAnyProblems": "si tiene algún problema",
@@ -682,6 +685,9 @@
     "IsGeneratedHint": "Si la pregunta ha sido generada automáticamente, entonces podría ser actualizada o eliminada más tarde.",
     "MaximalQuestionsCount": "Cantidad máxima de preguntas",
     "MinimalQuestionsCount": "Cantidad mínima de preguntas",
+    "QuestionExtraQuery": "Texto de consulta de generación de IA adicional para la pregunta",
+    "QuestionExtraQueryHint": "Texto de consulta de generación de IA adicional para la pregunta. \nCampo de texto sin formato.",
+    "QuestionExtraQueryPlaceholder": "Consulta de generación de IA adicional",
     "QuestionText": "Texto de la Pregunta",
     "QuestionTextHint": "Un texto de pregunta.",
     "QuestionTextPlaceholder": "Texto de la Pregunta",
@@ -704,6 +710,9 @@
     "TopicDescription": "Descripción del tema",
     "TopicDescriptionHint": "Una descripción del tema. Este texto puede ser usado tanto para generar preguntas y respuestas por el sistema mismo, como por usuarios para navegación y búsqueda.",
     "TopicDescriptionPlaceholder": "Descripción del Tema",
+    "TopicExtraQuery": "Consulta de generación de IA adicional",
+    "TopicExtraQueryHint": "Texto de consulta de generación de IA adicional para el tema. \nUna consulta de generación de campo de texto sin formato",
+    "TopicExtraQueryPlaceholder": "Consulta de generación de IA adicional",
     "TopicLanguage": "Idioma del Tema",
     "TopicLanguageHint": "Un idioma predefinido o personalizado opcional para el tema.",
     "TopicName": "Nombre del Tema",
@@ -1076,7 +1085,7 @@
     "RequestedTopicNotExists": "El tema solicitado no existe."
   },
   "MarkdownHint": {
-    "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>Guía de Markdown</MarkdownGuideLink> para la información de sintaxis."
+    "Content": "Este texto permite marcado markdown, mira la <MarkdownGuideLink>guía de markdown</MarkdownGuideLink> para la información de sintaxis."
   },
   "NavAuthButton": {
     "Dashboard": "Panel",
@@ -1557,6 +1566,7 @@
     "AnswersCount": "Respuestas",
     "Author": "Autor",
     "Created": "Creado",
+    "ExtraQuery": "Consulta de generación de IA adicional",
     "Modified": "Modificado",
     "NoAnswersYet": "Aún no hay respuestas",
     "QuestionText": "Texto de la Pregunta",
@@ -1571,6 +1581,7 @@
     "Author": "Autor",
     "Created": "Creado",
     "Description": "Descripción",
+    "ExtraQuery": "Consulta de generación de IA adicional",
     "Keywords": "Palabras clave",
     "Modified": "Modificado",
     "NoTopicLoaded": "No se cargó ningún tema",

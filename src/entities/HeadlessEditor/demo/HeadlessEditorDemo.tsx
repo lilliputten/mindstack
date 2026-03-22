@@ -13,6 +13,7 @@ import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions/AddQue
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
+import { ManageTopicsStoreProvider } from '@/stores/ManageTopicsStoreProvider';
 
 import { newItemIdPrefix } from '../constants';
 import { getUniqueIdForSet, reorderByDate } from '../helpers';
@@ -452,6 +453,10 @@ export function HeadlessEditorDemo(props: TProps) {
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
+        {/*
+        <ManageTopicsStoreProvider manageScope="all">
+        </ManageTopicsStoreProvider>
+        */}
         <RenderHeadlessEditor
           className={cn(
             isDev && '__HeadlessEditorDemo_HeadlessEditor', // DEBUG

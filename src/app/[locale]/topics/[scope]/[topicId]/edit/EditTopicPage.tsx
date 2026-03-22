@@ -43,6 +43,7 @@ const formBaseSchema = z.object({
   name: z.string().min(minNameLength).max(maxNameLength),
   // NOTE: It's impossible to limit minimal length (min) for optional strings?
   description: z.string().max(maxTextLength).optional(),
+  extraQuery: z.string().max(maxTextLength).optional(),
   isPublic: z.boolean().optional(),
   keywords: z.string().optional(),
   langCode: z.string().optional(),
@@ -145,6 +146,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
     () => ({
       name: topic.name || '',
       description: topic.description || '',
+      extraQuery: topic.extraQuery || '',
       isPublic: topic.isPublic || false,
       keywords: topic.keywords || '',
       langCode: topic.langCode || '',
@@ -217,6 +219,7 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         ...topic,
         name: formData.name,
         description: formData.description,
+        extraQuery: formData.extraQuery,
         isPublic: formData.isPublic,
         keywords: formData.keywords,
         langCode: formData.langCode,
@@ -228,6 +231,11 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         categoryIds: formData.categoryIds,
         categories: undefined,
       };
+      console.log('[EditTopicPage:handleFormSubmit]', {
+        formData,
+        topic,
+      });
+      debugger;
       startTransition(async () => {
         const updateTopicData = getUpdateTopicFromBroaderData(editedTopic);
         let updatedTopic: TAvailableTopic | undefined;

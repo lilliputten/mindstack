@@ -81,6 +81,22 @@ export function ViewQuestionContentSummary(props: TProps) {
     </div>
   );
 
+  const extraQueryContent = question.extraQuery && (
+    <div
+      data-testid="__ViewQuestionContentSummary_Section_ExtraQuery"
+      className="flex flex-col gap-4"
+    >
+      <div className="flex items-center gap-2">
+        <h3 className="content-truncate text-lg font-semibold">
+          {t('ViewQuestionContentSummary.ExtraQuery')}
+        </h3>
+      </div>
+      <div className="content-truncate rounded-lg bg-slate-500/10 p-4 text-sm">
+        {question.extraQuery}
+      </div>
+    </div>
+  );
+
   const questionPropertiesContent = (
     <div
       data-testid="__ViewQuestionContentSummary_Section_Properties"
@@ -274,6 +290,7 @@ export function ViewQuestionContentSummary(props: TProps) {
     >
       <AIGenerationsStatusInfo className="content-truncate" />
       {questionTextContent}
+      {extraQueryContent}
       {questionPropertiesContent}
       <Separator />
       {topicInfoContent}

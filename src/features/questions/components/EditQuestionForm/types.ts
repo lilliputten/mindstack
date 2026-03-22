@@ -6,6 +6,7 @@ import { makeNullableFieldsUndefined } from '@/lib/helpers/zod';
 
 const questionFormDataSchemaBase = QuestionSchema.pick({
   text: true, // string
+  extraQuery: true,
   isGenerated: true, // boolean
   answersCountRandom: true, // boolean
   answersCountMin: true, // number
