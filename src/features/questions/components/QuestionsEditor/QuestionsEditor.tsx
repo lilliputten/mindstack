@@ -11,9 +11,12 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions';
 import { isDev } from '@/constants';
 import {
+  getUniqueIdForSet,
+  newItemIdPrefix,
   reorderByDate,
   THeadlessEditorState,
   TReorderModes,
+  TSaveDataParams,
   useHeadlessEditorState,
 } from '@/entities/HeadlessEditor';
 import { CmpQuestion } from '@/entities/HeadlessEditor/demo/CmpQuestion';
@@ -113,6 +116,35 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   //   refetch({ cancelRefetch: true });
   // }, [refetch]);
 
+  const saveData = React.useCallback((saveParams: TSaveDataParams<T>) => {
+    const {
+      // All items list...
+      items, // T[]
+      // Items by update type...
+      updatedItems, // Set<T>
+      deletedItems, // Set<T>
+      addedItems, // Set<T>
+      // Ids by update type...
+      addedIds, // Set<T['id']>
+      deletedIds, // Set<T['id']>
+      updatedIds, // Set<T['id']>
+      reorderedIds, // Set<T['id']>
+      selectedIds, // Set<T['id']>
+    } = saveParams;
+    const updateQuestionsData = {
+      updatedItems: updatedItems ? [...updatedItems.values()] : undefined,
+      addedItems: updatedItems && [...updatedItems.values()],
+      deletedIds: deletedIds && [...deletedIds.values()],
+    };
+    // TODO: Call the proper server action. Update and invalidate the topic and all the questions
+    const promise: Promise<unknown> = updateQuestionsDataViaParams(updateQuestionsData);
+    console.log('[QuestionsEditor:saveData]', {
+      saveParams,
+    });
+    debugger;
+    return promise; // Promise.resolve(true);
+  }, []);
+
   // Create the state...
   const headlessEditorState = useHeadlessEditorState({
     // isReady,
@@ -130,6 +162,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     filterSelected,
     // Items interface...
     defaultItems,
+    saveData,
     getItemText,
     RenderItem: CmpQuestion,
     // Normalized...
@@ -175,31 +208,46 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   const hasChanges = !!totalChangedCount;
   memo.hasChanges = hasChanges;
 
-  // const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
-  //   traceId: 'QuestionsEditor:QuestionsEditor',
-  // });
-  // const confirmActionCallback = React.useCallback(
-  //   (action: () => void) => {
-  //     return () => {
-  //       if (memo.hasChanges) {
-  //         // Set the action for the dialog `handleConfirm` handler...
-  //         setConfirmAction(() => action);
-  //       } else {
-  //         // ...or invoke it immediatelly...
-  //         action();
-  //       }
-  //     };
-  //   },
-  //   [memo],
-  // );
-  // const confirmGoToTheRouteCallback = React.useCallback(
-  //   (route: string) => {
-  //     return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
-  //   },
-  //   [confirmActionCallback, goToTheRoute],
-  // );
+  /* // UNUSED: Confirmation callback handlers
+   * const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+   *   traceId: 'QuestionsEditor:QuestionsEditor',
+   * });
+   * const confirmActionCallback = React.useCallback(
+   *   (action: () => void) => {
+   *     return () => {
+   *       if (memo.hasChanges) {
+   *         // Set the action for the dialog `handleConfirm` handler...
+   *         setConfirmAction(() => action);
+   *       } else {
+   *         // ...or invoke it immediatelly...
+   *         action();
+   *       }
+   *     };
+   *   },
+   *   [memo],
+   * );
+   * const confirmGoToTheRouteCallback = React.useCallback(
+   *   (route: string) => {
+   *     return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
+   *   },
+   *   [confirmActionCallback, goToTheRoute],
+   * );
+   */
 
   const onSaveData = React.useCallback(() => {
+    // Emulate data save procedure: remove any 'new item' features...
+    const usedIds = new Set<T['id']>();
+    const savedItems = items.map((it) => {
+      const savedIt = { ...it };
+      if (savedIt.isNew) delete savedIt.isNew;
+      let id = savedIt.id;
+      if (!id || id.startsWith(newItemIdPrefix)) {
+        id = getUniqueIdForSet(usedIds, '__saved');
+        savedIt.id = id;
+      }
+      usedIds.add(id);
+      return savedIt;
+    });
     console.log('[QuestionsEditor:onSaveData]', {
       // selectedIds,
       addedIds,
@@ -210,6 +258,15 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       updatedIds,
     });
     debugger;
+    // Save new data...
+    setDefaultItems(savedItems);
+    // TODO: Update and invalidate the topic and all the questions
+    // setItems(savedItems);
+    // // Update all data-related indices...
+    // setUpdatedIds(undefined);
+    // setDeletedIds(undefined);
+    // setAddedIds(undefined);
+    // setReorderedIds(undefined);
   }, [
     // selectedIds,
     addedIds,

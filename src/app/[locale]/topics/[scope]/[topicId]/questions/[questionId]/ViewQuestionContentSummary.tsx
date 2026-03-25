@@ -264,7 +264,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
           <span className="flex gap-2 truncate opacity-50">
             <Icons.CalendarDays className="hidden size-4 shrink-0 sm:flex" />
-            <span className="truncate">{t('ViewQuestionContentSummary.Created')}:</span>
+            <span className="truncate">{t('Created')}:</span>
           </span>
           <span className="truncate">{getFormattedRelativeDate(format, question.createdAt)}</span>
         </div>
@@ -272,7 +272,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
             <span className="flex gap-2 truncate opacity-50">
               <Icons.Edit className="hidden size-4 shrink-0 sm:flex" />
-              <span className="truncate">{t('ViewQuestionContentSummary.Modified')}:</span>
+              <span className="truncate">{t('Modified')}:</span>
             </span>
             <span className="truncate">{getFormattedRelativeDate(format, question.updatedAt)}</span>
           </div>

@@ -1,6 +1,8 @@
 import React from 'react';
+import { useFormatter } from 'next-intl';
 import { FormState } from 'react-hook-form';
 
+import { compareDates, getFormattedRelativeDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
@@ -40,6 +42,8 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
   const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
   const t = useT();
+  const format = useFormatter();
+
   const { manageScope } = useManageTopicsStore();
   const topicsListRoutePath = `/topics/${manageScope}`;
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
@@ -185,7 +189,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         key="ViewInfo"
         className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
         variant={viewInfo ? 'theme' : 'ghost'}
-        title={t('ViewInfo')}
+        title={t('View Info')}
         onClick={() => setViewInfo((viewInfo) => !viewInfo)}
       >
         <Icons.Info className="size-3.5 shrink-0" />
@@ -270,12 +274,36 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <MarkdownText
             className={cn(
               isDev && '__CmpQuestion_Text', // DEBUG
-              'content-truncate',
-              'w-full',
+              'content-truncate w-full',
             )}
           >
             {text}
           </MarkdownText>
+        )}
+        {viewInfo && (
+          <div
+            className={cn(
+              isDev && '__CmpQuestion_Info', // DEBUG
+              'content-truncate flex flex-wrap gap-4 gap-y-2 text-sm',
+            )}
+          >
+            <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+              <span className="flex gap-2 truncate opacity-50">
+                <Icons.CalendarDays className="hidden size-4 shrink-0 sm:flex" />
+                <span className="truncate">{t('Created')}:</span>
+              </span>
+              <span className="truncate">{getFormattedRelativeDate(format, item.createdAt)}</span>
+            </div>
+            {!!compareDates(item.updatedAt, item.createdAt) && (
+              <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+                <span className="flex gap-2 truncate opacity-50">
+                  <Icons.Edit className="hidden size-4 shrink-0 sm:flex" />
+                  <span className="truncate">{t('Modified')}:</span>
+                </span>
+                <span className="truncate">{getFormattedRelativeDate(format, item.updatedAt)}</span>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <div

@@ -13,7 +13,6 @@ import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions/AddQue
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
-import { ManageTopicsStoreProvider } from '@/stores/ManageTopicsStoreProvider';
 
 import { newItemIdPrefix } from '../constants';
 import { getUniqueIdForSet, reorderByDate } from '../helpers';
