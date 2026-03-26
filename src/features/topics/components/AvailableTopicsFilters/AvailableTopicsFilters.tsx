@@ -139,7 +139,7 @@ export function AvailableTopicsFilters(props: TProps) {
                   </span>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="bottom" className="flex items-center gap-2 truncate">
+              <TooltipContent side="bottom" className="content-truncate flex items-center gap-2">
                 {hasFilters ? (
                   <>
                     {t('Displaying')}: {filtersInfo}

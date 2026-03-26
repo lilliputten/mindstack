@@ -105,19 +105,27 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     filterText,
     filterTextSmart,
     filterTargeted,
-    filterUpdated,
+    filterUpdated, // And reordered (?)
     filterAdded,
     filterSelected,
     // State...
     updatedIds,
     addedIds,
-    // reorderedIds,
+    reorderedIds,
     selectedIds,
     compareTargetId,
     // Show normalized values
     showNormalized,
     setShowNormalized,
   } = props;
+
+  /* // DEBUG: Detect excessive unmounts
+   * React.useEffect(() => {
+   *   return () => {
+   *     console.log('[HeadlessEditorControls:DEBUG:UNMOUNTED]');
+   *   };
+   * }, []);
+   */
 
   const t = useT();
 
@@ -300,6 +308,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           onCheckedChange={() => setShowNormalized?.(!showNormalized)}
         />
         {t('HeadlessEditor.ShowNormalizedRates')}
+        <Tooltip key="ShowNormalizedComparsions-Tooltip">
+          <TooltipTrigger asChild>
+            <Icons.Info className="size-5 cursor-pointer text-theme" />
+          </TooltipTrigger>
+          <TooltipContent side="top" className="content-truncate flex max-w-sm items-center gap-2">
+            {t('HeadlessEditor.ShowNormalizedComparsionsTooltip')}
+          </TooltipContent>
+        </Tooltip>
       </Label>
     ),
     !!setCompareTargetId && !!compareTargetId && (
@@ -316,6 +332,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     ),
   ].filter(Boolean);
 
+  const updatedAndReorderedCount = (updatedIds?.size || 0) + (reorderedIds?.size || 0);
+
   const filters = [
     // Filters...
     <div key="FiltersLabel" className="flex items-center text-sm font-bold opacity-50">
@@ -326,7 +344,15 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         defaultChecked={!!filterTargeted}
         onCheckedChange={(checked) => setFilterTargeted(Boolean(checked))}
       />
-      <span>{t('Compared')}</span>
+      <span>{t('HeadlessEditor.FilterComparedItems')}</span>
+      <Tooltip key="FilterTargeted-Tooltip">
+        <TooltipTrigger asChild>
+          <Icons.Info className="size-5 cursor-pointer text-theme" />
+        </TooltipTrigger>
+        <TooltipContent side="top" className="content-truncate flex max-w-sm items-center gap-2">
+          {t('HeadlessEditor.FilterTargetedsTooltip')}
+        </TooltipContent>
+      </Tooltip>
     </Label>,
     <Label key="FilterUpdated" className="ml-1 flex select-none items-center gap-2">
       <Checkbox
@@ -334,8 +360,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         onCheckedChange={(checked) => setFilterUpdated(Boolean(checked))}
       />
       <span>
-        {t('Updated')}
-        <span className="ml-1 font-thin opacity-50">({updatedIds?.size || 0})</span>
+        {t('HeadlessEditor.FilterUpdatedItems')}
+        <span className="ml-1 font-thin opacity-50">({updatedAndReorderedCount})</span>
       </span>
     </Label>,
     <Label key="FilterAdded" className="ml-1 flex select-none items-center gap-2">
@@ -344,7 +370,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         onCheckedChange={(checked) => setFilterAdded(Boolean(checked))}
       />
       <span>
-        {t('Added')}
+        {t('HeadlessEditor.FilterAddedItems')}
         <span className="ml-1 font-thin opacity-50">({addedIds?.size || 0})</span>
       </span>
     </Label>,
@@ -354,7 +380,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         onCheckedChange={(checked) => setFilterSelected(Boolean(checked))}
       />
       <span>
-        {t('Selected')}
+        {t('HeadlessEditor.FilterSelectedItems')}
         <span className="ml-1 font-thin opacity-50">({selectedIds?.size || 0})</span>
       </span>
     </Label>,
@@ -403,6 +429,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         onCheckedChange={(checked) => setFilterTextSmart(Boolean(checked))}
       />
       {t('HeadlessEditor.SmartTextFilter')}
+      <Tooltip key="TextFilterSmart-Tooltip">
+        <TooltipTrigger asChild>
+          <Icons.Info className="size-5 cursor-pointer text-theme" />
+        </TooltipTrigger>
+        <TooltipContent side="top" className="content-truncate flex max-w-sm items-center gap-2">
+          {t('HeadlessEditor.SmartTextFilterTooltip')}
+        </TooltipContent>
+      </Tooltip>
     </Label>,
   ].filter(Boolean);
 
@@ -465,9 +499,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 </Button>
               </TooltipTrigger>
               <TooltipContent
-                side="top"
-                // side={isExpanded ? 'top' : 'bottom'}
-                className="flex items-center gap-2 truncate"
+                side={isExpanded ? 'bottom' : 'top'}
+                className="content-truncate flex items-center gap-2"
               >
                 {totalChangedCount
                   ? t('HeadlessEditor.HasUnsavedChanges')

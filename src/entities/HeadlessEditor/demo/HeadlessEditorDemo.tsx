@@ -477,7 +477,7 @@ export function HeadlessEditorDemo(props: TProps) {
         closeImmediatelly
       />
       <ConfirmModal
-        dialogTitle={t('ManageTopicQuestionsListCard.ConfirmDeleteQuestions')}
+        dialogTitle={t('ConfirmDeleteQuestions')}
         confirmButtonVariant="destructive"
         confirmButtonText={t('Delete')}
         confirmButtonBusyText={t('ManageTopicQuestionsListCard.Deleting')}
@@ -489,7 +489,7 @@ export function HeadlessEditorDemo(props: TProps) {
         }}
         isVisible={deleteSelectedConfirmVisible}
       >
-        {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
+        {t('ConfirmDeleteQuestionsMessage', {
           count: selectedIds?.size || 0,
         })}
       </ConfirmModal>

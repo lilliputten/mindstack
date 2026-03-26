@@ -21,6 +21,8 @@
   "AnyLanguage": "Any Language",
   "AppLanguage": "Application Language",
   "Apply": "Apply",
+  "ApplyChanges": "Apply Changes",
+  "AreYouSureYouWantToLoseData": "Are you sure you want to lose all your unsaved data?",
   "AuthenticationError": "Authentication error",
   "Author": "Author",
   "Authors": "Authors",
@@ -42,6 +44,8 @@
   "ClickToHideSettings": "Click to hide settings",
   "Close": "Close",
   "Compared": "Compared",
+  "ConfirmDeleteQuestions": "Confirm delete questions",
+  "ConfirmDeleteQuestionsMessage": "Do you confirm deleting {count, plural, =0 {no questions} =1 {# selected question} other {# selected questions}}?",
   "Continue": "Continue",
   "Created": "Created",
   "CreationDate": "Creation date",
@@ -133,6 +137,7 @@
   "SelectAll": "Select All",
   "SelectAnswer": "Select answer",
   "SelectDeselectAll": "Select/deselect all",
+  "SelectItem": "Select Item",
   "SelectNone": "Select None",
   "Selected": "Selected",
   "SettingsPageNotFound": "Settings page not found",
@@ -879,7 +884,12 @@
     "ComparsionRate": "Comparison rate",
     "DeleteSelected": "Delete Selected",
     "DragItemToReorder": "Drag item to reorder",
+    "FilterAddedItems": "Added",
     "FilterByText": "Filter by text",
+    "FilterComparedItems": "Compared/comparable",
+    "FilterSelectedItems": "Selected",
+    "FilterTargetedsTooltip": "Show only the elements involved in the comparison with the current target (if the target is set), or those that can be compared with other elements (if the target is not set).",
+    "FilterUpdatedItems": "Updated",
     "HasUnsavedChanges": "Has unsaved changes",
     "Hide": "Hide",
     "HideControls": "Hide Controls",
@@ -900,8 +910,10 @@
     "SelectRecord": "Select record",
     "SelectReorderingMode": "Select reordering mode",
     "ShowControls": "Show Controls",
+    "ShowNormalizedComparsionsTooltip": "Show normalized comparison results, not absolute ones.",
     "ShowNormalizedRates": "Show normalized rates",
     "SmartTextFilter": "Smart text filter",
+    "SmartTextFilterTooltip": "A smart text filter tries to take into account word forms and discard insignificant words.",
     "TheElementIsNotInvolvedInComparison": "The element is not involved in the comparison",
     "UndoChanges": "Undo changes",
     "ViewInfo": "View Info"
@@ -1099,8 +1111,6 @@
     "Cancel": "Cancel",
     "CannotDeleteSelectedQuestions": "Cannot delete selected questions",
     "CannotUpdateQuestionGeneratedStatus": "Cannot update question generated status",
-    "ConfirmDeleteQuestions": "Confirm delete questions",
-    "ConfirmDeleteQuestionsMessage": "Do you confirm deleting {count, plural, =0 {no questions} =1 {# selected question} other {# selected questions}}?",
     "Delete": "Delete",
     "DeleteSelected": "Delete Selected",
     "Deleting": "Deleting",
@@ -1421,6 +1431,7 @@
     "SignInModalIntroForBasic": "To activate a basic subscription, simply sign-in to the system."
   },
   "QuestionsEditor": {
+    "DeletingQuestions": "Deleting questions...",
     "EditQuestions": "Edit Questions"
   },
   "QuestionsGenerationTypes": {
@@ -1979,6 +1990,5 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulu"
-  },
-  "SelectItem": "Select Item"
+  }
 }

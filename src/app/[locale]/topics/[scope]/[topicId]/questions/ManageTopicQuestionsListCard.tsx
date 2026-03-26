@@ -707,7 +707,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         // goToTheRoute={goToTheRoute}
       />
       <ConfirmModal
-        dialogTitle={t('ManageTopicQuestionsListCard.ConfirmDeleteQuestions')}
+        dialogTitle={t('ConfirmDeleteQuestions')}
         confirmButtonVariant="destructive"
         confirmButtonText={t('Delete')}
         confirmButtonBusyText={t('ManageTopicQuestionsListCard.Deleting')}
@@ -717,7 +717,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteSelectedConfirm}
       >
-        {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
+        {t('ConfirmDeleteQuestionsMessage', {
           count: selectedQuestions.size,
         })}
       </ConfirmModal>

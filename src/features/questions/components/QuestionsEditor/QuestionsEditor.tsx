@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
-import { TAvailableQuestionsResultsQueryData } from '@/lib/types/react-query';
 import {
   getErrorText,
   getUnqueItemsList,
@@ -108,10 +107,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   const { allQuestions, queryKey, refetch, isRefetching, isFetching } = availableQuestionsQuery;
   const isLoading = isSaving || isRefetching || isFetching;
 
-  React.useEffect(() => {
-    console.log('[QuestionsEditor:DEBUG:allQuestions]', queryKey, allQuestions);
-  }, [queryKey, allQuestions]);
-
   const questionsLocale = topic?.langCode || locale;
   // const questionsCount = topic?._count?.questions;
   // const allowedTraining = !!questionsCount;
@@ -162,23 +157,11 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
             : undefined,
         };
         // Call the server action to update and invalidate the topic and all the questions
-        console.log('[QuestionsEditor:saveDataFn:start]', {
-          updateQuestionsData,
-          saveParams,
-        });
         // Call the server action to update questions...
         const promise: Promise<TUpdateQuestionsDataViaParamsResults> =
           updateQuestionsDataViaParams(updateQuestionsData);
         setSavePromise(promise);
         const results = await promise;
-        console.log('[QuestionsEditor:saveDataFn:done]', {
-          updateQuestionsData,
-          saveParams,
-          topicId,
-          // invalidatePrefixes,
-        });
-        // invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
-        // memo.reloadData?.();
         return results;
       } catch (error) {
         const details = getErrorText(error);
@@ -195,7 +178,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         memo.savePromise = undefined;
       }
     },
-    [memo, topicId],
+    [memo],
   );
 
   const updateQuestionsQueryData = React.useCallback(
@@ -217,33 +200,17 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       const allItems = new Map<T['id'], T>();
       queryClient.setQueryData<TGetResultsInfiniteQueryData<T>>(queryKey, (oldData) => {
         if (!oldData) return oldData;
-        console.log('[QuestionsEditor:updateQuestionsQueryData:start]', {
-          oldData,
-          firstOldItems: oldData.pages[0].items,
-          updatedItemsMap,
-          addedItemsMap,
-          autoAddedIdsMap,
-          added, // TQuestion[], Newly added items
-          autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
-          updated, // TQuestion[], Updated items
-          deletedIds, // TQuestionId[], Deleted item ids
-          results,
-          topicId,
-        });
         const lastPageIndex = oldData.pages.length - 1;
         let totalCount = 0;
         const pages: TGetResults<T>[] = oldData.pages.map((page, index) => {
           const items: T[] = page.items
             .map((it) => {
-              console.log('[QuestionsEditor:updateQuestionsQueryData:item]', it.id, it);
               if (deletedIdsSet.has(it.id)) {
                 // Delete the item
-                console.log('[QuestionsEditor:updateQuestionsQueryData:item deleting]', it.id, it);
                 return undefined;
               }
               if (updatedItemsMap.has(it.id)) {
                 // Use the updated item
-                console.log('[QuestionsEditor:updateQuestionsQueryData:item updating]', it.id, it);
                 it = updatedItemsMap.get(it.id) ?? it;
               } else {
                 const newId = autoAddedIdsMap.has(it.id) ? autoAddedIdsMap.get(it.id) : it.id;
@@ -251,11 +218,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
                   // Use the added item with
                   const newItem = addedItemsMap.get(it.id);
                   if (newItem) {
-                    console.log(
-                      '[QuestionsEditor:updateQuestionsQueryData:item adding]',
-                      it.id,
-                      it,
-                    );
                     it = newItem;
                   }
                 }
@@ -274,38 +236,26 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         });
         // Update totalCount for all pages...
         const updatedPages = pages.map((page) => ({ ...page, totalCount }));
-        console.log('[QuestionsEditor:updateQuestionsQueryData:updated data]', {
-          updatedPages,
-          oldPages: oldData.pages,
-          allItems,
-          remainedAddedItemsMap,
-        });
         // Return updated data...
         return { ...oldData, pages: updatedPages };
       });
       const items = [...allItems.values(), ...remainedAddedItemsMap.values()];
-      console.log('[QuestionsEditor:updateQuestionsQueryData:done]', {
-        items,
-        added, // TQuestion[], Newly added items
-        autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
-        updated, // TQuestion[], Updated items
-        deletedIds, // TQuestionId[], Deleted item ids
-        results,
-        topicId,
-      });
+      /* console.log('[QuestionsEditor:updateQuestionsQueryData:done]', {
+       *   items,
+       *   added, // TQuestion[], Newly added items
+       *   autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
+       *   updated, // TQuestion[], Updated items
+       *   deletedIds, // TQuestionId[], Deleted item ids
+       *   results,
+       * });
+       */
       return items;
     },
-    [queryClient, queryKey, topicId],
+    [queryClient, queryKey],
   );
 
   const updateSavedDataResults = React.useCallback(
     (results: TUpdateQuestionsDataViaParamsResults) => {
-      const {
-        added, // TQuestion[], Newly added items
-        autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
-        updated, // TQuestion[], Updated items
-        deletedIds, // TQuestionId[], Deleted item ids
-      } = results;
       // Invalidate the topic and all the questions...
       const invalidatePrefixes = [
         ['available-questions-for-topic', topicId],
@@ -317,17 +267,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
       ].map(makeQueryKeyPrefix);
       invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [queryKey]);
       const items = updateQuestionsQueryData(results);
-      console.log('[QuestionsEditor:updateSavedDataResults:done]', {
-        items,
-        added, // TQuestion[], Newly added items
-        autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
-        updated, // TQuestion[], Updated items
-        deletedIds, // TQuestionId[], Deleted item ids
-        results,
-        topicId,
-        invalidatePrefixes,
-      });
-      debugger;
       if (items && memo.setItemsData) {
         memo.setItemsData(items);
       }
@@ -436,9 +375,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
 
   const setItemsData = React.useCallback(
     (items: T[]) => {
-      console.log('[QuestionsEditor:setItemsData]', {
-        items,
-      });
       setDefaultItems(items);
       setItems(items);
       // Reset ids
@@ -563,10 +499,10 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         <ConfirmModal
           isVisible
           // isVisible={deleteSelectedConfirmVisible}
-          dialogTitle={t('QuestionsEditor.ConfirmDeleteQuestions')}
+          dialogTitle={t('ConfirmDeleteQuestions')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Delete')}
-          confirmButtonBusyText={t('QuestionsEditor.Deleting')}
+          confirmButtonBusyText={t('QuestionsEditor.DeletingQuestions')}
           cancelButtonText={t('Cancel')}
           handleClose={() => setDeleteSelectedConfirmVisible(false)}
           handleConfirm={() => {
@@ -574,14 +510,14 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
             setDeleteSelectedConfirmVisible(false);
           }}
         >
-          {t('QuestionsEditor.ConfirmDeleteQuestionsMessage', {
+          {t('ConfirmDeleteQuestionsMessage', {
             count: selectedIds?.size || 0,
           })}
         </ConfirmModal>
       )}
       {!!confirmAction && (
         <ConfirmModal
-          isVisible // ={!!confirmAction}
+          isVisible
           dialogTitle={t('YouHaveUnsavedChanges')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Yes')}
@@ -592,7 +528,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
             setConfirmAction(undefined);
           }}
         >
-          {t('Are you sure you want to lose all your modified data?')}
+          {t('AreYouSureYouWantToLoseData')}
         </ConfirmModal>
       )}
     </>

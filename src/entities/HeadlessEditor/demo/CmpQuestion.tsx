@@ -24,6 +24,8 @@ import { T } from './types';
 
 /** Show edit button in the actions block or (otherwise) in the dropdown menu */
 const showEditAsAction = true;
+const isActiveAnswersButton = true;
+const showEmptyAnswersButton = false;
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
   const { className, item, updateItem, hasChanges } = props;
@@ -45,7 +47,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
   const topicRoutePath = `${topicsListRoutePath}/${topicId}`;
   const questionsListRoutePath = `${topicRoutePath}/questions`;
   const questionRoutePath = `${questionsListRoutePath}/${id}`;
-  // const answersListRoutePath = `${questionRoutePath}/answers`;
+  const answersListRoutePath = `${questionRoutePath}/answers`;
   // const answerRoutePath = `${answersListRoutePath}/${answerId}`;
 
   // const goBack = useGoBack(topicRoutePath);
@@ -147,11 +149,11 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           key="Save"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
           variant={isEdited ? 'success' : 'ghost'}
-          title={t('Save')}
+          title={t('ApplyChanges')}
           disabled={!isEdited}
           onClick={handleSave}
         >
-          <Icons.Save className="size-4 shrink-0" />
+          <Icons.Check className="size-4 shrink-0" />
         </Button>
       ),
       // Cancel editing
@@ -166,7 +168,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <Icons.X className="size-4 shrink-0" />
         </Button>
       ),
-      !!count && (
+      (showEmptyAnswersButton || !!count) && (
         <div
           // TODO: Add a handler to expand answers section...
           key="Answers"
@@ -174,10 +176,14 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             isDev && '__CmpQuestion_Count', // DEBUG
             'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
             'bg-theme-500/10 text-xs text-white opacity-50',
+            isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
           )}
-          title={t('AnswersCount')}
+          onClick={
+            isActiveAnswersButton ? confirmGoToTheRouteCallback(questionRoutePath) : undefined
+          }
+          title={t('Answers')}
         >
-          <span className="truncate">{count}</span>
+          <span className="truncate">{count || 0}</span>
         </div>
       ),
       // Edit action
@@ -203,7 +209,19 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         <Icons.Info className="size-3.5 shrink-0" />
       </Button>,
     ].filter(Boolean);
-  }, [count, viewInfo, isEditMode, isEdited, item, t, updateItem, form, handleSave]);
+  }, [
+    isEditMode,
+    updateItem,
+    form,
+    isEdited,
+    t,
+    handleSave,
+    count,
+    confirmGoToTheRouteCallback,
+    questionRoutePath,
+    viewInfo,
+    item,
+  ]);
 
   const menuItems = React.useMemo(() => {
     return [
@@ -218,6 +236,15 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <span className="truncate">{t('Edit')}</span>
         </Button>
       ),
+      <Button
+        key="GoToTheAnswers"
+        className="content-truncate flex items-center justify-start gap-2"
+        variant="ghost"
+        onClick={confirmGoToTheRouteCallback(answersListRoutePath)}
+      >
+        <Icons.ChevronRight className="size-3 shrink-0" />
+        <span className="truncate">{t('GoToTheAnswers')}</span>
+      </Button>,
       <Button
         key="GoToTheQuestion"
         className="content-truncate flex items-center justify-start gap-2"
@@ -235,6 +262,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     t,
     confirmGoToTheRouteCallback,
     questionRoutePath,
+    answersListRoutePath,
     item,
   ]);
 
@@ -372,7 +400,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       </div>
       {!!confirmAction && (
         <ConfirmModal
-          isVisible // ={!!confirmAction}
+          isVisible
           dialogTitle={t('YouHaveUnsavedChanges')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Yes')}
@@ -383,7 +411,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             setConfirmAction(undefined);
           }}
         >
-          {t('Are you sure you want to lose all your modified data?')}
+          {t('AreYouSureYouWantToLoseData')}
         </ConfirmModal>
       )}
     </div>

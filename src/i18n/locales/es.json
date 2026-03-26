@@ -19,6 +19,8 @@
   "AnyLanguage": "Cualquier idioma",
   "AppLanguage": "Idioma de la aplicación",
   "Apply": "Aplicar",
+  "ApplyChanges": "Aplicar cambios",
+  "AreYouSureYouWantToLoseData": "¿Estás seguro de que quieres perder todos tus datos no guardados?",
   "AuthenticationError": "Error de autenticación",
   "Author": "Autor",
   "Authors": "Autores",
@@ -40,6 +42,8 @@
   "ClickToHideSettings": "Haz clic para ocultar la configuración",
   "Close": "Cerrar",
   "Compared": "Comparado",
+  "ConfirmDeleteQuestions": "Confirmar eliminar preguntas",
+  "ConfirmDeleteQuestionsMessage": "¿Confirma eliminar {count, plural, =0 {sin preguntas} =1 {",
   "Continue": "Continuar",
   "Created": "Creado",
   "CreationDate": "Fecha de creación",
@@ -130,6 +134,7 @@
   "SelectAll": "Seleccionar Todo",
   "SelectAnswer": "Seleccionar respuesta",
   "SelectDeselectAll": "Seleccionar/deseleccionar todo",
+  "SelectItem": "Seleccionar artículo",
   "SelectNone": "Seleccionar Ninguno",
   "Selected": "Seleccionado",
   "SettingsPageNotFound": "Página de configuración no encontrada",
@@ -869,7 +874,12 @@
     "ComparsionIndicator": "Indicador de comparación",
     "ComparsionRate": "Tasa de comparación",
     "DragItemToReorder": "Arrastre el elemento para reordenar",
+    "FilterAddedItems": "Agregados",
     "FilterByText": "Filtrar por texto",
+    "FilterComparedItems": "Comparados/comparables",
+    "FilterSelectedItems": "Seleccionados",
+    "FilterTargetedsTooltip": "Muestra solo los elementos involucrados en la comparación con el objetivo actual (si el objetivo está establecido), o aquellos que se pueden comparar con otros elementos (si el objetivo no está establecido).",
+    "FilterUpdatedItems": "Actualizados",
     "HasUnsavedChanges": "Tiene cambios sin guardar",
     "HideControls": "Ocultar controles",
     "NoChangesMade": "No se realizaron cambios",
@@ -880,8 +890,10 @@
     "ReorderByTextDescending": "Ordenar por texto (descendente)",
     "ResetComparisonTarget": "Restablecer objetivo de comparación",
     "SelectReorderingMode": "Seleccionar modo de reordenamiento",
+    "ShowNormalizedComparsionsTooltip": "Muestra resultados de comparación normalizados, no absolutos.",
     "ShowNormalizedRates": "Mostrar tasas normalizadas",
     "SmartTextFilter": "Filtro de texto inteligente",
+    "SmartTextFilterTooltip": "Un filtro de texto inteligente intenta tener en cuenta las formas de las palabras y descartar palabras insignificantes.",
     "TheElementIsNotInvolvedInComparison": "El elemento no está involucrado en la comparación"
   },
   "ImageUpload": {
@@ -1399,6 +1411,7 @@
     "SignInModalIntroForBasic": "Para activar una suscripción básica, simplemente inicie sesión en el sistema."
   },
   "QuestionsEditor": {
+    "DeletingQuestions": "Eliminando preguntas...",
     "EditQuestions": "Editar preguntas"
   },
   "QuestionsGenerationTypes": {
@@ -1957,6 +1970,5 @@
     "Yoruba": "Yoruba",
     "Zhuang": "Zhuang",
     "Zulu": "Zulú"
-  },
-  "SelectItem": "Seleccionar artículo"
+  }
 }

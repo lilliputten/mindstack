@@ -11,10 +11,9 @@ import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { maxTextLength, minTextLength } from '@/components/pages/ManageTopicQuestions/constants';
 import { isDev } from '@/constants';
-import { TAvailableQuestion, TNewOrOldQuestion } from '@/features/questions/types';
+import { TNewOrOldQuestion } from '@/features/questions/types';
 
 import { EditQuestionFormFields } from './EditQuestionFormFields';
-// import { topicQuestionDeletedEventId } from '../DeleteQuestionModal';
 import { TFormData } from './types';
 
 // TODO: To use `questionFormDataSchema`?

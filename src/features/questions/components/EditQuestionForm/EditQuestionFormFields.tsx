@@ -3,7 +3,7 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-import { TPropsWithChildren, TPropsWithChildrenAndClassName } from '@/lib/types';
+import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';

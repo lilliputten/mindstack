@@ -176,12 +176,13 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   } = props;
   memo.addedIds = addedIds;
 
-  // DEBUG: Detect excessive unmounts
-  React.useEffect(() => {
-    return () => {
-      console.log('[HeadlessEditor:UNMOUNTED]');
-    };
-  }, []);
+  /* // DEBUG: Detect excessive unmounts
+   * React.useEffect(() => {
+   *   return () => {
+   *     console.log('[HeadlessEditor:DEBUG:UNMOUNTED]');
+   *   };
+   * }, []);
+   */
 
   // Freshly added items...
   const [freshIds, setFreshIds] = React.useState<Set<TCmpItemId> | undefined>();
@@ -443,11 +444,11 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const filteredItems = React.useMemo(() => {
     let filteredItems = orderedItems;
     if (filterUpdated) {
-      if (!updatedIds?.size) {
+      if (!updatedIds?.size && !reorderedIds?.size) {
         return [];
       }
       filteredItems = filteredItems?.filter((it) => {
-        return updatedIds.has(it.id);
+        return !!(updatedIds?.has(it.id) || reorderedIds?.has(it.id));
       });
     }
     if (filterAdded) {
@@ -511,6 +512,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     overallComparedCache,
     selectedIds,
     updatedIds,
+    reorderedIds,
   ]);
 
   // A ref for the bottommost element, required for scroll to the bottom on new items adding, see an effect below
@@ -624,7 +626,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
             <Skeleton key={idx} className="h-8 w-full" />
           ))
         ) : !filteredItems?.length ? (
-          <div className="rounded border border-dashed p-6 text-center text-sm opacity-30">
+          <div className="rounded border border-dashed p-6 pt-2 text-center text-sm opacity-30">
             {t('HeadlessEditor.NoItemsToDisplay')}
           </div>
         ) : (
