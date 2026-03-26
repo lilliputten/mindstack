@@ -85,10 +85,10 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   /** Texts for the reorder items */
   const reorderTitles = React.useMemo<Record<TReorderKey, string>>(
     () => ({
-      abc: t('By text'),
-      abcDesc: t('By text (descending)'),
-      date: t('By date'),
-      dateDesc: t('By date (descending)'),
+      abc: t('ByText'),
+      abcDesc: t('ByTextDescending'),
+      date: t('ByDate'),
+      dateDesc: t('ByDateDescending'),
     }),
     [t],
   );

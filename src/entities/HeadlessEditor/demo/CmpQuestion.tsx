@@ -197,7 +197,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         key="ViewInfo"
         className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
         variant={viewInfo ? 'theme' : 'ghost'}
-        title={t('View Info')}
+        title={t('ViewInfo')}
         onClick={() => setViewInfo((viewInfo) => !viewInfo)}
       >
         <Icons.Info className="size-3.5 shrink-0" />

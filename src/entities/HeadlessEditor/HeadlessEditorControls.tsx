@@ -121,7 +121,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const t = useT();
 
-  const [isExpanded, setExpanded] = React.useState(true);
+  const [isExpanded, setExpanded] = React.useState(false);
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
@@ -157,7 +157,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       >
         <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
         <span className="truncate">
-          {t('Undo changes')}
+          {t('UndoChanges')}
           {!!totalChangedCount && (
             <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
           )}
@@ -182,7 +182,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           <Icons.Square className="size-4 shrink-0 opacity-50" />
         )}
         <span className="truncate">
-          {!selectedIds?.size ? 'Select All' : 'Deselect All'}
+          {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
           <span className="ml-1 font-thin opacity-50">({items.length})</span>
         </span>
       </Button>
@@ -198,7 +198,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         // size="sm"
       >
         <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('Select All')}</span>
+        <span className="truncate">{t('SelectAll')}</span>
       </Button>,
       <Button
         key="SelectNone"
@@ -209,7 +209,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         // size="sm"
       >
         <Icons.Square className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('Select None')}</span>
+        <span className="truncate">{t('SelectNone')}</span>
       </Button>,
       */
     <Button
@@ -219,7 +219,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       variant="success"
     >
       <Icons.Plus className="size-4 shrink-0 opacity-50" />
-      <span className="truncate">{t('Add New')}</span>
+      <span className="truncate">{t('AddNew')}</span>
     </Button>,
     !!onDeleteAction && !!selectedIds?.size && (
       <Button
@@ -231,7 +231,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       >
         <Icons.Trash className="size-4 shrink-0 opacity-50" />
         <span className="truncate">
-          {t('Delete Selected')}
+          {t('DeleteSelected')}
           {!!selectedIds?.size && (
             <span className="ml-1 font-thin opacity-50">({selectedIds.size})</span>
           )}
@@ -265,15 +265,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     // Reorders...
     !!items.length && !!reorderItems && !!reorderTitles && (
       <Label className="relative flex w-full items-center gap-2" key="Reorder">
-        <div className="shrink-0 truncate text-sm font-bold opacity-50">{t('Reorder items')}:</div>
+        <div className="shrink-0 truncate text-sm font-bold opacity-50">{t('ReorderItems')}:</div>
         <Select onValueChange={reorderItems}>
           <SelectTrigger
             className={cn(
               isDev && '__HeadlessEditorDemo__SelectReorder', // DEBUG
-              // 'flex-1',
             )}
           >
-            <span className="opacity-50">{t('Select reordering mode')}</span>
+            <span className="opacity-50">{t('HeadlessEditor.SelectReorderingMode')}</span>
           </SelectTrigger>
           <SelectContent>
             {Object.entries(reorderTitles).map(([key, title]) => (
@@ -289,7 +288,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const comparisons = [
     <div key="ComparisonLabel" className="flex items-center text-sm font-bold opacity-50">
-      <span>Comparison:</span>
+      <span>{t('HeadlessEditor.Comparison')}:</span>
     </div>,
     !!setShowNormalized && (
       <Label
@@ -300,7 +299,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           defaultChecked={showNormalized || false}
           onCheckedChange={() => setShowNormalized?.(!showNormalized)}
         />
-        {t('Show normalized rates')}
+        {t('HeadlessEditor.ShowNormalizedRates')}
       </Label>
     ),
     !!setCompareTargetId && !!compareTargetId && (
@@ -312,7 +311,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         disabled={!compareTargetId}
       >
         <Icons.CircleSlash2 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('Reset comparison target')}</span>
+        <span className="truncate">{t('HeadlessEditor.ResetComparisonTarget')}</span>
       </Button>
     ),
   ].filter(Boolean);
@@ -320,14 +319,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
   const filters = [
     // Filters...
     <div key="FiltersLabel" className="flex items-center text-sm font-bold opacity-50">
-      <span>Filter:</span>
+      <span>{t('Filter')}:</span>
     </div>,
     <Label key="FilterTargeted" className="ml-1 flex select-none items-center gap-2">
       <Checkbox
         defaultChecked={!!filterTargeted}
         onCheckedChange={(checked) => setFilterTargeted(Boolean(checked))}
       />
-      <span>Compared</span>
+      <span>{t('Compared')}</span>
     </Label>,
     <Label key="FilterUpdated" className="ml-1 flex select-none items-center gap-2">
       <Checkbox
@@ -364,13 +363,13 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
   const textFilters = [
     <Label className="relative flex gap-2" key="FilterByText">
       <div key="Filter" className="flex items-center text-sm font-bold opacity-50">
-        <span>Filter by text:</span>
+        <span>{t('HeadlessEditor.FilterByText')}:</span>
       </div>
       <Input
         // id="FilterByText"
         name="FilterByText"
         className="inline pr-11"
-        placeholder="Filter by text"
+        placeholder={t('HeadlessEditor.FilterByText')}
         value={filterText || ''}
         onChange={(ev) => {
           const { target } = ev;
@@ -403,7 +402,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         defaultChecked={filterTextSmart}
         onCheckedChange={(checked) => setFilterTextSmart(Boolean(checked))}
       />
-      {t('Smart text filter')}
+      {t('HeadlessEditor.SmartTextFilter')}
     </Label>,
   ].filter(Boolean);
 
@@ -438,7 +437,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                   <span className="flex flex-1 items-center gap-2 truncate">
                     <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
                     {/*controlsCaption*/}
-                    {isExpanded ? t('Hide Controls') : t('Show Controls')}
+                    {isExpanded ? t('HideControls') : t('ShowControls')}
                     {/*!!totalChangedCount && <span className="ml-1 font-thin opacity-50">*</span>*/}
                     {!!totalChangedCount && <Icons.Asterisk className="size-4 opacity-50" />}
                   </span>
@@ -466,10 +465,13 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 </Button>
               </TooltipTrigger>
               <TooltipContent
-                side={isExpanded ? 'top' : 'bottom'}
+                side="top"
+                // side={isExpanded ? 'top' : 'bottom'}
                 className="flex items-center gap-2 truncate"
               >
-                {totalChangedCount ? t('Has unsaved changes') : t('No changes made')}
+                {totalChangedCount
+                  ? t('HeadlessEditor.HasUnsavedChanges')
+                  : t('HeadlessEditor.NoChangesMade')}
               </TooltipContent>
             </Tooltip>
           </CardTitle>

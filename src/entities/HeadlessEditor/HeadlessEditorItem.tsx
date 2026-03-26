@@ -123,8 +123,8 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     .filter(Boolean)
     .join(' ');
   const infoTitle = hasOverallValue
-    ? t('Comparsion rate') + ': ' + infoStr
-    : t('The element is not involved in the comparison');
+    ? t('HeadlessEditor.ComparsionRate') + ': ' + infoStr
+    : t('HeadlessEditor.TheElementIsNotInvolvedInComparison');
 
   return (
     <div
@@ -217,7 +217,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           )}
           {...attributes}
           {...listeners}
-          title={t('Drag item to reorder')}
+          title={t('HeadlessEditor.DragItemToReorder')}
         >
           <Icons.GripVertical className="size-4 shrink-0" />
         </span>
@@ -232,8 +232,8 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
             {!!toggleCheck && (
               <Checkbox
                 checked={isSelected || false}
-                aria-label={t('Select record')}
-                title={t('Select Item')}
+                aria-label={t('SelectItem')}
+                title={t('SelectItem')}
                 className={cn(
                   isDev && '__HeadlessEditorItem_Checkbox', // DEBUG
                   'bg-background/20',
@@ -246,7 +246,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
               />
             )}
             <div
-              aria-label={t('Comparsion indicator')}
+              aria-label={t('HeadlessEditor.ComparsionIndicator')}
               className={cn(
                 isDev && '__HeadlessEditorItem_CompareIcon', // DEBUG
                 'box-content size-2.5 shrink-0 rounded-full p-[2px] transition',

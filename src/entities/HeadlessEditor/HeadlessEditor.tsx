@@ -4,6 +4,7 @@ import React from 'react';
 
 import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { SortableWrapper } from '@/components/sortable';
 import { isDev } from '@/config';
@@ -139,6 +140,7 @@ export interface THeadlessEditorProps<
 export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
   props: THeadlessEditorProps<T, LargeTexts>,
 ) {
+  const t = useT();
   const memo = React.useMemo<TMemo<T>>(() => defaultMemo, []);
   const {
     className,
@@ -623,7 +625,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           ))
         ) : !filteredItems?.length ? (
           <div className="rounded border border-dashed p-6 text-center text-sm opacity-30">
-            No items to display
+            {t('HeadlessEditor.NoItemsToDisplay')}
           </div>
         ) : (
           filteredItems?.map((it, idx) => {
