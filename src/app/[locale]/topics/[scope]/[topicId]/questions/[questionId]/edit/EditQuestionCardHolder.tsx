@@ -70,13 +70,6 @@ export function EditQuestionCardHolder(props: TEditQuestionCardHolderProps) {
     };
   }, [questionId]);
 
-  // const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
-  // const {
-  //   isFetched: isTopicsFetched,
-  //   queryKey: availableTopicsQueryKey,
-  //   queryProps: availableTopicsQueryProps,
-  // } = availableTopicsQuery;
-
   const availableTopicQuery = useAvailableTopicById({
     id: topicId,
     // availableTopicsQueryKey,
@@ -92,7 +85,10 @@ export function EditQuestionCardHolder(props: TEditQuestionCardHolderProps) {
     // isCached: isTopicCached,
   } = availableTopicQuery;
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'EditQuestionCardHolder',
+    topicId,
+  });
   const {
     queryKey: availableQuestionsQueryKey,
     queryProps: availableQuestionsQueryProps,

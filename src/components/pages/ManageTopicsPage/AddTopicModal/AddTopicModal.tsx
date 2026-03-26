@@ -32,7 +32,7 @@ export function AddTopicModal() {
 
   const t = useT();
 
-  const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
+  const availableTopicsQuery = useAvailableTopicsByScope({ traceId: 'AddTopicModal', manageScope });
 
   // Check if we're still on the add route
   const pathname = usePathname();

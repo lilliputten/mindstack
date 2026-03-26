@@ -47,7 +47,10 @@ export function AddQuestionModalPage() {
     goBack();
   }, [goBack]);
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'AddQuestionModalPage',
+    topicId,
+  });
   const queryClient = useQueryClient();
 
   useDocumentTitle(t('AddQuestionModal.ModalTitle'), shouldBeVisible);

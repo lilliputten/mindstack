@@ -29,7 +29,7 @@ export function TopicBriefInfo(props: TProps) {
    *   error: topicError,
    * } = availableTopicQuery;
    */
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({ traceId: 'TopicBriefInfo', topicId });
   const {
     allQuestions,
     isFetched: isQuestionsFetched,

@@ -58,6 +58,7 @@ export interface THeadlessEditorControlsExternalProps<_T extends TCmpItemBase> {
   onSaveData?: () => void;
   onAddAction?: () => void;
   onDeleteAction?: () => void;
+  onReload?: () => void;
   // Filter setters...
   setFilterTargeted: React.Dispatch<React.SetStateAction<boolean>>;
   setFilterUpdated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -82,6 +83,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     onSaveData,
     onAddAction,
     onDeleteAction,
+    onReload,
     // Editor actions...
     restoreDefaults,
     reorderItems,
@@ -119,7 +121,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const t = useT();
 
-  const [isExpanded, setExpanded] = React.useState(false);
+  const [isExpanded, setExpanded] = React.useState(true);
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
@@ -226,7 +228,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         className="content-truncate flex items-center gap-2"
         variant={selectedIds?.size ? 'destructive' : 'ghost'}
         disabled={!selectedIds?.size}
-        // size="sm"
       >
         <Icons.Trash className="size-4 shrink-0 opacity-50" />
         <span className="truncate">
@@ -235,6 +236,17 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             <span className="ml-1 font-thin opacity-50">({selectedIds.size})</span>
           )}
         </span>
+      </Button>
+    ),
+    !!onReload && (
+      <Button
+        key="Reload"
+        onClick={onReload}
+        className="content-truncate flex items-center gap-2"
+        variant="ghost"
+      >
+        <Icons.Refresh className="size-4 shrink-0 opacity-50" />
+        <span className="truncate">{t('Reload')}</span>
       </Button>
     ),
     <Button

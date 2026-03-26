@@ -7,3 +7,13 @@
 ['available-topic', topicId],
 ['available-topics'],
 ['most-recent-suggested-category'],
+
+See example:
+
+```
+  const invalidatePrefixes = [
+    ['available-question', questionId],
+    ['available-questions-for-topic', topicId],
+  ].map(makeQueryKeyPrefix);
+  invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
+```

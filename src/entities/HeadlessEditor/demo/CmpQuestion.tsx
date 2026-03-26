@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
-import { FormState } from 'react-hook-form';
+import { FormState, UseFormReturn } from 'react-hook-form';
 
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -35,10 +35,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     topicId,
   } = item;
 
-  React.useEffect(() => {
-    console.log('[CmpQuestion:DEBUG:item]', item);
-  }, [item]);
-
   const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
   const t = useT();
@@ -58,7 +54,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
   const count = answers?.length || _count?.answers;
 
   // Item editing...
-  // const [form, setForm] = React.useState<UseFormReturn<TFormData> | undefined>();
+  const [form, setForm] = React.useState<UseFormReturn<TFormData> | undefined>();
   const [isDirty, setIsDirty] = React.useState(false);
   // const [isValid, setIsValid] = React.useState(false);
 
@@ -105,7 +101,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     [confirmActionCallback, goToTheRoute],
   );
 
-  const handleFormSubmit = React.useCallback(
+  const getEditedItem = React.useCallback(
     (formData: TFormData) => {
       const editedItem: T = {
         ...item,
@@ -119,29 +115,41 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         answersCountMax: formData.answersCountMax,
         isGenerated: formData.isGenerated,
       };
-      setEditedItem(editedItem);
+      return editedItem;
     },
     [item],
   );
 
+  const handleFormSubmit = React.useCallback(
+    (formData: TFormData) => {
+      const editedItem: T = getEditedItem(formData);
+      setEditedItem(editedItem);
+    },
+    [getEditedItem],
+  );
+
+  const handleSave = React.useCallback(() => {
+    if (!form || !updateItem) {
+      // TODO: Throw an error?
+      return;
+    }
+    const formData: TFormData = form.watch();
+    const editedItem: T = getEditedItem(formData);
+    updateItem(editedItem);
+    setEditedItem(undefined);
+  }, [getEditedItem, form, updateItem]);
+
   const actionItems = React.useMemo(() => {
     return [
       // Save
-      isEditMode && (
+      isEditMode && !!updateItem && !!form && (
         <Button
           key="Save"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
           variant={isEdited ? 'success' : 'ghost'}
           title={t('Save')}
           disabled={!isEdited}
-          onClick={() => {
-            // Update an item with the new text...
-            if (updateItem) {
-              // const newItem: T = { ...item, text: editText || '' };
-              updateItem(editedItem);
-            }
-            setEditedItem(undefined);
-          }}
+          onClick={handleSave}
         >
           <Icons.Save className="size-4 shrink-0" />
         </Button>
@@ -195,7 +203,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         <Icons.Info className="size-3.5 shrink-0" />
       </Button>,
     ].filter(Boolean);
-  }, [count, editedItem, viewInfo, isEditMode, isEdited, item, t, updateItem]);
+  }, [count, viewInfo, isEditMode, isEdited, item, t, updateItem, form, handleSave]);
 
   const menuItems = React.useMemo(() => {
     return [
@@ -256,6 +264,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           isDev && '__CmpQuestion_Content', // DEBUG
           'content-truncate relative flex flex-1 flex-col gap-4 rounded-md text-left',
         )}
+        title={[item.order && `[${item.order}]`, item.id].filter(Boolean).join(' ')} // DEBUG
       >
         {isEditMode ? (
           <EditQuestionForm
@@ -264,7 +273,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             )}
             fieldsClassName="p-1"
             question={item}
-            // setForm={setForm}
+            setForm={setForm}
             setFormState={setFormState}
             handleFormSubmit={handleFormSubmit}
             // noSections

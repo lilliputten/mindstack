@@ -25,7 +25,10 @@ export function EditTopicPageHolder(props: TEditTopicPageHolderProps) {
     throw new Error('No topic specified');
   }
 
-  const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
+  const availableTopicsQuery = useAvailableTopicsByScope({
+    traceId: 'EditTopicPageHolder',
+    manageScope,
+  });
   const {
     isFetched: isTopicsFetched,
     queryKey: availableTopicsQueryKey,

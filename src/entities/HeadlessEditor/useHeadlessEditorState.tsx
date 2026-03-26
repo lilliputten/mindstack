@@ -22,14 +22,29 @@ export type TReorderModes<T extends TCmpItemBase> = Record<string, TCustomReorde
 
 type TNew<T extends TCmpItemBase> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>;
 
+function prepareItemToSave<T extends TCmpItemBase>(it: T): T {
+  if (it._count) {
+    it = { ...it };
+    delete it._count;
+  }
+  return it;
+}
+function prepareNewItemToSave<T extends TCmpItemBase>(it: T): TNew<T> {
+  const newIt = { ...prepareItemToSave(it) } as TNew<T>;
+  delete newIt.isNew;
+  // delete newIt.id;
+  return newIt;
+}
+
 export interface TSaveDataParams<T extends TCmpItemBase> {
   // All items list...
   items: T[];
   // Items by update type...
   updatedItems?: Set<T>;
   deletedItems?: Set<T>;
-  addedItems?: Set<T>;
+  addedItems?: Set<TNew<T>>;
   // Ids by update type...
+  // affectedIds?: Set<T['id']>;
   addedIds?: Set<T['id']>;
   updatedIds?: Set<T['id']>;
   deletedIds?: Set<T['id']>;
@@ -100,6 +115,8 @@ interface TMemo<T extends TCmpItemBase> {
   filterUpdated?: boolean;
   filterAdded?: boolean;
   filterSelected?: boolean;
+  showNormalized?: boolean;
+  totalChangedCount?: number;
 }
 
 export interface THeadlessEditorState<
@@ -185,6 +202,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   memo.filterUpdated = filterUpdated;
   memo.filterAdded = filterAdded;
   memo.filterSelected = filterSelected;
+  memo.showNormalized = showNormalized;
 
   // const [isSaving, startSavingTransition] = React.useTransition();
   const [isSaving, setSaving] = React.useState(false);
@@ -205,16 +223,21 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
 
   // Update items handler
   const updateItems = React.useCallback((its: T[]) => {
-    const newIdsMap = new Map(its.map((item) => [item.id, item]));
-    setUpdatedIds((updatedIds = new Set()) => new Set([...updatedIds, ...newIdsMap.keys()]));
-    setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
+    const newItemsMap = new Map(its.map((item) => [item.id, item]));
+    setUpdatedIds((updatedIds = new Set()) => new Set([...updatedIds, ...newItemsMap.keys()]));
+    setItems((items) => {
+      const updatedItems = items.map((old) => newItemsMap.get(old.id) ?? old);
+      return updatedItems;
+    });
   }, []);
 
   // Update reordered indices handler
   const updateReordered = React.useCallback((its: T[]) => {
-    const newIdsMap = new Map(its.map((item) => [item.id, item]));
-    setReorderedIds((reorderedIds = new Set()) => new Set([...reorderedIds, ...newIdsMap.keys()]));
-    setItems((items) => items.map((old) => newIdsMap.get(old.id) ?? old));
+    const newItemsMap = new Map(its.map((item) => [item.id, item]));
+    setReorderedIds(
+      (reorderedIds = new Set()) => new Set([...reorderedIds, ...newItemsMap.keys()]),
+    );
+    setItems((items) => items.map((old) => newItemsMap.get(old.id) ?? old));
   }, []);
 
   // State: Local selected ids set
@@ -261,7 +284,6 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
 
   // Restore defaults handler
   const restoreDefaults = React.useCallback(() => {
-    debugger;
     setItems(defaultItems);
     setUpdatedIds(undefined);
     setDeletedIds(undefined);
@@ -297,30 +319,22 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       return;
     }
     // Emulate data save procedure: remove any 'new item' features...
-    const __usedIds = new Set<T['id']>();
+    // const affectedIds = new Set<T['id']>();
     const updatedItems = new Set<T>();
     const deletedItems = new Set<T>();
-    const addedItems = new Set<T>();
-    const __savedItems = items.map((it) => {
-      let id: T['id'] = it.id;
-      const savedIt = { ...it };
-      if (savedIt.isNew || addedIds?.has(id)) {
-        delete savedIt.isNew; // DEBUG only
-        addedItems.add(it);
-      }
-      // DEBUG: Convert an id to 'saved' -- it should be done by the backend DB code
-      if (!id || String(id).startsWith(newItemIdPrefix)) {
-        id = getUniqueIdForSet(__usedIds, '__saved');
-        savedIt.id = id;
-      }
-      if (deletedIds?.has(id)) {
+    const addedItems = new Set<TNew<T>>();
+    /* const __savedItems = */ items.map((it) => {
+      const id: T['id'] = it.id;
+      if (it.isNew || String(id).startsWith(newItemIdPrefix) || addedIds?.has(id)) {
+        // delete it.isNew; // DEBUG only
+        addedItems.add(prepareNewItemToSave(it));
+      } else if (deletedIds?.has(id)) {
         deletedItems.add(it);
-      }
-      if (updatedIds?.has(id) || reorderedIds?.has(id)) {
+      } else if (updatedIds?.has(id) || reorderedIds?.has(id)) {
         updatedItems.add(it);
       }
-      __usedIds.add(id);
-      return savedIt;
+      // affectedIds.add(id);
+      return it;
     });
 
     const saveDataParams: TSaveDataParams<T> = {
@@ -329,18 +343,19 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       // Items by update type...
       updatedItems, // Set<T>
       deletedItems, // Set<T>
-      addedItems, // Set<T>
+      addedItems, // Set<TNew<T>>
       // Ids by update type...
+      // affectedIds,
       addedIds, // Set<T['id']>
       deletedIds, // Set<T['id']>
       updatedIds, // Set<T['id']>
       reorderedIds, // Set<T['id']>
       selectedIds, // Set<T['id']>
     };
-    console.log('[useHeadlessEditorState:handleSave]', {
+    console.log('[useHeadlessEditorState:handleSave:start]', {
       saveDataParams,
-      __usedIds,
-      __savedItems,
+      // affectedIds,
+      // __savedItems,
       // selectedIds,
       addedIds,
       deletedIds,
@@ -349,15 +364,15 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       reorderedIds,
       updatedIds,
     });
-    debugger;
     // startSavingTransition(async () => { });
     setSaving(true);
     const savePromise = saveData?.(saveDataParams) || Promise.resolve();
     savePromise
-      .then(() => {
-        // Save new data...
-        // setDefaultItems(__savedItems);
-        // setItems(__savedItems);
+      .then((res) => {
+        console.log('[useHeadlessEditorState:handleSave:done]', {
+          res,
+          saveDataParams,
+        });
         // Update all data-related indices...
         setUpdatedIds(undefined);
         setDeletedIds(undefined);
@@ -469,6 +484,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       addedIds?.size,
       reorderedIds?.size,
     ].reduce((summ = 0, val = 0) => summ + val, 0) || 0;
+  memo.totalChangedCount = totalChangedCount;
 
   const RenderHeadlessEditorControls = React.useCallback(
     (props: THeadlessEditorControlsExternalProps<T>) => {
@@ -477,9 +493,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         // Reorder...
         reorderTitles,
         // Actions...
-        // onSaveData,
+        // onSaveData, // NOTE: `handleSave` is used
         onAddAction,
         onDeleteAction,
+        onReload,
         // Filter setters...
         setFilterTargeted,
         setFilterUpdated,
@@ -502,6 +519,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         filterUpdated,
         filterAdded,
         filterSelected,
+        // showNormalized,
       } = memo;
       return (
         <HeadlessEditorControls
@@ -516,6 +534,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           onSaveData={saveData ? handleSave : undefined}
           onAddAction={onAddAction}
           onDeleteAction={onDeleteAction}
+          onReload={onReload}
           // Filter setters...
           setFilterTargeted={setFilterTargeted}
           setFilterUpdated={setFilterUpdated}
@@ -565,6 +584,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       setShowNormalized,
       showNormalized,
       handleSave,
+      saveData,
     ],
   );
 
@@ -585,6 +605,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         filterUpdated,
         filterAdded,
         filterSelected,
+        showNormalized,
+        totalChangedCount,
       } = memo;
       return (
         <HeadlessEditor
@@ -636,6 +658,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       // items,
       // reorderedIds,
       // selectedIds,
+      // showNormalized,
+      // totalChangedCount,
       // updatedIds,
       RenderItem,
       getItemText,
@@ -644,9 +668,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       lang,
       largeTexts,
       memo,
-      showNormalized,
       toggleSelectedId,
-      totalChangedCount,
       updateItems,
       updateReordered,
     ],

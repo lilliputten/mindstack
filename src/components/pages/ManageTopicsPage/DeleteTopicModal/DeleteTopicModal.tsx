@@ -23,7 +23,7 @@ export function DeleteTopicModal(props: TDeleteTopicModalProps) {
   const { topicId } = props;
   const t = useT();
 
-  const availableTopics = useAvailableTopicsByScope({ manageScope });
+  const availableTopics = useAvailableTopicsByScope({ traceId: 'DeleteTopicModal', manageScope });
 
   const goBack = useGoBack(routePath);
 

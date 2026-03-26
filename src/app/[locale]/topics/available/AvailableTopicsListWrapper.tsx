@@ -38,6 +38,7 @@ export function AvailableTopicsListWrapper() {
   const augmentFiltersDefaults = React.useMemo(() => ({ hasQuestions: true }), []);
 
   const availableTopicsQuery = useAvailableTopicsByScope({
+    traceId: 'AvailableTopicsListWrapper',
     manageScope,
     enabled: !!filtersParams,
     ...filtersParams,

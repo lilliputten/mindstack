@@ -5,6 +5,7 @@ export interface TCmpItemBase {
   id: TCmpItemId;
   isNew?: boolean;
   order?: number | null; // According to Prisma optinal type
+  _count?: unknown;
 }
 
 export interface TCmpItemProps<T> {

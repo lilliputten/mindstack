@@ -48,7 +48,10 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
     goBack();
   }, [goBack]);
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'DeleteQuestionModal',
+    topicId,
+  });
 
   const queryClient = useQueryClient();
 

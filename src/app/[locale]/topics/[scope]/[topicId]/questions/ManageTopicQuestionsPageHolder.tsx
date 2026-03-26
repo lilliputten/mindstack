@@ -26,13 +26,6 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     throw new Error('No topic specified');
   }
 
-  // const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
-  // const {
-  //   isFetched: isTopicsFetched,
-  //   queryKey: availableTopicsQueryKey,
-  //   queryProps: availableTopicsQueryProps,
-  // } = availableTopicsQuery;
-
   const availableTopicQuery = useAvailableTopicById({
     id: topicId,
     // availableTopicsQueryKey,
@@ -46,6 +39,7 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
   const isTopicReady = isTopicCached || isTopicFetched;
 
   const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'ManageTopicQuestionsPageHolder',
     topicId,
     // itemsLimit: null, // Take all questions, without paging
   });

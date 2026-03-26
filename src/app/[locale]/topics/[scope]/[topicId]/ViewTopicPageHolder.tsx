@@ -25,7 +25,10 @@ export function ViewTopicPageHolder(props: TViewTopicPageHolderProps) {
     throw new Error('No topic specified');
   }
 
-  const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
+  const availableTopicsQuery = useAvailableTopicsByScope({
+    traceId: 'ViewTopicPageHolder',
+    manageScope,
+  });
   const {
     isFetched: isTopicsFetched,
     queryKey: availableTopicsQueryKey,

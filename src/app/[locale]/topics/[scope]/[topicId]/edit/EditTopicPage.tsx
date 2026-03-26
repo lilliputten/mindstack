@@ -231,11 +231,6 @@ export function EditTopicPage(props: TEditTopicPageProps) {
         categoryIds: formData.categoryIds,
         categories: undefined,
       };
-      console.log('[EditTopicPage:handleFormSubmit]', {
-        formData,
-        topic,
-      });
-      debugger;
       startTransition(async () => {
         const updateTopicData = getUpdateTopicFromBroaderData(editedTopic);
         let updatedTopic: TAvailableTopic | undefined;

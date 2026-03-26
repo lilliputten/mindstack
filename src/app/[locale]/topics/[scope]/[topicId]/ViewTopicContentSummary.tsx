@@ -38,6 +38,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
   const topicId = topic?.id;
 
   const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'ViewTopicContentSummary',
     topicId,
     itemsLimit: null, // Take all questions, without paging
   });
@@ -203,49 +204,6 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
 
       <Separator />
 
-      {/* Timestamps */}
-      <div
-        data-testid="__ViewTopicContentSummary_Section_Timeline"
-        className="content-truncate flex flex-col gap-4"
-      >
-        <h3 className="content-truncate text-lg font-semibold">{t('Timeline')}</h3>
-        <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
-          <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
-            <span className="flex gap-2 truncate opacity-50">
-              <Icons.CalendarDays className="size-4 shrink-0" />
-              <span className="truncate">{t('Created')}:</span>
-            </span>
-            <span className="content-truncate">
-              {getFormattedRelativeDate(format, topic.createdAt)}
-            </span>
-          </div>
-          {!!compareDates(topic.updatedAt, topic.createdAt) && (
-            <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
-              <span className="flex gap-2 truncate opacity-50">
-                <Icons.Edit className="size-4 shrink-0" />
-                <span className="truncate">{t('Modified')}:</span>
-              </span>
-              <span className="content-truncate">
-                {getFormattedRelativeDate(format, topic.updatedAt)}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Author Info */}
-      <div
-        data-testid="__ViewTopicContentSummary_Section_Author"
-        className="content-truncate flex flex-col gap-4"
-      >
-        <h3 className="content-truncate text-lg font-semibold">{t('Author')}</h3>
-        <div className="content-truncate flex items-center gap-2 text-sm">
-          <SmallUserBlock user={topic.user} className="truncate" />
-        </div>
-      </div>
-
-      <Separator />
-
       {/* Topic Questions */}
       <div
         data-testid="__ViewTopicContentSummary_Section_Questions"
@@ -315,6 +273,49 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
           </div>
           )*/}
       </div>
+
+      {/* Timestamps */}
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Timeline"
+        className="content-truncate flex flex-col gap-4"
+      >
+        <h3 className="content-truncate text-lg font-semibold">{t('Timeline')}</h3>
+        <div className="flex flex-wrap gap-4 gap-y-2 text-sm">
+          <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+            <span className="flex gap-2 truncate opacity-50">
+              <Icons.CalendarDays className="size-4 shrink-0" />
+              <span className="truncate">{t('Created')}:</span>
+            </span>
+            <span className="content-truncate">
+              {getFormattedRelativeDate(format, topic.createdAt)}
+            </span>
+          </div>
+          {!!compareDates(topic.updatedAt, topic.createdAt) && (
+            <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+              <span className="flex gap-2 truncate opacity-50">
+                <Icons.Edit className="size-4 shrink-0" />
+                <span className="truncate">{t('Modified')}:</span>
+              </span>
+              <span className="content-truncate">
+                {getFormattedRelativeDate(format, topic.updatedAt)}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Author Info */}
+      <div
+        data-testid="__ViewTopicContentSummary_Section_Author"
+        className="content-truncate flex flex-col gap-4"
+      >
+        <h3 className="content-truncate text-lg font-semibold">{t('Author')}</h3>
+        <div className="content-truncate flex items-center gap-2 text-sm">
+          <SmallUserBlock user={topic.user} className="truncate" />
+        </div>
+      </div>
+
+      <Separator />
     </div>
   );
 }
