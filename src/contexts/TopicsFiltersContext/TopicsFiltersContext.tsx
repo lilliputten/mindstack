@@ -170,7 +170,10 @@ export function TopicsFiltersProvider(props: TopicsFiltersProviderProps) {
               defaultFiltersData,
             );
             // Update URL without page reload
-            const queryString = newSearchParams.toString();
+            const queryString = newSearchParams
+              .toString()
+              // A naive approach to get rid of string `'undefined'` values
+              .replace(/=undefined\b/g, '=');
             const url = window.location.pathname + (queryString ? '?' + queryString : '');
             router.replace(url, { scroll: false });
           }
