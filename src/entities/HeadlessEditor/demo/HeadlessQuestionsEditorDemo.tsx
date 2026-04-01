@@ -47,7 +47,7 @@ const reorderTitles: Record<TReorderKey, string> = {
   dateDesc: 'By date (descending)',
 };
 
-export function HeadlessEditorDemo(props: TProps) {
+export function HeadlessQuestionsEditorDemo(props: TProps) {
   const {
     className,
     // Language for comparator
@@ -287,7 +287,7 @@ export function HeadlessEditorDemo(props: TProps) {
       <Select key="Reorder" onValueChange={reorderItems}>
         <SelectTrigger
           className={cn(
-            isDev && '__HeadlessEditorDemo__SelectReorder', // DEBUG
+            isDev && '__HeadlessQuestionsEditorDemo__SelectReorder', // DEBUG
             'flex-1',
           )}
         >
@@ -429,14 +429,14 @@ export function HeadlessEditorDemo(props: TProps) {
   return (
     <div
       className={cn(
-        isDev && '__HeadlessEditorDemo', // DEBUG
+        isDev && '__HeadlessQuestionsEditorDemo', // DEBUG
         'flex flex-col gap-6',
         className,
       )}
     >
       <div
         className={cn(
-          isDev && '__HeadlessEditorDemo_Actions', // DEBUG
+          isDev && '__HeadlessQuestionsEditorDemo_Actions', // DEBUG
           'flex flex-wrap gap-2 px-6',
         )}
       >
@@ -444,21 +444,17 @@ export function HeadlessEditorDemo(props: TProps) {
       </div>
       <ScrollArea
         className={cn(
-          isDev && '__HeadlessEditorDemo_Scroll', // DEBUG
+          isDev && '__HeadlessQuestionsEditorDemo_Scroll', // DEBUG
           'flex flex-1 flex-col overflow-hidden',
         )}
         viewportClassName={cn(
-          isDev && '__HeadlessEditorDemo_ScrollViewport',
+          isDev && '__HeadlessQuestionsEditorDemo_ScrollViewport',
           '[&>div]:flex-col [&>div]:flex-1 [&>div]:justify-center [&>div]:items-center',
         )}
       >
-        {/*
-        <ManageTopicsStoreProvider manageScope="all">
-        </ManageTopicsStoreProvider>
-        */}
         <RenderHeadlessEditor
           className={cn(
-            isDev && '__HeadlessEditorDemo_HeadlessEditor', // DEBUG
+            isDev && '__HeadlessQuestionsEditorDemo_HeadlessEditor', // DEBUG
             'w-full px-6',
           )}
           // forceCompact

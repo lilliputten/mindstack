@@ -514,7 +514,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       return (
         <HeadlessEditorControls
           className={cn(
-            isDev && '__HeadlessEditorDemo_HeadlessEditorControls', // DEBUG
+            isDev && '__useHeadlessEditorState_HeadlessEditorControls', // DEBUG
             className,
           )}
           // Reorder...
@@ -601,7 +601,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       return (
         <HeadlessEditor
           className={cn(
-            isDev && '__HeadlessEditorDemo_HeadlessEditor', // DEBUG
+            isDev && '__useHeadlessEditorState_HeadlessEditor', // DEBUG
             className,
           )}
           // Lifecylcle control...

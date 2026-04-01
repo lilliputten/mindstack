@@ -277,7 +277,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         <Select onValueChange={reorderItems}>
           <SelectTrigger
             className={cn(
-              isDev && '__HeadlessEditorDemo__SelectReorder', // DEBUG
+              isDev && '__HeadlessQuestionsEditorDemo__SelectReorder', // DEBUG
             )}
           >
             <span className="opacity-50">{t('HeadlessEditor.SelectReorderingMode')}</span>

@@ -395,51 +395,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     });
   }, [refetch, setItemsData]);
 
-  /* // UNUSED: onSaveData
-   * const onSaveData = React.useCallback(() => {
-   *   // Emulate data save procedure: remove any 'new item' features...
-   *   const usedIds = new Set<T['id']>();
-   *   const savedItems = items.map((it) => {
-   *     const savedIt = { ...it };
-   *     if (savedIt.isNew) delete savedIt.isNew;
-   *     let id = savedIt.id;
-   *     if (!id || id.startsWith(newItemIdPrefix)) {
-   *       id = getUniqueIdForSet(usedIds, '__saved');
-   *       savedIt.id = id;
-   *     }
-   *     usedIds.add(id);
-   *     return savedIt;
-   *   });
-   *   console.log('[QuestionsEditor:onSaveData]', {
-   *     // selectedIds,
-   *     addedIds,
-   *     deletedIds,
-   *     items,
-   *     memo,
-   *     reorderedIds,
-   *     updatedIds,
-   *   });
-   *   debugger;
-   *   // Save new data...
-   *   setDefaultItems(savedItems);
-   *   // TODO: Update and invalidate the topic and all the questions
-   *   // setItems(savedItems);
-   *   // // Update all data-related indices...
-   *   // setUpdatedIds(undefined);
-   *   // setDeletedIds(undefined);
-   *   // setAddedIds(undefined);
-   *   // setReorderedIds(undefined);
-   * }, [
-   *   // selectedIds,
-   *   addedIds,
-   *   deletedIds,
-   *   items,
-   *   memo,
-   *   reorderedIds,
-   *   updatedIds,
-   * ]);
-   */
-
   return (
     <>
       <RenderHeadlessEditorControls
