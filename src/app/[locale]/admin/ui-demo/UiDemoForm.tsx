@@ -14,7 +14,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { HeadlessQuestionsEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo';
+import { HeadlessAnswersEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
@@ -205,7 +205,7 @@ export function UiDemoForm() {
               'rounded-md border border-dashed border-theme-500/20',
             )}
           >
-            <HeadlessQuestionsEditorDemo className="overflow-hidden" />
+            <HeadlessAnswersEditorDemo className="overflow-hidden" />
           </div>
           {(!showForm || !isMobile) && (
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />

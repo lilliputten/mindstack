@@ -24,6 +24,11 @@ import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { updateAnswer } from '@/features/answers/actions';
 import { useAnswersBreadcrumbsItems } from '@/features/answers/components/AnswersBreadcrumbs';
+import {
+  answerFormDataSchema,
+  EditAnswerForm,
+  TFormData,
+} from '@/features/answers/components/EditAnswerForm';
 import { TAnswer, TAvailableAnswer } from '@/features/answers/types';
 import {
   useAvailableAnswerById,
@@ -34,9 +39,6 @@ import {
   useGoToTheRoute,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
-
-import { EditAnswerForm } from './EditAnswerForm';
-import { answerFormDataSchema, TFormData } from './types';
 
 interface TEditAnswerCardProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;

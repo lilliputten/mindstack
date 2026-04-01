@@ -44,6 +44,8 @@
   "Compared": "Сравнено",
   "ConfirmDeleteQuestions": "Подтвердить удаление вопросов",
   "ConfirmDeleteQuestionsMessage": "Подтверждаете удаление {count, plural, =0 {ни одного вопроса} =1 {# выбранного вопроса} few {# выбранных вопроса} other {# выбранных вопросов}}?",
+  "ConfirmDeleteAnswers": "Подтвердить удаление ответов",
+  "ConfirmDeleteAnswersMessage": "Подтверждаете удаление {count, plural, =0 {ни одного ответа} =1 {# выбранного ответа} few {# выбранных ответа} many {# выбранных ответов} other {# выбранных ответов}}?",
   "Continue": "Продолжить",
   "Created": "Создано",
   "CreationDate": "Дата создания",
@@ -1413,6 +1415,9 @@
   "QuestionsEditor": {
     "DeletingQuestions": "Удаление вопросов...",
     "EditQuestions": "Редактировать вопросы"
+  },
+  "AnswersEditor": {
+    "DeletingAnswers": "Удаление ответов..."
   },
   "QuestionsGenerationTypes": {
     "BASIC": "Простые вопросы",

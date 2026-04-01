@@ -13,6 +13,14 @@ export type TAnswerId = TAnswer['id'];
 /** Only text and questionId are required fields */
 export type TNewAnswer = Partial<Answer> & Pick<Answer, 'text' | 'questionId'>;
 
+/**
+ * Answer row used in headless editors: stable `id`, optional `isNew` / `order` (see `TCmpItemBase`).
+ */
+export interface TNewOrOldAnswer extends TNewAnswer {
+  id: Answer['id'];
+  isNew?: boolean;
+}
+
 /** User fields to include with a flag `iGetAvailableQuestionsParamsSchema.ncludeUser` */
 export const IncludedQuestionSelect = {
   id: true as const,

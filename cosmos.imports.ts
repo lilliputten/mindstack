@@ -6,6 +6,7 @@ import type { RendererConfig, UserModuleWrappers } from 'react-cosmos-core';
 
 import * as fixture0 from './src/components/ui/Button.fixture';
 import * as fixture1 from './src/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo.fixture';
+import * as fixture2 from './src/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo.fixture';
 
 import * as decorator0 from './src/entities/HeadlessEditor/demo/cosmos.decorator';
 
@@ -16,7 +17,8 @@ export const rendererConfig: RendererConfig = {
 
 const fixtures = {
   'src/components/ui/Button.fixture.tsx': { module: fixture0 },
-  'src/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo.fixture.tsx': { module: fixture1 }
+  'src/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo.fixture.tsx': { module: fixture1 },
+  'src/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo.fixture.tsx': { module: fixture2 }
 };
 
 const decorators = {

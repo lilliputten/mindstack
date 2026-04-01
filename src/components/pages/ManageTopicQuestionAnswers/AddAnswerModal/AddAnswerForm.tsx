@@ -38,6 +38,8 @@ export interface TAddAnswerFormProps {
   topicId: TTopicId;
   questionId: TQuestionId;
   addedAnswerId?: TAnswerId;
+  /** Close the dialog right after a successful local submit (e.g. headless editor). */
+  closeImmediatelly?: boolean;
 }
 
 export interface TFormData {
@@ -46,8 +48,16 @@ export interface TFormData {
 }
 
 export function AddAnswerForm(props: TAddAnswerFormProps) {
-  const { className, handleAddAnswer, handleClose, isPending, topicId, questionId, addedAnswerId } =
-    props;
+  const {
+    className,
+    handleAddAnswer,
+    handleClose,
+    isPending,
+    topicId,
+    questionId,
+    addedAnswerId,
+    closeImmediatelly,
+  } = props;
   const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
 
@@ -113,6 +123,9 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
     return handleAddAnswer(newAnswer)
       .then(() => {
         setLimitsError(undefined);
+        if (closeImmediatelly) {
+          handleClose?.();
+        }
       })
       .catch((error) => {
         const message = t('AddAnswerForm.CannotCreateAnswer');

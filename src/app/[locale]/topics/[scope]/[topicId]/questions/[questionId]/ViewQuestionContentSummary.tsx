@@ -18,13 +18,15 @@ import { TRoutePath } from '@/config';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
+import { AnswersEditor } from '@/features/answers/components/AnswersEditor';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { SmallUserBlock } from '@/features/users';
 import { useUserById } from '@/features/users/query-hooks';
 import { useAvailableAnswers, useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
-import { PreviewAnswers } from '@/widgets/answers';
+
+// import { PreviewAnswers } from '@/widgets/answers';
 
 interface TProps {
   topic: TAvailableTopic;
@@ -50,14 +52,13 @@ export function ViewQuestionContentSummary(props: TProps) {
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
 
-  const availableAnswersQuery = useAvailableAnswers({ questionId });
-  const {
-    allAnswers,
-    // queryKey: availableAnswersQueryKey,
-    // queryProps: availableAnswersQueryProps,
-    isFetching: isAnswersFetching,
-    isFetched: isAnswersFetched,
-  } = availableAnswersQuery;
+  const availableAnswersQuery = useAvailableAnswers({
+    questionId,
+    itemsLimit: null,
+    includeQuestion: true,
+    traceId: 'ViewQuestionContentSummary',
+  });
+  const { isFetching: isAnswersFetching, isFetched: isAnswersFetched } = availableAnswersQuery;
 
   const questionTextContent = (
     <div
@@ -167,17 +168,23 @@ export function ViewQuestionContentSummary(props: TProps) {
         )}
       </div>
       */}
-      <div className="content-truncate flex flex-wrap gap-2">
+      <div className="content-truncate flex min-h-[240px] flex-1 flex-col gap-2">
         {isAnswersFetching || !isAnswersFetched ? (
           generateArray(question._count?.answers || 3).map((n) => (
             <Skeleton key={n} className="h-5 w-full" />
           ))
-        ) : !allAnswers.length ? (
-          <p className="text-sm opacity-50">No answers created yet</p>
         ) : (
-          <PreviewAnswers answers={allAnswers} />
+          <AnswersEditor
+            topicId={question.topicId}
+            questionId={question.id}
+            availableAnswersQuery={availableAnswersQuery}
+          />
         )}
       </div>
+      {/*
+      Previous answers preview (replaced by AnswersEditor). Was:
+      PreviewAnswers with allAnswers from useAvailableAnswers.
+      */}
     </div>
   );
 

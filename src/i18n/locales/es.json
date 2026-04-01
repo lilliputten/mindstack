@@ -44,6 +44,8 @@
   "Compared": "Comparado",
   "ConfirmDeleteQuestions": "Confirmar eliminar preguntas",
   "ConfirmDeleteQuestionsMessage": "¿Confirma eliminar {count, plural, =0 {sin preguntas} =1 {",
+  "ConfirmDeleteAnswers": "Confirmar eliminación de respuestas",
+  "ConfirmDeleteAnswersMessage": "¿Confirmas eliminar {count, plural, =0 {ninguna respuesta} =1 {# respuesta seleccionada} other {# respuestas seleccionadas}}?",
   "Continue": "Continuar",
   "Created": "Creado",
   "CreationDate": "Fecha de creación",
@@ -1413,6 +1415,9 @@
   "QuestionsEditor": {
     "DeletingQuestions": "Eliminando preguntas...",
     "EditQuestions": "Editar preguntas"
+  },
+  "AnswersEditor": {
+    "DeletingAnswers": "Eliminando respuestas..."
   },
   "QuestionsGenerationTypes": {
     "BASIC": "Preguntas simples",

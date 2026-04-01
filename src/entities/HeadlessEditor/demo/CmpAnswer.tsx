@@ -1,0 +1,413 @@
+'use client';
+
+import React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormatter } from 'next-intl';
+import { useForm, useFormState } from 'react-hook-form';
+import * as z from 'zod';
+
+import { compareDates, getFormattedRelativeDate } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Button } from '@/components/ui/Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/DropdownMenu';
+import { MarkdownText } from '@/components/ui/MarkdownText';
+import { ConfirmModal } from '@/components/modals/ConfirmModal';
+import {
+  maxTextLength,
+  minTextLength,
+} from '@/components/pages/ManageTopicQuestionAnswers/constants';
+import * as Icons from '@/components/shared/Icons';
+import { isDev, TRoutePath } from '@/config';
+import { EditAnswerForm, TFormData } from '@/features/answers/components/EditAnswerForm';
+import { TNewOrOldAnswer } from '@/features/answers/types';
+import { useGoToTheRoute } from '@/hooks';
+import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
+
+import { TCmpItemProps } from '../types';
+
+const showEditAsAction = true;
+
+const formDataSchema = z.object({
+  text: z.string().min(minTextLength).max(maxTextLength),
+  explanation: z.string().optional(),
+  isCorrect: z.boolean().optional(),
+  isGenerated: z.boolean().optional(),
+});
+
+type TItem = TNewOrOldAnswer & {
+  question?: { id: string; topicId?: string | null } | null;
+};
+
+export function CmpAnswer(props: TCmpItemProps<TItem>) {
+  const { className, item, updateItem, hasChanges } = props;
+  const {
+    id,
+    text = '',
+    explanation = '',
+    isCorrect = false,
+    isGenerated = false,
+    questionId,
+    question,
+  } = item;
+
+  const topicId = question?.topicId ?? undefined;
+
+  const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
+
+  const t = useT();
+  const format = useFormatter();
+
+  const { manageScope } = useManageTopicsStore();
+  const topicsListRoutePath = `/topics/${manageScope}`;
+  const topicRoutePath = topicId ? `${topicsListRoutePath}/${topicId}` : undefined;
+  const questionsListRoutePath = topicRoutePath ? `${topicRoutePath}/questions` : undefined;
+  const questionRoutePath = questionsListRoutePath
+    ? `${questionsListRoutePath}/${questionId}`
+    : undefined;
+  const answersListRoutePath = questionRoutePath ? `${questionRoutePath}/answers` : undefined;
+  const answerRoutePath = answersListRoutePath ? `${answersListRoutePath}/${id}` : undefined;
+
+  const goToTheRoute = useGoToTheRoute();
+
+  const form = useForm<TFormData>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    resolver: zodResolver(formDataSchema),
+    defaultValues: {
+      text: text || '',
+      explanation: explanation || '',
+      isCorrect,
+      isGenerated,
+    },
+  });
+
+  const { isDirty } = useFormState({ control: form.control });
+
+  const [viewInfo, setViewInfo] = React.useState(false);
+
+  const [editedItem, setEditedItem] = React.useState<TItem | undefined>();
+  const isEditMode = editedItem != undefined;
+  const isEdited = isEditMode && isDirty;
+
+  const [isDropdownOpen, setDropdownOpen] = React.useState(false);
+
+  const openEditor = React.useCallback(() => {
+    form.reset({
+      text: text || '',
+      explanation: explanation || '',
+      isCorrect,
+      isGenerated,
+    });
+    setEditedItem(item);
+  }, [form, text, explanation, isCorrect, isGenerated, item]);
+
+  const confirmActionCallback = React.useCallback(
+    (action: () => void) => {
+      return () => {
+        setDropdownOpen(false);
+        if (hasChanges) {
+          setConfirmAction(() => action);
+        } else {
+          action();
+        }
+      };
+    },
+    [hasChanges],
+  );
+
+  const dropdownActionCallback = React.useCallback((action: () => void) => {
+    return () => {
+      setDropdownOpen(false);
+      action();
+    };
+  }, []);
+
+  const confirmGoToTheRouteCallback = React.useCallback(
+    (route: string | undefined) => {
+      if (!route) return () => undefined;
+      return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
+    },
+    [confirmActionCallback, goToTheRoute],
+  );
+
+  const getEditedItem = React.useCallback(
+    (formData: TFormData) => {
+      const next: TItem = {
+        ...item,
+        text: formData.text,
+        explanation: formData.explanation,
+        isCorrect: formData.isCorrect,
+        isGenerated: formData.isGenerated,
+      };
+      return next;
+    },
+    [item],
+  );
+
+  const handleFormSubmit = React.useCallback(
+    (formData: TFormData) => {
+      setEditedItem(getEditedItem(formData));
+    },
+    [getEditedItem],
+  );
+
+  const handleSave = React.useCallback(() => {
+    if (!updateItem) {
+      return;
+    }
+    const formData: TFormData = form.getValues();
+    updateItem(getEditedItem(formData));
+    setEditedItem(undefined);
+  }, [form, getEditedItem, updateItem]);
+
+  const actionItems = React.useMemo(() => {
+    return [
+      isEditMode && !!updateItem && (
+        <Button
+          key="Save"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant={isEdited ? 'success' : 'ghost'}
+          title={t('ApplyChanges')}
+          disabled={!isEdited}
+          onClick={handleSave}
+        >
+          <Icons.Check className="size-4 shrink-0" />
+        </Button>
+      ),
+      isEditMode && (
+        <Button
+          key="CancelEditing"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant="ghost"
+          title={t('CancelEditing')}
+          onClick={() => setEditedItem(undefined)}
+        >
+          <Icons.X className="size-4 shrink-0" />
+        </Button>
+      ),
+      <div
+        key="Correctness"
+        className={cn(
+          isDev && '__CmpAnswer_Correctness',
+          'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
+          'bg-theme-500/10 text-xs text-white opacity-50',
+        )}
+        title={t('EditAnswerFormFields.IsCorrect')}
+      >
+        <span className="truncate">{isCorrect ? '✓' : '—'}</span>
+      </div>,
+      !!updateItem && !isEditMode && showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant="ghost"
+          title={t('Edit')}
+          onClick={openEditor}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+        </Button>
+      ),
+      <Button
+        key="ViewInfo"
+        className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+        variant={viewInfo ? 'theme' : 'ghost'}
+        title={t('ViewInfo')}
+        onClick={() => setViewInfo((v) => !v)}
+      >
+        <Icons.Info className="size-3.5 shrink-0" />
+      </Button>,
+    ].filter(Boolean);
+  }, [isEditMode, updateItem, isEdited, t, handleSave, isCorrect, viewInfo, openEditor]);
+
+  const menuItems = React.useMemo(() => {
+    return [
+      !!updateItem && !isEditMode && !showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant="ghost"
+          onClick={dropdownActionCallback(openEditor)}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+          <span className="truncate">{t('Edit')}</span>
+        </Button>
+      ),
+      answersListRoutePath && (
+        <Button
+          key="GoToTheAnswers"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant="ghost"
+          onClick={confirmGoToTheRouteCallback(answersListRoutePath)}
+        >
+          <Icons.ChevronRight className="size-3 shrink-0" />
+          <span className="truncate">{t('GoToTheAnswers')}</span>
+        </Button>
+      ),
+      answerRoutePath && (
+        <Button
+          key="GoToTheAnswer"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant="ghost"
+          onClick={confirmGoToTheRouteCallback(answerRoutePath)}
+        >
+          <Icons.ChevronRight className="size-3 shrink-0" />
+          <span className="truncate">{t('EditAnswer')}</span>
+        </Button>
+      ),
+    ].filter(Boolean);
+  }, [
+    updateItem,
+    isEditMode,
+    dropdownActionCallback,
+    openEditor,
+    t,
+    confirmGoToTheRouteCallback,
+    answersListRoutePath,
+    answerRoutePath,
+  ]);
+
+  return (
+    <div
+      data-item-id={id}
+      data-testid="__CmpAnswer"
+      className={cn(
+        isDev && '__CmpAnswer',
+        'relative flex w-full items-start gap-2 text-left',
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          isDev && '__CmpAnswer_Content',
+          'content-truncate relative flex flex-1 flex-col gap-4 rounded-md text-left',
+        )}
+        title={[item.order && `[${item.order}]`, item.id].filter(Boolean).join(' ')}
+      >
+        {isEditMode ? (
+          <EditAnswerForm
+            className={cn(isDev && '__CmpAnswer_Form')}
+            fieldsClassName="p-1 !px-2 !py-2"
+            form={form}
+            handleFormSubmit={handleFormSubmit}
+            isPending={false}
+          />
+        ) : (
+          <MarkdownText className={cn(isDev && '__CmpAnswer_Text', 'content-truncate w-full')}>
+            {text}
+          </MarkdownText>
+        )}
+        {!isEditMode && !!explanation && (
+          <div
+            className={cn(
+              isDev && '__CmpAnswer_Explanation',
+              'content-truncate rounded-md bg-muted/30 p-2 text-sm opacity-80',
+            )}
+          >
+            <MarkdownText className="content-truncate">{explanation}</MarkdownText>
+          </div>
+        )}
+        {viewInfo && (
+          <div
+            className={cn(
+              isDev && '__CmpAnswer_Info',
+              'content-truncate flex flex-wrap gap-4 gap-y-2 text-sm',
+            )}
+          >
+            <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+              <span className="flex gap-2 truncate opacity-50">
+                <Icons.CalendarDays className="hidden size-4 shrink-0 sm:flex" />
+                <span className="truncate">{t('Created')}:</span>
+              </span>
+              <span className="truncate">
+                {item.createdAt ? getFormattedRelativeDate(format, item.createdAt) : '—'}
+              </span>
+            </div>
+            {!!item.updatedAt &&
+              !!item.createdAt &&
+              !!compareDates(item.updatedAt, item.createdAt) && (
+                <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
+                  <span className="flex gap-2 truncate opacity-50">
+                    <Icons.Edit className="hidden size-4 shrink-0 sm:flex" />
+                    <span className="truncate">{t('Modified')}:</span>
+                  </span>
+                  <span className="truncate">
+                    {getFormattedRelativeDate(format, item.updatedAt)}
+                  </span>
+                </div>
+              )}
+          </div>
+        )}
+      </div>
+      <div
+        className={cn(
+          isDev && '__CmpAnswer_Extra',
+          'flex shrink-0 items-center justify-center gap-1 max-xs:flex-col',
+        )}
+      >
+        {actionItems}
+        {!!menuItems.length && (
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setDropdownOpen}>
+            <DropdownMenuTrigger
+              asChild
+              aria-label="Show Menu"
+              className={cn(isDev && '__CmpAnswer_DropdownMenuTrigger')}
+            >
+              <Button
+                size="sm"
+                variant="ghost"
+                title={t('ShowMenu')}
+                className={cn(
+                  isDev && '__CmpAnswer_DropdownMenuToggle',
+                  'size-6 p-0',
+                  'active:bg-theme active:text-theme-foreground',
+                  'ring-offset-background',
+                  'data-[state=open]:bg-theme/20',
+                  'data-[state=open]:ring-1',
+                  'data-[state=open]:ring-theme/50',
+                )}
+              >
+                <Icons.MenuVertical className="size-4 transition-all" />
+                <span className="sr-only">{t('ShowMenu')}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className={cn(
+                isDev && '__CmpAnswer_DropdownMenuContent',
+                'mt-2 rounded-lg bg-popover',
+                'flex w-full flex-col gap-1',
+              )}
+              viewportClassName={cn(
+                isDev && '__CmpAnswer_DropdownMenuContentViewport',
+                '[&>div]:gap-1',
+              )}
+            >
+              {menuItems}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+      {!!confirmAction && (
+        <ConfirmModal
+          isVisible
+          dialogTitle={t('YouHaveUnsavedChanges')}
+          confirmButtonVariant="destructive"
+          confirmButtonText={t('Yes')}
+          cancelButtonText={t('No')}
+          handleClose={() => setConfirmAction(undefined)}
+          handleConfirm={() => {
+            confirmAction?.();
+            setConfirmAction(undefined);
+          }}
+        >
+          {t('AreYouSureYouWantToLoseData')}
+        </ConfirmModal>
+      )}
+    </div>
+  );
+}
