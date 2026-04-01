@@ -14,7 +14,8 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { HeadlessAnswersEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo';
+// import { HeadlessAnswersEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo';
+import { HeadlessQuestionsEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
 import { useMediaQuery } from '@/hooks';
 
@@ -31,7 +32,7 @@ export function UiDemoForm() {
   const [showForm, toggleForm] = React.useState(false);
 
   const [logs, setLogs] = React.useState<TLogRecord[]>([
-    /* // DEMO: Sample data
+    /* // DEMO: Sample log data
      * {
      *   type: 'data',
      *   title: 'Sample data record',
@@ -179,7 +180,7 @@ export function UiDemoForm() {
         actions={actions}
       >
         <div className="flex flex-wrap gap-4">
-          <h1 className="truncate text-2xl">Test AI Text Query</h1>
+          <h1 className="truncate text-2xl">UI Demo</h1>
           {form.watch('showDebugData') && (
             <Badge variant="destructive" className="flex gap-1 truncate">
               <Icons.FlaskConical className="size-4 opacity-50" />
@@ -205,7 +206,7 @@ export function UiDemoForm() {
               'rounded-md border border-dashed border-theme-500/20',
             )}
           >
-            <HeadlessAnswersEditorDemo className="overflow-hidden" />
+            <HeadlessQuestionsEditorDemo className="overflow-hidden" />
           </div>
           {(!showForm || !isMobile) && (
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />

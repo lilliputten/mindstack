@@ -91,7 +91,8 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     [t],
   );
 
-  const { allAnswers, queryKey, refetch, isRefetching, isFetching } = availableAnswersQuery;
+  const { allAnswers, queryKey, refetch, isRefetching, isFetching, isFetched } =
+    availableAnswersQuery;
   const isLoading = isSaving || isRefetching || isFetching;
 
   const answersLocale = locale;
@@ -313,6 +314,16 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     });
   }, [refetch, setItemsData]);
 
+  React.useEffect(() => {
+    if (!isFetched) {
+      return;
+    }
+    if (hasChanges) {
+      return;
+    }
+    setItemsData(allAnswers);
+  }, [allAnswers, hasChanges, isFetched, setItemsData]);
+
   return (
     <>
       <RenderHeadlessEditorControls
@@ -337,7 +348,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
         saveScrollHash={saveScrollHash}
         className={cn(
           isDev && '__AnswersEditor_Scroll',
-          'relative flex min-h-[200px] flex-1 flex-col overflow-hidden',
+          'relative flex flex-1 flex-col overflow-hidden',
         )}
         viewportClassName={cn(isDev && '__AnswersEditor_Scroll_Viewport')}
       >

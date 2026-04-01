@@ -44,10 +44,10 @@
   "ClickToHideSettings": "Click to hide settings",
   "Close": "Close",
   "Compared": "Compared",
-  "ConfirmDeleteQuestions": "Confirm delete questions",
-  "ConfirmDeleteQuestionsMessage": "Do you confirm deleting {count, plural, =0 {no questions} =1 {# selected question} other {# selected questions}}?",
   "ConfirmDeleteAnswers": "Confirm delete answers",
   "ConfirmDeleteAnswersMessage": "Do you confirm deleting {count, plural, =0 {no answers} =1 {# selected answer} other {# selected answers}}?",
+  "ConfirmDeleteQuestions": "Confirm delete questions",
+  "ConfirmDeleteQuestionsMessage": "Do you confirm deleting {count, plural, =0 {no questions} =1 {# selected question} other {# selected questions}}?",
   "Continue": "Continue",
   "Created": "Created",
   "CreationDate": "Creation date",
@@ -264,6 +264,9 @@
     "ToastError": "Can not create new topic",
     "ToastLoading": "Creating new topic...",
     "ToastSuccess": "Successfully created new topic \"{name}\""
+  },
+  "AnswersEditor": {
+    "DeletingAnswers": "Deleting answers..."
   },
   "AnswersGenerationTypeTexts": {
     "CORRECT": "Only correct answers",
@@ -647,6 +650,8 @@
     "SuccessfullySavedAnswer": "Successfully saved the answer"
   },
   "EditAnswerFormFields": {
+    "AnswerIsCorrect": "Answer is correct",
+    "AnswerIsIncorrect": "Answer is incorrect",
     "AnswerText": "Answer Text",
     "AnswerTextHint": "An answer text.",
     "AnswerTextPlaceholder": "Answer Text",
@@ -1435,9 +1440,6 @@
   "QuestionsEditor": {
     "DeletingQuestions": "Deleting questions...",
     "EditQuestions": "Edit Questions"
-  },
-  "AnswersEditor": {
-    "DeletingAnswers": "Deleting answers..."
   },
   "QuestionsGenerationTypes": {
     "BASIC": "Simple Questions",

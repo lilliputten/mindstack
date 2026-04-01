@@ -168,20 +168,20 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <Icons.X className="size-4 shrink-0" />
         </Button>
       ),
-      (showEmptyAnswersButton || !!count) && (
+      !isEditMode && (showEmptyAnswersButton || !!count) && (
         <div
           // TODO: Add a handler to expand answers section...
           key="Answers"
           className={cn(
             isDev && '__CmpQuestion_Count', // DEBUG
             'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
-            'bg-theme-500/10 text-xs text-white opacity-50',
+            'bg-theme-500/10 text-xs text-foreground opacity-50',
             isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
           )}
           onClick={
             isActiveAnswersButton ? confirmGoToTheRouteCallback(questionRoutePath) : undefined
           }
-          title={t('Answers')}
+          title={t('GoToTheAnswers')}
         >
           <span className="truncate">{count || 0}</span>
         </div>
@@ -199,15 +199,17 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         </Button>
       ),
       // View question info
-      <Button
-        key="ViewInfo"
-        className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-        variant={viewInfo ? 'theme' : 'ghost'}
-        title={t('ViewInfo')}
-        onClick={() => setViewInfo((viewInfo) => !viewInfo)}
-      >
-        <Icons.Info className="size-3.5 shrink-0" />
-      </Button>,
+      !isEditMode && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          title={t('ViewInfo')}
+          onClick={() => setViewInfo((viewInfo) => !viewInfo)}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+        </Button>
+      ),
     ].filter(Boolean);
   }, [
     isEditMode,
@@ -225,6 +227,19 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
 
   const menuItems = React.useMemo(() => {
     return [
+      // View question info
+      isEditMode && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          title={t('ViewInfo')}
+          onClick={dropdownActionCallback(() => setViewInfo((viewInfo) => !viewInfo))}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+          <span className="truncate">{t('ViewInfo')}</span>
+        </Button>
+      ),
       !!updateItem && !isEditMode && !showEditAsAction && (
         <Button
           key="Edit"
@@ -256,14 +271,15 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       </Button>,
     ].filter(Boolean);
   }, [
-    updateItem,
-    isEditMode,
-    dropdownActionCallback,
-    t,
-    confirmGoToTheRouteCallback,
-    questionRoutePath,
     answersListRoutePath,
+    confirmGoToTheRouteCallback,
+    dropdownActionCallback,
+    isEditMode,
     item,
+    questionRoutePath,
+    t,
+    updateItem,
+    viewInfo,
   ]);
 
   return (

@@ -42,10 +42,10 @@
   "ClickToHideSettings": "Haz clic para ocultar la configuración",
   "Close": "Cerrar",
   "Compared": "Comparado",
-  "ConfirmDeleteQuestions": "Confirmar eliminar preguntas",
-  "ConfirmDeleteQuestionsMessage": "¿Confirma eliminar {count, plural, =0 {sin preguntas} =1 {",
   "ConfirmDeleteAnswers": "Confirmar eliminación de respuestas",
   "ConfirmDeleteAnswersMessage": "¿Confirmas eliminar {count, plural, =0 {ninguna respuesta} =1 {# respuesta seleccionada} other {# respuestas seleccionadas}}?",
+  "ConfirmDeleteQuestions": "Confirmar eliminar preguntas",
+  "ConfirmDeleteQuestionsMessage": "¿Confirma eliminar {count, plural, =0 {sin preguntas} =1 {",
   "Continue": "Continuar",
   "Created": "Creado",
   "CreationDate": "Fecha de creación",
@@ -260,6 +260,9 @@
     "ToastError": "No se puede crear el nuevo tema",
     "ToastLoading": "Creando nuevo tema...",
     "ToastSuccess": "Se creó exitosamente el nuevo tema \"{name}\""
+  },
+  "AnswersEditor": {
+    "DeletingAnswers": "Eliminando respuestas..."
   },
   "AnswersGenerationTypeTexts": {
     "CORRECT": "Solo respuestas correctas",
@@ -639,6 +642,8 @@
     "SuccessfullySavedAnswer": "Respuesta guardada exitosamente"
   },
   "EditAnswerFormFields": {
+    "AnswerIsCorrect": "la respuesta es correcta",
+    "AnswerIsIncorrect": "La respuesta es incorrecta",
     "AnswerText": "Texto de la Respuesta",
     "AnswerTextHint": "Un texto de respuesta.",
     "AnswerTextPlaceholder": "Texto de la Respuesta",
@@ -1415,9 +1420,6 @@
   "QuestionsEditor": {
     "DeletingQuestions": "Eliminando preguntas...",
     "EditQuestions": "Editar preguntas"
-  },
-  "AnswersEditor": {
-    "DeletingAnswers": "Eliminando respuestas..."
   },
   "QuestionsGenerationTypes": {
     "BASIC": "Preguntas simples",

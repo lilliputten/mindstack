@@ -42,10 +42,10 @@
   "ClickToHideSettings": "Нажмите, чтобы скрыть настройки",
   "Close": "Закрыть",
   "Compared": "Сравнено",
-  "ConfirmDeleteQuestions": "Подтвердить удаление вопросов",
-  "ConfirmDeleteQuestionsMessage": "Подтверждаете удаление {count, plural, =0 {ни одного вопроса} =1 {# выбранного вопроса} few {# выбранных вопроса} other {# выбранных вопросов}}?",
   "ConfirmDeleteAnswers": "Подтвердить удаление ответов",
   "ConfirmDeleteAnswersMessage": "Подтверждаете удаление {count, plural, =0 {ни одного ответа} =1 {# выбранного ответа} few {# выбранных ответа} many {# выбранных ответов} other {# выбранных ответов}}?",
+  "ConfirmDeleteQuestions": "Подтвердить удаление вопросов",
+  "ConfirmDeleteQuestionsMessage": "Подтверждаете удаление {count, plural, =0 {ни одного вопроса} =1 {# выбранного вопроса} few {# выбранных вопроса} other {# выбранных вопросов}}?",
   "Continue": "Продолжить",
   "Created": "Создано",
   "CreationDate": "Дата создания",
@@ -256,6 +256,9 @@
     "ToastError": "Невозможно создать новую тему",
     "ToastLoading": "Создание новой темы...",
     "ToastSuccess": "Новая тема \"{name}\" создана"
+  },
+  "AnswersEditor": {
+    "DeletingAnswers": "Удаление ответов..."
   },
   "AnswersGenerationTypeTexts": {
     "CORRECT": "Только правильные ответы",
@@ -640,6 +643,8 @@
     "SuccessfullySavedAnswer": "Ответ сохранён"
   },
   "EditAnswerFormFields": {
+    "AnswerIsCorrect": "Ответ правильный",
+    "AnswerIsIncorrect": "Ответ неверный",
     "AnswerText": "Текст ответа",
     "AnswerTextHint": "Текст ответа.",
     "AnswerTextPlaceholder": "Текст ответа",
@@ -1415,9 +1420,6 @@
   "QuestionsEditor": {
     "DeletingQuestions": "Удаление вопросов...",
     "EditQuestions": "Редактировать вопросы"
-  },
-  "AnswersEditor": {
-    "DeletingAnswers": "Удаление ответов..."
   },
   "QuestionsGenerationTypes": {
     "BASIC": "Простые вопросы",

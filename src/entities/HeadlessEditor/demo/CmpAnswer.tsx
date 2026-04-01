@@ -25,12 +25,13 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
 import { EditAnswerForm, TFormData } from '@/features/answers/components/EditAnswerForm';
 import { TNewOrOldAnswer } from '@/features/answers/types';
-import { useGoToTheRoute } from '@/hooks';
+import { useAvailableQuestionById, useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { TCmpItemProps } from '../types';
 
 const showEditAsAction = true;
+const showExplanation = false;
 
 const formDataSchema = z.object({
   text: z.string().min(minTextLength).max(maxTextLength),
@@ -52,15 +53,25 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     isCorrect = false,
     isGenerated = false,
     questionId,
-    question,
+    // question, // NOTE: Using the question data from `useAvailableQuestionById` below
   } = item;
-
-  const topicId = question?.topicId ?? undefined;
-
-  const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
   const t = useT();
   const format = useFormatter();
+  const goToTheRoute = useGoToTheRoute();
+
+  const availableQuestionQuery = useAvailableQuestionById({ id: questionId, traceId: 'CmpAnswer' });
+  const {
+    question,
+    isFetched: isQuestionFetched,
+    isFetching: isQuestionFetching,
+  } = availableQuestionQuery;
+
+  const isReady = isQuestionFetched && !isQuestionFetching;
+
+  const topicId = question?.topicId;
+
+  const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
   const { manageScope } = useManageTopicsStore();
   const topicsListRoutePath = `/topics/${manageScope}`;
@@ -71,8 +82,6 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     : undefined;
   const answersListRoutePath = questionRoutePath ? `${questionRoutePath}/answers` : undefined;
   const answerRoutePath = answersListRoutePath ? `${answersListRoutePath}/${id}` : undefined;
-
-  const goToTheRoute = useGoToTheRoute();
 
   const form = useForm<TFormData>({
     mode: 'onChange',
@@ -87,6 +96,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
   });
 
   const { isDirty } = useFormState({ control: form.control });
+  const formIsCorrect = form.watch('isCorrect');
 
   const [viewInfo, setViewInfo] = React.useState(false);
 
@@ -105,6 +115,21 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     });
     setEditedItem(item);
   }, [form, text, explanation, isCorrect, isGenerated, item]);
+
+  React.useEffect(() => {
+    if (isEditMode) {
+      return;
+    }
+    form.reset(
+      {
+        text: text || '',
+        explanation: explanation || '',
+        isCorrect,
+        isGenerated,
+      },
+      { keepDirtyValues: false },
+    );
+  }, [form, id, text, explanation, isCorrect, isGenerated, isEditMode]);
 
   const confirmActionCallback = React.useCallback(
     (action: () => void) => {
@@ -165,6 +190,19 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     setEditedItem(undefined);
   }, [form, getEditedItem, updateItem]);
 
+  const toggleCorrectness = React.useCallback(() => {
+    if (!updateItem || isEditMode) {
+      return;
+    }
+    const current = form.getValues('isCorrect') ?? false;
+    form.setValue('isCorrect', !current, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+    updateItem(getEditedItem(form.getValues()));
+  }, [updateItem, isEditMode, form, getEditedItem]);
+
   const actionItems = React.useMemo(() => {
     return [
       isEditMode && !!updateItem && (
@@ -190,17 +228,32 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           <Icons.X className="size-4 shrink-0" />
         </Button>
       ),
-      <div
-        key="Correctness"
-        className={cn(
-          isDev && '__CmpAnswer_Correctness',
-          'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
-          'bg-theme-500/10 text-xs text-white opacity-50',
-        )}
-        title={t('EditAnswerFormFields.IsCorrect')}
-      >
-        <span className="truncate">{isCorrect ? '✓' : '—'}</span>
-      </div>,
+      !!updateItem && !isEditMode && (
+        <Button
+          key="Correctness"
+          type="button"
+          variant="ghost"
+          className={cn(
+            isDev && '__CmpAnswer_Correctness',
+            'flex size-6 shrink-0 items-center justify-center rounded-md p-0',
+            (formIsCorrect ?? false)
+              ? 'bg-green-600/25 text-green-600 hover:bg-green-600/40 hover:text-green-700'
+              : 'bg-red-600/20 text-red-500 hover:bg-red-600/35 hover:text-red-600',
+          )}
+          title={
+            formIsCorrect
+              ? t('EditAnswerFormFields.AnswerIsCorrect')
+              : t('EditAnswerFormFields.AnswerIsIncorrect')
+          }
+          onClick={toggleCorrectness}
+        >
+          {formIsCorrect ? (
+            <Icons.CircleCheck className="size-4 shrink-0" />
+          ) : (
+            <Icons.CircleAlert className="size-4 shrink-0" />
+          )}
+        </Button>
+      ),
       !!updateItem && !isEditMode && showEditAsAction && (
         <Button
           key="Edit"
@@ -212,20 +265,44 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           <Icons.Edit className="size-3.5 shrink-0" />
         </Button>
       ),
-      <Button
-        key="ViewInfo"
-        className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
-        variant={viewInfo ? 'theme' : 'ghost'}
-        title={t('ViewInfo')}
-        onClick={() => setViewInfo((v) => !v)}
-      >
-        <Icons.Info className="size-3.5 shrink-0" />
-      </Button>,
+      !isEditMode && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          title={t('ViewInfo')}
+          onClick={() => setViewInfo((v) => !v)}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+        </Button>
+      ),
     ].filter(Boolean);
-  }, [isEditMode, updateItem, isEdited, t, handleSave, isCorrect, viewInfo, openEditor]);
+  }, [
+    isEditMode,
+    updateItem,
+    isEdited,
+    t,
+    handleSave,
+    formIsCorrect,
+    viewInfo,
+    openEditor,
+    toggleCorrectness,
+  ]);
 
   const menuItems = React.useMemo(() => {
     return [
+      isEditMode && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          title={t('ViewInfo')}
+          onClick={dropdownActionCallback(() => setViewInfo((v) => !v))}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+          <span className="truncate">{t('ViewInfo')}</span>
+        </Button>
+      ),
       !!updateItem && !isEditMode && !showEditAsAction && (
         <Button
           key="Edit"
@@ -269,6 +346,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     confirmGoToTheRouteCallback,
     answersListRoutePath,
     answerRoutePath,
+    viewInfo,
   ]);
 
   return (
@@ -277,7 +355,8 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
       data-testid="__CmpAnswer"
       className={cn(
         isDev && '__CmpAnswer',
-        'relative flex w-full items-start gap-2 text-left',
+        'relative flex w-full items-start gap-2 text-left transition',
+        !isReady && 'opacity-50',
         className,
       )}
     >
@@ -301,7 +380,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
             {text}
           </MarkdownText>
         )}
-        {!isEditMode && !!explanation && (
+        {!isEditMode && showExplanation && !!explanation && (
           <div
             className={cn(
               isDev && '__CmpAnswer_Explanation',

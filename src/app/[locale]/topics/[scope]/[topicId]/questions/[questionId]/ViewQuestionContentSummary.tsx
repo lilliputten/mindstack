@@ -26,8 +26,6 @@ import { useUserById } from '@/features/users/query-hooks';
 import { useAvailableAnswers, useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-// import { PreviewAnswers } from '@/widgets/answers';
-
 interface TProps {
   topic: TAvailableTopic;
   question: TAvailableQuestion;
@@ -139,36 +137,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           </Link>
         </div>
       </div>
-      {/*
-      <div className="content-truncate flex flex-wrap gap-2">
-        <Badge variant="outline" className="flex items-center gap-2 truncate px-2 py-1">
-          <Icons.Answers className="size-4 shrink-0 opacity-50" />
-          {question._count?.answers ? (
-            <span className="truncate">
-              <span className="truncate opacity-50">
-                {t('ViewQuestionContentSummary.AnswersCount')}:
-              </span>{' '}
-              {question._count.answers}
-            </span>
-          ) : (
-            <span className="truncate">{t('ViewQuestionContentSummary.NoAnswersYet')}</span>
-          )}
-        </Badge>
-        {question.answersCountRandom && question.answersCountMin && question.answersCountMax && (
-          <Badge
-            variant="outline"
-            className="flex items-center gap-2 truncate border-blue-500 px-2 py-1 text-blue-500"
-          >
-            <Icons.Hash className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">
-              {t('ViewQuestionContentSummary.RandomAnswersRange')}: {question.answersCountMin}-
-              {question.answersCountMax}
-            </span>
-          </Badge>
-        )}
-      </div>
-      */}
-      <div className="content-truncate flex min-h-[240px] flex-1 flex-col gap-2">
+      <div className="content-truncate flex flex-1 flex-col gap-2">
         {isAnswersFetching || !isAnswersFetched ? (
           generateArray(question._count?.answers || 3).map((n) => (
             <Skeleton key={n} className="h-5 w-full" />
@@ -181,10 +150,6 @@ export function ViewQuestionContentSummary(props: TProps) {
           />
         )}
       </div>
-      {/*
-      Previous answers preview (replaced by AnswersEditor). Was:
-      PreviewAnswers with allAnswers from useAvailableAnswers.
-      */}
     </div>
   );
 
