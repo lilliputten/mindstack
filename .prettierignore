@@ -15,4 +15,7 @@ cosmos.imports.ts
 # Hard-copied multilingual-stemmer
 src/packages/text-comparator/multilingual-stemmer/*
 
+# Config files
+.qwen
+
 **/*.mdx

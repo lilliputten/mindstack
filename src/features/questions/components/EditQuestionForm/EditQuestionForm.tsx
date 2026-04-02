@@ -113,16 +113,21 @@ export function EditQuestionForm(props: TEditQuestionFormProps) {
     defaultValues, // Default values for the form.
   });
 
+  // Call setForm only once on mount — form identity changes every render and
+  // would otherwise trigger an infinite re-render loop in the parent.
+  const setFormRef = React.useRef(setForm);
   React.useEffect(() => {
-    setForm?.(form);
-  }, [setForm, form]);
+    setFormRef.current?.(form);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // @see https://react-hook-form.com/docs/useform/formstate
-  const formState = form.formState;
+  const { isDirty, isValid } = form.formState;
 
   React.useEffect(() => {
-    setFormState?.(formState);
-  }, [setFormState, formState]);
+    setFormState?.(form.formState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setFormState, isDirty, isValid]);
 
   return (
     <FormProvider {...form}>
