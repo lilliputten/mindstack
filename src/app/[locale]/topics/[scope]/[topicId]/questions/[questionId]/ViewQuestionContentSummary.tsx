@@ -147,6 +147,7 @@ export function ViewQuestionContentSummary(props: TProps) {
             topicId={question.topicId}
             questionId={question.id}
             availableAnswersQuery={availableAnswersQuery}
+            isReady={!isAnswersFetching}
           />
         )}
       </div>

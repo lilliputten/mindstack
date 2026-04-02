@@ -15,8 +15,12 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
-import { AnswersEditor } from '@/features/answers/components';
+import { TSaveDataParams } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
+import { HeadlessAnswersEditor } from '@/features/answers/components/AnswersEditor';
+import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
+import { TQuestionId } from '@/features/questions/types';
 import { useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
@@ -27,6 +31,45 @@ import { T } from './types';
 const showEditAsAction = true;
 const isActiveAnswersButton = true;
 const showEmptyAnswersButton = true;
+
+/**
+ * `TNewOrOldQuestion.answers` may list draft shapes (text-only) or full `TAvailableAnswer` rows.
+ * The headless answers editor requires stable `id` and `questionId` on every row.
+ */
+function toHeadlessAnswerRows(
+  questionId: TQuestionId,
+  raw: T['answers'] | undefined,
+): TNewOrOldAnswer[] {
+  if (!raw?.length) {
+    return [];
+  }
+  return raw.map((entry, index) => {
+    if (
+      entry &&
+      typeof entry === 'object' &&
+      'id' in entry &&
+      entry.id != null &&
+      'questionId' in entry &&
+      entry.questionId != null &&
+      'text' in entry
+    ) {
+      return entry as TNewOrOldAnswer;
+    }
+    const e = entry as {
+      text: string;
+      isCorrect?: boolean;
+      explanation?: string | null;
+    };
+    return {
+      id: `${newItemIdPrefix}cmp-${String(questionId)}-${String(index)}`,
+      questionId,
+      text: e.text,
+      isCorrect: e.isCorrect,
+      explanation: e.explanation,
+      isNew: true,
+    };
+  });
+}
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
   const { className, item, updateItem, hasChanges } = props;
@@ -235,6 +278,24 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     viewInfo,
   ]);
 
+  const headlessAnswerRows = React.useMemo(() => toHeadlessAnswerRows(id, answers), [id, answers]);
+
+  const saveAnswersData = React.useCallback(
+    async (saveParams: TSaveDataParams<TNewOrOldAnswer>): Promise<TNewOrOldAnswer[]> => {
+      const { items, updatedItems, deletedIds, addedItems } = saveParams;
+      const updatedMap = new Map(updatedItems ? [...updatedItems].map((u) => [u.id, u]) : []);
+      const newItems = items
+        .filter((answer) => !deletedIds?.has(answer.id))
+        .map((answer) => updatedMap.get(answer.id) ?? answer)
+        .concat(addedItems ? ([...addedItems.values()] as TNewOrOldAnswer[]) : []);
+      if (updateItem) {
+        updateItem({ ...item, answers: newItems });
+      }
+      return newItems;
+    },
+    [item, updateItem],
+  );
+
   const menuItems = React.useMemo(() => {
     return [
       // View question info
@@ -372,18 +433,16 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <div
             className={cn(
               isDev && '__CmpQuestion_Answers', // DEBUG
-              'content-truncate flex flex-wrap gap-4 gap-y-2 text-sm',
+              'content-truncate flex max-h-[min(24rem,50vh)] min-h-0 flex-col gap-2 text-sm',
             )}
           >
-            HeadlessAnswersEditor placeholder
-            {/* // TODO: Place 'HeadlessAnswersEditor` here
-            <AnswersEditor
-            // TODO: Place 'AnswersEditor` here
-            topicId={topicId}
-            questionId={id}
-            availableAnswersQuery={availableAnswersQuery}
+            <HeadlessAnswersEditor
+              topicId={topicId}
+              questionId={id}
+              questions={headlessAnswerRows}
+              isReady
+              saveData={saveAnswersData}
             />
-            */}
           </div>
         )}
       </div>

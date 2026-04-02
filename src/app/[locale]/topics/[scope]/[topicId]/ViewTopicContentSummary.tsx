@@ -33,7 +33,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
   const format = useFormatter();
   const t = useT();
 
-  const { topic, isFetched: isTopicFetched } = availableTopicQuery;
+  const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
 
   const topicId = topic?.id;
 
@@ -43,13 +43,8 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     itemsLimit: null, // Take all questions, without paging
     includeAnswers: true, // Include answers
   });
-  const {
-    // allQuestions,
-    // queryKey: availableQuestionsQueryKey,
-    // queryProps: availableQuestionsQueryProps,
-    // isFetching: isQuestionsFetching,
-    isFetched: isQuestionsFetched,
-  } = availableQuestionsQuery;
+  const { isFetched: isQuestionsFetched, isFetching: isQuestionsFetching } =
+    availableQuestionsQuery;
 
   // const [headlessEditorState, setHeadlessEditorState] = React.useState<
   //   THeadlessEditorState<TNewOrOldQuestion> | undefined
@@ -242,6 +237,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             topicId={topicId}
             availableTopicQuery={availableTopicQuery}
             availableQuestionsQuery={availableQuestionsQuery}
+            isReady={!isTopicFetching && !isQuestionsFetching}
             // setHeadlessEditorState={setHeadlessEditorState}
           />
         ) : (

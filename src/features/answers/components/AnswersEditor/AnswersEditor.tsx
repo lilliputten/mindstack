@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
@@ -11,23 +10,8 @@ import {
   invalidateKeysByPrefixes,
   makeQueryKeyPrefix,
 } from '@/lib/helpers';
-import { getRandomHashString } from '@/lib/helpers/strings';
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import { TLocale, useT } from '@/i18n';
-import { ScrollArea } from '@/components/ui/ScrollArea';
-import { ConfirmModal } from '@/components/modals/ConfirmModal';
-import { AddAnswerModal } from '@/components/pages/ManageTopicQuestionAnswers';
-import { isDev } from '@/constants';
-import {
-  newItemIdPrefix,
-  reorderByDate,
-  THeadlessEditorState,
-  TReorderModes,
-  TSaveDataParams,
-  useHeadlessEditorState,
-} from '@/entities/HeadlessEditor';
-import { CmpAnswer } from '@/entities/HeadlessEditor/demo/CmpAnswer';
+import { newItemIdPrefix, THeadlessEditorState, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableAnswers } from '@/hooks';
@@ -36,91 +20,47 @@ import {
   TUpdateAnswersDataViaParamsResults,
   updateAnswersDataViaParams,
 } from '../../actions/updateAnswersDataViaParams';
+import { HeadlessAnswersEditor } from './HeadlessAnswersEditor';
 import { T } from './types';
-
-const saveScrollHash = getRandomHashString();
-
-const largeTexts = false;
-
-function getItemText(item: T) {
-  return item.text;
-}
-
-const reorderModes = {
-  abc: {},
-  abcDesc: { desc: true },
-  date: { func: reorderByDate },
-  dateDesc: { func: reorderByDate, desc: true },
-} as const satisfies TReorderModes<T>;
-type TReorderKey = keyof typeof reorderModes;
 
 export interface TAnswersEditorProps {
   topicId: TTopicId;
   questionId: TQuestionId;
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
+  /** When false, the headless editor stays in a non-interactive loading state. */
+  isReady?: boolean;
   setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
-  handleSaveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
+  saveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
 }
 
 interface TMemo {
-  hasChanges?: boolean;
   savePromise?: Promise<TUpdateAnswersDataViaParamsResults>;
   setItemsData?: (items: T[]) => void;
 }
 
 export function AnswersEditor(props: TAnswersEditorProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
-  const { topicId, questionId, availableAnswersQuery, setHeadlessEditorState, handleSaveData } =
-    props;
+  const {
+    topicId,
+    questionId,
+    availableAnswersQuery,
+    isReady: isReadyFromParent,
+    setHeadlessEditorState,
+    saveData: saveDataFromParent,
+  } = props;
 
   const [savePromise, setSavePromise] = React.useState<
     Promise<TUpdateAnswersDataViaParamsResults> | undefined
   >();
   const isSaving = !!savePromise;
 
-  const locale = useLocale() as TLocale;
   const queryClient = useQueryClient();
-  const t = useT();
 
-  const reorderTitles = React.useMemo<Record<TReorderKey, string>>(
-    () => ({
-      abc: t('ByText'),
-      abcDesc: t('ByTextDescending'),
-      date: t('ByDate'),
-      dateDesc: t('ByDateDescending'),
-    }),
-    [t],
-  );
-
-  // \<\(allAnswers\|queryKey\|refetch\|isRefetching\|isFetching\|isFetched\)\>
   const { allAnswers, queryKey, refetch, isRefetching, isFetching, isFetched } =
     availableAnswersQuery;
-  const isAnswersReady = isFetched && !isFetching;
-  const isLoading = isSaving || isRefetching || !isAnswersReady;
-
-  const answersLocale = locale;
-
-  const [defaultItems, setDefaultItems] = React.useState<T[]>(allAnswers);
-
-  // (Re-) Initialize default items...
-  React.useEffect(() => {
-    if (memo.setItemsData) {
-      memo.setItemsData(allAnswers);
-    }
-  }, [memo, allAnswers]);
-
-  const [addAnswerModalVisible, setAddAnswerModalVisible] = React.useState(false);
-  const [deleteSelectedConfirmVisible, setDeleteSelectedConfirmVisible] = React.useState(false);
-  const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
-
-  const [showNormalized, setShowNormalized] = React.useState(false);
-
-  const [filterTargeted, setFilterTargeted] = React.useState(false);
-  const [filterUpdated, setFilterUpdated] = React.useState(false);
-  const [filterAdded, setFilterAdded] = React.useState(false);
-  const [filterSelected, setFilterSelected] = React.useState(false);
-  const [filterText, setFilterText] = React.useState<string | undefined>();
-  const [filterTextSmart, setFilterTextSmart] = React.useState(false);
+  const isAnswersQueryReady = isFetched && !isFetching;
+  const isExternalReady = isReadyFromParent ?? true;
+  const isHeadlessReady = isExternalReady && isAnswersQueryReady && !isSaving && !isRefetching;
 
   const saveDataFn = React.useCallback(
     async (saveParams: TSaveDataParams<T>): Promise<TUpdateAnswersDataViaParamsResults> => {
@@ -252,8 +192,8 @@ export function AnswersEditor(props: TAnswersEditorProps) {
 
   const saveData = React.useCallback(
     async (saveParams: TSaveDataParams<T>): Promise<T[]> => {
-      if (handleSaveData) {
-        const items = await handleSaveData(saveParams);
+      if (saveDataFromParent) {
+        const items = await saveDataFromParent(saveParams);
         if (items && memo.setItemsData) {
           memo.setItemsData(items);
         }
@@ -262,179 +202,37 @@ export function AnswersEditor(props: TAnswersEditorProps) {
       const results = await saveDataMutationHandler(saveParams);
       return updateAnswersQueryData(results);
     },
-    [memo, handleSaveData, saveDataMutationHandler, updateAnswersQueryData],
+    [memo, saveDataFromParent, saveDataMutationHandler, updateAnswersQueryData],
   );
 
-  const headlessEditorState = useHeadlessEditorState({
-    isReady: isAnswersReady,
-    lang: answersLocale,
-    largeTexts,
-    reorderModes,
-    filterText,
-    filterTextSmart,
-    filterTargeted,
-    filterUpdated,
-    filterAdded,
-    filterSelected,
-    defaultItems,
-    saveData,
-    getItemText,
-    RenderItem: CmpAnswer,
-    showNormalized,
-    setShowNormalized,
-  });
+  const reloadData = React.useCallback(
+    ({ setItemsData }: { setItemsData: (items: T[]) => void }) => {
+      void refetch().then((res) => {
+        const { data } = res;
+        const items = getUnqueItemsList<T>(data?.pages);
+        setItemsData(items);
+      });
+    },
+    [refetch],
+  );
 
-  React.useEffect(() => {
-    if (setHeadlessEditorState) {
-      setHeadlessEditorState(headlessEditorState);
-    }
-  }, [setHeadlessEditorState, headlessEditorState]);
-
-  const {
-    totalChangedCount,
-    setItems,
-    setUpdatedIds,
-    setDeletedIds,
-    setAddedIds,
-    setReorderedIds,
-    selectedIds,
-    addNewItem,
-    deleteSelected,
-    RenderHeadlessEditor,
-    RenderHeadlessEditorControls,
-  } = headlessEditorState;
-  const hasChanges = !!totalChangedCount;
-  memo.hasChanges = hasChanges;
-
-  const confirmActionCallback = React.useCallback(
-    (action: () => void) => {
-      return () => {
-        if (memo.hasChanges) {
-          setConfirmAction(() => action);
-        } else {
-          action();
-        }
-      };
+  const onBindSetItemsData = React.useCallback(
+    (setItemsData: (items: T[]) => void) => {
+      memo.setItemsData = setItemsData;
     },
     [memo],
   );
 
-  const setItemsData = React.useCallback(
-    (items: T[]) => {
-      setDefaultItems(items);
-      setItems(items);
-      setUpdatedIds(undefined);
-      setDeletedIds(undefined);
-      setAddedIds(undefined);
-      setReorderedIds(undefined);
-    },
-    [setAddedIds, setDeletedIds, setItems, setReorderedIds, setUpdatedIds],
-  );
-  memo.setItemsData = setItemsData;
-
-  const reloadData = React.useCallback(() => {
-    refetch().then((res) => {
-      const { data } = res;
-      const items = getUnqueItemsList<T>(data?.pages);
-      setItemsData(items);
-    });
-  }, [refetch, setItemsData]);
-
-  React.useEffect(() => {
-    if (!isFetched) {
-      return;
-    }
-    if (hasChanges) {
-      return;
-    }
-    setItemsData(allAnswers);
-  }, [allAnswers, hasChanges, isFetched, setItemsData]);
-
   return (
-    <>
-      <RenderHeadlessEditorControls
-        className={cn(
-          isDev && '__AnswersEditor_RenderHeadlessEditorControls',
-          'transition',
-          isLoading && 'opacity-50',
-        )}
-        reorderTitles={reorderTitles}
-        onAddAction={() => setAddAnswerModalVisible(true)}
-        onDeleteAction={() => setDeleteSelectedConfirmVisible(true)}
-        onReload={confirmActionCallback(reloadData)}
-        setFilterTargeted={setFilterTargeted}
-        setFilterUpdated={setFilterUpdated}
-        setFilterAdded={setFilterAdded}
-        setFilterSelected={setFilterSelected}
-        setFilterText={setFilterText}
-        setFilterTextSmart={setFilterTextSmart}
-      />
-      <ScrollArea
-        saveScrollKey="AnswersEditor"
-        saveScrollHash={saveScrollHash}
-        className={cn(
-          isDev && '__AnswersEditor_Scroll',
-          'relative flex flex-1 flex-col overflow-hidden',
-        )}
-        viewportClassName={cn(isDev && '__AnswersEditor_Scroll_Viewport')}
-      >
-        <RenderHeadlessEditor
-          className={cn(
-            isDev && '__AnswersEditor_RenderHeadlessEditor',
-            'w-full',
-            'transition',
-            isLoading && 'opacity-50',
-          )}
-        />
-      </ScrollArea>
-      {addAnswerModalVisible && (
-        <AddAnswerModal
-          variant="controlled"
-          isVisible
-          onClose={() => setAddAnswerModalVisible(false)}
-          onDone={(formData) => {
-            addNewItem({ questionId, text: formData.text, isCorrect: formData.isCorrect });
-          }}
-          topicId={topicId}
-          questionId={questionId}
-          closeImmediatelly
-        />
-      )}
-      {deleteSelectedConfirmVisible && (
-        <ConfirmModal
-          isVisible
-          dialogTitle={t('ConfirmDeleteAnswers')}
-          confirmButtonVariant="destructive"
-          confirmButtonText={t('Delete')}
-          confirmButtonBusyText={t('AnswersEditor.DeletingAnswers')}
-          cancelButtonText={t('Cancel')}
-          handleClose={() => setDeleteSelectedConfirmVisible(false)}
-          handleConfirm={() => {
-            deleteSelected();
-            setDeleteSelectedConfirmVisible(false);
-          }}
-        >
-          {t('ConfirmDeleteAnswersMessage', {
-            count: selectedIds?.size || 0,
-          })}
-        </ConfirmModal>
-      )}
-      {!!confirmAction && (
-        <ConfirmModal
-          isVisible
-          dialogTitle={t('YouHaveUnsavedChanges')}
-          confirmButtonVariant="destructive"
-          confirmButtonText={t('Yes')}
-          cancelButtonText={t('No')}
-          handleClose={() => setConfirmAction(undefined)}
-          handleConfirm={() => {
-            confirmAction?.();
-            setConfirmAction(undefined);
-          }}
-        >
-          {t('AreYouSureYouWantToLoseData')}
-        </ConfirmModal>
-      )}
-    </>
+    <HeadlessAnswersEditor
+      topicId={topicId}
+      questionId={questionId}
+      questions={allAnswers}
+      isReady={isHeadlessReady}
+      saveData={saveData}
+      reloadData={reloadData}
+      onBindSetItemsData={onBindSetItemsData}
+      setHeadlessEditorState={setHeadlessEditorState}
+    />
   );
 }
