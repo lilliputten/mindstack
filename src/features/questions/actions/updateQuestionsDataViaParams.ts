@@ -8,7 +8,7 @@ import { TNewOrOldQuestion, TNewQuestion, TQuestionId } from '@/features/questio
 
 import { TQuestion } from '../types';
 
-interface TUpdateQuestionsDataViaParams {
+export interface TUpdateQuestionsDataViaParams {
   updatedItems?: TNewOrOldQuestion[];
   addedItems?: TNewQuestion[];
   deletedIds?: string[];

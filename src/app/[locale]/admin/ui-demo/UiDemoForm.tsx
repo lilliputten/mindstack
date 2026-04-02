@@ -177,6 +177,13 @@ export function UiDemoForm(props: TProps) {
     ],
   );
 
+  const notifyUpdate = React.useCallback(
+    (data: unknown) => {
+      addLog({ type: 'data', title: 'Data updated:', content: data });
+    },
+    [addLog],
+  );
+
   return (
     <>
       <DashboardHeader
@@ -216,7 +223,7 @@ export function UiDemoForm(props: TProps) {
             {/*
             <HeadlessQuestionsEditorDemo className="overflow-hidden" />
             */}
-            <QuestionsEditorDemo topicId={topicId} />
+            <QuestionsEditorDemo topicId={topicId} notifyUpdate={notifyUpdate} />
           </div>
           {(!showForm || !isMobile) && (
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />

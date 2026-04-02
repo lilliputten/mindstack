@@ -5,15 +5,17 @@ import { TSaveDataParams } from '@/entities/HeadlessEditor';
 import { TTopicId } from '@/features/topics';
 import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 
+import { TUpdateQuestionsDataViaParams } from '../../actions';
 import { QuestionsEditor } from './QuestionsEditor';
 import { T } from './types';
 
 interface TProps {
   className?: string;
   topicId?: TTopicId;
+  notifyUpdate?: (updateQuestionsData: TUpdateQuestionsDataViaParams) => void;
 }
 export function QuestionsEditorDemo(props: TProps) {
-  const { topicId, className } = props;
+  const { topicId, className, notifyUpdate } = props;
 
   if (!topicId) {
     throw new Error('Not topic id specified');
@@ -39,15 +41,20 @@ export function QuestionsEditorDemo(props: TProps) {
     traceId: 'QuestionsEditorDemo',
     topicId,
     itemsLimit: null, // Take all questions, without paging
+    includeAnswers: true, // Include answers
   });
   const {
-    // allQuestions,
+    allQuestions,
     // queryKey: availableQuestionsQueryKey,
     // queryProps: availableQuestionsQueryProps,
     isFetching: isQuestionsFetching,
     isFetched: isQuestionsFetched,
   } = availableQuestionsQuery;
   const isQuestionsReady = isQuestionsFetched && !isQuestionsFetching;
+
+  console.log('[QuestionsEditorDemo:allQuestions:DEBUG]', {
+    allQuestions,
+  });
 
   const isReady = isTopicReady && isQuestionsReady;
 
@@ -59,36 +66,45 @@ export function QuestionsEditorDemo(props: TProps) {
       items,
       // Items by update type
       updatedItems,
-      deletedItems,
+      // deletedItems,
       addedItems,
       // Ids by update type
-      addedIds,
+      // addedIds,
       deletedIds,
-      updatedIds,
-      reorderedIds,
-      selectedIds,
+      // updatedIds,
+      // reorderedIds,
+      // selectedIds,
     } = saveParams;
-    // eslint-disable-next-line no-console
+    // 1. Prepare data for API call
+    const updateQuestionsData: TUpdateQuestionsDataViaParams = {
+      updatedItems: updatedItems?.size ? [...updatedItems.values()] : undefined,
+      addedItems: addedItems?.size ? [...addedItems.values()] : undefined,
+      deletedIds: deletedIds?.size ? [...deletedIds.values()] : undefined,
+    };
+    if (notifyUpdate) {
+      notifyUpdate(updateQuestionsData);
+    }
+    const updatedMap = new Map(updatedItems ? [...updatedItems].map((u) => [u.id, u]) : []);
+    const newItems = items
+      .filter((item) => !deletedIds?.has(item.id))
+      // .map((item) => (updatedMap.has(item.id) ? { ...item, ...updatedMap.get(item.id) } : item))
+      .map((item) => updatedMap.get(item.id) ?? item)
+      .concat(addedItems ? ([...addedItems.values()] as T[]) : []);
     console.log('[QuestionsEditorDemo:handleSaveData] Detailed data:', {
+      updateQuestionsData,
+      newItems,
       items,
       updatedItems,
-      deletedItems,
+      // deletedItems,
       addedItems,
-      addedIds,
+      // addedIds,
       deletedIds,
-      updatedIds,
-      reorderedIds,
-      selectedIds,
+      // updatedIds,
+      // reorderedIds,
+      // selectedIds,
     });
     debugger;
     /* // TODO: Implement actual data save logic here
-     * // Example implementation:
-     * // 1. Prepare data for API call
-     * const updateQuestionsData = {
-     *   updatedItems: updatedItems?.size ? [...updatedItems.values()] : undefined,
-     *   addedItems: addedItems?.size ? [...addedItems.values()] : undefined,
-     *   deletedIds: deletedIds?.size ? [...deletedIds.values()] : undefined,
-     * };
      * // 2. Call API endpoint or server action
      * const results = await updateQuestionsDataViaParams(updateQuestionsData);
      * // 3. Return updated items
@@ -101,9 +117,9 @@ export function QuestionsEditorDemo(props: TProps) {
      *   console.error('Error saving questions:', error);
      *   throw error;
      * }
+     * // Return updated data
      */
-    // Return updated data
-    return items;
+    return newItems;
   };
 
   return (
