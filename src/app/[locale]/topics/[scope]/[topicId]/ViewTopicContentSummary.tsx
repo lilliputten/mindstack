@@ -41,6 +41,7 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     traceId: 'ViewTopicContentSummary',
     topicId,
     itemsLimit: null, // Take all questions, without paging
+    includeAnswers: true, // Include answers
   });
   const {
     // allQuestions,

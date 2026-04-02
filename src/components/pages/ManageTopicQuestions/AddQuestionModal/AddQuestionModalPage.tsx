@@ -50,6 +50,7 @@ export function AddQuestionModalPage() {
   const availableQuestionsQuery = useAvailableQuestions({
     traceId: 'AddQuestionModalPage',
     topicId,
+    // includeAnswers: true, // Include answers
   });
   const queryClient = useQueryClient();
 

@@ -51,6 +51,7 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
   const availableQuestionsQuery = useAvailableQuestions({
     traceId: 'DeleteQuestionModal',
     topicId,
+    // includeAnswers: true, // Include answers
   });
 
   const queryClient = useQueryClient();

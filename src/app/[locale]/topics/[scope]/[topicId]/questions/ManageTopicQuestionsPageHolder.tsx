@@ -42,6 +42,7 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     traceId: 'ManageTopicQuestionsPageHolder',
     topicId,
     // itemsLimit: null, // Take all questions, without paging
+    // includeAnswers: true, // Include answers
   });
   const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
   const isQuestionsReady = isQuestionsFetched;

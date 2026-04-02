@@ -88,6 +88,7 @@ export function EditQuestionCardHolder(props: TEditQuestionCardHolderProps) {
   const availableQuestionsQuery = useAvailableQuestions({
     traceId: 'EditQuestionCardHolder',
     topicId,
+    // includeAnswers: true, // Include answers
   });
   const {
     queryKey: availableQuestionsQueryKey,
