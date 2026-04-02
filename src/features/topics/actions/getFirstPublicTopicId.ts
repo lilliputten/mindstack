@@ -21,9 +21,7 @@ export async function getFirstPublicTopicId(params: TParams = {}): Promise<TUser
       questions: { some: {} },
       ...(userId ? { userId } : {}),
     },
-    select: {
-      id: true,
-    },
+    select: { id: true },
     orderBy: { createdAt: 'asc' },
   });
 

@@ -37,6 +37,7 @@ export function QuestionsEditorDemo(props: TProps) {
     traceId: 'QuestionsEditorDemo',
     topicId,
     itemsLimit: null, // Take all questions, without paging
+    includeAnswers: true, // Include answers
   });
   const {
     // allQuestions,

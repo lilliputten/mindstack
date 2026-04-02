@@ -110,14 +110,23 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   // const goToTheRoute = useGoToTheRoute();
 
   const { topic } = availableTopicQuery;
-  const { allQuestions, queryKey, refetch, isRefetching, isFetching } = availableQuestionsQuery;
-  const isLoading = isSaving || isRefetching || isFetching;
+  const { allQuestions, queryKey, refetch, isRefetching, isFetching, isFetched } =
+    availableQuestionsQuery;
+  const isReady = isFetched && !isFetching;
+  const isLoading = isSaving || isRefetching || !isReady;
 
   const questionsLocale = topic?.langCode || locale;
   // const questionsCount = topic?._count?.questions;
   // const allowedTraining = !!questionsCount;
 
   const [defaultItems, setDefaultItems] = React.useState<T[]>(allQuestions);
+
+  // (Re-) Initialize default items...
+  React.useEffect(() => {
+    if (memo.setItemsData) {
+      memo.setItemsData(allQuestions);
+    }
+  }, [memo, allQuestions]);
 
   const [addQuestionModalVisible, setAddQuestionModalVisible] = React.useState(false);
   const [deleteSelectedConfirmVisible, setDeleteSelectedConfirmVisible] = React.useState(false);
@@ -309,7 +318,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
 
   // Create the state...
   const headlessEditorState = useHeadlessEditorState({
-    // isReady,
+    isReady,
     /// Options...
     lang: questionsLocale,
     largeTexts,

@@ -94,11 +94,19 @@ export function AnswersEditor(props: TAnswersEditorProps) {
 
   const { allAnswers, queryKey, refetch, isRefetching, isFetching, isFetched } =
     availableAnswersQuery;
-  const isLoading = isSaving || isRefetching || isFetching;
+  const isReady = isFetched && !isFetching;
+  const isLoading = isSaving || isRefetching || !isReady;
 
   const answersLocale = locale;
 
   const [defaultItems, setDefaultItems] = React.useState<T[]>(allAnswers);
+
+  // (Re-) Initialize default items...
+  React.useEffect(() => {
+    if (memo.setItemsData) {
+      memo.setItemsData(allAnswers);
+    }
+  }, [memo, allAnswers]);
 
   const [addAnswerModalVisible, setAddAnswerModalVisible] = React.useState(false);
   const [deleteSelectedConfirmVisible, setDeleteSelectedConfirmVisible] = React.useState(false);
@@ -257,6 +265,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
   );
 
   const headlessEditorState = useHeadlessEditorState({
+    isReady,
     lang: answersLocale,
     largeTexts,
     reorderModes,

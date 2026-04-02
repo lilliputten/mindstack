@@ -1,29 +1,45 @@
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/constructMetadata';
+import { prisma } from '@/lib/db';
 import { checkIfUserIsAdmin, getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
-import { getT, TAwaitedLocaleProps } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, welcomeAliasRoute } from '@/config';
 import { getFirstPublicTopicId } from '@/features/topics/actions';
 
 import { UiDemoForm } from './UiDemoForm';
 
-export async function generateMetadata({ params }: TAwaitedLocaleProps) {
-  const { locale } = await params;
-  const t = await getT({ locale });
+export async function generateMetadata() {
   return constructMetadata({
-    title: t('Pages.TestQueryTitle'),
+    title: 'UI Demo',
   });
 }
 
 export default async function TestQueryPage() {
   const user = await getCurrentUser();
+  const userId = user?.id;
   const isAdmin = checkIfUserIsAdmin(user); // await isAdminUser();
 
   // Fetch the first available public topic (which has questions) id
-  const topicId = await getFirstPublicTopicId({ userId: user?.id });
+  const topic = await prisma.topic.findFirst({
+    where: {
+      isPublic: true,
+      questions: { some: {} },
+      ...(userId ? { userId } : {}),
+    },
+    include: {
+      questions: true,
+      _count: { select: { questions: true } },
+    },
+    // select: { id: true },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  const topicId = topic?.id; // await getFirstPublicTopicId({ userId: user?.id });
+  console.log('[src/app/[locale]/admin/ui-demo/page.tsx]', {
+    topic,
+  });
 
   if (!isAdmin) {
     return redirect(welcomeAliasRoute);

@@ -15,8 +15,9 @@ import { ShowLogRecords, TLogRecord } from '@/components/debug/ShowLogRecords';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 // import { HeadlessAnswersEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo';
-import { HeadlessQuestionsEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo';
+// import { HeadlessQuestionsEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
+import { QuestionsEditorDemo } from '@/features/questions/components/QuestionsEditor/QuestionsEditorDemo';
 import { TTopicId } from '@/features/topics';
 import { useMediaQuery } from '@/hooks';
 
@@ -212,7 +213,10 @@ export function UiDemoForm(props: TProps) {
               'rounded-md border border-dashed border-theme-500/20',
             )}
           >
+            {/*
             <HeadlessQuestionsEditorDemo className="overflow-hidden" />
+            */}
+            <QuestionsEditorDemo topicId={topicId} />
           </div>
           {(!showForm || !isMobile) && (
             <ShowLogRecords logs={logs} className={cn('mx-6', showForm && 'max-h-[300px]')} />
