@@ -37,9 +37,10 @@ export default async function TestQueryPage() {
   });
 
   const topicId = topic?.id; // await getFirstPublicTopicId({ userId: user?.id });
-  console.log('[src/app/[locale]/admin/ui-demo/page.tsx]', {
-    topic,
-  });
+  /* console.log('[src/app/[locale]/admin/ui-demo/page.tsx]', {
+   *   topic,
+   * });
+   */
 
   if (!isAdmin) {
     return redirect(welcomeAliasRoute);
