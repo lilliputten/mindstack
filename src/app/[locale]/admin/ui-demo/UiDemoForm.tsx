@@ -17,6 +17,7 @@ import { isDev } from '@/config';
 // import { HeadlessAnswersEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessAnswersEditorDemo';
 import { HeadlessQuestionsEditorDemo } from '@/entities/HeadlessEditor/demo/HeadlessQuestionsEditorDemo';
 import { getServerInfo } from '@/features/app/helpers/getServerInfo';
+import { TTopicId } from '@/features/topics';
 import { useMediaQuery } from '@/hooks';
 
 import {
@@ -27,7 +28,12 @@ import {
 } from './UiDemoFormDefinitions';
 import { UiDemoFormFields } from './UiDemoFormFields';
 
-export function UiDemoForm() {
+interface TProps {
+  topicId?: TTopicId;
+}
+
+export function UiDemoForm(props: TProps) {
+  const { topicId } = props;
   const [_error, setError] = React.useState<string | null>(null);
   const [showForm, toggleForm] = React.useState(false);
 

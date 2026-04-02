@@ -167,7 +167,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         const details = getErrorText(error);
         const message = 'Cannot save questions';
         // eslint-disable-next-line no-console
-        console.error('[QuestionsEditor:saveData]', [message, details].join(': '), {
+        console.error('[QuestionsEditor:saveDataFn]', [message, details].join(': '), {
           error,
           saveParams,
         });
@@ -240,15 +240,6 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         return { ...oldData, pages: updatedPages };
       });
       const items = [...allItems.values(), ...remainedAddedItemsMap.values()];
-      /* console.log('[QuestionsEditor:updateQuestionsQueryData:done]', {
-       *   items,
-       *   added, // TQuestion[], Newly added items
-       *   autoAddedIds, // TQuestionId>, Hash for auto-renamed 'new ids'
-       *   updated, // TQuestion[], Updated items
-       *   deletedIds, // TQuestionId[], Deleted item ids
-       *   results,
-       * });
-       */
       return items;
     },
     [queryClient, queryKey],

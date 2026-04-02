@@ -1,11 +1,12 @@
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { isAdminUser } from '@/lib/session';
+import { checkIfUserIsAdmin, getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { getT, TAwaitedLocaleProps } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, welcomeAliasRoute } from '@/config';
+import { getFirstPublicTopicId } from '@/features/topics/actions';
 
 import { UiDemoForm } from './UiDemoForm';
 
@@ -18,7 +19,11 @@ export async function generateMetadata({ params }: TAwaitedLocaleProps) {
 }
 
 export default async function TestQueryPage() {
-  const isAdmin = await isAdminUser();
+  const user = await getCurrentUser();
+  const isAdmin = checkIfUserIsAdmin(user); // await isAdminUser();
+
+  // Fetch the first available public topic (which has questions) id
+  const topicId = await getFirstPublicTopicId({ userId: user?.id });
 
   if (!isAdmin) {
     return redirect(welcomeAliasRoute);
@@ -37,7 +42,7 @@ export default async function TestQueryPage() {
       limitWidth
       // scrollable
     >
-      <UiDemoForm />
+      <UiDemoForm topicId={topicId} />
     </PageWrapper>
   );
 }

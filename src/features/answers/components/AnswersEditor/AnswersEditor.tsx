@@ -135,7 +135,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
         const details = getErrorText(error);
         const message = 'Cannot save answers';
         // eslint-disable-next-line no-console
-        console.error('[AnswersEditor:saveData]', [message, details].join(': '), {
+        console.error('[AnswersEditor:saveDataFn]', [message, details].join(': '), {
           error,
           saveParams,
         });

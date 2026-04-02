@@ -33,8 +33,12 @@ export async function isLoggedUser() {
   return !!user?.id;
 }
 
-export async function isAdminUser() {
-  const user = await getCurrentUser();
+export async function checkIfUserIsAdmin(user?: TUser) {
   const isAdmin = user?.role === 'ADMIN';
   return isAdmin;
+}
+
+export async function isAdminUser() {
+  const user = await getCurrentUser();
+  return checkIfUserIsAdmin(user);
 }
