@@ -112,8 +112,8 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   const { topic } = availableTopicQuery;
   const { allQuestions, queryKey, refetch, isRefetching, isFetching, isFetched } =
     availableQuestionsQuery;
-  const isReady = isFetched && !isFetching;
-  const isLoading = isSaving || isRefetching || !isReady;
+  const isQuestionsReady = isFetched && !isFetching;
+  const isLoading = isSaving || isRefetching || !isQuestionsReady;
 
   const questionsLocale = topic?.langCode || locale;
   // const questionsCount = topic?._count?.questions;
@@ -318,7 +318,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
 
   // Create the state...
   const headlessEditorState = useHeadlessEditorState({
-    isReady,
+    isReady: isQuestionsReady,
     /// Options...
     lang: questionsLocale,
     largeTexts,

@@ -15,6 +15,7 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
+import { AnswersEditor } from '@/features/answers/components';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
 import { useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
@@ -25,7 +26,7 @@ import { T } from './types';
 /** Show edit button in the actions block or (otherwise) in the dropdown menu */
 const showEditAsAction = true;
 const isActiveAnswersButton = true;
-const showEmptyAnswersButton = false;
+const showEmptyAnswersButton = true;
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
   const { className, item, updateItem, hasChanges } = props;
@@ -53,6 +54,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
   // const goBack = useGoBack(topicRoutePath);
   const goToTheRoute = useGoToTheRoute();
 
+  const hasAnswersData = answers != undefined;
   const count = answers?.length || _count?.answers;
 
   // Item editing...
@@ -65,6 +67,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     // setIsValid(formState.isValid);
   }, []);
 
+  const [viewAnswers, setViewAnswers] = React.useState(false);
   const [viewInfo, setViewInfo] = React.useState(false);
 
   // Data editing support...
@@ -169,9 +172,10 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         </Button>
       ),
       !isEditMode && (showEmptyAnswersButton || !!count) && (
-        <div
+        <Button
           // TODO: Add a handler to expand answers section...
           key="Answers"
+          variant={viewAnswers ? 'theme' : 'ghost'}
           className={cn(
             isDev && '__CmpQuestion_Count', // DEBUG
             'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
@@ -179,12 +183,16 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
           )}
           onClick={
-            isActiveAnswersButton ? confirmGoToTheRouteCallback(questionRoutePath) : undefined
+            hasAnswersData
+              ? () => setViewAnswers((viewAnswers) => !viewAnswers)
+              : isActiveAnswersButton
+                ? confirmGoToTheRouteCallback(questionRoutePath)
+                : undefined
           }
-          title={t('GoToTheAnswers')}
+          title={hasAnswersData ? t('ShowAnswers') : t('GoToTheAnswers')}
         >
           <span className="truncate">{count || 0}</span>
-        </div>
+        </Button>
       ),
       // Edit action
       !!updateItem && !isEditMode && showEditAsAction && (
@@ -212,17 +220,19 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       ),
     ].filter(Boolean);
   }, [
-    isEditMode,
-    updateItem,
-    form,
-    isEdited,
-    t,
-    handleSave,
-    count,
     confirmGoToTheRouteCallback,
-    questionRoutePath,
-    viewInfo,
+    count,
+    form,
+    handleSave,
+    hasAnswersData,
+    isEditMode,
+    isEdited,
     item,
+    questionRoutePath,
+    t,
+    updateItem,
+    viewAnswers,
+    viewInfo,
   ]);
 
   const menuItems = React.useMemo(() => {
@@ -356,6 +366,24 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
                 <span className="truncate">{getFormattedRelativeDate(format, item.updatedAt)}</span>
               </div>
             )}
+          </div>
+        )}
+        {hasAnswersData && viewAnswers && (
+          <div
+            className={cn(
+              isDev && '__CmpQuestion_Answers', // DEBUG
+              'content-truncate flex flex-wrap gap-4 gap-y-2 text-sm',
+            )}
+          >
+            HeadlessAnswersEditor placeholder
+            {/* // TODO: Place 'HeadlessAnswersEditor` here
+            <AnswersEditor
+            // TODO: Place 'AnswersEditor` here
+            topicId={topicId}
+            questionId={id}
+            availableAnswersQuery={availableAnswersQuery}
+            />
+            */}
           </div>
         )}
       </div>

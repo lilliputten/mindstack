@@ -92,10 +92,11 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     [t],
   );
 
+  // \<\(allAnswers\|queryKey\|refetch\|isRefetching\|isFetching\|isFetched\)\>
   const { allAnswers, queryKey, refetch, isRefetching, isFetching, isFetched } =
     availableAnswersQuery;
-  const isReady = isFetched && !isFetching;
-  const isLoading = isSaving || isRefetching || !isReady;
+  const isAnswersReady = isFetched && !isFetching;
+  const isLoading = isSaving || isRefetching || !isAnswersReady;
 
   const answersLocale = locale;
 
@@ -265,7 +266,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
   );
 
   const headlessEditorState = useHeadlessEditorState({
-    isReady,
+    isReady: isAnswersReady,
     lang: answersLocale,
     largeTexts,
     reorderModes,
