@@ -28,7 +28,6 @@ import {
   useHeadlessEditorState,
 } from '@/entities/HeadlessEditor';
 import { CmpAnswer } from '@/entities/HeadlessEditor/demo/CmpAnswer';
-import { TNewOrOldAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableAnswers } from '@/hooks';
@@ -52,14 +51,15 @@ const reorderModes = {
   abcDesc: { desc: true },
   date: { func: reorderByDate },
   dateDesc: { func: reorderByDate, desc: true },
-} as const satisfies TReorderModes<TNewOrOldAnswer>;
+} as const satisfies TReorderModes<T>;
 type TReorderKey = keyof typeof reorderModes;
 
 export interface TAnswersEditorProps {
   topicId: TTopicId;
   questionId: TQuestionId;
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
-  setHeadlessEditorState?: (state: THeadlessEditorState<TNewOrOldAnswer>) => void;
+  setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
+  handleSaveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
 }
 
 interface TMemo {
@@ -70,7 +70,8 @@ interface TMemo {
 
 export function AnswersEditor(props: TAnswersEditorProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
-  const { topicId, questionId, availableAnswersQuery, setHeadlessEditorState } = props;
+  const { topicId, questionId, availableAnswersQuery, setHeadlessEditorState, handleSaveData } =
+    props;
 
   const [savePromise, setSavePromise] = React.useState<
     Promise<TUpdateAnswersDataViaParamsResults> | undefined
@@ -240,6 +241,21 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     [saveDataMutation],
   );
 
+  const saveData = React.useCallback(
+    async (saveParams: TSaveDataParams<T>): Promise<T[]> => {
+      if (handleSaveData) {
+        const items = await handleSaveData(saveParams);
+        if (items && memo.setItemsData) {
+          memo.setItemsData(items);
+        }
+        return items;
+      }
+      const results = await saveDataMutationHandler(saveParams);
+      return updateAnswersQueryData(results);
+    },
+    [memo, handleSaveData, saveDataMutationHandler, updateAnswersQueryData],
+  );
+
   const headlessEditorState = useHeadlessEditorState({
     lang: answersLocale,
     largeTexts,
@@ -251,7 +267,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     filterAdded,
     filterSelected,
     defaultItems,
-    saveData: saveDataMutationHandler,
+    saveData,
     getItemText,
     RenderItem: CmpAnswer,
     showNormalized,

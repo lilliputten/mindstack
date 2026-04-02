@@ -27,7 +27,6 @@ import {
   useHeadlessEditorState,
 } from '@/entities/HeadlessEditor';
 import { CmpQuestion } from '@/entities/HeadlessEditor/demo/CmpQuestion';
-import { TNewOrOldQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById } from '@/hooks';
 
@@ -50,14 +49,15 @@ const reorderModes = {
   abcDesc: { desc: true },
   date: { func: reorderByDate },
   dateDesc: { func: reorderByDate, desc: true },
-} as const satisfies TReorderModes<TNewOrOldQuestion>;
+} as const satisfies TReorderModes<T>;
 type TReorderKey = keyof typeof reorderModes;
 
 export interface TQuestionsEditorProps {
   topicId: TTopicId;
   availableQuestionsQuery: ReturnType<typeof useAvailableQuestions>;
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
-  setHeadlessEditorState?: (state: THeadlessEditorState<TNewOrOldQuestion>) => void;
+  setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
+  handleSaveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
 }
 
 interface TMemo {
@@ -68,7 +68,13 @@ interface TMemo {
 
 export function QuestionsEditor(props: TQuestionsEditorProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
-  const { topicId, availableQuestionsQuery, availableTopicQuery, setHeadlessEditorState } = props;
+  const {
+    topicId,
+    availableQuestionsQuery,
+    availableTopicQuery,
+    setHeadlessEditorState,
+    handleSaveData,
+  } = props;
 
   // const [isSaving, startSaving] = React.useTransition();
   const [savePromise, setSavePromise] = React.useState<
@@ -286,6 +292,21 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     [saveDataMutation],
   );
 
+  const saveData = React.useCallback(
+    async (saveParams: TSaveDataParams<T>): Promise<T[]> => {
+      if (handleSaveData) {
+        const items = await handleSaveData(saveParams);
+        if (items && memo.setItemsData) {
+          memo.setItemsData(items);
+        }
+        return items;
+      }
+      const results = await saveDataMutationHandler(saveParams);
+      return updateQuestionsQueryData(results);
+    },
+    [memo, handleSaveData, saveDataMutationHandler, updateQuestionsQueryData],
+  );
+
   // Create the state...
   const headlessEditorState = useHeadlessEditorState({
     // isReady,
@@ -303,7 +324,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     filterSelected,
     // Items interface...
     defaultItems,
-    saveData: saveDataMutationHandler,
+    saveData,
     getItemText,
     RenderItem: CmpQuestion,
     // Normalized...
