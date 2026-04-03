@@ -1,3 +1,4 @@
+import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
@@ -62,28 +63,34 @@ export function QuestionsEditorDemo(props: TProps) {
   return (
     <div
       className={cn(
-        isDev && '__QuestionsEditorDemo',
+        isDev && '__QuestionsEditorDemo', // DEBUG
         'flex size-full flex-1 flex-col gap-4 px-6',
         className,
       )}
     >
-      {!isEditorReady && (
+      {!isEditorReady ? (
         <div
           className={cn(
-            isDev && '__QuestionsEditorDemo_Skeleton',
-            'flex size-full flex-1 flex-col gap-4 px-6',
+            isDev && '__QuestionsEditorDemo_Skeleton', // DEBUG
+            'flex w-full flex-col gap-4',
           )}
         >
-          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <div className="flex size-full flex-1 flex-col gap-2">
+            {generateArray(3).map((i) => (
+              <Skeleton key={i} className="h-16 w-full" />
+            ))}
+          </div>
         </div>
+      ) : (
+        <QuestionsEditorCore
+          topicId={topicId}
+          langCode={topic?.langCode ?? undefined}
+          questions={allQuestions}
+          isReady={isEditorReady}
+          saveData={saveData}
+        />
       )}
-      <QuestionsEditorCore
-        topicId={topicId}
-        langCode={topic?.langCode ?? undefined}
-        questions={allQuestions}
-        isReady={isEditorReady}
-        saveData={saveData}
-      />
     </div>
   );
 }

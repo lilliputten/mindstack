@@ -9,6 +9,7 @@ import * as z from 'zod';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import {
   DropdownMenu,
@@ -25,7 +26,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
 import { EditAnswerForm, TFormData } from '@/features/answers/components/EditAnswerForm';
 import { TNewOrOldAnswer } from '@/features/answers/types';
-import { useAvailableQuestionById, useGoToTheRoute } from '@/hooks';
+import { useAvailableQuestionById, useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { TCmpItemProps } from '../types';
@@ -45,7 +46,7 @@ type TItem = TNewOrOldAnswer & {
 };
 
 export function CmpAnswer(props: TCmpItemProps<TItem>) {
-  const { className, item, updateItem, hasChanges } = props;
+  const { className, item, updateItem, hasChanges, compact } = props;
   const {
     id,
     text = '',
@@ -55,6 +56,10 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     questionId,
     // question, // NOTE: Using the question data from `useAvailableQuestionById` below
   } = item;
+
+  // TODO: Detect compact mode depending on the container element width
+  const { mediaWidths } = useMediaMinDevices();
+  const isCompact = compact || !mediaWidths.includes('lg');
 
   const t = useT();
   const format = useFormatter();
@@ -145,16 +150,16 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     [hasChanges],
   );
 
-  const dropdownActionCallback = React.useCallback((action: () => void) => {
+  const dropdownActionCallback = React.useCallback((action?: () => void) => {
     return () => {
       setDropdownOpen(false);
-      action();
+      action?.();
     };
   }, []);
 
   const confirmGoToTheRouteCallback = React.useCallback(
-    (route: string | undefined) => {
-      if (!route) return () => undefined;
+    (route?: string) => {
+      if (!route) return () => {};
       return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
     },
     [confirmActionCallback, goToTheRoute],
@@ -186,8 +191,8 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
       return;
     }
     const formData: TFormData = form.getValues();
-    updateItem(getEditedItem(formData));
     setEditedItem(undefined);
+    updateItem(getEditedItem(formData));
   }, [form, getEditedItem, updateItem]);
 
   const toggleCorrectness = React.useCallback(() => {
@@ -205,9 +210,10 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
 
   const actionItems = React.useMemo(() => {
     return [
-      isEditMode && !!updateItem && (
+      // ApplyChanges
+      !isCompact && isEditMode && !!updateItem && (
         <Button
-          key="Save"
+          key="ApplyChanges"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
           variant={isEdited ? 'success' : 'ghost'}
           title={t('ApplyChanges')}
@@ -217,7 +223,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           <Icons.Check className="size-4 shrink-0" />
         </Button>
       ),
-      isEditMode && (
+      !isCompact && isEditMode && (
         <Button
           key="CancelEditing"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -228,13 +234,13 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           <Icons.X className="size-4 shrink-0" />
         </Button>
       ),
-      !!updateItem && !isEditMode && (
+      !isCompact && !!updateItem && !isEditMode && (
         <Button
           key="Correctness"
           type="button"
           variant="ghost"
           className={cn(
-            isDev && '__CmpAnswer_Correctness',
+            isDev && '__CmpAnswer_Correctness', // DEBUG
             'flex size-6 shrink-0 items-center justify-center rounded-md p-0',
             (formIsCorrect ?? false)
               ? 'bg-green-600/25 text-green-600 hover:bg-green-600/40 hover:text-green-700'
@@ -254,7 +260,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           )}
         </Button>
       ),
-      !!updateItem && !isEditMode && showEditAsAction && (
+      !isCompact && !!updateItem && !isEditMode && showEditAsAction && (
         <Button
           key="Edit"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -265,7 +271,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           <Icons.Edit className="size-3.5 shrink-0" />
         </Button>
       ),
-      !isEditMode && (
+      !isCompact && !isEditMode && (
         <Button
           key="ViewInfo"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -278,6 +284,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
       ),
     ].filter(Boolean);
   }, [
+    isCompact,
     isEditMode,
     updateItem,
     isEdited,
@@ -291,27 +298,79 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
 
   const menuItems = React.useMemo(() => {
     return [
-      isEditMode && (
+      // ApplyChanges
+      isCompact && isEditMode && !!isEdited && !!updateItem && (
         <Button
-          key="ViewInfo"
-          className="content-truncate flex items-center justify-start gap-2"
-          variant={viewInfo ? 'theme' : 'ghost'}
-          title={t('ViewInfo')}
-          onClick={dropdownActionCallback(() => setViewInfo((v) => !v))}
+          key="ApplyChanges"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant={isEdited ? 'success' : 'ghost'}
+          disabled={!isEdited}
+          onClick={dropdownActionCallback(handleSave)}
         >
-          <Icons.Info className="size-3.5 shrink-0" />
-          <span className="truncate">{t('ViewInfo')}</span>
+          <Icons.Check className="size-4 shrink-0" />
+          <span className="truncate">{t('ApplyChanges')}</span>
         </Button>
       ),
-      !!updateItem && !isEditMode && !showEditAsAction && (
+      isCompact && isEditMode && (
+        <Button
+          key="CancelEditing"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant="ghost"
+          onClick={dropdownActionCallback(() => setEditedItem(undefined))}
+        >
+          <Icons.X className="size-4 shrink-0" />
+          <span className="truncate">{t('CancelEditing')}</span>
+        </Button>
+      ),
+      isCompact && !!updateItem && !isEditMode && (
+        <Button
+          key="Correctness"
+          type="button"
+          variant="ghost"
+          className={cn(
+            isDev && '__CmpAnswer_Correctness', // DEBUG
+            'content-truncate flex items-center justify-start gap-2 text-left',
+            // 'flex size-6 shrink-0 items-center justify-center rounded-md p-0',
+            (formIsCorrect ?? false)
+              ? 'bg-green-600/25 text-green-600 hover:bg-green-600/40 hover:text-green-700'
+              : 'bg-red-600/20 text-red-500 hover:bg-red-600/35 hover:text-red-600',
+          )}
+          onClick={dropdownActionCallback(toggleCorrectness)}
+        >
+          {formIsCorrect ? (
+            <Icons.CircleCheck className="size-4 shrink-0" />
+          ) : (
+            <Icons.CircleAlert className="size-4 shrink-0" />
+          )}
+          <span className="truncate">
+            {formIsCorrect
+              ? t('EditAnswerFormFields.AnswerIsCorrect')
+              : t('EditAnswerFormFields.AnswerIsIncorrect')}
+          </span>
+        </Button>
+      ),
+      // Edit
+      isCompact && !!updateItem && !isEditMode && showEditAsAction && (
         <Button
           key="Edit"
-          className="content-truncate flex items-center justify-start gap-2"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
           variant="ghost"
           onClick={dropdownActionCallback(openEditor)}
         >
           <Icons.Edit className="size-3.5 shrink-0" />
           <span className="truncate">{t('Edit')}</span>
+        </Button>
+      ),
+      // ViewInfo
+      isCompact && !isEditMode && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          onClick={dropdownActionCallback(() => setViewInfo((v) => !v))}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+          <span className="truncate">{t('ViewInfo')}</span>
         </Button>
       ),
       answersListRoutePath && (
@@ -321,8 +380,14 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           variant="ghost"
           onClick={confirmGoToTheRouteCallback(answersListRoutePath)}
         >
-          <Icons.ChevronRight className="size-3 shrink-0" />
-          <span className="truncate">{t('GoToTheAnswers')}</span>
+          <Link
+            href={answersListRoutePath as TRoutePath}
+            className="content-truncate flex items-center justify-start gap-2"
+            onClick={(ev) => ev.preventDefault()}
+          >
+            <Icons.ChevronRight className="size-3 shrink-0" />
+            <span className="truncate">{t('GoToTheAnswers')}</span>
+          </Link>
         </Button>
       ),
       answerRoutePath && (
@@ -332,21 +397,32 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
           variant="ghost"
           onClick={confirmGoToTheRouteCallback(answerRoutePath)}
         >
-          <Icons.ChevronRight className="size-3 shrink-0" />
-          <span className="truncate">{t('EditAnswer')}</span>
+          <Link
+            href={answerRoutePath as TRoutePath}
+            className="content-truncate flex items-center justify-start gap-2"
+            onClick={(ev) => ev.preventDefault()}
+          >
+            <Icons.ChevronRight className="size-3 shrink-0" />
+            <span className="truncate">{t('EditAnswer')}</span>
+          </Link>
         </Button>
       ),
     ].filter(Boolean);
   }, [
-    updateItem,
+    isCompact,
     isEditMode,
-    dropdownActionCallback,
-    openEditor,
+    isEdited,
+    updateItem,
+    handleSave,
     t,
-    confirmGoToTheRouteCallback,
-    answersListRoutePath,
-    answerRoutePath,
+    dropdownActionCallback,
+    formIsCorrect,
+    toggleCorrectness,
+    openEditor,
     viewInfo,
+    answersListRoutePath,
+    confirmGoToTheRouteCallback,
+    answerRoutePath,
   ]);
 
   return (
@@ -354,7 +430,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
       data-item-id={id}
       data-testid="__CmpAnswer"
       className={cn(
-        isDev && '__CmpAnswer',
+        isDev && '__CmpAnswer', // DEBUG
         'relative flex w-full items-start gap-2 text-left transition',
         !isReady && 'opacity-50',
         className,
@@ -370,10 +446,11 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
         {isEditMode ? (
           <EditAnswerForm
             className={cn(isDev && '__CmpAnswer_Form')}
-            fieldsClassName="p-1 !px-2 !py-2"
+            fieldsClassName="p-1"
             form={form}
             handleFormSubmit={handleFormSubmit}
             isPending={false}
+            // noSections={isCompact}
           />
         ) : (
           <MarkdownText className={cn(isDev && '__CmpAnswer_Text', 'content-truncate w-full')}>
@@ -424,8 +501,9 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
       </div>
       <div
         className={cn(
-          isDev && '__CmpAnswer_Extra',
-          'flex shrink-0 items-center justify-center gap-1 max-xs:flex-col',
+          isDev && '__CmpAnswer_Extra', // DEBUG
+          'flex shrink-0 items-center justify-center gap-1',
+          isCompact && 'flex-col', // NOTE: Show in compact mode
         )}
       >
         {actionItems}
@@ -434,14 +512,17 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
             <DropdownMenuTrigger
               asChild
               aria-label="Show Menu"
-              className={cn(isDev && '__CmpAnswer_DropdownMenuTrigger')}
+              className={cn(
+                isDev && '__CmpAnswer_DropdownMenuTrigger', // DEBUG
+                isCompact && 'order-first', // NOTE: Show in compact mode
+              )}
             >
               <Button
                 size="sm"
                 variant="ghost"
                 title={t('ShowMenu')}
                 className={cn(
-                  isDev && '__CmpAnswer_DropdownMenuToggle',
+                  isDev && '__CmpAnswer_DropdownMenuToggle', // DEBUG
                   'size-6 p-0',
                   'active:bg-theme active:text-theme-foreground',
                   'ring-offset-background',
@@ -457,12 +538,12 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
             <DropdownMenuContent
               align="end"
               className={cn(
-                isDev && '__CmpAnswer_DropdownMenuContent',
+                isDev && '__CmpAnswer_DropdownMenuContent', // DEBUG
                 'mt-2 rounded-lg bg-popover',
                 'flex w-full flex-col gap-1',
               )}
               viewportClassName={cn(
-                isDev && '__CmpAnswer_DropdownMenuContentViewport',
+                isDev && '__CmpAnswer_DropdownMenuContentViewport', // DEBUG
                 '[&>div]:gap-1',
               )}
             >

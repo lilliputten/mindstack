@@ -29,8 +29,7 @@ function FormSection({ children, className }: TPropsWithChildrenAndClassName) {
     <div
       className={cn(
         isDev && '__EditQuestionFormFields_FormSection', // DEBUG
-        'flex w-full flex-1 flex-col gap-6 md:w-[45%]',
-        // 'py-2',
+        'flex w-full flex-1 flex-col gap-6 xl:w-[45%]',
         className,
       )}
     >
@@ -61,7 +60,7 @@ export function EditQuestionFormFields(props: TEditQuestionFormFieldsProps) {
       className={cn(
         isDev && '__EditQuestionFormFields', // DEBUG
         'flex w-full flex-col gap-6 px-6 py-2',
-        !noSections && 'md:flex-row',
+        !noSections && 'xl:flex-row',
         className,
       )}
     >

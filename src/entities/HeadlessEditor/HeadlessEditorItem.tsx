@@ -221,7 +221,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         >
           <Icons.GripVertical className="size-4 shrink-0" />
         </span>
-        {false || !isReady ? (
+        {isReady ? (
           <>
             {!!toggleCheck && <Skeleton className="size-4" />}
             <Skeleton className="size-4" />

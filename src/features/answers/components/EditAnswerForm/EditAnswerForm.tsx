@@ -17,10 +17,11 @@ interface TEditAnswerFormProps {
   handleFormSubmit: (formData: TFormData) => void;
   isPending: boolean;
   fieldsClassName?: string;
+  noSections?: boolean;
 }
 
 export function EditAnswerForm(props: TEditAnswerFormProps) {
-  const { className, form, handleFormSubmit, isPending, fieldsClassName } = props;
+  const { className, form, handleFormSubmit, isPending, fieldsClassName, noSections } = props;
 
   return (
     <FormProvider {...form}>
@@ -34,7 +35,7 @@ export function EditAnswerForm(props: TEditAnswerFormProps) {
         )}
       >
         <ScrollArea>
-          <EditAnswerFormFields form={form} className={fieldsClassName} />
+          <EditAnswerFormFields form={form} className={fieldsClassName} noSections={noSections} />
         </ScrollArea>
       </form>
     </FormProvider>

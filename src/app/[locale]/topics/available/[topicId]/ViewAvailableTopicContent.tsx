@@ -54,7 +54,7 @@ export function ViewAvailableTopicContent(props: TViewAvailableTopicContentProps
     startWorkout().then(() => goToTheRoute(workoutRouteGoPath));
   }, [startWorkout, goToTheRoute, workoutRouteGoPath]);
 
-  if (false || !isWorkoutReady) {
+  if (isWorkoutReady) {
     return <InnerSkeleton className="mx-6" />;
   }
 

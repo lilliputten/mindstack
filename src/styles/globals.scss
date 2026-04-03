@@ -571,6 +571,11 @@
     overflow: hidden;
     max-width: 100%;
   }
+  .content-truncate-x {
+    // overflow-x: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
   .content-truncate {
     overflow: hidden;
     text-overflow: ellipsis;

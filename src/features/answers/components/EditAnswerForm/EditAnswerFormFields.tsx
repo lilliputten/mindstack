@@ -3,7 +3,7 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-import { TPropsWithChildren } from '@/lib/types';
+import { TPropsWithChildren, TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/Form';
@@ -19,6 +19,7 @@ import { TFormData } from './types';
 interface TEditAnswerFormFieldsProps {
   form: UseFormReturn<TFormData>;
   className?: string;
+  noSections?: boolean;
 }
 
 function FormSection({ children }: TPropsWithChildren) {
@@ -26,7 +27,7 @@ function FormSection({ children }: TPropsWithChildren) {
     <div
       className={cn(
         isDev && '__EditAnswerFormFields_FormSection',
-        'flex w-full flex-1 flex-col gap-6 py-2 md:w-[45%]',
+        'flex w-full flex-1 flex-col gap-6 xl:w-[45%]',
       )}
     >
       {children}
@@ -35,15 +36,27 @@ function FormSection({ children }: TPropsWithChildren) {
 }
 
 export function EditAnswerFormFields(props: TEditAnswerFormFieldsProps) {
-  const { className, form } = props;
+  const { className, form, noSections } = props;
+
+  const EffectiveSection = !noSections
+    ? FormSection
+    : ({ children }: TPropsWithChildrenAndClassName) => children;
+
   const t = useT();
   const textKey = React.useId();
   const explanationKey = React.useId();
   const isCorrectKey = React.useId();
   const isGeneratedKey = React.useId();
   return (
-    <div className={cn('flex w-full flex-col gap-6 px-6 py-2 md:flex-row', className)}>
-      <FormSection>
+    <div
+      className={cn(
+        isDev && '__EditAnswerFormFields', // DEBUG
+        'flex w-full flex-col gap-6 px-6 py-2',
+        !noSections && 'xl:flex-row',
+        className,
+      )}
+    >
+      <EffectiveSection>
         <FormField
           name="text"
           control={form.control}
@@ -88,8 +101,8 @@ export function EditAnswerFormFields(props: TEditAnswerFormFieldsProps) {
             </FormItem>
           )}
         />
-      </FormSection>
-      <FormSection>
+      </EffectiveSection>
+      <EffectiveSection>
         <FormField
           name="isCorrect"
           control={form.control}
@@ -128,7 +141,7 @@ export function EditAnswerFormFields(props: TEditAnswerFormFieldsProps) {
             </FormItem>
           )}
         />
-      </FormSection>
+      </EffectiveSection>
     </div>
   );
 }

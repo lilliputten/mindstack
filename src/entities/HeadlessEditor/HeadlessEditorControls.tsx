@@ -45,6 +45,8 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   // Show normalized values
   // showNormalized?: boolean;
   setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
+  // Options...
+  disableScroll?: boolean;
 }
 
 /** Options to pass from the render point in the target component.
@@ -75,6 +77,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     className,
     // Options...
     isReady = true,
+    disableScroll,
     // Calculated data...
     totalChangedCount,
     // Items...
@@ -447,6 +450,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           isDev && '__HeadlessEditorControls', // DEBUG
           'flex flex-col',
           'content-truncate flex flex-col gap-1',
+          disableScroll && 'overflow-visible',
           !isExpanded && 'shrink-0',
           !isReady && 'pointer-events-none opacity-50',
           className,
@@ -457,7 +461,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             isDev && '__HeadlessEditorControls_Header', // DEBUG
             'flex flex-row items-center justify-between space-y-0 p-0',
             'shrink-0',
-            'overflow-hidden',
+            !disableScroll && 'overflow-hidden',
           )}
         >
           <CardTitle className="rounded-0 w-full">
@@ -513,13 +517,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           <CardContent
             className={cn(
               isDev && '__HeadlessEditorControls_Content', // DEBUG
-              'overflow-hidden',
+              !disableScroll && 'overflow-hidden',
               'flex flex-col',
               'px-0',
               'py-0',
             )}
           >
             <ScrollArea
+              disableScroll={disableScroll}
               className={cn(
                 isDev && '__HeadlessEditorControls_Scroll', // DEBUG
               )}

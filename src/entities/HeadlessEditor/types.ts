@@ -14,4 +14,5 @@ export interface TCmpItemProps<T> {
   updateItem?: (it: T) => void;
   /** Does the owner editor component have unsaved data? */
   hasChanges?: boolean;
+  compact?: boolean;
 }

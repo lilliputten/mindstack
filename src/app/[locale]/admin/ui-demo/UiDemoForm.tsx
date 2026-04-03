@@ -179,6 +179,10 @@ export function UiDemoForm(props: TProps) {
 
   const notifyUpdate = React.useCallback(
     (data: unknown) => {
+      console.log('[src/app/[locale]/admin/ui-demo/UiDemoForm.tsx:notifyUpdate]', {
+        data,
+      });
+      debugger;
       addLog({ type: 'data', title: 'Data updated:', content: data });
     },
     [addLog],

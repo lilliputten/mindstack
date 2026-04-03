@@ -5,6 +5,7 @@ import { FormState, UseFormReturn } from 'react-hook-form';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
+import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/Button';
 import {
   DropdownMenu,
@@ -21,7 +22,7 @@ import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
 import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
 import { TQuestionId } from '@/features/questions/types';
-import { useGoToTheRoute } from '@/hooks';
+import { useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { TCmpItemProps } from '../types';
@@ -72,7 +73,7 @@ function toHeadlessAnswerRows(
 }
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
-  const { className, item, updateItem, hasChanges } = props;
+  const { className, item, updateItem, hasChanges, compact } = props;
   const {
     id, // Required an unique id
     text = '', // Question markdown text
@@ -80,6 +81,10 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     answers,
     topicId,
   } = item;
+
+  // TODO: Detect compact mode depending on the container element width
+  const { mediaWidths } = useMediaMinDevices();
+  const isCompact = compact || !mediaWidths.includes('lg');
 
   const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
@@ -136,15 +141,18 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     },
     [hasChanges],
   );
-  const dropdownActionCallback = React.useCallback((action: () => void) => {
+  const dropdownActionCallback = React.useCallback((action?: (ev?: React.MouseEvent) => void) => {
     return () => {
       setDropdownOpen(false);
-      action();
+      action?.();
     };
   }, []);
   const confirmGoToTheRouteCallback = React.useCallback(
-    (route: string) => {
-      return confirmActionCallback(() => goToTheRoute(route as TRoutePath));
+    (route?: string) => {
+      if (!route) return () => {};
+      return confirmActionCallback(() => {
+        goToTheRoute(route as TRoutePath);
+      });
     },
     [confirmActionCallback, goToTheRoute],
   );
@@ -187,12 +195,22 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     setEditedItem(undefined);
   }, [getEditedItem, form, updateItem]);
 
+  const clickAnswers = React.useMemo(
+    () =>
+      hasAnswersData
+        ? () => setViewAnswers((viewAnswers) => !viewAnswers)
+        : isActiveAnswersButton
+          ? confirmGoToTheRouteCallback(questionRoutePath)
+          : undefined,
+    [confirmGoToTheRouteCallback, hasAnswersData, questionRoutePath],
+  );
+
   const actionItems = React.useMemo(() => {
     return [
-      // Save
-      isEditMode && !!updateItem && !!form && (
+      // ApplyChanges
+      !isCompact && isEditMode && !!updateItem && !!form && (
         <Button
-          key="Save"
+          key="ApplyChanges"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
           variant={isEdited ? 'success' : 'ghost'}
           title={t('ApplyChanges')}
@@ -203,7 +221,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         </Button>
       ),
       // Cancel editing
-      isEditMode && (
+      !isCompact && isEditMode && (
         <Button
           key="CancelEditing"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -214,7 +232,8 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <Icons.X className="size-4 shrink-0" />
         </Button>
       ),
-      !isEditMode && (showEmptyAnswersButton || !!count) && (
+      // Show answers
+      !isCompact && !isEditMode && (showEmptyAnswersButton || !!count) && (
         <Button
           // TODO: Add a handler to expand answers section...
           key="Answers"
@@ -225,20 +244,14 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             'bg-theme-500/10 text-xs text-foreground opacity-50',
             isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
           )}
-          onClick={
-            hasAnswersData
-              ? () => setViewAnswers((viewAnswers) => !viewAnswers)
-              : isActiveAnswersButton
-                ? confirmGoToTheRouteCallback(questionRoutePath)
-                : undefined
-          }
+          onClick={clickAnswers}
           title={hasAnswersData ? t('ShowAnswers') : t('GoToTheAnswers')}
         >
           <span className="truncate">{count || 0}</span>
         </Button>
       ),
       // Edit action
-      !!updateItem && !isEditMode && showEditAsAction && (
+      !isCompact && !!updateItem && !isEditMode && showEditAsAction && (
         <Button
           key="Edit"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -250,7 +263,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         </Button>
       ),
       // View question info
-      !isEditMode && (
+      !isCompact && !isEditMode && (
         <Button
           key="ViewInfo"
           className="content-truncate flex size-6 items-center justify-center gap-2 p-0"
@@ -263,11 +276,149 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       ),
     ].filter(Boolean);
   }, [
+    isCompact,
+    isEditMode,
+    updateItem,
+    form,
+    isEdited,
+    t,
+    handleSave,
+    count,
+    viewAnswers,
+    clickAnswers,
+    hasAnswersData,
+    viewInfo,
+    item,
+  ]);
+
+  const menuItems = React.useMemo(() => {
+    return [
+      // Edit action
+      isCompact && !!updateItem && !isEditMode && showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant="ghost"
+          title={t('Edit')}
+          onClick={dropdownActionCallback(() => setEditedItem(item))}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+          <span className="truncate">{t('Edit')}</span>
+        </Button>
+      ),
+      // ApplyChanges
+      isCompact && isEditMode && isEdited && !!updateItem && !!form && (
+        <Button
+          key="ApplyChanges"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant={isEdited ? 'success' : 'ghost'}
+          disabled={!isEdited}
+          onClick={dropdownActionCallback(handleSave)}
+        >
+          <Icons.Check className="size-4 shrink-0" />
+          <span className="truncate">{t('ApplyChanges')}</span>
+        </Button>
+      ),
+      // Cancel editing
+      isCompact && isEditMode && (
+        <Button
+          key="CancelEditing"
+          className="content-truncate flex items-center justify-start gap-2 text-left"
+          variant="ghost"
+          onClick={dropdownActionCallback(() => setEditedItem(undefined))}
+        >
+          <Icons.X className="size-4 shrink-0" />
+          <span className="truncate">{t('CancelEditing')}</span>
+        </Button>
+      ),
+      // Show answers
+      isCompact && !isEditMode && hasAnswersData && (
+        <Button
+          // TODO: Add a handler to expand answers section...
+          key="Answers"
+          variant={viewAnswers ? 'theme' : 'ghost'}
+          className={cn(
+            isDev && '__CmpQuestion_Count', // DEBUG
+            'content-truncate flex items-center justify-start gap-2 text-left',
+            isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
+          )}
+          onClick={dropdownActionCallback(clickAnswers)}
+        >
+          <Icons.Answers className="size-3.5 shrink-0" />
+          <span className="truncate">
+            {hasAnswersData ? t('ShowAnswers') : t('GoToTheAnswers')}
+          </span>
+          <span className="truncate font-light opacity-50">({count || 0})</span>
+        </Button>
+      ),
+      // View question info
+      (isCompact || isEditMode) && (
+        <Button
+          key="ViewInfo"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant={viewInfo ? 'theme' : 'ghost'}
+          title={t('ViewInfo')}
+          onClick={dropdownActionCallback(() => setViewInfo((viewInfo) => !viewInfo))}
+        >
+          <Icons.Info className="size-3.5 shrink-0" />
+          <span className="truncate">{t('ViewInfo')}</span>
+        </Button>
+      ),
+      // Edit
+      !!updateItem && !isEditMode && !showEditAsAction && (
+        <Button
+          key="Edit"
+          className="content-truncate flex items-center justify-start gap-2"
+          variant="ghost"
+          onClick={dropdownActionCallback(() => setEditedItem(item))}
+        >
+          <Icons.Edit className="size-3.5 shrink-0" />
+          <span className="truncate">{t('Edit')}</span>
+        </Button>
+      ),
+      // Go to answers
+      <Button
+        key="GoToTheAnswers"
+        className="content-truncate flex items-center justify-start gap-2"
+        variant="ghost"
+        onClick={confirmGoToTheRouteCallback(answersListRoutePath)}
+      >
+        <Link
+          href={answersListRoutePath as TRoutePath}
+          className="content-truncate flex items-center justify-start gap-2"
+          onClick={(ev) => ev.preventDefault()}
+        >
+          <Icons.ChevronRight className="size-3 shrink-0" />
+          <span className="truncate">{t('GoToTheAnswers')}</span>
+        </Link>
+      </Button>,
+      // Go to the question
+      <Button
+        key="GoToTheQuestion"
+        className="content-truncate flex items-center justify-start gap-2"
+        variant="ghost"
+        onClick={confirmGoToTheRouteCallback(questionRoutePath)}
+      >
+        <Link
+          href={questionRoutePath as TRoutePath}
+          className="content-truncate flex items-center justify-start gap-2"
+          onClick={(ev) => ev.preventDefault()}
+        >
+          <Icons.ChevronRight className="size-3 shrink-0" />
+          <span className="truncate">{t('GoToTheQuestion')}</span>
+        </Link>
+      </Button>,
+    ].filter(Boolean);
+  }, [
+    answersListRoutePath,
+    clickAnswers,
     confirmGoToTheRouteCallback,
     count,
+    dropdownActionCallback,
     form,
     handleSave,
     hasAnswersData,
+    isCompact,
     isEditMode,
     isEdited,
     item,
@@ -295,63 +446,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     },
     [item, updateItem],
   );
-
-  const menuItems = React.useMemo(() => {
-    return [
-      // View question info
-      isEditMode && (
-        <Button
-          key="ViewInfo"
-          className="content-truncate flex items-center justify-start gap-2"
-          variant={viewInfo ? 'theme' : 'ghost'}
-          title={t('ViewInfo')}
-          onClick={dropdownActionCallback(() => setViewInfo((viewInfo) => !viewInfo))}
-        >
-          <Icons.Info className="size-3.5 shrink-0" />
-          <span className="truncate">{t('ViewInfo')}</span>
-        </Button>
-      ),
-      !!updateItem && !isEditMode && !showEditAsAction && (
-        <Button
-          key="Edit"
-          className="content-truncate flex items-center justify-start gap-2"
-          variant="ghost"
-          onClick={dropdownActionCallback(() => setEditedItem(item))}
-        >
-          <Icons.Edit className="size-3.5 shrink-0" />
-          <span className="truncate">{t('Edit')}</span>
-        </Button>
-      ),
-      <Button
-        key="GoToTheAnswers"
-        className="content-truncate flex items-center justify-start gap-2"
-        variant="ghost"
-        onClick={confirmGoToTheRouteCallback(answersListRoutePath)}
-      >
-        <Icons.ChevronRight className="size-3 shrink-0" />
-        <span className="truncate">{t('GoToTheAnswers')}</span>
-      </Button>,
-      <Button
-        key="GoToTheQuestion"
-        className="content-truncate flex items-center justify-start gap-2"
-        variant="ghost"
-        onClick={confirmGoToTheRouteCallback(questionRoutePath)}
-      >
-        <Icons.ChevronRight className="size-3 shrink-0" />
-        <span className="truncate">{t('GoToTheQuestion')}</span>
-      </Button>,
-    ].filter(Boolean);
-  }, [
-    answersListRoutePath,
-    confirmGoToTheRouteCallback,
-    dropdownActionCallback,
-    isEditMode,
-    item,
-    questionRoutePath,
-    t,
-    updateItem,
-    viewInfo,
-  ]);
 
   return (
     <div
@@ -391,7 +485,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             setForm={setForm}
             setFormState={setFormState}
             handleFormSubmit={handleFormSubmit}
-            // noSections
+            // noSections={isCompact}
             // isPending={isPending}
           />
         ) : (
@@ -433,9 +527,10 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
           <div
             className={cn(
               isDev && '__CmpQuestion_Answers', // DEBUG
-              'content-truncate flex max-h-[min(24rem,50vh)] min-h-0 flex-col gap-2 text-sm',
+              'content-truncate flex flex-col gap-2 text-sm',
             )}
           >
+            {/* TODO: Show sekeleton */}
             <AnswersEditorCore
               topicId={topicId}
               questionId={id}
@@ -449,7 +544,9 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       <div
         className={cn(
           isDev && '__CmpQuestion_Extra', // DEBUG
-          'flex shrink-0 items-center justify-center gap-1 max-xs:flex-col',
+          'flex shrink-0 items-center justify-center gap-1',
+          // 'max-lg:flex-col',
+          isCompact && 'flex-col', // NOTE: Show in compact mode
         )}
       >
         {actionItems}
@@ -462,6 +559,8 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
                   aria-label="Show Menu"
                   className={cn(
                     isDev && '__CmpQuestion_DropdownMenuTrigger', // DEBUG
+                    // 'max-lg:order-first',
+                    isCompact && 'order-first', // NOTE: Show in compact mode
                   )}
                 >
                   <Button
