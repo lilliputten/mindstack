@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
-import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions';
+import { AddAnswerModal } from '@/components/pages/ManageTopicQuestionAnswers';
 import { isDev } from '@/constants';
 import {
   reorderByDate,
@@ -17,7 +17,8 @@ import {
   TSaveDataParams,
   useHeadlessEditorState,
 } from '@/entities/HeadlessEditor';
-import { CmpQuestion } from '@/entities/HeadlessEditor/demo/CmpQuestion';
+import { CmpAnswer } from '@/entities/HeadlessEditor/demo/CmpAnswer';
+import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 
 import { T } from './types';
@@ -38,16 +39,24 @@ const reorderModes = {
 } as const satisfies TReorderModes<T>;
 type TReorderKey = keyof typeof reorderModes;
 
-export interface THeadlessQuestionsEditorProps {
+export interface TAnswersEditorCoreProps {
   topicId: TTopicId;
-  /** Used for comparator language; falls back to the active UI locale when omitted. */
-  langCode?: string;
+  questionId: TQuestionId;
+  /** Answer rows (named `questions` per shared headless editor contract). */
   questions: T[];
   setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
+  /**
+   * Lets a parent wrapper obtain `setItemsData` for cache-driven sync (e.g. React Query).
+   * Not part of the public feature API; prefer keeping sync logic in the wrapper.
+   */
   onBindSetItemsData?: (setItemsData: (items: T[]) => void) => void;
   saveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
   /** Upper-level readiness (e.g. all React Query requests settled). */
   isReady?: boolean;
+  /**
+   * When set, invoked on reload instead of resetting from the `questions` prop.
+   * Use `setItemsData` to apply fetched rows (e.g. after a React Query refetch).
+   */
   reloadData?: (ctx: { setItemsData: (items: T[]) => void }) => void | Promise<void>;
 }
 
@@ -56,11 +65,11 @@ interface TMemo {
   setItemsData?: (items: T[]) => void;
 }
 
-export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
+export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const {
     topicId,
-    langCode,
+    questionId,
     questions,
     setHeadlessEditorState,
     onBindSetItemsData,
@@ -85,7 +94,7 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
     [t],
   );
 
-  const questionsLocale = langCode || locale;
+  const answersLocale = locale;
 
   const [defaultItems, setDefaultItems] = React.useState<T[]>(questions);
 
@@ -95,7 +104,7 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
     }
   }, [memo, questions]);
 
-  const [addQuestionModalVisible, setAddQuestionModalVisible] = React.useState(false);
+  const [addAnswerModalVisible, setAddAnswerModalVisible] = React.useState(false);
   const [deleteSelectedConfirmVisible, setDeleteSelectedConfirmVisible] = React.useState(false);
   const [confirmAction, setConfirmAction] = React.useState<() => void | undefined>();
 
@@ -110,7 +119,7 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
 
   const headlessEditorState = useHeadlessEditorState({
     isReady,
-    lang: questionsLocale,
+    lang: answersLocale,
     largeTexts,
     reorderModes,
     filterText,
@@ -122,7 +131,7 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
     defaultItems,
     saveData: saveDataProp,
     getItemText,
-    RenderItem: CmpQuestion,
+    RenderItem: CmpAnswer,
     showNormalized,
     setShowNormalized,
   });
@@ -201,12 +210,12 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
     <>
       <RenderHeadlessEditorControls
         className={cn(
-          isDev && '__HeadlessQuestionsEditor_RenderHeadlessEditorControls',
+          isDev && '__AnswersEditorCore_RenderHeadlessEditorControls',
           'transition',
           !isReady && 'opacity-50',
         )}
         reorderTitles={reorderTitles}
-        onAddAction={() => setAddQuestionModalVisible(true)}
+        onAddAction={() => setAddAnswerModalVisible(true)}
         onDeleteAction={() => setDeleteSelectedConfirmVisible(true)}
         onReload={confirmActionCallback(reloadData)}
         setFilterTargeted={setFilterTargeted}
@@ -217,41 +226,43 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
         setFilterTextSmart={setFilterTextSmart}
       />
       <ScrollArea
-        saveScrollKey="HeadlessQuestionsEditor"
+        saveScrollKey="AnswersEditorCore"
         saveScrollHash={saveScrollHash}
         className={cn(
-          isDev && '__HeadlessQuestionsEditor_Scroll',
+          isDev && '__AnswersEditorCore_Scroll',
           'relative flex flex-1 flex-col overflow-hidden',
         )}
-        viewportClassName={cn(isDev && '__HeadlessQuestionsEditor_Scroll_Viewport')}
+        viewportClassName={cn(isDev && '__AnswersEditorCore_Scroll_Viewport')}
       >
         <RenderHeadlessEditor
           className={cn(
-            isDev && '__HeadlessQuestionsEditor_RenderHeadlessEditor',
+            isDev && '__AnswersEditorCore_RenderHeadlessEditor',
             'w-full',
             'transition',
             !isReady && 'opacity-50',
           )}
         />
       </ScrollArea>
-      {addQuestionModalVisible && (
-        <AddQuestionModal
+      {addAnswerModalVisible && (
+        <AddAnswerModal
+          variant="controlled"
           isVisible
-          onClose={() => setAddQuestionModalVisible(false)}
+          onClose={() => setAddAnswerModalVisible(false)}
           onDone={(formData) => {
-            const newItem = { topicId, ...formData };
-            addNewItem(newItem);
+            addNewItem({ questionId, text: formData.text, isCorrect: formData.isCorrect });
           }}
+          topicId={topicId}
+          questionId={questionId}
           closeImmediatelly
         />
       )}
       {deleteSelectedConfirmVisible && (
         <ConfirmModal
           isVisible
-          dialogTitle={t('ConfirmDeleteQuestions')}
+          dialogTitle={t('ConfirmDeleteAnswers')}
           confirmButtonVariant="destructive"
           confirmButtonText={t('Delete')}
-          confirmButtonBusyText={t('QuestionsEditor.DeletingQuestions')}
+          confirmButtonBusyText={t('AnswersEditor.DeletingAnswers')}
           cancelButtonText={t('Cancel')}
           handleClose={() => setDeleteSelectedConfirmVisible(false)}
           handleConfirm={() => {
@@ -259,7 +270,7 @@ export function HeadlessQuestionsEditor(props: THeadlessQuestionsEditorProps) {
             setDeleteSelectedConfirmVisible(false);
           }}
         >
-          {t('ConfirmDeleteQuestionsMessage', {
+          {t('ConfirmDeleteAnswersMessage', {
             count: selectedIds?.size || 0,
           })}
         </ConfirmModal>

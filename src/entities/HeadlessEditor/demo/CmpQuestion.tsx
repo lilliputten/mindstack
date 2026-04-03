@@ -17,7 +17,7 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
 import { TSaveDataParams } from '@/entities/HeadlessEditor';
 import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
-import { HeadlessAnswersEditor } from '@/features/answers/components/AnswersEditor';
+import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
 import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
 import { TQuestionId } from '@/features/questions/types';
@@ -436,7 +436,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
               'content-truncate flex max-h-[min(24rem,50vh)] min-h-0 flex-col gap-2 text-sm',
             )}
           >
-            <HeadlessAnswersEditor
+            <AnswersEditorCore
               topicId={topicId}
               questionId={id}
               questions={headlessAnswerRows}

@@ -20,7 +20,7 @@ import {
   TUpdateAnswersDataViaParamsResults,
   updateAnswersDataViaParams,
 } from '../../actions/updateAnswersDataViaParams';
-import { HeadlessAnswersEditor } from './HeadlessAnswersEditor';
+import { AnswersEditorCore } from './AnswersEditorCore';
 import { T } from './types';
 
 export interface TAnswersEditorProps {
@@ -224,7 +224,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
   );
 
   return (
-    <HeadlessAnswersEditor
+    <AnswersEditorCore
       topicId={topicId}
       questionId={questionId}
       questions={allAnswers}

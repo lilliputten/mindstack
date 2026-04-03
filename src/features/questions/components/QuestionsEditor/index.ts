@@ -1,2 +1,2 @@
-export * from './HeadlessQuestionsEditor';
+export * from './QuestionsEditorCore';
 export * from './QuestionsEditor';

@@ -6,7 +6,6 @@ import { checkIfUserIsAdmin, getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { isDev, welcomeAliasRoute } from '@/config';
-import { getFirstPublicTopicId } from '@/features/topics/actions';
 
 import { UiDemoForm } from './UiDemoForm';
 
@@ -36,11 +35,7 @@ export default async function TestQueryPage() {
     orderBy: { createdAt: 'asc' },
   });
 
-  const topicId = topic?.id; // await getFirstPublicTopicId({ userId: user?.id });
-  /* console.log('[src/app/[locale]/admin/ui-demo/page.tsx]', {
-   *   topic,
-   * });
-   */
+  const topicId = topic?.id;
 
   if (!isAdmin) {
     return redirect(welcomeAliasRoute);

@@ -6,7 +6,7 @@ import { TTopicId } from '@/features/topics';
 import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 
 import { TUpdateQuestionsDataViaParams } from '../../actions';
-import { HeadlessQuestionsEditor } from './HeadlessQuestionsEditor';
+import { QuestionsEditorCore } from './QuestionsEditorCore';
 import { T } from './types';
 
 interface TProps {
@@ -77,7 +77,7 @@ export function QuestionsEditorDemo(props: TProps) {
           <Skeleton className="h-8 w-full" />
         </div>
       )}
-      <HeadlessQuestionsEditor
+      <QuestionsEditorCore
         topicId={topicId}
         langCode={topic?.langCode ?? undefined}
         questions={allQuestions}

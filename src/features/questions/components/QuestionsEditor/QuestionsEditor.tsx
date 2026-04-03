@@ -18,7 +18,7 @@ import {
   TUpdateQuestionsDataViaParamsResults,
   updateQuestionsDataViaParams,
 } from '../../actions/updateQuestionsDataViaParams';
-import { HeadlessQuestionsEditor } from './HeadlessQuestionsEditor';
+import { QuestionsEditorCore } from './QuestionsEditorCore';
 import { T } from './types';
 
 export interface TQuestionsEditorProps {
@@ -224,7 +224,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   );
 
   return (
-    <HeadlessQuestionsEditor
+    <QuestionsEditorCore
       topicId={topicId}
       langCode={topic?.langCode ?? undefined}
       questions={allQuestions}
