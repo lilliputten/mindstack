@@ -235,17 +235,25 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       // Show answers
       !isCompact && !isEditMode && (showEmptyAnswersButton || !!count) && (
         <Button
-          // TODO: Add a handler to expand answers section...
           key="Answers"
-          variant={viewAnswers ? 'theme' : 'ghost'}
+          // variant={viewAnswers ? 'theme' : 'ghost'}
           className={cn(
             isDev && '__CmpQuestion_Count', // DEBUG
             'flex h-6 min-w-8 shrink-0 items-center justify-center rounded-md px-2',
-            'bg-theme-500/10 text-xs text-foreground opacity-50',
-            isActiveAnswersButton && 'cursor-pointer transition hover:bg-theme-500/50',
+            viewAnswers
+              ? 'bg-theme-500 text-white hover:bg-theme-600'
+              : 'bg-theme-500/10 text-foreground hover:bg-theme-500/20',
+            'text-xs opacity-80',
+            isActiveAnswersButton && 'cursor-pointer transition',
           )}
           onClick={clickAnswers}
-          title={hasAnswersData ? t('ShowAnswers') : t('GoToTheAnswers')}
+          title={
+            !hasAnswersData
+              ? t('GoToTheAnswers')
+              : viewAnswers
+                ? t('HideAnswers')
+                : t('ShowAnswers')
+          }
         >
           <span className="truncate">{count || 0}</span>
         </Button>
@@ -334,7 +342,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       // Show answers
       isCompact && !isEditMode && hasAnswersData && (
         <Button
-          // TODO: Add a handler to expand answers section...
           key="Answers"
           variant={viewAnswers ? 'theme' : 'ghost'}
           className={cn(
@@ -457,6 +464,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         // hasChanges && 'border border-red-500', // DEBUG
         className,
       )}
+      onDoubleClick={() => setEditedItem(item)}
     >
       {/* // An item bullet dot sample
       <div
@@ -545,7 +553,6 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
         className={cn(
           isDev && '__CmpQuestion_Extra', // DEBUG
           'flex shrink-0 items-center justify-center gap-1',
-          // 'max-lg:flex-col',
           isCompact && 'flex-col', // NOTE: Show in compact mode
         )}
       >

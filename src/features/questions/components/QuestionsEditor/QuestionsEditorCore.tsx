@@ -150,7 +150,8 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
   memo.hasChanges = hasChanges;
 
   const confirmActionCallback = React.useCallback(
-    (action: () => void) => {
+    (action?: () => void) => {
+      if (!action) return undefined;
       return () => {
         if (memo.hasChanges) {
           setConfirmAction(() => action);
@@ -179,13 +180,15 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     onBindSetItemsData?.(setItemsData);
   }, [onBindSetItemsData, setItemsData]);
 
-  const reloadData = React.useCallback(() => {
+  const reloadData = React.useMemo(() => {
     if (reloadDataProp) {
-      void reloadDataProp({ setItemsData });
-      return;
+      return () => {
+        void reloadDataProp({ setItemsData });
+        return;
+      };
     }
-    setItemsData(questions);
-  }, [reloadDataProp, questions, setItemsData]);
+    return undefined;
+  }, [reloadDataProp, setItemsData]);
 
   React.useEffect(() => {
     if (!isReady) {

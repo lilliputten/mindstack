@@ -179,10 +179,11 @@ export function UiDemoForm(props: TProps) {
 
   const notifyUpdate = React.useCallback(
     (data: unknown) => {
+      // eslint-disable-next-line no-console
       console.log('[src/app/[locale]/admin/ui-demo/UiDemoForm.tsx:notifyUpdate]', {
         data,
       });
-      debugger;
+      debugger; // eslint-disable-line no-debugger
       addLog({ type: 'data', title: 'Data updated:', content: data });
     },
     [addLog],

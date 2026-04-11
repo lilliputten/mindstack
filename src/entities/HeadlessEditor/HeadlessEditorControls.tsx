@@ -2,7 +2,8 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
-import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Input } from '@/components/ui/Input';
@@ -140,64 +141,76 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const actions = [
     // Basic actions...
-    onSaveData && !!totalChangedCount && (
-      <Button
-        key="SaveData"
-        onClick={onSaveData}
-        className="content-truncate flex items-center gap-2"
-        variant={totalChangedCount ? 'success' : 'ghost'}
-        disabled={!totalChangedCount}
-        // size="sm"
-      >
-        <Icons.Save className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">
-          {t('Save')}
-          {!!totalChangedCount && (
-            <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
-          )}
-        </span>
-      </Button>
-    ),
-    !!totalChangedCount && (
-      <Button
-        key="UndoChanges"
-        onClick={restoreDefaults}
-        className="content-truncate flex items-center gap-2"
-        variant={totalChangedCount ? 'theme' : 'ghost'}
-        disabled={!totalChangedCount}
-      >
-        <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">
-          {t('UndoChanges')}
-          {!!totalChangedCount && (
-            <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
-          )}
-        </span>
-      </Button>
-    ),
-    !!items.length && (
-      <Button
-        key="SelectAll"
-        onClick={() =>
-          setSelectedIds((selectedIds) => {
-            return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
-          })
-        }
-        className="content-truncate flex items-center gap-2"
-        variant={items.length ? 'theme' : 'ghost'}
-        disabled={!items.length}
-      >
-        {!selectedIds?.size ? (
-          <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
-        ) : (
-          <Icons.Square className="size-4 shrink-0 opacity-50" />
-        )}
-        <span className="truncate">
-          {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
-          <span className="ml-1 font-thin opacity-50">({items.length})</span>
-        </span>
-      </Button>
-    ),
+    /* // UNUSED: These actions displayed in the panel header
+     * onSaveData && !!totalChangedCount && (
+     *   <Button
+     *     key="SaveData"
+     *     onClick={onSaveData}
+     *     className="content-truncate flex items-center gap-2"
+     *     variant={totalChangedCount ? 'success' : 'ghost'}
+     *     disabled={!totalChangedCount}
+     *   >
+     *     <Icons.Save className="size-4 shrink-0 opacity-50" />
+     *     <span className="truncate">
+     *       {t('Save')}
+     *       {!!totalChangedCount && (
+     *         <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
+     *       )}
+     *     </span>
+     *   </Button>
+     * ),
+     * !!totalChangedCount && (
+     *   <Button
+     *     key="UndoChanges"
+     *     onClick={restoreDefaults}
+     *     className="content-truncate flex items-center gap-2"
+     *     variant={totalChangedCount ? 'theme' : 'ghost'}
+     *     disabled={!totalChangedCount}
+     *   >
+     *     <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
+     *     <span className="truncate">
+     *       {t('UndoChanges')}
+     *       {!!totalChangedCount && (
+     *         <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
+     *       )}
+     *     </span>
+     *   </Button>
+     * ),
+     * !!onReload && (
+     *   <Button
+     *     key="Reload"
+     *     onClick={onReload}
+     *     className="content-truncate flex items-center gap-2"
+     *     variant="ghost"
+     *   >
+     *     <Icons.Refresh className="size-4 shrink-0 opacity-50" />
+     *     <span className="truncate">{t('Reload')}</span>
+     *   </Button>
+     * ),
+     * !!items.length && (
+     *   <Button
+     *     key="SelectAll"
+     *     onClick={() =>
+     *       setSelectedIds((selectedIds) => {
+     *         return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
+     *       })
+     *     }
+     *     className="content-truncate flex items-center gap-2"
+     *     variant={items.length ? 'theme' : 'ghost'}
+     *     disabled={!items.length}
+     *   >
+     *     {!selectedIds?.size ? (
+     *       <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
+     *     ) : (
+     *       <Icons.Square className="size-4 shrink-0 opacity-50" />
+     *     )}
+     *     <span className="truncate">
+     *       {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
+     *       <span className="ml-1 font-thin opacity-50">({items.length})</span>
+     *     </span>
+     *   </Button>
+     * ),
+     */
     /*
       // Separate select all/select none controls
       <Button
@@ -206,7 +219,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         className="content-truncate flex items-center gap-2"
         variant={selectedIds?.size !== items.length ? 'theme' : 'ghost'}
         disabled={selectedIds?.size === items.length}
-        // size="sm"
       >
         <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
         <span className="truncate">{t('SelectAll')}</span>
@@ -217,7 +229,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         className="content-truncate flex items-center gap-2"
         variant={selectedIds?.size ? 'theme' : 'ghost'}
         disabled={!selectedIds?.size}
-        // size="sm"
       >
         <Icons.Square className="size-4 shrink-0 opacity-50" />
         <span className="truncate">{t('SelectNone')}</span>
@@ -247,17 +258,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             <span className="ml-1 font-thin opacity-50">({selectedIds.size})</span>
           )}
         </span>
-      </Button>
-    ),
-    !!onReload && (
-      <Button
-        key="Reload"
-        onClick={onReload}
-        className="content-truncate flex items-center gap-2"
-        variant="ghost"
-      >
-        <Icons.Refresh className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('Reload')}</span>
       </Button>
     ),
     <Button
@@ -364,7 +364,9 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       />
       <span>
         {t('HeadlessEditor.FilterUpdatedItems')}
-        <span className="ml-1 font-thin opacity-50">({updatedAndReorderedCount})</span>
+        <Badge variant={'theme50'} className="ml-2 truncate px-2 text-xs opacity-50 max-xs:hidden">
+          {updatedAndReorderedCount}
+        </Badge>
       </span>
     </Label>,
     <Label key="FilterAdded" className="ml-1 flex select-none items-center gap-2">
@@ -374,7 +376,9 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       />
       <span>
         {t('HeadlessEditor.FilterAddedItems')}
-        <span className="ml-1 font-thin opacity-50">({addedIds?.size || 0})</span>
+        <Badge variant={'theme50'} className="ml-2 truncate px-2 text-xs opacity-50 max-xs:hidden">
+          {addedIds?.size || 0}
+        </Badge>
       </span>
     </Label>,
     <Label key="FilterSelected" className="ml-1 mr-2 flex select-none items-center gap-2">
@@ -384,7 +388,9 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       />
       <span>
         {t('HeadlessEditor.FilterSelectedItems')}
-        <span className="ml-1 font-thin opacity-50">({selectedIds?.size || 0})</span>
+        <Badge variant={'theme50'} className="ml-2 truncate px-2 text-xs opacity-50 max-xs:hidden">
+          {selectedIds?.size || 0}
+        </Badge>
       </span>
     </Label>,
   ].filter(Boolean);
@@ -464,46 +470,131 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             !disableScroll && 'overflow-hidden',
           )}
         >
-          <CardTitle className="rounded-0 w-full">
+          <CardTitle className="rounded-0 flex w-full">
+            {/*
             <Tooltip key="AvailableTopicsFilters-Caption">
-              <TooltipTrigger asChild>
-                <Button
-                  variant={isExpanded ? 'ghost' : 'theme'}
-                  onClick={() => setExpanded((isExpanded) => !isExpanded)}
-                  className="flex w-full items-center gap-2 rounded-none"
-                >
-                  <span className="flex flex-1 items-center gap-2 truncate">
-                    <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
-                    {/*controlsCaption*/}
-                    {isExpanded ? t('HideControls') : t('ShowControls')}
-                    {/*!!totalChangedCount && <span className="ml-1 font-thin opacity-50">*</span>*/}
+              <TooltipTrigger
+                // asChild
+                className={cn(
+                  isDev && '__HeadlessEditorControls_TooltipTrigger', // DEBUG
+                  'flex w-full items-center justify-between space-y-0 p-0',
+                )}
+              >
+            */}
+            {/* SaveData */}
+            {onSaveData && !!totalChangedCount && (
+              <div
+                key="SaveData"
+                onClick={onSaveData}
+                title={t('Save')}
+                className={cn(
+                  buttonVariants({ variant: 'success' }),
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                )}
+              >
+                <Icons.Save className={cn('size-4 shrink-0')} />
+                <span className="truncate max-md:hidden">{t('Save')}</span>
+              </div>
+            )}
+            {/* UndoChanges */}
+            {!!totalChangedCount && (
+              <div
+                key="UndoChanges"
+                onClick={restoreDefaults}
+                title={t('UndoChanges')}
+                className={cn(
+                  buttonVariants({ variant: 'theme80' }),
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                )}
+              >
+                <Icons.Undo2 className="size-4 shrink-0" />
+                <span className="truncate max-xs:hidden">
+                  <span className="truncate max-md:hidden">{t('UndoChanges')}</span>
+                  {!!totalChangedCount && (
+                    <Badge
+                      variant={'theme'}
+                      className="ml-2 truncate px-2 text-xs opacity-50 max-xs:hidden"
+                    >
+                      {totalChangedCount}
+                    </Badge>
+                  )}
+                </span>
+              </div>
+            )}
+            {/* Reload */}
+            {!!onReload && (
+              <div
+                key="Reload"
+                onClick={onReload}
+                className={cn(
+                  buttonVariants({ variant: 'theme80' }),
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                )}
+                title={t('Reload')}
+              >
+                <Icons.Refresh className="size-4 shrink-0" />
+                <span className="truncate max-md:hidden">{t('Reload')}</span>
+              </div>
+            )}
+            {/* SelectAll */}
+            {!!items.length && (
+              <div
+                key="SelectAll"
+                onClick={() =>
+                  setSelectedIds((selectedIds) => {
+                    return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
+                  })
+                }
+                className={cn(
+                  buttonVariants({ variant: 'theme80' }),
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                )}
+                title={!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
+              >
+                {!selectedIds?.size ? (
+                  <Icons.Square className="size-4 shrink-0" />
+                ) : selectedIds?.size === items.length ? (
+                  <Icons.SquareCheck className="size-4 shrink-0" />
+                ) : (
+                  <Icons.SquareDot className="size-4 shrink-0" />
+                )}
+                <span className="truncate max-md:hidden">
+                  {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
+                </span>
+                <Badge variant={'theme'} className="truncate px-2 text-xs opacity-50 max-xs:hidden">
+                  {selectedIds?.size || items.length}
+                </Badge>
+              </div>
+            )}
+
+            {/* // Expand toggler */}
+            <div
+              onClick={() => setExpanded((isExpanded) => !isExpanded)}
+              className={cn(
+                buttonVariants({ variant: 'default' }),
+                'flex flex-1 cursor-pointer items-center gap-2 truncate rounded-none',
+              )}
+              title={isExpanded ? t('HideOptions') : t('ShowOptions')}
+            >
+              <span className="flex flex-1 items-center gap-2 truncate">
+                <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
+                <span className="truncate max-xs:hidden">
+                  {isExpanded ? t('HideOptions') : t('ShowOptions')}
+                </span>
+                {/* // These are not required as the changed status is obviously displayed in the header (see buttons above)
+                    !!totalChangedCount && <span className="ml-1 font-thin opacity-50">*</span>
                     {!!totalChangedCount && <Icons.Asterisk className="size-4 opacity-50" />}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    {/*
-                    {!onDefaults && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                          ev.stopPropagation();
-                          handleResetToDefaults();
-                        }}
-                        className="h-7 w-7 opacity-70 hover:opacity-100"
-                        title={t('ResetToDefaults')}
-                      >
-                        <Icons.X className="size-3.5" />
-                      </Button>
-                    )}
                     */}
-                    <ToggleIcon className="size-4" />
-                  </span>
-                </Button>
+              </span>
+              <span className="flex shrink-0 items-center gap-2">
+                <ToggleIcon className="size-4" />
+              </span>
+            </div>
+            {/*
               </TooltipTrigger>
               <TooltipContent
-                side={isExpanded ? 'bottom' : 'top'}
+                side="top"
+                // side={isExpanded ? 'bottom' : 'top'}
                 className="content-truncate flex items-center gap-2"
               >
                 {totalChangedCount
@@ -511,6 +602,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                   : t('HeadlessEditor.NoChangesMade')}
               </TooltipContent>
             </Tooltip>
+            */}
           </CardTitle>
         </CardHeader>
         {isExpanded && (

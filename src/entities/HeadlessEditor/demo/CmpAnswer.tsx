@@ -435,6 +435,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
         !isReady && 'opacity-50',
         className,
       )}
+      onDoubleClick={() => openEditor()}
     >
       <div
         className={cn(

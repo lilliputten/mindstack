@@ -127,6 +127,7 @@ export const {
   SquareChartGantt,
   SquareCheck,
   SquareDashedKanban,
+  SquareDot,
   SquareLibrary,
   Star,
   Tags,

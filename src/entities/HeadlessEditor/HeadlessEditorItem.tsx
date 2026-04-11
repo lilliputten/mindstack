@@ -195,7 +195,6 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
           'flex shrink-0 items-center gap-2 text-sm',
           'min-h-6',
           'transition',
-          // isDragging && 'opacity-0',
           isOverlay && 'opacity-20',
         )}
         // title="Click to toggle the item comparison mode only with similar items"
@@ -221,7 +220,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         >
           <Icons.GripVertical className="size-4 shrink-0" />
         </span>
-        {isReady ? (
+        {!isReady ? (
           <>
             {!!toggleCheck && <Skeleton className="size-4" />}
             <Skeleton className="size-4" />
