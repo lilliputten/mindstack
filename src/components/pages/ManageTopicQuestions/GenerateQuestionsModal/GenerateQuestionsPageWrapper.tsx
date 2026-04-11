@@ -627,15 +627,14 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
             isSaving={saveQuestionsMutation.isPending}
             generatedQuestions={generatedQuestions}
             saveQuestions={saveCallback}
-            /* // TODO: Issue #80: Implement simple questions editing
-             * editQuestions={() => {
-             *   if (!generatedQuestions?.length) {
-             *     toast.error(t('GenerateQuestionsModal.NoQuestionsGenerated'));
-             *   } else {
-             *     setEditing(true);
-             *   }
-             * }}
-             */
+            // TODO: Issue #80: Implement simple questions editing
+            editQuestions={() => {
+              if (!generatedQuestions?.length) {
+                toast.error(t('GenerateQuestionsModal.NoQuestionsGenerated'));
+              } else {
+                setEditing(true);
+              }
+            }}
           />
         ) : (
           <GenerateQuestionsForm

@@ -452,6 +452,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
   return (
     <TooltipProvider delayDuration={0}>
       <Card
+        data-totalChangedCount={totalChangedCount}
         className={cn(
           isDev && '__HeadlessEditorControls', // DEBUG
           'flex flex-col',

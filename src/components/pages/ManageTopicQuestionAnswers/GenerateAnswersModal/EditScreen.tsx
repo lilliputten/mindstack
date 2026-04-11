@@ -6,25 +6,37 @@ import { Button } from '@/components/ui/Button';
 import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { TNewAnswer } from '@/features/answers/types';
+import { TSaveDataParams } from '@/entities/HeadlessEditor';
+import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
+import { TNewOrOldAnswer } from '@/features/answers/types';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics';
-import { PreviewAnswers } from '@/widgets/answers';
 
 export interface TEditScreenProps {
   startOverCallback?: () => void;
   className?: string;
   isSaving?: boolean;
-  topicId: TTopicId; // Is it required here?
-  questionId: TQuestionId; // Is it required here?
-  generatedAnswers?: TNewAnswer[];
-  saveAnswers: () => unknown;
+  topicId: TTopicId;
+  questionId: TQuestionId;
+  answers?: TNewOrOldAnswer[];
   handleCancel?: () => void;
+  /** Callback to save data via parent component */
+  saveData?: (saveParams: TSaveDataParams<TNewOrOldAnswer>) => Promise<TNewOrOldAnswer[]>;
+  reloadAnswers?: () => void;
 }
 
 export function EditScreen(props: TEditScreenProps) {
-  const { className, startOverCallback, isSaving, generatedAnswers, saveAnswers, handleCancel } =
-    props;
+  const {
+    className,
+    startOverCallback,
+    isSaving = false,
+    answers,
+    handleCancel,
+    saveData,
+    topicId,
+    questionId,
+    reloadAnswers,
+  } = props;
   const t = useT();
 
   const CancelIcon = isSaving ? Icons.X : Icons.Undo2;
@@ -51,20 +63,17 @@ export function EditScreen(props: TEditScreenProps) {
             isSaving && 'opacity-20',
           )}
         >
-          {!generatedAnswers?.length ? (
+          {!answers?.length ? (
             <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersToEdit')} />
           ) : (
             <div className="conent-truncate flex flex-col gap-4">
-              <h3 className="content-truncate text-xl font-semibold text-theme">
-                {t('GenerateAnswersModal.EditAnswersCount', {
-                  count: generatedAnswers.length,
-                })}
-                :
-              </h3>
-              {/* Display preview of the added answers */}
-              <PreviewAnswers
-                answers={generatedAnswers}
-                className="content-truncate flex flex-col gap-2 text-sm"
+              <AnswersEditorCore
+                topicId={topicId}
+                questionId={questionId}
+                answers={answers}
+                // isReady={!isSaving}
+                saveData={saveData}
+                reloadData={reloadAnswers}
               />
             </div>
           )}
@@ -87,24 +96,6 @@ export function EditScreen(props: TEditScreenProps) {
           'content-truncate flex w-full flex-wrap gap-2',
         )}
       >
-        {/* Options for generated answers... */}
-        {!isSaving && !!generatedAnswers?.length && (
-          <>
-            {/* Option 1: saveAnswers */}
-            <Button
-              className="content-truncate flex gap-2"
-              onClick={() => {
-                saveAnswers();
-              }}
-              variant={!isSaving ? 'success' : 'ghost'}
-              disabled={isSaving}
-            >
-              <Icons.Save className="size-4 shrink-0" />
-              <span className="truncate">{t('GenerateAnswersModal.SaveAnswers')}</span>
-            </Button>
-          </>
-        )}
-
         {/* Return to the form */}
         {!isSaving && startOverCallback && (
           <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">

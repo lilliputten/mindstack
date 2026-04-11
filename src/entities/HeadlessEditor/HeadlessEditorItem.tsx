@@ -190,6 +190,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         />
       )}
       <div
+        data-debug-id={it.id}
         className={cn(
           isDev && '__HeadlessEditorItem_Controllers', // DEBUG
           'flex shrink-0 items-center gap-2 text-sm',

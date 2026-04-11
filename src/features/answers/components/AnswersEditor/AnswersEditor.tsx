@@ -227,7 +227,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     <AnswersEditorCore
       topicId={topicId}
       questionId={questionId}
-      questions={allAnswers}
+      answers={allAnswers}
       isReady={isHeadlessReady}
       saveData={saveData}
       reloadData={reloadData}

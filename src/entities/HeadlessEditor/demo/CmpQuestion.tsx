@@ -542,7 +542,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             <AnswersEditorCore
               topicId={topicId}
               questionId={id}
-              questions={headlessAnswerRows}
+              answers={headlessAnswerRows}
               isReady
               saveData={saveAnswersData}
             />

@@ -42,8 +42,8 @@ type TReorderKey = keyof typeof reorderModes;
 export interface TAnswersEditorCoreProps {
   topicId: TTopicId;
   questionId: TQuestionId;
-  /** Answer rows (named `questions` per shared headless editor contract). */
-  questions: T[];
+  /** Answer rows (named `answers` per shared headless editor contract). */
+  answers: T[];
   setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
   /**
    * Lets a parent wrapper obtain `setItemsData` for cache-driven sync (e.g. React Query).
@@ -54,7 +54,7 @@ export interface TAnswersEditorCoreProps {
   /** Upper-level readiness (e.g. all React Query requests settled). */
   isReady?: boolean;
   /**
-   * When set, invoked on reload instead of resetting from the `questions` prop.
+   * When set, invoked on reload instead of resetting from the `answers` prop.
    * Use `setItemsData` to apply fetched rows (e.g. after a React Query refetch).
    */
   reloadData?: (ctx: { setItemsData: (items: T[]) => void }) => void | Promise<void>;
@@ -70,7 +70,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
   const {
     topicId,
     questionId,
-    questions,
+    answers,
     setHeadlessEditorState,
     onBindSetItemsData,
     saveData: saveDataProp,
@@ -96,13 +96,13 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
 
   const answersLocale = locale;
 
-  const [defaultItems, setDefaultItems] = React.useState<T[]>(questions);
+  const [defaultItems, setDefaultItems] = React.useState<T[]>(answers);
 
   React.useEffect(() => {
     if (memo.setItemsData) {
-      memo.setItemsData(questions);
+      memo.setItemsData(answers);
     }
-  }, [memo, questions]);
+  }, [memo, answers]);
 
   const [addAnswerModalVisible, setAddAnswerModalVisible] = React.useState(false);
   const [deleteSelectedConfirmVisible, setDeleteSelectedConfirmVisible] = React.useState(false);
@@ -206,8 +206,8 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
     if (hasChanges) {
       return;
     }
-    setItemsData(questions);
-  }, [questions, hasChanges, isReady, setItemsData]);
+    setItemsData(answers);
+  }, [answers, hasChanges, isReady, setItemsData]);
 
   return (
     <>

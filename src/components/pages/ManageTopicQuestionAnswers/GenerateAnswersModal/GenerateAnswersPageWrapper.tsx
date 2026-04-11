@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { defaultAiClientType } from '@/lib/ai';
 import { getErrorText } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
+import { TGetResultsInfiniteQueryData } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { useRouteChanging } from '@/hooks/next-router/useRouteChanging';
@@ -21,6 +22,7 @@ import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, defaultAIGenerationTemperature } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import {
@@ -33,10 +35,12 @@ import {
   answersGenerationTypes,
   TGenerateQuestionAnswersParams,
 } from '@/features/ai/types/GenerateAnswersTypes';
-import { deleteAnswers } from '@/features/answers/actions';
-import { addMultipleAnswers } from '@/features/answers/actions/addMultipleAnswers';
+import {
+  TUpdateAnswersDataViaParamsResults,
+  updateAnswersDataViaParams,
+} from '@/features/answers/actions/updateAnswersDataViaParams';
 import { useAnswersBreadcrumbsItems } from '@/features/answers/components/AnswersBreadcrumbs';
-import { TAvailableAnswer, TNewAnswer } from '@/features/answers/types';
+import { TAvailableAnswer, TNewOrOldAnswer } from '@/features/answers/types';
 import { logJsonData } from '@/features/logger/server-actions';
 import {
   useAvailableAnswers,
@@ -50,8 +54,6 @@ import {
 import { ContentSkeleton, InnerContentSkeleton } from './ContentSkeleton';
 import { EditScreen } from './EditScreen';
 import { GenerateAnswersForm } from './GenerateAnswersForm';
-import { GeneratedScreen } from './GeneratedScreen';
-import { SavedScreen } from './SavedScreen';
 import { formSchema, TFormData } from './types';
 
 /** A debug data file id */
@@ -59,17 +61,22 @@ const debugDataId: TAIQuerDebugDataId = 'answers-query-data-01';
 
 /** Show debug data to test answers editing */
 const __debugGenerated = isDev && false;
-const __debugGeneratedAnswers: TNewAnswer[] | undefined = __debugGenerated
+const __demoQuestionId = 'x1';
+const __debugGeneratedAnswers: TNewOrOldAnswer[] | undefined = __debugGenerated
   ? [
       {
-        questionId: 'xxx',
+        id: `${newItemIdPrefix}1`,
+        isNew: true,
+        questionId: __demoQuestionId,
         text: 'Answer _markdown_ text',
         explanation: 'Explanation markdown text...',
         isCorrect: false,
         isGenerated: true,
       },
       {
-        questionId: 'yyy',
+        id: `${newItemIdPrefix}2`,
+        isNew: true,
+        questionId: __demoQuestionId,
         text: '**Second answer** with much longer text for test purposes and visual issues detection',
         explanation: 'Explanation markdown text...',
         isCorrect: true,
@@ -78,27 +85,27 @@ const __debugGeneratedAnswers: TNewAnswer[] | undefined = __debugGenerated
     ]
   : undefined;
 
-const __now = new Date();
-
-/** Show debug data to test saved questions */
-const __debugSaved = isDev && false;
-const __debugSavedAnswers: TAvailableAnswer[] | undefined = __debugSaved
-  ? [
-      // DEBUG: Test data
-      {
-        id: 'aaa',
-        order: undefined,
-        questionId: 'zzz',
-        createdAt: __now,
-        updatedAt: __now,
-        isGenerated: true,
-        text: 'Sample answer',
-        explanation: 'Sample explanation',
-        isCorrect: true,
-        // isSaved: true,
-      },
-    ]
-  : undefined;
+/* [>* Show debug data to test saved questions <]
+ * const __now = new Date();
+ * const __debugSaved = isDev && false;
+ * const __debugSavedAnswers: TAvailableAnswer[] | undefined = __debugSaved
+ *   ? [
+ *       // DEBUG: Test data
+ *       {
+ *         id: 'aaa',
+ *         order: undefined,
+ *         questionId: __demoQuestionId,
+ *         createdAt: __now,
+ *         updatedAt: __now,
+ *         isGenerated: true,
+ *         text: 'Sample answer',
+ *         explanation: 'Sample explanation',
+ *         isCorrect: true,
+ *         // isSaved: true,
+ *       },
+ *     ]
+ *   : undefined;
+ */
 
 interface GenerateAnswersPageWrapperProps {
   scope: TTopicsManageScopeId;
@@ -116,14 +123,14 @@ export function GenerateAnswersPageWrapper({
 
   const isAdmin = user?.role === 'ADMIN';
 
-  const [isEditing, setEditing] = React.useState<boolean>(false && __debugGenerated);
+  // const [isEditing, setEditing] = React.useState<boolean>(true [> && __debugGenerated <]);
+  const [isStarted, setStarted] = React.useState<boolean>(false);
+  const [isGenerated, setGenerated] = React.useState<boolean>(false);
 
-  const [generatedAnswers, setGeneratedAnswers] = React.useState<TNewAnswer[] | undefined>(
+  const [generatedAnswers, setGeneratedAnswers] = React.useState<TNewOrOldAnswer[] | undefined>(
     __debugGeneratedAnswers,
   );
-  const [savedAnswers, setSavedAnswers] = React.useState<TAvailableAnswer[] | undefined>(
-    __debugSavedAnswers,
-  );
+  const [isSaved, setSaved] = React.useState(false);
   const [error, setError] = React.useState<string | undefined>();
 
   const [isLeaving, setLeaving] = React.useState(false);
@@ -188,25 +195,51 @@ export function GenerateAnswersPageWrapper({
   } = availableQuestionQuery;
   const isQuestionPending = !isQuestionFetched || isQuestionFetching;
 
-  const availableAnswersQuery = useAvailableAnswers({ itemsLimit: null, questionId });
+  const availableAnswersQuery = useAvailableAnswers({
+    enabled: isStarted,
+    questionId,
+    itemsLimit: null,
+    includeQuestion: true,
+    traceId: 'GenerateAnswersPageWrapper',
+  });
   const {
+    refetch: refetchAnswers,
     allAnswers: answers,
-    isFetching: isAnswersFetching,
     isFetched: isAnswersFetched,
+    isFetching: isAnswersFetching,
+    isRefetching: isAnswersRefetching,
   } = availableAnswersQuery;
-  const isAnswersPending = !isAnswersFetched || isAnswersFetching;
+  const isAnswersPending = isStarted && (!isAnswersFetched || isAnswersFetching);
 
   const questionsCount = topic?._count?.questions;
   const allowedTraining = !!questionsCount;
 
+  const combinedAnswers = React.useMemo<TNewOrOldAnswer[]>(
+    () => [...answers, ...(generatedAnswers || [])],
+    [answers, generatedAnswers],
+  );
+
+  /*
+   * React.useEffect(() => {
+   *   console.log('[GenerateAnswersPageWrapper:DEBUG]', {
+   *     combinedAnswers,
+   *     answers,
+   *     generatedAnswers,
+   *   });
+   * }, [
+   *   //
+   *   combinedAnswers,
+   *   generatedAnswers,
+   *   answers,
+   * ]);
+   */
+
   // Using different titles depending on the current status
-  const title = isEditing
-    ? t('GenerateAnswersModal.EditingAnswers')
-    : savedAnswers
-      ? t('GenerateAnswersModal.AnswersSaved')
-      : generatedAnswers
-        ? t('GenerateAnswersModal.AnswersGeneratedStatus')
-        : t('GenerateAnswersModal.Title');
+  const title = isSaved
+    ? t('GenerateAnswersModal.AnswersSaved')
+    : isGenerated
+      ? t('GenerateAnswersModal.AnswersGeneratedStatus')
+      : t('GenerateAnswersModal.Title');
   useDocumentTitle(title);
 
   const generateAnswersMutation = useMutation({
@@ -259,46 +292,161 @@ export function GenerateAnswersPageWrapper({
     },
   });
 
-  const saveAnswersMutation = useMutation<TAvailableAnswer[], Error, TNewAnswer[]>({
-    mutationFn: async (newAnswers) => {
-      setError(undefined);
+  // Save data function using updateAnswersDataViaParams
+  const saveDataFn = React.useCallback(
+    async (
+      saveParams: TSaveDataParams<TNewOrOldAnswer>,
+    ): Promise<TUpdateAnswersDataViaParamsResults> => {
+      const { updatedItems, addedItems, deletedIds } = saveParams;
+      try {
+        const updateAnswersData = {
+          updatedItems: updatedItems?.size ? [...updatedItems.values()] : undefined,
+          addedItems: addedItems?.size ? [...addedItems.values()] : undefined,
+          deletedIds: deletedIds?.size
+            ? [...deletedIds.values()].filter((id) => !String(id).startsWith(newItemIdPrefix))
+            : undefined,
+        };
+        const results = await updateAnswersDataViaParams(updateAnswersData);
+        console.log('[GenerateAnswersPageWrapper:saveDataFn:done]', {
+          results,
+          updateAnswersData,
+        });
+        return results;
+      } catch (error) {
+        const details = getErrorText(error);
+        const message = 'Cannot save answers';
+        // eslint-disable-next-line no-console
+        console.error('[GenerateAnswersPageWrapper:saveDataFn]', [message, details].join(': '), {
+          error,
+          saveParams,
+        });
+        debugger; // eslint-disable-line no-debugger
+        throw error;
+      }
+    },
+    [],
+  );
 
-      // Cancel previous action before starting new
-      abortControllerRef.current?.abort('Cleaned up');
-      // Initialize abort controller
-      const controller = new AbortController();
-      abortControllerRef.current = controller;
+  // Update React Query cache with saved data
+  const updateAnswersQueryData = React.useCallback(
+    (results: TUpdateAnswersDataViaParamsResults) => {
+      const { added = [], autoAddedIds, updated = [], deletedIds } = results;
+      const deletedIdsSet = new Set(deletedIds);
+      const updatedItemsMap = new Map(updated?.map((it) => [it.id, it]));
+      const addedItemsMap = new Map(added?.map((it) => [it.id, it]));
+      const _addedIdsEntries = autoAddedIds && Object.entries(autoAddedIds);
+      const autoAddedIdsMap = new Map(_addedIdsEntries?.map(([origId, id]) => [origId, id]));
+      const remainedAddedItemsMap = new Map<TNewOrOldAnswer['id'], TNewOrOldAnswer>(
+        [...added, ...updated].map((it) => [it.id, it]),
+      );
 
-      const abortPromise = new Promise<never>((_, rej) => (controller.signal.onabort = rej));
+      /** Collect all returned items */
+      const allItems = new Map<TNewOrOldAnswer['id'], TNewOrOldAnswer>();
 
-      const savePromise = addMultipleAnswers(newAnswers);
-
-      // Handle aborted operation and clean up...
-      savePromise.then((savedAnswers) => {
-        if (controller.signal.aborted) {
-          const answerIdsToRemove = savedAnswers?.map(({ id }) => id);
-          // eslint-disable-next-line no-console
-          console.warn('[GenerateAnswersPageWrapper:saveAnswersMutation:aborted]', {
-            answerIdsToRemove,
-            savedAnswers,
-            newAnswers,
-            controller,
+      queryClient.setQueryData<TGetResultsInfiniteQueryData<TNewOrOldAnswer>>(
+        availableAnswersQuery.queryKey,
+        (oldData) => {
+          if (!oldData) return oldData;
+          const lastPageIndex = oldData.pages.length - 1;
+          let totalCount = 0;
+          const pages = oldData.pages.map((page, index) => {
+            const items: TNewOrOldAnswer[] = page.items
+              .map((it) => {
+                if (deletedIdsSet.has(it.id)) {
+                  return undefined;
+                }
+                if (updatedItemsMap.has(it.id)) {
+                  it = updatedItemsMap.get(it.id) ?? it;
+                } else {
+                  const newId = autoAddedIdsMap.has(it.id) ? autoAddedIdsMap.get(it.id) : it.id;
+                  if (newId && addedItemsMap.has(newId)) {
+                    const newItem = addedItemsMap.get(it.id);
+                    if (newItem) {
+                      it = newItem;
+                    }
+                  }
+                }
+                remainedAddedItemsMap.delete(it.id);
+                allItems.set(it.id, it);
+                return it;
+              })
+              .filter(Boolean) as TNewOrOldAnswer[];
+            if (remainedAddedItemsMap.size && index === lastPageIndex) {
+              items.push(...remainedAddedItemsMap.values());
+            }
+            totalCount += items.length;
+            return { ...page, items, totalCount };
           });
-          // Cleanup: remove added answers (if any)...
-          if (answerIdsToRemove?.length) {
-            /* await: Don't wait for result */
-            deleteAnswers(answerIdsToRemove);
-          }
-        }
+          const updatedPages = pages.map((page) => ({ ...page, totalCount }));
+          return { ...oldData, pages: updatedPages };
+        },
+      );
+
+      const items = [...allItems.values(), ...remainedAddedItemsMap.values()];
+
+      console.log('[GenerateAnswersPageWrapper:updateAnswersQueryData:done]', {
+        items,
+        allItems,
+        remainedAddedItemsMap,
+        autoAddedIdsMap,
+        updatedItemsMap,
+        addedItemsMap,
+        results,
       });
 
-      const savedAnswers = await Promise.race([abortPromise, savePromise]);
-      return savedAnswers;
+      return items;
     },
-    onSettled: () => {
-      abortControllerRef.current = null;
+    [queryClient, availableAnswersQuery.queryKey],
+  );
+
+  // Handle mutation results
+  const updateSavedDataResults = React.useCallback(
+    (_results: TUpdateAnswersDataViaParamsResults) => {
+      const invalidatePrefixes = [
+        ['available-answers-for-question', questionId],
+        ['available-question', questionId],
+        ['available-questions-for-topic', topicId],
+        ['available-topics'],
+      ].map(makeQueryKeyPrefix);
+      invalidateKeysByPrefixes(queryClient, invalidatePrefixes, [availableAnswersQuery.queryKey]);
+    },
+    [queryClient, questionId, topicId, availableAnswersQuery.queryKey],
+  );
+
+  const saveDataMutation = useMutation({
+    mutationFn: saveDataFn,
+    onSuccess: updateSavedDataResults,
+    onError: (error) => {
+      const details = getErrorText(error);
+      const message = 'Cannot save answers';
+      const comboMsg = [message, details].join(': ');
+      // eslint-disable-next-line no-console
+      console.error('[GenerateAnswersPageWrapper:saveDataMutation:onError]', comboMsg, {
+        error,
+      });
+      debugger; // eslint-disable-line no-debugger
+      toast.error(message);
     },
   });
+
+  // Wrapper function that matches the expected signature for AnswersEditorCore
+  const saveData = React.useCallback(
+    async (saveParams: TSaveDataParams<TNewOrOldAnswer>): Promise<TNewOrOldAnswer[]> => {
+      const results = await saveDataMutation.mutateAsync(saveParams);
+      // Return the updated items from the query data
+      const items = updateAnswersQueryData(results);
+      console.log('[GenerateAnswersPageWrapper:saveData:items]', {
+        items,
+        results,
+        saveParams,
+      });
+      setSaved(true);
+      setGeneratedAnswers(undefined);
+      // setSavedAnswers(items as TAvailableAnswer[]);
+      return items || [];
+    },
+    [saveDataMutation, updateAnswersQueryData],
+  );
 
   const resetOperations = React.useCallback(() => {
     abortControllerRef.current?.abort();
@@ -313,8 +461,8 @@ export function GenerateAnswersPageWrapper({
     if (generateAnswersMutation.isPending) {
       generateAnswersMutation.reset();
     }
-    if (saveAnswersMutation.isPending) {
-      saveAnswersMutation.reset();
+    if (saveDataMutation.isPending) {
+      saveDataMutation.reset();
     }
   }, [
     queryClient,
@@ -322,11 +470,12 @@ export function GenerateAnswersPageWrapper({
     availableAnswersQuery.queryKey,
     availableQuestionQuery.queryKey,
     generateAnswersMutation,
-    saveAnswersMutation,
+    saveDataMutation,
   ]);
 
   const generateCallback = React.useCallback(
     async (formData: TFormData) => {
+      setStarted(true);
       try {
         if (!questionId) {
           toast.error(t('GenerateAnswersModal.NoQuestionIdDefined'));
@@ -343,16 +492,16 @@ export function GenerateAnswersPageWrapper({
         });
 
         const queryData = await queryPromise;
-        const answers = parseGeneratedQuestionAnswers(queryData);
-        const newAnswers: TNewAnswer[] | undefined = answers?.map((answer) => ({
+        const parsedAnswers = parseGeneratedQuestionAnswers(queryData);
+
+        const newAnswers: TNewOrOldAnswer[] | undefined = parsedAnswers?.map((answer, idx) => ({
           ...answer,
+          // Generate special 'new' ids
+          id: newItemIdPrefix + (idx + 1),
+          isNew: true,
           questionId,
           isGenerated: true,
         }));
-
-        if (!newAnswers || !newAnswers.length) {
-          throw new Error(t('GenerateAnswersModal.NoAnswersGeneratedError'));
-        }
 
         const __debugData = {
           newAnswers,
@@ -367,6 +516,7 @@ export function GenerateAnswersPageWrapper({
         console.log(__idMsg, message, __debugData);
         logJsonData(__idMsg, { formData, topicId, questionId }, __debugData); // NOTE: Not awaiting and catching!
 
+        setGenerated(true);
         setGeneratedAnswers(newAnswers);
       } catch (error) {
         const isAborted =
@@ -400,64 +550,6 @@ export function GenerateAnswersPageWrapper({
     [generateAnswersMutation, topicId, questionId, resetOperations, t],
   );
 
-  const saveCallback = React.useCallback(async () => {
-    try {
-      if (!questionId) {
-        throw new Error(t('GenerateAnswersModal.NoQuestionIdDefined'));
-      }
-      if (!generatedAnswers?.length) {
-        throw new Error('No answers has been generated');
-      }
-
-      const newAnswers: TNewAnswer[] = generatedAnswers;
-      const addAnswersPromise = saveAnswersMutation.mutateAsync(newAnswers);
-      toast.promise(addAnswersPromise, {
-        loading: t('GenerateAnswersModal.AddingAnswers'),
-        success: t('GenerateAnswersModal.AnswersAdded'),
-        // error: t('GenerateAnswersModal.AnswersAddingError'),
-        cancel: {
-          label: t('Cancel'),
-          onClick: resetOperations,
-        },
-      });
-
-      const savedAnswers = await addAnswersPromise;
-      setSavedAnswers(savedAnswers);
-
-      const invalidatePrefixes = [
-        ['available-question', questionId],
-        ['available-answers-for-question', questionId],
-      ].map(makeQueryKeyPrefix);
-      invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
-    } catch (error) {
-      const isAborted =
-        (error instanceof Event && error.type === 'abort') ||
-        (error as Error).name === 'AbortError';
-      const message = isAborted
-        ? t('GenerateAnswersModal.SavingAnswersAborted')
-        : t('GenerateAnswersModal.SavingAnswersErrorOccured');
-      const details = getErrorText(error);
-      const comboMsg = [message, details].filter(Boolean).join(': ');
-      saveAnswersMutation.reset();
-
-      if (isAborted) {
-        // eslint-disable-next-line no-console
-        console.warn('[GenerateAnswersPageWrapper:saveCallback] Aborted:', comboMsg, {
-          details,
-          error,
-        });
-      } else {
-        // eslint-disable-next-line no-console
-        console.error('[GenerateAnswersPageWrapper:saveCallback] ❌', comboMsg, {
-          details,
-          error,
-        });
-        debugger; // eslint-disable-line no-debugger
-        setError(comboMsg);
-      }
-    }
-  }, [saveAnswersMutation, generatedAnswers, queryClient, questionId, t, resetOperations]);
-
   /** Hide modal & cancel all pending operations */
   const cancelAndGoBack = React.useCallback(() => {
     setLeaving(true);
@@ -467,12 +559,13 @@ export function GenerateAnswersPageWrapper({
 
   const startOverCallback = React.useCallback(() => {
     resetOperations();
-    setEditing(false);
+    setGenerated(false);
     setGeneratedAnswers(undefined);
-    setSavedAnswers(undefined);
+    setSaved(false);
+    setStarted(false);
   }, [resetOperations]);
 
-  const areMutationsPending = generateAnswersMutation.isPending || saveAnswersMutation.isPending;
+  const areMutationsPending = generateAnswersMutation.isPending || saveDataMutation.isPending;
   const isBusy =
     isPreparing || isTopicPending || isQuestionPending || isAnswersPending || areMutationsPending;
 
@@ -484,6 +577,14 @@ export function GenerateAnswersPageWrapper({
         icon: Icons.ArrowLeft,
         visibleFor: 'sm',
         onClick: cancelAndGoBack,
+      },
+      {
+        id: 'StartOver',
+        content: t('StartOver'),
+        icon: Icons.Refresh,
+        visibleFor: 'sm',
+        onClick: startOverCallback,
+        hidden: !isGenerated,
       },
       {
         id: 'AddNewQuestion',
@@ -519,13 +620,15 @@ export function GenerateAnswersPageWrapper({
       },
     ],
     [
-      t,
+      allowedTraining,
       cancelAndGoBack,
+      isGenerated,
+      questionsListRoutePath,
+      startOverCallback,
+      t,
+      topicId,
       topicRoutePath,
       topicsListRoutePath,
-      questionsListRoutePath,
-      topicId,
-      allowedTraining,
     ],
   );
 
@@ -580,53 +683,21 @@ export function GenerateAnswersPageWrapper({
             title={t('NoAiGenrationsAvailable')}
             explanation={<AIGenerationsStatusInfo className="justify-center" />}
           />
-        ) : savedAnswers ? (
-          <SavedScreen
-            className={cn(
-              isDev && '__GenerateAnswersPageWrapper_SavedScreen', // DEBUG
-              'px-6',
-            )}
-            startOverCallback={startOverCallback}
-            scope={scope}
-            topicId={topicId}
-            questionId={questionId}
-            savedAnswers={savedAnswers}
-          />
-        ) : generatedAnswers && isEditing ? (
+        ) : isGenerated ? (
           <EditScreen
             className={cn(
               isDev && '__GenerateAnswersPageWrapper_EditScreen', // DEBUG
               'px-6',
+              (isAnswersRefetching || saveDataMutation.isPending) && 'opacity-50',
             )}
-            startOverCallback={startOverCallback}
+            // startOverCallback={startOverCallback}
             topicId={topicId}
             questionId={questionId}
-            isSaving={saveAnswersMutation.isPending}
+            isSaving={saveDataMutation.isPending}
             handleCancel={resetOperations}
-            generatedAnswers={generatedAnswers}
-            saveAnswers={saveCallback}
-          />
-        ) : generatedAnswers ? (
-          <GeneratedScreen
-            className={cn(
-              isDev && '__GenerateAnswersPageWrapper_GeneratedScreen', // DEBUG
-              'px-6',
-            )}
-            handleCancel={resetOperations}
-            startOverCallback={startOverCallback}
-            isSaving={saveAnswersMutation.isPending}
-            topicId={topicId}
-            questionId={questionId}
-            generatedAnswers={generatedAnswers}
-            saveAnswers={saveCallback}
-            // TODO: Issue #80: Implement simple answers editing
-            editAnswers={() => {
-              if (!generatedAnswers?.length) {
-                toast.error(t('GenerateAnswersModal.NoAnswersGenerated'));
-              } else {
-                setEditing(true);
-              }
-            }}
+            answers={combinedAnswers}
+            saveData={saveData}
+            reloadAnswers={() => refetchAnswers()}
           />
         ) : (
           <GenerateAnswersForm

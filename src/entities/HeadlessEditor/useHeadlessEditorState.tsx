@@ -35,6 +35,13 @@ function prepareNewItemToSave<T extends TCmpItemBase>(it: T): TNew<T> {
   // delete newIt.id;
   return newIt;
 }
+function getAddedIdsSet<T extends TCmpItemBase>(items: T[]) {
+  return new Set(
+    items
+      .filter(({ id, isNew }) => isNew || String(id).startsWith(newItemIdPrefix))
+      .map(({ id }) => id),
+  );
+}
 
 export interface TSaveDataParams<T extends TCmpItemBase> {
   // All items list...
@@ -212,11 +219,14 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   const [items, setItems] = React.useState(() => defaultItems);
   memo.items = items;
 
+  // Initialize ids from items
+  const initAddedIds = React.useMemo(() => new Set(getAddedIdsSet(defaultItems)), [defaultItems]);
+
   // Tracking indices
-  const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>();
-  const [deletedIds, setDeletedIds] = React.useState<Set<TCmpItemId> | undefined>();
-  const [addedIds, setAddedIds] = React.useState<Set<TCmpItemId> | undefined>();
-  const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>();
+  const [updatedIds, setUpdatedIds] = React.useState<Set<TCmpItemId> | undefined>(undefined);
+  const [deletedIds, setDeletedIds] = React.useState<Set<TCmpItemId> | undefined>(undefined);
+  const [addedIds, setAddedIds] = React.useState<Set<TCmpItemId> | undefined>(initAddedIds);
+  const [reorderedIds, setReorderedIds] = React.useState<Set<TCmpItemId> | undefined>(undefined);
   memo.addedIds = addedIds;
   memo.updatedIds = updatedIds;
   memo.deletedIds = deletedIds;
@@ -261,26 +271,22 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     });
   }, []);
 
-  // Effect: Remove orphan ids, update `addedIds`...
+  // Effect: Actualize tracked id sets when items change (remove orphan ids)...
   React.useEffect(() => {
     const existedKeys = new Set<TCmpItemId>(items.map(({ id }) => id));
-    setCompareTargetId((id) => {
-      return id && existedKeys.has(id) ? id : undefined;
-    });
     const hasId = (id: TCmpItemId) => existedKeys.has(id);
     const hasIdsSet = (ids?: Set<TCmpItemId>) => ids && new Set(ids.keys().filter(hasId));
-    // Actualize tracked id sets...
-    setSelectedIds(hasIdsSet);
-    setUpdatedIds(hasIdsSet);
-    setReorderedIds(hasIdsSet);
-    // Recreate added ids set...
-    setAddedIds(
-      new Set(
-        items
-          .filter(({ id, isNew }) => isNew || String(id).startsWith(newItemIdPrefix))
-          .map(({ id }) => id),
-      ),
-    );
+    const addedIds = getAddedIdsSet(items);
+    // Lifecycle workaround (TODO: Use a proper way to update)
+    setTimeout(() => {
+      setCompareTargetId((id) => {
+        return id && existedKeys.has(id) ? id : undefined;
+      });
+      setSelectedIds(hasIdsSet);
+      setUpdatedIds(hasIdsSet);
+      setReorderedIds(hasIdsSet);
+      setAddedIds(addedIds);
+    });
   }, [items]);
 
   // Restore defaults handler
@@ -292,13 +298,8 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     setDeletedIds(undefined);
     setReorderedIds(undefined);
     // Recreate added ids list from the items...
-    setAddedIds(
-      new Set(
-        defaultItems
-          .filter(({ id, isNew }) => isNew || String(id).startsWith(newItemIdPrefix))
-          .map(({ id }) => id),
-      ),
-    );
+    const addedIds = getAddedIdsSet(defaultItems);
+    setAddedIds(addedIds);
   }, [memo]);
 
   // Restore defaults handler
@@ -474,6 +475,27 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       reorderedIds?.size,
     ].reduce((summ = 0, val = 0) => summ + val, 0) || 0;
   memo.totalChangedCount = totalChangedCount;
+
+  /*
+   * React.useEffect(() => {
+   *   console.log('[useHeadlessEditorState:DEBUG]', {
+   *     totalChangedCount,
+   *     addedIds,
+   *     updatedIds,
+   *     reorderedIds,
+   *     items,
+   *     defaultItems,
+   *   });
+   * }, [
+   *   //
+   *   totalChangedCount,
+   *   addedIds,
+   *   updatedIds,
+   *   reorderedIds,
+   *   items,
+   *   defaultItems,
+   * ]);
+   */
 
   const RenderHeadlessEditorControls = React.useCallback(
     (props: THeadlessEditorControlsExternalProps<T>) => {
