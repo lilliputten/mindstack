@@ -593,7 +593,10 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           />
         ) : savedQuestions ? (
           <SavedScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateQuestionsPageWrapper_SavedScreen', // DEBUG
+              'px-6',
+            )}
             startOverCallback={startOverCallback}
             scope={scope}
             topicId={topicId}
@@ -601,7 +604,10 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           />
         ) : generatedQuestions && isEditing ? (
           <EditScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateQuestionsPageWrapper_EditScreen', // DEBUG
+              'px-6',
+            )}
             startOverCallback={startOverCallback}
             topicId={topicId}
             isSaving={saveQuestionsMutation.isPending}
@@ -611,7 +617,10 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           />
         ) : generatedQuestions ? (
           <GeneratedScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateQuestionsPageWrapper_GeneratedScreen', // DEBUG
+              'px-6',
+            )}
             startOverCallback={startOverCallback}
             handleCancel={resetOperations}
             topicId={topicId}
@@ -630,10 +639,13 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           />
         ) : (
           <GenerateQuestionsForm
+            className={cn(
+              isDev && '__GenerateQuestionsPageWrapper_GenerateQuestionsForm', // DEBUG
+              'px-6',
+            )}
             form={form}
             generateCallback={generateCallback}
             handleCancel={resetOperations}
-            className="px-6"
             isGenerating={generateQuestionsMutation.isPending}
             isPending={isBusy}
             topicId={topicId}

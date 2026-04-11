@@ -582,7 +582,10 @@ export function GenerateAnswersPageWrapper({
           />
         ) : savedAnswers ? (
           <SavedScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateAnswersPageWrapper_SavedScreen', // DEBUG
+              'px-6',
+            )}
             startOverCallback={startOverCallback}
             scope={scope}
             topicId={topicId}
@@ -591,7 +594,10 @@ export function GenerateAnswersPageWrapper({
           />
         ) : generatedAnswers && isEditing ? (
           <EditScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateAnswersPageWrapper_EditScreen', // DEBUG
+              'px-6',
+            )}
             startOverCallback={startOverCallback}
             topicId={topicId}
             questionId={questionId}
@@ -602,7 +608,10 @@ export function GenerateAnswersPageWrapper({
           />
         ) : generatedAnswers ? (
           <GeneratedScreen
-            className="px-6"
+            className={cn(
+              isDev && '__GenerateAnswersPageWrapper_GeneratedScreen', // DEBUG
+              'px-6',
+            )}
             handleCancel={resetOperations}
             startOverCallback={startOverCallback}
             isSaving={saveAnswersMutation.isPending}
@@ -610,22 +619,24 @@ export function GenerateAnswersPageWrapper({
             questionId={questionId}
             generatedAnswers={generatedAnswers}
             saveAnswers={saveCallback}
-            /* // TODO: Issue #80: Implement simple answers editing
-             * editAnswers={() => {
-             *   if (!generatedAnswers?.length) {
-             *     toast.error(t('GenerateAnswersModal.NoAnswersGenerated'));
-             *   } else {
-             *     setEditing(true);
-             *   }
-             * }}
-             */
+            // TODO: Issue #80: Implement simple answers editing
+            editAnswers={() => {
+              if (!generatedAnswers?.length) {
+                toast.error(t('GenerateAnswersModal.NoAnswersGenerated'));
+              } else {
+                setEditing(true);
+              }
+            }}
           />
         ) : (
           <GenerateAnswersForm
+            className={cn(
+              isDev && '__GenerateAnswersPageWrapper_GenerateAnswersForm', // DEBUG
+              'px-6',
+            )}
             form={form}
             generateCallback={generateCallback}
             handleCancel={resetOperations}
-            className="px-6"
             isGenerating={generateAnswersMutation.isPending}
             isPending={isBusy}
             topicId={topicId}
