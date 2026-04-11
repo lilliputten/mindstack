@@ -126,7 +126,7 @@ export async function LandingPage(props: TLandingPageProps) {
   // production and not admin users)
   if (!isDev && user?.role !== 'ADMIN' && !user?.email?.includes('lilliputten')) {
     const __idMsg = '[LandingPage] Main page visited';
-    logJsonData(__idMsg, { locale } /* , { resolvedParams } */);
+    logJsonData(__idMsg, { locale } /* , { resolvedParams } */); // NOTE: Not awaiting and catching!
   }
 
   // Enable static rendering

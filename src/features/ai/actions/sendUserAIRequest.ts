@@ -52,7 +52,7 @@ export async function sendUserAIRequest(
   const __idMsg = `[sendUserAIRequest]${__dev} ℹ️ AI API request: Sending`;
   // eslint-disable-next-line no-console
   console.log(__idMsg, { user, ...__debugData });
-  await logJsonData(__idMsg, { opts }, __debugData);
+  logJsonData(__idMsg, { opts }, __debugData); // NOTE: Not awaiting and catching!
 
   const startTime = new Date();
 
@@ -87,7 +87,7 @@ export async function sendUserAIRequest(
     const __idMsg = `[sendUserAIRequest]${__dev} 🆗 AI API request: Success`;
     // eslint-disable-next-line no-console
     console.log(__idMsg, { ...__debugData, user });
-    await logJsonData(__idMsg, { opts, generationRecord }, __debugData);
+    logJsonData(__idMsg, { opts, generationRecord }, __debugData); // NOTE: Not awaiting and catching!
 
     return queryData;
   } catch (error) {
@@ -103,7 +103,7 @@ export async function sendUserAIRequest(
     console.error(__idMsg, { ...__debugData, error, user });
     debugger; // eslint-disable-line no-debugger
     // Send log message to the telegram logging channel
-    logJsonData(__idMsg, __debugData);
+    logJsonData(__idMsg, __debugData); // NOTE: Not awaiting and catching!
     // Re-throw errors from checkAllowedAIGenerations or other errors
     throw error;
   }

@@ -128,7 +128,7 @@ export const nextAuthApp = NextAuth({
         // Log the user data for analytics or monitoring
         // This follows project conventions for structured logging
         const __idMsg = '[auth:signIn] User signed in';
-        logJsonData(__idMsg, __logData, __extraData);
+        logJsonData(__idMsg, __logData, __extraData); // NOTE: Not awaiting and catching!
         // eslint-disable-next-line no-console
         console.log(__idMsg, {
           ...__logData,
@@ -199,7 +199,7 @@ export const nextAuthApp = NextAuth({
             params,
           };
           const __idMsg = '[auth:jwt] New user signed up';
-          logJsonData(__idMsg, __logData, __extraData);
+          logJsonData(__idMsg, __logData, __extraData); // NOTE: Not awaiting and catching!
           // eslint-disable-next-line no-console
           console.log(__idMsg, {
             ...__logData,

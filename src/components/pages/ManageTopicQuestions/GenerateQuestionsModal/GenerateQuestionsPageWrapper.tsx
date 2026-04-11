@@ -367,7 +367,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
         const __idMsg = '[GenerateQuestionsModal:generateCallback] 🆗 ' + message;
         // eslint-disable-next-line no-console
         console.log(__idMsg, __debugData);
-        logJsonData(__idMsg, { formData, topicId }, __debugData);
+        logJsonData(__idMsg, { formData, topicId }, __debugData); // NOTE: Not awaiting and catching!
 
         setGeneratedQuestions(newQuestions);
       } catch (error) {

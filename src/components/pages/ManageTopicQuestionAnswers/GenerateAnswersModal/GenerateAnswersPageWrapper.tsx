@@ -365,7 +365,7 @@ export function GenerateAnswersPageWrapper({
         const __idMsg = '[GenerateAnswersPageWrapper:generateCallback]';
         // eslint-disable-next-line no-console
         console.log(__idMsg, message, __debugData);
-        logJsonData(__idMsg, { formData, topicId, questionId }, __debugData);
+        logJsonData(__idMsg, { formData, topicId, questionId }, __debugData); // NOTE: Not awaiting and catching!
 
         setGeneratedAnswers(newAnswers);
       } catch (error) {

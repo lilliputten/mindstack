@@ -5,12 +5,16 @@ import { Bot, session } from 'grammy';
 import { BOT_TOKEN } from '@/config/envServer';
 import { prisma } from '@/lib/db';
 import { getErrorText } from '@/lib/helpers';
+import { isDev } from '@/config';
 
 import { BotContext, SessionData, TBot } from './botTypes';
 
 const cachedBots: Record<string, TBot> = {};
 
 export const botCommands = new CommandGroup();
+
+/* Bot is a logging mostly. Don't wait for a quite long time */
+const timeoutSeconds = isDev ? 5 : 10;
 
 export function getBot(token: string = BOT_TOKEN) {
   if (cachedBots[token]) {
@@ -19,7 +23,11 @@ export function getBot(token: string = BOT_TOKEN) {
   try {
     // const bot = new Bot(token);
     // @see constructor(token: string, config?: BotConfig<C>);
-    const bot = new Bot<BotContext>(token);
+    const bot = new Bot<BotContext>(token, {
+      client: {
+        timeoutSeconds: timeoutSeconds,
+      },
+    });
     bot.use(commands());
     bot.use(botCommands);
     bot.use(

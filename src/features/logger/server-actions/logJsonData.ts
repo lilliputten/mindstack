@@ -100,11 +100,11 @@ export async function logJsonData(
   } catch (error) {
     const errMsg = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[logJsonData]', errMsg, {
+    console.warn('[logJsonData]', errMsg, {
       error,
       text,
     });
-    debugger; // eslint-disable-line no-debugger
+    // debugger; // eslint-disable-line no-debugger
     // NOTE: Don't re-throw errors as it's a non-critical code
     // throw error;
   }

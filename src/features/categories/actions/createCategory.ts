@@ -83,7 +83,7 @@ export async function createCategory(params: TCreateCategoryParams & TOptions) {
         creator,
       };
       const __idMsg = '[createCategory] 📊';
-      logJsonData(__idMsg, null, __debugData);
+      logJsonData(__idMsg, null, __debugData); // NOTE: Not awaiting and catching!
     }
 
     // Clear recent categories cache

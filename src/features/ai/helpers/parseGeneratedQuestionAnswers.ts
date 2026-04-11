@@ -81,6 +81,7 @@ export function parseGeneratedQuestionAnswers(queryData: TAITextQueryData) {
     console.error(__idMsg, { ...__debugData, error });
     debugger; // eslint-disable-line no-debugger
     // Send log message to the telegram logging channel
+    // NOTE: Not awaiting and catching!
     logJsonData(
       __idMsg,
       {
