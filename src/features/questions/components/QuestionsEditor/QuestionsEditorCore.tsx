@@ -51,6 +51,8 @@ export interface TQuestionsEditorCoreProps {
   reloadData?: (ctx: { setItemsData: (items: T[]) => void }) => void | Promise<void>;
   /** Arbitrary extra data forwarded to every CmpQuestion call */
   extraParams?: unknown;
+  /** When true, `hasChanges` is derived from `totalChangedCount` instead of tracked as independent state. */
+  calculateChanges?: boolean;
 }
 
 interface TMemo {
@@ -70,6 +72,7 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     isReady: isReadyProp,
     reloadData: reloadDataProp,
     extraParams,
+    calculateChanges,
   } = props;
 
   const isExternalReady = isReadyProp ?? true;
@@ -126,6 +129,7 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     saveData: saveDataProp,
     getItemText,
     RenderItem: CmpQuestion,
+    calculateChanges,
     extraParams,
     showNormalized,
     setShowNormalized,
@@ -138,7 +142,8 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
   }, [setHeadlessEditorState, headlessEditorState]);
 
   const {
-    totalChangedCount,
+    // totalChangedCount,
+    hasChanges,
     setItems,
     setUpdatedIds,
     setDeletedIds,
@@ -150,7 +155,6 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     RenderHeadlessEditor,
     RenderHeadlessEditorControls,
   } = headlessEditorState;
-  const hasChanges = !!totalChangedCount;
   memo.hasChanges = hasChanges;
 
   const confirmActionCallback = React.useCallback(

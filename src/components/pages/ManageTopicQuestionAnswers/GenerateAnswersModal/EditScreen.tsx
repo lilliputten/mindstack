@@ -79,6 +79,7 @@ export function EditScreen(props: TEditScreenProps) {
                 // isReady={!isSaving}
                 saveData={saveData}
                 reloadData={reloadAnswers}
+                calculateChanges
               />
             </div>
           )}

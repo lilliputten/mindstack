@@ -73,6 +73,7 @@ export function EditScreen(props: TEditScreenProps) {
                 questions={questions}
                 saveData={saveData}
                 reloadData={reloadQuestions}
+                calculateChanges
               />
             </div>
           )}

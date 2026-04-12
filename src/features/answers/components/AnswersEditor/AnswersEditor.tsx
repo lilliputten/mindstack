@@ -31,6 +31,8 @@ export interface TAnswersEditorProps {
   isReady?: boolean;
   setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
   saveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
+  /** When true, `hasChanges` is derived from `totalChangedCount` instead of tracked as independent state. */
+  calculateChanges?: boolean;
 }
 
 interface TMemo {
@@ -47,6 +49,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     isReady: isReadyFromParent,
     setHeadlessEditorState,
     saveData: saveDataFromParent,
+    calculateChanges,
   } = props;
 
   const [savePromise, setSavePromise] = React.useState<
@@ -233,6 +236,7 @@ export function AnswersEditor(props: TAnswersEditorProps) {
       reloadData={reloadData}
       onBindSetItemsData={onBindSetItemsData}
       setHeadlessEditorState={setHeadlessEditorState}
+      calculateChanges={calculateChanges}
     />
   );
 }
