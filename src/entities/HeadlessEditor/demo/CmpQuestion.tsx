@@ -442,14 +442,15 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     viewInfo,
   ]);
 
+  // XXX: Is it required?
   const headlessAnswerRows = React.useMemo(() => toHeadlessAnswerRows(id, answers), [id, answers]);
 
   const saveAnswersData = React.useCallback(
     async (saveParams: TSaveDataParams<TNewOrOldAnswer>): Promise<TNewOrOldAnswer[]> => {
-      const { items, updatedItems, deletedIds, addedItems } = saveParams;
+      const { items, updatedItems, deletedIds, addedItems, addedIds } = saveParams;
       const updatedMap = new Map(updatedItems ? [...updatedItems].map((u) => [u.id, u]) : []);
       const newItems = items
-        .filter((answer) => !deletedIds?.has(answer.id))
+        .filter((answer) => !deletedIds?.has(answer.id) && !addedIds?.has(answer.id))
         .map((answer) => updatedMap.get(answer.id) ?? answer)
         .concat(addedItems ? ([...addedItems.values()] as TNewOrOldAnswer[]) : []);
       if (updateItem) {

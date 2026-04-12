@@ -470,15 +470,14 @@ export function GenerateAnswersPageWrapper({
 
         setGenerated(true);
         setGeneratedAnswers((answers = []) => {
-          const ids = new Set<TNewOrOldAnswer['id']>(answers.map(({ id }) => id));
+          const answersIds = new Set<TNewOrOldAnswer['id']>(answers.map(({ id }) => id));
           const newAnswers: TNewOrOldAnswer[] =
             parsedAnswers?.map((answer) => {
-              // Generate special 'new' ids
-              const id = getUniqueIdForSet(ids, newItemIdPrefix);
-              ids.add(id);
+              const answerId = getUniqueIdForSet(answersIds, newItemIdPrefix);
+              answersIds.add(answerId);
               return {
                 ...answer,
-                id,
+                id: answerId,
                 isNew: true,
                 questionId,
                 isGenerated: true,

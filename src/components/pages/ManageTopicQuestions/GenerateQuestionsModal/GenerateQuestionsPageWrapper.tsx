@@ -37,6 +37,7 @@ import {
   TAITextQueryData,
   TGenerateTopicQuestionsParams,
 } from '@/features/ai/types';
+import { TNewOrOldAnswer } from '@/features/answers/types';
 import { logJsonData } from '@/features/logger/server-actions';
 import {
   TUpdateQuestionsDataViaParamsResults,
@@ -437,17 +438,32 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
         setGenerated(true);
         setGeneratedQuestions((existing = []) => {
-          const ids = new Set<TNewOrOldQuestion['id']>(existing.map(({ id }) => id));
+          const questionIds = new Set<TNewOrOldQuestion['id']>(existing.map(({ id }) => id));
           const newQuestions: TNewOrOldQuestion[] =
             parsedQuestions?.map((q) => {
-              const id = getUniqueIdForSet(ids, newItemIdPrefix);
-              ids.add(id);
+              const questionId = getUniqueIdForSet(questionIds, newItemIdPrefix);
+              questionIds.add(questionId);
+              const answersIds = new Set<TNewOrOldAnswer['id']>();
+              const answers: TNewOrOldAnswer[] =
+                q.answers?.map((answer) => {
+                  const answerId = getUniqueIdForSet(answersIds, newItemIdPrefix);
+                  answersIds.add(answerId);
+                  return {
+                    ...answer,
+                    id: answerId,
+                    isNew: true,
+                    questionId: questionId,
+                    isGenerated: true,
+                  };
+                }) || [];
+
               return {
                 ...q,
-                id,
+                id: questionId,
                 isNew: true,
                 topicId,
                 isGenerated: true,
+                answers,
               };
             }) || [];
           const __debugData = { newQuestions, queryData, topicId, formData };
