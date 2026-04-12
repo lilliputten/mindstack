@@ -3,32 +3,36 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
+import { MarkdownText } from '@/components/ui/MarkdownText';
 import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { TNewQuestion } from '@/features/questions/types';
+import { TSaveDataParams } from '@/entities/HeadlessEditor';
+import { QuestionsEditorCore } from '@/features/questions/components/QuestionsEditor';
+import { TNewOrOldQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
-import { PreviewQuestions } from '@/widgets/questions';
 
-export interface TProps {
+export interface TEditScreenProps {
   startOverCallback?: () => void;
   className?: string;
   isSaving?: boolean;
-  topicId: TTopicId; // Is it required here?
-  generatedQuestions?: TNewQuestion[];
-  saveQuestions: () => unknown;
+  topicId: TTopicId;
+  questions?: TNewOrOldQuestion[];
   handleCancel?: () => void;
+  saveData?: (saveParams: TSaveDataParams<TNewOrOldQuestion>) => Promise<TNewOrOldQuestion[]>;
+  reloadQuestions?: () => void;
 }
 
-export function EditScreen(props: TProps) {
+export function EditScreen(props: TEditScreenProps) {
   const {
     className,
     startOverCallback,
-    // topicId,
-    isSaving,
-    generatedQuestions,
-    saveQuestions,
+    isSaving = false,
+    questions,
     handleCancel,
+    saveData,
+    topicId,
+    reloadQuestions,
   } = props;
   const t = useT();
 
@@ -56,25 +60,24 @@ export function EditScreen(props: TProps) {
             isSaving && 'opacity-20',
           )}
         >
-          {!generatedQuestions?.length ? (
+          {!questions?.length ? (
             <ErrorSplash className="px-6" title={t('GenerateQuestionsModal.NoQuestionsToEdit')} />
           ) : (
             <div className="conent-truncate flex flex-col gap-4">
-              <h3 className="content-truncate text-xl font-semibold text-theme">
-                {t('GenerateQuestionsModal.EditQuestionsCount', {
-                  count: generatedQuestions.length,
-                })}
-                :
-              </h3>
-              {/* Display preview of the added questions */}
-              <PreviewQuestions
-                questions={generatedQuestions}
-                className="content-truncate flex flex-col gap-2 text-sm"
+              <div className="conent-truncate flex gap-4">
+                <Icons.Info className="size-8 shrink-0 text-theme-500" />
+                <MarkdownText>{t('GenerateQuestionsModal.EditHelpMarkdownText')}</MarkdownText>
+              </div>
+              <QuestionsEditorCore
+                topicId={topicId}
+                questions={questions}
+                saveData={saveData}
+                reloadData={reloadQuestions}
               />
             </div>
           )}
         </div>
-        {/* Generating splash */}
+        {/* Saving splash */}
         <BusySplashWithInfo
           title={t('GenerateQuestionsModal.SavingQuestions')}
           className={cn(
@@ -92,24 +95,6 @@ export function EditScreen(props: TProps) {
           'content-truncate flex w-full flex-wrap gap-2',
         )}
       >
-        {/* Options for generated questions... */}
-        {!isSaving && !!generatedQuestions?.length && (
-          <>
-            {/* Option 1: saveQuestions */}
-            <Button
-              className="content-truncate flex gap-2"
-              onClick={() => {
-                saveQuestions();
-              }}
-              variant={!isSaving ? 'success' : 'ghost'}
-              disabled={isSaving}
-            >
-              <Icons.Save className="size-4 shrink-0" />
-              <span className="truncate">{t('GenerateQuestionsModal.SaveQuestions')}</span>
-            </Button>
-          </>
-        )}
-
         {/* Return to the form */}
         {!isSaving && startOverCallback && (
           <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">

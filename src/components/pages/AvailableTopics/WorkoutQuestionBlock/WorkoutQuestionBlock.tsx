@@ -72,7 +72,10 @@ export function WorkoutQuestionBlock() {
     }
   }, [isWorkoutPending, memo, handleFinishWorkout, isExceed, currentStep, totalSteps]);
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: questionId });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: questionId,
+    traceId: 'WorkoutQuestionBlock',
+  });
   const {
     question,
     isFetched: isQuestionFetched,

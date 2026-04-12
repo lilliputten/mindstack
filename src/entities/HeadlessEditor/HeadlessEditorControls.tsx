@@ -20,7 +20,6 @@ import { TCmpItemBase, TCmpItemId } from './types';
 interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   extends Omit<
     THeadlessEditorProps<T, LargeTexts>,
-    // | 'showNormalized'
     | 'RenderItem'
     | 'changeItemsOrder'
     | 'className'
@@ -44,7 +43,6 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   // Calculated data...
   totalChangedCount?: number;
   // Show normalized values
-  // showNormalized?: boolean;
   setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
   // Options...
   disableScroll?: boolean;
@@ -123,14 +121,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     setShowNormalized,
   } = props;
 
-  /* // DEBUG: Detect excessive unmounts
-   * React.useEffect(() => {
-   *   return () => {
-   *     console.log('[HeadlessEditorControls:DEBUG:UNMOUNTED]');
-   *   };
-   * }, []);
-   */
-
   const t = useT();
 
   const [isExpanded, setExpanded] = React.useState(false);
@@ -139,89 +129,90 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const HeaderIcon = !isReady ? Icons.Spinner : Icons.Settings2;
 
-  const actions = [
-    // Basic actions...
-    /* // UNUSED: These actions displayed in the panel header
-     * onSaveData && !!totalChangedCount && (
-     *   <Button
-     *     key="SaveData"
-     *     onClick={onSaveData}
-     *     className="content-truncate flex items-center gap-2"
-     *     variant={totalChangedCount ? 'success' : 'ghost'}
-     *     disabled={!totalChangedCount}
-     *   >
-     *     <Icons.Save className="size-4 shrink-0 opacity-50" />
-     *     <span className="truncate">
-     *       {t('Save')}
-     *       {!!totalChangedCount && (
-     *         <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
-     *       )}
-     *     </span>
-     *   </Button>
-     * ),
-     * !!totalChangedCount && (
-     *   <Button
-     *     key="UndoChanges"
-     *     onClick={restoreDefaults}
-     *     className="content-truncate flex items-center gap-2"
-     *     variant={totalChangedCount ? 'theme' : 'ghost'}
-     *     disabled={!totalChangedCount}
-     *   >
-     *     <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
-     *     <span className="truncate">
-     *       {t('UndoChanges')}
-     *       {!!totalChangedCount && (
-     *         <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
-     *       )}
-     *     </span>
-     *   </Button>
-     * ),
-     * !!onReload && (
-     *   <Button
-     *     key="Reload"
-     *     onClick={onReload}
-     *     className="content-truncate flex items-center gap-2"
-     *     variant="ghost"
-     *   >
-     *     <Icons.Refresh className="size-4 shrink-0 opacity-50" />
-     *     <span className="truncate">{t('Reload')}</span>
-     *   </Button>
-     * ),
-     * !!items.length && (
-     *   <Button
-     *     key="SelectAll"
-     *     onClick={() =>
-     *       setSelectedIds((selectedIds) => {
-     *         return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
-     *       })
-     *     }
-     *     className="content-truncate flex items-center gap-2"
-     *     variant={items.length ? 'theme' : 'ghost'}
-     *     disabled={!items.length}
-     *   >
-     *     {!selectedIds?.size ? (
-     *       <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
-     *     ) : (
-     *       <Icons.Square className="size-4 shrink-0 opacity-50" />
-     *     )}
-     *     <span className="truncate">
-     *       {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
-     *       <span className="ml-1 font-thin opacity-50">({items.length})</span>
-     *     </span>
-     *   </Button>
-     * ),
-     */
-    <Button
-      key="Hide"
-      type="button"
-      variant="ghost"
-      onClick={() => setExpanded(false)}
-      className="flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
-    >
-      <Icons.ChevronUp className="size-4 opacity-50" />
-      <span className="truncate">{t('Hide')}</span>
-    </Button>,
-  ].filter(Boolean);
+  /* // UNUSED: actions section: all actions are contained in the panel header
+   * const actions = [
+   *   // Basic actions...
+   *   // UNUSED: These actions displayed in the panel header
+   *   onSaveData && !!totalChangedCount && (
+   *     <Button
+   *       key="SaveData"
+   *       onClick={onSaveData}
+   *       className="content-truncate flex items-center gap-2"
+   *       variant={totalChangedCount ? 'success' : 'ghost'}
+   *       disabled={!totalChangedCount}
+   *     >
+   *       <Icons.Save className="size-4 shrink-0 opacity-50" />
+   *       <span className="truncate">
+   *         {t('Save')}
+   *         {!!totalChangedCount && (
+   *           <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
+   *         )}
+   *       </span>
+   *     </Button>
+   *   ),
+   *   !!totalChangedCount && (
+   *     <Button
+   *       key="UndoChanges"
+   *       onClick={restoreDefaults}
+   *       className="content-truncate flex items-center gap-2"
+   *       variant={totalChangedCount ? 'theme' : 'ghost'}
+   *       disabled={!totalChangedCount}
+   *     >
+   *       <Icons.Undo2 className="size-4 shrink-0 opacity-50" />
+   *       <span className="truncate">
+   *         {t('UndoChanges')}
+   *         {!!totalChangedCount && (
+   *           <span className="ml-1 font-thin opacity-50">({totalChangedCount})</span>
+   *         )}
+   *       </span>
+   *     </Button>
+   *   ),
+   *   !!onReload && (
+   *     <Button
+   *       key="Reload"
+   *       onClick={onReload}
+   *       className="content-truncate flex items-center gap-2"
+   *       variant="ghost"
+   *     >
+   *       <Icons.Refresh className="size-4 shrink-0 opacity-50" />
+   *       <span className="truncate">{t('Reload')}</span>
+   *     </Button>
+   *   ),
+   *   !!items.length && (
+   *     <Button
+   *       key="SelectAll"
+   *       onClick={() =>
+   *         setSelectedIds((selectedIds) => {
+   *           return !selectedIds?.size ? new Set(items.map(({ id }) => id)) : undefined;
+   *         })
+   *       }
+   *       className="content-truncate flex items-center gap-2"
+   *       variant={items.length ? 'theme' : 'ghost'}
+   *       disabled={!items.length}
+   *     >
+   *       {!selectedIds?.size ? (
+   *         <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
+   *       ) : (
+   *         <Icons.Square className="size-4 shrink-0 opacity-50" />
+   *       )}
+   *       <span className="truncate">
+   *         {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
+   *         <span className="ml-1 font-thin opacity-50">({items.length})</span>
+   *       </span>
+   *     </Button>
+   *   ),
+   *   <Button
+   *     key="Hide"
+   *     type="button"
+   *     variant="ghost"
+   *     onClick={() => setExpanded(false)}
+   *     className="flex max-w-full items-center justify-start gap-2 truncate md:ml-auto"
+   *   >
+   *     <Icons.ChevronUp className="size-4 opacity-50" />
+   *     <span className="truncate">{t('Hide')}</span>
+   *   </Button>,
+   * ].filter(Boolean);
+   */
 
   const reorders = [
     // Reorders...
@@ -352,7 +343,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         <span>{t('HeadlessEditor.FilterByText')}:</span>
       </div>
       <Input
-        // id="FilterByText"
         name="FilterByText"
         className="inline pr-11"
         placeholder={t('HeadlessEditor.FilterByText')}

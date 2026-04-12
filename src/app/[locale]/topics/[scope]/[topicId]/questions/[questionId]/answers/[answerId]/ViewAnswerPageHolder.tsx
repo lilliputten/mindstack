@@ -39,7 +39,10 @@ export function ViewAnswerPageHolder(props: TViewAnswerPageHolderProps) {
   const { topic, isFetched: isTopicFetched, isCached: isTopicCached } = availableTopicQuery;
   const isTopicReady = isTopicCached || isTopicFetched;
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: questionId });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: questionId,
+    traceId: 'ViewAnswerPageHolder',
+  });
   const {
     question,
     isFetched: isQuestionFetched,

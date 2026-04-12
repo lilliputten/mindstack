@@ -815,7 +815,7 @@
     "AnswersGenerationError": "Can not retrieve AI generated data",
     "AnswersSaved": "Answers saved",
     "EditAnswersCount": "{count, plural, =0 {No answers to edit} =1 {Edit # answer} other {Edit # answers}}",
-    "EditHelpMarkdownText": "Check and edit the generated questions by changing their order and properties, comparing them with existing questions that are also editable. If necessary, you can call the generation procedure again without saving the data. By default, new questions are added to the end of the list and indicated by a green border. The changed answers are marked with a blue border. Save the data when done.",
+    "EditHelpMarkdownText": "Check and edit the generated answers by changing their order and properties, comparing them with existing answers that are also editable. If necessary, you can call the generation procedure again without saving the data. By default, new answers are added to the end of the list and indicated by a green border. The changed answers are marked with a blue border. Save the data when done.",
     "EditTheData": "Edit the data",
     "EditingAnswers": "Editing answers",
     "ErrorOccured": "Error occured",
@@ -859,6 +859,7 @@
   },
   "GenerateQuestionsModal": {
     "DialogTitle": "Generate Questions",
+    "EditHelpMarkdownText": "Check and edit the generated questions by changing their order and properties, comparing them with existing questions that are also editable. If necessary, you can call the generation procedure again without saving the data. By default, new questions are added to the end of the list and indicated by a green border. The changed questions are marked with a blue border. Save the data when done.",
     "EditQuestionsCount": "{count, plural, =0 {No questions to edit} =1 {Edit # question} other {Edit # questions}}",
     "EditTheData": "Edit the questions",
     "EditingQuestions": "Editing questions",

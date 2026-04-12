@@ -52,6 +52,9 @@ export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) 
 
   const isCached = !!cachedQuestion;
   const enabled = !!questionId && !isCached; // Disable query if no ID or already cached
+  if (questionId?.startsWith('__new')) {
+    debugger;
+  }
 
   const queryFn = React.useCallback(async () => {
     try {
@@ -86,6 +89,7 @@ export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) 
           details,
           error,
           queryProps,
+          questionId,
         });
         debugger; // eslint-disable-line no-debugger
         toast.error(message);

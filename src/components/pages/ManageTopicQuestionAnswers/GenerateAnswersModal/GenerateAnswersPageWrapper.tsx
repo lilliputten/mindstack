@@ -164,7 +164,10 @@ export function GenerateAnswersPageWrapper({
   const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
   const isTopicPending = !isTopicFetched || isTopicFetching;
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: questionId });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: questionId,
+    traceId: 'GenerateAnswersPageWrapper',
+  });
   const {
     question,
     isFetched: isQuestionFetched,
