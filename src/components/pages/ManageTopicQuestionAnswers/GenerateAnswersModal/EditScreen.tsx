@@ -3,6 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
+import { MarkdownText } from '@/components/ui/MarkdownText';
 import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
@@ -67,6 +68,10 @@ export function EditScreen(props: TEditScreenProps) {
             <ErrorSplash className="px-6" title={t('GenerateAnswersModal.NoAnswersToEdit')} />
           ) : (
             <div className="conent-truncate flex flex-col gap-4">
+              <div className="conent-truncate flex gap-4">
+                <Icons.Info className="size-8 shrink-0 text-theme-500" />
+                <MarkdownText>{t('GenerateAnswersModal.EditHelpMarkdownText')}</MarkdownText>
+              </div>
               <AnswersEditorCore
                 topicId={topicId}
                 questionId={questionId}

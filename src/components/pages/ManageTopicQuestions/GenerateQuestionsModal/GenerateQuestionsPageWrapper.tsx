@@ -54,11 +54,12 @@ const debugDataId: TAIQuerDebugDataId = 'questions-query-data-06';
 
 /** Show debug data to test questions editing and generated splash */
 const __debugGenerated = isDev && false;
+const __demoTopicId = 'cml3z7si00001nvdwunclr1gg';
 const __debugGeneratedQuestions: TNewQuestion[] | undefined = __debugGenerated
   ? [
       // DEBUG: Test data
       {
-        topicId: 'xxx', // cml6pgajf0001nvjsxuordxpm
+        topicId: __demoTopicId,
         text: 'Sample generated question',
         answers: [
           {

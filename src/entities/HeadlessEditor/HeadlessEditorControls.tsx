@@ -211,55 +211,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
      *   </Button>
      * ),
      */
-    /*
-      // Separate select all/select none controls
-      <Button
-        key="SelectAll"
-        onClick={() => setSelectedIds(new Set(items.map(({ id }) => id)))}
-        className="content-truncate flex items-center gap-2"
-        variant={selectedIds?.size !== items.length ? 'theme' : 'ghost'}
-        disabled={selectedIds?.size === items.length}
-      >
-        <Icons.SquareCheck className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('SelectAll')}</span>
-      </Button>,
-      <Button
-        key="SelectNone"
-        onClick={() => setSelectedIds(undefined)}
-        className="content-truncate flex items-center gap-2"
-        variant={selectedIds?.size ? 'theme' : 'ghost'}
-        disabled={!selectedIds?.size}
-      >
-        <Icons.Square className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">{t('SelectNone')}</span>
-      </Button>,
-      */
-    <Button
-      key="AddAction"
-      onClick={onAddAction}
-      className="content-truncate flex items-center gap-2"
-      variant="success"
-    >
-      <Icons.Plus className="size-4 shrink-0 opacity-50" />
-      <span className="truncate">{t('AddNew')}</span>
-    </Button>,
-    !!onDeleteAction && !!selectedIds?.size && (
-      <Button
-        key="DeleteSelected"
-        onClick={onDeleteAction}
-        className="content-truncate flex items-center gap-2"
-        variant={selectedIds?.size ? 'destructive' : 'ghost'}
-        disabled={!selectedIds?.size}
-      >
-        <Icons.Trash className="size-4 shrink-0 opacity-50" />
-        <span className="truncate">
-          {t('DeleteSelected')}
-          {!!selectedIds?.size && (
-            <span className="ml-1 font-thin opacity-50">({selectedIds.size})</span>
-          )}
-        </span>
-      </Button>
-    ),
     <Button
       key="Hide"
       type="button"
@@ -275,7 +226,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
   const reorders = [
     // Reorders...
     !!items.length && !!reorderItems && !!reorderTitles && (
-      <Label className="relative flex w-full items-center gap-2" key="Reorder">
+      <Label className="relative flex min-h-10 w-full items-center gap-2" key="Reorder">
         <div className="shrink-0 truncate text-sm font-bold opacity-50">{t('ReorderItems')}:</div>
         <Select onValueChange={reorderItems}>
           <SelectTrigger
@@ -304,7 +255,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     !!setShowNormalized && (
       <Label
         key="ShowNormalizedComparsions"
-        className={cn('mx-2 flex select-none items-center gap-2')}
+        className={cn('mx-2 flex min-h-10 select-none items-center gap-2')}
       >
         <Checkbox
           defaultChecked={showNormalized || false}
@@ -342,7 +293,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     <div key="FiltersLabel" className="flex items-center text-sm font-bold opacity-50">
       <span>{t('Filter')}:</span>
     </div>,
-    <Label key="FilterTargeted" className="ml-1 flex select-none items-center gap-2">
+    <Label key="FilterTargeted" className="ml-1 flex min-h-10 select-none items-center gap-2">
       <Checkbox
         defaultChecked={!!filterTargeted}
         onCheckedChange={(checked) => setFilterTargeted(Boolean(checked))}
@@ -357,7 +308,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         </TooltipContent>
       </Tooltip>
     </Label>,
-    <Label key="FilterUpdated" className="ml-1 flex select-none items-center gap-2">
+    <Label key="FilterUpdated" className="ml-1 flex min-h-10 select-none items-center gap-2">
       <Checkbox
         defaultChecked={filterUpdated}
         onCheckedChange={(checked) => setFilterUpdated(Boolean(checked))}
@@ -369,7 +320,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         </Badge>
       </span>
     </Label>,
-    <Label key="FilterAdded" className="ml-1 flex select-none items-center gap-2">
+    <Label key="FilterAdded" className="ml-1 flex min-h-10 select-none items-center gap-2">
       <Checkbox
         defaultChecked={filterAdded}
         onCheckedChange={(checked) => setFilterAdded(Boolean(checked))}
@@ -381,7 +332,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         </Badge>
       </span>
     </Label>,
-    <Label key="FilterSelected" className="ml-1 mr-2 flex select-none items-center gap-2">
+    <Label key="FilterSelected" className="ml-1 mr-2 flex min-h-10 select-none items-center gap-2">
       <Checkbox
         defaultChecked={filterSelected}
         onCheckedChange={(checked) => setFilterSelected(Boolean(checked))}
@@ -396,7 +347,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
   ].filter(Boolean);
 
   const textFilters = [
-    <Label className="relative flex gap-2" key="FilterByText">
+    <Label className="relative flex min-h-10 gap-2" key="FilterByText">
       <div key="Filter" className="flex items-center text-sm font-bold opacity-50">
         <span>{t('HeadlessEditor.FilterByText')}:</span>
       </div>
@@ -431,7 +382,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     </Label>,
     <Label
       key="TextFilterSmart"
-      className={cn('mx-2 flex select-none items-center gap-2', !filterText && 'disabled')}
+      className={cn('mx-2 flex min-h-10 select-none items-center gap-2', !filterText && 'disabled')}
     >
       <Checkbox
         defaultChecked={filterTextSmart}
@@ -560,14 +511,41 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                   <Icons.SquareDot className="size-4 shrink-0" />
                 )}
                 <span className="truncate max-md:hidden">
-                  {!selectedIds?.size ? t('SelectAll') : t('DeselectAll')}
+                  {!selectedIds?.size ? t('Select') : t('Deselect')}
                 </span>
                 <Badge variant={'theme'} className="truncate px-2 text-xs opacity-50 max-xs:hidden">
                   {selectedIds?.size || items.length}
                 </Badge>
               </div>
             )}
-
+            {/* DeleteSelected */}
+            {!!onDeleteAction && !!selectedIds?.size && (
+              <div
+                key="DeleteSelected"
+                onClick={onDeleteAction}
+                className={cn(
+                  buttonVariants({ variant: selectedIds?.size ? 'destructive' : 'ghost' }),
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                )}
+                title={t('DeleteSelected')}
+              >
+                <Icons.Trash className="size-4 shrink-0" />
+                <span className="truncate max-md:hidden">{t('Delete')}</span>
+              </div>
+            )}
+            {/* AddAction */}
+            <div
+              key="AddAction"
+              onClick={onAddAction}
+              className={cn(
+                buttonVariants({ variant: 'theme80' }),
+                'flex cursor-pointer items-center gap-2 truncate rounded-none',
+              )}
+              title={t('AddNew')}
+            >
+              <Icons.Plus className="size-4 shrink-0" />
+              <span className="truncate max-md:hidden">{t('Add')}</span>
+            </div>
             {/* // Expand toggler */}
             <div
               onClick={() => setExpanded((isExpanded) => !isExpanded)}
@@ -623,8 +601,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               )}
               viewportClassName={cn(
                 isDev && '__HeadlessEditorControls_ScrollViewport', // DEBUG
-                'flex py-6 flex-col flex-1',
-                '[&>div]:!flex [&>div]:flex-col [&>div]:gap-2 [&>div]:flex-1',
+                'flex py-2 flex-col flex-1',
+                '[&>div]:!flex [&>div]:flex-col [&>div]:px-4 [&>div]:gap-2 [&>div]:flex-1',
               )}
             >
               {/* Filters... */}
@@ -632,7 +610,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Filters', // DEBUG
-                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                    'content-truncate flex flex-wrap gap-1',
                   )}
                 >
                   {filters}
@@ -644,7 +622,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_TextFilters', // DEBUG
-                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                    'content-truncate flex flex-wrap gap-1',
                   )}
                 >
                   {textFilters}
@@ -656,7 +634,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                    'content-truncate flex flex-wrap gap-1',
                   )}
                 >
                   {reorders}
@@ -668,7 +646,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
+                    'content-truncate flex flex-wrap gap-1',
                   )}
                 >
                   {comparisons}
@@ -676,16 +654,16 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               )}
 
               {/* Actions... */}
-              {!!actions.length && (
-                <div
-                  className={cn(
-                    isDev && '__HeadlessEditorControls_Actions', // DEBUG
-                    'content-truncate flex flex-wrap gap-1 px-6 py-2',
-                  )}
-                >
-                  {actions}
-                </div>
-              )}
+              {/*!!actions.length && (
+              <div
+                className={cn(
+                  isDev && '__HeadlessEditorControls_Actions', // DEBUG
+                  'content-truncate flex flex-wrap gap-1',
+                )}
+              >
+                {actions}
+              </div>
+              )*/}
             </ScrollArea>
           </CardContent>
         )}

@@ -22,7 +22,7 @@ import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, defaultAIGenerationTemperature } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
+import { getUniqueIdForSet, newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import {
@@ -85,28 +85,6 @@ const __debugGeneratedAnswers: TNewOrOldAnswer[] | undefined = __debugGenerated
     ]
   : undefined;
 
-/* [>* Show debug data to test saved questions <]
- * const __now = new Date();
- * const __debugSaved = isDev && false;
- * const __debugSavedAnswers: TAvailableAnswer[] | undefined = __debugSaved
- *   ? [
- *       // DEBUG: Test data
- *       {
- *         id: 'aaa',
- *         order: undefined,
- *         questionId: __demoQuestionId,
- *         createdAt: __now,
- *         updatedAt: __now,
- *         isGenerated: true,
- *         text: 'Sample answer',
- *         explanation: 'Sample explanation',
- *         isCorrect: true,
- *         // isSaved: true,
- *       },
- *     ]
- *   : undefined;
- */
-
 interface GenerateAnswersPageWrapperProps {
   scope: TTopicsManageScopeId;
   topicId: string;
@@ -123,7 +101,6 @@ export function GenerateAnswersPageWrapper({
 
   const isAdmin = user?.role === 'ADMIN';
 
-  // const [isEditing, setEditing] = React.useState<boolean>(true [> && __debugGenerated <]);
   const [isStarted, setStarted] = React.useState<boolean>(false);
   const [isGenerated, setGenerated] = React.useState<boolean>(false);
 
@@ -218,21 +195,6 @@ export function GenerateAnswersPageWrapper({
     () => [...answers, ...(generatedAnswers || [])],
     [answers, generatedAnswers],
   );
-
-  /*
-   * React.useEffect(() => {
-   *   console.log('[GenerateAnswersPageWrapper:DEBUG]', {
-   *     combinedAnswers,
-   *     answers,
-   *     generatedAnswers,
-   *   });
-   * }, [
-   *   //
-   *   combinedAnswers,
-   *   generatedAnswers,
-   *   answers,
-   * ]);
-   */
 
   // Using different titles depending on the current status
   const title = isSaved
@@ -484,7 +446,7 @@ export function GenerateAnswersPageWrapper({
         const queryPromise = generateAnswersMutation.mutateAsync(formData);
         toast.promise(queryPromise, {
           loading: t('GenerateAnswersModal.GeneratingAnswers'),
-          success: t('GenerateAnswersModal.AnswersGenerated'),
+          // success: t('GenerateAnswersModal.AnswersGenerated'),
           cancel: {
             label: t('Cancel'),
             onClick: resetOperations,
@@ -494,30 +456,45 @@ export function GenerateAnswersPageWrapper({
         const queryData = await queryPromise;
         const parsedAnswers = parseGeneratedQuestionAnswers(queryData);
 
-        const newAnswers: TNewOrOldAnswer[] | undefined = parsedAnswers?.map((answer, idx) => ({
-          ...answer,
-          // Generate special 'new' ids
-          id: newItemIdPrefix + (idx + 1),
-          isNew: true,
-          questionId,
-          isGenerated: true,
-        }));
+        if (!parsedAnswers?.length) {
+          toast.warning(t('GenerateAnswersModal.NoAnswersGenerated'));
+          return;
+        }
 
-        const __debugData = {
-          newAnswers,
-          queryData,
-          topicId,
-          questionId,
-          formData,
-        };
-        const message = 'Parsed generated answers';
-        const __idMsg = '[GenerateAnswersPageWrapper:generateCallback]';
-        // eslint-disable-next-line no-console
-        console.log(__idMsg, message, __debugData);
-        logJsonData(__idMsg, { formData, topicId, questionId }, __debugData); // NOTE: Not awaiting and catching!
+        toast.success(
+          t('GenerateAnswersModal.GeneratedAnswersCount', { count: parsedAnswers.length }),
+        );
 
         setGenerated(true);
-        setGeneratedAnswers(newAnswers);
+        setGeneratedAnswers((answers = []) => {
+          const ids = new Set<TNewOrOldAnswer['id']>(answers.map(({ id }) => id));
+          const newAnswers: TNewOrOldAnswer[] =
+            parsedAnswers?.map((answer) => {
+              // Generate special 'new' ids
+              const id = getUniqueIdForSet(ids, newItemIdPrefix);
+              ids.add(id);
+              return {
+                ...answer,
+                id,
+                isNew: true,
+                questionId,
+                isGenerated: true,
+              };
+            }) || [];
+          const __debugData = {
+            newAnswers,
+            queryData,
+            topicId,
+            questionId,
+            formData,
+          };
+          const message = 'Parsed generated answers';
+          const __idMsg = '[GenerateAnswersPageWrapper:generateCallback]';
+          // eslint-disable-next-line no-console
+          console.log(__idMsg, message, __debugData);
+          logJsonData(__idMsg, { formData, topicId, questionId }, __debugData); // NOTE: Not awaiting and catching!
+          return [...answers, ...newAnswers];
+        });
       } catch (error) {
         const isAborted =
           (error instanceof Event && error.type === 'abort') ||
@@ -560,7 +537,7 @@ export function GenerateAnswersPageWrapper({
   const startOverCallback = React.useCallback(() => {
     resetOperations();
     setGenerated(false);
-    setGeneratedAnswers(undefined);
+    // setGeneratedAnswers(undefined);
     setSaved(false);
     setStarted(false);
   }, [resetOperations]);
@@ -575,29 +552,16 @@ export function GenerateAnswersPageWrapper({
         id: 'Back',
         content: t('Back'),
         icon: Icons.ArrowLeft,
-        visibleFor: 'sm',
+        visibleFor: 'xs',
         onClick: cancelAndGoBack,
       },
       {
         id: 'StartOver',
-        content: t('StartOver'),
+        content: t('GenerateAgain'),
         icon: Icons.Refresh,
         visibleFor: 'sm',
         onClick: startOverCallback,
         hidden: !isGenerated,
-      },
-      {
-        id: 'AddNewQuestion',
-        content: t('AddNewQuestion'),
-        icon: Icons.Add,
-        visibleFor: 'xl',
-        href: `${topicRoutePath}/questions/add`,
-      },
-      {
-        id: 'AddNewTopic',
-        content: t('AddNewTopic'),
-        icon: Icons.Add,
-        href: `${topicsListRoutePath}/add`,
       },
       {
         id: 'GoToTheTopic',
@@ -628,7 +592,6 @@ export function GenerateAnswersPageWrapper({
       t,
       topicId,
       topicRoutePath,
-      topicsListRoutePath,
     ],
   );
 
