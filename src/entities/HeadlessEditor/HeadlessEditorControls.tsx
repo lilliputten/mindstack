@@ -42,6 +42,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   setReorderedIds: React.Dispatch<React.SetStateAction<Set<TCmpItemId> | undefined>>;
   // Calculated data...
   totalChangedCount?: number;
+  hasChanges?: boolean;
   // Show normalized values
   setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
   // Options...
@@ -79,6 +80,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
     disableScroll,
     // Calculated data...
     totalChangedCount,
+    hasChanges,
     // Items...
     items,
     // Actions...
@@ -423,7 +425,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               >
             */}
             {/* SaveData */}
-            {onSaveData && !!totalChangedCount && (
+            {onSaveData && hasChanges && (
               <div
                 key="SaveData"
                 onClick={onSaveData}
@@ -438,7 +440,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               </div>
             )}
             {/* UndoChanges */}
-            {!!totalChangedCount && (
+            {hasChanges && (
               <div
                 key="UndoChanges"
                 onClick={restoreDefaults}

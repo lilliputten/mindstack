@@ -69,6 +69,7 @@ interface TMemo<T extends TCmpItemBase> {
   compareTargetId?: TCmpItemId;
   freshHandlers: Set<TTimeoutHandler>;
   getItemComparedValues?: (it: T) => TItemComparedValues;
+  extraParams?: unknown;
 }
 const defaultMemo: TMemo<TCmpItemBase> = {
   freshHandlers: new Set(),
@@ -178,6 +179,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     changeItemsOrder: changeExternalItemsOrder,
   } = props;
   memo.addedIds = addedIds;
+  memo.extraParams = extraParams;
 
   /* // DEBUG: Detect excessive unmounts
    * React.useEffect(() => {
@@ -411,7 +413,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           updateItem={handleUpdate}
           toggleCheck={toggleCheck}
           handleCompareTargetId={handleCompareTargetId}
-          extraParams={extraParams}
+          extraParams={memo.extraParams}
           // Item state...
           isUpdated={updatedIds?.has(id)}
           isAdded={addedIds?.has(id)}
@@ -438,7 +440,6 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       memo,
       showNormalized,
       toggleCheck,
-      extraParams,
     ],
   );
 

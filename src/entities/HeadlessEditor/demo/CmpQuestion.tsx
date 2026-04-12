@@ -16,8 +16,7 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
-import { TSaveDataParams } from '@/entities/HeadlessEditor';
-import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
+import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
 import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
@@ -115,8 +114,15 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
     // setIsValid(formState.isValid);
   }, []);
 
+  const [viewAnswersHasRendered, setViewAnswersHasRendered] = React.useState(false);
   const [viewAnswers, setViewAnswers] = React.useState(false);
   const [viewInfo, setViewInfo] = React.useState(false);
+
+  React.useEffect(() => {
+    if (viewAnswers) {
+      setViewAnswersHasRendered(true);
+    }
+  }, [viewAnswers]);
 
   // Data editing support...
   const [editedItem, setEditedItem] = React.useState<T | undefined>();
@@ -531,11 +537,12 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
             )}
           </div>
         )}
-        {hasAnswersData && viewAnswers && (
+        {hasAnswersData && (viewAnswers || viewAnswersHasRendered) && (
           <div
             className={cn(
               isDev && '__CmpQuestion_Answers', // DEBUG
               'content-truncate flex flex-col gap-2 text-sm',
+              !viewAnswers && 'hidden',
             )}
           >
             {/* TODO: Show sekeleton */}
