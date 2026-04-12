@@ -276,6 +276,7 @@ describe('updateQuestionsDataViaParams', () => {
       await expect(
         updateQuestionsDataViaParams({
           addedItems: [{ text: 'Test', topicId: 'some-id' } as TNewQuestion],
+          noDebug: true,
         }),
       ).rejects.toThrow('Undefined user');
     });
@@ -314,6 +315,7 @@ describe('updateQuestionsDataViaParams', () => {
                 topicId: topic.id,
               },
             ],
+            noDebug: true,
           }),
         ).rejects.toThrow('Current user is not allowed to modify questions in some topics');
       } finally {
@@ -473,6 +475,219 @@ describe('updateQuestionsDataViaParams', () => {
         await cleanupDb(createdIds);
       }
     });
+
+    it('should handle mixed new and existing answers when updating a question', async () => {
+      const dateTag = formatDateTag();
+      const createdIds: CreatedId[] = [];
+      try {
+        const user = await jestPrisma.user.create({
+          data: { email: `user-mixed-answers-${dateTag}@test.com`, role: 'USER' },
+        });
+        createdIds.push({ type: 'user', id: user.id });
+
+        const topic = await jestPrisma.topic.create({
+          data: { name: `Topic-${dateTag}`, userId: user.id },
+        });
+        createdIds.push({ type: 'topic', id: topic.id });
+
+        const question = await jestPrisma.question.create({
+          data: { text: `Question - ${dateTag}`, topicId: topic.id },
+        });
+
+        // Create two existing answers
+        const existingAnswer1 = await jestPrisma.answer.create({
+          data: {
+            text: `Existing Answer 1 - ${dateTag}`,
+            questionId: question.id,
+            isCorrect: true,
+          },
+        });
+        const existingAnswer2 = await jestPrisma.answer.create({
+          data: {
+            text: `Existing Answer 2 - ${dateTag}`,
+            questionId: question.id,
+            isCorrect: false,
+          },
+        });
+        createdIds.push({ type: 'question', id: question.id });
+        createdIds.push({ type: 'answer', id: existingAnswer1.id });
+        createdIds.push({ type: 'answer', id: existingAnswer2.id });
+
+        mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+        // Update question with:
+        // - 1 updated existing answer (existingAnswer1)
+        // - 1 new answer without ID
+        // - Remove existingAnswer2 (not in the list)
+        const result = await updateQuestionsDataViaParams({
+          updatedItems: [
+            {
+              id: question.id,
+              text: `Updated Question - ${dateTag}`,
+              topicId: topic.id,
+              answers: [
+                {
+                  id: existingAnswer1.id, // ← Update this existing answer
+                  text: `Modified Answer 1 - ${dateTag}`,
+                  isCorrect: false, // Changed from true to false
+                },
+                {
+                  // ← New answer without ID
+                  text: `Brand New Answer - ${dateTag}`,
+                  isCorrect: true,
+                },
+              ],
+            },
+          ],
+        });
+
+        expect(result.updated).toHaveLength(1);
+
+        // Verify the changes
+        const updatedQuestion = await jestPrisma.question.findUnique({
+          where: { id: question.id },
+          include: { answers: true },
+        });
+
+        expect(updatedQuestion?.answers).toHaveLength(2);
+
+        // Check that existing answer was updated
+        const modifiedAnswer = updatedQuestion?.answers.find((a) => a.id === existingAnswer1.id);
+        expect(modifiedAnswer).toBeDefined();
+        expect(modifiedAnswer?.text).toContain('Modified Answer 1');
+        expect(modifiedAnswer?.isCorrect).toBe(false);
+
+        // Check that new answer was created
+        const newAnswer = updatedQuestion?.answers.find((a) => a.text.includes('Brand New Answer'));
+        expect(newAnswer).toBeDefined();
+        expect(newAnswer?.isCorrect).toBe(true);
+
+        // Check that removed answer was deleted
+        const removedAnswerExists = await jestPrisma.answer.findUnique({
+          where: { id: existingAnswer2.id },
+        });
+        expect(removedAnswerExists).toBeNull();
+      } finally {
+        await cleanupDb(createdIds);
+      }
+    });
+
+    it('should handle new answers with __new prefix IDs', async () => {
+      const dateTag = formatDateTag();
+      const createdIds: CreatedId[] = [];
+      try {
+        const user = await jestPrisma.user.create({
+          data: { email: `user-answer-ids-${dateTag}@test.com`, role: 'USER' },
+        });
+        createdIds.push({ type: 'user', id: user.id });
+
+        const topic = await jestPrisma.topic.create({
+          data: { name: `Topic-${dateTag}`, userId: user.id },
+        });
+        createdIds.push({ type: 'topic', id: topic.id });
+
+        const question = await jestPrisma.question.create({
+          data: { text: `Question - ${dateTag}`, topicId: topic.id },
+        });
+        createdIds.push({ type: 'question', id: question.id });
+
+        mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+        // Add new answers with __new prefix IDs
+        const result = await updateQuestionsDataViaParams({
+          updatedItems: [
+            {
+              id: question.id,
+              text: `Updated Question - ${dateTag}`,
+              topicId: topic.id,
+              answers: [
+                {
+                  id: '__new1', // Temporary ID
+                  text: `New Answer 1 - ${dateTag}`,
+                  isCorrect: true,
+                },
+                {
+                  id: '__new2', // Temporary ID
+                  text: `New Answer 2 - ${dateTag}`,
+                  isCorrect: false,
+                },
+              ],
+            },
+          ],
+        });
+
+        expect(result.updated).toHaveLength(1);
+
+        // Verify answers were actually created with real IDs
+        const updatedQuestion = await jestPrisma.question.findUnique({
+          where: { id: question.id },
+          include: { answers: true },
+        });
+
+        expect(updatedQuestion?.answers).toHaveLength(2);
+        expect(updatedQuestion?.answers.every((a) => !a.id.startsWith('__new'))).toBe(true);
+
+        // Verify the answers have correct properties
+        const answer1 = updatedQuestion?.answers.find((a) => a.text.includes('New Answer 1'));
+        const answer2 = updatedQuestion?.answers.find((a) => a.text.includes('New Answer 2'));
+        expect(answer1?.isCorrect).toBe(true);
+        expect(answer2?.isCorrect).toBe(false);
+      } finally {
+        await cleanupDb(createdIds);
+      }
+    });
+
+    it('should delete all answers when updating with empty answers array', async () => {
+      const dateTag = formatDateTag();
+      const createdIds: CreatedId[] = [];
+      try {
+        const user = await jestPrisma.user.create({
+          data: { email: `user-delete-all-answers-${dateTag}@test.com`, role: 'USER' },
+        });
+        createdIds.push({ type: 'user', id: user.id });
+
+        const topic = await jestPrisma.topic.create({
+          data: { name: `Topic-${dateTag}`, userId: user.id },
+        });
+        createdIds.push({ type: 'topic', id: topic.id });
+
+        const question = await jestPrisma.question.create({
+          data: { text: `Question - ${dateTag}`, topicId: topic.id },
+        });
+
+        await jestPrisma.answer.create({
+          data: { text: `Answer 1 - ${dateTag}`, questionId: question.id, isCorrect: true },
+        });
+        await jestPrisma.answer.create({
+          data: { text: `Answer 2 - ${dateTag}`, questionId: question.id, isCorrect: false },
+        });
+        createdIds.push({ type: 'question', id: question.id });
+
+        mockedGetCurrentUser.mockResolvedValue(user as TUser);
+
+        const result = await updateQuestionsDataViaParams({
+          updatedItems: [
+            {
+              id: question.id,
+              text: `Updated Question - ${dateTag}`,
+              topicId: topic.id,
+              answers: [], // Empty array should delete all answers
+            },
+          ],
+        });
+
+        expect(result.updated).toHaveLength(1);
+
+        const updatedQuestion = await jestPrisma.question.findUnique({
+          where: { id: question.id },
+          include: { answers: true },
+        });
+
+        expect(updatedQuestion?.answers).toHaveLength(0);
+      } finally {
+        await cleanupDb(createdIds);
+      }
+    });
   });
 
   describe('Edge Cases', () => {
@@ -496,6 +711,7 @@ describe('updateQuestionsDataViaParams', () => {
                 topicId: 'some-topic',
               },
             ],
+            noDebug: true,
           }),
         ).rejects.toThrow();
       } finally {

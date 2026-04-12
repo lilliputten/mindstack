@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
 import { newItemIdPrefix } from '@/entities/HeadlessEditor';
+import { TAvailableAnswer } from '@/features/answers/types';
 import { TNewOrOldQuestion, TNewQuestion, TQuestionId } from '@/features/questions/types';
 
 import { TQuestion } from '../types';
@@ -25,6 +26,10 @@ export interface TUpdateQuestionsDataViaParamsResults {
   deletedIds?: TQuestionId[];
 }
 
+interface TOptions {
+  noDebug?: boolean;
+}
+
 /**
  * Updates, adds, and deletes questions in a single transaction.
  * Performs security checks to ensure user has access to modify the questions.
@@ -32,9 +37,9 @@ export interface TUpdateQuestionsDataViaParamsResults {
  * @returns Array of affected questions (updated and added)
  */
 export async function updateQuestionsDataViaParams(
-  data: TUpdateQuestionsDataViaParams,
+  data: TUpdateQuestionsDataViaParams & TOptions,
 ): Promise<TUpdateQuestionsDataViaParamsResults> {
-  const { updatedItems = [], addedItems = [], deletedIds = [] } = data;
+  const { updatedItems = [], addedItems = [], deletedIds = [], noDebug } = data;
 
   const user = await getCurrentUser();
   const userId = user?.id;
@@ -103,32 +108,74 @@ export async function updateQuestionsDataViaParams(
       if (updatedItems.length > 0) {
         const updatePromises = updatedItems.map(async (item) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { id, _count, createdAt, updatedAt, answers, ...updateData } = item;
+          const { id, _count, createdAt, updatedAt, answers: rawAnswers, ...updateData } = item;
 
-          // Update the question
+          // Cast answers to extended type to include optional fields from editor
+          const answers = rawAnswers as TAvailableAnswer[] | undefined;
+
+          // Update the question with nested answer operations
           const updatedQuestion = await tx.question.update({
             where: { id },
-            data: updateData,
+            data: {
+              ...updateData,
+              ...(answers &&
+                Array.isArray(answers) && {
+                  answers: {
+                    // First, delete answers that are not in the new list
+                    deleteMany: {
+                      id: {
+                        notIn: answers
+                          .filter((a): a is TAvailableAnswer & { id: string } => {
+                            // Only keep answers with real IDs (not __new, not undefined)
+                            return !!(a.id && !String(a.id).startsWith(newItemIdPrefix));
+                          })
+                          .map((a) => a.id),
+                      },
+                    },
+                    // Create new answers (those without ID or with __new IDs)
+                    create: answers
+                      .filter((a): a is TAvailableAnswer => {
+                        // New answers are those without ID or with __new prefix
+                        return !a.id || String(a.id).startsWith(newItemIdPrefix);
+                      })
+                      .map((answer) => {
+                        // Extract only the fields we need for creation
+                        const { id: _answerId, questionId: _questionId, ...answerData } = answer;
+                        return {
+                          text: answerData.text,
+                          explanation: answerData.explanation,
+                          isCorrect: answerData.isCorrect ?? false,
+                          order: answerData.order,
+                          isGenerated: item.isGenerated || false,
+                        };
+                      }),
+                    // Update existing answers (those with real IDs, not __new)
+                    update: answers
+                      .filter((a): a is TAvailableAnswer & { id: string } => {
+                        // Existing answers have real IDs (not __new prefix)
+                        return !!(a.id && !String(a.id).startsWith(newItemIdPrefix));
+                      })
+                      .map((answer) => {
+                        const { id: answerId, questionId: _questionId, ...answerData } = answer;
+
+                        return {
+                          where: { id: answerId },
+                          data: {
+                            text: answerData.text,
+                            explanation: answerData.explanation,
+                            isCorrect: answerData.isCorrect ?? false,
+                            order: answerData.order,
+                            isGenerated: item.isGenerated || false,
+                          },
+                        };
+                      }),
+                  },
+                }),
+            },
+            include: {
+              answers: true,
+            },
           });
-
-          // TODO: Handle answers update if present
-          if (answers && Array.isArray(answers)) {
-            // Delete existing answers
-            await tx.answer.deleteMany({
-              where: { questionId: id },
-            });
-
-            // Create new answers
-            if (answers.length > 0) {
-              await tx.answer.createMany({
-                data: answers.map((answer) => ({
-                  ...answer,
-                  questionId: id,
-                  isGenerated: item.isGenerated || false,
-                })),
-              });
-            }
-          }
 
           return updatedQuestion;
         });
@@ -140,28 +187,48 @@ export async function updateQuestionsDataViaParams(
       // Process additions
       if (addedItems.length > 0) {
         const addPromises = addedItems.map(async (item) => {
-          const { answers, ...questionFields } = item;
+          const { answers: rawAnswers, ...questionFields } = item;
+
+          // Cast answers to extended type to include optional fields from editor
+          const answers = rawAnswers as TAvailableAnswer[] | undefined;
 
           const origId = questionFields.id;
           const hasNewOrigId = !!origId && origId.startsWith(newItemIdPrefix);
-          if (hasNewOrigId) {
-            // It will be created automatically
-            delete questionFields.id;
-          }
+
+          // Prepare question data for creation
+          const { id: _questionId, ...questionDataWithoutId } = questionFields;
+          const questionData = hasNewOrigId ? questionDataWithoutId : questionFields;
+
+          // Add nested answer creation if answers exist
+          const createData = {
+            ...questionData,
+            ...(answers?.length && {
+              answers: {
+                create: answers.map((answer) => {
+                  // Exclude 'id' and 'questionId' from nested creates
+                  // These are auto-generated or set by Prisma relationships
+                  const { id: _answerId, questionId: _questionId, ...answerData } = answer;
+
+                  return {
+                    text: answerData.text,
+                    explanation: answerData.explanation,
+                    isCorrect: answerData.isCorrect ?? false,
+                    order: answerData.order,
+                    isGenerated: item.isGenerated || false,
+                  };
+                }),
+              },
+            }),
+          };
 
           const addedQuestion = await tx.question.create({
-            data: {
-              ...questionFields,
-              ...(answers?.length && {
-                answers: {
-                  create: answers.map((answer) => ({
-                    ...answer,
-                    isGenerated: item.isGenerated || false,
-                  })),
-                },
-              }),
+            data: createData,
+            include: {
+              answers: true, // Include answers to get their generated IDs
             },
           });
+
+          // Map question ID if it was a temporary ID
           if (hasNewOrigId && origId !== addedQuestion.id) {
             if (!results.autoAddedIds) results.autoAddedIds = {};
             results.autoAddedIds[origId] = addedQuestion.id;
@@ -277,13 +344,15 @@ export async function updateQuestionsDataViaParams(
 
     return results;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[updateQuestionsDataViaParams] catch', {
-      error,
-      data,
-      user,
-    });
-    debugger; // eslint-disable-line no-debugger
+    if (!noDebug) {
+      // eslint-disable-next-line no-console
+      console.error('[updateQuestionsDataViaParams] catch', {
+        error,
+        data,
+        user,
+      });
+      debugger; // eslint-disable-line no-debugger
+    }
     throw error;
   }
 }

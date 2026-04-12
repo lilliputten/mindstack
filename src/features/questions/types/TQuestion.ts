@@ -17,10 +17,12 @@ const _IncludedTopicSchema = TopicSchema; // .pick(IncludedTopicSelect);
 type TIncludedTopic = z.infer<typeof _IncludedTopicSchema>;
 
 const newAnswerSchema = z.object({
+  id: z.string().optional(),
   text: z.string(),
   isCorrect: z.boolean().optional(),
   explanation: z.string().nullable().optional(),
 });
+
 export const newQuestionSchema = QuestionSchema.partial().extend({
   text: QuestionSchema.shape.text,
   topicId: QuestionSchema.shape.topicId,
@@ -28,14 +30,6 @@ export const newQuestionSchema = QuestionSchema.partial().extend({
 });
 
 export type TNewQuestion = z.infer<typeof newQuestionSchema>;
-export type _TNewQuestion = Partial<Question> &
-  Pick<Question, 'text' | 'topicId'> & {
-    answers?: Array<{
-      text: string;
-      isCorrect?: boolean;
-      explanation?: string | null;
-    }>;
-  };
 export interface TNewOrOldQuestion extends TNewQuestion {
   id: Question['id'];
   isNew?: boolean;
