@@ -100,6 +100,8 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
   getItemText: (item: T) => string;
   /** Editor item rendering component */
   RenderItem: (props: TCmpItemProps<T>) => JSX.Element | null;
+  /** Arbitrary extra data forwarded to every RenderItem call */
+  extraParams?: unknown;
 }
 
 interface TRenderProps {
@@ -199,6 +201,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     saveData,
     getItemText,
     RenderItem,
+    extraParams,
 
     // Normalized...
     showNormalized,
@@ -647,6 +650,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           RenderItem={RenderItem}
           updateItems={updateItems}
           updateReordered={updateReordered}
+          extraParams={extraParams}
           // State...
           updatedIds={updatedIds}
           addedIds={addedIds}
@@ -683,6 +687,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       toggleSelectedId,
       updateItems,
       updateReordered,
+      extraParams,
     ],
   );
 

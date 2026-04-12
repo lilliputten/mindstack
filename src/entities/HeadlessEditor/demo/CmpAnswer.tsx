@@ -26,9 +26,12 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
 import { EditAnswerForm, TFormData } from '@/features/answers/components/EditAnswerForm';
 import { TNewOrOldAnswer } from '@/features/answers/types';
+import { TQuestionId } from '@/features/questions/types';
+import { TTopicId } from '@/features/topics';
 import { useAvailableQuestionById, useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
+import { newItemIdPrefix } from '../constants';
 import { TCmpItemProps } from '../types';
 
 const showEditAsAction = true;
@@ -42,11 +45,13 @@ const formDataSchema = z.object({
 });
 
 type TItem = TNewOrOldAnswer & {
-  question?: { id: string; topicId?: string | null } | null;
+  question?: { id: TQuestionId; topicId?: TTopicId };
 };
 
+type TCmpAnswerExtraParams = Pick<TItem, 'question'>;
+
 export function CmpAnswer(props: TCmpItemProps<TItem>) {
-  const { className, item, updateItem, hasChanges, compact } = props;
+  const { className, item, updateItem, hasChanges, compact, extraParams } = props;
   const {
     id,
     text = '',
@@ -54,8 +59,12 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
     isCorrect = false,
     isGenerated = false,
     questionId,
-    // question, // NOTE: Using the question data from `useAvailableQuestionById` below
+    // question, // NOTE: Using the question data from `useAvailableQuestionById` or from the `extraParams`, see below
   } = item;
+
+  // Extract question from extraParams if provided by a parent CmpQuestion
+  const extraQuestion = (extraParams as TCmpAnswerExtraParams | undefined)?.question ?? null;
+  const isNewQuestion = questionId.startsWith(newItemIdPrefix);
 
   // TODO: Detect compact mode depending on the container element width
   const { mediaWidths } = useMediaMinDevices();
@@ -65,14 +74,19 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
   const format = useFormatter();
   const goToTheRoute = useGoToTheRoute();
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: questionId, traceId: 'CmpAnswer' });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: questionId,
+    traceId: 'CmpAnswer',
+    enabled: !extraQuestion && !isNewQuestion,
+  });
   const {
-    question,
+    question: fetchedQuestion,
     isFetched: isQuestionFetched,
     isFetching: isQuestionFetching,
   } = availableQuestionQuery;
 
-  const isReady = isQuestionFetched && !isQuestionFetching;
+  const question = extraQuestion ?? fetchedQuestion;
+  const isReady = extraQuestion ? true : isQuestionFetched && !isQuestionFetching;
 
   const topicId = question?.topicId;
 

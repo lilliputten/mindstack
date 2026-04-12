@@ -15,6 +15,8 @@ interface TUseAvailableQuestionByIdProps extends TGetAvailableQuestionByIdParams
   /** availableQuestionsQueryKey - A query key from `useAvailableQuestions` */
   availableQuestionsQueryKey?: QueryKey;
   traceId?: string;
+  /** When false, disables the query entirely (overrides internal enabled logic) */
+  enabled?: boolean;
 }
 
 interface TMemo {
@@ -27,7 +29,13 @@ const staleTime = defaultStaleTime;
 /** Get question data from cached `useAvailableQuestions` query data or fetch it now */
 export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) {
   const queryClient = useQueryClient();
-  const { availableQuestionsQueryKey, id: questionId, traceId, ...queryProps } = props;
+  const {
+    availableQuestionsQueryKey,
+    id: questionId,
+    traceId,
+    enabled: enabledProp,
+    ...queryProps
+  } = props;
 
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -51,10 +59,7 @@ export function useAvailableQuestionById(props: TUseAvailableQuestionByIdProps) 
     .find((question) => question.id === questionId);
 
   const isCached = !!cachedQuestion;
-  const enabled = !!questionId && !isCached; // Disable query if no ID or already cached
-  if (questionId?.startsWith('__new')) {
-    debugger;
-  }
+  const enabled = enabledProp !== false && !!questionId && !isCached; // Disable query if no ID, already cached, or explicitly disabled
 
   const queryFn = React.useCallback(async () => {
     try {

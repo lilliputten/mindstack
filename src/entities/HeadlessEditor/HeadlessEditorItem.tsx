@@ -42,6 +42,7 @@ interface TProps<T extends TCmpItemBase> {
   updateItem?: (it: T) => void;
   toggleCheck?: (id: T['id']) => void;
   handleCompareTargetId?: (id: T['id']) => void;
+  extraParams?: unknown;
 
   /// Item state...
 
@@ -78,6 +79,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
     updateItem,
     toggleCheck,
     handleCompareTargetId,
+    extraParams,
     // Item state...
     isUpdated,
     isAdded,
@@ -294,6 +296,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         item={it}
         updateItem={updateItem}
         hasChanges={hasChanges}
+        extraParams={extraParams}
       />
     </div>
   );

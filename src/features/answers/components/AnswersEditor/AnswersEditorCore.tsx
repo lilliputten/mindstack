@@ -58,6 +58,8 @@ export interface TAnswersEditorCoreProps {
    * Use `setItemsData` to apply fetched rows (e.g. after a React Query refetch).
    */
   reloadData?: (ctx: { setItemsData: (items: T[]) => void }) => void | Promise<void>;
+  /** Arbitrary extra data forwarded to every CmpAnswer call */
+  extraParams?: unknown;
 }
 
 interface TMemo {
@@ -76,6 +78,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
     saveData: saveDataProp,
     isReady: isReadyProp,
     reloadData: reloadDataProp,
+    extraParams,
   } = props;
 
   const isExternalReady = isReadyProp ?? true;
@@ -132,6 +135,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
     saveData: saveDataProp,
     getItemText,
     RenderItem: CmpAnswer,
+    extraParams,
     showNormalized,
     setShowNormalized,
   });

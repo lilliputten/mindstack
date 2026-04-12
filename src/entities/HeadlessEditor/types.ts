@@ -15,4 +15,6 @@ export interface TCmpItemProps<T> {
   /** Does the owner editor component have unsaved data? */
   hasChanges?: boolean;
   compact?: boolean;
+  /** Arbitrary extra data passed through the editor tree */
+  extraParams?: unknown;
 }

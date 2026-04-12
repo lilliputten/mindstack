@@ -120,6 +120,8 @@ export interface THeadlessEditorProps<
   updateItems?: (its: T[]) => void;
   /** Update reordered items */
   updateReordered?: (its: T[]) => void;
+  /** Arbitrary extra data forwarded to every RenderItem call */
+  extraParams?: unknown;
 
   /// Tracking indices...
 
@@ -164,6 +166,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     RenderItem,
     updateItems,
     updateReordered,
+    extraParams,
     // State...
     updatedIds: externalUpdatedIds,
     addedIds,
@@ -408,6 +411,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
           updateItem={handleUpdate}
           toggleCheck={toggleCheck}
           handleCompareTargetId={handleCompareTargetId}
+          extraParams={extraParams}
           // Item state...
           isUpdated={updatedIds?.has(id)}
           isAdded={addedIds?.has(id)}
@@ -434,6 +438,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
       memo,
       showNormalized,
       toggleCheck,
+      extraParams,
     ],
   );
 

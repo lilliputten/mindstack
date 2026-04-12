@@ -73,7 +73,7 @@ function toHeadlessAnswerRows(
 }
 
 export function CmpQuestion(props: TCmpItemProps<T>) {
-  const { className, item, updateItem, hasChanges, compact } = props;
+  const { className, item, updateItem, hasChanges, compact, extraParams } = props;
   const {
     id, // Required an unique id
     text = '', // Question markdown text
@@ -545,6 +545,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
               answers={headlessAnswerRows}
               isReady
               saveData={saveAnswersData}
+              extraParams={{ ...(extraParams as object | undefined), question: item }}
             />
           </div>
         )}

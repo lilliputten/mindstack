@@ -49,6 +49,8 @@ export interface TQuestionsEditorCoreProps {
   /** Upper-level readiness (e.g. all React Query requests settled). */
   isReady?: boolean;
   reloadData?: (ctx: { setItemsData: (items: T[]) => void }) => void | Promise<void>;
+  /** Arbitrary extra data forwarded to every CmpQuestion call */
+  extraParams?: unknown;
 }
 
 interface TMemo {
@@ -67,6 +69,7 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     saveData: saveDataProp,
     isReady: isReadyProp,
     reloadData: reloadDataProp,
+    extraParams,
   } = props;
 
   const isExternalReady = isReadyProp ?? true;
@@ -123,6 +126,7 @@ export function QuestionsEditorCore(props: TQuestionsEditorCoreProps) {
     saveData: saveDataProp,
     getItemText,
     RenderItem: CmpQuestion,
+    extraParams,
     showNormalized,
     setShowNormalized,
   });
