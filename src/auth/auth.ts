@@ -3,7 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
-import { UserRoleType } from '@/generated/prisma';
+import { UserRoleType, UserGradeType } from '@/generated/prisma';
 
 import { SET_FIRST_USER_ADMIN, USE_ALLOWED_USERS } from '@/config/envServer';
 import { authErrorRoute, welcomeAliasRoute } from '@/config/routesConfig';
@@ -170,6 +170,9 @@ export const nextAuthApp = NextAuth({
           // @see JWT type extension in `@types/next-auth.d.ts`
           user.role = token.role as UserRoleType;
         }
+        if (token.grade) {
+          user.grade = token.grade as UserGradeType;
+        }
         user.name = token.name || null;
         user.image = token.picture || null;
       }
@@ -232,6 +235,7 @@ export const nextAuthApp = NextAuth({
       token.email = dbUser.email;
       token.picture = dbUser.image;
       token.role = dbUser.role as UserRoleType;
+      token.grade = dbUser.grade as UserGradeType;
       return token;
     },
   } satisfies AuthConfig['callbacks'],
