@@ -259,7 +259,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
         return results;
       } catch (error) {
         const details = getErrorText(error);
-        const message = 'Cannot save questions';
+        const message = t('CannotSaveQuestions');
         // eslint-disable-next-line no-console
         console.error('[GenerateQuestionsPageWrapper:saveDataFn]', [message, details].join(': '), {
           error,
@@ -360,7 +360,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
     onSuccess: updateSavedDataResults,
     onError: (error) => {
       const details = getErrorText(error);
-      const message = 'Cannot save questions';
+      const message = t('CannotSaveQuestions');
       const comboMsg = [message, details].join(': ');
       // eslint-disable-next-line no-console
       console.error('[GenerateQuestionsPageWrapper:saveDataMutation:onError]', comboMsg, {
@@ -432,6 +432,10 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           return;
         }
 
+        console.log('[]', {
+          parsedQuestions,
+        });
+
         toast.success(
           t('GenerateQuestionsModal.GeneratedQuestionsCount', { count: parsedQuestions.length }),
         );
@@ -457,8 +461,11 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
                   };
                 }) || [];
 
+              // Exclude AI metadata fields that aren't part of the Question schema
+              const { answersCount: _answersCount, ...questionData } = q;
+
               return {
-                ...q,
+                ...questionData,
                 id: questionId,
                 isNew: true,
                 topicId,

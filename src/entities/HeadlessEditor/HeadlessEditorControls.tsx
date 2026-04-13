@@ -601,7 +601,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Filters', // DEBUG
-                    'content-truncate flex flex-wrap gap-1',
+                    'content-truncate-x flex flex-wrap gap-1',
                   )}
                 >
                   {filters}
@@ -613,7 +613,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_TextFilters', // DEBUG
-                    'content-truncate flex flex-wrap gap-1',
+                    'content-truncate-x flex flex-wrap gap-1',
                   )}
                 >
                   {textFilters}
@@ -625,7 +625,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate flex flex-wrap gap-1',
+                    'content-truncate-x flex flex-wrap gap-1',
                   )}
                 >
                   {reorders}
@@ -637,7 +637,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <div
                   className={cn(
                     isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate flex flex-wrap gap-1',
+                    'content-truncate-x flex flex-wrap gap-1',
                   )}
                 >
                   {comparisons}
@@ -649,7 +649,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               <div
                 className={cn(
                   isDev && '__HeadlessEditorControls_Actions', // DEBUG
-                  'content-truncate flex flex-wrap gap-1',
+                  'content-truncate-x flex flex-wrap gap-1',
                 )}
               >
                 {actions}

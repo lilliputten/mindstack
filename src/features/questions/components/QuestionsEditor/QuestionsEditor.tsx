@@ -9,6 +9,7 @@ import {
   makeQueryKeyPrefix,
 } from '@/lib/helpers';
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types';
+import { useT } from '@/i18n';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
 import { newItemIdPrefix, THeadlessEditorState, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { TTopicId } from '@/features/topics/types';
@@ -55,6 +56,8 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
   >();
   const isSaving = !!savePromise;
 
+  const t = useT();
+
   const queryClient = useQueryClient();
 
   const { topic } = availableTopicQuery;
@@ -85,7 +88,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         return results;
       } catch (error) {
         const details = getErrorText(error);
-        const message = 'Cannot save questions';
+        const message = t('CannotSaveQuestions');
         // eslint-disable-next-line no-console
         console.error('[QuestionsEditor:saveDataFn]', [message, details].join(': '), {
           error,
@@ -98,7 +101,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
         memo.savePromise = undefined;
       }
     },
-    [memo],
+    [memo, t],
   );
 
   const updateQuestionsQueryData = React.useCallback(
@@ -177,7 +180,7 @@ export function QuestionsEditor(props: TQuestionsEditorProps) {
     onSuccess: updateSavedDataResults,
     onError: (error) => {
       const details = getErrorText(error);
-      const message = 'Cannot save questions';
+      const message = t('CannotSaveQuestions');
       const comboMsg = [message, details].join(': ');
       // eslint-disable-next-line no-console
       console.error('[QuestionsEditor:saveDataMutation:onError]', comboMsg, {
