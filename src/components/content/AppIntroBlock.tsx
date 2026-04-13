@@ -18,7 +18,7 @@ import {
 } from '@/config';
 import { isDev } from '@/constants';
 import { useEnvContext } from '@/contexts/EnvContext';
-import { AIGenerationsStatusBadge } from '@/features/ai-generations/components';
+import { AIGenerationsDetails } from '@/features/ai-generations/components';
 import { getUserStatusText } from '@/features/users/helpers/getUserStatusText';
 import { useSessionData } from '@/hooks';
 
@@ -27,7 +27,7 @@ import { Skeleton } from '../ui/Skeleton';
 export function AppIntroBlock(props: TPropsWithClassName) {
   const t = useT();
   const { className } = props;
-  const { data: sessionData, user, loading: isUserLoading } = useSessionData();
+  const { user, loading: isUserLoading } = useSessionData();
   const isAdmin = user?.role === 'ADMIN';
 
   const {
@@ -86,6 +86,8 @@ export function AppIntroBlock(props: TPropsWithClassName) {
             {t('AppIntro.CurrentUserStatus', { status: getUserStatusText(user, t) })}
           </p>
 
+          <AIGenerationsDetails showUserInfo={false} showGenerationMode={false} />
+
           {/* Guest specific */}
           {!user && (
             <>
@@ -128,9 +130,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
                 </li>
 
                 {/* AI Generations Status for Basic Users */}
-                <li>
-                  <AIGenerationsStatusBadge skeletonWidth="w-3/4" />
-                </li>
+                <li className="-ml-5 list-none"></li>
 
                 <li>{t('AppIntro.BasicProgressTracking')}</li>
                 <li>
@@ -158,11 +158,6 @@ export function AppIntroBlock(props: TPropsWithClassName) {
                   })}
                 </li>
 
-                {/* AI Generations Status for PRO Users */}
-                <li>
-                  <AIGenerationsStatusBadge skeletonWidth="w-3/4" />
-                </li>
-
                 <li>
                   {t('AppIntro.AdvancedAnalyticsInsights')} <span className="text-theme">*</span>
                 </li>
@@ -181,11 +176,6 @@ export function AppIntroBlock(props: TPropsWithClassName) {
               <ul className="list-disc space-y-1 pl-5">
                 <li>{t('AppIntro.EverythingInProPlan')}</li>
                 <li>{t('AppIntro.UnlimitedContentCreation')}</li>
-
-                {/* AI Generations Status for Premium Users - Always Unlimited */}
-                <li>
-                  <AIGenerationsStatusBadge skeletonWidth="w-3/4" />
-                </li>
 
                 <li>
                   {t('AppIntro.AdvancedPrioritySupport')} <span className="text-theme">*</span>

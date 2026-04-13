@@ -191,6 +191,9 @@
   "ifYouHaveAnyProblems": "si tiene algún problema",
   "or": "o",
   "AIGenerationsStatusInfo": {
+    "AIGenerationAvailable": "La generación de IA está disponible",
+    "AIGenerationNotAvailable": "La generación de IA no está disponible",
+    "AiGenerationDetails": "Detalles de la generación de IA",
     "AvailableAIGenerations": "Generaciones de IA disponibles: {availableGenerations}",
     "CheckYourUsagePlan": "verifique su plan de uso",
     "NoAIGenerationsAvailable": "¡No hay generaciones de IA disponibles!",

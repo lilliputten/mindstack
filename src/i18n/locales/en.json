@@ -195,6 +195,9 @@
   "ifYouHaveAnyProblems": "if you have any problems",
   "or": "or",
   "AIGenerationsStatusInfo": {
+    "AIGenerationAvailable": "AI generation is available",
+    "AIGenerationNotAvailable": "AI generation is not available",
+    "AiGenerationDetails": "AI Generation details",
     "AvailableAIGenerations": "Available AI generations: {availableGenerations}",
     "CheckYourUsagePlan": "check your usage plan",
     "NoAIGenerationsAvailable": "No AI generations available!",

@@ -187,6 +187,9 @@
   "ago": "назад",
   "or": "или",
   "AIGenerationsStatusInfo": {
+    "AIGenerationAvailable": "Доступно поколение ИИ",
+    "AIGenerationNotAvailable": "ИИ Генерация недоступна",
+    "AiGenerationDetails": "Детали ИИ генерации",
     "AvailableAIGenerations": "Доступные генерации с ИИ: {availableGenerations}",
     "CheckYourUsagePlan": "проверьте свой тарифный план",
     "NoAIGenerationsAvailable": "Нет доступных генераций ИИ!",
