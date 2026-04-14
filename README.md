@@ -1,13 +1,8 @@
-<!--
- @since 2025.07.05
- @changed 2026.02.08, 05:15
--->
-
 # MindStack Memory Trainer
 
 NextJS Memory Training Application for interactive learning and spaced repetition practice.
 
-![Application](public/static/opengraph-image-v2.jpg 'Application Splash')
+Application
 
 ## ℹ️ Build info (auto-generated)
 
@@ -17,12 +12,12 @@ NextJS Memory Training Application for interactive learning and spaced repetitio
 
 MindStack is a modern memory training application that helps users create, organize, and practice learning materials through interactive workouts. Built with Next.js 15 and TypeScript, it provides a comprehensive platform for knowledge retention using spaced repetition techniques and active recall.
 
-- **Repository:** https://github.com/lilliputten/mindstack/
-- **Live Application:** https://mindstack.lilliputten.com/
-- **Vercel Deployment:** https://mind-stack-trainer.vercel.app/
-- **Project reference:** https://lilliputten.com/projects/2026/mindstack/
+- **Repository:** [https://github.com/lilliputten/mindstack/](https://github.com/lilliputten/mindstack/)
+- **Live Application:** [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
+- **Vercel Deployment:** [https://mind-stack-trainer.vercel.app/](https://mind-stack-trainer.vercel.app/)
+- **Project reference:** [https://lilliputten.com/projects/2026/mindstack/](https://lilliputten.com/projects/2026/mindstack/)
 
-![Application Preview](public/static/opengraph-image.jpg 'MindStack Memory Trainer')
+Application Preview
 
 ## 🚀 Core Features
 
@@ -446,16 +441,16 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## ☂ Support
 
-- **Issues**: https://github.com/lilliputten/mindstack/issues
-- **Email**: lilliputten@gmail.com
-- **Documentation**: https://mindstack.lilliputten.com/
+- **Issues**: [https://github.com/lilliputten/mindstack/issues](https://github.com/lilliputten/mindstack/issues)
+- **Email**: [lilliputten@gmail.com](mailto:lilliputten@gmail.com)
+- **Documentation**: [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
 
 ## 🔗 Resources
 
-- **Live Application**: https://mindstack.lilliputten.com/
-- **Vercel Deployment**: https://mind-stack-trainer.vercel.app/
-- **GitHub Repository**: https://github.com/lilliputten/mindstack/
-- **Project Reference**: https://lilliputten.com/projects/2026/mindstack/
+- **Live Application**: [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
+- **Vercel Deployment**: [https://mind-stack-trainer.vercel.app/](https://mind-stack-trainer.vercel.app/)
+- **GitHub Repository**: [https://github.com/lilliputten/mindstack/](https://github.com/lilliputten/mindstack/)
+- **Project Reference**: [https://lilliputten.com/projects/2026/mindstack/](https://lilliputten.com/projects/2026/mindstack/)
 
 ---
 
