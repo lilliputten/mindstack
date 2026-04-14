@@ -82,32 +82,64 @@
 
 ## Visual Asset Requirements
 
-### New Screenshots Needed (Priority Order)
+### Real Screenshots Available (from landing-screenshots.md)
 
-1. **Hero Composite** (Highest)
-   - Topic creation + Editor + Training session
-   - OR AI-generated collage
+✅ **All required screenshots already exist!** No need for new captures or AI generation.
 
-2. **FeaturesSection** (High)
-   - Card 1: "My Topics" list view
-   - Card 2: AI generation button in editor
-   - Card 3: Duplicate detection UI (or mockup)
-   - Card 4: Inline editing in action
-   - Card 5: Privacy toggle in topic settings
-   - Card 6: Category→Topic hierarchy visualization
+**Screenshot Mapping:**
 
-3. **BigImageCTASection** (Medium)
-   - Before/after: Messy notes → Organized topic
+1. **HeroSection** 
+   - ✅ Use: `v.0.1.4/welcome page with premium account info and unlimited ai generations.png`
+   - Shows welcome/onboarding experience with value proposition
 
-4. **RecentCategories/Topics Sections** (Low)
-   - Already using real data—just verify screenshots are current
+2. **FeaturesSection** (6 cards)
+   - Card 1: ✅ `v.0.1.3/categories.png` - Category browsing/filtering
+   - Card 2: ✅ `v.0.1.4/generate questions dialog 3.png` - AI generation interface
+   - Card 3: ✅ `v.0.1.4/questions comparison.png` - Duplicate detection with similarity rates
+   - Card 4: ✅ `v.0.1.4/edit topic questions and answers.png` - Inline editing workflow
+   - Card 5: ✅ `v.0.1.4/mobile panel.png` - Settings/privacy controls
+   - Card 6: ✅ `v.0.1.4/available topics list with a filter.png` - Topic organization
 
-### Screenshot Specifications
-- **Resolution:** 1920x1080 minimum
-- **Theme:** Consistent (all light OR all dark mode)
-- **Format:** JPG or WebP (compressed)
-- **Naming:** `feature-create-topics.jpg`, `feature-duplicate-check.jpg`, etc.
-- **Location:** `/public/static/landing/features/`
+3. **BigImageCTASection**
+   - ✅ Use: `v.0.1.4/generated questions saved with active comparison.png`
+   - Shows complete workflow: generated content with validation
+
+4. **HowItWorksCards** (3 steps)
+   - Step 1: ✅ `v.0.1.4/signin popup screen.png` - Getting started
+   - Step 2: ✅ `v.0.1.4/generated questions with opened and editing answer.png` - Generation + editing
+   - Step 3: ✅ `v.0.1.3/trainig step questions 2.png` - Training in action
+
+5. **PromoCTASection** (optional)
+   - ✅ Use: `v.0.1.3/pricing.png` - Shows pricing transparency
+
+### Additional Available Screenshots (for future use)
+
+- `v.0.1.4/delete questions confirmation.png` - Editing process/deletion
+- `v.0.1.4/generated questions filtering.png` - Content filtering
+- `v.0.1.4/generated questions and answers list.png` - Generated Q&A overview
+- `v.0.1.3/training results.png` - Training outcomes
+- `v.0.1.4/not started training.png` - Training preparation
+- `v.0.1.3/payment method.png` - Payment options
+- `v.0.1.4/language selection.png` - Multi-language support
+- `v.0.1.3/settings.png` - User settings (mobile)
+
+### Screenshot Optimization Checklist
+
+**Current State:**
+- All screenshots from v.0.1.3 and v.0.1.4
+- Various resolutions and formats
+- Located in project assets folder
+
+**Required Actions:**
+- [ ] Verify all screenshots use consistent theme (light/dark mode)
+- [ ] Optimize resolution (target: 1920x1080 max, WebP format)
+- [ ] Compress for web (target: <200KB per image)
+- [ ] Move to `/public/static/landing/features/` directory
+- [ ] Rename with descriptive names (e.g., `feature-duplicate-detection.webp`)
+- [ ] Write alt text for each image (accessibility)
+- [ ] Test loading performance on landing page
+
+**Estimated Effort:** 2-3 hours for optimization and organization
 
 ---
 

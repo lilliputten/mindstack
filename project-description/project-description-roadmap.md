@@ -34,21 +34,31 @@ Rebuild the product positioning around the core value: **MindStack helps users c
 - [x] Output file: `landing-rewrite-draft.md` - Comprehensive section-by-section proposals created
 - [x] Output file: `additional-content-ideas.md` - Supplementary strategic suggestions
 - [x] Output file: `landing-changes-summary.md` - Quick reference implementation guide
-- [~] Awaiting your review and approval before proceeding to implementation
+- [x] Output file: `landing-screenshots.md` - Real app screenshots catalog (pre-existing)
+- [x] Output file: `landing-visual-flow.md` - Visual diagrams and comparisons
+- [x] Output file: `step-3-completion-summary.md` - Phase completion summary
+- [x] Mapped all sections to real screenshots from landing-screenshots.md
+- [x] All auxiliary files organized in project-description/ folder
+- [x] Awaiting your review and approval before proceeding to implementation (Step 5)
 
 ### Step 4. Technical Article Draft (architecture and stack)
 
-- [ ] Create technical overview draft: stack, data pipeline, generation and validation cycle.
-- [ ] Explain text comparator module and current beta limitations.
-- [ ] Describe auth options, pricing tiers, and payment integrations at system level.
-- [ ] Add section for current limitations and near-term roadmap (Telegram bot, algorithm improvements).
-- Output file: `project-description-technical-draft.md`
+- [x] Create technical overview draft: stack, data pipeline, generation and validation cycle.
+- [x] Explain text comparator module and current beta limitations.
+- [x] Describe auth options, pricing tiers, and payment integrations at system level.
+- [x] Add section for current limitations and near-term roadmap (Telegram bot, algorithm improvements).
+- [x] Output file: `project-description-technical-draft.md` - Comprehensive technical architecture document
+- [x] Covered: Technology stack, system architecture, data pipeline, text comparator details
+- [x] Covered: Authentication, authorization, payment integration (Stripe + YooMoney)
+- [x] Covered: Current limitations (beta features, scalability, feature gaps)
+- [x] Covered: Roadmap (short-term Q2 2026, mid-term Q3-Q4 2026, long-term 2027+)
+- [x] Covered: Development guidelines, code standards, testing strategy, deployment process
 
-### Step 5. Landing Implementation (code + translations)
+### Step 5. Landing Implementation (content + translations)
 
-- [ ] Apply approved copy updates in landing components and locale files.
-- [ ] Remove/replace outdated FAQ items.
-- [ ] Update section visuals references (temporary placeholders if assets are pending).
+- [ ] Apply approved content updates in landing components and locale files.
+- [ ] Remove/replace outdated FAQ items, add new ones.
+- [ ] Update section visuals references (temporary placeholders if assets are pending; use images listed in the `landing-screenshots.md` -- they'll be added later).
 - [ ] Run lint on changed files.
 - [ ] Run full TypeScript check (`npx tsc --noEmit`).
 - Output: updated `src/components/screens/LandingContent/*` and locale files.

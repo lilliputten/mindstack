@@ -15,6 +15,42 @@
 
 ---
 
+## Available Real Screenshots
+
+See [landing-screenshots.md](./landing-screenshots.md) for complete catalog of available screenshots.
+
+**Key Screenshots for Landing:**
+
+**Hero Section:**
+- `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` - Welcome page showing value proposition
+
+**Features Section:**
+- Card 1 (Build From Your Own Knowledge): `v.0.1.3/categories.png` or `v.0.1.4/available topics list with a filter.png`
+- Card 2 (Generate, Check, Perfect): `v.0.1.4/generate questions dialog 3.png`
+- Card 3 (Keep Data Clean): `v.0.1.4/questions comparison.png` - Shows similarity detection
+- Card 4 (Edit Without Context Switching): `v.0.1.4/edit topic questions and answers.png`
+- Card 5 (Control Your Privacy): `v.0.1.4/mobile panel.png` - Shows settings/privacy
+- Card 6 (Organized Hierarchy): `v.0.1.3/topics.png` - Shows filtering and organization
+
+**How It Works:**
+- Step 1: `v.0.1.4/signin popup screen.png` - Getting started
+- Step 2: `v.0.1.4/generated questions with opened and editing answer.png` - Generation and editing
+- Step 3: `v.0.1.3/trainig step questions 2.png` - Training in action
+
+**Training/Results:**
+- `v.0.1.3/training results.png` - Shows outcomes
+- `v.0.1.4/not started training.png` - Training preparation
+
+**Pricing/Payment:**
+- `v.0.1.3/pricing.png` - Pricing plans
+- `v.0.1.3/payment method.png` - Payment options
+
+**Settings/User Info:**
+- `v.0.1.4/language selection.png` - Multi-language support
+- `v.0.1.3/settings.png` - User customization
+
+---
+
 ## Section-by-Section Rewrite Plan
 
 ### 1. HeroSection
@@ -47,24 +83,12 @@
 - Secondary: "Explore Public Topics" (instead of "Available Categories")
 
 **Visual Strategy:**
-Instead of a plain screenshot, suggest a **collage/composite image** showing:
-- Left side: Topic creation interface (form with title, category selection)
-- Center: Question-answer editor with AI generation button highlighted
-- Right side: Training session in progress
-- Overlay elements: Checkmarks for validation steps, arrows showing workflow
+✅ **Use Real Screenshot:** `v.0.1.4/welcome page with premium account info and unlimited ai generations.png`
+- Shows the welcome/onboarding experience
+- Demonstrates value proposition visually
+- More authentic than composite images
 
-**Image Generation Prompt Ideas:**
-```
-Modern UI collage showing three panels:
-1. Topic creation form with clean inputs
-2. Rich text editor with Q&A pairs and AI sparkles icon
-3. Interactive quiz card with answer reveal
-Color scheme: professional blue-purple gradient
-Style: Clean, modern SaaS dashboard aesthetic
-Mood: Productive, focused, empowering
-```
-
-**Alternative:** Use an actual screenshot but add overlay graphics (arrows, callouts) highlighting the "Create → Validate → Train" flow.
+**Alternative:** If welcome page doesn't fit, use `v.0.1.4/available topics list with a filter.png` to show the breadth of available content.
 
 ---
 
@@ -89,37 +113,37 @@ Mood: Productive, focused, empowering
 **Card 1: Personal-First Training Builder**
 - **Title:** "Build From Your Own Knowledge"
 - **Text:** "Create topics around your real work, studies, or interests. No generic courses—just your personalized training datasets organized by categories."
-- **Image:** Screenshot of topic creation page or "My Topics" view
+- **Image:** ✅ `v.0.1.3/categories.png` - Shows category browsing and filtering
 - **Why:** Establishes the core value proposition immediately
 
 **Card 2: Smart Content Generation & Review**
 - **Title:** "Generate, Check, Perfect"
 - **Text:** "Use AI to draft questions and answers instantly, then review and edit before saving. Regenerate until quality meets your standards."
-- **Image:** Screenshot showing AI generation button + inline editor
+- **Image:** ✅ `v.0.1.4/generate questions dialog 3.png` - Shows AI generation interface
 - **Why:** Highlights the unique generation-validation workflow
 
 **Card 3: Duplicate Detection**
 - **Title:** "Keep Your Data Clean"
 - **Text:** "Compare new items against existing ones to catch duplicates and near-duplicates. Beta similarity algorithms help maintain dataset quality as it grows."
-- **Image:** Screenshot of comparison interface or duplicate warning UI
+- **Image:** ✅ `v.0.1.4/questions comparison.png` - Shows similarity comparison with different rates
 - **Why:** Technical differentiator that solves a real pain point
 
 **Card 4: In-Place Editing Workflow**
 - **Title:** "Edit Without Context Switching"
 - **Text:** "Modify questions and answers directly in the training interface using our rich HeadlessEditor. No separate editing mode needed."
-- **Image:** Screenshot of inline editing in action
+- **Image:** ✅ `v.0.1.4/edit topic questions and answers.png` - Shows inline editing
 - **Why:** Emphasizes UX efficiency
 
 **Card 5: Private or Public—Your Choice**
 - **Title:** "Control Your Privacy"
 - **Text:** "Keep topics private by default for personal use. Share selected topics publicly when you want to contribute to the community."
-- **Image:** Screenshot showing privacy toggle or public/private topic badges
+- **Image:** ✅ `v.0.1.4/mobile panel.png` - Shows mobile settings panel with privacy controls
 - **Why:** Addresses data ownership concerns
 
 **Card 6: Structured for Scale**
 - **Title:** "Organized Hierarchy That Grows With You"
 - **Text:** "Categories → Topics → Questions → Answers. A clear structure that keeps your knowledge base manageable whether you have 10 or 1000 items."
-- **Image:** Diagram or screenshot showing the hierarchy visually
+- **Image:** ✅ `v.0.1.4/available topics list with a filter.png` - Shows topic organization with filters
 - **Why:** Shows the system can handle complexity
 
 **Section Title:** "Everything You Need to Build Quality Training Datasets"  
@@ -227,20 +251,12 @@ No major changes needed.
 - **"Create Your First Topic Now"** or **"Start Building Free"**
 
 **Visual Strategy:**
-Show a **before/after transformation**:
-- Left: Messy notes, scattered documents, browser tabs (chaos)
-- Arrow pointing right
-- Right: Clean MindStack interface with organized topic, structured Q&A (order)
+✅ **Use Real Screenshot:** `v.0.1.4/generated questions saved with active comparison.png`
+- Shows the complete workflow: generated questions with comparison active
+- Demonstrates the value of validation before saving
+- More authentic than before/after composite
 
-**Image Prompt:**
-```
-Split-screen composition:
-Left side: Disorganized workspace with sticky notes, open books, multiple browser windows, handwritten notes
-Right side: Clean MindStack UI showing organized topic with categorized questions
-Center: Bold arrow connecting left to right
-Style: Modern, professional, slightly aspirational
-Colors: Warm tones on left (chaos), cool professional blues on right (order)
-```
+**Alternative:** Use `v.0.1.4/generated questions filtering.png` to show how users can organize and filter their generated content.
 
 ---
 
@@ -250,6 +266,8 @@ Colors: Warm tones on left (chaos), cool professional blues on right (order)
 
 **Minor Enhancement:**
 Add context: "Recently updated public topics from the community" to clarify these are shared examples, not the primary use case.
+
+**Screenshot Reference:** Already uses dynamic DB data - no static screenshot needed.
 
 ---
 
@@ -269,28 +287,26 @@ Add context: "Recently updated public topics from the community" to clarify thes
 - **Icon:** `Icons.FolderPlus` or `Icons.BookOpen`
 - **Title:** "Create or Choose a Topic"
 - **Text:** "Start a new topic under a relevant category, or browse public topics for inspiration. Set it as private or public based on your needs."
+- **Visual:** ✅ `v.0.1.4/signin popup screen.png` - Shows getting started/authentication
 
 **Card 2: Build & Validate Content**
 - **Icon:** `Icons.CheckCircle` or `Icons.Shield`
 - **Title:** "Generate, Review, Refine"
 - **Text:** "Add questions manually or use AI generation. Compare new items against existing ones to avoid duplicates. Edit in place until everything looks right."
+- **Visual:** ✅ `v.0.1.4/generated questions with opened and editing answer.png` - Shows generation + editing workflow
 
 **Card 3: Train & Iterate**
 - **Icon:** `Icons.Repeat` or `Icons.TrendingUp`
 - **Title:** "Practice and Improve"
 - **Text:** "Run repetition sessions on your validated data. Track performance, identify weak areas, and continuously refine your topic as you learn."
+- **Visual:** ✅ `v.0.1.3/trainig step questions 2.png` - Shows training session in action
 
 **Section Title:** "How MindStack Works"  
 **Section Description:** "A complete workflow from idea to mastery"
 
-**Alternative 6-Card Version** (if you want more detail):
-
-1. **Pick a Category** — Browse existing or request new ones
-2. **Create a Topic** — Private by default, public if you choose
-3. **Add Questions** — Write manually or generate with AI
-4. **Validate Content** — Check for duplicates, edit in place
-5. **Save & Organize** — Approved data goes into your structured library
-6. **Start Training** — Run sessions, track progress, iterate
+**Alternative Visuals:**
+- For Card 3, could also use `v.0.1.3/training results.png` to show outcomes
+- Or `v.0.1.4/not started training.png` to show preparation phase
 
 ---
 
@@ -302,7 +318,7 @@ Add context: "Recently updated public topics from the community" to clarify thes
 
 **Alternative Idea** (if kept): Show a JSON snippet representing the data structure:
 
-```json
+``json
 {
   "category": "Programming",
   "topic": "React Hooks",
@@ -403,45 +419,53 @@ Consider adding social proof here:
 - "X+ topics created" / "Y+ active users" (if you have stats)
 - Or a testimonial quote (even if placeholder for now)
 
+**Screenshot Option:** Could use `v.0.1.3/pricing.png` to show pricing transparency, or `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` to show premium benefits.
+
 ---
 
 ## Visual Asset Strategy
 
-### Screenshot Capture Guidelines
+### Screenshot Mapping Summary
 
-For each feature card, capture screenshots showing:
+All screenshots referenced above are from the real application (see [landing-screenshots.md](./landing-screenshots.md)). Here's the complete mapping:
 
-1. **Real UI states** (not mockups)—authenticity builds trust
-2. **Clear focal points**—use browser dev tools to highlight buttons/sections if needed
-3. **Consistent theme**—all screenshots should use the same color theme (light or dark, pick one)
-4. **Minimal chrome**—crop out browser URL bar, use full-window captures
-5. **Annotated overlays** (optional)—add arrows/callouts in post-production to guide attention
+| Section | Screenshot Path | Purpose |
+|---------|----------------|---------|
+| **Hero** | `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` | Welcome/onboarding value prop |
+| **Feature 1** | `v.0.1.3/categories.png` | Category browsing/filtering |
+| **Feature 2** | `v.0.1.4/generate questions dialog 3.png` | AI generation interface |
+| **Feature 3** | `v.0.1.4/questions comparison.png` | Duplicate/similarity detection |
+| **Feature 4** | `v.0.1.4/edit topic questions and answers.png` | Inline editing workflow |
+| **Feature 5** | `v.0.1.4/mobile panel.png` | Privacy/settings controls |
+| **Feature 6** | `v.0.1.4/available topics list with a filter.png` | Topic organization |
+| **BigImageCTA** | `v.0.1.4/generated questions saved with active comparison.png` | Complete workflow demonstration |
+| **HowItWorks 1** | `v.0.1.4/signin popup screen.png` | Getting started |
+| **HowItWorks 2** | `v.0.1.4/generated questions with opened and editing answer.png` | Generation + editing |
+| **HowItWorks 3** | `v.0.1.3/trainig step questions 2.png` | Training in action |
+| **PromoCTA** | `v.0.1.3/pricing.png` (optional) | Pricing transparency |
 
-### Specific Screenshots Needed
+### Screenshot Specifications
 
-**HeroSection:**
-- Composite: Topic creation + Editor + Training session (or generate via AI prompt above)
+**Current State:**
+- All screenshots are from v.0.1.3 and v.0.1.4
+- Located in project folder (paths relative to assets directory)
+- Mix of desktop and mobile views
 
-**FeaturesSection:**
-1. Card 1: "My Topics" page showing topic list with create button
-2. Card 2: Question editor with "Generate with AI" button visible
-3. Card 3: Duplicate warning/comparison UI (if exists, otherwise mock up)
-4. Card 4: Inline editing in action (cursor in editable field)
-5. Card 5: Topic settings showing privacy toggle
-6. Card 6: Category → Topic → Question hierarchy visualization
+**Requirements for Landing:**
+1. **Consistent Theme:** Verify all screenshots use same color theme (light or dark)
+2. **Resolution:** Ensure minimum 1920x1080 for desktop, optimize for web
+3. **Format:** Convert to WebP or optimized JPG for faster loading
+4. **Naming:** Use descriptive names like `feature-duplicate-detection.webp`
+5. **Alt Text:** Write descriptive alt text for accessibility
 
-**BigImageCTASection:**
-- Before/after composite (messy notes → organized MindStack topic)
-
-**HowItWorksCards:**
-- Icons are sufficient, but could add small thumbnail screenshots below each card
+**Location:** Move to `/public/static/landing/features/` with organized naming
 
 ### Temporary Solution
 
-If screenshots aren't ready yet:
-- Use placeholder gradients with text overlays describing what will be shown
-- Example: `bg-gradient-to-br from-blue-500 to-purple-600` with centered text "Topic Creation Interface"
-- Update roadmap to mark "Capture production screenshots" as pending task
+If some screenshots need optimization:
+- Use current versions with CSS overlays to highlight key areas
+- Add captions explaining what's shown
+- Plan Phase 2 screenshot refresh after initial launch
 
 ---
 
@@ -453,9 +477,10 @@ If screenshots aren't ready yet:
 3. Verify no broken layout due to text length changes
 
 **Phase 2: Visual Updates (Medium Priority)**
-1. Capture/create new screenshots
-2. Replace image paths in components
-3. Add alt text for accessibility
+1. Optimize and organize screenshots from landing-screenshots.md
+2. Map screenshots to component sections per table above
+3. Update image paths in components
+4. Add alt text for accessibility
 
 **Phase 3: Structural Changes (Lower Priority)**
 1. Remove DescriptionCodeSection if decided
@@ -468,9 +493,9 @@ If screenshots aren't ready yet:
 
 1. **Tone:** Should we be more aggressive about "NOT a learning platform" or keep it softer?
 2. **Technical Depth:** How much should we mention the beta status of similarity algorithms? (Currently being transparent but not alarming)
-3. **Screenshots vs. Illustrations:** Invest in real UI captures or use generated/artistic visuals for hero sections?
+3. **Screenshot Quality:** Do existing screenshots need enhancement (annotations, callouts) or are they clear enough as-is?
 4. **Social Proof:** Do we have user stats/testimonials to add, or should we skip for now?
-5. **Mobile Responsiveness:** All proposed screenshots are desktop-oriented—should we capture mobile views too?
+5. **Mobile Responsiveness:** Some screenshots are mobile views—should we prioritize desktop or show both?
 
 ---
 
@@ -480,6 +505,6 @@ After your review:
 1. ✅ Mark this document as reviewed/approved with comments
 2. 📝 I'll update `project-description-roadmap.md` to mark Step 3 as in progress
 3. 🔧 Begin implementing approved changes in locale files and components
-4. 📸 Coordinate screenshot capture/creation tasks
+4. 📸 Organize and optimize screenshots from landing-screenshots.md
 5. 🧪 Test all changes before marking Step 3 complete
 
