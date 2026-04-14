@@ -54,6 +54,31 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   disableScroll?: boolean;
 }
 
+interface TControlsGroupProps {
+  className?: string;
+  id?: string;
+  items?: JSX.Element[];
+}
+
+function ControlsGroup(props: TControlsGroupProps) {
+  const { className, id, items } = props;
+  if (!items || !items.length) {
+    return null;
+  }
+  return (
+    <div
+      data-debugid={id}
+      className={cn(
+        isDev && '__HeadlessEditorControls_ControlsGroup', // DEBUG
+        'content-truncate-x flex flex-wrap gap-1 p-1',
+        className,
+      )}
+    >
+      {items}
+    </div>
+  );
+}
+
 /** Options to pass from the render point in the target component.
  * Ensure re-passing of these options in the `src/entities/HeadlessEditor/useHeadlessEditorState.tsx`.
  */
@@ -250,7 +275,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         </Select>
       </Label>
     ),
-  ].filter(Boolean);
+  ].filter(Boolean) as JSX.Element[];
 
   const comparisons = [
     <div key="ComparisonLabel" className="flex items-center text-sm font-bold opacity-50">
@@ -288,7 +313,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
         <span className="truncate">{t('HeadlessEditor.ResetComparisonTarget')}</span>
       </Button>
     ),
-  ].filter(Boolean);
+  ].filter(Boolean) as JSX.Element[];
 
   const updatedAndReorderedCount = (updatedIds?.size || 0) + (reorderedIds?.size || 0);
 
@@ -408,7 +433,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
       <Card
         className={cn(
           isDev && '__HeadlessEditorControls', // DEBUG
-          'flex flex-col',
           'content-truncate flex flex-col gap-1',
           disableScroll && 'overflow-visible',
           !isExpanded && 'shrink-0',
@@ -424,16 +448,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           )}
         >
           <CardTitle className="rounded-0 flex w-full">
-            {/*
-            <Tooltip key="AvailableTopicsFilters-Caption">
-              <TooltipTrigger
-                // asChild
-                className={cn(
-                  isDev && '__HeadlessEditorControls_TooltipTrigger', // DEBUG
-                  'flex w-full items-center justify-between space-y-0 p-0',
-                )}
-              >
-            */}
             {/* SaveData */}
             {onSaveData && allowedSave && (
               <div
@@ -568,19 +582,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <ToggleIcon className="size-4" />
               </span>
             </div>
-            {/*
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                // side={isExpanded ? 'bottom' : 'top'}
-                className="content-truncate flex items-center gap-2"
-              >
-                {changesCount
-                  ? t('HeadlessEditor.HasUnsavedChanges')
-                  : t('HeadlessEditor.NoChangesMade')}
-              </TooltipContent>
-            </Tooltip>
-            */}
           </CardTitle>
         </CardHeader>
         {isExpanded && (
@@ -588,9 +589,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
             className={cn(
               isDev && '__HeadlessEditorControls_Content', // DEBUG
               !disableScroll && 'overflow-hidden',
-              'flex flex-col',
-              'px-0',
-              'py-0',
+              'flex flex-col px-0 py-0',
             )}
           >
             <ScrollArea
@@ -601,68 +600,14 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               viewportClassName={cn(
                 isDev && '__HeadlessEditorControls_ScrollViewport', // DEBUG
                 'flex py-2 flex-col flex-1',
-                '[&>div]:!flex [&>div]:flex-col [&>div]:px-4 [&>div]:gap-2 [&>div]:flex-1',
+                '[&>div]:!flex [&>div]:flex-col [&>div]:px-4 [&>div]:gap-1 [&>div]:flex-1',
               )}
             >
-              {/* Filters... */}
-              {filters.length > 1 && (
-                <div
-                  className={cn(
-                    isDev && '__HeadlessEditorControls_Filters', // DEBUG
-                    'content-truncate-x flex flex-wrap gap-1',
-                  )}
-                >
-                  {filters}
-                </div>
-              )}
-
-              {/* Text filters... */}
-              {textFilters.length > 1 && (
-                <div
-                  className={cn(
-                    isDev && '__HeadlessEditorControls_TextFilters', // DEBUG
-                    'content-truncate-x flex flex-wrap gap-1',
-                  )}
-                >
-                  {textFilters}
-                </div>
-              )}
-
-              {/* Reorders... */}
-              {reorders.length > 0 && (
-                <div
-                  className={cn(
-                    isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate-x flex flex-wrap gap-1',
-                  )}
-                >
-                  {reorders}
-                </div>
-              )}
-
-              {/* Reorders... */}
-              {comparisons.length > 1 && (
-                <div
-                  className={cn(
-                    isDev && '__HeadlessEditorControls_Reorders', // DEBUG
-                    'content-truncate-x flex flex-wrap gap-1',
-                  )}
-                >
-                  {comparisons}
-                </div>
-              )}
-
-              {/* Actions... */}
-              {/*!!actions.length && (
-              <div
-                className={cn(
-                  isDev && '__HeadlessEditorControls_Actions', // DEBUG
-                  'content-truncate-x flex flex-wrap gap-1',
-                )}
-              >
-                {actions}
-              </div>
-              )*/}
+              <ControlsGroup id="filters" items={filters} />
+              <ControlsGroup id="textFilters" items={textFilters} />
+              <ControlsGroup id="reorders" items={reorders} />
+              <ControlsGroup id="comparisons" items={comparisons} />
+              {/* UNUSED: <ControlsGroup id="actions" items={actions} /> */}
             </ScrollArea>
           </CardContent>
         )}

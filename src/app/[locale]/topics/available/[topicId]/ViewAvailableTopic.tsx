@@ -99,7 +99,7 @@ export function ViewAvailableTopic(props: TViewAvailableTopicProps) {
         variant: 'ghost',
         icon: Icons.Edit,
         visibleFor: 'xl',
-        disabled: !allowedEdit,
+        hidden: !allowedEdit,
         href: `${manageTopicsRoute}/${topicId}`,
       },
     ],
