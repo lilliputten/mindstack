@@ -26,12 +26,15 @@ Rebuild the product positioning around the core value: **MindStack helps users c
 
 ### Step 3. Landing Rewrite Plan (section-by-section copy and visuals)
 
-- [ ] Keep current landing section structure and rewrite each section intent.
-- [ ] Propose new titles, descriptions, card texts, CTA copy.
-- [ ] Propose screenshot-first illustration strategy (what to capture per section).
-- [ ] Define which sections should be reframed vs simplified.
-- [ ] Replace weak "learning-only" framing with "build your own training pipeline".
-- Output file: `landing-rewrite-draft.md`
+- [x] Keep current landing section structure and rewrite each section intent.
+- [x] Propose new titles, descriptions, card texts, CTA copy.
+- [x] Propose screenshot-first illustration strategy (what to capture per section).
+- [x] Define which sections should be reframed vs simplified.
+- [x] Replace weak "learning-only" framing with "build your own training pipeline".
+- [x] Output file: `landing-rewrite-draft.md` - Comprehensive section-by-section proposals created
+- [x] Output file: `additional-content-ideas.md` - Supplementary strategic suggestions
+- [x] Output file: `landing-changes-summary.md` - Quick reference implementation guide
+- [~] Awaiting your review and approval before proceeding to implementation
 
 ### Step 4. Technical Article Draft (architecture and stack)
 
