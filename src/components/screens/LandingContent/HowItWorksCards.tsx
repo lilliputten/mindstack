@@ -31,19 +31,19 @@ export function HowItWorksCards() {
       <div className="mt-3 grid gap-6 py-6 lg:grid-cols-3">
         <CardWithIcon
           debugId="Card-1"
-          icon={Icons.Sparkles}
+          icon={Icons.BookOpen}
           title={t('Landing.HowItWorksCards.Title-1')}
           description={t('Landing.HowItWorksCards.Text-1')}
         />
         <CardWithIcon
           debugId="Card-2"
-          icon={Icons.Activity}
+          icon={Icons.WandSparkles}
           title={t('Landing.HowItWorksCards.Title-2')}
           description={t('Landing.HowItWorksCards.Text-2')}
         />
         <CardWithIcon
           debugId="Card-3"
-          icon={Icons.LineChart}
+          icon={Icons.Refresh}
           title={t('Landing.HowItWorksCards.Title-3')}
           description={t('Landing.HowItWorksCards.Text-3')}
         />

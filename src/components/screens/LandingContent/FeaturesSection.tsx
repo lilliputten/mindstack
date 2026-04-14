@@ -30,10 +30,10 @@ export function FeaturesSection() {
       {/* Single Feature Card */}
       <div className="my-6 grid gap-3">
         <FeatureCard
-          debugId="CreateCustomTopics"
+          debugId="BuildFromYourOwnKnowledge"
           title={t('Landing.FeaturesSection.Card-1-Title')}
           description={t('Landing.FeaturesSection.Card-1-Text')}
-          imageSrc="/static/landing/features/15.jpg"
+          imageSrc="/static/landing/features/v.0.1.3/categories.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-1-Title')}
           imageAspectRatio="aspect-video"
           // descriptionSize="lg"
@@ -44,18 +44,18 @@ export function FeaturesSection() {
       {/* Two Column Feature Cards */}
       <div className="my-6 grid gap-6 md:grid-cols-2">
         <FeatureCard
-          debugId="InteractiveWorkouts"
+          debugId="GenerateCheckPerfect"
           title={t('Landing.FeaturesSection.Card-2-Title')}
           description={t('Landing.FeaturesSection.Card-2-Text')}
-          imageSrc="/static/landing/features/09.jpg"
+          imageSrc="/static/landing/features/v.0.1.4/generate-questions-dialog-3.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-2-Title')}
           imageAspectRatio="aspect-video"
         />
         <FeatureCard
-          debugId="QuestionAnswerSystem"
+          debugId="KeepDataClean"
           title={t('Landing.FeaturesSection.Card-3-Title')}
           description={t('Landing.FeaturesSection.Card-3-Text')}
-          imageSrc="/static/landing/features/07.jpg"
+          imageSrc="/static/landing/features/v.0.1.4/questions-comparison.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-3-Title')}
           imageAspectRatio="aspect-video"
         />
@@ -64,26 +64,26 @@ export function FeaturesSection() {
       {/* Three Column Feature Cards */}
       <div className="my-6 grid gap-6 md:grid-cols-3">
         <FeatureCard
-          debugId="MultiLanguageSupport"
+          debugId="EditWithoutContextSwitching"
           title={t('Landing.FeaturesSection.Card-4-Title')}
           description={t('Landing.FeaturesSection.Card-4-Text')}
-          imageSrc="/static/landing/features/10.jpg"
+          imageSrc="/static/landing/features/v.0.1.4/edit-topic-questions-and-answers.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-4-Title')}
           imageAspectRatio="aspect-video"
         />
         <FeatureCard
-          debugId="ProgressTracking"
+          debugId="ControlYourPrivacy"
           title={t('Landing.FeaturesSection.Card-5-Title')}
           description={t('Landing.FeaturesSection.Card-5-Text')}
-          imageSrc="/static/landing/features/11.jpg"
+          imageSrc="/static/landing/features/v.0.1.4/mobile-panel.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-5-Title')}
           imageAspectRatio="aspect-video"
         />
         <FeatureCard
-          debugId="ShareCollaborate"
+          debugId="OrganizedHierarchy"
           title={t('Landing.FeaturesSection.Card-6-Title')}
           description={t('Landing.FeaturesSection.Card-6-Text')}
-          imageSrc="/static/landing/features/13.jpg"
+          imageSrc="/static/landing/features/v.0.1.3/topics.jpg"
           imageAlt={t('Landing.FeaturesSection.Card-6-Title')}
           imageAspectRatio="aspect-video"
         />

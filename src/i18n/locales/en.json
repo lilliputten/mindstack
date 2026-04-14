@@ -950,46 +950,54 @@
   },
   "Landing": {
     "BigImageCTASection": {
-      "Description": "Whether you're learning a new language, preparing for exams, or mastering professional skills, MindStack adapts to your goals.",
-      "Title": "Build Your Knowledge Base Today",
-      "TryItFreeText": "Try It Free"
+      "Description": "MindStack transforms your raw information—work documents, study materials, technical references—into organized, trainable datasets with built-in quality checks.",
+      "Title": "Your Knowledge Deserves Better Than Flashcards",
+      "TryItFreeText": "Create Your First Topic Now"
     },
     "CardsWithIconsSection": {
-      "Description": "Features based on what actually helps people learn",
-      "Text-1": "We help you review material at intervals that match how memory naturally works.",
-      "Text-2": "Practicing pulling information from memory makes future recall easier and more reliable.",
-      "Text-3": "The app adjusts to concentrate on topics that need your attention, while maintaining what you've already learned.",
-      "Title": "Why We Built It This Way",
-      "Title-1": "Timed Reviews",
-      "Title-2": "Retrieval Practice",
-      "Title-3": "Smart Focus"
+      "Description": "Every step optimized for speed and control",
+      "Text-1": "Create a topic in seconds. Choose a category, set privacy, add your first question—or let AI generate a starter set.",
+      "Text-2": "Generated content stays in draft mode until you approve it. Edit, regenerate, or discard—full control over your dataset.",
+      "Text-3": "Start repetition sessions as soon as you save your first question. No waiting, no setup delays.",
+      "Title": "Streamlined From Creation to Practice",
+      "Title-1": "Quick Setup",
+      "Title-2": "Review Before Save",
+      "Title-3": "Train Instantly"
     },
     "FAQSection": {
-      "Description": "Everything you need to know about MindStack and how to get started with memory training.",
-      "Title": "Frequently Asked Questions",
+      "Description": "Everything you need to know about creating and using personal training datasets",
+      "Title": "Common Questions",
       "FreeToUse": {
-        "Answer": "MindStack offers a free tier that includes core features for creating topics, questions, and workouts. Additional features and higher limits may be available in premium plans. Check our pricing page for more details.",
-        "Question": "Is MindStack free to use?"
+        "Answer": "MindStack offers a free tier that includes core features for creating topics, questions, and workouts. Additional features and higher limits may be available in premium plans. Check our <LinkPricing>pricing page</LinkPricing> for more details.",
+        "Question": "What's included in the free plan?"
       },
       "HowToCreateFirstTopic": {
-        "Answer": "<p>Creating a topic in MindStack is simple:</p><ol><li>Sign up for a free account</li><li>Navigate to \"My Topics\" in the dashboard</li><li>Click \"Create Topic\" and fill in the title and language</li><li>Add questions and answers to your topic</li><li>Start practicing with workouts!</li></ol>",
+        "Answer": "<p>Creating a topic in MindStack is simple:</p><ol><li>Sign up for a free account</li><li>Navigate to \"My Topics\" in the dashboard</li><li>Click \"Create Topic\" and fill in the title and language</li><li>Add questions manually or use AI generation</li><li>Review and validate your content</li><li>Start practicing with workouts!</li></ol>",
         "Question": "How do I create my first topic?"
       },
-      "LearningProgramming": {
-        "Answer": "Absolutely! MindStack is perfect for learning programming concepts, syntax, algorithms, and more. Create topics for different programming languages, frameworks, or concepts. The spaced repetition system helps you remember code patterns and technical details effectively.",
-        "Question": "Can I use MindStack for learning programming?"
+      "DuplicateDetection": {
+        "Answer": "Our beta similarity algorithm compares new questions and answers against existing ones in your topic using text analysis (including stemming for better matching). It flags potential duplicates so you can decide whether to merge, rephrase, or keep both. Note: This feature is still improving and works best with clear, distinct phrasing.",
+        "Question": "How does the duplicate detection work?"
       },
-      "LearningTechniques": {
-        "Answer": "We combine spaced repetition, active recall, and interleaved practice - all proven by cognitive science to improve long-term retention.",
-        "Question": "What learning techniques does MindStack use?"
+      "AIGeneratedContent": {
+        "Answer": "You have full control. You can edit any generated item, regenerate specific questions, or delete them entirely. Nothing is saved to your database until you explicitly approve it. Think of AI as a drafting assistant, not an autopilot.",
+        "Question": "What if I'm not satisfied with AI-generated content?"
       },
-      "MobileApp": {
-        "Answer": "MindStack is a progressive web app that works perfectly on all devices. Save it to your home screen for an app-like experience.",
-        "Question": "Is there a mobile app?"
+      "ManualQuestions": {
+        "Answer": "No. You can write them manually, use AI to generate drafts, or combine both approaches. The key difference is that generated content stays in review mode—you check, edit, and approve everything before it becomes part of your training dataset.",
+        "Question": "Do I need to write all questions and answers manually?"
+      },
+      "DifferenceFromAnki": {
+        "Answer": "While those tools focus on flashcard management, MindStack emphasizes the entire content creation workflow. You get AI-assisted generation, duplicate detection, in-place editing, and a structured hierarchy (categories → topics → questions → answers). It's designed for building quality datasets, not just storing cards.",
+        "Question": "How is this different from Anki or Quizlet?"
       },
       "MultipleLanguages": {
         "Answer": "Yes! MindStack supports multiple languages. You can create topics in different languages and switch between them seamlessly. This is especially useful for language learning or when studying materials in different languages.",
         "Question": "Does MindStack support multiple languages?"
+      },
+      "PrivacyControl": {
+        "Answer": "Yes. Topics are private by default. Only you can see and train on them. You can optionally make topics public to share with the community, but this is completely your choice.",
+        "Question": "Can I keep my topics private?"
       },
       "Price": {
         "Answer": "Basic features are free forever. Premium plans unlock unlimited topics, advanced analytics, and AI features. See <LinkPricing>pricing</LinkPricing> section.",
@@ -1004,55 +1012,59 @@
         "Question": "How do I track my progress?"
       },
       "WhatIsMindStack": {
-        "Answer": "MindStack is a memory training application that helps you create, organize, and practice learning materials. You can create custom topics with questions and answers, then use interactive workouts to train your memory through spaced repetition and active recall techniques.",
+        "Answer": "MindStack is a platform for creating personal repetition training systems. Instead of using pre-made courses, you build your own question-answer datasets from topics that matter to you—work materials, study subjects, technical references, or anything else. The system helps you generate, validate, and practice with your content.",
         "Question": "What is MindStack?"
       },
       "WithoutAccount": {
-        "Answer": "Yes! You can explore public topics and try workouts without registration. Create an account to save your progress and build custom topics.",
-        "Question": "Can I use MindStack without creating an account?"
+        "Answer": "Guests can explore public topics and try sample workouts, but progress isn't saved. To create your own topics, save data, and track history, you'll need a free account. Registration takes seconds via OAuth (Google, GitHub, Yandex) or email/Telegram OTP.",
+        "Question": "Can I use MindStack without registering?"
       },
-      "WorkoutSystem": {
-        "Answer": "Workouts present questions from your topics in a randomized order. You answer each question, and the system tracks your performance. Based on your answers, MindStack uses spaced repetition algorithms to schedule reviews at optimal intervals, helping you remember information for longer periods.",
-        "Question": "How does the workout system work?"
+      "NewCategoryRequest": {
+        "Answer": "Registered users can submit category creation requests through the embedded form on the categories page. Our team reviews submissions and adds relevant categories to keep the system organized.",
+        "Question": "How do I request a new category?"
+      },
+      "TelegramBot": {
+        "Answer": "Yes, but it's currently limited to authentication only. We're working on adding progress tracking and payment support in future updates.",
+        "Question": "Is there a Telegram bot?"
       }
     },
     "FeaturesSection": {
-      "Card-1-Text": "Create your own learning modules: formulate questions and answers, and sort them into categories. Use multilingual support and tags for the clearest and most personalized organization of knowledge.",
-      "Card-1-Title": "Create and Organize Your Knowledge",
-      "Card-2-Text": "Enrich your training by using popular topic collections created by other users. Or start with your private materials — the system effectively supports any path you choose.",
-      "Card-2-Title": "Practice Within a Community of Learners",
-      "Card-3-Text": "Generate questions and answers instantly using AI. Perfect for starting new topics or expanding existing ones.",
-      "Card-3-Title": "AI-Powered Content Creation",
-      "Card-4-Text": "Learn in English, Spanish, Russian, or any language. Perfect for language learners and multilingual content.",
-      "Card-4-Title": "Multi-Language Learning",
-      "Card-5-Text": "Track your improvement with detailed statistics, performance graphs, and retention metrics.",
-      "Card-5-Title": "Progress Analytics",
-      "Card-6-Text": "Share your topics with others or explore community-created materials.",
-      "Card-6-Title": "Share and Collaborate",
-      "Description": "From creating custom study materials to tracking your progress, the application combines proven learning techniques with modern technology.",
-      "Title": "Everything You Need for Effective Learning"
+      "Card-1-Text": "Create topics around your real work, studies, or interests. No generic courses—just your personalized training datasets organized by categories.",
+      "Card-1-Title": "Build From Your Own Knowledge",
+      "Card-2-Text": "Use AI to draft questions and answers instantly, then review and edit before saving. Regenerate until quality meets your standards.",
+      "Card-2-Title": "Generate, Check, Perfect",
+      "Card-3-Text": "Compare new items against existing ones to catch duplicates and near-duplicates. Beta similarity algorithms help maintain dataset quality as it grows.",
+      "Card-3-Title": "Keep Your Data Clean",
+      "Card-4-Text": "Modify questions and answers directly in the training interface using our rich HeadlessEditor. No separate editing mode needed.",
+      "Card-4-Title": "Edit Without Context Switching",
+      "Card-5-Text": "Keep topics private by default for personal use. Share selected topics publicly when you want to contribute to the community.",
+      "Card-5-Title": "Control Your Privacy",
+      "Card-6-Text": "Categories → Topics → Questions → Answers. A clear structure that keeps your knowledge base manageable whether you have 10 or 1000 items.",
+      "Card-6-Title": "Organized Hierarchy That Grows With You",
+      "Description": "From initial idea to active training session, MindStack provides tools for creating, validating, and practicing with your personal knowledge base.",
+      "Title": "Everything You Need to Build Quality Training Datasets"
     },
     "HeroSection": {
-      "Description": "MindStack transforms how you learn and remember with AI‑powered memory training, spaced repetition, and active recall.",
-      "ExploreAvailableCategoriesText": "Available Categories",
-      "StartTrainingFreeText": "Start Training Free",
-      "Title": "Train Your Brain. Build Your Knowledge."
+      "Description": "MindStack helps you create structured question-answer datasets from your personal topics, validate them with AI assistance, and run effective repetition trainings—all in one workflow.",
+      "ExploreAvailableCategoriesText": "Explore Public Topics",
+      "StartTrainingFreeText": "Start Creating Your First Topic",
+      "Title": "Turn Your Knowledge Into Repeatable Trainings"
     },
     "HowItWorksCards": {
-      "Description": "Get started with MindStack in just a few minutes",
-      "Text-1": "Start with existing topics or create your own with our AI assistant",
-      "Text-2": "Practice with adaptive sessions that focus on what you need most",
-      "Text-3": "Monitor progress and see your knowledge grow over time",
-      "Title": "Start Learning in 3 Simple Steps",
-      "Title-1": "Create or Choose Topics",
-      "Title-2": "Train with Smart Workouts",
-      "Title-3": "Track and Improve"
+      "Description": "A complete workflow from idea to mastery",
+      "Text-1": "Start a new topic under a relevant category, or browse public topics for inspiration. Set it as private or public based on your needs.",
+      "Text-2": "Add questions manually or use AI generation. Compare new items against existing ones to avoid duplicates. Edit in place until everything looks right.",
+      "Text-3": "Run repetition sessions on your validated data. Track performance, identify weak areas, and continuously refine your topic as you learn.",
+      "Title": "How MindStack Works",
+      "Title-1": "Define Your Topic",
+      "Title-2": "Generate, Review, Refine",
+      "Title-3": "Practice and Iterate"
     },
     "PromoCTASection": {
-      "Description": "Join a growing community of learners and discover a better way to remember",
+      "Description": "Join users who are transforming their work docs, study materials, and reference guides into structured, trainable datasets. Free to start, powerful when you need it.",
       "ExploreCategoriesText": "Explore Categories",
-      "StartFreeTrainingText": "Start Free Training",
-      "Title": "Start Building Your Knowledge Today"
+      "StartFreeTrainingText": "Start Building Now",
+      "Title": "Ready to Build Your First Training System?"
     },
     "RecentCategoriesSection": {
       "Description": "Explore predefined categories or create your own, if you're authorized.",
