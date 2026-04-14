@@ -25,6 +25,12 @@ import { useSessionData } from '../useSessionUser';
 import { useAvailableTopicById } from './useAvailableTopicById';
 import { useQuestionIdsForTopicId } from './useQuestionIdsForTopicId';
 
+interface TUseWorkoutQueryProps {
+  topicId?: TTopicId;
+  enabled?: boolean;
+  traceId?: string;
+}
+
 const staleTime = defaultStaleTime;
 
 const shuffleQuestionsStr = (ids?: string[]) => {
@@ -39,15 +45,12 @@ interface TMemo {
   userId?: TUserId;
   workout?: TWorkoutData | null;
   questionIds?: string[];
-}
-
-interface TUseWorkoutQueryProps {
-  topicId?: TTopicId;
-  enabled?: boolean;
+  query?: ReturnType<typeof useQuery>;
+  mounted?: boolean;
 }
 
 export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
-  const { enabled = true, topicId } = props;
+  const { enabled = true, topicId, traceId } = props;
   const queryClient = useQueryClient();
   const memo = React.useMemo<TMemo>(() => ({}), []);
 
@@ -104,28 +107,38 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
 
   const queryFn = React.useCallback(async () => {
     try {
-      if (!topicId) {
-        return null;
-      }
-      if (isLocal) {
-        const localData = await fetchFromIndexedDB(topicId);
-        return localData || null;
-      }
-      const serverData = await getWorkout(topicId);
-      return serverData || null;
+      if (!topicId) return null;
+
+      const result = await Promise.race([
+        isLocal ? fetchFromIndexedDB(topicId) : getWorkout(topicId),
+        new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+      ]);
+
+      return result || null;
     } catch (error) {
-      const details = getErrorText(error);
-      const message = 'Cannot load workout data';
-      // eslint-disable-next-line no-console
-      console.error('[useWorkoutQuery:queryFn]', message, {
-        details,
-        error,
-        topicId,
-      });
-      debugger; // eslint-disable-line no-debugger
+      if (!memo.mounted) {
+        const message = 'Query failed while unmounted. Probably, that is not an error.';
+        // eslint-disable-next-line no-console
+        console.warn('[useWorkoutQuery:queryFn]', traceId, message, { topicId });
+      } else if (error === 'timeout') {
+        const message = 'Query has been timed out and will be started over';
+        // eslint-disable-next-line no-console
+        console.warn('[useWorkoutQuery:queryFn]', traceId, message, { topicId });
+      } else {
+        const message = 'Cannot load workout data';
+        // eslint-disable-next-line no-console
+        console.error('[useWorkoutQuery:queryFn]', traceId, message, {
+          traceId,
+          error,
+          topicId,
+          errorDetails: getErrorText(error),
+        });
+        debugger; // eslint-disable-line no-debugger
+        throw error;
+      }
       return null;
     }
-  }, [isLocal, topicId, fetchFromIndexedDB]);
+  }, [memo, isLocal, topicId, fetchFromIndexedDB, traceId]);
 
   const query = useQuery<TWorkoutData | null>({
     queryKey,
@@ -133,6 +146,23 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
     enabled: isEnabled,
     queryFn: queryFn,
   });
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
 
   const isQueryReady =
     query.isFetched && !query.isLoading && !query.isPending && !query.isRefetching;
@@ -218,7 +248,12 @@ export function useWorkoutQuery(props: TUseWorkoutQueryProps) {
   const startWorkout = React.useCallback(() => {
     const { questionIds } = memo;
     const workout = memo.workout
-      ? { ...memo.workout, questionsOrder: shuffleQuestionsStr(questionIds) }
+      ? {
+          ...memo.workout,
+          // Update questions count each time
+          questionsCount: questionIds?.length || 0,
+          questionsOrder: shuffleQuestionsStr(questionIds),
+        }
       : createNewWorkoutData();
     const now = new Date();
     const updatedWorkout: TWorkoutData = {

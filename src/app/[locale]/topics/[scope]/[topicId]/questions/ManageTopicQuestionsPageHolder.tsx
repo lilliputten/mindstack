@@ -26,13 +26,6 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     throw new Error('No topic specified');
   }
 
-  // const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
-  // const {
-  //   isFetched: isTopicsFetched,
-  //   queryKey: availableTopicsQueryKey,
-  //   queryProps: availableTopicsQueryProps,
-  // } = availableTopicsQuery;
-
   const availableTopicQuery = useAvailableTopicById({
     id: topicId,
     // availableTopicsQueryKey,
@@ -42,19 +35,20 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     // includeQuestionsCount: availableTopicsQueryProps.includeQuestionsCount,
   });
 
-  const {
-    // topic,
-    isFetched: isTopicFetched,
-    isCached: isTopicCached,
-  } = availableTopicQuery;
-
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
-  const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
-
+  const { isFetched: isTopicFetched, isCached: isTopicCached } = availableTopicQuery;
   const isTopicReady = isTopicCached || isTopicFetched;
 
+  const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'ManageTopicQuestionsPageHolder',
+    topicId,
+    // itemsLimit: null, // Take all questions, without paging
+    // includeAnswers: true, // Include answers
+  });
+  const { isFetched: isQuestionsFetched } = availableQuestionsQuery;
+  const isQuestionsReady = isQuestionsFetched;
+
   // No data loaded yet - show skeleton
-  if (!isQuestionsFetched || !isTopicReady) {
+  if (!isQuestionsReady || !isTopicReady) {
     return (
       <div
         className={cn(
@@ -71,11 +65,22 @@ export function ManageTopicQuestionsPageHolder(props: TManageTopicQuestionsPageH
     );
   }
 
+  /* // New approach, via QuestionsEditor, moved to the Topic Card
   return (
-    <ManageTopicQuestionsListCard
+    <QuestionsEditor
+      topicId={topicId}
       availableTopicQuery={availableTopicQuery}
       availableQuestionsQuery={availableQuestionsQuery}
-      {...props}
+    />
+    );
+  */
+
+  // Old table-based component
+  return (
+    <ManageTopicQuestionsListCard
+      topicId={topicId}
+      availableTopicQuery={availableTopicQuery}
+      availableQuestionsQuery={availableQuestionsQuery}
     />
   );
 }

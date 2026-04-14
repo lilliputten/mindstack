@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { RichTranslationValues } from 'next-intl';
 
 import { generateArray } from '@/lib/helpers';
@@ -17,6 +18,7 @@ import {
 } from '@/config';
 import { isDev } from '@/constants';
 import { useEnvContext } from '@/contexts/EnvContext';
+import { AIGenerationsDetails } from '@/features/ai-generations/components';
 import { getUserStatusText } from '@/features/users/helpers/getUserStatusText';
 import { useSessionData } from '@/hooks';
 
@@ -27,9 +29,10 @@ export function AppIntroBlock(props: TPropsWithClassName) {
   const { className } = props;
   const { user, loading: isUserLoading } = useSessionData();
   const isAdmin = user?.role === 'ADMIN';
+
   const {
-    BASIC_USER_GENERATIONS,
-    PRO_USER_MONTHLY_GENERATIONS,
+    // BASIC_USER_GENERATIONS,
+    // PRO_USER_MONTHLY_GENERATIONS,
     BASIC_TOPICS_LIMIT,
     BASIC_QUESTIONS_LIMIT,
     BASIC_ANSWERS_LIMIT,
@@ -79,7 +82,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
         </>
       ) : (
         <>
-          <p className="font-bold">
+          <p data-testid="CurrentUserStatus" className="font-bold">
             {t('AppIntro.CurrentUserStatus', { status: getUserStatusText(user, t) })}
           </p>
 
@@ -123,7 +126,10 @@ export function AppIntroBlock(props: TPropsWithClassName) {
                     limit: (BASIC_ANSWERS_LIMIT ?? 10).toString(),
                   })}
                 </li>
-                <li>{t('AppIntro.AIGenerationsTotal', { count: BASIC_USER_GENERATIONS })}</li>
+
+                {/* AI Generations Status for Basic Users */}
+                <li className="-ml-5 list-none"></li>
+
                 <li>{t('AppIntro.BasicProgressTracking')}</li>
                 <li>
                   {t('AppIntro.PublicCommunityAccess')} <span className="text-theme">*</span>
@@ -149,9 +155,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
                     limit: (PRO_QUESTIONS_LIMIT ?? 20).toString(),
                   })}
                 </li>
-                <li>
-                  {t('AppIntro.AIGenerationsPerMonth', { count: PRO_USER_MONTHLY_GENERATIONS })}
-                </li>
+
                 <li>
                   {t('AppIntro.AdvancedAnalyticsInsights')} <span className="text-theme">*</span>
                 </li>
@@ -170,7 +174,7 @@ export function AppIntroBlock(props: TPropsWithClassName) {
               <ul className="list-disc space-y-1 pl-5">
                 <li>{t('AppIntro.EverythingInProPlan')}</li>
                 <li>{t('AppIntro.UnlimitedContentCreation')}</li>
-                <li>{t('AppIntro.UnlimitedAIGenerations')}</li>
+
                 <li>
                   {t('AppIntro.AdvancedPrioritySupport')} <span className="text-theme">*</span>
                 </li>
@@ -210,9 +214,13 @@ export function AppIntroBlock(props: TPropsWithClassName) {
       </div>
 
       {/* Link to pricing page */}
-      <div className="space-y-1">
-        <p>{t.rich('AppIntro.PremiumUsersAlsoGet', richTextTags)}</p>
-      </div>
+      {user?.grade !== 'PREMIUM' && user?.grade !== 'PRO' && user?.grade !== 'UNLIMITED' && (
+        <div className="space-y-1">
+          <p>{t.rich('AppIntro.PremiumUsersAlsoGet', richTextTags)}</p>
+        </div>
+      )}
+
+      <AIGenerationsDetails showUserInfo={false} showGenerationMode={false} />
 
       <div className="space-y-2">
         {/* Future features note */}

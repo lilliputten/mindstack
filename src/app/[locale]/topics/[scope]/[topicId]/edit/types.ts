@@ -8,6 +8,7 @@ import { makeNullableFieldsUndefined } from '@/lib/helpers/zod';
 const topicFormDataSchemaBase = TopicSchema.pick({
   name: true, // string
   description: true, // string
+  extraQuery: true, // string
   isPublic: true, // boolean
   keywords: true, // string
   langCode: true, // string (TLanguageId)

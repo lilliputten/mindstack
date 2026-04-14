@@ -1,10 +1,8 @@
 'use server';
 
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { headers } from 'next/headers';
-
 import { debugObj } from '@/lib/debug';
 import { getErrorText, unixEOLs } from '@/lib/helpers';
+import { getServerHeaders } from '@/lib/server';
 import { getCurrentUser } from '@/lib/session';
 import { versionInfo } from '@/config';
 import { isDev } from '@/constants';
@@ -15,50 +13,43 @@ export interface TLogDataOptions extends TLoggingMessageOptions {
 }
 
 export async function logData(idMsg: string, data?: object, opts: TLogDataOptions = {}) {
-  const headersObj: ReadonlyHeaders = await headers();
-  // DEBUG: Use reduce to convert headers to a plain object
-  const allHeaders = Array.from(headersObj.entries()).reduce(
-    (acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-  const clientIp = allHeaders['x-forwarded-for'] || allHeaders['x-real-ip'];
-  const referer = allHeaders.referer;
-  const host = allHeaders.host;
-  const matchedPath = allHeaders['x-matched-path'];
-  const rewrittenPath = allHeaders['x-nextjs-rewritten-path'];
-  // const link = allHeaders.link;
-  const userAgent = allHeaders['user-agent']?.replace(/\s+/gm, ' ');
-  const ipTimezone = allHeaders['x-vercel-ip-timezone'];
-  const ipContinent = allHeaders['x-vercel-ip-continent'];
-  const ipCountry = allHeaders['x-vercel-ip-country'];
-  const ipLatitude = allHeaders['x-vercel-ip-latitude']; // "55.6784"
-  const ipLongitude = allHeaders['x-vercel-ip-longitude']; // "37.2652"
-  const ipCity = allHeaders['x-vercel-ip-city']?.replace(/%20/g, ' ');
-  const intlLocale = allHeaders['x-next-intl-locale'];
+  const headers = await getServerHeaders();
+  const clientIp = headers['x-forwarded-for'] || headers['x-real-ip'];
+  const referer = headers.referer;
+  const host = headers.host;
+  const matchedPath = headers['x-matched-path'];
+  const rewrittenPath = headers['x-nextjs-rewritten-path'];
+  // const link = headers.link;
+  const userAgent = headers['user-agent']?.replace(/\s+/gm, ' ');
+  const ipTimezone = headers['x-vercel-ip-timezone'];
+  const ipContinent = headers['x-vercel-ip-continent'];
+  const ipCountry = headers['x-vercel-ip-country'];
+  const ipLatitude = headers['x-vercel-ip-latitude']; // "55.6784"
+  const ipLongitude = headers['x-vercel-ip-longitude']; // "37.2652"
+  const ipCity = headers['x-vercel-ip-city']?.replace(/%20/g, ' ');
+  const intlLocale = headers['x-next-intl-locale'];
   const now = new Date();
   // const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731
   const dateISO = now.toISOString(); // -> 026-02-06T13:32:27.050Z
   const user = await getCurrentUser();
+  const coords =
+    [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined; // 55.6784 37.2652
+  const location = [ipCity, ipCountry, ipContinent, coords].filter(Boolean).join(', ') || undefined;
   const dataToSend: Record<string, unknown> = {
-    path: [rewrittenPath, matchedPath && `(${matchedPath})`].filter(Boolean).join(' '),
+    path: rewrittenPath,
     host,
     tz: ipTimezone,
     referer,
     ip: clientIp !== '::1' ? clientIp : undefined,
-    locale: [intlLocale, ipCountry && `(${ipCountry})`].filter(Boolean).join(' '),
-    city: ipCity,
-    continent: ipContinent,
-    coords:
-      [ipLatitude, ipLongitude].filter(Boolean).join(' ').replace(/"/g, '').trim() || undefined, // 55.6784 37.2652
+    location,
+    locale: intlLocale,
     agent: userAgent,
     version: versionInfo,
     date: dateISO,
-    prod: !isDev,
-    // allHeaders,
+    matchedPath,
+    // headers,
     user,
+    mode: isDev ? 'dev' : undefined,
   };
   if (opts.level) {
     dataToSend.level = opts.level;
@@ -66,7 +57,7 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   // const infoStr = debugObj(dataToSend);
   const combinedData = { ...dataToSend, ...data };
   let dataStr = '';
-  if (data) {
+  if (combinedData) {
     try {
       dataStr = debugObj(combinedData);
     } catch (error) {

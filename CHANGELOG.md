@@ -1,9 +1,49 @@
 <!--
  @since 2025.07.05
- @changed 2026.02.10, 04:51
+ @changed 2026.04.14, 04:06
 -->
 
 # CHANGELOG
+
+## Implemented headless editor system for batch editing Q&A with AI generation improvements, #[v.0.1.4](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.4) - 2026.04.14
+
+### Added
+
+- Headless editor system for batch editing questions and answers with drag-n-drop support
+- New `AnswersEditor` and `QuestionsEditor` components with unified state management
+- AI generation status badge and detailed information display on welcome page
+- Multilingual stemmer support for text comparison (WebAssembly modules)
+- Cosmos UI librarian with default test fixtures
+- Language selection dialog component with 'any' and 'current' language options
+- Add new item buttons (topics, questions, answers) with success notifications
+- Vercel analytics integration
+
+### Changed
+
+- Refactored generate questions/answers pages from modals to dedicated pages
+- Updated all react-query hooks to properly support unmounts and request aborts
+- Improved language filtering: defaults to current locale, supports 'any' language option
+- Enhanced category filtering with improved 'ANY' status handling
+- Optimized logging: important data first, non-blocking async calls
+
+### Fixed
+
+- URL filter parameters creation/parsing (resolved `?langCode=-&langCustom=undefined` bug)
+- User avatar icon display on mobile panel
+- Topic count in categories info (now counts only public topics)
+- Scrollbar visibility in add question/answer modals
+- Not-found pages server-client props handling
+
+### Technical
+
+- Added `useHeadlessEditorState` custom hook for editor state management
+- Implemented text comparison with multilingual stemming
+- Added drag-n-drop sorting with visual feedback for reordered items
+- Extracted `BusySplash` component for loading states
+- Created `MediumCategoriesListByCategoryIds` for enhanced category display
+
+- [Issue #80](https://github.com/lilliputten/mindstack/issues/80): Refactor questions (answers) adding procedure
+- [Compare versions](https://github.com/lilliputten/mindstack/compare/v.0.1.3...v.0.1.4)
 
 ## Minor changes: Enhanced UI, filtering, and content management features - 2026.02.10
 
@@ -39,7 +79,7 @@ Core Features
 
 - **Two algorithms**: n-gram histogram intersection and cosine similarity.
 - **Multi-language support**: Optimized and tested for English, Russian, and Spanish.
-- **Fully supports languages**: *de, en, es, fr, it, nl, ru*. The resulting list depends on the intersection of the languages supported by `stemmers` (*ar, da, nl, en, fi, fr, de, el, hu, it, pt, ro, ru, es, sw, ta, tr*) and `stopwords` (*de, en, es, fr, it, nl, ru*) modules.
+- **Fully supports languages**: _de, en, es, fr, it, nl, ru_. The resulting list depends on the intersection of the languages supported by `stemmers` (_ar, da, nl, en, fi, fr, de, el, hu, it, pt, ro, ru, es, sw, ta, tr_) and `stopwords` (_de, en, es, fr, it, nl, ru_) modules.
 - **Performance optimized**: Benchmarks show 0.1-3ms for n-gram and 0.2-8ms for token comparisons.
 - **Configurable**: Adjustable n-gram sizes and preprocessing options.
 

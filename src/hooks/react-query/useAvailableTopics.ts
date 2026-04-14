@@ -10,8 +10,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-// import { toast } from 'sonner';
-
 import { TAllUsedKeys, TAvailableTopicsResultsQueryData } from '@/lib/types/react-query';
 import { getErrorText } from '@/lib/helpers';
 import {
@@ -36,36 +34,34 @@ import { TAvailableTopic, TTopicId } from '@/features/topics/types';
 
 import { useSessionUser } from '../useSessionUser';
 
-const itemsLimit = defaultItemsLimit;
-
-const staleTime = defaultStaleTime;
-
-// TODO: Register all the query keys
-
-type TUseAvailableTopicsProps = Omit<TGetAvailableTopicsParams, 'skip' | 'take'> & {
+interface TUseAvailableTopicsProps extends Omit<TGetAvailableTopicsParams, 'skip' | 'take'> {
   traceId?: string;
   enabled?: boolean;
-};
+}
 
-/** Collection of the all used query keys (mb, already invalidated).
+interface TMemo {
+  query?: UseInfiniteQueryResult<TAvailableTopicsResultsQueryData, Error>;
+  mounted?: boolean;
+}
+
+const itemsLimit = defaultItemsLimit;
+const staleTime = defaultStaleTime;
+
+/** Collection of all used query keys (may already be invalidated).
  *
- * QueryKey's are stored with strigified keys.
- *
- * TODO:
- * - To use `QueryCache.subscribe` to remove invalidated keys?
- * - Create a helper to invalidate all the keys or all the keys, except current?
+ * QueryKeys are stored with stringified keys.
  */
 const allUsedKeys: TAllUsedKeys = {};
 
 function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
-  const { traceId: _id, enabled = true, ...queryProps } = props;
+  const { traceId, enabled = true, ...queryProps } = props;
   const queryClient = useQueryClient();
-  // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
-
   const t = useT();
 
-  /* Use partrial query url as a part of the query key */
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  /* Use partial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => {
     // Convert Date objects to ISO strings for URL composition
     const urlParams = {
@@ -77,11 +73,52 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
     };
     return composeUrlQuery(urlParams);
   }, [queryProps]);
+
   const queryKey = React.useMemo<QueryKey>(
     () => ['available-topics', queryUrlHash],
     [queryUrlHash],
   );
-  allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
+  const keyId = stringifyQueryKey(queryKey);
+  allUsedKeys[keyId] = queryKey;
+
+  const queryFn = React.useCallback(
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
+      try {
+        const result = await Promise.race([
+          getAvailableTopics({
+            ...queryProps,
+            skip: pageParam,
+            take: itemsLimit,
+          }),
+          new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+        ]);
+
+        return result;
+      } catch (error) {
+        if (!memo.mounted) {
+          const message = 'Query failed while unmounted. Probably, that is not an error.';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableTopics:queryFn]', traceId, message, { pageParam });
+        } else if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableTopics:queryFn]', traceId, message, { pageParam });
+        } else {
+          const details = getErrorText(error);
+          const message = t('UseAvailableTopics.CannotLoadTopicsData');
+          // eslint-disable-next-line no-console
+          console.error('[useAvailableTopics:queryFn]', traceId, message, {
+            details,
+            error,
+            pageParam,
+          });
+          debugger; // eslint-disable-line no-debugger
+        }
+        throw error;
+      }
+    },
+    [memo, queryProps, t, traceId],
+  );
 
   const query: UseInfiniteQueryResult<TAvailableTopicsResultsQueryData, Error> = useInfiniteQuery<
     TGetAvailableTopicsResults,
@@ -93,143 +130,62 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
     enabled,
     queryKey,
     staleTime, // Data validity period
-    // gcTime: 10 * staleTime, // Inactive cache validity period
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      /* // Take only unique topics (it cause permanent 'more items available' if some topics has been loaded twice)
-       * const loadedCount = getUnqueItemsList(allPages).length;
-       */
-      // A naive solution
-      const loadedCount = allPages.reduce((acc, page) => acc + page.items.length, 0);
+      const loadedCount = allPages.reduce((acc, page) => acc + (page?.items.length || 0), 0);
       return loadedCount < lastPage.totalCount ? loadedCount : undefined;
     },
-    queryFn: async (params) => {
-      /* // DEBUG: Test error
-       * throw new Error('Test error');
-       */
-      const { pageParam = 0 } = params;
-      try {
-        // OPTION: Using server function
-        const result = await getAvailableTopics({
-          ...queryProps,
-          skip: pageParam,
-          take: itemsLimit,
-        });
-        return result;
-        /* // OPTION: Using route api fetch
-         * const paginationHash = composeUrlQuery(
-         *   { skip: pageParam, take: itemsLimit },
-         * );
-         * const url = appendUrlQueries('/api/topics', queryUrlHash, paginationHash);
-         * const result = await handleApiResponse<TGetAvailableTopicsResults>(fetch(url), {
-         *   onInvalidateKeys: invalidateKeys,
-         *   debugDetails: {
-         *     initiator: 'useAvailableTopics',
-         *     action: 'getAvailableTopics',
-         *     pageParam,
-         *   },
-         * });
-         * return result.data as TGetAvailableTopicsResults;
-         */
-      } catch (error) {
-        const details = getErrorText(error); // error instanceof APIError ? error.details : null;
-        const message = t('UseAvailableTopics.CannotLoadTopicsData');
-        // eslint-disable-next-line no-console
-        console.error('[useAvailableTopics:queryFn]', message, {
-          details,
-          error,
-          pageParam,
-          // url,
-        });
-        debugger; // eslint-disable-line no-debugger
-        // toast.error(message);
-        throw error;
-      }
-    },
+    queryFn,
   });
+  memo.query = query;
+
+  // Handle component mount/unmount
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
 
   // Derived data...
-
   const allTopics = React.useMemo(() => getUnqueItemsList(query.data?.pages), [query.data?.pages]);
 
   // Incapsulated helpers...
-
-  /** Add new topic record to the pages data
-   * @param {TAvailableTopic} newTopic - Record to add
-   * @param {boolean} toStart - Add the new item to the beginning of the existing items. TODO: Determine default behavior by `orderBy`?
-   */
   const addNewTopic = React.useCallback(
     (newTopic: TAvailableTopic, toStart?: boolean) =>
       addNewItemToQueryCache<TAvailableTopic>(queryClient, queryKey, newTopic, toStart),
     [queryClient, queryKey],
   );
 
-  /** Delete the specified topic (by id) from the pages data.
-   * @param {TTopicId} topicIdToDelete - Assuming topic has a unique id of string or number type
-   */
   const deleteTopic = React.useCallback(
     (topicIdToDelete: TTopicId) =>
       deleteItemFromQueryCache<TAvailableTopic>(queryClient, queryKey, topicIdToDelete),
     [queryClient, queryKey],
   );
 
-  /** Delete the specified topic (by id) from the pages data.
-   * @param {TTopicId} topicIdToDelete - Assuming topic has a unique id of string or number type
-   */
   const updateTopic = React.useCallback(
     (updatedTopic: TAvailableTopic) =>
       updateItemInQueryCache<TAvailableTopic>(queryClient, queryKey, updatedTopic),
     [queryClient, queryKey],
   );
 
-  /** Invalidate all used keys, except optional specified ones
-   * @param {QueryKey[]} [excludeKeys] -- The list of keys to exclude from the invalidation
-   */
   const invalidateAllKeysExcept = React.useCallback(
     (excludeKeys?: QueryKey[]) =>
       invalidateAllUsedKeysExcept(queryClient, excludeKeys, allUsedKeys),
     [queryClient],
   );
 
-  /* // List of query properties:
-   * status
-   * error
-   * data
-   * isLoading
-   * isError
-   * isPending
-   * isLoadingError
-   * isRefetchError
-   * isSuccess
-   * isPlaceholderData
-   * fetchNextPage
-   * fetchPreviousPage
-   * hasNextPage
-   * hasPreviousPage
-   * isFetchNextPageError
-   * isFetchingNextPage
-   * isFetchPreviousPageError
-   * isFetchingPreviousPage
-   * dataUpdatedAt
-   * errorUpdatedAt
-   * failureCount
-   * failureReason
-   * errorUpdateCount
-   * isFetched
-   * isFetchedAfterMount
-   * isFetching
-   * isInitialLoading
-   * isPaused
-   * isRefetching
-   * isStale
-   * isEnabled
-   * refetch
-   * fetchStatus
-   * promise
-   */
-
-  return React.useMemo(() => {
-    return {
+  return React.useMemo(
+    () => ({
       ...query,
       queryClient,
       // Derived data...
@@ -239,29 +195,27 @@ function useAvailableTopics(props: TUseAvailableTopicsProps = {}) {
       queryUrlHash,
       allUsedKeys,
       allTopics,
-      hasTopics: !!allTopics.length, // !!query.data?.pages[0]?.totalCount,
+      hasTopics: !!allTopics.length,
       // Helpers...
       addNewTopic,
       deleteTopic,
       updateTopic,
       invalidateAllKeysExcept,
-    };
-  }, [
-    queryClient,
-    query,
-    // Derived data...
-    routePath,
-    queryProps,
-    queryKey,
-    queryUrlHash,
-    // allUsedKeys,
-    allTopics,
-    // Helpers...
-    addNewTopic,
-    deleteTopic,
-    updateTopic,
-    invalidateAllKeysExcept,
-  ]);
+    }),
+    [
+      query,
+      queryClient,
+      routePath,
+      queryProps,
+      queryKey,
+      queryUrlHash,
+      allTopics,
+      addNewTopic,
+      deleteTopic,
+      updateTopic,
+      invalidateAllKeysExcept,
+    ],
+  );
 }
 
 interface TUseAvailableTopicsByScopeProps extends TUseAvailableTopicsProps {
@@ -275,16 +229,12 @@ export function useAvailableTopicsByScope(props: TUseAvailableTopicsByScopeProps
     const isAdmin = user?.role === 'ADMIN';
     return {
       traceId,
-      // skip, // Skip records (start from the nth record), default = 0 // z.number().int().nonnegative().optional()
-      // take, // Amount of records to return, default = {itemsLimit} // z.number().int().positive().optional()
-      adminMode: manageScope === TopicsManageScopeIds.ALL_TOPICS && isAdmin, // Get all users' data not only your own (admins only: will return no data for non-admins) ??? // z.boolean().optional()
-      showOnlyMyTopics: manageScope === TopicsManageScopeIds.MY_TOPICS, // Display only current user's topics, TODO: To use the settings value?
-      includeWorkout: true, // Include (limited) active workout data // z.boolean().optional()
-      // includeStats: true,  // Include (limited) workout stats data // z.boolean().optional()
-      includeUser: true, // Include compact user info data (name, email) in the `user` property of result object // z.boolean().optional()
-      includeQuestionsCount: true, // Include related questions count, in `_count: { questions }` // z.boolean().optional()
-      orderBy: { updatedAt: 'desc' }, // Sort by parameter, default: `{ updatedAt: 'desc' }`, packed json string // TopicFindManyArgsSchema.shape.orderBy // This approach doesn't work
-      // topicIds, // Include only listed topic ids // z.array(z.string()).optional()
+      adminMode: manageScope === TopicsManageScopeIds.ALL_TOPICS && isAdmin,
+      showOnlyMyTopics: manageScope === TopicsManageScopeIds.MY_TOPICS,
+      includeWorkout: true,
+      includeUser: true,
+      includeQuestionsCount: true,
+      orderBy: { updatedAt: 'desc' },
       ...queryProps,
     } satisfies TUseAvailableTopicsProps;
   }, [traceId, manageScope, queryProps, user]);

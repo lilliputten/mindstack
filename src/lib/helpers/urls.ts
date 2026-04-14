@@ -209,7 +209,7 @@ export function updateUrlParamsWithSchema<T extends z.ZodRawShape>(
     }
 
     // For other types (numbers, enums, etc.), convert to string
-    if (typeof value !== 'object') {
+    if (typeof value !== 'object' && value != undefined) {
       newSearchParams.set(key, String(value));
       return;
     }

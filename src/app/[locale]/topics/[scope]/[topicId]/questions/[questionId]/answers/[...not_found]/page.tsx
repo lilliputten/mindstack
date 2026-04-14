@@ -1,8 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import NotFoundScreen from '@/components/pages/shared/NotFoundScreen';
-import * as Icons from '@/components/shared/Icons';
+import { NotFoundScreen } from '@/components/pages/shared';
 import { isDev } from '@/constants';
 
 export const dynamic = 'force-dynamic';
@@ -27,8 +26,8 @@ export default function NotFound() {
           isDev && '__AnswerNotFoundPage_Screen', // DEBUG
           'w-full',
         )}
-        icon={Icons.Answers}
-        title={t('NotFoundPages.WrongAnswerComponentRequested')}
+        iconId="Answers"
+        title={t('AnswerNotFound')}
       />
     </PageWrapper>
   );

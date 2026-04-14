@@ -1,33 +1,22 @@
-import { truncateMarkdown, truncateString } from '@/lib/helpers';
+import { truncateMarkdown } from '@/lib/helpers';
 
 import {
   answersGenerationTypeQueries,
-  maxExtraTextLength,
   TAnswerGenerationType,
   TGenerateQuestionAnswersParams,
 } from '../types/GenerateAnswersTypes';
 import { TPlainMessage } from '../types/messages';
 
-/* // UNUSED: Temporarily
- * function getSystemQueryText(_params: TGenerateQuestionAnswersParams) {
- *   return [
- *     'You are an assistant that generates correct or wrong question answers for a given topic in JSON format.',
- *     'Each answer object should have "text" with answer text (in markdown format) and "isCorrect" boolean properties indicating whether it is a correct answer or not.',
- *     'The response should be well-formed JSON, and answer texts must use the language of the input topic and the input question.',
- *   ].join('\n\n');
- * }
- */
-
 export function getAnswersGenerationQuery(answersGenerationType: TAnswerGenerationType) {
   return answersGenerationTypeQueries[answersGenerationType];
 }
 
-function getUserQueryText(params: TGenerateQuestionAnswersParams) {
+export function createGenerateQuestionAnswersMessages(params: TGenerateQuestionAnswersParams) {
   const {
-    // topicDescription,
+    topicDescription,
     questionText,
     topicText,
-    // topicKeywords,
+    topicKeywords,
     extraText,
     existedAnswers,
     answersCountMin,
@@ -37,14 +26,16 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     langName,
     langCode,
   } = params;
-  // const topicDescriptionStr = topicDescription?.trim();
-  // const topicKeywordsStr = topicKeywords?.trim();
-  const topicTextStr = topicText?.trim();
-  const extraTextStr = truncateString(extraText, maxExtraTextLength);
-  // const existedAnswersJson = existedAnswers?.length ? JSON.stringify(existedAnswers) : undefined;
+
   const existedAnswersText = existedAnswers
     ?.map(({ text }) => '- ' + truncateMarkdown(text, 200))
     .join('\n');
+
+  const answerFieldsText = [
+    `- "text" with the answer text,`,
+    `- "explanation" the reason why this answer is correct or incorrect,`,
+    `- "isCorrect" as a boolean indicating if it is the correct answer.`,
+  ].join('\n');
 
   const langText = [
     // Compose complex language string (`{NAME} ({CODE})` or `{NAME}` or `{CODE}`
@@ -54,39 +45,53 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     .filter(Boolean)
     .join(' ');
 
-  const answerFieldsText = [
-    `"text" with the answer text in plain text or strict markdown markup.`,
-    `"explanation" the reason why this answer is correct or incorrect.`,
-    `"isCorrect" as a boolean indicating if it is the correct answer.`,
+  const requirements = [
+    langText
+      ? `All texts (except code examples, if any) must be generated in ${langText} language.`
+      : `The language of the answers must be derived from the language of the question and the topic.`,
+    `Answers should be clear, educational, and relevant to the question.`,
+    `Return ONLY a valid JSON object with an "answers" field containing a list of answer objects and an "answersCount" field with a totally generated answers count.`,
+    `It's possible to use limited markdown (for code, bold, emphasis, links, lists, etc, don't use headings) in answer texts and explanations.`,
+    `Don't use any html tags. Use normal newlines instead of <br>.`,
+    `Don't wrap the response in the markdwon code quotes (\`\`\`), return raw json.`,
+    `Don't add any content (like notes) outside the JSON object.`,
+    getAnswersGenerationQuery(answersGenerationType),
+  ].filter(Boolean);
+  const requirementsText = requirements.map((s) => '- ' + s).join('\n');
+
+  const systemMessageContent = `You are an expert educational content creator. Generate high-quality answers for a given question.
+
+Requirements:
+
+${requirementsText}
+
+Each answer object must have:
+
+${answerFieldsText}
+
+Example format:
+{
+  "answersCount": 1,
+  "answers": [
+    "text": "\${ANSWER_1}",
+    "explanation": "\${EXPLANATION_1}",
+    "isCorrect": \${BOOLEAN_VALUE}
   ]
-    .filter(Boolean)
-    .map((s) => '- ' + s)
-    .join('\n');
+}
+`;
+
+  const answersCountText =
+    answersCountMin !== answersCountMax
+      ? `${answersCountMin}-${answersCountMax} answers`
+      : `${answersCountMin} answer${answersCountMin !== 1 ? 's' : ''}`;
 
   const userMessageContent = [
-    `Generate a list of between ${answersCountMin} and ${answersCountMax} answers to the following question`,
-    existedAnswersText &&
-      `These answers should exclude previously generated responses (listed below).`,
-
-    getAnswersGenerationQuery(answersGenerationType),
-
-    `Provide the result as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number of totally generated answers.`,
-
-    langText
-      ? `All texts (, if any) must be generated in ${langText} language.`
-      : `The language of the answers must be derived from the language of the question (or the topic).`,
-
-    `Each answer object must have:`,
-    answerFieldsText,
-
     questionText && `Question: ${questionText}`,
-
-    topicTextStr && `This question and the answers are part of a common topic: ${topicTextStr}`,
-
-    extraTextStr,
-
-    `Do not include any other text.`,
-    `Make sure that the JSON is formed correctly.`,
+    topicText && `General text: ${topicText}`,
+    topicDescription && `Topic description: ${topicDescription}`,
+    topicKeywords && `Topic keywords: ${topicKeywords}`,
+    `Generate ${answersCountText} for this question.`,
+    extraText && `Additional instructions: ${extraText}`,
 
     existedAnswersText && `Avoid duplicating existing answers:`,
     existedAnswersText,
@@ -94,13 +99,22 @@ function getUserQueryText(params: TGenerateQuestionAnswersParams) {
     .filter(Boolean)
     .join('\n\n');
 
-  return userMessageContent;
-}
+  // NOTE: Temporarily monitoring AI generation
+  // eslint-disable-next-line no-console
+  console.log('[createGenerateQuestionAnswersMessages]', {
+    systemMessageContent,
+    userMessageContent,
+  });
 
-export function createGenerateQuestionAnswersMessages(params: TGenerateQuestionAnswersParams) {
-  const messages: TPlainMessage[] = [
-    // { role: 'system', content: getSystemQueryText(params) },
-    { role: 'user', content: getUserQueryText(params) },
-  ];
-  return messages;
+  const systemMessage: TPlainMessage = {
+    role: 'system',
+    content: systemMessageContent,
+  };
+
+  const userMessage: TPlainMessage = {
+    role: 'user',
+    content: userMessageContent,
+  };
+
+  return [systemMessage, userMessage];
 }

@@ -125,8 +125,8 @@ export async function LandingPage(props: TLandingPageProps) {
   // message and `resolvedParams` is sending as attached json) (only for
   // production and not admin users)
   if (!isDev && user?.role !== 'ADMIN' && !user?.email?.includes('lilliputten')) {
-    const __idMsg = '[LandingPage:test] Debug log';
-    logJsonData(__idMsg, { locale } /* , { resolvedParams } */);
+    const __idMsg = '[LandingPage] Main page visited';
+    logJsonData(__idMsg, { locale } /* , { resolvedParams } */); // NOTE: Not awaiting and catching!
   }
 
   // Enable static rendering

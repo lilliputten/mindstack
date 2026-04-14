@@ -43,7 +43,10 @@ export function EditAnswerPageHolder(props: TEditAnswerPageHolderProps) {
   const { topic, isFetched: isTopicFetched, isCached: isTopicCached } = availableTopicQuery;
   const isTopicReady = isTopicCached || isTopicFetched;
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: questionId });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: questionId,
+    traceId: 'EditAnswerPageHolder',
+  });
   const {
     question,
     isFetched: isQuestionFetched,

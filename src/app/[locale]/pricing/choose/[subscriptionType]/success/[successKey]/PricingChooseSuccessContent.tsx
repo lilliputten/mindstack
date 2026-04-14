@@ -122,7 +122,7 @@ export function PricingChooseSuccessContent({
           className={cn(
             isDev && '__PricingChooseSuccessContent_Features', // DEBUG
             'mb-8',
-            'w-max-full w-full bg-theme/5 px-6 py-4 md:w-2/3',
+            'w-full max-w-full bg-theme/5 px-6 py-4 md:w-2/3',
           )}
         >
           <CardHeader className="flex flex-col items-center">

@@ -89,7 +89,7 @@ export function ImageUpload(props: TProps) {
         <>
           <Image
             src={imagePreviewUrl}
-            alt={t('ImageUpload.CategoryImagePreview')}
+            alt={t('ImageUpload.ImagePreview')}
             fill
             className="pointer-events-none object-cover"
           />

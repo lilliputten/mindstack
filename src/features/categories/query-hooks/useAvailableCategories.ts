@@ -38,7 +38,7 @@ const staleTime = defaultStaleTime;
 /** Collection of all used query keys (may already be invalidated).
  * NOTE: QueryKeys are stored with stringified keys.
  */
-const allUsedKeys: TAllUsedKeys = {};
+const allUsedKeys: TAllUsedKeys = {}; // TODO: Use WeakMap?
 
 type TUseAvailableCategoriesProps = Omit<TGetAvailableCategoriesParams, 'skip' | 'take'> & {
   traceId?: string;
@@ -80,13 +80,6 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
   const queryFn = React.useCallback(
     async ({ pageParam = 0 }: { pageParam?: number; signal?: AbortSignal }) => {
       try {
-        /* console.log('[useAvailableCategories:queryFn] start', traceId, keyId, {
-         *   queryKey,
-         *   enabled,
-         *   queryProps,
-         *   memo,
-         * });
-         */
         // TODO: To throw an exception if not `memo.mounted` set?
         const result = await Promise.race([
           getAvailableCategories({
@@ -101,26 +94,9 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
           // To kill hanged out queries, and start it over
           new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
         ]);
-        /* console.log('[useAvailableCategories:queryFn] done', traceId, keyId, {
-         *   result,
-         *   queryKey,
-         *   enabled,
-         *   queryProps,
-         *   memo,
-         * });
-         */
         return result;
       } catch (error) {
-        if (error === 'timeout') {
-          const message = 'Query has been timed out and will be started over';
-          // eslint-disable-next-line no-console
-          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
-            pageParam,
-            memo,
-            queryProps,
-          });
-          // NOTE: No user warnings for timeouts
-        } else if (!memo.mounted) {
+        if (!memo.mounted) {
           const message = 'Query failed while unmounted. Probably, that is not an error.';
           // eslint-disable-next-line no-console
           console.warn('[useAvailableCategories:queryFn]', traceId, message, {
@@ -129,6 +105,15 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
             queryProps,
           });
           // NOTE: No user warnings for problems when unmounted
+        } else if (error === 'timeout') {
+          const message = 'Query has been timed out and will be started over';
+          // eslint-disable-next-line no-console
+          console.warn('[useAvailableCategories:queryFn]', traceId, message, {
+            pageParam,
+            memo,
+            queryProps,
+          });
+          // NOTE: No user warnings for timeouts
         } else {
           const message = 'Cannot load categories data';
           const details = getErrorText(error);
@@ -142,23 +127,16 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
             queryProps,
           });
           toast.error(message);
+          throw error;
         }
-        throw error;
+        return null;
       }
     },
-    [
-      // enabled,
-      // keyId,
-      // queryKey,
-      all,
-      memo,
-      queryProps,
-      traceId,
-    ],
+    [all, memo, queryProps, traceId],
   );
 
   const query = useInfiniteQuery<
-    TGetAvailableCategoriesResults,
+    TGetAvailableCategoriesResults | null,
     Error,
     InfiniteData<TGetAvailableCategoriesResults>,
     QueryKey,
@@ -178,10 +156,10 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const loadedCount = (allPages as TGetResults<TAvailableCategory>[]).reduce(
-        (acc, page) => acc + page.items.length,
+        (acc, page) => acc + (page?.items.length || 0),
         0,
       );
-      return loadedCount < (lastPage as TGetResults<TAvailableCategory>).totalCount
+      return loadedCount < (lastPage as TGetResults<TAvailableCategory>)?.totalCount
         ? loadedCount
         : undefined;
     },
@@ -193,27 +171,11 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
     const query = memo.query;
     if (query) {
       memo.mounted = true;
-      /* console.log('[useAvailableCategories:mount]', traceId, keyId, {
-       *   memo,
-       * });
-       */
       return () => {
         memo.mounted = false;
         const { isFetching } = query;
-        /* console.log('[useAvailableCategories:unmount]', traceId, keyId, {
-         *   isFetching,
-         *   memo,
-         * });
-         */
         // NOTE: Trying to prevent stucking on permanent isFetching state on fast simultaneous unmounts (in dialog popups)
         if (isFetching) {
-          /* console.log('[useAvailableCategories:unmount:CLEANUP]', traceId, keyId, {
-           *   isFetching,
-           *   queryKey,
-           *   queryClient,
-           *   query,
-           * });
-           */
           // 1. IMMEDIATELY cancel pending requests
           queryClient.cancelQueries({ queryKey, exact: true });
           // 2. RESET to idle state (stops isLoading)
@@ -223,7 +185,7 @@ export function useAvailableCategories(props: TUseAvailableCategoriesProps = {})
         }
       };
     }
-  }, [memo, queryKey, queryClient, traceId, keyId]);
+  }, [memo, queryKey, queryClient, traceId]);
 
   const allCategories = React.useMemo(
     () => getUnqueItemsList(query.data?.pages),

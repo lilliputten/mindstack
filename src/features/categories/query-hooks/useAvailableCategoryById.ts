@@ -18,6 +18,11 @@ interface TUseAvailableCategoryByIdProps extends TGetAvailableCategoryByIdParams
   enabled?: boolean;
 }
 
+interface TMemo {
+  query?: ReturnType<typeof useQuery>;
+  mounted?: boolean;
+}
+
 const staleTime = defaultStaleTime;
 
 /** Get category data from cached `useAvailableCategories` query data or fetch it now */
@@ -29,11 +34,11 @@ export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) 
     id: categoryId,
     ...queryProps
   } = props;
-  // const invalidateKeys = useInvalidateReactQueryKeys();
 
+  const memo = React.useMemo<TMemo>(() => ({}), []);
   const queryClient = useQueryClient();
 
-  /* Use partrial query url as a part of the query key */
+  /* Use partial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
 
   const queryKey = React.useMemo<QueryKey>(
@@ -54,24 +59,37 @@ export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) 
   const isCached = !!cachedCategory;
   const isEnabled = enabled && !!categoryId && !isCached;
 
-  // Only fetch if the category is not cached
-  const query = useQuery<TAvailableCategory | undefined>({
-    queryKey,
-    staleTime, // Data validity period
-    enabled: isEnabled, // Disable query if already cached or no id provided
-    queryFn: async (_params) => {
-      try {
-        if (categoryId) {
-          return await getCategoryById({ id: categoryId, ...queryProps });
-        }
-      } catch (error) {
+  const queryFn = React.useCallback(async () => {
+    try {
+      if (categoryId) {
+        const result = await Promise.race([
+          getCategoryById({ id: categoryId, ...queryProps }),
+          new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+        ]);
+        return result;
+      }
+    } catch (error) {
+      if (!memo.mounted) {
+        const message = 'Query failed while unmounted. Probably, that is not an error.';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableCategoryById:queryFn]', traceId, message, {
+          categoryId,
+          queryUrlHash,
+        });
+      } else if (error === 'timeout') {
+        const message = 'Query has been timed out and will be started over';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableCategoryById:queryFn]', traceId, message, {
+          categoryId,
+          queryUrlHash,
+        });
+      } else {
         const message = 'Cannot load category data';
-        const details = getErrorText(error); // error instanceof APIError ? error.details : null;
+        const details = getErrorText(error);
         const comboMsg = [message, details].filter(Boolean).join(': ');
         // eslint-disable-next-line no-console
-        console.error('[useAvailableCategoryById:queryFn]', comboMsg, {
+        console.error('[useAvailableCategoryById:queryFn]', traceId, comboMsg, {
           traceId,
-          _params,
           details,
           error,
           queryProps,
@@ -84,16 +102,47 @@ export function useAvailableCategoryById(props: TUseAvailableCategoryByIdProps) 
         if (isEnabled) {
           debugger; // eslint-disable-line no-debugger
         }
-        throw new Error(message);
+        throw error;
       }
-    },
+      return null;
+    }
+  }, [categoryId, queryProps, memo, traceId, queryUrlHash, queryKey, isEnabled, enabled]);
+
+  // Only fetch if the category is not cached
+  const query = useQuery<TAvailableCategory | undefined | null>({
+    queryKey,
+    staleTime, // Data validity period
+    queryFn,
+    enabled: isEnabled, // Disable query if already cached or no id provided
   });
 
-  return {
-    category: cachedCategory ?? query.data,
-    isCached,
-    queryKey,
-    queryClient,
-    ...query,
-  };
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
+
+  return React.useMemo(
+    () => ({
+      category: cachedCategory ?? query.data,
+      isCached,
+      queryKey,
+      queryUrlHash,
+      queryClient,
+      ...query,
+    }),
+    [cachedCategory, isCached, query, queryKey, queryUrlHash, queryClient],
+  );
 }

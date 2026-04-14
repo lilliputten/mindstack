@@ -7,6 +7,8 @@ import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isDev } from '@/constants';
 
+import { ScrollArea } from './ScrollArea';
+
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -83,8 +85,10 @@ DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayNam
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
+    viewportClassName?: string;
+  }
+>(({ className, viewportClassName, sideOffset = 4, children, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
       ref={ref}
@@ -97,7 +101,7 @@ const DropdownMenuContent = React.forwardRef<
         'rounded-md',
         'border',
         'bg-popover',
-        'p-1',
+        // 'p-1',
         'text-popover-foreground',
         'shadow-md',
         'animate-in',
@@ -105,10 +109,27 @@ const DropdownMenuContent = React.forwardRef<
         'data-[side=left]:slide-in-from-right-2',
         'data-[side=right]:slide-in-from-left-2',
         'data-[side=top]:slide-in-from-bottom-2',
+        'max-h-[var(--radix-dropdown-menu-content-available-height)]',
+        'flex flex-1 flex-col',
         className,
       )}
       {...props}
-    />
+    >
+      <ScrollArea
+        className={cn(
+          isDev && '__DropdownMenu_Scroll', // DEBUG
+          'flex flex-1 flex-col',
+        )}
+        viewportClassName={cn(
+          isDev && '__DropdownMenu_ScrollViewport', // DEBUG
+          'flex flex-1 flex-col',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:flex-1 [&>div]:p-1',
+          viewportClassName,
+        )}
+      >
+        {children}
+      </ScrollArea>
+    </DropdownMenuPrimitive.Content>
   </DropdownMenuPrimitive.Portal>
 ));
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;

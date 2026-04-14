@@ -1,6 +1,19 @@
-        ['available-question', questionId],
-        ['available-questions-for-topic', topicId],
-        ['available-topic', topicId],
-        ['available-topics'],
-        ['available-categories'],
-        ['most-recent-suggested-category'],
+// TODO: Issue #66: Verify all react-query invalidation (check `invalidatePrefixes` invocations)
+
+['available-answers-for-question', questionId],
+['available-categories'],
+['available-question', questionId],
+['available-questions-for-topic', topicId],
+['available-topic', topicId],
+['available-topics'],
+['most-recent-suggested-category'],
+
+See example:
+
+```
+  const invalidatePrefixes = [
+    ['available-question', questionId],
+    ['available-questions-for-topic', topicId],
+  ].map(makeQueryKeyPrefix);
+  invalidateKeysByPrefixes(queryClient, invalidatePrefixes);
+```

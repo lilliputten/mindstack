@@ -181,9 +181,9 @@ describe('getAvailableCategories', () => {
           },
           topics: {
             create: [
-              { name: `${testPrefix} Topic 1`, userId: user.id },
-              { name: `${testPrefix} Topic 2`, userId: user.id },
-              { name: `${testPrefix} Topic 3`, userId: user.id },
+              { name: `${testPrefix} Topic 1`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic 2`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic 3`, userId: user.id, isPublic: true },
             ],
           },
         },
@@ -213,7 +213,7 @@ describe('getAvailableCategories', () => {
             },
           },
           topics: {
-            create: [{ name: `${testPrefix} Topic A`, userId: user.id }],
+            create: [{ name: `${testPrefix} Topic A`, userId: user.id, isPublic: true }],
           },
         },
       });
@@ -448,7 +448,7 @@ describe('getAvailableCategories', () => {
             },
           },
           topics: {
-            create: [{ name: `${testPrefix} Topic A`, userId: user.id }],
+            create: [{ name: `${testPrefix} Topic A`, userId: user.id, isPublic: true }],
           },
         },
       });
@@ -479,10 +479,10 @@ describe('getAvailableCategories', () => {
           },
           topics: {
             create: [
-              { name: `${testPrefix} Topic 1`, userId: user.id },
-              { name: `${testPrefix} Topic 2`, userId: user.id },
-              { name: `${testPrefix} Topic 3`, userId: user.id },
-              { name: `${testPrefix} Topic 4`, userId: user.id },
+              { name: `${testPrefix} Topic 1`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic 2`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic 3`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic 4`, userId: user.id, isPublic: true },
             ],
           },
         },
@@ -514,8 +514,8 @@ describe('getAvailableCategories', () => {
           },
           topics: {
             create: [
-              { name: `${testPrefix} Topic X`, userId: user.id },
-              { name: `${testPrefix} Topic Y`, userId: user.id },
+              { name: `${testPrefix} Topic X`, userId: user.id, isPublic: true },
+              { name: `${testPrefix} Topic Y`, userId: user.id, isPublic: true },
             ],
           },
         },

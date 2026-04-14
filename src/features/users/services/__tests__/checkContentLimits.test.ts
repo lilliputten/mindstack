@@ -57,6 +57,7 @@ describe('checkContentLimits', () => {
       subscriptionStartedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
+      lastSignedIn: null,
     });
   });
 
@@ -131,6 +132,7 @@ describe('checkContentLimits', () => {
         subscriptionStartedAt: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        lastSignedIn: null,
       });
 
       prisma.topic.count.mockResolvedValue(100);

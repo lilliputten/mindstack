@@ -28,7 +28,7 @@ export function UserAvatar({ user, className, ...props }: UserAvatarProps) {
         data-testid="__UserAvatar_Core"
         className={cn(
           isDev && '__UserAvatar_Core', // DEBUG
-          'relative size-10 rounded-full bg-theme-700/25',
+          'relative size-10 overflow-hidden rounded-full bg-theme-700/25',
           // isAdmin && 'border-2 border-solid border-red-400', // Indicate admin role with a border
         )}
         {...props}

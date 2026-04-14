@@ -15,7 +15,7 @@ import { manageCategoriesRoute } from '@/config';
 import { isDev } from '@/constants';
 import { updateCategory } from '@/features/categories/actions';
 import { TAvailableCategory, TCategoryId } from '@/features/categories/types';
-import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useDocumentTitle, useGoBack, useMediaQuery, useUpdateModalVisibility } from '@/hooks';
 
 import { getCategoryName } from '../../helpers';
 import { useAvailableCategoryById } from '../../query-hooks';
@@ -72,7 +72,7 @@ export function EditCategoryModal(props: TProps) {
 
   const dialogTitle = t('EditCategoryModal.DialogTitle');
 
-  useModalTitle(dialogTitle, shouldBeVisible);
+  useDocumentTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const goBack = useGoBack(routePath);

@@ -12,6 +12,12 @@ import { TAvailableTopic } from '@/features/topics/types';
 interface TUseAvailableTopicByIdProps extends TGetAvailableTopicByIdParams {
   /** availableTopicsQueryKey - A query key from `useAvailableTopics` */
   availableTopicsQueryKey?: QueryKey;
+  traceId?: string;
+}
+
+interface TMemo {
+  query?: ReturnType<typeof useQuery>;
+  mounted?: boolean;
 }
 
 const staleTime = defaultStaleTime;
@@ -19,10 +25,11 @@ const staleTime = defaultStaleTime;
 /** Get topic data from cached `useAvailableTopics` query data or fetch it now */
 export function useAvailableTopicById(props: TUseAvailableTopicByIdProps) {
   const queryClient = useQueryClient();
-  // const invalidateKeys = useInvalidateReactQueryKeys();
-  const { availableTopicsQueryKey, id: topicId, ...queryProps } = props;
+  const { availableTopicsQueryKey, id: topicId, traceId, ...queryProps } = props;
 
-  /* Use partrial query url as a part of the query key */
+  const memo = React.useMemo<TMemo>(() => ({}), []);
+
+  /* Use partial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
 
   const queryKey = React.useMemo<QueryKey>(
@@ -41,53 +48,76 @@ export function useAvailableTopicById(props: TUseAvailableTopicByIdProps) {
     .find((topic) => topic.id === topicId);
 
   const isCached = !!cachedTopic;
+  const enabled = !!topicId && !isCached;
 
-  // Only fetch if the topic is not cached
-  const query = useQuery<TAvailableTopic>({
-    queryKey,
-    staleTime, // Data validity period
-    queryFn: async (_params) => {
-      try {
-        /* // OPTION 1: Using route api fetch
-         * const url = appendUrlQueries(`/api/topics/${topicId}`, queryUrlHash);
-         * const result = await handleApiResponse<TAvailableTopic>(fetch(url), {
-         *   onInvalidateKeys: invalidateKeys,
-         *   debugDetails: {
-         *     initiator: 'useAvailableTopicById',
-         *     action: 'getAvailableTopicById',
-         *     url,
-         *     queryProps,
-         *     topicId,
-         *   },
-         * });
-         * return result.data as TAvailableTopic;
-         */
-        // OPTION 2: Using server function
-        return await getAvailableTopicById({ id: topicId, ...queryProps });
-      } catch (error) {
-        const errDetails = getErrorText(error); // error instanceof APIError ? error.details : null;
-        const humanMsg = 'Cannot load topic data';
+  const queryFn = React.useCallback(async () => {
+    try {
+      const result = await Promise.race([
+        getAvailableTopicById({ id: topicId, ...queryProps }),
+        new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+      ]);
+
+      return result;
+    } catch (error) {
+      if (!memo.mounted) {
+        const message = 'Query failed while unmounted. Probably, that is not an error.';
         // eslint-disable-next-line no-console
-        console.error('[useAvailableTopicById:queryFn]', humanMsg, {
+        console.warn('[useAvailableTopicById:queryFn]', traceId, message, { topicId });
+      } else if (error === 'timeout') {
+        const message = 'Query has been timed out and will be started over';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableTopicById:queryFn]', traceId, message, { topicId });
+      } else {
+        const errDetails = getErrorText(error);
+        const message = 'Cannot load topic data';
+        // eslint-disable-next-line no-console
+        console.error('[useAvailableTopicById:queryFn]', traceId, message, {
           errDetails,
           error,
           queryProps,
           topicId,
         });
-        // eslint-disable-next-line no-debugger
-        debugger;
-        // toast.error(humanMsg);
-        throw new Error(humanMsg);
+        debugger; // eslint-disable-line no-debugger
+        throw error;
       }
-    },
-    enabled: !isCached, // Disable query if already cached
-  });
+      return null;
+    }
+  }, [topicId, queryProps, traceId, memo]);
 
-  return {
-    topic: cachedTopic ?? query.data,
-    isCached,
+  // Only fetch if the topic is not cached
+  const query = useQuery<TAvailableTopic | null>({
     queryKey,
-    queryClient,
-    ...query,
-  };
+    staleTime, // Data validity period
+    queryFn,
+    enabled, // Disable query if already cached
+  });
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
+
+  return React.useMemo(
+    () => ({
+      topic: cachedTopic ?? query.data,
+      isCached,
+      queryKey,
+      queryUrlHash,
+      queryClient,
+      ...query,
+    }),
+    [cachedTopic, isCached, query, queryKey, queryUrlHash, queryClient],
+  );
 }

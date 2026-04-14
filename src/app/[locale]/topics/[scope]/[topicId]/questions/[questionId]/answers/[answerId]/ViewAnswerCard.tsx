@@ -45,7 +45,9 @@ export function ViewAnswerCard(props: TViewAnswerCardProps) {
 
   // const goToTheRoute = useGoToTheRoute();
   const goBack = useGoBack(answersListRoutePath);
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewAnswerCard',
+  });
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [

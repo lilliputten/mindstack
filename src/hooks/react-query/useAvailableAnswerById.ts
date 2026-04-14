@@ -14,6 +14,12 @@ interface TUseAvailableAnswerByIdProps extends TGetAvailableAnswerByIdParams {
   /** availableAnswersQueryKey - A query key from `useAvailableAnswers` */
   availableAnswersQueryKey?: QueryKey;
   enabled?: boolean;
+  traceId?: string;
+}
+
+interface TMemo {
+  query?: ReturnType<typeof useQuery>;
+  mounted?: boolean;
 }
 
 const staleTime = defaultStaleTime;
@@ -22,7 +28,9 @@ const staleTime = defaultStaleTime;
 export function useAvailableAnswerById(props: TUseAvailableAnswerByIdProps) {
   const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
-  const { availableAnswersQueryKey, id: answerId, enabled, ...queryProps } = props;
+  const { availableAnswersQueryKey, id: answerId, enabled = true, traceId, ...queryProps } = props;
+
+  const memo = React.useMemo<TMemo>(() => ({}), []);
 
   /* Use partrial query url as a part of the query key */
   const queryUrlHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
@@ -43,52 +51,76 @@ export function useAvailableAnswerById(props: TUseAvailableAnswerByIdProps) {
     .find((answer) => answer.id === answerId);
 
   const isCached = !!cachedAnswer;
+  const isEnabled = enabled && !isCached;
 
-  // Only fetch if the answer is not cached
-  const query = useQuery<TAvailableAnswer>({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey,
-    staleTime, // Data validity period
-    enabled: enabled && !isCached, // Disable query if already cached
-    queryFn: async (_params) => {
-      const url = appendUrlQueries(`/api/answers/${answerId}`, queryUrlHash);
-      try {
-        /* // OPTION 1: Using route api fetch
-         * const result = await handleApiResponse<TAvailableAnswer>(fetch(url), {
-         *   onInvalidateKeys: invalidateKeys,
-         *   debugDetails: {
-         *     initiator: 'useAvailableAnswerById',
-         *     action: 'getAvailableAnswerById',
-         *     url,
-         *     queryProps,
-         *     answerId,
-         *   },
-         * });
-         * return result.data as TAvailableAnswer;
-         */
-        // OPTION 2: Using server function
-        return await getAvailableAnswerById({ id: answerId, ...queryProps });
-      } catch (error) {
+  const queryFn = React.useCallback(async () => {
+    const url = appendUrlQueries(`/api/answers/${answerId}`, queryUrlHash);
+
+    try {
+      const result = await Promise.race([
+        getAvailableAnswerById({ id: answerId, ...queryProps }),
+        new Promise<never>((_, reject) => setTimeout(() => reject('timeout'), 10000)),
+      ]);
+
+      return result;
+    } catch (error) {
+      if (!memo.mounted) {
+        const message = 'Query failed while unmounted. Probably, that is not an error.';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableAnswerById:queryFn]', traceId, message, { answerId, url });
+      } else if (error === 'timeout') {
+        const message = 'Query has been timed out and will be started over';
+        // eslint-disable-next-line no-console
+        console.warn('[useAvailableAnswerById:queryFn]', traceId, message, { answerId, url });
+      } else {
         const details = error instanceof APIError ? error.details : null;
         const message = 'Cannot load answer data';
         // eslint-disable-next-line no-console
-        console.error('[useAvailableAnswerById:queryFn]', message, {
+        console.error('[useAvailableAnswerById:queryFn]', traceId, message, {
           details,
           error,
           url,
         });
-        // eslint-disable-next-line no-debugger
-        debugger;
+        debugger; // eslint-disable-line no-debugger
         toast.error(message);
         throw error;
       }
-    },
-  });
+      return null;
+    }
+  }, [answerId, queryProps, queryUrlHash, traceId, memo]);
 
-  return {
-    ...query,
-    answer: cachedAnswer ?? query.data,
-    isCached,
+  const query = useQuery<TAvailableAnswer | null>({
     queryKey,
-  };
+    staleTime, // Data validity period
+    queryFn,
+    enabled: isEnabled, // Disable query if already cached
+  });
+  memo.query = query;
+
+  React.useEffect(() => {
+    const query = memo.query;
+    if (query) {
+      memo.mounted = true;
+      return () => {
+        memo.mounted = false;
+        const { isFetching } = query;
+        if (isFetching) {
+          queryClient.cancelQueries({ queryKey, exact: true });
+          queryClient.resetQueries({ queryKey, exact: true });
+          queryClient.removeQueries({ queryKey, exact: true });
+        }
+      };
+    }
+  }, [memo, queryKey, queryClient]);
+
+  return React.useMemo(
+    () => ({
+      ...query,
+      answer: cachedAnswer ?? query.data,
+      isCached,
+      queryKey,
+      queryUrlHash,
+    }),
+    [query, cachedAnswer, isCached, queryKey, queryUrlHash],
+  );
 }

@@ -1,10 +1,8 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
 import { TReactNode } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { TGenericIcon } from '@/components/shared/IconTypes';
+import { useT } from '@/i18n';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/constants';
 
@@ -13,25 +11,20 @@ import { isDev } from '@/constants';
 interface TNotFoundScreenProps {
   title?: TReactNode;
   className?: string;
-  icon?: TGenericIcon;
+  iconId?: string;
 }
 
-export default function NotFoundScreen(props: TNotFoundScreenProps) {
-  const { title, className, icon } = props;
-  const pathname = usePathname();
-  const titleContent = title || (
-    <>
-      Page <u>{pathname}</u> not found!
-    </>
-  );
+export function NotFoundScreen(props: TNotFoundScreenProps) {
+  const { title, className, iconId } = props;
+  const t = useT();
   return (
     <PageError
       className={cn(
         isDev && '__NotFoundScreen', // DEBUG
         className,
       )}
-      icon={icon}
-      title={titleContent}
+      icon={iconId}
+      title={title || t('PageNotFound')}
     />
   );
 }

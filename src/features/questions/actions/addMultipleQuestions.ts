@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db';
 import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getErrorText } from '@/lib/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { isDev } from '@/constants';
 import { checkQuestionsLimit } from '@/features/users/services/checkContentLimits';
 
 import { TAvailableQuestion, TNewQuestion } from '../types';
@@ -51,6 +52,10 @@ function getCreateQuestionData(questionData: TNewQuestion) {
 export async function addMultipleQuestions(
   newQuestions: TNewQuestion[],
 ): Promise<TAvailableQuestion[]> {
+  if (isDev) {
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+
   const user = await getCurrentUser();
   if (!user) {
     throw new Error('User must be signed in');

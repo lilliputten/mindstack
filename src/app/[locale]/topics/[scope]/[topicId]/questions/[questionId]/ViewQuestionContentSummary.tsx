@@ -9,21 +9,21 @@ import { truncateMarkdown } from '@/lib/helpers/markdown';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
-import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
 import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
-import { isDev } from '@/constants';
+import { defaultStaleTime, isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
+import { AnswersEditor } from '@/features/answers/components/AnswersEditor';
 import { TAvailableQuestion } from '@/features/questions/types';
 import { TAvailableTopic } from '@/features/topics/types';
 import { SmallUserBlock } from '@/features/users';
 import { useUserById } from '@/features/users/query-hooks';
-import { useSessionUser } from '@/hooks';
+import { useAvailableAnswers, useSessionUser } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 interface TProps {
@@ -38,13 +38,29 @@ export function ViewQuestionContentSummary(props: TProps) {
   const format = useFormatter();
   const user = useSessionUser();
   const isLogged = !!user;
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewQuestionContentSummary',
+  });
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
+
+  const questionId = question.id;
 
   const t = useT();
 
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
+
+  const [hasAnswersChanged, setHasAnswersChanged] = React.useState(false);
+
+  const availableAnswersQuery = useAvailableAnswers({
+    questionId,
+    itemsLimit: null,
+    includeQuestion: true,
+    traceId: 'ViewQuestionContentSummary',
+    // NOTE: Disable update while editing
+    staleTime: hasAnswersChanged ? Infinity : defaultStaleTime,
+  });
+  const { isFetching: isAnswersFetching, isFetched: isAnswersFetched } = availableAnswersQuery;
 
   const questionTextContent = (
     <div
@@ -68,14 +84,33 @@ export function ViewQuestionContentSummary(props: TProps) {
     </div>
   );
 
+  const extraQueryContent = question.extraQuery && (
+    <div
+      data-testid="__ViewQuestionContentSummary_Section_ExtraQuery"
+      className="flex flex-col gap-4"
+    >
+      <div className="flex items-center gap-2">
+        <h3 className="content-truncate text-lg font-semibold">
+          {t('ViewQuestionContentSummary.ExtraQuery')}
+        </h3>
+      </div>
+      <div className="content-truncate rounded-lg bg-slate-500/10 p-4 text-sm">
+        {question.extraQuery}
+      </div>
+    </div>
+  );
+
   const questionPropertiesContent = (
     <div
       data-testid="__ViewQuestionContentSummary_Section_Properties"
       className="flex flex-col gap-4"
     >
       <div className="content-truncate flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="content-truncate text-lg font-semibold">
-          {t('ViewQuestionContentSummary.Answers')}
+        <h3 className="content-truncate flex gap-2 text-lg">
+          <span className="truncate font-semibold">{t('ViewQuestionContentSummary.Answers')}</span>
+          {!!question._count?.answers && (
+            <span className="truncate opacity-50">({question._count.answers})</span>
+          )}
         </h3>
         <div className="content-truncate flex flex-wrap gap-2">
           <Link
@@ -106,32 +141,25 @@ export function ViewQuestionContentSummary(props: TProps) {
           </Link>
         </div>
       </div>
-      <div className="content-truncate flex flex-wrap gap-2">
-        <Badge variant="outline" className="flex items-center gap-2 truncate px-2 py-1">
-          <Icons.Answers className="size-4 shrink-0 opacity-50" />
-          {question._count?.answers ? (
-            <span className="truncate">
-              <span className="truncate opacity-50">
-                {t('ViewQuestionContentSummary.AnswersCount')}:
-              </span>{' '}
-              {question._count.answers}
-            </span>
-          ) : (
-            <span className="truncate">{t('ViewQuestionContentSummary.NoAnswersYet')}</span>
-          )}
-        </Badge>
-
-        {question.answersCountRandom && question.answersCountMin && question.answersCountMax && (
-          <Badge
-            variant="outline"
-            className="flex items-center gap-2 truncate border-blue-500 px-2 py-1 text-blue-500"
-          >
-            <Icons.Hash className="size-4 shrink-0 opacity-50" />
-            <span className="truncate">
-              {t('ViewQuestionContentSummary.RandomAnswersRange')}: {question.answersCountMin}-
-              {question.answersCountMax}
-            </span>
-          </Badge>
+      <div className="content-truncate flex flex-1 flex-col gap-2">
+        {false || !isAnswersFetched ? (
+          <div className="flex w-full flex-col gap-2">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex w-full flex-col gap-1">
+              {generateArray(question._count?.answers ?? 3).map((n) => (
+                <Skeleton key={n} className="h-8 w-full" />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <AnswersEditor
+            topicId={question.topicId}
+            questionId={question.id}
+            availableAnswersQuery={availableAnswersQuery}
+            isReady={isAnswersFetched}
+            isLoading={isAnswersFetching}
+            setHeadlessEditorState={(state) => setHasAnswersChanged(state.hasChanges)}
+          />
         )}
       </div>
     </div>
@@ -220,7 +248,7 @@ export function ViewQuestionContentSummary(props: TProps) {
         <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
           <span className="flex gap-2 truncate opacity-50">
             <Icons.CalendarDays className="hidden size-4 shrink-0 sm:flex" />
-            <span className="truncate">{t('ViewQuestionContentSummary.Created')}:</span>
+            <span className="truncate">{t('Created')}:</span>
           </span>
           <span className="truncate">{getFormattedRelativeDate(format, question.createdAt)}</span>
         </div>
@@ -228,7 +256,7 @@ export function ViewQuestionContentSummary(props: TProps) {
           <div className="content-truncate flex flex-wrap items-center gap-2 gap-y-1">
             <span className="flex gap-2 truncate opacity-50">
               <Icons.Edit className="hidden size-4 shrink-0 sm:flex" />
-              <span className="truncate">{t('ViewQuestionContentSummary.Modified')}:</span>
+              <span className="truncate">{t('Modified')}:</span>
             </span>
             <span className="truncate">{getFormattedRelativeDate(format, question.updatedAt)}</span>
           </div>
@@ -246,6 +274,7 @@ export function ViewQuestionContentSummary(props: TProps) {
     >
       <AIGenerationsStatusInfo className="content-truncate" />
       {questionTextContent}
+      {extraQueryContent}
       {questionPropertiesContent}
       <Separator />
       {topicInfoContent}

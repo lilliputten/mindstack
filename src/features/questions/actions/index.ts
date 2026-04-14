@@ -7,3 +7,4 @@ export * from './getAvailableQuestions';
 export * from './getAvailableQuestionsIdsForTopicId';
 export * from './getQuestion';
 export * from './updateQuestion';
+export * from './updateQuestionsDataViaParams';

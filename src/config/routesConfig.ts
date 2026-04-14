@@ -24,6 +24,7 @@ export const recentTrainingsRoute = '/trainings/recent';
 export const settingsRoute = '/settings';
 
 // 4. User-only allowed routes
+export const adminUiDemoRoute = '/admin/ui-demo';
 export const adminAiTestTextQueryRoute = '/admin/ai/test-text-query';
 export const adminBotControlRoute = '/admin/bot/control';
 export const adminRoute = '/admin';
@@ -125,6 +126,7 @@ const allRoutes = [
   settingsRoute,
 
   // 4. User-only allowed routes
+  adminUiDemoRoute,
   adminAiTestTextQueryRoute,
   adminBotControlRoute,
   adminRoute,

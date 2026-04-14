@@ -31,10 +31,14 @@ export const ManageTopicsStoreProvider = (props: ManageTopicsProviderProps) => {
 
 export const useManageTopicsStoreSelector = <T,>(selector: (store: ManageTopicsStore) => T): T => {
   const counterStoreContext = useContext(ManageTopicsContext);
-  if (!counterStoreContext) {
-    throw new Error(`useManageTopicsStoreSelector must be used within ManageTopicsStoreProvider`);
-  }
-  return useStore(counterStoreContext, selector);
+  /* // Old approach: Throw an error for missed context
+   * if (!counterStoreContext) {
+   *   throw new Error(`useManageTopicsStoreSelector must be used within ManageTopicsStoreProvider`);
+   *   // return { manageScope: 'my' };
+   * }
+   */
+  // XXX: Is it safe?
+  return useStore(counterStoreContext || createManageTopicsStore(), selector);
 };
 
 export const useManageTopicsStore = () => useManageTopicsStoreSelector((state) => state);

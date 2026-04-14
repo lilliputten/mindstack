@@ -2,10 +2,12 @@
 
 import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 
 import { TPropsWithChildren } from '@/lib/types/react';
 import { deepCompare, prepareObjectToLossyCompare } from '@/lib/helpers';
+import { TLocale } from '@/i18n';
 import { useLocalStorage, useSessionData } from '@/hooks';
 
 import {
@@ -52,32 +54,44 @@ interface TWorkoutsFiltersContextProviderProps extends TPropsWithChildren {
   onFiltersChanged?: (filters: TAvailableWorkoutsFiltersParams) => void;
 }
 
-function getFiltersParamsFromData(filtersData: TFiltersData) {
+function getFiltersParamsFromData(
+  filtersData: TFiltersData,
+  locale: TLocale,
+): TAvailableWorkoutsFiltersParams {
   const {
     searchText,
     hasWorkoutStats,
     hasActiveWorkouts,
     langCode,
     langName,
-    searchLang,
-    minStarted,
-    maxStarted,
-    minFinished,
-    maxFinished,
+    // searchLang,
+    // minStarted,
+    // maxStarted,
+    // minFinished,
+    // maxFinished,
+    // categoryIds,
+    ...rest
   } = filtersData;
 
-  return {
+  const finalLangCode = langCode === '-' ? undefined : !langCode ? locale : langCode;
+
+  const params = {
+    ...rest,
     searchText: searchText != null ? searchText : undefined,
     hasWorkoutStats: hasWorkoutStats != null ? hasWorkoutStats : undefined,
     hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
-    langCode: langCode != null ? langCode : undefined,
-    langName: langName != null ? langName : undefined,
-    searchLang: searchLang != null ? searchLang : undefined,
-    minStarted,
-    maxStarted,
-    minFinished,
-    maxFinished,
-  };
+    langCode: finalLangCode,
+    langName: langCode !== '-' && langName ? langName : undefined,
+    // langName: langName != null ? langName : undefined,
+    // langCode: langCode != null ? langCode : undefined,
+    // searchLang: searchLang != null ? searchLang : undefined,
+    // minStarted,
+    // maxStarted,
+    // minFinished,
+    // maxFinished,
+  } satisfies TAvailableWorkoutsFiltersParams;
+
+  return params;
 }
 
 /** Lossy compare with defaults. Don't count:
@@ -99,6 +113,8 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
 
   const { loading: isUserLoading, authenticated: isAuthenticated } = useSessionData();
   const isLocal = !isAuthenticated;
+
+  const locale = useLocale() as TLocale;
 
   const [isExpanded, setExpanded] = React.useState(false);
   const [isReady, setIsReady] = React.useState(false);
@@ -125,8 +141,8 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
   );
 
   const getFiltersParams = React.useCallback((): TAvailableWorkoutsFiltersParams => {
-    return getFiltersParamsFromData(filtersData);
-  }, [filtersData]);
+    return getFiltersParamsFromData(filtersData, locale);
+  }, [filtersData, locale]);
 
   const handleApplyButton = React.useCallback(
     async (data: TFiltersData) => {
@@ -135,7 +151,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
         const isDefaults = JSON.stringify(data) === JSON.stringify(filtersDataDefaults);
         const saveData = isDefaults ? undefined : data;
         setStoredFilters(saveData);
-        const filtersParams = getFiltersParamsFromData(data);
+        const filtersParams = getFiltersParamsFromData(data, locale);
         setFiltersParams(filtersParams);
         onFiltersChanged?.(filtersParams);
         setExpanded(false);
@@ -149,7 +165,7 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
         console.error('[WorkoutsFiltersContext:handleApplyButton]', { error: err });
       }
     },
-    [form, isInited, onFiltersChanged, setStoredFilters],
+    [form, isInited, onFiltersChanged, setStoredFilters, locale],
   );
 
   const handleResetToDefaults = React.useCallback(() => {
@@ -178,11 +194,11 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
     const initialFilters = { ...filtersDataDefaults, ...storedFilters };
     form.reset(initialFilters);
     setStoredFilters(initialFilters);
-    const filtersParams = getFiltersParamsFromData(initialFilters);
+    const filtersParams = getFiltersParamsFromData(initialFilters, locale);
     setFiltersParams(filtersParams);
     setIsReady(true);
     setIsInited(true);
-  }, [form, isInited, localStorageInited, storedFilters, setStoredFilters, storageKey]);
+  }, [form, isInited, localStorageInited, storedFilters, setStoredFilters, storageKey, locale]);
 
   const expandFilters = React.useCallback(() => {
     if (!isExpanded) {
@@ -237,5 +253,3 @@ export function WorkoutsFiltersContextProvider(props: TWorkoutsFiltersContextPro
     <WorkoutsFiltersContext.Provider value={value}>{children}</WorkoutsFiltersContext.Provider>
   );
 }
-
-export default WorkoutsFiltersContext;

@@ -407,7 +407,9 @@ export function QuestionsTableContent(
     });
   }, [memo, setSelectedQuestions]);
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ManageTopicsListCard:QuestionsTableContent',
+  });
 
   if (!isQuestionsFetched) {
     return (
@@ -574,7 +576,6 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
   const handleDeleteSelected = React.useCallback(() => {
     const selectedIds = Array.from(selectedQuestions);
     if (selectedIds.length === 0) return;
-
     const promise = deleteSelectedMutation.mutateAsync(selectedIds);
     toast.promise(promise, {
       loading: t('ManageTopicQuestionsListCard.DeletingSelectedQuestions'),
@@ -592,7 +593,9 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
     setShowDeleteSelectedConfirm(false);
   }, []);
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ManageTopicQuestionsListCard:ManageTopicQuestionsListCard',
+  });
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -674,7 +677,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
 
   const breadcrumbs = useQuestionsBreadcrumbsItems({
     scope: manageScope,
-    topic,
+    topic: topic || undefined,
   });
 
   return (
@@ -704,7 +707,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         // goToTheRoute={goToTheRoute}
       />
       <ConfirmModal
-        dialogTitle={t('ManageTopicQuestionsListCard.ConfirmDeleteQuestions')}
+        dialogTitle={t('ConfirmDeleteQuestions')}
         confirmButtonVariant="destructive"
         confirmButtonText={t('Delete')}
         confirmButtonBusyText={t('ManageTopicQuestionsListCard.Deleting')}
@@ -714,7 +717,7 @@ export function ManageTopicQuestionsListCard(props: TManageTopicQuestionsListCar
         isPending={deleteSelectedMutation.isPending}
         isVisible={showDeleteSelectedConfirm}
       >
-        {t('ManageTopicQuestionsListCard.ConfirmDeleteQuestionsMessage', {
+        {t('ConfirmDeleteQuestionsMessage', {
           count: selectedQuestions.size,
         })}
       </ConfirmModal>

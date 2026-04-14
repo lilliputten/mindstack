@@ -24,6 +24,11 @@ import { isDev } from '@/constants';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { updateAnswer } from '@/features/answers/actions';
 import { useAnswersBreadcrumbsItems } from '@/features/answers/components/AnswersBreadcrumbs';
+import {
+  answerFormDataSchema,
+  EditAnswerForm,
+  TFormData,
+} from '@/features/answers/components/EditAnswerForm';
 import { TAnswer, TAvailableAnswer } from '@/features/answers/types';
 import {
   useAvailableAnswerById,
@@ -34,9 +39,6 @@ import {
   useGoToTheRoute,
 } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
-
-import { EditAnswerForm } from './EditAnswerForm';
-import { answerFormDataSchema, TFormData } from './types';
 
 interface TEditAnswerCardProps {
   availableTopicQuery: ReturnType<typeof useAvailableTopicById>;
@@ -77,7 +79,7 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     throw new Error(t('NoQuestionFound'));
   }
   if (!answer) {
-    throw new Error(t('EditAnswerCard.NoAnswerFound'));
+    throw new Error(t('NoAnswerFound'));
   }
 
   // Calculate paths...
@@ -183,13 +185,15 @@ export function EditAnswerCard(props: TEditAnswerCardProps) {
     [answer, t, queryClient, availableAnswersQuery, form],
   );
 
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewAnswerCard',
+  });
 
   const handleReload = React.useCallback(() => {
     availableAnswerQuery
       .refetch()
       .then((res) => {
-        const answer: TAvailableAnswer | undefined = res.data;
+        const answer: TAvailableAnswer | undefined | null = res.data;
         if (answer) {
           // Convert answer to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
           const cleanedAnswer = removeNullUndefinedValues(

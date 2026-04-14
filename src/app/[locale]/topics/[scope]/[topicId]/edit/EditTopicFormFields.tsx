@@ -29,7 +29,8 @@ interface TEditTopicFormFieldsProps {
   onCancel?: (ev: React.MouseEvent) => void;
   form: UseFormReturn<TTopicFormData>;
   className?: string;
-  selectLanguage: (ev: React.MouseEvent) => void;
+  selectLanguage: () => void;
+  resetLanguage: () => void;
 }
 
 /**
@@ -51,26 +52,18 @@ function FormSection({ children }: TPropsWithChildren) {
 }
 
 export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
-  const { className, form, selectLanguage } = props;
+  const { className, form, selectLanguage, resetLanguage } = props;
   const t = useT();
   // Create unique keys for labels
   const nameKey = React.useId();
   const descriptionKey = React.useId();
+  const extraQueryKey = React.useId();
   const isPublicKey = React.useId();
   const keywordsKey = React.useId();
   const langCodeKey = React.useId();
   const answersCountRandomKey = React.useId();
   const answersCountMinKey = React.useId();
   const answersCountMaxKey = React.useId();
-  // Reset language
-  const resetLang = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    const opts = { shouldDirty: true, shouldValidate: true };
-    form.setValue('langCode', undefined, opts);
-    form.setValue('langName', undefined, opts);
-    form.setValue('langCustom', undefined, opts);
-  };
   return (
     <div className={cn('flex w-full flex-col gap-6 px-6 py-2 md:flex-row', className)}>
       <FormSection>
@@ -97,7 +90,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Input
                   id={nameKey}
                   type="text"
-                  className="flex-1"
+                  className="w-full flex-1"
                   placeholder={t('EditTopicFormFields.TopicNamePlaceholder')}
                   {...field}
                 />
@@ -123,12 +116,37 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                   id={descriptionKey}
                   className="flex-1"
                   placeholder={t('EditTopicFormFields.TopicDescriptionPlaceholder')}
-                  rows={5}
+                  rows={3}
                   {...field}
                 />
               </FormControl>
               <FormHint className="content-truncate">
                 {t('EditTopicFormFields.TopicDescriptionHint')} <MarkdownHint />
+              </FormHint>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* extraQuery */}
+        <FormField
+          name="extraQuery"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-4">
+              <Label className="truncate" htmlFor={extraQueryKey}>
+                {t('EditTopicFormFields.TopicExtraQuery')}
+              </Label>
+              <FormControl>
+                <Textarea
+                  id={extraQueryKey}
+                  className="flex-1"
+                  placeholder={t('EditTopicFormFields.TopicExtraQueryPlaceholder')}
+                  rows={3}
+                  {...field}
+                />
+              </FormControl>
+              <FormHint className="content-truncate">
+                {t('EditTopicFormFields.TopicExtraQueryHint')}
               </FormHint>
               <FormMessage />
             </FormItem>
@@ -149,6 +167,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Input
                   id={keywordsKey}
                   type="text"
+                  className="w-full flex-1"
                   placeholder={t('EditTopicFormFields.KeywordsPlaceholder')}
                   {...field}
                 />
@@ -197,11 +216,17 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                 <Button
                   id={langCodeKey}
                   variant="ghostForm"
-                  onClick={selectLanguage}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    selectLanguage();
+                  }}
                   className="flex w-full justify-stretch gap-4 text-left"
                 >
                   <span className="flex-1 truncate">
-                    {langCode || langName ? (
+                    {langCode === '-' ? (
+                      t('AnyLanguage')
+                    ) : langCode || langName ? (
                       <LanguageName langCode={langCode} langName={langName} />
                     ) : (
                       t('EditTopicFormFields.SelectLanguage')
@@ -212,7 +237,21 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                       <Icons.Edit className="size-3" />
                     </span>
                   )}
-                  {langCode && <Icons.Close onClick={resetLang} className="size-4" />}
+                  {langCode === '-' && (
+                    <span className="opacity-50">
+                      <Icons.Asterisk className="size-5" />
+                    </span>
+                  )}
+                  {(langCode || langName) && (
+                    <Icons.Close
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        resetLanguage();
+                      }}
+                      className="size-4"
+                    />
+                  )}
                 </Button>
                 <FormHint className="content-truncate">
                   {t('EditTopicFormFields.TopicLanguageHint')}
@@ -266,6 +305,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                     <Input
                       id={answersCountMinKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditTopicFormFields.MinimalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}
@@ -287,6 +327,7 @@ export function EditTopicFormFields(props: TEditTopicFormFieldsProps) {
                     <Input
                       id={answersCountMaxKey}
                       type="number"
+                      className="w-full flex-1"
                       placeholder={t('EditTopicFormFields.MaximalQuestionsCount')}
                       {...field}
                       onChange={(ev) => field.onChange(Number(ev.target.value) || '')}

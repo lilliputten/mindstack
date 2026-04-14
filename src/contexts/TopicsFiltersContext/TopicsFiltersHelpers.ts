@@ -122,9 +122,9 @@ export function getActiveFilterIds(filtersData?: TFiltersData): TFiltersDataKey[
       return id;
     })
     .filter(Boolean);
-  // NOTE: searchLang is a permanent field, due to these specific cases: '-' -- for all languages, and the empty value -- for locale default
-  if (!activeIds.includes('searchLang')) {
-    activeIds.unshift('searchLang');
+  // NOTE: langCode is a permanent field, due to these specific cases: '-' -- for all languages, and the empty value -- for locale default
+  if (!activeIds.includes('langCode')) {
+    activeIds.unshift('langCode');
   }
   return activeIds as TFiltersDataKey[];
 }
@@ -139,6 +139,11 @@ export function convertAvailableFiltersToParams(
     hasActiveWorkouts: hasActiveWorkouts != null ? hasActiveWorkouts : undefined,
     hasQuestions: hasQuestions != null ? hasQuestions : undefined,
     orderBy: orderBySelect ? orderByMap[orderBySelect] : undefined,
-    searchLang: filtersData.searchLang !== '-' ? filtersData.searchLang : undefined,
+    // searchLang: filtersData.searchLang !== '-' ? filtersData.searchLang : undefined,
+    langCode: filtersData.langCode !== '-' ? filtersData.langCode : undefined,
+    langName:
+      filtersData.langCode && filtersData.langCode !== '-' && filtersData.langName
+        ? filtersData.langName
+        : undefined,
   };
 }

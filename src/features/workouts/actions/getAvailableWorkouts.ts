@@ -108,7 +108,7 @@ export async function getAvailableWorkouts(
       where.AND = [...existingAnd, { topicId: { in: topicIds } }];
     }
 
-    if (categoryIds) {
+    if (categoryIds?.length) {
       where.topic = {
         ...((where.topic as Prisma.TopicWhereInput) || {}),
         categories: { some: { id: { in: categoryIds } } },

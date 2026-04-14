@@ -83,7 +83,7 @@ export function DashboardSidebar({ links }: TDashboardSidebarProps) {
         saveScrollHash={saveScrollHash}
         className={cn(
           isDev && '__DashboardSidebar', // DEBUG
-          'h-full border-r bg-theme/10',
+          'h-full shrink-0 border-r bg-theme/10',
         )}
         viewportClassName={cn(
           isDev && '__DashboardSidebar_ScrollViewport', // DEBUG

@@ -31,6 +31,11 @@ jest.mock('next/navigation', () => ({
 
 jest.mock('next-intl/server', () => ({
   setRequestLocale: jest.fn(),
+  getRequestConfig: jest.fn(() => ({
+    messages: {},
+    onError: jest.fn(),
+    getMessageFallback: jest.fn(),
+  })),
 }));
 
 // Mock the auth module with proper typing

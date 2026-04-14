@@ -1,13 +1,5 @@
-import { TAwaitedLocaleProps } from '@/i18n/types';
-import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
+import { GenerateQuestionsPage } from '@/components/pages/ManageTopicQuestions/GenerateQuestionsModal/GenerateQuestionsPage';
 
-import ManageTopicQuestionsPage from '../page';
+export { generateMetadata } from '@/components/pages/ManageTopicQuestions/GenerateQuestionsModal/GenerateQuestionsPage';
 
-type TAwaitedProps = TAwaitedLocaleProps<{
-  scope: TTopicsManageScopeId;
-  topicId: string;
-}>;
-
-export default function GenerateQuestionsModalPage({ params }: TAwaitedProps) {
-  return <ManageTopicQuestionsPage showGenerateModal={true} params={params} />;
-}
+export default GenerateQuestionsPage;

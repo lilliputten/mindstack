@@ -66,7 +66,7 @@ export async function getAvailableCategories(
     if (includeTranslations) {
       include.translations = true;
     }
-    include._count = { select: { topics: true } };
+    include._count = { select: { topics: { where: { isPublic: true } } } };
 
     /* // ???
      * if (!userId) {

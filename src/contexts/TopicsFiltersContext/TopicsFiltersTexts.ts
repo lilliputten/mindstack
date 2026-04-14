@@ -34,7 +34,10 @@ export const specifcFieldUnionStrings: Partial<Record<TFiltersDataKey, Record<st
 
 export const filterFieldNames: Record<TFiltersDataKey, string> = {
   searchText: 'Label-SearchText',
-  searchLang: 'Label-SearchLang',
+  // searchLang: 'Label-SearchLang',
+  langCode: 'Label-LangCode',
+  langName: 'Label-LangName', // ???
+  langCustom: 'Label-LangCustom', // ???
   showOnlyMyTopics: 'Label-ShowOnlyMyTopics',
   hasWorkoutStats: 'Label-HasWorkoutStats',
   hasActiveWorkouts: 'Label-HasActiveWorkouts',

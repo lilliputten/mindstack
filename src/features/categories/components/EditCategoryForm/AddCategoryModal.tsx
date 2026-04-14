@@ -23,7 +23,7 @@ import { isDev } from '@/constants';
 import { createCategory } from '@/features/categories/actions';
 import { useMostRecentSuggestedCategory } from '@/features/categories/query-hooks/useMostRecentSuggestedCategory';
 import { TAvailableCategory, TCreateCategoryParams } from '@/features/categories/types';
-import { useGoBack, useMediaQuery, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useDocumentTitle, useGoBack, useMediaQuery, useUpdateModalVisibility } from '@/hooks';
 
 import { allowSuggestCategoriesIn } from '../../constants';
 import { EditCategoryForm } from './EditCategoryForm';
@@ -74,7 +74,7 @@ export function AddCategoryModal(props: TProps) {
   const shouldBeVisible = true; // pathname?.endsWith(urlPostfix);
 
   const dialogTitle = suggestionMode ? t('SuggestNewCategory') : t('AddNewCategory');
-  useModalTitle(dialogTitle, shouldBeVisible);
+  useDocumentTitle(dialogTitle, shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const goBack = useGoBack(routePath);

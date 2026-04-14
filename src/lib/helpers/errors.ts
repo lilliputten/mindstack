@@ -37,7 +37,11 @@ export function getErrorText(err: unknown, opts: TGetErrorTextOpts = {}): string
    */
   const isError = err instanceof Error;
   let errorText: string | undefined;
-  if (isErrorInstance(err, AIGenerationError)) {
+  if (err instanceof Event && (err.target instanceof AbortSignal || err.type === 'abort')) {
+    errorText = 'AbortEvent';
+  } else if (err instanceof AbortSignal) {
+    errorText = 'AbortSignal';
+  } else if (isErrorInstance(err, AIGenerationError)) {
     errorText = getGenericIDErrorText(err, AIGenerationError);
   } else if (isErrorInstance(err, ServerAuthError)) {
     errorText = getGenericIDErrorText(err, ServerAuthError);

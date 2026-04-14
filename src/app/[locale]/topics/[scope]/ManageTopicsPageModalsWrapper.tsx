@@ -41,6 +41,7 @@ export function ManageTopicsPageModalsWrapper(props: TTopicsListProps) {
   >();
 
   const availableTopicsQuery = useAvailableTopicsByScope({
+    traceId: 'ManageTopicsPageModalsWrapper',
     manageScope,
     enabled: !!filtersParams,
     showOnlyMyTopics: isOnlyMy,

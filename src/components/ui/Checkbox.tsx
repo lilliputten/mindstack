@@ -16,16 +16,17 @@ const Checkbox = React.forwardRef<
   React.ComponentPropsWithoutRef<TRoot> & {
     icon?: TGenericIcon;
     indicatorClassName?: string;
+    size?: 'default' | 'sm';
   }
 >((allProps, ref) => {
-  const { className, icon: Icon = Check, indicatorClassName, ...props } = allProps;
+  const { className, icon: Icon = Check, indicatorClassName, size, ...props } = allProps;
   return (
     <CheckboxPrimitive.Root
       ref={ref}
       className={cn(
         isDev && '__Checkbox', // DEBUG
         'peer',
-        'size-4',
+        size === 'sm' ? 'size-3' : 'size-4',
         'shrink-0',
         'rounded-sm',
         'border',

@@ -48,4 +48,5 @@ Always put the real code into modules with meaningful names. Use `index.ts` file
 
 (End of common rules.)
 
-> @changed 2026.02.07, 19:20
+> @changed 2026.02.12, 23:33
+> @see https://agents.md/

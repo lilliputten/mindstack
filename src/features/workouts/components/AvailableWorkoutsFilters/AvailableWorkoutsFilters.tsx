@@ -10,8 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { FormProvider } from '@/components/ui/Form';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
+import { SelectTopicLanguageModal } from '@/components/modals/SelectTopicLanguageModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
+import { TSelectTopicLanguageData } from '@/features/topics';
 import {
   getActiveFilterIds,
   useWorkoutsFiltersContext,
@@ -42,6 +44,31 @@ export function AvailableWorkoutsFilters(props: TProps) {
     handleClearChanges,
   } = useWorkoutsFiltersContext();
 
+  const [isSelectLanguageVisible, setShowSelectLanguage] = React.useState<boolean | undefined>();
+  const [langCode, langName, langCustom] = form.watch(['langCode', 'langName', 'langCustom']);
+
+  const handleSelectedLanguage = React.useCallback(
+    ({ langCode, langName, langCustom }: TSelectTopicLanguageData) => {
+      // Update the form fields
+      const opts = {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      };
+      form.setValue('langCode', langCode, opts);
+      form.setValue('langName', langName, opts);
+      form.setValue('langCustom', langCustom, opts);
+    },
+    [form],
+  );
+  const setAnyLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: '-', langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
+  const resetLanguage = React.useCallback(() => {
+    setShowSelectLanguage(false);
+    handleSelectedLanguage({ langCode: undefined, langName: undefined, langCustom: undefined });
+  }, [handleSelectedLanguage]);
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
   const filtersInfo = React.useMemo(
@@ -115,7 +142,7 @@ export function AvailableWorkoutsFilters(props: TProps) {
                   </span>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="bottom" className="flex items-center gap-2 truncate">
+              <TooltipContent side="bottom" className="content-truncate flex items-center gap-2">
                 {hasFilters ? (
                   <>
                     {t('AvailableWorkoutsFilters.Displaying')}: {filtersInfo}
@@ -183,7 +210,11 @@ export function AvailableWorkoutsFilters(props: TProps) {
                       </div>
                     )}
 
-                    <AvailableWorkoutsFiltersFields form={form} />
+                    <AvailableWorkoutsFiltersFields
+                      form={form}
+                      selectLanguage={() => setShowSelectLanguage(true)}
+                      resetLanguage={resetLanguage}
+                    />
                   </div>
                   <div
                     className={cn(
@@ -234,6 +265,16 @@ export function AvailableWorkoutsFilters(props: TProps) {
                 </form>
               </FormProvider>
             </ScrollArea>
+            <SelectTopicLanguageModal
+              isVisible={isSelectLanguageVisible}
+              langCode={langCode}
+              langName={langName}
+              langCustom={langCustom}
+              handleHide={() => setShowSelectLanguage(false)}
+              handleSelect={handleSelectedLanguage}
+              setAnyLanguage={setAnyLanguage}
+              resetLanguage={resetLanguage}
+            />
           </CardContent>
         )}
       </Card>

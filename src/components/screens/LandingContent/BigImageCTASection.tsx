@@ -48,7 +48,7 @@ export function BigImageCTASection() {
             src="/static/landing/features/02.jpg"
             alt={t('Landing.BigImageCTASection.Title')}
             fill
-            className="object-cover"
+            className="bg-theme-500/20 object-cover"
           />
         </div>
       </div>

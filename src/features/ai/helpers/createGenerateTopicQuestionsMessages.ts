@@ -24,12 +24,9 @@ export function createGenerateTopicQuestionsMessages(
   } = params;
 
   // const hasExistedQuestions = !!existedQuestions?.length;
-  const existedQuestionsText = existedQuestions?.length
-    ? existedQuestions.map(({ text }) => '- ' + truncateMarkdown(text, 200)).join('\n')
-    : undefined;
-
-  // const descriptionText = topicDescription ? `\nDescription: ${topicDescription}` : '';
-  // const extraInstructions = extraText ? `\n\nAdditional instructions: ${extraText}` : '';
+  const existedQuestionsText = existedQuestions
+    ?.map(({ text }) => '- ' + truncateMarkdown(text, 200))
+    .join('\n');
 
   const generationTypeInstructions = {
     BASIC: 'Generate straightforward, clear questions that test basic understanding.',
@@ -38,7 +35,7 @@ export function createGenerateTopicQuestionsMessages(
   };
 
   const answerFieldsText = [
-    `- "text" with the answer text in plain text or strict markdown markup (in the same language as the question),`,
+    `- "text" with the answer text,`,
     `- "explanation" the reason why this answer is correct or incorrect,`,
     `- "isCorrect" as a boolean indicating if it is the correct answer.`,
   ].join('\n');
@@ -57,9 +54,12 @@ export function createGenerateTopicQuestionsMessages(
       : `The language of the questions and answers must be derived from the language of the topic.`,
     generationTypeInstructions[questionsGenerationType],
     `Questions should be clear, educational, and relevant to the topic.`,
-    `Return ONLY a valid JSON object with a "questions" field containing a list of question objects and "questionsCount" with a number of totally generated questions.`,
-    `Each question should be a complete, well-formed question.`,
-    `For each question, generate answers in an "answers" field, as a well-formed JSON object with an "answers" field containing a list of answer objects and "answersCount" with a number generated answers.`,
+    `Return ONLY a valid JSON object with a "questions" field containing a list of question objects and a "questionsCount" field with a totally generated questions count.`,
+    `For each question, generate answers list (as well-formed JSON objects) in an "answers" field, and an "answersCount" field containing a list of answer objects.`,
+    `It's possible to use limited markdown (for code, bold, emphasis, links, lists, etc, don't use headings) markup in question texts, answer texts and explanations.`,
+    `Don't use any html tags. Use normal newlines instead of <br>.`,
+    `Don't wrap the response in the markdwon code quotes (\`\`\`), return raw json.`,
+    `Don't add any content (like notes) outside the JSON object.`,
     getAnswersGenerationQuery(answersGenerationType),
   ].filter(Boolean);
   const requirementsText = requirements.map((s) => '- ' + s).join('\n');
@@ -67,6 +67,7 @@ export function createGenerateTopicQuestionsMessages(
   const systemMessageContent = `You are an expert educational content creator. Generate high-quality questions for a learning topic.
 
 Requirements:
+
 ${requirementsText}
 
 Each answer object must have:
@@ -106,6 +107,7 @@ Example format:
     .join('\n\n');
 
   // NOTE: Temporarily monitoring AI generation
+  // eslint-disable-next-line no-console
   console.log('[createGenerateTopicQuestionsMessages]', {
     systemMessageContent,
     userMessageContent,

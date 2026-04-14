@@ -9,8 +9,10 @@ import {
 import { GigaChatCallOptions } from 'langchain-gigachat';
 
 import { defaultAIGenerationTemperature } from '@/config/env';
-import { defaultAiClientType, getAiClient } from '@/lib/ai';
+import { getAiClient } from '@/lib/ai/server-actions';
+import { defaultAiClientType } from '@/lib/ai/types';
 import { getErrorText } from '@/lib/helpers';
+import { isDev } from '@/constants';
 
 import { TPlainMessage } from '../types/messages';
 import { TAIQuerDebugDataId, TAIQueryOptions } from '../types/TAIQueryOptions';
@@ -22,6 +24,8 @@ async function getDebugDataContent(debugData: TAIQuerDebugDataId) {
   switch (debugData) {
     case 'answers-query-data-01':
       return await import('./sample-data/GenerateQuestions/answers-query-data-01.json');
+    case 'questions-query-data-06':
+      return await import('./sample-data/GenerateQuestions/questions-query-data-06.json');
     case 'questions-query-data-05':
       return await import('./sample-data/GenerateQuestions/questions-query-data-05.json');
     case 'questions-query-data-04':
@@ -43,7 +47,9 @@ export async function sendAiTextQuery(messages: TPlainMessage[], opts: TAIQueryO
     debugData,
   } = opts;
   if (debugData) {
-    await new Promise((r) => setTimeout(r, 1000));
+    if (isDev) {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
     try {
       const data = await getDebugDataContent(debugData);
       return data.default as TAITextQueryData;

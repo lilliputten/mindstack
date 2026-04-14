@@ -242,13 +242,20 @@
     // min-width: auto !important;
     min-width: var(--radix-popper-anchor-width) !important;
     max-width: var(--radix-popper-available-width);
-    // max-width: var(--radix-popper-anchor-width);
+    // Trying to limite the height of the popover on small screens to fit all the elements
+    &,
+    & > [role='dialog'],
+    & > [role='dialog'] > div,
+    & > [role='listbox'],
+    & > [role='listbox'] > div {
+      max-height: min(50dvh, var(--radix-popper-available-height));
+    }
   }
 }
 
 @layer utilities {
   .disabled {
-    @apply pointer-events-none cursor-default opacity-50;
+    @apply pointer-events-none cursor-default opacity-30;
   }
 
   .step {
@@ -292,6 +299,42 @@
   // Theme-based gradients
   .bg-theme-gr1 {
     @apply bg-gr-135 from-theme-400/50 to-theme-600/50;
+  }
+
+  /* // TODO: Animate newly added ("fresh") `HeadlessEditor` items with a variable
+   * @property --indicate-fresh-bg-opacity {
+   *   syntax: '<number>';
+   *   inherits: false;
+   *   initial-value: 1;
+   * }
+   */
+  .indicate-item {
+    animation-name: indicate-item;
+    animation-duration: var(--indicate-item-duration, 1s);
+    animation-direction: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    /* // TODO: With a variable
+     * background-color: rgba(0 0 255 / var(--indicate-fresh-bg-opacity));
+     */
+    @keyframes indicate-item {
+      0% {
+        // --animate-fresh-bg-opacity: 1;
+        background-color: rgba(
+          var(--color-theme-500-RGB) / var(--indicate-item-background-start-opacity, 0%)
+        );
+      }
+      25% {
+        // --indicate-fresh-bg-opacity: 1;
+        background-color: var(--indicate-item-background-color, green);
+      }
+      100% {
+        // --indicate-fresh-bg-opacity: 0.5;
+        background-color: rgba(
+          var(--color-theme-500-RGB) / var(--indicate-item-background-start-opacity, 0%)
+        );
+      }
+    }
   }
 
   // gr0
@@ -524,10 +567,33 @@
     text-overflow: ellipsis;
   }
 
+  .content-fit {
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .content-truncate-x {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
   .content-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+  }
+
+  // Sonner toast fixups
+  [data-sonner-toast] {
+    // Hide close buttons for 'loading' toasts, as they can't handle `onDismiss` actions
+    &[data-type="loading"] [data-close-button="true"],
+    // Hide cancel buttons for 'non-loading' toasts (they'll be used only for cancel pending operations)
+    &:not([data-type="loading"]) [data-button][data-cancel="true"] {
+      display: none;
+    }
+    // Stylize cancel button
+    &[data-styled='true'] [data-button][data-cancel='true'] {
+      @apply bg-theme-500/20 text-foreground hover:opacity-80;
+    }
   }
 
   // Define themes (from global variables `$themes` and `$defaultTheme`, see definitions in the `src/config/themeColors.ts`)

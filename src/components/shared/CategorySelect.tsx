@@ -89,7 +89,7 @@ function CategorySelectComponent({
   return (
     <div
       className={cn(
-        isDev && '__CategorySelect', // DEBUG
+        isDev && '__CategorySelectComponent', // DEBUG
         className,
       )}
     >
@@ -151,7 +151,10 @@ function CategorySelectComponent({
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className={cn('w-full p-0')}
+          className={cn(
+            isDev && '__CategorySelectComponent_PopoverContent', // DEBUG
+            'w-full p-0',
+          )}
           align="start"
           // HINT: Prevent block scroll events by outer scrolls
           onWheel={(e) => e.stopPropagation()}
@@ -257,7 +260,12 @@ export function CategorySelect({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col gap-4">
+        <FormItem
+          className={cn(
+            isDev && '__CategorySelect', // DEBUG
+            'flex w-full flex-col gap-4',
+          )}
+        >
           <FormLabel className="truncate">{label}</FormLabel>
           <FormControl>
             <StableMountWrapper

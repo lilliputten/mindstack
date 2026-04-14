@@ -36,7 +36,9 @@ export function ViewAnswerContentSummary(props: TViewAnswerContentSummaryProps) 
   const format = useFormatter();
   // const user = useSessionUser();
   const { user: topicAuthor, loading: isAuthorLoading } = useUserById(topic?.userId);
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus();
+  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = useAIGenerationsStatus({
+    traceId: 'ViewAnswerContentSummary',
+  });
 
   const t = useT();
 

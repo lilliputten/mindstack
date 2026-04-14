@@ -107,7 +107,7 @@ export function DashboardActions(props: DashboardActionsProps) {
           return (
             <DropdownMenuTrigger
               asChild
-              aria-label="Show Menu"
+              aria-label={t('ShowMenu')}
               className={cn(
                 isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
               )}
@@ -120,17 +120,17 @@ export function DashboardActions(props: DashboardActionsProps) {
                   isDev && '__AllowedUsersPage_DropdownMenuToggle', // DEBUG
                   'active:bg-theme active:text-theme-foreground',
                   'ring-offset-background',
-                  'focus:ring-2',
+                  'focus:ring-1',
                   'focus:ring-ring',
-                  'focus:ring-offset-2',
+                  // 'focus:ring-offset-1',
                   'data-[state=open]:bg-theme/20',
                   'data-[state=open]:ring-2',
-                  'data-[state=open]:ring-offset-2',
+                  // 'data-[state=open]:ring-offset-1',
                   'data-[state=open]:ring-theme/50',
                 )}
               >
                 <Icons.MenuVertical className="size-5 transition-all" />
-                <span className="sr-only">Show menu</span>
+                <span className="sr-only">{t('ShowMenu')}</span>
               </Button>
             </DropdownMenuTrigger>
           );
@@ -139,8 +139,14 @@ export function DashboardActions(props: DashboardActionsProps) {
           align="end"
           className={cn(
             isDev && '__DashboardActions_DropdownMenuContent', // DEBUG
-            'mt-2 rounded-lg bg-popover',
+            // 'mt-2',
+            'rounded-lg bg-popover',
             'flex w-full flex-col gap-1',
+            // 'px-1',
+          )}
+          viewportClassName={cn(
+            isDev && '__DashboardActions_DropdownMenuContent_Viewport', // DEBUG
+            '[&>div]:gap-1',
           )}
         >
           {menuActions}

@@ -133,7 +133,7 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
   if (!filtersData) {
     return [];
   }
-  const activeItems = Object.entries(filtersData)
+  const activeIds = Object.entries(filtersData)
     .map(([id, value]) => {
       const fieldId = id as TFiltersDataKey;
       if (value == null) {
@@ -158,7 +158,11 @@ export function getActiveFilterIds(filtersData?: TFiltersData) {
       return id;
     })
     .filter(Boolean) as TFiltersDataKey[];
-  return activeItems;
+  // NOTE: langCode is a permanent field, due to these specific cases: '-' -- for all languages, and the empty value -- for locale default
+  if (!activeIds.includes('langCode')) {
+    activeIds.unshift('langCode');
+  }
+  return activeIds;
 }
 
 /**

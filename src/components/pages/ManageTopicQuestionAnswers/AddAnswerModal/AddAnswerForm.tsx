@@ -38,6 +38,8 @@ export interface TAddAnswerFormProps {
   topicId: TTopicId;
   questionId: TQuestionId;
   addedAnswerId?: TAnswerId;
+  /** Close the dialog right after a successful local submit (e.g. headless editor). */
+  closeImmediatelly?: boolean;
 }
 
 export interface TFormData {
@@ -46,8 +48,16 @@ export interface TFormData {
 }
 
 export function AddAnswerForm(props: TAddAnswerFormProps) {
-  const { className, handleAddAnswer, handleClose, isPending, topicId, questionId, addedAnswerId } =
-    props;
+  const {
+    className,
+    handleAddAnswer,
+    handleClose,
+    isPending,
+    topicId,
+    questionId,
+    addedAnswerId,
+    closeImmediatelly,
+  } = props;
   const [isGoingOut, setIsGoingOut] = React.useState(false);
   const t = useT();
 
@@ -113,6 +123,9 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
     return handleAddAnswer(newAnswer)
       .then(() => {
         setLimitsError(undefined);
+        if (closeImmediatelly) {
+          handleClose?.();
+        }
       })
       .catch((error) => {
         const message = t('AddAnswerForm.CannotCreateAnswer');
@@ -146,10 +159,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
   const textKey = React.useId();
   const isCorrectKey = React.useId();
 
-  const Icon = isPending ? Icons.Spinner : Icons.Check;
-  const buttonText = isPending
-    ? t('AddAnswerForm.AddingButtonText')
-    : t('AddAnswerForm.AddButtonText');
+  const SubmitIcon = isPending ? Icons.Spinner : Icons.Check;
 
   return (
     <FormProvider {...form}>
@@ -244,7 +254,7 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
             isSubmitSuccessful && 'justify-center',
           )}
         >
-          {!limitsError && (
+          {!limitsError && !isSubmitSuccessful && (
             <Button
               type="submit"
               variant={isSubmitEnabled ? 'success' : 'disabled'}
@@ -252,11 +262,13 @@ export function AddAnswerForm(props: TAddAnswerFormProps) {
               className={cn(
                 isDev && '__AddAnswerForm_SaveButton', // DEBUG
                 'gap-2',
-                isSubmitSuccessful && 'hidden',
+                // isSubmitSuccessful && 'hidden',
               )}
             >
-              <Icon className={cn('size-4', isPending && 'animate-spin')} />{' '}
-              <span>{buttonText}</span>
+              <SubmitIcon className={cn('size-4', isBusy && 'animate-spin')} />{' '}
+              <span>
+                {isBusy ? t('AddAnswerForm.AddingButtonText') : t('AddAnswerForm.AddButtonText')}
+              </span>
             </Button>
           )}
           {/* Show a button "Go to the created answer". TODO: Use `router.replace`? */}

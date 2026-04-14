@@ -94,7 +94,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
         icon: Icons.Activity,
         visibleFor: 'sm',
         disabled: !allowedTraining,
-        onClick: handleResumeWorkout, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
+        onClick: handleStart, // isWorkoutInProgress ? handleResumeWorkout : handleStartWorkout,
       },
       {
         id: 'ManageTopic',
@@ -113,7 +113,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
       workout?.finished,
       workout?.started,
       allowedTraining,
-      handleResumeWorkout,
+      handleStart,
       allowedEdit,
       user,
       goToTheRoute,
@@ -124,7 +124,7 @@ export function WorkoutTopic(props: TPropsWithClassName) {
 
   const breadcrumbs = useTopicsBreadcrumbsItems({
     scope: manageScope,
-    topic: topic,
+    topic: topic || undefined,
     lastItem: {
       content: t('AvailableTopics.TrainingDetails'),
       // link: isWorkoutInProgress ? questionsContext.routePath : undefined,

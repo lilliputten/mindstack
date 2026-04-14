@@ -9,4 +9,13 @@ src/generated
 # Sample data: AI generated results (including broken)
 src/features/ai/actions/sample-data
 
+# cosmos
+cosmos.imports.ts
+
+# Hard-copied multilingual-stemmer
+src/packages/text-comparator/multilingual-stemmer/*
+
+# Config files
+.qwen
+
 **/*.mdx

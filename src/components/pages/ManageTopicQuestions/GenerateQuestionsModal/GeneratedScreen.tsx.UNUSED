@@ -1,0 +1,162 @@
+import React from 'react';
+
+import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
+import { Button } from '@/components/ui/Button';
+import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
+import * as Icons from '@/components/shared/Icons';
+import { isDev } from '@/constants';
+import { TNewQuestion } from '@/features/questions/types';
+import { TTopicId } from '@/features/topics/types';
+import { PreviewQuestions } from '@/widgets/questions';
+
+export interface TProps {
+  startOverCallback?: () => void;
+  handleCancel?: () => void;
+  className?: string;
+  topicId: TTopicId; // Is it required here?
+  isSaving?: boolean;
+  generatedQuestions?: TNewQuestion[];
+  saveQuestions?: () => unknown;
+  editQuestions?: () => unknown;
+}
+
+export function GeneratedScreen(props: TProps) {
+  const {
+    className,
+    startOverCallback,
+    handleCancel,
+    // topicId,
+    isSaving,
+    generatedQuestions,
+    saveQuestions,
+    editQuestions,
+  } = props;
+  const t = useT();
+
+  const CancelIcon = isSaving ? Icons.X : Icons.Undo2;
+
+  return (
+    <div
+      className={cn(
+        isDev && '__GeneratedScreen', // DEBUG
+        'flex w-full flex-col gap-6',
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          isDev && '__GeneratedScreen_Wrapper', // DEBUG
+          'relative transition',
+        )}
+      >
+        <div
+          className={cn(
+            isDev && '__GeneratedScreen_WrapperContent', // DEBUG
+            'flex w-full flex-col justify-center gap-4',
+            'min-h-24',
+            isSaving && 'opacity-20',
+          )}
+        >
+          {!generatedQuestions?.length ? (
+            <ErrorSplash
+              className="px-6"
+              title={t('GenerateQuestionsModal.NoQuestionsGenerated')}
+            />
+          ) : (
+            <div className="conent-truncate flex flex-col gap-4">
+              <h3 className="content-truncate flex items-center gap-4 text-xl font-semibold text-theme">
+                <Icons.WandSparkles className="shring-0 size-8 text-green-500" />
+                <span className="content-truncate flex-1">
+                  {t('GenerateQuestionsModal.GeneratedQuestionsCount', {
+                    count: generatedQuestions.length,
+                  })}
+                  :
+                </span>
+              </h3>
+              {/* Display preview of the added questions */}
+              <PreviewQuestions
+                questions={generatedQuestions}
+                className="content-truncate flex flex-col gap-2 overflow-hidden text-sm"
+              />
+            </div>
+          )}
+        </div>
+        {/* Generating splash */}
+        <BusySplashWithInfo
+          title={t('GenerateQuestionsModal.SavingQuestions')}
+          className={cn(
+            isDev && '__GeneratedScreen_BusySplash', // DEBUG
+            'absolute',
+          )}
+          isBusy={isSaving}
+        />
+      </div>
+
+      {/* Actions */}
+      <div
+        className={cn(
+          isDev && '__GeneratedScreen_Actions', // DEBUG
+          'content-truncate flex w-full flex-wrap gap-2',
+        )}
+      >
+        {/* Options for generated questions... */}
+        {!isSaving && !!generatedQuestions?.length && (
+          <>
+            {
+              /* Option 1: saveQuestions */ !!saveQuestions && (
+                <Button
+                  className="content-truncate flex gap-2"
+                  onClick={() => {
+                    saveQuestions();
+                  }}
+                  variant={!isSaving ? 'success' : 'ghost'}
+                  disabled={isSaving}
+                >
+                  <Icons.Save className="size-4 shrink-0" />
+                  <span className="truncate">{t('Save')}</span>
+                </Button>
+              )
+            }
+            {
+              /* Option 2: editQuestions */ !!editQuestions && (
+                <Button
+                  className="content-truncate flex gap-2"
+                  onClick={() => {
+                    editQuestions();
+                  }}
+                  variant={!isSaving ? 'theme' : 'ghost'}
+                  disabled={isSaving}
+                >
+                  <Icons.Edit className="size-4 shrink-0" />
+                  <span className="truncate">{t('GenerateQuestionsModal.EditTheData')}</span>
+                </Button>
+              )
+            }
+          </>
+        )}
+
+        {/* Return to the form */}
+        {!isSaving && startOverCallback && (
+          <Button variant="ghost" onClick={startOverCallback} className="content-truncate gap-2">
+            <CancelIcon className="size-4 shrink-0" />
+            <span className="truncate">{isSaving ? t('Cancel') : t('StartOver')}</span>
+          </Button>
+        )}
+        {isSaving && handleCancel && (
+          <Button
+            variant="ghost"
+            onClick={(ev) => {
+              ev.preventDefault();
+              handleCancel();
+            }}
+            className="content-truncate gap-2"
+          >
+            <Icons.Close className="size-4 shrink-0" />
+            <span className="truncate">{t('Cancel')}</span>
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}

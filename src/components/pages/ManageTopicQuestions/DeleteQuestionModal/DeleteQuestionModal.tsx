@@ -12,7 +12,7 @@ import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { deleteQuestion } from '@/features/questions/actions/deleteQuestion';
 import { TAvailableQuestion, TQuestionId } from '@/features/questions/types';
-import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useDocumentTitle, useGoBack, useUpdateModalVisibility } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
 import { topicQuestionDeletedEventId } from './constants';
@@ -48,11 +48,15 @@ export function DeleteQuestionModal(props: TDeleteQuestionModalProps) {
     goBack();
   }, [goBack]);
 
-  const availableQuestionsQuery = useAvailableQuestions({ topicId });
+  const availableQuestionsQuery = useAvailableQuestions({
+    traceId: 'DeleteQuestionModal',
+    topicId,
+    // includeAnswers: true, // Include answers
+  });
 
   const queryClient = useQueryClient();
 
-  useModalTitle(t('DeleteQuestionModal.ModalTitle'), shouldBeVisible);
+  useDocumentTitle(t('DeleteQuestionModal.ModalTitle'), shouldBeVisible);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   if (!topicId) {

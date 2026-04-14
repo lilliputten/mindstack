@@ -47,6 +47,10 @@ next-env.d.ts
 /certificates
 /src/generated/prisma
 
+# Cosmos
+# cosmos.imports.ts
+.cosmos-export
+
 # Temporariy, swap & ignored files
 /bin
 /log*.txt

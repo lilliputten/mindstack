@@ -1,2 +1,2 @@
-export * from './GenerateQuestionsModal';
-export * from './GenerateQuestionsForm';
+export * from './GenerateQuestionsPage';
+export * from './ContentSkeleton';

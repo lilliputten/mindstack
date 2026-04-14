@@ -63,7 +63,7 @@ export function NavUserAuthButton(props: TNavAuthButtonProps) {
               onSidebar && 'hover:bg-white hover:text-theme-700',
             )}
             variant="ghostOnTheme" // {onPrimary && !onSidebar ? 'ghostOnTheme' : 'ghost'}
-            size="sm"
+            // size="sm"
             onClick={() => {
               onClickEffect?.();
               showSignInModal();

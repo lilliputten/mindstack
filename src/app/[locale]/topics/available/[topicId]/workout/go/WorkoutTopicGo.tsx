@@ -34,7 +34,10 @@ import { WorkoutTopicGoContent } from './WorkoutTopicGoContent';
 const manageScope = TopicsManageScopeIds.AVAILABLE_TOPICS;
 
 function NextQuestionPrefetcher({ questionId }: { questionId?: TQuestionId }) {
-  useAvailableQuestionById({ id: questionId || '' });
+  useAvailableQuestionById({
+    id: questionId || '',
+    traceId: 'WorkoutTopicGo-NextQuestionPrefetcher',
+  });
   useAvailableAnswers({
     itemsLimit: null,
     questionId: questionId || '',
@@ -133,7 +136,10 @@ export function WorkoutTopicGo() {
   const currentQuestionId = unpackedQuestionsOrder[stepIndex] || '';
   const nextQuestionId = unpackedQuestionsOrder[stepIndex + 1] || '';
 
-  const availableQuestionQuery = useAvailableQuestionById({ id: currentQuestionId || '' });
+  const availableQuestionQuery = useAvailableQuestionById({
+    id: currentQuestionId || '',
+    traceId: 'WorkoutTopicGo',
+  });
   const {
     question,
     // isFetched: isQuestionFetched,
@@ -256,7 +262,7 @@ export function WorkoutTopicGo() {
 
   const breadcrumbs = useTopicsBreadcrumbsItems({
     scope: manageScope,
-    topic: topic,
+    topic: topic || undefined,
     lastItem: {
       content: t('WorkoutTopic.Training'),
       // link: isWorkoutInProgress ? questionsContext.routePath : undefined,

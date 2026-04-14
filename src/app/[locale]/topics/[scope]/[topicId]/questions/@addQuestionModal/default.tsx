@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions';
+import { AddQuestionModalPage } from '@/components/pages/ManageTopicQuestions';
 
 export default function AddQuestionModalDefault() {
   const pathname = usePathname();
@@ -10,7 +10,7 @@ export default function AddQuestionModalDefault() {
   const isAddQuestionRoute = pathname?.endsWith('/questions/add');
 
   if (isAddQuestionRoute) {
-    return <AddQuestionModal />;
+    return <AddQuestionModalPage />;
   }
 
   return null;

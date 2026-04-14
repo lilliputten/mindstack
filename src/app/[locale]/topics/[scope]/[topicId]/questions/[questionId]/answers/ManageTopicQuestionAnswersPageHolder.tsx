@@ -31,13 +31,6 @@ export function ManageTopicQuestionAnswersPageHolder(
     throw new Error('No question ID specified');
   }
 
-  // const availableTopicsQuery = useAvailableTopicsByScope({ manageScope });
-  // const {
-  //   isFetched: isTopicsFetched,
-  //   queryKey: availableTopicsQueryKey,
-  //   queryProps: availableTopicsQueryProps,
-  // } = availableTopicsQuery;
-
   const availableTopicQuery = useAvailableTopicById({
     id: topicId,
     // availableTopicsQueryKey,
@@ -53,15 +46,9 @@ export function ManageTopicQuestionAnswersPageHolder(
   } = availableTopicQuery;
   const isTopicReady = isTopicCached || isTopicFetched;
 
-  // const availableQuestionsQuery = useAvailableQuestions({ topicId });
-  // const {
-  //   isFetched: isQuestionsFetched,
-  //   queryKey: availableQuestionsQueryKey,
-  //   queryProps: availableQuestionsQueryProps,
-  // } = availableQuestionsQuery;
-
   const availableQuestionQuery = useAvailableQuestionById({
     id: questionId,
+    traceId: 'ManageTopicQuestionAnswersPageHolder',
     // availableQuestionsQueryKey,
     // ...availableQuestionsQueryProps,
   });

@@ -18,13 +18,22 @@ interface TEditTopicFormProps {
   handleCancel: (ev: React.MouseEvent) => void;
   form: UseFormReturn<TTopicFormData>;
   handleFormSubmit: (formData: TTopicFormData) => void;
-  selectLanguage: (ev: React.MouseEvent) => void;
+  selectLanguage: () => void;
+  resetLanguage: () => void;
   isPending: boolean;
 }
 
 export function EditTopicForm(props: TEditTopicFormProps) {
-  const { topic, className, handleCancel, form, handleFormSubmit, selectLanguage, isPending } =
-    props;
+  const {
+    topic,
+    className,
+    handleCancel,
+    form,
+    handleFormSubmit,
+    selectLanguage,
+    resetLanguage,
+    isPending,
+  } = props;
 
   const { isDirty, isValid } = form.formState;
 
@@ -49,6 +58,7 @@ export function EditTopicForm(props: TEditTopicFormProps) {
             isPending={isPending}
             onCancel={handleCancel}
             selectLanguage={selectLanguage}
+            resetLanguage={resetLanguage}
           />
         </ScrollArea>
       </form>

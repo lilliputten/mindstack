@@ -28,10 +28,10 @@ export function getUnqueItemsList<TItem extends { id: TId }, TId = string>(
   // Deduplicate topics by their ID
   const uniqueTopicsMap = new Set<TId>();
   return results
-    .flatMap((page) => page.items)
-    .filter(({ id }) => {
-      if (!uniqueTopicsMap.has(id)) {
-        uniqueTopicsMap.add(id);
+    .flatMap((page) => page?.items)
+    .filter((page) => {
+      if (page?.id && !uniqueTopicsMap.has(page.id)) {
+        uniqueTopicsMap.add(page.id);
         return true;
       }
     });

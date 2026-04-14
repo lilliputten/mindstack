@@ -1,0 +1,32 @@
+// EXAMPLE 1: A simpler editor component implementation, without forwarded API handlers, controlled via regular data props and optional handlers:
+export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
+  props: THeadlessEditorProps<T, LargeTexts>,
+) {
+  // ...
+
+// EXAMPLE 2: A more complex implementation, with an external interface:
+export interface TComparatorRef<_T> {
+  clearCompareTarget: () => void;
+  // compareTargetId?: T;
+}
+export function HeadlessEditorFactory<
+  T extends TCmpItemBase,
+  LargeTexts extends boolean = boolean,
+>() {
+  return React.forwardRef<TComparatorRef<T>, THeadlessEditorProps<T, LargeTexts>>(function HeadlessEditor(
+    props: THeadlessEditorProps<T, LargeTexts>,
+    ref,
+  ) {
+    // ...
+    const clearCompareTarget = React.useCallback(() => {
+      setCompareTargetId(undefined);
+    }, []);
+    // Provide external API
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        clearCompareTarget,
+      }),
+      [clearCompareTarget],
+    );
+    // ...

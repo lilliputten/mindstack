@@ -13,7 +13,7 @@ type TManageTopicQuestionsLayoutProps = TAwaitedProps & {
   children: React.ReactNode;
   addQuestionModal: React.ReactNode; // slot from @addQuestionModal
   deleteQuestionModal: React.ReactNode; // slot from @deleteQuestionModal
-  generateQuestionsModal: React.ReactNode; // slot from @generateQuestionsModal
+  // generateQuestionsModal: React.ReactNode; // slot from @generateQuestionsModal
 };
 
 export default async function ManageTopicQuestionsLayout(props: TManageTopicQuestionsLayoutProps) {
@@ -21,7 +21,7 @@ export default async function ManageTopicQuestionsLayout(props: TManageTopicQues
     children,
     addQuestionModal, // slot from @addQuestionModal
     deleteQuestionModal, // slot from @deleteQuestionModal
-    generateQuestionsModal, // slot from @generateQuestionsModal
+    // generateQuestionsModal, // slot from @generateQuestionsModal
     params,
   } = props;
   const resolvedParams = await params;
@@ -48,7 +48,7 @@ export default async function ManageTopicQuestionsLayout(props: TManageTopicQues
       {children}
       {addQuestionModal}
       {deleteQuestionModal}
-      {generateQuestionsModal}
+      {/* {generateQuestionsModal} */}
     </>
   );
 }

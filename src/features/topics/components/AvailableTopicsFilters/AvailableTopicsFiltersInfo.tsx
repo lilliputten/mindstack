@@ -51,8 +51,8 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
       activeFilterIds
         .map((id) => {
           const val = convertedData?.[id];
-          if (id != 'searchLang') {
-            if (val == undefined || (Array.isArray(val) && !val.length)) {
+          if (id != 'langCode') {
+            if (id === 'langName' || val == undefined || (Array.isArray(val) && !val.length)) {
               return undefined;
             }
             if (id === 'categoryIds' && !convertedData?.categoryNames?.length) {
@@ -84,11 +84,14 @@ export function AvailableTopicsFiltersInfo(props: TProps) {
                   {getFilterFieldName(id, tTexts)}:
                 </span>
               )}
-              {id === 'searchLang' ? (
+              {id === 'langCode' ? (
                 value === '-' ? (
                   tTexts('AnyLanguage')
                 ) : (
-                  <LanguageName langCode={val && typeof val === 'string' ? val : locale} />
+                  <LanguageName
+                    langCode={val && typeof val === 'string' ? val : locale}
+                    langName={convertedData?.langName}
+                  />
                 )
               ) : (
                 <span>{content}</span>

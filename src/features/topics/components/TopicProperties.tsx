@@ -13,6 +13,7 @@ import { SmallUserBlock, useUserById } from '@/features/users';
 
 interface TTopicPropertiesOptions {
   showDates?: boolean;
+  showAuthor?: boolean;
   omitExtraDetails?: boolean;
 }
 interface TTopicPropertiesProps {
@@ -25,6 +26,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
     topic,
     // Options...
     showDates,
+    showAuthor = true,
     omitExtraDetails,
   } = props;
   const format = useFormatter();
@@ -89,7 +91,7 @@ export function TopicProperties(props: TTopicPropertiesProps & TTopicPropertiesO
           />
         </span>
       )}
-      {!!userId && (
+      {showAuthor && !!userId && (
         <span id="user-author" className="flex items-center gap-1 truncate" title={t('Author')}>
           <SmallUserBlock isLoading={isUserLoading} user={user} tiny />
         </span>

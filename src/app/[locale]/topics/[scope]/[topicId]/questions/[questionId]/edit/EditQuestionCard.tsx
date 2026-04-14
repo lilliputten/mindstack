@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { FormState, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
-import z from 'zod';
 
 import { getErrorText, removeNullUndefinedValues } from '@/lib/helpers';
 import { invalidateKeysByPrefixes, makeQueryKeyPrefix } from '@/lib/helpers/react-query';
@@ -16,19 +14,19 @@ import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions
 import { Card } from '@/components/ui/Card';
 import { TActionMenuItem } from '@/components/dashboard/DashboardActions';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { maxTextLength, minTextLength } from '@/components/pages/ManageTopicQuestions/constants';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { updateQuestion } from '@/features/questions/actions';
+import {
+  EditQuestionForm,
+  questionFormDataSchema,
+  TFormData,
+} from '@/features/questions/components/EditQuestionForm';
 import { useQuestionsBreadcrumbsItems } from '@/features/questions/components/QuestionsBreadcrumbs';
 import { TAvailableQuestion, TQuestionData, TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById, useGoBack, useGoToTheRoute } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
-
-// import { topicQuestionDeletedEventId } from '../DeleteQuestionModal';
-import { EditQuestionForm } from './EditQuestionForm';
-import { questionFormDataSchema, TFormData } from './types';
 
 interface TEditQuestionCardProps {
   topicId: TTopicId;
@@ -38,17 +36,8 @@ interface TEditQuestionCardProps {
   availableQuestionQuery: ReturnType<typeof useAvailableQuestionById>;
 }
 
-const formDataSchema = z.object({
-  text: z.string().min(minTextLength).max(maxTextLength),
-  answersCountRandom: z.boolean().optional(),
-  answersCountMin: z.union([z.string().optional(), z.number()]),
-  answersCountMax: z.union([z.string().optional(), z.number()]),
-  isGenerated: z.boolean().optional(),
-});
-
 export function EditQuestionCard(props: TEditQuestionCardProps) {
   const {
-    // className,
     topicId,
     questionId,
     availableTopicQuery,
@@ -57,6 +46,15 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
   } = props;
   const { manageScope } = useManageTopicsStore();
   const t = useT();
+
+  const [form, setForm] = React.useState<UseFormReturn<TFormData> | undefined>();
+  const [isDirty, setIsDirty] = React.useState(false);
+  const [isValid, setIsValid] = React.useState(false);
+
+  const setFormState = React.useCallback((formState: FormState<TFormData>) => {
+    setIsDirty(formState.isDirty);
+    setIsValid(formState.isValid);
+  }, []);
 
   const queryClient = useQueryClient();
 
@@ -91,75 +89,17 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
 
   const [isPending, startTransition] = React.useTransition();
 
-  const formSchema = React.useMemo(
-    () =>
-      formDataSchema.superRefine((data, ctx) => {
-        const { answersCountRandom } = data;
-        if (answersCountRandom) {
-          const answersCountMin = Number(data.answersCountMin);
-          const answersCountMax = Number(data.answersCountMax);
-          if (!answersCountMin || answersCountMin < 1) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('EditQuestionCard.ItShouldBeAPositiveNumber'),
-              path: ['answersCountMin'],
-            });
-          }
-          if (!answersCountMax || answersCountMax < 1) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('EditQuestionCard.ItShouldBeAPositiveNumber'),
-              path: ['answersCountMax'],
-            });
-          }
-          if (answersCountMin > answersCountMax) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('EditQuestionCard.MinimalValueShouldBeLessThanMaximal'),
-              path: ['answersCountMin'],
-            });
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('EditQuestionCard.MinimalValueShouldBeLessThanMaximal'),
-              path: ['answersCountMax'],
-            });
-          }
-        }
-      }),
-    [t],
-  );
-
-  const defaultValues: TFormData = React.useMemo(
-    () => ({
-      text: question.text || '',
-      answersCountRandom: question.answersCountRandom || false,
-      answersCountMin: question.answersCountMin || undefined,
-      answersCountMax: question.answersCountMax || undefined,
-      isGenerated: question.isGenerated || false,
-    }),
-    [question],
-  );
-
-  // @see https://react-hook-form.com/docs/useform
-  const form = useForm<TFormData>({
-    // @see https://react-hook-form.com/docs/useform
-    mode: 'onChange', // 'all', // Validation strategy before submitting behaviour.
-    criteriaMode: 'all', // Display all validation errors or one at a time.
-    resolver: zodResolver(formSchema),
-    defaultValues, // Default values for the form.
-  });
-
-  // @see https://react-hook-form.com/docs/useform/formstate
-  const { isDirty, isValid } = form.formState;
-
-  const isSubmitEnabled = !isPending && isDirty && isValid;
+  const isSubmitEnabled = !isPending && !!isDirty && !!isValid;
 
   const handleFormSubmit = React.useCallback(
     (formData: TFormData) => {
       const editedQuestion: TQuestionData = {
-        id: question.id,
-        topicId: question.topicId,
+        ...question,
+        // id: question.id,
+        order: question.order || undefined,
+        // topicId: question.topicId,
         text: formData.text,
+        extraQuery: formData.extraQuery,
         answersCountRandom: formData.answersCountRandom,
         answersCountMin: formData.answersCountMin,
         answersCountMax: formData.answersCountMax,
@@ -187,7 +127,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           // Invalidate all other keys...
           availableQuestionsQuery.invalidateAllKeysExcept([availableQuestionsQuery.queryKey]);
           // Reset form to the current data
-          form.reset(form.getValues());
+          form?.reset(form?.getValues());
           // TODO: Convert `updatedQuestion` to the form data & reset form to these values?
         } catch (error) {
           const details = getErrorText(error);
@@ -208,7 +148,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
     availableQuestionQuery
       .refetch()
       .then((res) => {
-        const question: TAvailableQuestion | undefined = res.data;
+        const question: TAvailableQuestion | undefined | null = res.data;
         if (question) {
           // Convert question to the FormData, see example `src/app/[locale]/topics/[scope]/[topicId]/edit/EditTopicPage.tsx`
           const cleanedQuestion = removeNullUndefinedValues(
@@ -216,7 +156,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           );
           const convertedQuestion = questionFormDataSchema.parse(cleanedQuestion);
           // Set form data
-          form.reset(convertedQuestion);
+          form?.reset(convertedQuestion);
           // Add the created item to the cached react-query data
           availableQuestionsQuery.updateQuestion(question);
           // Invalidate all other keys...
@@ -235,7 +175,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
       });
   }, [availableQuestionQuery, form, availableQuestionsQuery, t]);
 
-  const handleSubmit = form.handleSubmit(handleFormSubmit);
+  const handleSubmit = form?.handleSubmit(handleFormSubmit);
 
   const actions: TActionMenuItem[] = React.useMemo(
     () => [
@@ -260,7 +200,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         content: t('ResetChanges'),
         icon: Icons.Close,
         visibleFor: 'lg',
-        onClick: () => form.reset(),
+        onClick: () => form?.reset(),
         hidden: !isDirty,
       },
       {
@@ -285,6 +225,7 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
         disabled: !isSubmitEnabled,
         pending: isPending,
         onClick: handleSubmit,
+        hidden: !handleSubmit,
       },
     ],
     [
@@ -331,7 +272,9 @@ export function EditQuestionCard(props: TEditQuestionCardProps) {
           className={cn(
             isDev && '__EditQuestionCard_Form', // DEBUG
           )}
-          form={form}
+          question={question}
+          setForm={setForm}
+          setFormState={setFormState}
           handleFormSubmit={handleFormSubmit}
           isPending={isPending}
         />

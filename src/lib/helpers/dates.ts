@@ -2,7 +2,7 @@ import ms from 'ms';
 import { useFormatter } from 'next-intl';
 
 import { defaultLocale, TLocale, TTranslator, useT } from '@/i18n';
-import { dayMs, halfYearMs, hourMs, minuteMs } from '@/constants';
+import { dayMs, epochStartDate, halfYearMs, hourMs, minuteMs } from '@/constants';
 
 export type TDateLike = Date | string | number;
 
@@ -42,18 +42,17 @@ export function ensureDate(date?: TDateLike): Date {
 }
 
 /** Return numeric date epochs difference. The returned value is positive if 'b' is the later than 'a'. Returns zero if the dates are equal. */
-export function compareDates(a: Date | string, b: Date | string) {
+export function compareDates(a: TDateLike = epochStartDate, b: TDateLike = epochStartDate) {
   // Workaround for cases when date has been passed as an ISO string
   a = ensureDate(a);
   b = ensureDate(b);
-
   return b.getTime() - a.getTime();
 }
 
 export function getFormattedRelativeDate(
   format: ReturnType<typeof useFormatter>,
-  date?: Date | string,
-  now?: Date | string,
+  date?: TDateLike,
+  now?: TDateLike,
 ) {
   // Workaround for cases when date has been passed as an ISO string
   date = ensureDate(date);
@@ -72,7 +71,7 @@ export function getFormattedRelativeDate(
   });
 }
 
-export function useFormattedRelativeDate(date?: Date | string, now?: Date | string) {
+export function useFormattedRelativeDate(date?: TDateLike, now?: TDateLike) {
   // Workaround for cases when date has been passed as an ISO string
   date = ensureDate(date);
   now = ensureDate(now);
@@ -82,8 +81,8 @@ export function useFormattedRelativeDate(date?: Date | string, now?: Date | stri
 }
 
 export function getNativeFormattedRelativeDate(
-  date: Date | string = new Date(),
-  now: Date | string = new Date(),
+  date: TDateLike = new Date(),
+  now: TDateLike = new Date(),
   locale: TLocale = defaultLocale,
 ) {
   // Workaround for cases when date has been passed as an ISO string
@@ -384,7 +383,7 @@ export function translatedPeriod(timestamp?: TDateLike, t?: TTranslator): string
 }
 
 /** Create a JavaScript Date object that is N days ago from an existing date */
-export function createDateWithDaysDiff(days: number, timestamp?: Date | string) {
+export function createDateWithDaysDiff(days: number, timestamp?: TDateLike) {
   const date = new Date(ensureDate(timestamp));
   date.setDate(date.getDate() + days);
   return date;

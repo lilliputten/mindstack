@@ -65,11 +65,11 @@ export async function sendLoggingMessage(
   } catch (error) {
     const errMsg = getErrorText(error);
     // eslint-disable-next-line no-console
-    console.error('[sendLoggingMessage]', errMsg, {
+    console.warn('[sendLoggingMessage]', errMsg, {
       error,
       text,
     });
-    debugger; // eslint-disable-line no-debugger
+    // debugger; // eslint-disable-line no-debugger
     // NOTE: Don't re-throw errors as it's a non-critical code
     // throw error;
   }

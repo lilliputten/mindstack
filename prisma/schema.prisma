@@ -1,3 +1,5 @@
+// vim: fdm=indent
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -46,25 +48,31 @@ model Session {
 }
 
 model User {
-  id                    String                  @id @default(cuid())
-  name                  String?
-  email                 String?                 @unique
-  emailVerified         DateTime?               @map("email_verified")
-  image                 String?
-  role                  UserRole                @default(USER)
-  grade                 UserGrade               @default(BASIC)
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  role          UserRole  @default(USER)
+  grade         UserGrade @default(BASIC)
+
+  // TODO: Issue #79: Track last sign-in time
+  lastSignedIn DateTime? @map("last_signed_in")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   subscriptionPeriod    UserSubscriptionPeriod? @map("subscription_period")
   subscriptionStartedAt DateTime?               @updatedAt @map("subscription_started_at")
-  accounts              Account[]
-  AIGenerations         AIGeneration[]
-  sessions              Session[]
-  topics                Topic[]
-  userPayments          UserPayment[]
-  userSettings          UserSettings?
-  userTopicWorkout      UserTopicWorkout[]
-  workoutStats          WorkoutStats[]
+
+  accounts         Account[]
+  AIGenerations    AIGeneration[]
+  sessions         Session[]
+  topics           Topic[]
+  userPayments     UserPayment[]
+  userSettings     UserSettings?
+  userTopicWorkout UserTopicWorkout[]
+  workoutStats     WorkoutStats[]
 
   @@map("users")
 }
@@ -117,34 +125,50 @@ model AllowedUser {
 }
 
 model UserSettings {
-  userId            String   @id @map("user_id")
-  showOnlyMyTopics  Boolean? @default(false) @map("show_only_my_topics")
-  locale            String?  @map("locale")
-  theme             String?  @map("theme")
-  themeColor        String?  @map("theme_color")
-  langCode          String?  @map("lang_code")
-  langName          String?  @map("lang_name")
-  langCustom        Boolean? @map("lang_custom")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+  userId           String   @id @map("user_id")
+  showOnlyMyTopics Boolean? @default(false) @map("show_only_my_topics")
+  locale           String?  @map("locale")
+  theme            String?  @map("theme")
+  themeColor       String?  @map("theme_color")
+  langCode         String?  @map("lang_code")
+  langName         String?  @map("lang_name")
+  langCustom       Boolean? @map("lang_custom")
+
+  // TODO: Issue #79: "Show my achievements publicly"
+  exposeAchievements Boolean @default(false) @map("expose_achievements")
+
+  // Is it used?
   jumpToNewEntities Boolean? @default(false) @map("jump_to_new_entities")
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("user_settings")
 }
 
 model AIGeneration {
-  id          String   @id @default(cuid())
-  modelUsed   String?  @map("model_used")
-  spentTimeMs Int      @default(0) @map("spent_time_ms")
-  spentTokens Int      @default(0) @map("spent_tokens")
-  topicId     String?  @map("topic_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  finishedAt  DateTime @default(now()) @map("finished_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-  userId      String   @map("user_id")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id String @id @default(cuid())
+
+  // TODO: Issue #79: Mark debug-mode generations
+  debugMode Boolean @default(false)
+
+  modelUsed String? @map("model_used")
+
+  spentTimeMs Int @default(0) @map("spent_time_ms")
+  spentTokens Int @default(0) @map("spent_tokens")
+
+  // Track related topic, if applicable
+  topicId String? @map("topic_id")
+
+  createdAt  DateTime @default(now()) @map("created_at")
+  finishedAt DateTime @default(now()) @map("finished_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("ai_generations")
@@ -178,57 +202,87 @@ model CategoryTranslation {
 }
 
 model Topic {
-  id                 String             @id @default(cuid())
-  name               String
-  description        String?
-  isPublic           Boolean?           @map("is_public")
-  keywords           String?
-  langCode           String?            @map("lang_code")
-  langName           String?            @map("lang_name")
-  langCustom         Boolean?           @map("lang_custom")
-  answersCountRandom Boolean?           @map("answers_count_random")
-  answersCountMin    Int?               @map("answers_count_min")
-  answersCountMax    Int?               @map("answers_count_max")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @default(now()) @updatedAt @map("updated_at")
-  userId             String             @map("user_id")
-  questions          Question[]
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userTopicWorkout   UserTopicWorkout[]
-  workoutStats       WorkoutStats[]
-  categories         Category[]         @relation("CategoryToTopic")
+  id String @id @default(cuid())
+
+  name        String
+  description String?
+  keywords    String?
+
+  isPublic Boolean? @map("is_public")
+
+  // TODO: Issue #79: Default "extra" text to use for AI generation
+  extraQuery String? @map("extra_query")
+
+  langCode   String?  @map("lang_code")
+  langName   String?  @map("lang_name")
+  langCustom Boolean? @map("lang_custom")
+
+  answersCountRandom Boolean? @map("answers_count_random")
+  answersCountMin    Int?     @map("answers_count_min")
+  answersCountMax    Int?     @map("answers_count_max")
+
+  userId String @map("user_id")
+
+  questions        Question[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userTopicWorkout UserTopicWorkout[]
+  workoutStats     WorkoutStats[]
+  categories       Category[]         @relation("CategoryToTopic")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@index([userId])
   @@map("topics")
 }
 
 model Question {
-  id                 String   @id @default(cuid())
-  text               String
+  id String @id @default(cuid())
+
+  // TODO: Issue #79: Order parameter to allow re-order the items
+  order Int?
+
+  text String
+
+  isGenerated Boolean @default(false) @map("is_generated")
+
+  // TODO: Issue #79: Default "extra" text to use for AI generation
+  extraQuery String? @map("extra_query")
+
   answersCountRandom Boolean? @map("answers_count_random")
   answersCountMin    Int?     @map("answers_count_min")
   answersCountMax    Int?     @map("answers_count_max")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
-  topicId            String   @map("topic_id")
-  isGenerated        Boolean  @default(false) @map("is_generated")
-  answers            Answer[]
-  topic              Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  topicId String @map("topic_id")
+
+  answers Answer[]
+  topic   Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@index([topicId])
   @@map("questions")
 }
 
 model Answer {
-  id          String   @id @default(cuid())
-  isCorrect   Boolean  @default(false) @map("is_correct")
-  isGenerated Boolean  @default(false) @map("is_generated")
+  id String @id @default(cuid())
+
+  // TODO: Issue #79: Order parameter to allow re-order the items
+  order Int?
+
   text        String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-  questionId  String   @map("question_id")
   explanation String?
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  isCorrect   Boolean @default(false) @map("is_correct")
+  isGenerated Boolean @default(false) @map("is_generated")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  questionId String @map("question_id")
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([questionId])
   @@map("answers")

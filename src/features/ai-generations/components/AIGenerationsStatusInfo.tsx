@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { InfoFrame } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { welcomeAliasRoute } from '@/config';
@@ -22,9 +23,8 @@ interface TProps extends TPropsWithClassName {
 export function AIGenerationsStatusInfo(props: TProps) {
   const t = useT();
   const { className, noFrame } = props;
-  const showFrame = !noFrame;
 
-  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const aiGenerationsStatusQuery = useAIGenerationsStatus({ traceId: 'AIGenerationsStatusInfo' });
 
   const {
     // Core properties...
@@ -71,44 +71,36 @@ export function AIGenerationsStatusInfo(props: TProps) {
   const isUnlimited = availableGenerations === unlimitedGenerations;
 
   return (
-    <div
+    <InfoFrame
+      noFrame={noFrame}
       className={cn(
         isDev && '__AIGenerationsStatusInfo', // DEBUG
-        'flex flex-wrap items-center gap-4 gap-y-1',
-        'content-truncate',
-        'rounded-md',
-        'text-sm',
-        showFrame && 'border',
-        showFrame && 'border-theme-600/5',
-        showFrame && 'bg-theme-600/5',
-        showFrame && 'p-3',
-        showFrame && 'py-2',
         className,
       )}
     >
       {/* Available Generations */}
       {isUnlimited ? (
         <span className="content-truncate flex items-center gap-1 text-green-600">
-          <Icons.CircleCheck className="mr-1 size-4 shrink-0 opacity-50" />
+          <Icons.CircleCheck className="mr-1 inline size-4 shrink-0 opacity-50" />
           <span className="content-truncate">
             {t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')}
           </span>
         </span>
       ) : allowed ? (
-        <span className="content-truncate flex items-center gap-1 text-green-600">
-          <Icons.CircleCheck className="mr-1 size-4 shrink-0 opacity-50" />
+        <span className="content-truncate inline text-green-600">
+          <Icons.CircleCheck className="mr-1 inline size-4 shrink-0 opacity-50" />
           <span className="content-truncate">
             {t('AIGenerationsStatusInfo.AvailableAIGenerations', { availableGenerations })}
           </span>
         </span>
       ) : (
-        <span className="content-truncate flex items-center gap-1">
-          <Icons.Warning className="mr-1 size-4 shrink-0 text-red-500 opacity-50" />
+        <span className="content-truncate inline gap-1">
+          <Icons.Warning className="mr-1 inline size-4 shrink-0 text-red-500 opacity-50" />
           <span className="content-truncate">
             <span className="content-truncate font-semibold text-red-500">
               {t('AIGenerationsStatusInfo.NoAIGenerationsAvailable')}
             </span>{' '}
-            Please{' '}
+            {t('Please')}{' '}
             <Link
               href={welcomeAliasRoute}
               className="content-truncate text-theme-500 hover:underline"
@@ -122,13 +114,13 @@ export function AIGenerationsStatusInfo(props: TProps) {
 
       {/* Used Generations */}
       {!!usedGenerations && (
-        <span className="flex items-center gap-1" title={t('UsedGenerations')}>
-          <Icons.LineChart className="mr-1 size-4 shrink-0 opacity-50" />
+        <span className="inline" title={t('UsedGenerations')}>
+          <Icons.LineChart className="mr-1 inline size-4 shrink-0 opacity-50" />
           {t('AIGenerationsStatusInfo.UsedGenerationsText', { usedGenerations })}
         </span>
       )}
 
-      {/*
+      {/* // UNUSED: Other possible details
       <span className="flex items-center gap-1" title="Generation mode">
         <Icons.Settings className="mr-1 size-4 opacity-50" />
         Mode: {generationMode}
@@ -152,6 +144,6 @@ export function AIGenerationsStatusInfo(props: TProps) {
         Allowed: {allowed ? 'Yes' : 'No'}
       </span>
       */}
-    </div>
+    </InfoFrame>
   );
 }

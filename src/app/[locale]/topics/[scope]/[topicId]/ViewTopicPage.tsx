@@ -62,7 +62,7 @@ export function ViewTopicPage(props: TViewTopicPageProps) {
 
   const breadcrumbs = useTopicsBreadcrumbsItems({ topic, scope: manageScope });
 
-  const aiGenerationsStatusQuery = useAIGenerationsStatus();
+  const aiGenerationsStatusQuery = useAIGenerationsStatus({ traceId: 'ViewTopicPage' });
   const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = aiGenerationsStatusQuery;
 
   const handleReload = React.useCallback(() => {

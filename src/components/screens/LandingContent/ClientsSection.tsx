@@ -34,7 +34,7 @@ export function ClientsSection() {
             key={index}
             className="relative h-12 w-24 opacity-60 grayscale transition-opacity hover:opacity-100 hover:grayscale-0"
           >
-            <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
+            <Image src={logo.src} alt={logo.alt} fill className="bg-theme-500/20 object-contain" />
           </div>
         ))}
       </div>

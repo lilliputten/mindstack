@@ -15,7 +15,7 @@ import { SuccessSplash } from '@/components/shared/SuccessSplash';
 import { isDev, manageCategoriesRoute } from '@/config';
 import { deleteCategory } from '@/features/categories/actions/deleteCategory';
 import { TAvailableCategory, TCategory, TCategoryId } from '@/features/categories/types';
-import { useGoBack, useModalTitle, useUpdateModalVisibility } from '@/hooks';
+import { useDocumentTitle, useGoBack, useUpdateModalVisibility } from '@/hooks';
 
 import { getCategoryName } from '../helpers';
 import { useAvailableCategoryById } from '../query-hooks';
@@ -73,7 +73,7 @@ export function DeleteCategoryModal(props: TDeleteCategoryModalProps) {
   }
 
   const dialogTitle = t('DeleteCategoryModal.DialogTitle');
-  useModalTitle(dialogTitle);
+  useDocumentTitle(dialogTitle);
   useUpdateModalVisibility(setVisible, shouldBeVisible);
 
   const deleteCategoryMutation = useMutation<TAvailableCategory, Error, TCategory>({

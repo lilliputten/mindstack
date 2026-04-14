@@ -91,8 +91,23 @@ if (typeof window !== 'undefined') {
 
 // Mocks...
 
+jest.mock('next-intl/server', () => ({
+  getRequestConfig: jest.fn(() => ({
+    messages: {},
+    onError: jest.fn(),
+    getMessageFallback: jest.fn(),
+  })),
+  setRequestLocale: jest.fn(),
+  getLocale: jest.fn(),
+}));
+
 jest.mock('@/jest/test/bare', () => ({
   getBare: jest.fn(() => 'initial mocked bare'),
+}));
+
+// Mock next/cache to avoid Request is not defined error in jsdom environment
+jest.mock('next/cache', () => ({
+  unstable_cache: <T>(fn: () => Promise<T>) => fn,
 }));
 
 jest.mock('@/lib/session', () => ({

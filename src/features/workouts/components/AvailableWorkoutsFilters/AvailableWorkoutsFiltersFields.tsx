@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/Select';
 import { Switch } from '@/components/ui/Switch';
 import { FormHint } from '@/components/blocks/FormHint';
+import { LanguageName } from '@/components/shared';
 import { CategorySelect } from '@/components/shared/CategorySelect';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
@@ -38,6 +39,8 @@ import { useWorkoutsFiltersContext } from '../../contexts';
 
 interface TProps extends TPropsWithClassName {
   form: UseFormReturn<TFiltersData>;
+  selectLanguage: () => void;
+  resetLanguage: () => void;
 }
 
 function FormSection({ children }: { children: React.ReactNode }) {
@@ -54,7 +57,7 @@ function FormSection({ children }: { children: React.ReactNode }) {
 }
 
 export function AvailableWorkoutsFiltersFields(props: TProps) {
-  const { className, form } = props;
+  const { className, form, selectLanguage, resetLanguage } = props;
 
   const tTexts = useT('AvailableWorkoutsFilterTexts');
   const t = useT();
@@ -70,7 +73,8 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
   const hasWorkoutStatsKey = React.useId();
   const hasActiveWorkoutsKey = React.useId();
   const adminModeKey = React.useId();
-  const searchLangKey = React.useId();
+  // const searchLangKey = React.useId();
+  const langCodeKey = React.useId();
   const minStartedKey = React.useId();
   const maxStartedKey = React.useId();
   const minFinishedKey = React.useId();
@@ -100,7 +104,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
             placeholder={t('AvailableWorkoutsFilters.SelectCategories')}
           />
         </div>
-        {/* Temporarily don't use `searchText` and `searchLang` for local mode: Required loading & caching topics data for local filtering */}
+        {/* Temporarily don't use `searchText` and `searchLang` for local mode, as it's required loading & caching topics data for local filtering */}
         {/* Search Text (Temporarily don't use for local mode) */}
         {!isLocal && (
           <FormField
@@ -118,7 +122,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       placeholder={t('AvailableWorkoutsFilters.SearchForTextPlaceholder')}
                       {...field}
                       value={field.value || ''}
-                      className={cn('pr-11')}
+                      className="w-full pr-11"
                       maxLength={maxSearchTextLength}
                     />
                     {field.value && (
@@ -147,7 +151,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
             )}
           />
         )}
-        {/* Search Language (only one language field as requested) */}
+        {/* Search Language (only one language field as requested)
         {!isLocal && (
           <FormField
             name="searchLang"
@@ -164,7 +168,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       placeholder={t('AvailableWorkoutsFilters.SearchLangPlaceholder')}
                       {...field}
                       value={field.value || ''}
-                      className={cn('pr-11')}
+                      className="w-full pr-11"
                     />
                     {field.value && (
                       <Button
@@ -194,6 +198,77 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
             )}
           />
         )}
+        */}
+        {/* langCode */}
+        <FormField
+          name="langCode"
+          control={form.control}
+          render={() => {
+            const [langCode, langName, langCustom] = form.watch([
+              'langCode',
+              'langName',
+              'langCustom',
+            ]);
+            return (
+              <FormItem
+                className={cn(
+                  'flex w-full flex-col gap-2',
+                  // !field.value && 'opacity-50',
+                )}
+              >
+                <Label className="truncate" htmlFor={langCodeKey}>
+                  {getFilterFieldName('langCode', tTexts)}
+                </Label>
+                <Button
+                  id={langCodeKey}
+                  variant="ghostForm"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    selectLanguage();
+                  }}
+                  className="flex w-full justify-stretch gap-4 text-left"
+                >
+                  <span className="flex-1 truncate">
+                    {langCode === '-' ? (
+                      t('AnyLanguage')
+                    ) : langCode || langName ? (
+                      <LanguageName langCode={langCode} langName={langName} />
+                    ) : (
+                      t('AppLanguage')
+                    )}
+                  </span>
+                  {langCustom && (
+                    <span className="opacity-50">
+                      <Icons.Edit className="size-3" />
+                    </span>
+                  )}
+                  {langCode === '-' && (
+                    <span className="opacity-50">
+                      <Icons.Asterisk className="size-5" />
+                    </span>
+                  )}
+                  {(langCode || langName) && (
+                    <Icons.Close
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        resetLanguage();
+                      }}
+                      className="size-4"
+                    />
+                  )}
+                </Button>
+                <FormHint className="content-truncate">
+                  {t.rich('AvailableWorkoutsFilters.SearchLangHint', {
+                    code: (chunks) => <code>{chunks}</code>,
+                  })}
+                </FormHint>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
         {/* Order By Select */}
         <FormField
           name="orderBySelect"
@@ -373,7 +448,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -396,7 +471,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -423,7 +498,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -446,7 +521,7 @@ export function AvailableWorkoutsFiltersFields(props: TProps) {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className={cn(!field.value && 'text-foreground/10')}
+                      className={cn('w-full', !field.value && 'text-foreground/10')}
                     />
                   </FormControl>
                   <FormMessage />

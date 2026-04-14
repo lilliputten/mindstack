@@ -18,6 +18,9 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
     return undefined;
   }
 
+  // Some models try tro use `<br>` as newlines.
+  rawContent = rawContent.replace(/<br>/g, '\n');
+
   // NOTE: Cloudflare might return this: ```json\n{...}\n```
   // NOTE: Sometimes it's possible to have some content before ```json from Cloudflare
   const mdStart = '```json';
@@ -25,10 +28,12 @@ function sanitizeRawJson(rawContent?: string, _noDebug?: boolean) {
   const jsonStart = rawContent.indexOf(mdStart);
   // OLD APPROACH: if (rawContent.startsWith(mdStart) && rawContent.endsWith(mdEnd)) ...
   if (jsonStart !== -1) {
-    rawContent = rawContent.substring(jsonStart + mdStart.length).trim();
-    if (rawContent.endsWith(mdEnd)) {
-      rawContent = rawContent.substring(rawContent.length - mdEnd.length).trim();
+    rawContent = rawContent.substring(jsonStart + mdStart.length);
+    const lastIndex = rawContent.lastIndexOf(mdEnd);
+    if (lastIndex !== -1) {
+      rawContent = rawContent.substring(0, lastIndex);
     }
+    rawContent = rawContent.trim();
   }
 
   return rawContent;
@@ -50,7 +55,7 @@ export function parseDangerousJson(rawContent?: string, noDebug?: boolean) {
         rawContent,
         error,
       });
-      debugger; // eslint-disable-line no-debugger
+      // debugger; // eslint-disable-line no-debugger
     }
 
     try {
@@ -64,7 +69,7 @@ export function parseDangerousJson(rawContent?: string, noDebug?: boolean) {
           rawContent,
           error,
         });
-        debugger; // eslint-disable-line no-debugger
+        // debugger; // eslint-disable-line no-debugger
       }
     }
 

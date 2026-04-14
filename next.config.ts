@@ -121,6 +121,8 @@ const nextConfig: NextConfig = {
     },
   },
   webpack: (config, _ctx) => {
+    // const { isServer } = ctx;
+
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
@@ -133,18 +135,6 @@ const nextConfig: NextConfig = {
       config.optimization = config.optimization || {};
       config.optimization.minimize =
         config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
-    }
-
-    const terserPlugin = config.optimization.minimizer.find(
-      (minimizer: { constructor: { name: string } }) =>
-        minimizer.constructor.name === 'TerserPlugin',
-    );
-
-    if (terserPlugin) {
-      // Modify Terser options to keep debugger statements
-      terserPlugin.options.terserOptions.compress.drop_debugger = false;
-      // Optionally, prevent console logs from being dropped
-      terserPlugin.options.terserOptions.compress.drop_console = false;
     }
 
     return config;
@@ -172,8 +162,17 @@ const nextConfig: NextConfig = {
       bodySizeLimit: `${blobBodySizeLimitMb}mb`,
     },
   },
-  compress: !isDev, // In favor of xtunnel (it loses `gzip` header)
+  compress: false, // !isDev, // In favor of xtunnel (it loses `gzip` header)
   reactStrictMode: false,
+  /* // DEBUG: Keep unminified code
+   * productionBrowserSourceMaps: true,
+   * swcMinify: false,
+   * swcMinifyDebugOptions: {
+   *   mangle: {
+   *     reserved: ['self', 'global'],
+   *   },
+   * },
+   */
 };
 
 export default withNextIntl(nextConfig);
