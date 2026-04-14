@@ -6,7 +6,6 @@ import { ContentFooter } from '@/components/shared';
 
 import { BigImageCTASection } from './BigImageCTASection';
 import { CardsWithIconsSection } from './CardsWithIconsSection';
-import { DescriptionCodeSection } from './DescriptionCodeSection';
 import { FAQSection } from './FAQSection';
 import { FeaturesSection } from './FeaturesSection';
 import { HeroSection } from './HeroSection';

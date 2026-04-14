@@ -1,55 +1,49 @@
 # Landing Page Rewrite Draft
 
-**Status:** In Progress - Ready for Review  
-**Date:** 2026-04-14  
+**Status:** In Progress - Ready for Review
+**Date:** 2026-04-14
 **Focus:** Reframe landing from "learning platform" to "personal training creation tool"
-
----
 
 ## Core Messaging Shift
 
-**OLD:** "Train Your Brain. Build Your Knowledge." (passive learning)  
+**OLD:** "Train Your Brain. Build Your Knowledge." (passive learning)
 **NEW:** "Create Custom Trainings From Your Own Knowledge" (active authoring)
 
 **Key Principle:** MindStack is not about consuming pre-made courses—it's about building your own repetition training system from YOUR topics, YOUR questions, and YOUR use cases.
 
----
-
 ## Available Real Screenshots
 
-See [landing-screenshots.md](./landing-screenshots.md) for complete catalog of available screenshots.
+See `landing-screenshots.md` for complete catalog of selcted and available screenshots.
 
 **Key Screenshots for Landing:**
 
 **Hero Section:**
-- `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` - Welcome page showing value proposition
+- `v.0.1.4/welcome-page-with-premium-account-info-and-unlimited-ai-generations.jpg` - Welcome page showing value proposition
 
 **Features Section:**
-- Card 1 (Build From Your Own Knowledge): `v.0.1.3/categories.png` or `v.0.1.4/available topics list with a filter.png`
-- Card 2 (Generate, Check, Perfect): `v.0.1.4/generate questions dialog 3.png`
-- Card 3 (Keep Data Clean): `v.0.1.4/questions comparison.png` - Shows similarity detection
-- Card 4 (Edit Without Context Switching): `v.0.1.4/edit topic questions and answers.png`
-- Card 5 (Control Your Privacy): `v.0.1.4/mobile panel.png` - Shows settings/privacy
-- Card 6 (Organized Hierarchy): `v.0.1.3/topics.png` - Shows filtering and organization
+- Card 1 (Build From Your Own Knowledge): `v.0.1.3/categories.jpg` or `v.0.1.4/available-topics-list-with-a-filter.jpg`
+- Card 2 (Generate, Check, Perfect): `v.0.1.4/generate-questions-dialog-3.jpg`
+- Card 3 (Keep Data Clean): `v.0.1.4/questions-comparison.jpg` - Shows similarity detection
+- Card 4 (Edit Without Context Switching): `v.0.1.4/edit-topic-questions-and-answers.jpg`
+- Card 5 (Control Your Privacy): `v.0.1.4/mobile-panel.jpg` - Shows settings/privacy
+- Card 6 (Organized Hierarchy): `v.0.1.3/topics.jpg` - Shows filtering and organization
 
 **How It Works:**
-- Step 1: `v.0.1.4/signin popup screen.png` - Getting started
-- Step 2: `v.0.1.4/generated questions with opened and editing answer.png` - Generation and editing
-- Step 3: `v.0.1.3/trainig step questions 2.png` - Training in action
+- Step 1: `v.0.1.4/signin-popup-screen.jpg` - Getting started
+- Step 2: `v.0.1.4/generated-questions-with-opened-and-editing-answer.jpg` - Generation and editing
+- Step 3: `v.0.1.3/trainig-step-questions-2.jpg` - Training in action
 
 **Training/Results:**
-- `v.0.1.3/training results.png` - Shows outcomes
-- `v.0.1.4/not started training.png` - Training preparation
+- `v.0.1.3/training-results.jpg` - Shows outcomes
+- `v.0.1.4/not-started-training.jpg` - Training preparation
 
 **Pricing/Payment:**
-- `v.0.1.3/pricing.png` - Pricing plans
-- `v.0.1.3/payment method.png` - Payment options
+- `v.0.1.3/pricing.jpg` - Pricing plans
+- `v.0.1.3/payment-method.jpg` - Payment options
 
 **Settings/User Info:**
-- `v.0.1.4/language selection.png` - Multi-language support
-- `v.0.1.3/settings.png` - User customization
-
----
+- `v.0.1.4/language-selection.jpg` - Multi-language support
+- `v.0.1.3/settings.jpg` - User customization
 
 ## Section-by-Section Rewrite Plan
 
@@ -83,12 +77,12 @@ See [landing-screenshots.md](./landing-screenshots.md) for complete catalog of a
 - Secondary: "Explore Public Topics" (instead of "Available Categories")
 
 **Visual Strategy:**
-✅ **Use Real Screenshot:** `v.0.1.4/welcome page with premium account info and unlimited ai generations.png`
+✅ **Use Real Screenshot:** `v.0.1.4/welcome-page-with-premium-account-info-and-unlimited-ai-generations.jpg`
 - Shows the welcome/onboarding experience
 - Demonstrates value proposition visually
 - More authentic than composite images
 
-**Alternative:** If welcome page doesn't fit, use `v.0.1.4/available topics list with a filter.png` to show the breadth of available content.
+**Alternative:** If welcome page doesn't fit, use `v.0.1.4/available-topics-list-with-a-filter.jpg` to show the breadth of available content.
 
 ---
 
@@ -113,40 +107,40 @@ See [landing-screenshots.md](./landing-screenshots.md) for complete catalog of a
 **Card 1: Personal-First Training Builder**
 - **Title:** "Build From Your Own Knowledge"
 - **Text:** "Create topics around your real work, studies, or interests. No generic courses—just your personalized training datasets organized by categories."
-- **Image:** ✅ `v.0.1.3/categories.png` - Shows category browsing and filtering
+- **Image:** ✅ `v.0.1.3/categories.jpg` - Shows category browsing and filtering
 - **Why:** Establishes the core value proposition immediately
 
 **Card 2: Smart Content Generation & Review**
 - **Title:** "Generate, Check, Perfect"
 - **Text:** "Use AI to draft questions and answers instantly, then review and edit before saving. Regenerate until quality meets your standards."
-- **Image:** ✅ `v.0.1.4/generate questions dialog 3.png` - Shows AI generation interface
+- **Image:** ✅ `v.0.1.4/generate-questions-dialog-3.jpg` - Shows AI generation interface
 - **Why:** Highlights the unique generation-validation workflow
 
 **Card 3: Duplicate Detection**
 - **Title:** "Keep Your Data Clean"
 - **Text:** "Compare new items against existing ones to catch duplicates and near-duplicates. Beta similarity algorithms help maintain dataset quality as it grows."
-- **Image:** ✅ `v.0.1.4/questions comparison.png` - Shows similarity comparison with different rates
+- **Image:** ✅ `v.0.1.4/questions-comparison.jpg` - Shows similarity comparison with different rates
 - **Why:** Technical differentiator that solves a real pain point
 
 **Card 4: In-Place Editing Workflow**
 - **Title:** "Edit Without Context Switching"
 - **Text:** "Modify questions and answers directly in the training interface using our rich HeadlessEditor. No separate editing mode needed."
-- **Image:** ✅ `v.0.1.4/edit topic questions and answers.png` - Shows inline editing
+- **Image:** ✅ `v.0.1.4/edit-topic-questions-and-answers.jpg` - Shows inline editing
 - **Why:** Emphasizes UX efficiency
 
 **Card 5: Private or Public—Your Choice**
 - **Title:** "Control Your Privacy"
 - **Text:** "Keep topics private by default for personal use. Share selected topics publicly when you want to contribute to the community."
-- **Image:** ✅ `v.0.1.4/mobile panel.png` - Shows mobile settings panel with privacy controls
+- **Image:** ✅ `v.0.1.4/mobile-panel.jpg` - Shows mobile settings panel with privacy controls
 - **Why:** Addresses data ownership concerns
 
 **Card 6: Structured for Scale**
 - **Title:** "Organized Hierarchy That Grows With You"
 - **Text:** "Categories → Topics → Questions → Answers. A clear structure that keeps your knowledge base manageable whether you have 10 or 1000 items."
-- **Image:** ✅ `v.0.1.4/available topics list with a filter.png` - Shows topic organization with filters
+- **Image:** ✅ `v.0.1.4/available-topics-list-with-a-filter.jpg` - Shows topic organization with filters
 - **Why:** Shows the system can handle complexity
 
-**Section Title:** "Everything You Need to Build Quality Training Datasets"  
+**Section Title:** "Everything You Need to Build Quality Training Datasets"
 **Section Description:** "From initial idea to active training session, MindStack provides tools for creating, validating, and practicing with your personal knowledge base."
 
 ---
@@ -191,7 +185,7 @@ No major changes needed.
 - **Title:** "Train Instantly"
 - **Text:** "Start repetition sessions as soon as you save your first question. No waiting, no setup delays."
 
-**Section Title:** "Streamlined From Creation to Practice"  
+**Section Title:** "Streamlined From Creation to Practice"
 **Section Description:** "Every step optimized for speed and control"
 
 ---
@@ -213,7 +207,7 @@ No major changes needed.
 - **Title:** "API-Ready Structure"
 - **Text:** "Clean hierarchical data model makes it easy to export, integrate, or build custom workflows."
 
-**Section Title:** "Built for Different Use Cases"  
+**Section Title:** "Built for Different Use Cases"
 **Section Description:** "Whether personal, collaborative, or technical"
 
 ---
@@ -251,12 +245,12 @@ No major changes needed.
 - **"Create Your First Topic Now"** or **"Start Building Free"**
 
 **Visual Strategy:**
-✅ **Use Real Screenshot:** `v.0.1.4/generated questions saved with active comparison.png`
+✅ **Use Real Screenshot:** `v.0.1.4/generated-questions-saved-with-active-comparison.jpg`
 - Shows the complete workflow: generated questions with comparison active
 - Demonstrates the value of validation before saving
 - More authentic than before/after composite
 
-**Alternative:** Use `v.0.1.4/generated questions filtering.png` to show how users can organize and filter their generated content.
+**Alternative:** Use `v.0.1.4/generated-questions-filtering.jpg` to show how users can organize and filter their generated content.
 
 ---
 
@@ -287,26 +281,26 @@ Add context: "Recently updated public topics from the community" to clarify thes
 - **Icon:** `Icons.FolderPlus` or `Icons.BookOpen`
 - **Title:** "Create or Choose a Topic"
 - **Text:** "Start a new topic under a relevant category, or browse public topics for inspiration. Set it as private or public based on your needs."
-- **Visual:** ✅ `v.0.1.4/signin popup screen.png` - Shows getting started/authentication
+- **Visual:** ✅ `v.0.1.4/signin-popup-screen.jpg` - Shows getting started/authentication
 
 **Card 2: Build & Validate Content**
 - **Icon:** `Icons.CheckCircle` or `Icons.Shield`
 - **Title:** "Generate, Review, Refine"
 - **Text:** "Add questions manually or use AI generation. Compare new items against existing ones to avoid duplicates. Edit in place until everything looks right."
-- **Visual:** ✅ `v.0.1.4/generated questions with opened and editing answer.png` - Shows generation + editing workflow
+- **Visual:** ✅ `v.0.1.4/generated-questions-with-opened-and-editing-answer.jpg` - Shows generation + editing workflow
 
 **Card 3: Train & Iterate**
 - **Icon:** `Icons.Repeat` or `Icons.TrendingUp`
 - **Title:** "Practice and Improve"
 - **Text:** "Run repetition sessions on your validated data. Track performance, identify weak areas, and continuously refine your topic as you learn."
-- **Visual:** ✅ `v.0.1.3/trainig step questions 2.png` - Shows training session in action
+- **Visual:** ✅ `v.0.1.3/trainig-step-questions-2.jpg` - Shows training session in action
 
-**Section Title:** "How MindStack Works"  
+**Section Title:** "How MindStack Works"
 **Section Description:** "A complete workflow from idea to mastery"
 
 **Alternative Visuals:**
-- For Card 3, could also use `v.0.1.3/training results.png` to show outcomes
-- Or `v.0.1.4/not started training.png` to show preparation phase
+- For Card 3, could also use `v.0.1.3/training-results.jpg` to show outcomes
+- Or `v.0.1.4/not-started-training.jpg` to show preparation phase
 
 ---
 
@@ -386,7 +380,7 @@ Add context: "Recently updated public topics from the community" to clarify thes
 - "How do I track my progress?" → Keep but simplify
 - "How does the workout system work?" → Merge into Q1/Q6
 
-**Section Title:** "Common Questions"  
+**Section Title:** "Common Questions"
 **Section Description:** "Everything you need to know about creating and using personal training datasets"
 
 ---
@@ -419,7 +413,7 @@ Consider adding social proof here:
 - "X+ topics created" / "Y+ active users" (if you have stats)
 - Or a testimonial quote (even if placeholder for now)
 
-**Screenshot Option:** Could use `v.0.1.3/pricing.png` to show pricing transparency, or `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` to show premium benefits.
+**Screenshot Option:** Could use `v.0.1.3/pricing.jpg` to show pricing transparency, or `v.0.1.4/welcome-page-with-premium-account-info-and-unlimited-ai-generations.jpg` to show premium benefits.
 
 ---
 
@@ -431,18 +425,18 @@ All screenshots referenced above are from the real application (see [landing-scr
 
 | Section | Screenshot Path | Purpose |
 |---------|----------------|---------|
-| **Hero** | `v.0.1.4/welcome page with premium account info and unlimited ai generations.png` | Welcome/onboarding value prop |
-| **Feature 1** | `v.0.1.3/categories.png` | Category browsing/filtering |
-| **Feature 2** | `v.0.1.4/generate questions dialog 3.png` | AI generation interface |
-| **Feature 3** | `v.0.1.4/questions comparison.png` | Duplicate/similarity detection |
-| **Feature 4** | `v.0.1.4/edit topic questions and answers.png` | Inline editing workflow |
-| **Feature 5** | `v.0.1.4/mobile panel.png` | Privacy/settings controls |
-| **Feature 6** | `v.0.1.4/available topics list with a filter.png` | Topic organization |
-| **BigImageCTA** | `v.0.1.4/generated questions saved with active comparison.png` | Complete workflow demonstration |
-| **HowItWorks 1** | `v.0.1.4/signin popup screen.png` | Getting started |
-| **HowItWorks 2** | `v.0.1.4/generated questions with opened and editing answer.png` | Generation + editing |
-| **HowItWorks 3** | `v.0.1.3/trainig step questions 2.png` | Training in action |
-| **PromoCTA** | `v.0.1.3/pricing.png` (optional) | Pricing transparency |
+| **Hero** | `v.0.1.4/welcome-page-with-premium-account-info-and-unlimited-ai-generations.jpg` | Welcome/onboarding value prop |
+| **Feature 1** | `v.0.1.3/categories.jpg` | Category browsing/filtering |
+| **Feature 2** | `v.0.1.4/generate-questions-dialog-3.jpg` | AI generation interface |
+| **Feature 3** | `v.0.1.4/questions-comparison.jpg` | Duplicate/similarity detection |
+| **Feature 4** | `v.0.1.4/edit-topic-questions-and-answers.jpg` | Inline editing workflow |
+| **Feature 5** | `v.0.1.4/mobile-panel.jpg` | Privacy/settings controls |
+| **Feature 6** | `v.0.1.4/available-topics-list-with-a-filter.jpg` | Topic organization |
+| **BigImageCTA** | `v.0.1.4/generated-questions-saved-with-active-comparison.jpg` | Complete workflow demonstration |
+| **HowItWorks 1** | `v.0.1.4/signin-popup-screen.jpg` | Getting started |
+| **HowItWorks 2** | `v.0.1.4/generated-questions-with-opened-and-editing-answer.jpg` | Generation + editing |
+| **HowItWorks 3** | `v.0.1.3/trainig-step-questions-2.jpg` | Training in action |
+| **PromoCTA** | `v.0.1.3/pricing.jpg` (optional) | Pricing transparency |
 
 ### Screenshot Specifications
 
