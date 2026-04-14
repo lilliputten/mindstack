@@ -8,16 +8,16 @@ import { cn } from '@/lib/utils';
 import { TLocale, useT } from '@/i18n';
 import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
-import { AddAnswerModal } from '@/components/pages/ManageTopicQuestionAnswers';
+import { AddAnswerModal } from '@/components/pages/ManageTopicQuestionAnswers/AddAnswerModal/AddAnswerModal';
 import { isDev } from '@/constants';
+import { CmpAnswer } from '@/entities/HeadlessEditor/CmpAnswer';
+import { reorderByDate } from '@/entities/HeadlessEditor/helpers';
 import {
-  CmpAnswer,
-  reorderByDate,
   THeadlessEditorState,
   TReorderModes,
   TSaveDataParams,
   useHeadlessEditorState,
-} from '@/entities/HeadlessEditor';
+} from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 

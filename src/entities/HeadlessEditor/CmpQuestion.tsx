@@ -16,15 +16,20 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import * as Icons from '@/components/shared/Icons';
 import { isDev, TRoutePath } from '@/config';
-import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
-import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
+import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor/AnswersEditorCore';
 import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
 import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
 import { useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
+// Fixed circular dependency issue
+import { newItemIdPrefix } from './constants';
 import { TCmpItemProps } from './types';
+import { TSaveDataParams } from './useHeadlessEditorState';
+
+// // Circular dependency error:
+// import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
 
 type T = TNewOrOldQuestion;
 

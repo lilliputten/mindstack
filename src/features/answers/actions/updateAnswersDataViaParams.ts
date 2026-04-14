@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { ContentLimitError } from '@/lib/errors/ContentLimitError';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
-import { newItemIdPrefix } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
 import { TAnswerId, TNewAnswer, TNewOrOldAnswer } from '@/features/answers/types';
 import { checkAnswersLimit } from '@/features/users/services/checkContentLimits';
 

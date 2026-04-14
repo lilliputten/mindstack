@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
+import CircularDependencyPlugin from 'circular-dependency-plugin';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 import { blobBodySizeLimitMb } from '@/constants';
@@ -136,6 +137,15 @@ const nextConfig: NextConfig = {
       config.optimization.minimize =
         config.optimization.minimize !== undefined ? config.optimization.minimize : !isDev;
     }
+
+    config.plugins.push(
+      new CircularDependencyPlugin({
+        exclude: /node_modules/,
+        failOnError: false, // Set true to block builds
+        allowAsyncCycles: false,
+        cwd: process.cwd(),
+      }),
+    );
 
     return config;
   },

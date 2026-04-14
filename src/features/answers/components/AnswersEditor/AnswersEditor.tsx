@@ -11,7 +11,11 @@ import {
   makeQueryKeyPrefix,
 } from '@/lib/helpers';
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types';
-import { newItemIdPrefix, THeadlessEditorState, TSaveDataParams } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
+import {
+  THeadlessEditorState,
+  TSaveDataParams,
+} from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableAnswers } from '@/hooks';

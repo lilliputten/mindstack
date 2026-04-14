@@ -7,8 +7,8 @@ import { MarkdownText } from '@/components/ui/MarkdownText';
 import { BusySplashWithInfo, ErrorSplash, InfoFrame } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
-import { TSaveDataParams } from '@/entities/HeadlessEditor';
-import { QuestionsEditorCore } from '@/features/questions/components/QuestionsEditor';
+import { TSaveDataParams } from '@/entities/HeadlessEditor/useHeadlessEditorState';
+import { QuestionsEditorCore } from '@/features/questions/components/QuestionsEditor/QuestionsEditorCore';
 import { TNewOrOldQuestion } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 

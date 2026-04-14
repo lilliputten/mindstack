@@ -2,7 +2,7 @@ import { generateArray } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isDev } from '@/config';
-import { TSaveDataParams } from '@/entities/HeadlessEditor';
+import { TSaveDataParams } from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { TTopicId } from '@/features/topics';
 import { useAvailableQuestions, useAvailableTopicById } from '@/hooks';
 

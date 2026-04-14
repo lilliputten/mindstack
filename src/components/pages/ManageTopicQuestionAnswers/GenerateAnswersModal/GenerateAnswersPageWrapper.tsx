@@ -22,7 +22,9 @@ import * as Icons from '@/components/shared/Icons';
 import { availableTopicsRoute, defaultAIGenerationTemperature } from '@/config';
 import { isDev } from '@/constants';
 import { TTopicsManageScopeId } from '@/contexts/TopicsContext';
-import { getUniqueIdForSet, newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
+import { getUniqueIdForSet } from '@/entities/HeadlessEditor/helpers';
+import { TSaveDataParams } from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import {

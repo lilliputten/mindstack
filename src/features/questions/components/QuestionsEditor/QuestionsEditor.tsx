@@ -11,7 +11,11 @@ import {
 import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types';
 import { useT } from '@/i18n';
 import { useAvailableQuestions } from '@/hooks/react-query/useAvailableQuestions';
-import { newItemIdPrefix, THeadlessEditorState, TSaveDataParams } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
+import {
+  THeadlessEditorState,
+  TSaveDataParams,
+} from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { TTopicId } from '@/features/topics/types';
 import { useAvailableTopicById } from '@/hooks';
 

@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { isDev } from '@/constants';
-import { newItemIdPrefix } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
 import { TAvailableAnswer } from '@/features/answers/types';
 import { TNewOrOldQuestion, TNewQuestion, TQuestionId } from '@/features/questions/types';
 

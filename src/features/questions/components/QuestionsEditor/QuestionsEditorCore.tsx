@@ -10,14 +10,14 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddQuestionModal } from '@/components/pages/ManageTopicQuestions';
 import { isDev } from '@/constants';
+import { CmpQuestion } from '@/entities/HeadlessEditor/CmpQuestion';
+import { reorderByDate } from '@/entities/HeadlessEditor/helpers';
 import {
-  CmpQuestion,
-  reorderByDate,
   THeadlessEditorState,
   TReorderModes,
   TSaveDataParams,
   useHeadlessEditorState,
-} from '@/entities/HeadlessEditor';
+} from '@/entities/HeadlessEditor/useHeadlessEditorState';
 import { TTopicId } from '@/features/topics/types';
 
 import { T } from './types';

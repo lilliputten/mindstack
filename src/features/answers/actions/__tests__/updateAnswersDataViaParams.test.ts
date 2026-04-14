@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals
 import { jestPrisma } from '@/lib/db/jestPrisma';
 import { formatDateTag } from '@/lib/helpers/dates';
 import { getCurrentUser } from '@/lib/session';
-import { newItemIdPrefix } from '@/entities/HeadlessEditor';
+import { newItemIdPrefix } from '@/entities/HeadlessEditor/constants';
 import { TNewAnswer, TNewOrOldAnswer } from '@/features/answers/types';
 import { TUser } from '@/features/users/types/TUser';
 
