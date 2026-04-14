@@ -255,7 +255,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
                 'border border-theme-500/50 bg-background/20',
                 !hasOverallValue && 'border-theme-500/10',
                 !!compareTargetId && hasValue && 'border-red-500/100',
-                isCompareTarget && 'animate-pulse border-dashed border-red-500',
+                isCompareTarget && 'animate-pulse border-dashed border-green-500',
                 !!handleCompareTargetId &&
                   hasOverallValue &&
                   'cursor-pointer hover:ring-2 hover:ring-theme-500/50',
@@ -273,7 +273,7 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
                 className={cn(
                   isDev && '__HeadlessEditorItem_CompareIcon', // DEBUG
                   'size-full rounded-full bg-red-500',
-                  isCompareTarget && 'bg-red-500',
+                  isCompareTarget && 'bg-green-500',
                 )}
                 style={{ opacity: isCompareTarget ? 1 : showValue.toFixed(2) }}
               />
@@ -288,7 +288,9 @@ export function HeadlessEditorItem<T extends TCmpItemBase>(props: TProps<T>) {
         className={cn(
           isDev && '__HeadlessEditorItem_RenderItem', // DEBUG
           'flex-1',
+          'content-truncate-x',
           'transition',
+          'max-xs:pl-6',
           // isDragging && 'opacity-0',
           isOverlay && 'opacity-20',
         )}

@@ -53,7 +53,7 @@ export function ContentSkeleton({ className }: TPropsWithClassName) {
       )}
     >
       {false && isDev && (
-        <div className="text-sm opacity-50">__GenerateQuestionsModal_ContentSkeleton</div>
+        <div className="text-sm opacity-50">__GenerateAnswersModal_ContentSkeleton</div>
       )}
       <div className={cn('flex size-full flex-col gap-2')}>
         <Skeleton className="h-5 w-1/3 shrink-0 rounded-lg" />

@@ -20,12 +20,13 @@ import { newItemIdPrefix, TSaveDataParams } from '@/entities/HeadlessEditor';
 import { AnswersEditorCore } from '@/features/answers/components/AnswersEditor';
 import { TNewOrOldAnswer } from '@/features/answers/types';
 import { EditQuestionForm, TFormData } from '@/features/questions/components/EditQuestionForm';
-import { TQuestionId } from '@/features/questions/types';
+import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
 import { useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-import { TCmpItemProps } from '../types';
-import { T } from './types';
+import { TCmpItemProps } from './types';
+
+type T = TNewOrOldQuestion;
 
 /** Show edit button in the actions block or (otherwise) in the dropdown menu */
 const showEditAsAction = true;
@@ -468,6 +469,7 @@ export function CmpQuestion(props: TCmpItemProps<T>) {
       className={cn(
         isDev && '__CmpQuestion', // DEBUG
         'relative flex w-full items-start gap-2 text-left',
+        // 'p-1',
         // hasChanges && 'border border-red-500', // DEBUG
         className,
       )}

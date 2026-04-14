@@ -1,3 +1,5 @@
+export * from './CmpAnswer';
+export * from './CmpQuestion';
 export * from './HeadlessEditor';
 export * from './constants';
 export * from './helpers';

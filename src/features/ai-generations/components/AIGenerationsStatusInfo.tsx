@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { InfoFrame } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { welcomeAliasRoute } from '@/config';
@@ -22,7 +23,6 @@ interface TProps extends TPropsWithClassName {
 export function AIGenerationsStatusInfo(props: TProps) {
   const t = useT();
   const { className, noFrame } = props;
-  const showFrame = !noFrame;
 
   const aiGenerationsStatusQuery = useAIGenerationsStatus({ traceId: 'AIGenerationsStatusInfo' });
 
@@ -71,18 +71,10 @@ export function AIGenerationsStatusInfo(props: TProps) {
   const isUnlimited = availableGenerations === unlimitedGenerations;
 
   return (
-    <div
+    <InfoFrame
+      noFrame={noFrame}
       className={cn(
         isDev && '__AIGenerationsStatusInfo', // DEBUG
-        'flex flex-wrap items-center gap-4 gap-y-1',
-        'content-truncate',
-        'rounded-md',
-        'text-sm',
-        showFrame && 'border',
-        showFrame && 'border-theme-600/5',
-        showFrame && 'bg-theme-600/5',
-        showFrame && 'p-3',
-        showFrame && 'py-2',
         className,
       )}
     >
@@ -128,7 +120,7 @@ export function AIGenerationsStatusInfo(props: TProps) {
         </span>
       )}
 
-      {/*
+      {/* // UNUSED: Other possible details
       <span className="flex items-center gap-1" title="Generation mode">
         <Icons.Settings className="mr-1 size-4 opacity-50" />
         Mode: {generationMode}
@@ -152,6 +144,6 @@ export function AIGenerationsStatusInfo(props: TProps) {
         Allowed: {allowed ? 'Yes' : 'No'}
       </span>
       */}
-    </div>
+    </InfoFrame>
   );
 }

@@ -3,7 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
-import { UserRoleType, UserGradeType } from '@/generated/prisma';
+import { UserGradeType, UserRoleType } from '@/generated/prisma';
 
 import { SET_FIRST_USER_ADMIN, USE_ALLOWED_USERS } from '@/config/envServer';
 import { authErrorRoute, welcomeAliasRoute } from '@/config/routesConfig';

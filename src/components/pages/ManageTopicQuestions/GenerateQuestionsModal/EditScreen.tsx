@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { MarkdownText } from '@/components/ui/MarkdownText';
-import { BusySplashWithInfo, ErrorSplash } from '@/components/shared';
+import { BusySplashWithInfo, ErrorSplash, InfoFrame } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { TSaveDataParams } from '@/entities/HeadlessEditor';
@@ -15,24 +15,30 @@ import { TTopicId } from '@/features/topics/types';
 export interface TEditScreenProps {
   startOverCallback?: () => void;
   className?: string;
-  isSaving?: boolean;
   topicId: TTopicId;
   questions?: TNewOrOldQuestion[];
   handleCancel?: () => void;
   saveData?: (saveParams: TSaveDataParams<TNewOrOldQuestion>) => Promise<TNewOrOldQuestion[]>;
   reloadQuestions?: () => void;
+  setHasQuestionsChanged: React.Dispatch<React.SetStateAction<boolean>>;
+  isSaving?: boolean;
+  isReady?: boolean;
+  isLoading?: boolean;
 }
 
 export function EditScreen(props: TEditScreenProps) {
   const {
     className,
     startOverCallback,
-    isSaving = false,
     questions,
     handleCancel,
     saveData,
     topicId,
     reloadQuestions,
+    setHasQuestionsChanged,
+    isSaving = false,
+    isReady = true,
+    isLoading = false,
   } = props;
   const t = useT();
 
@@ -49,31 +55,34 @@ export function EditScreen(props: TEditScreenProps) {
       <div
         className={cn(
           isDev && '__EditScreen_Wrapper', // DEBUG
-          'relative transition',
+          'relative',
         )}
       >
         <div
           className={cn(
             isDev && '__EditScreen_WrapperContent', // DEBUG
-            'flex w-full flex-col justify-center gap-4',
-            'min-h-24',
-            isSaving && 'opacity-20',
+            'flex w-full flex-col justify-center gap-4 transition',
+            isSaving && 'opacity-50',
           )}
         >
           {!questions?.length ? (
             <ErrorSplash className="px-6" title={t('GenerateQuestionsModal.NoQuestionsToEdit')} />
           ) : (
             <div className="conent-truncate flex flex-col gap-4">
-              <div className="conent-truncate flex gap-4">
-                <Icons.Info className="size-8 shrink-0 text-theme-500" />
+              <InfoFrame className="items-start gap-2">
+                <Icons.Info className="my-1 size-4 shrink-0 text-theme-500 opacity-50" />
                 <MarkdownText>{t('GenerateQuestionsModal.EditHelpMarkdownText')}</MarkdownText>
-              </div>
+              </InfoFrame>
               <QuestionsEditorCore
                 topicId={topicId}
                 questions={questions}
                 saveData={saveData}
                 reloadData={reloadQuestions}
                 calculateChanges
+                setHeadlessEditorState={(state) => setHasQuestionsChanged(state.hasChanges)}
+                isReady={isReady}
+                isLoading={isLoading}
+                // isSaving={isSaving}
               />
             </div>
           )}

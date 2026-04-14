@@ -31,8 +31,8 @@ import { TTopicId } from '@/features/topics';
 import { useAvailableQuestionById, useGoToTheRoute, useMediaMinDevices } from '@/hooks';
 import { useManageTopicsStore } from '@/stores/ManageTopicsStoreProvider';
 
-import { newItemIdPrefix } from '../constants';
-import { TCmpItemProps } from '../types';
+import { newItemIdPrefix } from './constants';
+import { TCmpItemProps } from './types';
 
 const showEditAsAction = true;
 const showExplanation = false;
@@ -44,13 +44,13 @@ const formDataSchema = z.object({
   isGenerated: z.boolean().optional(),
 });
 
-type TItem = TNewOrOldAnswer & {
+type T = TNewOrOldAnswer & {
   question?: { id: TQuestionId; topicId?: TTopicId };
 };
 
-type TCmpAnswerExtraParams = Pick<TItem, 'question'>;
+type TCmpAnswerExtraParams = Pick<T, 'question'>;
 
-export function CmpAnswer(props: TCmpItemProps<TItem>) {
+export function CmpAnswer(props: TCmpItemProps<T>) {
   const { className, item, updateItem, hasChanges, compact, extraParams } = props;
   const {
     id,
@@ -119,7 +119,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
 
   const [viewInfo, setViewInfo] = React.useState(false);
 
-  const [editedItem, setEditedItem] = React.useState<TItem | undefined>();
+  const [editedItem, setEditedItem] = React.useState<T | undefined>();
   const isEditMode = editedItem != undefined;
   const isEdited = isEditMode && isDirty;
 
@@ -181,7 +181,7 @@ export function CmpAnswer(props: TCmpItemProps<TItem>) {
 
   const getEditedItem = React.useCallback(
     (formData: TFormData) => {
-      const next: TItem = {
+      const next: T = {
         ...item,
         text: formData.text,
         explanation: formData.explanation,

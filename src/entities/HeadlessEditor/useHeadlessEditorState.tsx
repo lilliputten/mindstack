@@ -64,6 +64,7 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean = boolean> {
 
   /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
   isReady?: boolean;
+  isLoading?: boolean;
 
   /// Reorder options
 
@@ -127,8 +128,13 @@ interface TMemo<T extends TCmpItemBase> {
   filterSelected?: boolean;
   showNormalized?: boolean;
   totalChangedCount?: number;
-  hasChanges?: boolean;
+  changesCount?: number;
+  hasRevertableChanges?: boolean;
+  allowedSave?: boolean;
   extraParams?: unknown;
+  isReady?: boolean;
+  isLoading?: boolean;
+  isSaving?: boolean;
 }
 
 export interface THeadlessEditorState<
@@ -188,6 +194,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   const memo = React.useMemo<TMemo<T>>(() => ({}), []);
   const {
     isReady = true,
+    isLoading,
     lang,
     largeTexts,
 
@@ -219,9 +226,13 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
   memo.filterSelected = filterSelected;
   memo.showNormalized = showNormalized;
   memo.extraParams = extraParams;
+  memo.isReady = isReady;
+  memo.isLoading = isLoading;
 
-  const [_isSaving, setSaving] = React.useState(false);
-  const [hasChanges, setHasChanges] = React.useState(false);
+  const [isSaving, setSaving] = React.useState(false);
+  memo.isSaving = isSaving;
+
+  const [changesCount, setChangesCount] = React.useState<number>(0);
 
   // Items data...
   const [items, setItems] = React.useState(() => defaultItems);
@@ -248,7 +259,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       const updatedItems = items.map((old) => newItemsMap.get(old.id) ?? old);
       return updatedItems;
     });
-    setHasChanges(true);
+    setChangesCount((count) => count + newItemsMap.size);
   }, []);
 
   // Update reordered indices handler
@@ -258,7 +269,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       (reorderedIds = new Set()) => new Set([...reorderedIds, ...newItemsMap.keys()]),
     );
     setItems((items) => items.map((old) => newItemsMap.get(old.id) ?? old));
-    setHasChanges(true);
+    setChangesCount((count) => count + its.length);
   }, []);
 
   // State: Local selected ids set
@@ -299,7 +310,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     });
   }, [items]);
 
-  // Restore defaults handler
+  // Restore defaults (UNDO) handler
   const restoreDefaults = React.useCallback(() => {
     const { defaultItems } = memo;
     if (!defaultItems) return;
@@ -310,7 +321,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     // Recreate added ids list from the items...
     const addedIds = getAddedIdsSet(defaultItems);
     setAddedIds(addedIds);
-    setHasChanges(false);
+    setChangesCount(0);
   }, [memo]);
 
   // Restore defaults handler
@@ -377,7 +388,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         setDeletedIds(undefined);
         setAddedIds(undefined);
         setReorderedIds(undefined);
-        setHasChanges(false);
+        setChangesCount(0);
       })
       .finally(() => {
         setSaving(false);
@@ -406,7 +417,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         newSet.add(newItem.id);
         return newSet;
       });
-      setHasChanges(true);
+      setChangesCount((count) => count + 1);
     },
     [getUniqueNewId],
   );
@@ -418,7 +429,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       setDeletedIds((deletedIds = new Set()) => new Set([...deletedIds, ...selectedIds]));
       // Delete items
       setItems((items) => items.filter(({ id }) => !selectedIds?.has(id)));
-      setHasChanges(true);
+      setChangesCount((count) => count + selectedIds?.size);
     }
   }, [selectedIds]);
 
@@ -465,7 +476,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           (reorderedIds = new Set()) => new Set([...reorderedIds, ...newReorderedIds.keys()]),
         );
         setItems(newItems);
-        setHasChanges(true);
+        setChangesCount((count) => count + reorderedCount);
       }
     },
     [memo, lang],
@@ -490,7 +501,9 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
       reorderedIds?.size,
     ].reduce((summ = 0, val = 0) => summ + val, 0) || 0;
   memo.totalChangedCount = totalChangedCount;
-  memo.hasChanges = calculateChanges ? !!totalChangedCount : hasChanges;
+  memo.changesCount = changesCount;
+  memo.hasRevertableChanges = !!changesCount;
+  memo.allowedSave = calculateChanges ? !!totalChangedCount : !!changesCount;
 
   const RenderHeadlessEditorControls = React.useCallback(
     (props: THeadlessEditorControlsExternalProps<T>) => {
@@ -526,13 +539,21 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         filterAdded,
         filterSelected,
         showNormalized,
-        totalChangedCount,
-        hasChanges,
+        changesCount,
+        allowedSave,
+        isReady,
+        isLoading,
+        isSaving,
+        // totalChangedCount,
+        // hasRevertableChanges,
       } = memo;
       return (
         <HeadlessEditorControls
           className={cn(
             isDev && '__useHeadlessEditorState_HeadlessEditorControls', // DEBUG
+            'transition',
+            (!isReady || isLoading) && 'opacity-50',
+            !isReady && 'pointer-events-none',
             className,
           )}
           // Reorder...
@@ -550,8 +571,6 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           setFilterSelected={setFilterSelected}
           setFilterText={setFilterText}
           setFilterTextSmart={setFilterTextSmart}
-          // Lifecylcle control...
-          isReady={isReady}
           // Actions...
           setCompareTargetId={setCompareTargetId}
           setSelectedIds={setSelectedIds}
@@ -561,8 +580,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           setReorderedIds={setReorderedIds}
           restoreDefaults={restoreDefaults}
           // Calculated data...
-          totalChangedCount={totalChangedCount}
-          hasChanges={hasChanges}
+          changesCount={changesCount}
+          allowedSave={allowedSave}
+          // totalChangedCount={totalChangedCount}
+          // hasRevertableChanges={hasRevertableChanges}
           // Filters...
           filterText={filterText}
           filterTextSmart={filterTextSmart}
@@ -572,6 +593,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
           filterSelected={filterSelected}
           // Items...
           items={items || []}
+          // Lifecylcle control...
+          isReady={isReady}
+          isLoading={isLoading}
+          isSaving={isSaving}
           // State...
           updatedIds={updatedIds}
           addedIds={addedIds}
@@ -584,7 +609,17 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         />
       );
     },
-    [handleSave, isReady, memo, reorderItems, restoreDefaults, saveData, setShowNormalized],
+    [
+      handleSave,
+      // isLoading,
+      // isReady,
+      // isSaving,
+      memo,
+      reorderItems,
+      restoreDefaults,
+      saveData,
+      setShowNormalized,
+    ],
   );
 
   const RenderHeadlessEditor = React.useCallback(
@@ -605,18 +640,26 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
         filterAdded,
         filterSelected,
         showNormalized,
-        hasChanges,
+        // hasChanges,
+        allowedSave,
         // totalChangedCount,
+        isReady,
+        isLoading,
+        isSaving,
       } = memo;
       return (
         <HeadlessEditor
           className={cn(
             isDev && '__useHeadlessEditorState_HeadlessEditor', // DEBUG
+            'transition',
+            (!isReady || isLoading || isSaving) && 'opacity-50',
+            !isReady && 'pointer-events-none',
             className,
           )}
           // Lifecylcle control...
           isReady={isReady}
-          hasChanges={hasChanges}
+          isLoading={isLoading}
+          hasChanges={allowedSave}
           // Options...
           lang={lang}
           largeTexts={largeTexts}
@@ -650,7 +693,10 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
     [
       RenderItem,
       getItemText,
-      isReady,
+      // \<\(isReady\|isLoading\|isSaving\)\>
+      // isReady,
+      // isLoading,
+      // isSaving,
       lang,
       largeTexts,
       memo,
@@ -670,7 +716,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
 
       compareTargetId,
       totalChangedCount,
-      hasChanges: !!memo.hasChanges,
+      hasChanges: !!memo.hasRevertableChanges,
 
       /// Setters (AKA state controllers)...
 
@@ -715,7 +761,7 @@ export function useHeadlessEditorState<T extends TCmpItemBase, LargeTexts extend
 
       compareTargetId,
       totalChangedCount,
-      memo.hasChanges,
+      memo.hasRevertableChanges,
 
       /// Setters (AKA state controllers)...
 

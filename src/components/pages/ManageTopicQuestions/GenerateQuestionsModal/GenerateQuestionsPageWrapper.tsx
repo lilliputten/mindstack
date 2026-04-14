@@ -99,6 +99,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
   const [isStarted, setStarted] = React.useState<boolean>(false);
   const [isGenerated, setGenerated] = React.useState<boolean>(false);
+  // const [isGenerating, setGenerating] = React.useState<boolean>(false);
 
   const [generatedQuestions, setGeneratedQuestions] = React.useState<
     TNewOrOldQuestion[] | undefined
@@ -110,6 +111,42 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
   const __useDebugData = isDev || isAdmin;
 
+  const availableTopicQuery = useAvailableTopicById({
+    id: topicId || '',
+    includeQuestions: true,
+    includeQuestionsCount: true,
+  });
+  const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
+  const isTopicPending = !isTopicFetched || isTopicFetching;
+
+  const [_hasQuestionsChanged, setHasQuestionsChanged] = React.useState(false);
+
+  const availableQuestionsQuery = useAvailableQuestions({
+    enabled: isStarted,
+    topicId,
+    itemsLimit: null,
+    includeTopic: true,
+    includeAnswers: true,
+    traceId: 'GenerateQuestionsPageWrapper',
+    // NOTE: Disable update while editing
+    staleTime: Infinity, // hasQuestionsChanged ? Infinity : defaultStaleTime,
+  });
+  const {
+    refetch: refetchQuestions,
+    allQuestions: questions,
+    isFetched: isQuestionsFetched,
+    isFetching: isQuestionsFetching,
+  } = availableQuestionsQuery;
+  const isQuestionsPending = isStarted && (!isQuestionsFetched || isQuestionsFetching);
+
+  const questionsCount = topic?._count?.questions;
+  const allowedTraining = !!questionsCount;
+
+  const combinedQuestions = React.useMemo<TNewOrOldQuestion[]>(
+    () => [...questions, ...(generatedQuestions || [])],
+    [questions, generatedQuestions],
+  );
+
   const defaultValues: TFormData = React.useMemo(
     () => ({
       debugData: __useDebugData,
@@ -119,18 +156,18 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
       answersGenerationType: answersGenerationTypes[0],
       answersCountMin: isDev ? 1 : 2,
       answersCountMax: isDev ? 1 : 6,
-      extraText: '',
+      extraText: topic?.extraQuery || '',
       clientType: defaultAiClientType,
       temperature: defaultAIGenerationTemperature,
     }),
-    [__useDebugData],
+    [__useDebugData, topic],
   );
 
   const form = useForm<TFormData>({
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
-    defaultValues,
+    values: defaultValues,
   });
 
   const abortControllerRef = React.useRef<AbortController | null>(null);
@@ -138,7 +175,11 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
   const aiGenerationsStatusQuery = useAIGenerationsStatus({
     traceId: 'GenerateQuestionsPageWrapper',
   });
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = aiGenerationsStatusQuery;
+  const {
+    allowed: aiGenerationsAllowed,
+    loading: aiGenerationsLoading,
+    refetch: aiGenerationsRefetch,
+  } = aiGenerationsStatusQuery;
 
   const userAIRequest = useUserAIRequest();
   const t = useT();
@@ -151,39 +192,6 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
   const goBack = useGoBack(topicsListRoutePath);
 
   const isPreparing = isSessionLoading || aiGenerationsLoading;
-
-  const availableTopicQuery = useAvailableTopicById({
-    id: topicId || '',
-    includeQuestions: true,
-    includeQuestionsCount: true,
-  });
-  const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
-  const isTopicPending = !isTopicFetched || isTopicFetching;
-
-  const availableQuestionsQuery = useAvailableQuestions({
-    enabled: isStarted,
-    topicId,
-    itemsLimit: null,
-    includeTopic: true,
-    includeAnswers: true,
-    traceId: 'GenerateQuestionsPageWrapper',
-  });
-  const {
-    refetch: refetchQuestions,
-    allQuestions: questions,
-    isFetched: isQuestionsFetched,
-    isFetching: isQuestionsFetching,
-    isRefetching: isQuestionsRefetching,
-  } = availableQuestionsQuery;
-  const isQuestionsPending = isStarted && (!isQuestionsFetched || isQuestionsFetching);
-
-  const questionsCount = topic?._count?.questions;
-  const allowedTraining = !!questionsCount;
-
-  const combinedQuestions = React.useMemo<TNewOrOldQuestion[]>(
-    () => [...questions, ...(generatedQuestions || [])],
-    [questions, generatedQuestions],
-  );
 
   // Using different titles depending on the current status
   const title = isSaved
@@ -252,10 +260,6 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
             : undefined,
         };
         const results = await updateQuestionsDataViaParams(updateQuestionsData);
-        console.log('[GenerateQuestionsPageWrapper:saveDataFn:done]', {
-          results,
-          updateQuestionsData,
-        });
         return results;
       } catch (error) {
         const details = getErrorText(error);
@@ -269,7 +273,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
         throw error;
       }
     },
-    [],
+    [t],
   );
 
   // Update React Query cache with saved data
@@ -328,16 +332,6 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
       const items = [...allItems.values(), ...remainedAddedItemsMap.values()];
 
-      console.log('[GenerateQuestionsPageWrapper:updateQuestionsQueryData:done]', {
-        items,
-        allItems,
-        remainedAddedItemsMap,
-        autoAddedIdsMap,
-        updatedItemsMap,
-        addedItemsMap,
-        results,
-      });
-
       return items;
     },
     [queryClient, availableQuestionsQuery.queryKey],
@@ -374,18 +368,20 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
   // Wrapper function that matches the expected signature for QuestionsEditorCore
   const saveData = React.useCallback(
     async (saveParams: TSaveDataParams<TNewOrOldQuestion>): Promise<TNewOrOldQuestion[]> => {
-      const results = await saveDataMutation.mutateAsync(saveParams);
-      const items = updateQuestionsQueryData(results);
-      console.log('[GenerateQuestionsPageWrapper:saveData:items]', {
-        items,
-        results,
-        saveParams,
+      const savePromise = saveDataMutation.mutateAsync(saveParams);
+      toast.promise(savePromise, {
+        loading: t('GenerateQuestionsModal.SavingQuestions'),
+        error: t('GenerateQuestionsModal.SavingQuestionsError'),
+        success: t('GenerateQuestionsModal.QuestionsSaved'),
+        // cancel: { label: t('Cancel'), onClick: resetOperations }, // It's not cancelable
       });
+      const results = await savePromise;
+      const items = updateQuestionsQueryData(results);
       setSaved(true);
       setGeneratedQuestions(undefined);
       return items || [];
     },
-    [saveDataMutation, updateQuestionsQueryData],
+    [saveDataMutation, updateQuestionsQueryData, t],
   );
 
   const resetOperations = React.useCallback(() => {
@@ -409,6 +405,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
 
   const generateCallback = React.useCallback(
     async (formData: TFormData) => {
+      // setGenerating(true);
       setStarted(true);
       try {
         if (!topicId) {
@@ -431,10 +428,6 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           toast.warning(t('GenerateQuestionsModal.NoQuestionsGenerated'));
           return;
         }
-
-        console.log('[]', {
-          parsedQuestions,
-        });
 
         toast.success(
           t('GenerateQuestionsModal.GeneratedQuestionsCount', { count: parsedQuestions.length }),
@@ -508,6 +501,8 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
           toast.error(comboMsg);
           setError(comboMsg);
         }
+      } finally {
+        // setGenerating(false);
       }
     },
     [generateQuestionsMutation, topicId, resetOperations, t],
@@ -634,6 +629,7 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
             explanation={
               <AIGenerationsStatusInfo className="justify-center border-0 bg-transparent" />
             }
+            reset={aiGenerationsRefetch}
             className="mx-6"
           />
         ) : isGenerated ? (
@@ -641,14 +637,16 @@ export function GenerateQuestionsPageWrapper(props: TGenerateQuestionsPageWrappe
             className={cn(
               isDev && '__GenerateQuestionsPageWrapper_EditScreen', // DEBUG
               'px-6',
-              (isQuestionsRefetching || saveDataMutation.isPending) && 'opacity-50',
             )}
             topicId={topicId}
-            isSaving={saveDataMutation.isPending}
-            handleCancel={resetOperations}
+            // handleCancel={resetOperations} // It's not cancelable
             questions={combinedQuestions}
             saveData={saveData}
             reloadQuestions={() => refetchQuestions()}
+            setHasQuestionsChanged={setHasQuestionsChanged}
+            isReady={isGenerated && isTopicFetched && isQuestionsFetched}
+            isLoading={generateQuestionsMutation.isPending || isQuestionsFetching}
+            isSaving={saveDataMutation.isPending}
           />
         ) : (
           <GenerateQuestionsForm

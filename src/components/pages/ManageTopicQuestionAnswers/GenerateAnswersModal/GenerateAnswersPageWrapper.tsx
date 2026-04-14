@@ -103,6 +103,7 @@ export function GenerateAnswersPageWrapper({
 
   const [isStarted, setStarted] = React.useState<boolean>(false);
   const [isGenerated, setGenerated] = React.useState<boolean>(false);
+  // const [isGenerating, setGenerating] = React.useState<boolean>(false);
 
   const [generatedAnswers, setGeneratedAnswers] = React.useState<TNewOrOldAnswer[] | undefined>(
     __debugGeneratedAnswers,
@@ -113,34 +114,6 @@ export function GenerateAnswersPageWrapper({
   const [isLeaving, setLeaving] = React.useState(false);
 
   const __useDebugData = isDev || isAdmin;
-
-  const defaultValues: TFormData = React.useMemo(
-    () => ({
-      debugData: __useDebugData,
-      answersGenerationType: answersGenerationTypes[0],
-      answersCountMin: isDev ? 1 : 2,
-      answersCountMax: isDev ? 1 : 6,
-      extraText: '',
-      clientType: defaultAiClientType,
-      temperature: defaultAIGenerationTemperature,
-    }),
-    [__useDebugData],
-  );
-
-  // @see https://react-hook-form.com/docs/useform
-  const form = useForm<TFormData>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    resolver: zodResolver(formSchema),
-    defaultValues,
-  });
-
-  const abortControllerRef = React.useRef<AbortController | null>(null);
-
-  const aiGenerationsStatusQuery = useAIGenerationsStatus({
-    traceId: 'GenerateAnswersPageWrapper',
-  });
-  const { allowed: aiGenerationsAllowed, loading: aiGenerationsLoading } = aiGenerationsStatusQuery;
 
   const userAIRequest = useUserAIRequest();
   const t = useT();
@@ -153,8 +126,6 @@ export function GenerateAnswersPageWrapper({
   const questionRoutePath = `${questionsListRoutePath}/${questionId}`;
   const answersListRoutePath = `${questionRoutePath}/answers`;
   const goBack = useGoBack(answersListRoutePath);
-
-  const isPreparing = isSessionLoading || aiGenerationsLoading;
 
   const availableTopicQuery = useAvailableTopicById({
     id: topicId || '',
@@ -175,19 +146,21 @@ export function GenerateAnswersPageWrapper({
   } = availableQuestionQuery;
   const isQuestionPending = !isQuestionFetched || isQuestionFetching;
 
+  const [_hasAnswersChanged, setHasAnswersChanged] = React.useState(false);
+
   const availableAnswersQuery = useAvailableAnswers({
     enabled: isStarted,
     questionId,
     itemsLimit: null,
     includeQuestion: true,
     traceId: 'GenerateAnswersPageWrapper',
+    staleTime: Infinity, // hasAnswersChanged ? Infinity : defaultStaleTime,
   });
   const {
     refetch: refetchAnswers,
     allAnswers: answers,
     isFetched: isAnswersFetched,
     isFetching: isAnswersFetching,
-    isRefetching: isAnswersRefetching,
   } = availableAnswersQuery;
   const isAnswersPending = isStarted && (!isAnswersFetched || isAnswersFetching);
 
@@ -206,6 +179,40 @@ export function GenerateAnswersPageWrapper({
       ? t('GenerateAnswersModal.AnswersGeneratedStatus')
       : t('GenerateAnswersModal.Title');
   useDocumentTitle(title);
+
+  const defaultValues: TFormData = React.useMemo(
+    () => ({
+      debugData: __useDebugData,
+      answersGenerationType: answersGenerationTypes[0],
+      answersCountMin: isDev ? 1 : 2,
+      answersCountMax: isDev ? 1 : 6,
+      extraText: question?.extraQuery || '',
+      clientType: defaultAiClientType,
+      temperature: defaultAIGenerationTemperature,
+    }),
+    [__useDebugData, question],
+  );
+
+  // @see https://react-hook-form.com/docs/useform
+  const form = useForm<TFormData>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    resolver: zodResolver(formSchema),
+    values: defaultValues,
+  });
+
+  const abortControllerRef = React.useRef<AbortController | null>(null);
+
+  const aiGenerationsStatusQuery = useAIGenerationsStatus({
+    traceId: 'GenerateAnswersPageWrapper',
+  });
+  const {
+    allowed: aiGenerationsAllowed,
+    loading: aiGenerationsLoading,
+    refetch: aiGenerationsRefetch,
+  } = aiGenerationsStatusQuery;
+
+  const isPreparing = isSessionLoading || aiGenerationsLoading;
 
   const generateAnswersMutation = useMutation({
     mutationFn: async (formData: TFormData) => {
@@ -272,10 +279,6 @@ export function GenerateAnswersPageWrapper({
             : undefined,
         };
         const results = await updateAnswersDataViaParams(updateAnswersData);
-        console.log('[GenerateAnswersPageWrapper:saveDataFn:done]', {
-          results,
-          updateAnswersData,
-        });
         return results;
       } catch (error) {
         const details = getErrorText(error);
@@ -349,16 +352,6 @@ export function GenerateAnswersPageWrapper({
 
       const items = [...allItems.values(), ...remainedAddedItemsMap.values()];
 
-      console.log('[GenerateAnswersPageWrapper:updateAnswersQueryData:done]', {
-        items,
-        allItems,
-        remainedAddedItemsMap,
-        autoAddedIdsMap,
-        updatedItemsMap,
-        addedItemsMap,
-        results,
-      });
-
       return items;
     },
     [queryClient, availableAnswersQuery.queryKey],
@@ -397,20 +390,24 @@ export function GenerateAnswersPageWrapper({
   // Wrapper function that matches the expected signature for AnswersEditorCore
   const saveData = React.useCallback(
     async (saveParams: TSaveDataParams<TNewOrOldAnswer>): Promise<TNewOrOldAnswer[]> => {
-      const results = await saveDataMutation.mutateAsync(saveParams);
+      /* // DEBUG
+       * await new Promise((r) => setTimeout(r, 2000));
+       */
+      const savePromise = saveDataMutation.mutateAsync(saveParams);
+      toast.promise(savePromise, {
+        loading: t('GenerateAnswersModal.SavingAnswers'),
+        error: t('GenerateAnswersModal.SavingAnswersErrorOccured'),
+        success: t('GenerateAnswersModal.AnswersSaved'),
+        // cancel: { label: t('Cancel'), onClick: resetOperations }, // It's not cancelable
+      });
+      const results = await savePromise;
       // Return the updated items from the query data
       const items = updateAnswersQueryData(results);
-      console.log('[GenerateAnswersPageWrapper:saveData:items]', {
-        items,
-        results,
-        saveParams,
-      });
       setSaved(true);
       setGeneratedAnswers(undefined);
-      // setSavedAnswers(items as TAvailableAnswer[]);
       return items || [];
     },
-    [saveDataMutation, updateAnswersQueryData],
+    [saveDataMutation, updateAnswersQueryData, t],
   );
 
   const resetOperations = React.useCallback(() => {
@@ -441,6 +438,7 @@ export function GenerateAnswersPageWrapper({
   const generateCallback = React.useCallback(
     async (formData: TFormData) => {
       setStarted(true);
+      // setGenerating(true);
       try {
         if (!questionId) {
           toast.error(t('GenerateAnswersModal.NoQuestionIdDefined'));
@@ -524,6 +522,8 @@ export function GenerateAnswersPageWrapper({
           toast.error(comboMsg);
           setError(comboMsg);
         }
+      } finally {
+        // setGenerating(false);
       }
     },
     [generateAnswersMutation, topicId, questionId, resetOperations, t],
@@ -647,22 +647,26 @@ export function GenerateAnswersPageWrapper({
           <PageError
             title={t('NoAiGenrationsAvailable')}
             explanation={<AIGenerationsStatusInfo className="justify-center" />}
+            reset={aiGenerationsRefetch}
           />
         ) : isGenerated ? (
           <EditScreen
             className={cn(
               isDev && '__GenerateAnswersPageWrapper_EditScreen', // DEBUG
               'px-6',
-              (isAnswersRefetching || saveDataMutation.isPending) && 'opacity-50',
             )}
-            // startOverCallback={startOverCallback}
             topicId={topicId}
             questionId={questionId}
-            isSaving={saveDataMutation.isPending}
-            handleCancel={resetOperations}
+            // handleCancel={resetOperations} // It's not cancelable
             answers={combinedAnswers}
             saveData={saveData}
-            reloadAnswers={() => refetchAnswers()}
+            reloadAnswers={() => {
+              refetchAnswers();
+            }}
+            setHasAnswersChanged={setHasAnswersChanged}
+            isReady={isGenerated && isTopicFetched && isQuestionFetched && isAnswersFetched}
+            isLoading={generateAnswersMutation.isPending || isAnswersFetching}
+            isSaving={saveDataMutation.isPending}
           />
         ) : (
           <GenerateAnswersForm

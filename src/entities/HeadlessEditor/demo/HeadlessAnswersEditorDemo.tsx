@@ -14,10 +14,10 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TAnswerId, TNewOrOldAnswer } from '@/features/answers/types';
 
+import { CmpAnswer } from '../CmpAnswer';
 import { newItemIdPrefix } from '../constants';
 import { getUniqueIdForSet, reorderByDate } from '../helpers';
 import { TReorderModes, useHeadlessEditorState } from '../useHeadlessEditorState';
-import { CmpAnswer } from './CmpAnswer';
 import { demoAnswers, demoQuestionId, demoTopicId } from './demoAnswers';
 import { T } from './typesAnswer';
 

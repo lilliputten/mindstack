@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
 import { Button } from '@/components/ui/Button';
 import { FormProvider } from '@/components/ui/Form';
-import { BusySplashWithInfo } from '@/components/shared';
+import { MarkdownText } from '@/components/ui/MarkdownText';
+import { BusySplashWithInfo, InfoFrame } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
@@ -64,11 +65,15 @@ export function GenerateQuestionsForm(props: TGenerateQuestionsFormProps) {
             )}
           >
             <AIGenerationsStatusInfo />
+            <InfoFrame className="items-start gap-2">
+              <Icons.Info className="my-1 size-4 shrink-0 text-theme-500 opacity-50" />
+              <MarkdownText>{t('GenerateQuestionsForm.GenerationHelpMarkdownText')}</MarkdownText>
+            </InfoFrame>
             <GenerateQuestionsFormFields form={form} />
           </div>
           {/* Generating splash */}
           <BusySplashWithInfo
-            title="Generating questions..."
+            title={t('GenerateQuestionsForm.GeneratingQuestions')}
             className={cn(
               isDev && '__GenerateQuestionsForm_BusySplash', // DEBUG
               'absolute',

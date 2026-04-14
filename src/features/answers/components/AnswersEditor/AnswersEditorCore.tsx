@@ -11,13 +11,13 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal';
 import { AddAnswerModal } from '@/components/pages/ManageTopicQuestionAnswers';
 import { isDev } from '@/constants';
 import {
+  CmpAnswer,
   reorderByDate,
   THeadlessEditorState,
   TReorderModes,
   TSaveDataParams,
   useHeadlessEditorState,
 } from '@/entities/HeadlessEditor';
-import { CmpAnswer } from '@/entities/HeadlessEditor/demo/CmpAnswer';
 import { TQuestionId } from '@/features/questions/types';
 import { TTopicId } from '@/features/topics/types';
 
@@ -53,6 +53,7 @@ export interface TAnswersEditorCoreProps {
   saveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
   /** Upper-level readiness (e.g. all React Query requests settled). */
   isReady?: boolean;
+  isLoading?: boolean;
   /**
    * When set, invoked on reload instead of resetting from the `answers` prop.
    * Use `setItemsData` to apply fetched rows (e.g. after a React Query refetch).
@@ -78,14 +79,12 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
     setHeadlessEditorState,
     onBindSetItemsData,
     saveData: saveDataProp,
-    isReady: isReadyProp,
+    isReady = true,
+    isLoading,
     reloadData: reloadDataProp,
     extraParams,
     calculateChanges,
   } = props;
-
-  const isExternalReady = isReadyProp ?? true;
-  const isReady = isExternalReady;
 
   const locale = useLocale() as TLocale;
   const t = useT();
@@ -125,6 +124,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
 
   const headlessEditorState = useHeadlessEditorState({
     isReady,
+    isLoading,
     lang: answersLocale,
     largeTexts,
     reorderModes,
@@ -143,13 +143,11 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
     showNormalized,
     setShowNormalized,
   });
-
   React.useEffect(() => {
     if (setHeadlessEditorState) {
       setHeadlessEditorState(headlessEditorState);
     }
   }, [setHeadlessEditorState, headlessEditorState]);
-
   const {
     // totalChangedCount,
     hasChanges,
@@ -220,11 +218,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
   return (
     <>
       <RenderHeadlessEditorControls
-        className={cn(
-          isDev && '__AnswersEditorCore_RenderHeadlessEditorControls',
-          'transition',
-          !isReady && 'opacity-50',
-        )}
+        className={cn(isDev && '__AnswersEditorCore_RenderHeadlessEditorControls')}
         reorderTitles={reorderTitles}
         onAddAction={() => setAddAnswerModalVisible(true)}
         onDeleteAction={() => setDeleteSelectedConfirmVisible(true)}
@@ -246,12 +240,7 @@ export function AnswersEditorCore(props: TAnswersEditorCoreProps) {
         viewportClassName={cn(isDev && '__AnswersEditorCore_Scroll_Viewport')}
       >
         <RenderHeadlessEditor
-          className={cn(
-            isDev && '__AnswersEditorCore_RenderHeadlessEditor',
-            'w-full',
-            'transition',
-            !isReady && 'opacity-50',
-          )}
+          className={cn(isDev && '__AnswersEditorCore_RenderHeadlessEditor', 'w-full')}
         />
       </ScrollArea>
       {addAnswerModalVisible && (

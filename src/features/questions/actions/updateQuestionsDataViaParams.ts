@@ -107,8 +107,17 @@ export async function updateQuestionsDataViaParams(
       // Process updates
       if (updatedItems.length > 0) {
         const updatePromises = updatedItems.map(async (item) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { id, _count, createdAt, updatedAt, answers: rawAnswers, ...updateData } = item;
+          const {
+            id,
+            // Skip extra data...
+            _count,
+            createdAt: _createdAt,
+            updatedAt: _updatedAt,
+            answers: rawAnswers,
+            topic: _topic,
+            // TODO: Remove all other, unexpected in the Prisma Question data model, data
+            ...updateData
+          } = item as TNewOrOldQuestion & { topic: unknown };
 
           // Cast answers to extended type to include optional fields from editor
           const answers = rawAnswers as TAvailableAnswer[] | undefined;

@@ -32,6 +32,9 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
     | 'updateItems'
     | 'updateReordered'
   > {
+  // State...
+  isSaving?: boolean;
+  isLoading?: boolean;
   // Actions...
   restoreDefaults: () => void;
   reorderItems?: (id?: string) => void;
@@ -41,8 +44,10 @@ interface TProps<T extends TCmpItemBase, LargeTexts extends boolean>
   setAddedIds: React.Dispatch<React.SetStateAction<Set<TCmpItemId> | undefined>>;
   setReorderedIds: React.Dispatch<React.SetStateAction<Set<TCmpItemId> | undefined>>;
   // Calculated data...
-  totalChangedCount?: number;
-  hasChanges?: boolean;
+  changesCount?: number;
+  // totalChangedCount?: number;
+  // hasRevertableChanges?: boolean;
+  allowedSave?: boolean;
   // Show normalized values
   setShowNormalized?: React.Dispatch<React.SetStateAction<boolean>>;
   // Options...
@@ -75,12 +80,17 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 ) {
   const {
     className,
-    // Options...
+    // State...
+    isSaving,
+    isLoading,
     isReady = true,
+    // Options...
     disableScroll,
     // Calculated data...
-    totalChangedCount,
-    hasChanges,
+    changesCount,
+    allowedSave,
+    // totalChangedCount,
+    // hasRevertableChanges,
     // Items...
     items,
     // Actions...
@@ -129,7 +139,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
 
   const ToggleIcon = isExpanded ? Icons.ChevronUp : Icons.ChevronDown;
 
-  const HeaderIcon = !isReady ? Icons.Spinner : Icons.Settings2;
+  const isBusy = !isReady || isLoading || isSaving;
+  const HeaderIcon = isBusy ? Icons.Spinner : Icons.Settings2;
 
   /* // UNUSED: actions section: all actions are contained in the panel header
    * const actions = [
@@ -401,7 +412,6 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
           'content-truncate flex flex-col gap-1',
           disableScroll && 'overflow-visible',
           !isExpanded && 'shrink-0',
-          !isReady && 'pointer-events-none opacity-50',
           className,
         )}
       >
@@ -425,14 +435,15 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               >
             */}
             {/* SaveData */}
-            {onSaveData && hasChanges && (
+            {onSaveData && allowedSave && (
               <div
                 key="SaveData"
                 onClick={onSaveData}
                 title={t('Save')}
                 className={cn(
                   buttonVariants({ variant: 'success' }),
-                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none transition',
+                  isBusy && 'disabled',
                 )}
               >
                 <Icons.Save className={cn('size-4 shrink-0')} />
@@ -440,7 +451,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               </div>
             )}
             {/* UndoChanges */}
-            {hasChanges && (
+            {!!changesCount && (
               <div
                 key="UndoChanges"
                 onClick={restoreDefaults}
@@ -453,12 +464,12 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 <Icons.Undo2 className="size-4 shrink-0" />
                 <span className="truncate max-xs:hidden">
                   <span className="truncate max-md:hidden">{t('UndoChanges')}</span>
-                  {!!totalChangedCount && (
+                  {!!changesCount && (
                     <Badge
                       variant={'theme'}
                       className="ml-2 truncate px-2 text-xs opacity-50 max-xs:hidden"
                     >
-                      {totalChangedCount}
+                      {changesCount}
                     </Badge>
                   )}
                 </span>
@@ -471,7 +482,8 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 onClick={onReload}
                 className={cn(
                   buttonVariants({ variant: 'theme80' }),
-                  'flex cursor-pointer items-center gap-2 truncate rounded-none',
+                  'flex cursor-pointer items-center gap-2 truncate rounded-none transition',
+                  isBusy && 'disabled',
                 )}
                 title={t('Reload')}
               >
@@ -547,14 +559,10 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
               title={isExpanded ? t('HideOptions') : t('ShowOptions')}
             >
               <span className="flex flex-1 items-center gap-2 truncate">
-                <HeaderIcon className={cn('size-4 shrink-0', !isReady && 'animate-spin')} />
-                <span className="truncate max-xs:hidden">
+                <HeaderIcon className={cn('size-4 shrink-0', isBusy && 'animate-spin')} />
+                <span className="truncate max-lg:hidden">
                   {isExpanded ? t('HideOptions') : t('ShowOptions')}
                 </span>
-                {/* // These are not required as the changed status is obviously displayed in the header (see buttons above)
-                    !!totalChangedCount && <span className="ml-1 font-thin opacity-50">*</span>
-                    {!!totalChangedCount && <Icons.Asterisk className="size-4 opacity-50" />}
-                    */}
               </span>
               <span className="flex shrink-0 items-center gap-2">
                 <ToggleIcon className="size-4" />
@@ -567,7 +575,7 @@ export function HeadlessEditorControls<T extends TCmpItemBase, LargeTexts extend
                 // side={isExpanded ? 'bottom' : 'top'}
                 className="content-truncate flex items-center gap-2"
               >
-                {totalChangedCount
+                {changesCount
                   ? t('HeadlessEditor.HasUnsavedChanges')
                   : t('HeadlessEditor.NoChangesMade')}
               </TooltipContent>

@@ -31,8 +31,8 @@ export function AppIntroBlock(props: TPropsWithClassName) {
   const isAdmin = user?.role === 'ADMIN';
 
   const {
-    BASIC_USER_GENERATIONS,
-    PRO_USER_MONTHLY_GENERATIONS,
+    // BASIC_USER_GENERATIONS,
+    // PRO_USER_MONTHLY_GENERATIONS,
     BASIC_TOPICS_LIMIT,
     BASIC_QUESTIONS_LIMIT,
     BASIC_ANSWERS_LIMIT,
@@ -85,8 +85,6 @@ export function AppIntroBlock(props: TPropsWithClassName) {
           <p data-testid="CurrentUserStatus" className="font-bold">
             {t('AppIntro.CurrentUserStatus', { status: getUserStatusText(user, t) })}
           </p>
-
-          <AIGenerationsDetails showUserInfo={false} showGenerationMode={false} />
 
           {/* Guest specific */}
           {!user && (
@@ -216,9 +214,13 @@ export function AppIntroBlock(props: TPropsWithClassName) {
       </div>
 
       {/* Link to pricing page */}
-      <div className="space-y-1">
-        <p>{t.rich('AppIntro.PremiumUsersAlsoGet', richTextTags)}</p>
-      </div>
+      {user?.grade !== 'PREMIUM' && user?.grade !== 'PRO' && user?.grade !== 'UNLIMITED' && (
+        <div className="space-y-1">
+          <p>{t.rich('AppIntro.PremiumUsersAlsoGet', richTextTags)}</p>
+        </div>
+      )}
+
+      <AIGenerationsDetails showUserInfo={false} showGenerationMode={false} />
 
       <div className="space-y-2">
         {/* Future features note */}

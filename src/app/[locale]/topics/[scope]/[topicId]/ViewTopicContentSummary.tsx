@@ -3,6 +3,7 @@
 import React from 'react';
 import { useFormatter } from 'next-intl';
 
+import { generateArray } from '@/lib/helpers';
 import { compareDates, getFormattedRelativeDate } from '@/lib/helpers/dates';
 import { cn } from '@/lib/utils';
 import { useT } from '@/i18n';
@@ -15,7 +16,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { LanguageName } from '@/components/shared';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
-import { isDev } from '@/constants';
+import { defaultStaleTime, isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { MediumCategoriesListByCategoryIds } from '@/features/categories/components';
 import { QuestionsEditor } from '@/features/questions/components/QuestionsEditor';
@@ -35,6 +36,8 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
 
   const { topic, isFetched: isTopicFetched, isFetching: isTopicFetching } = availableTopicQuery;
 
+  const [hasQuestionsChanged, setHasQuestionsChanged] = React.useState(false);
+
   const topicId = topic?.id;
 
   const availableQuestionsQuery = useAvailableQuestions({
@@ -42,21 +45,16 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
     topicId,
     itemsLimit: null, // Take all questions, without paging
     includeAnswers: true, // Include answers
+    // NOTE: Disable update while editing
+    staleTime: hasQuestionsChanged ? Infinity : defaultStaleTime,
   });
   const { isFetched: isQuestionsFetched, isFetching: isQuestionsFetching } =
     availableQuestionsQuery;
-
-  // const [headlessEditorState, setHeadlessEditorState] = React.useState<
-  //   THeadlessEditorState<TNewOrOldQuestion> | undefined
-  // >();
 
   // Check if query is actually being invalidated
   if (!topic) {
     throw new Error(t('ViewTopicContentSummary.NoTopicLoaded'));
   }
-
-  // const user = useSessionUser();
-  // const isOwner = !!topic.userId && topic.userId === user?.id;
 
   const categoryIds = topic.categoryIds || topic.categories?.map(({ id }) => id);
 
@@ -237,11 +235,19 @@ export function ViewTopicContentSummary({ availableTopicQuery }: TProps) {
             topicId={topicId}
             availableTopicQuery={availableTopicQuery}
             availableQuestionsQuery={availableQuestionsQuery}
-            isReady={!isTopicFetching && !isQuestionsFetching}
-            // setHeadlessEditorState={setHeadlessEditorState}
+            isReady={isTopicFetched && isQuestionsFetched}
+            isLoading={isTopicFetching || isQuestionsFetching}
+            setHeadlessEditorState={(state) => setHasQuestionsChanged(state.hasChanges)}
           />
         ) : (
-          <Skeleton className="h-10 w-full" />
+          <div className="flex w-full flex-col gap-2">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex w-full flex-col gap-1">
+              {generateArray(topic._count?.questions ?? 3).map((n) => (
+                <Skeleton key={n} className="h-8 w-full" />
+              ))}
+            </div>
+          </div>
         )}
         {/*
         <div className="content-truncate flex flex-wrap gap-2">

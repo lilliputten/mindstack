@@ -116,7 +116,7 @@ export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
     (!!availableGenerations && availableGenerations > 0) ||
     availableGenerations === unlimitedGenerations;
   const loading = !query.isFetched || query.isLoading;
-  const error = query.error;
+  const { error, refetch } = query;
 
   return React.useMemo(() => {
     return {
@@ -131,6 +131,7 @@ export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
       allowed,
       loading,
       error,
+      refetch,
       // Additional properties for abort and mount state
       isMounted: !!memo.mounted,
       isFetching: query.isFetching,
@@ -146,6 +147,7 @@ export function useAIGenerationsStatus({ traceId }: { traceId?: string } = {}) {
     allowed,
     loading,
     error,
+    refetch, // TODO: To allow refetch on error?
     memo.mounted,
     query.isFetching,
   ]);

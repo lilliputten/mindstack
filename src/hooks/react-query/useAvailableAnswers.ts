@@ -28,14 +28,11 @@ import { defaultItemsLimit, defaultStaleTime } from '@/constants';
 import { getAvailableAnswers } from '@/features/answers/actions/getAvailableAnswers';
 import { TAnswerId, TAvailableAnswer } from '@/features/answers/types';
 
-const staleTime = defaultStaleTime;
-
-// TODO: Register all the query keys
-
 interface TUseAvailableAnswersProps extends Omit<TGetAvailableAnswersParams, 'skip' | 'take'> {
   enabled?: boolean;
   itemsLimit?: number | null;
   traceId?: string;
+  staleTime?: number;
 }
 
 interface TMemo {
@@ -52,7 +49,7 @@ interface TMemo {
 const allUsedKeys: TAllUsedKeys = {};
 
 export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
-  const { enabled, questionId, traceId, ...queryProps } = props;
+  const { enabled, questionId, traceId, staleTime = defaultStaleTime, ...queryProps } = props;
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
 
@@ -91,6 +88,7 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
         } else if (error === 'timeout') {
           // eslint-disable-next-line no-console
           console.warn('[useAvailableAnswers:queryFn]', traceId, 'Query timeout', {
+            traceId,
             pageParam,
           });
         } else {
@@ -117,7 +115,6 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
     number // Cursor type (from `skip` api parameter)
   >({
     queryKey,
-    staleTime, // Data validity period
     enabled,
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
@@ -125,6 +122,10 @@ export function useAvailableAnswers(props: TUseAvailableAnswersProps = {}) {
       return loadedCount < lastPage.totalCount ? loadedCount : undefined;
     },
     queryFn,
+    staleTime, // Data validity period
+    // refetchOnWindowFocus: false,
+    // refetchOnMount: false,
+    // refetchOnReconnect: false,
   });
   memo.query = query;
 

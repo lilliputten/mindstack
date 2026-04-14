@@ -32,14 +32,13 @@ interface TUseAvailableQuestionsProps extends Omit<TGetAvailableQuestionsParams,
   enabled?: boolean;
   itemsLimit?: number | null;
   traceId?: string;
+  staleTime?: number;
 }
 
 interface TMemo {
   query?: UseInfiniteQueryResult<TAvailableQuestionsResultsQueryData, Error>;
   mounted?: boolean;
 }
-
-const staleTime = defaultStaleTime;
 
 /** Collection of the all used query keys (may already be invalidated).
  *
@@ -50,7 +49,7 @@ const staleTime = defaultStaleTime;
 const allUsedKeys: TAllUsedKeys = {};
 
 export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
-  const { enabled = true, topicId, traceId, ...queryProps } = props;
+  const { enabled = true, topicId, traceId, staleTime = defaultStaleTime, ...queryProps } = props;
   const queryClient = useQueryClient();
   const routePath = usePathname();
   const t = useT();
@@ -119,7 +118,6 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
       number // Cursor type (from `skip` api parameter)
     >({
       queryKey,
-      staleTime, // Data validity period
       enabled: !!topicId && enabled,
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
@@ -127,6 +125,10 @@ export function useAvailableQuestions(props: TUseAvailableQuestionsProps = {}) {
         return loadedCount < lastPage.totalCount ? loadedCount : undefined;
       },
       queryFn,
+      staleTime, // Data validity period
+      // refetchOnWindowFocus: false,
+      // refetchOnMount: false,
+      // refetchOnReconnect: false,
     });
   memo.query = query;
 

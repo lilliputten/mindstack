@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/Separator';
 import { Skeleton } from '@/components/ui/Skeleton';
 import * as Icons from '@/components/shared/Icons';
 import { TRoutePath } from '@/config';
-import { isDev } from '@/constants';
+import { defaultStaleTime, isDev } from '@/constants';
 import { AIGenerationsStatusInfo } from '@/features/ai-generations/components';
 import { useAIGenerationsStatus } from '@/features/ai-generations/query-hooks';
 import { AnswersEditor } from '@/features/answers/components/AnswersEditor';
@@ -50,11 +50,15 @@ export function ViewQuestionContentSummary(props: TProps) {
   const isTopicLoadingOverall = false; // !topic && /* !isTopicsFetched || */ (!isTopicFetched || isTopicLoading);
   const isOwner = !!topic?.userId && topic?.userId === user?.id;
 
+  const [hasAnswersChanged, setHasAnswersChanged] = React.useState(false);
+
   const availableAnswersQuery = useAvailableAnswers({
     questionId,
     itemsLimit: null,
     includeQuestion: true,
     traceId: 'ViewQuestionContentSummary',
+    // NOTE: Disable update while editing
+    staleTime: hasAnswersChanged ? Infinity : defaultStaleTime,
   });
   const { isFetching: isAnswersFetching, isFetched: isAnswersFetched } = availableAnswersQuery;
 
@@ -138,16 +142,23 @@ export function ViewQuestionContentSummary(props: TProps) {
         </div>
       </div>
       <div className="content-truncate flex flex-1 flex-col gap-2">
-        {isAnswersFetching || !isAnswersFetched ? (
-          generateArray(question._count?.answers || 3).map((n) => (
-            <Skeleton key={n} className="h-5 w-full" />
-          ))
+        {false || !isAnswersFetched ? (
+          <div className="flex w-full flex-col gap-2">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex w-full flex-col gap-1">
+              {generateArray(question._count?.answers ?? 3).map((n) => (
+                <Skeleton key={n} className="h-8 w-full" />
+              ))}
+            </div>
+          </div>
         ) : (
           <AnswersEditor
             topicId={question.topicId}
             questionId={question.id}
             availableAnswersQuery={availableAnswersQuery}
-            isReady={!isAnswersFetching}
+            isReady={isAnswersFetched}
+            isLoading={isAnswersFetching}
+            setHeadlessEditorState={(state) => setHasAnswersChanged(state.hasChanges)}
           />
         )}
       </div>

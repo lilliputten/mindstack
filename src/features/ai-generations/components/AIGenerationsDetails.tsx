@@ -119,7 +119,7 @@ export function AIGenerationsDetails(props: TProps) {
       )}
     </li>,
     // Main Info: Available Generations
-    aiGenerationsAllowed && (
+    !!grade && grade !== 'GUEST' && (
       <li key="aiGenerationsAllowed" data-testid="aiGenerationsAllowed">
         {isUnlimited
           ? t('AIGenerationsStatusInfo.UnlimitedAIGenerationsAvailable')

@@ -14,10 +14,10 @@ import * as Icons from '@/components/shared/Icons';
 import { isDev } from '@/config';
 import { TNewOrOldQuestion, TQuestionId } from '@/features/questions/types';
 
+import { CmpQuestion } from '../CmpQuestion';
 import { newItemIdPrefix } from '../constants';
 import { getUniqueIdForSet, reorderByDate } from '../helpers';
 import { TReorderModes, useHeadlessEditorState } from '../useHeadlessEditorState';
-import { CmpQuestion } from './CmpQuestion';
 import { demoQuestions, demoTopicId } from './demoQuestions';
 import { T } from './types';
 

@@ -16,39 +16,7 @@ import { compareByOrder } from './helpers';
 import { TCmpItemBase, TCmpItemId, TCmpItemProps } from './types';
 import { useComparator } from './useComparator';
 
-/* // EXAMPLE 1: A simpler editor component implementation, without forwarded API handlers, controlled via regular data props and optional handlers:
- * export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolean>(
- *   props: THeadlessEditorProps<T, LargeTexts>,
- * ) { ... }
- *
- * // EXAMPLE 2: A more complex implementation, with an external interface:
- * export interface TComparatorRef<_T> {
- *   clearCompareTarget: () => void;
- *   // compareTargetId?: T;
- * }
- * export function HeadlessEditorFactory<
- *   T extends TCmpItemBase,
- *   LargeTexts extends boolean = boolean,
- * >() {
- *   return React.forwardRef<TComparatorRef<T>, THeadlessEditorProps<T, LargeTexts>>(function HeadlessEditor(
- *     props: THeadlessEditorProps<T, LargeTexts>,
- *     ref,
- *   ) {
- *     // ...
- *     const clearCompareTarget = React.useCallback(() => {
- *       setCompareTargetId(undefined);
- *     }, []);
- *     // Provide external API
- *     React.useImperativeHandle(
- *       ref,
- *       () => ({
- *         clearCompareTarget,
- *       }),
- *       [clearCompareTarget],
- *     );
- */
-
-const __showDebug = isDev && true;
+const __showDebug = isDev && false;
 
 type TTimeoutHandler = ReturnType<typeof setTimeout>;
 
@@ -84,6 +52,7 @@ export interface THeadlessEditorProps<
   /// Lifecylcle control...
   /** Data ready flag. A skeleton will be disaplayed until it hasn't set. */
   isReady?: boolean;
+  isLoading?: boolean;
   /** Does the owner editor component have unsaved data? */
   hasChanges?: boolean;
 
@@ -148,6 +117,7 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
   const {
     className,
     isReady: isExternalReady = true,
+    // isLoading,
     hasChanges,
     // Options...
     lang,
@@ -612,9 +582,10 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
     [changeExternalItemsOrder, orderedItems, updateReordered, addReorderedIds],
   );
 
+  const displayItems = filteredItems || orderedItems;
+
   return (
     <SortableWrapper
-      // isPending={isPending}
       items={filteredItems || []}
       RenderItem={RenderEditorItem}
       changeItemsOrder={changeItemsOrder}
@@ -623,20 +594,21 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
         className={cn(
           isDev && '__HeadlessEditor', // DEBUG
           'content-truncate flex flex-col gap-1',
+          'relative',
           className,
         )}
       >
         {/* Render skeletons or real items */}
-        {!isReady || !filteredItems ? (
-          generateArray(items.length || 5).map((idx) => (
+        {!isReady || !displayItems ? (
+          generateArray(items.length || 3).map((idx) => (
             <Skeleton key={idx} className="h-8 w-full" />
           ))
-        ) : !filteredItems?.length ? (
+        ) : !displayItems?.length ? (
           <div className="rounded border border-dashed p-6 pt-2 text-center text-sm opacity-30">
             {t('HeadlessEditor.NoItemsToDisplay')}
           </div>
         ) : (
-          filteredItems?.map((it, idx) => {
+          displayItems?.map((it, idx) => {
             return <RenderEditorItem _idx={idx + 1} key={it.id} item={it} />;
           })
         )}
@@ -653,6 +625,16 @@ export function HeadlessEditor<T extends TCmpItemBase, LargeTexts extends boolea
             compareTargetId={compareTargetId}
           />
         )}
+        {/* Comparator nitialization splash
+        <BusySplashWithInfo
+          title={t('HeadlessEditor.InitializingComparator')}
+          className={cn(
+            isDev && '__HeadlessEditor_BusySplash', // DEBUG
+            'absolute',
+          )}
+          isBusy={!isComparatorReady}
+        />
+        */}
       </div>
     </SortableWrapper>
   );

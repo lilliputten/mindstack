@@ -29,6 +29,7 @@ export interface TAnswersEditorProps {
   availableAnswersQuery: ReturnType<typeof useAvailableAnswers>;
   /** When false, the headless editor stays in a non-interactive loading state. */
   isReady?: boolean;
+  isLoading?: boolean;
   setHeadlessEditorState?: (state: THeadlessEditorState<T>) => void;
   saveData?: (saveParams: TSaveDataParams<T>) => Promise<T[]>;
   /** When true, `hasChanges` is derived from `totalChangedCount` instead of tracked as independent state. */
@@ -46,7 +47,8 @@ export function AnswersEditor(props: TAnswersEditorProps) {
     topicId,
     questionId,
     availableAnswersQuery,
-    isReady: isReadyFromParent,
+    isReady: isReadyFromParent = true,
+    isLoading: isLoadingFromParent,
     setHeadlessEditorState,
     saveData: saveDataFromParent,
     calculateChanges,
@@ -61,9 +63,8 @@ export function AnswersEditor(props: TAnswersEditorProps) {
 
   const { allAnswers, queryKey, refetch, isRefetching, isFetching, isFetched } =
     availableAnswersQuery;
-  const isAnswersQueryReady = isFetched && !isFetching;
-  const isExternalReady = isReadyFromParent ?? true;
-  const isHeadlessReady = isExternalReady && isAnswersQueryReady && !isSaving && !isRefetching;
+  const isEditorReady = isReadyFromParent && isFetched;
+  const isEditorLoading = isLoadingFromParent || isSaving || isFetching || isRefetching;
 
   const saveDataFn = React.useCallback(
     async (saveParams: TSaveDataParams<T>): Promise<TUpdateAnswersDataViaParamsResults> => {
@@ -231,7 +232,8 @@ export function AnswersEditor(props: TAnswersEditorProps) {
       topicId={topicId}
       questionId={questionId}
       answers={allAnswers}
-      isReady={isHeadlessReady}
+      isReady={isEditorReady}
+      isLoading={isEditorLoading}
       saveData={saveData}
       reloadData={reloadData}
       onBindSetItemsData={onBindSetItemsData}
