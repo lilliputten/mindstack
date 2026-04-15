@@ -1063,6 +1063,7 @@
     "PromoCTASection": {
       "Description": "Join users who are transforming their work docs, study materials, and reference guides into structured, trainable datasets. Free to start, powerful when you need it.",
       "ExploreCategoriesText": "Explore Categories",
+      "ReadDocsText": "Read Documentation",
       "StartFreeTrainingText": "Start Building Now",
       "Title": "Ready to Build Your First Training System?"
     },
@@ -1276,8 +1277,8 @@
     "RecentWorkoutsTitle": "Recent Trainings",
     "RedirectTitle": "Redirecting...",
     "RootDescription": "Application for creating and running repetition trainings from your own topics and datasets",
-    "RootKeywords": "memory, training, application",
-    "RootTitle": "Mind Stack Trainer",
+    "RootKeywords": "knowledge training, spaced repetition, personal learning, AI-powered learning, dataset creation",
+    "RootTitle": "MindStack - Personal Knowledge Training",
     "SettingsDescription": "Application settings",
     "SettingsTitle": "Application Settings",
     "StartBotTitle": "Start Bot",

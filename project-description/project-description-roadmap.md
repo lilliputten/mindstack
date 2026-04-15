@@ -114,7 +114,34 @@ Rebuild the product positioning around the core value: **MindStack helps users c
   - Updated: `README.md` - Complete overhaul with new positioning
   - Updated: `src/app/[locale]/public/docs/DocsContentEn.md` - Comprehensive English documentation
 
-### Step 7. Changelog Update
+### Step 7. Multi-Language Docs & Metadata Updates
+
+- [x] Create Russian translation of docs page (`DocsContentRu.md`).
+  - Complete translation of all 548 lines from English
+  - Preserved all variable placeholders and formatting
+  - Technical terms appropriately localized
+- [x] Spanish translation created by user (`DocsContentEs.md`).
+- [x] Connect all translations in `DocsPage.tsx`.
+  - Added locale switch for 'es' and 'ru' cases
+  - Follows same pattern as ContactsPage
+  - Automatic locale detection works correctly
+- [x] Add docs link to landing page PromoCTASection.
+  - Added third button: "Read Documentation" → /docs
+  - Button layout: Start Training | Read Docs | Explore Categories
+  - Used BookOpen icon for visual clarity
+- [x] Add translation key `ReadDocsText` to all locales (en, ru, es).
+- [x] Update project metadata with new positioning.
+  - **package.json:** Updated description and added 7 SEO keywords
+  - **env.ts:** Updated siteTitle, siteDescription, siteKeywords
+  - **Locale files:** Updated Pages.RootTitle, RootDescription, RootKeywords in all 3 languages
+- [x] Output files:
+  - Created: `src/app/[locale]/public/docs/DocsContentRu.md`
+  - Updated: `src/app/[locale]/public/docs/DocsPage.tsx`
+  - Updated: `src/components/screens/LandingContent/PromoCTASection.tsx`
+  - Updated: `src/i18n/locales/en.json`, `ru.json`, `es.json`
+  - Updated: `package.json`, `src/config/env.ts`
+
+### Step 8. Changelog Update
 
 - [ ] Add a clear entry in `CHANGELOG.md` describing positioning/content updates.
 - [ ] Mention major documentation and landing copy changes.

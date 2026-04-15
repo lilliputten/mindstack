@@ -1041,6 +1041,7 @@
     "PromoCTASection": {
       "Description": "Únete a usuarios que están transformando sus documentos de trabajo, materiales de estudio y guías de referencia en conjuntos de datos estructurados y entrenables. Gratuito para comenzar, poderoso cuando lo necesites.",
       "ExploreCategoriesText": "Explorar categorías",
+      "ReadDocsText": "Leer documentación",
       "StartFreeTrainingText": "Comenzar a construir ahora",
       "Title": "¿Listo para construir tu primer sistema de entrenamiento?"
     },
@@ -1256,8 +1257,8 @@
     "RecentWorkoutsTitle": "Entrenamientos Recientes",
     "RedirectTitle": "Redirigiendo...",
     "RootDescription": "Aplicación para crear y ejecutar entrenamientos de repetición a partir de sus propios temas y conjuntos de datos",
-    "RootKeywords": "memoria, entrenamiento, aplicación",
-    "RootTitle": "Mind Stack Trainer",
+    "RootKeywords": "entrenamiento de conocimientos, repetición espaciada, aprendizaje personal, aprendizaje con IA, creación de conjuntos de datos",
+    "RootTitle": "MindStack - Entrenamiento Personal de Conocimientos",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración de la aplicación",
     "StartBotTitle": "Iniciar robot",

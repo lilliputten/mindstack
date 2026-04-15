@@ -89,7 +89,7 @@ Once you have at least one question-answer pair:
 
 MindStack organizes your knowledge in a clear structure:
 
-```
+```python
 Categories (broad subjects)
   └─ Topics (specific areas within categories)
       └─ Questions (individual queries)
@@ -97,12 +97,14 @@ Categories (broad subjects)
 ```
 
 **Example:**
-- **Category:** Programming Languages
-  - **Topic:** Python Basics
-    - **Question:** What is a list comprehension?
-      - **Answer:** A concise way to create lists in Python...
-    - **Question:** How do you handle exceptions?
-      - **Answer:** Using try-except blocks...
+```python
+Programming Languages
+  └─ Python Basics
+      ├─ What is a list comprehension?
+      │   └─ A concise way to create lists in Python...
+      └─ How do you handle exceptions?
+          └─ Using try-except blocks...
+```
 
 This hierarchy keeps your knowledge base manageable whether you have 10 or 1000 items.
 
