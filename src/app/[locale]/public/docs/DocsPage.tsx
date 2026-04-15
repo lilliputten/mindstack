@@ -35,7 +35,10 @@ interface TDocsPagePropsWithContent extends TDocsPageProps {
 
 async function getContentImport(locale: TLocale) {
   switch (locale) {
-    // TODO: Add another languages
+    case 'es':
+      return import('./DocsContentEs.md');
+    case 'ru':
+      return import('./DocsContentRu.md');
     case 'en':
     default:
       return import('./DocsContentEn.md');

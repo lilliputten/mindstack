@@ -27,7 +27,7 @@ export function LandingContent() {
         <HowItWorksCards />
         {/*
         <DescriptionCodeSection />
-        */}
+         */}
         <FAQSection />
         <PromoCTASection />
       </main>

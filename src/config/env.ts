@@ -45,6 +45,7 @@ export const publicAppUrl = String(process.env.NEXT_PUBLIC_URL);
 export const dataContentType = 'application/json; charset=utf-8';
 
 // Default values for meta properties (see also translations under the `Page.Root*` keys)
-export const siteTitle = 'Mind Stack Trainer';
-export const siteDescription = 'Memory Training Application';
+export const siteTitle = 'MindStack - Personal Knowledge Training';
+export const siteDescription =
+  'Create and run repetition trainings from your own topics and datasets';
 export const siteKeywords = '';

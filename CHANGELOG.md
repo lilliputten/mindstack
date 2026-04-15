@@ -1,9 +1,61 @@
 <!--
  @since 2025.07.05
- @changed 2026.04.14, 04:06
+ @changed 2026.04.15, 05:00
 -->
 
 # CHANGELOG
+
+## Repositioning as Personal Knowledge Training Platform with multi-language documentation and enhanced metadata, #[v.0.1.5](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.5) - 2026.04.15
+
+### Added
+
+- Complete Russian translation of documentation (DocsContentRu.md) with 550+ lines
+- Complete Spanish translation of documentation (DocsContentEs.md) with 550+ lines
+- Multi-language support for docs page (en, ru, es) via locale-aware content loading
+- "Read Documentation" button to landing page PromoCTASection with BookOpen icon
+- Translation keys for docs button in all three locales (en, ru, es)
+- Technology stack keywords to package.json (Next.js, React, TypeScript, Prisma, PostgreSQL, Vercel, LangChain, Cloudflare AI, Tailwind CSS, Radix UI)
+
+### Changed
+
+- **Complete repositioning** from "Memory Training Application" to "Personal Knowledge Training Platform"
+- Updated README.md with new value proposition: "Turn your own knowledge into repeatable trainings"
+- Rewrote DocsContentEn.md from 200 to 500+ lines with comprehensive creation workflow documentation
+- Enhanced documentation structure with Getting Started guide, data hierarchy explanation, and detailed feature descriptions
+- Updated all project metadata (package.json, env.ts, locale files) to reflect new positioning
+- Reformatted documentation examples using pseudographic tree symbols for better visual clarity
+- Updated Pages.RootTitle, RootDescription, and RootKeywords in all three locales (en, ru, es)
+- Improved FAQ section with 15 creation-focused questions covering duplicate detection, privacy, and AI generation
+
+### Fixed
+
+- Removed outdated Redis reference from technology stack documentation
+- Corrected product naming consistency: "MindStack" instead of "Mind Stack Trainer"
+- Aligned all public-facing messaging with approved positioning document
+- Fixed documentation example formatting to match hierarchy diagram style
+
+### Documentation
+
+- Added comprehensive "Getting Started" guide with step-by-step instructions
+- Documented data hierarchy: Categories → Topics → Questions → Answers
+- Explained key features: HeadlessEditor, duplicate detection (beta), generation review loop, privacy control
+- Added user roles and permissions breakdown (Guest, Basic, Pro, Premium)
+- Documented authentication options (OAuth: Google, GitHub, Yandex; OTP: Email, Telegram)
+- Added payment systems documentation (Stripe for international, YooMoney for Russia)
+- Expanded troubleshooting guide with common issues and solutions
+- Added privacy and security information detailing what is/isn't stored
+- Created completion summaries for Steps 6 and 7 in project-description directory
+
+### Technical
+
+- Updated DocsPage.tsx to support dynamic locale-based content imports
+- Added docsAliasRoute import to PromoCTASection component
+- Maintained consistent variable placeholders across all translations ({siteTitle}, {contactEmail}, etc.)
+- Preserved markdown structure and code block formatting in all translations
+- Ensured all route links remain functional across language versions
+
+- [Issue #83](https://github.com/lilliputten/mindstack/issues/83): Reposition project as personal knowledge training platform
+- [Compare versions](https://github.com/lilliputten/mindstack/compare/v.0.1.4...v.0.1.5)
 
 ## Implemented headless editor system for batch editing Q&A with AI generation improvements, #[v.0.1.4](https://github.com/lilliputten/mindstack/releases/tag/v.0.1.4) - 2026.04.14
 

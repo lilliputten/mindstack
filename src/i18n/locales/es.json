@@ -928,109 +928,122 @@
   },
   "Landing": {
     "BigImageCTASection": {
-      "Description": "Ya sea que estés aprendiendo un nuevo idioma, preparando exámenes o dominando habilidades profesionales, MindStack se adapta a tus objetivos.",
-      "Title": "Construye tu base de conocimiento hoy",
-      "TryItFreeText": "Pruébalo gratis"
+      "Description": "MindStack transforma tu información sin procesar —documentos de trabajo, materiales de estudio, referencias técnicas— en conjuntos de datos organizados y entrenables con controles de calidad integrados.",
+      "Title": "Tu conocimiento merece más que tarjetas de memoria",
+      "TryItFreeText": "Crea tu primer tema ahora"
     },
     "CardsWithIconsSection": {
-      "Description": "Funciones basadas en lo que realmente ayuda a las personas a aprender",
-      "Text-1": "Le ayudamos a revisar material a intervalos que coincidan con el funcionamiento natural de la memoria.",
-      "Text-2": "Practicar extraer información de la memoria hace que el recuerdo futuro sea más fácil y confiable.",
-      "Text-3": "La aplicación se ajusta para concentrarse en temas que necesitan su atención, manteniendo al mismo tiempo lo que ya ha aprendido.",
-      "Title": "Por qué lo construimos de esta manera",
-      "Title-1": "Revisiones cronometradas",
-      "Title-2": "Práctica de recuperación",
-      "Title-3": "Enfoque inteligente"
+      "Description": "Cada paso optimizado para velocidad y control",
+      "Text-1": "Crea un tema en segundos. Elige una categoría, configura la privacidad, agrega tu primera pregunta, o deja que la IA genere un conjunto inicial.",
+      "Text-2": "El contenido generado permanece en modo borrador hasta que lo apruebes. Edita, regenera o descarta: control total sobre tu conjunto de datos.",
+      "Text-3": "Inicia sesiones de repetición tan pronto como guardes tu primera pregunta. Sin esperas, sin demoras en la configuración.",
+      "Title": "Optimizado desde la creación hasta la práctica",
+      "Title-1": "Configuración rápida",
+      "Title-2": "Revisar antes de guardar",
+      "Title-3": "Entrena al instante"
     },
     "FAQSection": {
-      "Description": "Todo lo que necesita saber sobre MindStack y cómo comenzar con el entrenamiento de la memoria.",
-      "Title": "Preguntas Frecuentes",
+      "Description": "Todo lo que necesita saber sobre crear y usar conjuntos de datos de entrenamiento personal",
+      "Title": "Preguntas frecuentes",
+      "AIGeneratedContent": {
+        "Answer": "Tienes control total. Puedes editar cualquier elemento generado, regenerar preguntas específicas o eliminarlas por completo. Nada se guarda en tu base de datos hasta que lo apruebes explícitamente. Piensa en la IA como un asistente de borradores, no como un piloto automático.",
+        "Question": "¿Qué pasa si no estoy satisfecho con el contenido generado por IA?"
+      },
+      "DifferenceFromAnki": {
+        "Answer": "Mientras esas herramientas se enfocan en la gestión de tarjetas flash, MindStack enfatiza todo el flujo de trabajo de creación de contenido. Obtienes generación asistida por IA, detección de duplicados, edición en el lugar y una jerarquía estructurada (categorías → temas → preguntas → respuestas). Está diseñado para crear conjuntos de datos de calidad, no solo almacenar tarjetas.",
+        "Question": "¿En qué se diferencia de Anki o Quizlet?"
+      },
+      "DuplicateDetection": {
+        "Answer": "Nuestro algoritmo de similitud beta compara nuevas preguntas y respuestas con las existentes en tu tema usando análisis de texto (incluyendo stemming para mejor coincidencia). Marca posibles duplicados para que puedas decidir si fusionar, reformular o mantener ambos. Nota: Esta función aún está mejorando y funciona mejor con frases claras y distintas.",
+        "Question": "¿Cómo funciona la detección de duplicados?"
+      },
       "FreeToUse": {
-        "Answer": "MindStack ofrece una versión gratuita que incluye funciones básicas para crear temas, preguntas y entrenamientos. Características adicionales y límites más altos pueden estar disponibles en planes premium. Consulte nuestra página de precios para más detalles.",
-        "Question": "¿MindStack es gratuito?"
+        "Answer": "MindStack ofrece una versión gratuita que incluye funciones básicas para crear temas, preguntas y entrenamientos. Características adicionales y límites más altos pueden estar disponibles en planes premium. Consulte nuestra <LinkPricing>página de precios</LinkPricing> para más detalles.",
+        "Question": "¿Qué incluye el plan gratuito?"
       },
       "HowToCreateFirstTopic": {
-        "Answer": "<p>Crear un tema en MindStack es simple:</p><ol><li>Regístrese para obtener una cuenta gratuita</li><li>Navegue a \"Mis Temas\" en el panel de control</li><li>Haga clic en \"Crear Tema\" y complete el título e idioma</li><li>Agregue preguntas y respuestas a su tema</li><li>¡Comience a practicar con entrenamientos!</li></ol>",
+        "Answer": "<p>Crear un tema en MindStack es simple:</p><ol><li>Regístrese para obtener una cuenta gratuita</li><li>Navegue a \"Mis Temas\" en el panel de control</li><li>Haga clic en \"Crear Tema\" y complete el título e idioma</li><li>Agregue preguntas manualmente o use la generación de IA</li><li>Revise y valide su contenido</li><li>¡Comience a practicar con entrenamientos!</li></ol>",
         "Question": "¿Cómo creo mi primer tema?"
       },
-      "LearningProgramming": {
-        "Answer": "¡Absolutamente! MindStack es perfecto para aprender conceptos de programación, sintaxis, algoritmos y más. Cree temas para diferentes lenguajes de programación, frameworks o conceptos. El sistema de repetición espaciada le ayuda a recordar patrones de código y detalles técnicos de manera efectiva.",
-        "Question": "¿Puedo usar MindStack para aprender programación?"
-      },
-      "LearningTechniques": {
-        "Answer": "Combinamos repetición espaciada, recuperación activa y práctica intercalada: todas probadas por la ciencia cognitiva para mejorar la retención a largo plazo.",
-        "Question": "¿Qué técnicas de aprendizaje utiliza MindStack?"
-      },
-      "MobileApp": {
-        "Answer": "MindStack es una aplicación web progresiva que funciona perfectamente en todos los dispositivos. Guárdela en su pantalla de inicio para una experiencia similar a la de una aplicación.",
-        "Question": "¿Hay una aplicación móvil?"
+      "ManualQuestions": {
+        "Answer": "No. Puedes escribirlas manualmente, usar la IA para generar borradores, o combinar ambos enfoques. La diferencia clave es que el contenido generado permanece en modo de revisión: verificas, editas y apruebas todo antes de que se convierta en parte de tu conjunto de datos de entrenamiento.",
+        "Question": "¿Necesito escribir todas las preguntas y respuestas manualmente?"
       },
       "MultipleLanguages": {
         "Answer": "¡Sí! MindStack admite varios idiomas. Puede crear temas en diferentes idiomas y cambiar entre ellos sin problemas. Esto es especialmente útil para el aprendizaje de idiomas o cuando estudia materiales en diferentes idiomas.",
         "Question": "¿MindStack admite varios idiomas?"
       },
+      "NewCategoryRequest": {
+        "Answer": "Los usuarios registrados pueden enviar solicitudes de creación de categorías a través del formulario integrado en la página de categorías. Nuestro equipo revisa las submissions y agrega categorías relevantes para mantener el sistema organizado.",
+        "Question": "¿Cómo solicito una nueva categoría?"
+      },
       "Price": {
         "Answer": "Las funciones básicas son gratuitas para siempre. Los planes premium desbloquean temas ilimitados, análisis avanzados y funciones de IA. Vea la sección de <LinkPricing>precios</LinkPricing>.",
         "Question": "¿Cuánto cuesta?"
       },
+      "PrivacyControl": {
+        "Answer": "Sí. Los temas son privados por defecto. Solo tú puedes verlos y entrenar con ellos. Opcionalmente puedes hacer temas públicos para compartir con la comunidad, pero esta es completamente tu elección.",
+        "Question": "¿Puedo mantener mis temas privados?"
+      },
       "ShareTopics": {
         "Answer": "¡Sí! Puede compartir sus temas con la comunidad o mantenerlos privados. Explore temas creados por otros usuarios para descubrir nuevos materiales de aprendizaje. Este enfoque colaborativo ayuda a todos a aprender juntos.",
         "Question": "¿Puedo compartir mis temas con otros?"
+      },
+      "TelegramBot": {
+        "Answer": "Sí, pero actualmente está limitado solo a autenticación. Estamos trabajando para agregar seguimiento de progreso y soporte de pagos en futuras actualizaciones.",
+        "Question": "¿Hay un bot de Telegram?"
       },
       "TrackProgress": {
         "Answer": "MindStack proporciona estadísticas detalladas y seguimiento de progreso. Puede ver su desempeño en diferentes temas, hacer un seguimiento de la mejora con el tiempo e identificar áreas que necesitan más práctica. El panel muestra su historial de entrenamiento y tasas de éxito.",
         "Question": "¿Cómo hago seguimiento de mi progreso?"
       },
       "WhatIsMindStack": {
-        "Answer": "MindStack es una aplicación de entrenamiento de memoria que le ayuda a crear, organizar y practicar materiales de aprendizaje. Puede crear temas personalizados con preguntas y respuestas, y luego usar entrenamientos interactivos para entrenar su memoria mediante técnicas de repetición espaciada y recuperación activa.",
+        "Answer": "MindStack es una plataforma para crear sistemas de entrenamiento de repetición personal. En lugar de usar cursos predefinidos, construyes tus propios conjuntos de datos de preguntas y respuestas a partir de temas que te importan: materiales de trabajo, materias de estudio, referencias técnicas o cualquier otra cosa. El sistema te ayuda a generar, validar y practicar con tu contenido.",
         "Question": "¿Qué es MindStack?"
       },
       "WithoutAccount": {
-        "Answer": "¡Sí! Puede explorar temas públicos y probar entrenamientos sin registrarse. Cree una cuenta para guardar su progreso y construir temas personalizados.",
-        "Question": "¿Puedo usar MindStack sin crear una cuenta?"
-      },
-      "WorkoutSystem": {
-        "Answer": "Los entrenamientos presentan preguntas de sus temas en orden aleatorio. Usted responde cada pregunta, y el sistema registra su desempeño. Basándose en sus respuestas, MindStack utiliza algoritmos de repetición espaciada para programar revisiones en intervalos óptimos, ayudándole a recordar la información durante períodos más largos.",
-        "Question": "¿Cómo funciona el sistema de entrenamiento?"
+        "Answer": "Los invitados pueden explorar temas públicos y probar entrenamientos de muestra, pero el progreso no se guarda. Para crear tus propios temas, guardar datos y rastrear historial, necesitarás una cuenta gratuita. El registro toma segundos a través de OAuth (Google, GitHub, Yandex) o email/Telegram OTP.",
+        "Question": "¿Puedo usar MindStack sin registrarme?"
       }
     },
     "FeaturesSection": {
-      "Card-1-Text": "Crea tus propios módulos de aprendizaje: formula preguntas y respuestas, y ordénalos por categorías. Utiliza la función multilingüe y etiquetas para una organización del conocimiento clara y completamente personalizada.",
-      "Card-1-Title": "Crea y organiza tu conocimiento",
-      "Card-2-Text": "Enriquece tu entrenamiento utilizando colecciones populares de temas creadas por otros usuarios. O comienza con tus materiales privados: el sistema respalda eficazmente cualquier camino que elijas.",
-      "Card-2-Title": "Practica dentro de una Comunidad de Estudiantes",
-      "Card-3-Text": "Genere preguntas y respuestas al instante utilizando IA. \nPerfecto para iniciar nuevos temas o ampliar los existentes.",
-      "Card-3-Title": "Creación de contenido impulsada por IA",
-      "Card-4-Text": "Aprende en inglés, español, ruso o cualquier idioma. \nPerfecto para estudiantes de idiomas y contenido multilingüe.",
-      "Card-4-Title": "Aprendizaje multilingüe",
-      "Card-5-Text": "Realice un seguimiento de su mejora con estadísticas detalladas, gráficos de rendimiento y métricas de retención.",
-      "Card-5-Title": "Análisis de progreso",
-      "Card-6-Text": "Comparta sus temas con otras personas o explore materiales creados por la comunidad.",
-      "Card-6-Title": "Comparte y colabora",
-      "Description": "Desde la creación de materiales de estudio personalizados hasta el seguimiento de su progreso, la aplicación combina técnicas de aprendizaje comprobadas con tecnología moderna.",
-      "Title": "Todo lo que necesitas para un aprendizaje eficaz"
+      "Card-1-Text": "Crea temas alrededor de tu trabajo real, estudios o intereses. Sin cursos genéricos, solo tus conjuntos de datos de entrenamiento personalizados organizados por categorías.",
+      "Card-1-Title": "Construye desde tu propio conocimiento",
+      "Card-2-Text": "Usa la IA para redactar preguntas y respuestas al instante, luego revisa y edita antes de guardar. Regenera hasta que la calidad cumpla tus estándares.",
+      "Card-2-Title": "Genera, verifica, perfecciona",
+      "Card-3-Text": "Compara nuevos elementos con los existentes para detectar duplicados y casi duplicados. Los algoritmos de similitud beta ayudan a mantener la calidad del conjunto de datos a medida que crece.",
+      "Card-3-Title": "Mantén tus datos limpios",
+      "Card-4-Text": "Modifica preguntas y respuestas directamente en la interfaz de entrenamiento usando nuestro HeadlessEditor. Sin necesidad de un modo de edición separado.",
+      "Card-4-Title": "Edita sin cambiar de contexto",
+      "Card-5-Text": "Mantén los temas privados por defecto para uso personal. Comparte temas seleccionados públicamente cuando quieras contribuir a la comunidad.",
+      "Card-5-Title": "Controla tu privacidad",
+      "Card-6-Text": "Categorías → Temas → Preguntas → Respuestas. Una estructura clara que mantiene tu base de conocimientos manejable, ya sea que tengas 10 o 1000 elementos.",
+      "Card-6-Title": "Jerarquía organizada que crece contigo",
+      "Description": "Desde la idea inicial hasta la sesión de entrenamiento activa, MindStack proporciona herramientas para crear, validar y practicar con tu base de conocimientos personal.",
+      "Title": "Todo lo que necesitas para crear conjuntos de datos de entrenamiento de calidad"
     },
     "HeroSection": {
-      "Description": "MindStack transforma la forma en que aprendes y recuerdas con entrenamiento de memoria impulsado por IA, repetición espaciada y recuperación activa.",
-      "ExploreAvailableCategoriesText": "Categorías disponibles",
-      "StartTrainingFreeText": "Comenzar entrenamiento gratis",
-      "Title": "Entrena tu cerebro. Construye tu conocimiento."
+      "Description": "MindStack te ayuda a crear conjuntos de datos estructurados de preguntas y respuestas a partir de tus temas personales, validarlos con asistencia de IA y ejecutar entrenamientos efectivos de repetición, todo en un solo flujo de trabajo.",
+      "ExploreAvailableCategoriesText": "Explorar temas públicos",
+      "StartTrainingFreeText": "Empieza a crear tu primer tema",
+      "Title": "Convierte tus conocimientos en entrenamientos repetibles"
     },
     "HowItWorksCards": {
-      "Description": "Comience a usar MindStack en solo unos minutos",
-      "Text-1": "Comience con temas existentes o cree los suyos propios con nuestro asistente de IA",
-      "Text-2": "Practica con sesiones adaptativas que se centran en lo que más necesitas",
-      "Text-3": "Supervise el progreso y vea crecer sus conocimientos con el tiempo",
-      "Title": "Empiece a aprender en 3 sencillos pasos",
-      "Title-1": "Crear o elegir temas",
-      "Title-2": "Entrena con entrenamientos inteligentes",
-      "Title-3": "Seguimiento y mejora"
+      "Description": "Un flujo de trabajo completo desde la idea hasta el dominio",
+      "Text-1": "Inicia un nuevo tema bajo una categoría relevante, o explora temas públicos para inspirarte. Configúralo como privado o público según tus necesidades.",
+      "Text-2": "Agrega preguntas manualmente o usa la generación de IA. Compara nuevos elementos con los existentes para evitar duplicados. Edita en el lugar hasta que todo se vea bien.",
+      "Text-3": "Ejecuta sesiones de repetición en tus datos validados. Rastrea el rendimiento, identifica áreas débiles y refina continuamente tu tema mientras aprendes.",
+      "Title": "Cómo funciona MindStack",
+      "Title-1": "Define tu tema",
+      "Title-2": "Genera, revisa, refina",
+      "Title-3": "Practica e itera"
     },
     "PromoCTASection": {
-      "Description": "Únete a una comunidad en crecimiento de aprendices y descubre una mejor forma de recordar",
+      "Description": "Únete a usuarios que están transformando sus documentos de trabajo, materiales de estudio y guías de referencia en conjuntos de datos estructurados y entrenables. Gratuito para comenzar, poderoso cuando lo necesites.",
       "ExploreCategoriesText": "Explorar categorías",
-      "StartFreeTrainingText": "Comenzar entrenamiento gratis",
-      "Title": "Comienza a construir tu conocimiento hoy"
+      "ReadDocsText": "Leer documentación",
+      "StartFreeTrainingText": "Comenzar a construir ahora",
+      "Title": "¿Listo para construir tu primer sistema de entrenamiento?"
     },
     "RecentCategoriesSection": {
       "Description": "Explora categorías predefinidas o crea las tuyas propias, si estás autorizado.",
@@ -1243,9 +1256,9 @@
     "Questions": "Preguntas",
     "RecentWorkoutsTitle": "Entrenamientos Recientes",
     "RedirectTitle": "Redirigiendo...",
-    "RootDescription": "Aplicación Memory Training para el aprendizaje interactivo y la práctica de repeticiones espaciadas",
-    "RootKeywords": "memoria, entrenamiento, aplicación",
-    "RootTitle": "Mind Stack Trainer",
+    "RootDescription": "Aplicación para crear y ejecutar entrenamientos de repetición a partir de sus propios temas y conjuntos de datos",
+    "RootKeywords": "entrenamiento de conocimientos, repetición espaciada, aprendizaje personal, aprendizaje con IA, creación de conjuntos de datos",
+    "RootTitle": "MindStack - Entrenamiento Personal de Conocimientos",
     "SettingsDescription": "Configuración de la aplicación",
     "SettingsTitle": "Configuración de la aplicación",
     "StartBotTitle": "Iniciar robot",

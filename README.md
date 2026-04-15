@@ -1,144 +1,202 @@
-<!--
- @since 2025.07.05
- @changed 2026.02.08, 05:15
--->
+# MindStack - Personal Knowledge Training Platform
 
-# MindStack Memory Trainer
-
-NextJS Memory Training Application for interactive learning and spaced repetition practice.
-
-![Application](public/static/opengraph-image-v2.jpg 'Application Splash')
+Next.js application for creating and running repetition trainings from your own topics and datasets.
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.4 / 2026.04.14 06:39:10 +0300
+- Project info: v.0.1.5 / 2026.04.15 04:59:01 +0300
 
 ## 🌟 Overview
 
-MindStack is a modern memory training application that helps users create, organize, and practice learning materials through interactive workouts. Built with Next.js 15 and TypeScript, it provides a comprehensive platform for knowledge retention using spaced repetition techniques and active recall.
+**MindStack helps you turn your own knowledge into repeatable trainings.** Instead of using generic public courses, you build personal training systems from your real work materials, study subjects, or technical references. The platform provides tools for creating question-answer datasets, validating them with AI assistance, and practicing through spaced repetition—all in one streamlined workflow.
 
-- **Repository:** https://github.com/lilliputten/mindstack/
-- **Live Application:** https://mindstack.lilliputten.com/
-- **Vercel Deployment:** https://mind-stack-trainer.vercel.app/
-- **Project reference:** https://lilliputten.com/projects/2026/mindstack/
+The core promise is simple: **a convenient and controllable way to systematize and train your personal knowledge**.
 
-![Application Preview](public/static/opengraph-image.jpg 'MindStack Memory Trainer')
+### Key Differentiators
+
+✅ **Personal-first approach** — Create trainings from your own data, not someone else's curriculum  
+✅ **Generation control** — Review and edit AI-generated content before saving; regenerate until quality meets your standards  
+✅ **Duplicate detection** — Beta similarity algorithms help catch duplicate or near-duplicate items as your dataset grows  
+✅ **In-place editing** — Edit questions and answers directly in the training interface using HeadlessEditor  
+✅ **Privacy by default** — Keep topics private for personal use, share publicly only when you choose  
+✅ **Structured hierarchy** — Categories → Topics → Questions → Answers keeps everything organized  
+
+### Quick Links
+
+- **Repository:** [https://github.com/lilliputten/mindstack/](https://github.com/lilliputten/mindstack/)
+- **Live Application:** [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
+- **Vercel Deployment:** [https://mind-stack-trainer.vercel.app/](https://mind-stack-trainer.vercel.app/)
+- **Project Reference:** [https://lilliputten.com/projects/2026/mindstack/](https://lilliputten.com/projects/2026/mindstack/)
+- **Pricing & Plans:** [https://mindstack.lilliputten.com/pricing](https://mindstack.lilliputten.com/pricing)
+
+Application Preview
 
 ## 🚀 Core Features
 
 ### ✅ Implemented Features
 
-**Learning & Practice**
+**Content Creation & Management**
 
-- Interactive workout sessions with spaced repetition algorithms
-- Progress tracking and statistics for each topic
-- Public topics available without authorization (limited analytics)
-- Custom question and answer creation
-- Topic categorization and tagging system
-- Multi-language topic support (predefined and custom languages)
+- Create topics from your own knowledge areas (work, studies, interests)
+- Write questions and answers manually or generate with AI assistance
+- **In-place editing** via HeadlessEditor — no context switching needed
+- **Duplicate detection** — compare new items against existing ones to maintain dataset quality
+- **Generation review loop** — edit, regenerate, or discard AI drafts before saving
+- Hierarchical organization: Categories → Topics → Questions → Answers
+- Mark topics as private (default) or share publicly with community
+- Multi-language support for topics and interface (English, Spanish, Russian)
 
-**Content Management**
+**Training & Practice**
 
-- Create, edit, and manage topics with questions and answers
-- Mark topics as private or share them with other users
-- AI-powered question and answer generation
-- Advanced topic search with multiple parameters
-- Category management for topic organization
+- Interactive workout sessions using spaced repetition algorithms
+- Progress tracking with detailed statistics per topic
+- Start training immediately after creating first question
+- Guest mode for exploring public topics (no account required)
+- Performance history and retention metrics for registered users
+
+**AI-Powered Assistance**
+
+- Generate questions and answers instantly using LangChain + multiple LLM providers
+- **Cloudflare Workers AI** — flexible model switching (Meta Llama, Mistral, etc.)
+- **GigaChat** — optimized for Russian language content generation
+- Structured output parsing for consistent JSON responses
+- Generation quota tracking based on subscription tier
+
+**Authentication & Access Control**
+
+- Multiple OAuth providers: Google, GitHub, Yandex
+- Email OTP authentication
+- Telegram bot OTP authentication
+- Role-based access: Guest, Basic (free), Pro, Premium
+- User grade system with progressive feature unlocking
 
 **Payment & Subscriptions**
 
-- International payment processing via Stripe
-- Russian payment processing via YooKassa
-- Multiple subscription tiers (Basic, Pro, Premium, Unlimited)
-- Payment status tracking and management
-
-**Authentication & Security**
-
-- Multiple OAuth providers: GitHub, Google, Yandex
-- Email-based authentication
-- Telegram bot authentication (via OTP)
-- Role-based access control (USER, ADMIN)
-- User grade system with tiered features
+- International payments via Stripe (credit cards, subscriptions)
+- Russian market payments via YooMoney (local payment methods)
+- Multiple subscription tiers with different AI generation quotas
+- Payment status tracking and automatic renewal management
 
 **Internationalization**
 
-- Full interface support for English, Spanish, and Russian
-- Dynamic language switching
-- Automatic locale detection
-- Language-specific topic support
+- Full UI translation: English, Spanish, Russian
+- Dynamic locale switching without page reload
+- Automatic locale detection from browser/system
+- Language-specific topic categorization
 
 ### 🔮 Planned Features
 
-**Content Enhancement**
+**Enhanced AI Capabilities**
 
-- Custom illustrations for questions and answers
-- AI-generated preview images for questions and answers
-- Main page display of recent and popular topics
+- Semantic similarity detection (beyond current lexical comparison)
+- Vector database integration for faster duplicate searches
+- Smart topic suggestions based on user interests
+- Content expansion from URLs or uploaded documents
+- Additional LLM providers (OpenAI, Anthropic) as fallback options
 
-**User Experience**
+**Telegram Bot Expansion**
 
-- Link multiple authorized accounts
-- Telegram bot statistics tracking
-- In-app, email, and Telegram notifications
-- User comparison and achievement sharing
-- Badges and achievement system
+- Progress tracking commands (`/progress`, `/stats`)
+- Daily training reminders and notifications
+- Quick topic creation via chat interface
+- Payment link generation through bot
 
-**Advanced Features**
+**Mobile Experience**
 
-- Enhanced statistics and analytics dashboard
-- Social sharing of topics and achievements
-- Collaborative topic editing
-- Export/import functionality for topics
+- Enhanced PWA offline caching for training without internet
+- Improved touch interactions and swipe gestures
+- Better mobile editor UX for small screens
+- Potential native apps (iOS/Android) in long-term roadmap
+
+**Collaboration & Social**
+
+- Real-time shared topic editing for teams
+- Comment and discussion threads on questions
+- Version history and rollback functionality
+- Team workspaces with admin controls
+
+**Advanced Analytics**
+
+- Learning curve visualization
+- Weak area identification and recommendations
+- Study habit analysis and optimization tips
+- Exportable reports for premium users
+
+**Developer Ecosystem**
+
+- Public REST API for CRUD operations
+- Webhook support for external integrations
+- API documentation and SDKs
+- Developer portal with usage examples
 
 ## 🛠️ Technology Stack
 
 ### Core Framework
 
-- **Next.js 15** — React framework with App Router
-- **TypeScript** — Full type safety
-- **React 19** — Latest React features
-- **Prisma 6** — Type-safe database ORM
-- **PostgreSQL** — Production database
+- **Next.js 15.5.7** — React framework with App Router, SSR, and SSG
+- **TypeScript 5.8.3** — Full type safety across codebase (strict mode, no `any`)
+- **React 19.1.2** — Latest React features including concurrent rendering
+- **Prisma 6.18.0** — Type-safe database ORM with automatic migrations
+- **PostgreSQL** — Production relational database
 
 ### Styling & UI
 
 - **Tailwind CSS 3.4** — Utility-first CSS framework
-- **Radix UI** — Accessible UI primitives
-- **SCSS/Sass** — Advanced styling with CSS variables
-- **next-themes** — Dark/light mode support
+- **Radix UI** — Accessible, unstyled UI primitives
+- **SCSS/Sass** — Advanced styling with CSS variables and theming
+- **next-themes** — Dark/light/high-contrast theme support
+- **Lucide React** — Consistent icon system
 
 ### State Management
 
-- **React Query (TanStack Query 5)** — Server state management
-- **Zustand 5** — Client state management
-- **React Context** — Local component state
+- **React Query (TanStack Query 5.85.3)** — Server state management and caching
+- **Zustand 5.0.8** — Lightweight client state management
+- **React Context** — Theme, locale, and settings providers
 
-### Authentication & Validation
+### Authentication & Security
 
-- **NextAuth.js 5** — Multi-provider authentication
-- **Zod** — Schema validation
-- **Telegram Auth** — Secure Telegram integration
+- **Auth.js (NextAuth) 5.0.0-beta.29** — Multi-provider authentication
+- **OAuth Providers:** Google, GitHub, Yandex
+- **OTP Methods:** Email, Telegram bot
+- **Zod** — Runtime schema validation for inputs and API responses
+- **JWT Sessions** — Encrypted tokens with server-side validation
 
 ### AI Integration
 
-- **LangChain** — AI model orchestration
-- **GigaChat** — AI content generation (with different available model levels, `GIGACHAT_MODEL`: 'GigaChat' | 'GigaChat-Pro' | 'GigaChat-Max')
-- **Cloudflare AI** — Alternative AI provider
+- **LangChain 1.0.1** — LLM orchestration framework with unified provider interface
+- **Cloudflare Workers AI** (`@langchain/cloudflare`) — Flexible model switching capability
+  - Supports Meta Llama, Mistral, and other configurable models
+  - Serverless edge inference for cost-effective scaling
+- **GigaChat** (`gigachat-node`) — Russian language LLM specialization
+  - Multiple model tiers: GigaChat, GigaChat-Pro, GigaChat-Max
+  - Optimized for Cyrillic text processing
+- **Natural Language Processing:**
+  - `natural` 8.1.0 — General NLP toolkit
+  - `multilingual-stemmer` 1.0.2 — WASM-based word stemming (EN, RU, ES)
+  - Custom text comparator module (beta similarity detection)
 
-See environment variable parameters.
+See environment variable parameters for AI configuration details.
 
 ### Payments
 
-- **Stripe** — International payments
-- **Yookassa** — Russian payment processing
+- **Stripe 20.1.0** — International payment processing and subscription management
+- **YooMoney Checkout** (`@a2seven/yoo-checkout`) — Russian market payments and compliance
 
 ### Testing & Quality
 
-- **Jest** — Testing framework
-- **React Testing Library** — Component testing
-- **ESLint** — Code linting
-- **Prettier** — Code formatting
-- **Stylelint** — CSS/SCSS linting
+- **Jest 29.7.0** — Unit and integration testing framework
+- **React Testing Library 16.0.1** — Component testing with user interaction simulation
+- **ESLint** — Code linting with TypeScript strict rules
+- **Prettier** — Consistent code formatting
+- **Stylelint** — CSS/SCSS linting and style enforcement
+- **Husky + Commitlint** — Git hooks for commit message conventions
+
+### Internationalization
+
+- **next-intl 3.26.3** — Multi-language support with locale-based routing
+- Rich translation values (HTML, links, components)
+- Dynamic locale switching without page reload
+- Automatic locale detection from browser/system
 
 ## 📦 Installation & Setup
 
@@ -446,16 +504,16 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## ☂ Support
 
-- **Issues**: https://github.com/lilliputten/mindstack/issues
-- **Email**: lilliputten@gmail.com
-- **Documentation**: https://mindstack.lilliputten.com/
+- **Issues**: [https://github.com/lilliputten/mindstack/issues](https://github.com/lilliputten/mindstack/issues)
+- **Email**: [lilliputten@gmail.com](mailto:lilliputten@gmail.com)
+- **Documentation**: [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
 
 ## 🔗 Resources
 
-- **Live Application**: https://mindstack.lilliputten.com/
-- **Vercel Deployment**: https://mind-stack-trainer.vercel.app/
-- **GitHub Repository**: https://github.com/lilliputten/mindstack/
-- **Project Reference**: https://lilliputten.com/projects/2026/mindstack/
+- **Live Application**: [https://mindstack.lilliputten.com/](https://mindstack.lilliputten.com/)
+- **Vercel Deployment**: [https://mind-stack-trainer.vercel.app/](https://mind-stack-trainer.vercel.app/)
+- **GitHub Repository**: [https://github.com/lilliputten/mindstack/](https://github.com/lilliputten/mindstack/)
+- **Project Reference**: [https://lilliputten.com/projects/2026/mindstack/](https://lilliputten.com/projects/2026/mindstack/)
 
 ---
 

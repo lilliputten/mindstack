@@ -7,7 +7,7 @@ import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { buttonVariants } from '@/components/ui/Button';
 import * as Icons from '@/components/shared/Icons';
-import { availableCategoriesRoute, isDev, startAliasRoute } from '@/config';
+import { docsAliasRoute, isDev, startAliasRoute } from '@/config';
 
 export function PromoCTASection() {
   const t = useT();
@@ -55,6 +55,17 @@ export function PromoCTASection() {
             <span className="truncate">{t('Landing.PromoCTASection.StartFreeTrainingText')}</span>
           </Link>
           <Link
+            href={docsAliasRoute}
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'lg', rounded: 'lg' }),
+              'content-truncate flex items-center gap-2',
+            )}
+          >
+            <Icons.BookOpen className="size-4 shrink-0 opacity-50" />
+            <span className="truncate">{t('Landing.PromoCTASection.ReadDocsText')}</span>
+          </Link>
+          {/*
+          <Link
             href={availableCategoriesRoute}
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg', rounded: 'lg' }),
@@ -64,6 +75,7 @@ export function PromoCTASection() {
             <Icons.Categories className="size-4 shrink-0 opacity-50" />
             <span className="truncate">{t('Landing.PromoCTASection.ExploreCategoriesText')}</span>
           </Link>
+          */}
         </div>
       </div>
     </section>

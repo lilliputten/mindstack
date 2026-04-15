@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx *)"
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(node *)"
     ]
   },
   "$version": 3

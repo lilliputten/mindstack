@@ -1,0 +1,87 @@
+# Step 5: Landing Page - Used Images List
+
+**Date:** 2026-04-15
+**Purpose:** Document all images used in the landing page after Step 5 updates
+
+## Images by Section
+
+### 1. HeroSection
+**File:** `src/components/screens/LandingContent/HeroSection.tsx`
+- **Image:** `/static/landing/features/14clean.jpg`
+- **Purpose:** Hero section background/visual
+- **Status:** Kept current image (as per plan)
+
+### 2. FeaturesSection (6 Cards)
+**File:** `src/components/screens/LandingContent/FeaturesSection.tsx`
+
+#### Card 1: Build From Your Own Knowledge
+- **Image:** `/static/landing/features/v.0.1.3/categories.jpg`
+- **Purpose:** Shows category browsing and filtering
+- **Debug ID:** `BuildFromYourOwnKnowledge`
+
+#### Card 2: Generate, Check, Perfect
+- **Image:** `/static/landing/features/v.0.1.4/generate-questions-dialog-3.jpg`
+- **Purpose:** Shows AI generation interface
+- **Debug ID:** `GenerateCheckPerfect`
+
+#### Card 3: Keep Your Data Clean
+- **Image:** `/static/landing/features/v.0.1.4/questions-comparison.jpg`
+- **Purpose:** Shows similarity detection/duplicate checking
+- **Debug ID:** `KeepDataClean`
+
+#### Card 4: Edit Without Context Switching
+- **Image:** `/static/landing/features/v.0.1.4/edit-topic-questions-and-answers.jpg`
+- **Purpose:** Shows inline editing workflow
+- **Debug ID:** `EditWithoutContextSwitching`
+
+#### Card 5: Control Your Privacy
+- **Image:** `/static/landing/features/v.0.1.4/mobile-panel.jpg`
+- **Purpose:** Shows settings/privacy controls
+- **Debug ID:** `ControlYourPrivacy`
+
+#### Card 6: Organized Hierarchy That Grows With You
+- **Image:** `/static/landing/features/v.0.1.3/topics.jpg`
+- **Purpose:** Shows topic organization with filters
+- **Debug ID:** `OrganizedHierarchy`
+
+### 3. BigImageCTASection
+**File:** `src/components/screens/LandingContent/BigImageCTASection.tsx`
+- **Image:** `/static/landing/features/02.jpg`
+- **Purpose:** CTA section background image
+- **Status:** Kept current image (as per plan)
+
+## Summary
+
+**Total Images Used:** 8
+
+**From v.0.1.3:** 2 images
+- `categories.jpg`
+- `topics.jpg`
+
+**From v.0.1.4:** 4 images
+- `generate-questions-dialog-3.jpg`
+- `questions-comparison.jpg`
+- `edit-topic-questions-and-answers.jpg`
+- `mobile-panel.jpg`
+
+**Legacy/Other:** 2 images
+- `14clean.jpg` (HeroSection - kept as per plan)
+- `02.jpg` (BigImageCTASection - kept as per plan)
+
+## Image Path Pattern
+
+All images follow the pattern:
+```
+/static/landing/features/[version]/[filename].jpg
+```
+
+Where:
+- `[version]` is either `v.0.1.3`, `v.0.1.4`, or omitted for legacy images
+- `[filename]` is a descriptive name of the screenshot content
+
+## Notes
+
+- All FeatureCard images use real application screenshots
+- HeroSection and BigImageCTASection retained their existing images as specified in the plan
+- All images use `aspect-video` ratio for consistency
+- Images are stored in `/public/static/landing/features/` directory
