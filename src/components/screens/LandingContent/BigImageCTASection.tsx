@@ -45,7 +45,7 @@ export function BigImageCTASection() {
       <div className="relative mt-4 w-full max-w-none">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg">
           <Image
-            src="/static/landing/features/02.jpg"
+            src="/static/landing/features/abstract/02.jpg"
             alt={t('Landing.BigImageCTASection.Title')}
             fill
             className="bg-theme-500/20 object-cover"

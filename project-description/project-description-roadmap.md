@@ -62,12 +62,27 @@ Rebuild the product positioning around the core value: **MindStack helps users c
 - [x] Plan includes: Complete testing checklist (functional, responsive, accessibility, performance)
 - [x] Plan includes: Deployment preparation and rollback procedures
 - [x] Plan includes: Troubleshooting guide and success metrics
-- [ ] Apply approved content updates in landing components and locale files.
-- [ ] Remove/replace outdated FAQ items, add new ones.
-- [ ] Update section visuals references (temporary placeholders if assets are pending; use images listed in the `landing-screenshots.md` -- they'll be added later).
-- [ ] Run lint on changed files.
-- [ ] Run full TypeScript check (`npx tsc --noEmit`).
-- Output: updated `src/components/screens/LandingContent/*` and locale files.
+- [x] Apply approved content updates in landing components and locale files.
+  - Updated HeroSection, FeaturesSection, BigImageCTASection, CardsWithIconsSection, HowItWorksCards, PromoCTASection
+  - All three locales (en, ru, es) translated and validated
+- [x] Remove/replace outdated FAQ items, add new ones.
+  - Removed: LearningTechniques, MobileApp, LearningProgramming, WorkoutSystem
+  - Added: DuplicateDetection, AIGeneratedContent, ManualQuestions, DifferenceFromAnki, PrivacyControl, NewCategoryRequest, TelegramBot
+  - Updated FAQSection.tsx component with new FAQ structure (15 total FAQs)
+- [x] Update section visuals references (temporary placeholders if assets are pending; use images listed in the `landing-screenshots.md` -- they'll be added later).
+  - FeaturesSection: Updated all 6 feature cards with real app screenshots per landing-rewrite-draft.md mapping
+  - HeroSection: Kept current image (14clean.jpg) as per plan
+  - BigImageCTASection: Kept current image (02.jpg) as per plan
+  - CardsWithIconsSection: Updated icons (Rocket, Eye, Play)
+  - HowItWorksCards: Updated icons (BookOpen, WandSparkles, Refresh)
+- [x] Run lint on changed files.
+  - ESLint passed for all modified component files
+- [x] Run full TypeScript check (`npx tsc --noEmit`).
+  - TypeScript compilation passed with 0 errors
+- [x] Output files:
+  - Updated: `src/components/screens/LandingContent/*` (FAQSection, CardsWithIconsSection, HowItWorksCards, FeaturesSection)
+  - Updated: `src/i18n/locales/en.json`, `ru.json`, `es.json`
+  - Created: `project-description/step-used-images.txt` (comprehensive image inventory)
 
 ### Step 6. Public Project Documentation Updates
 

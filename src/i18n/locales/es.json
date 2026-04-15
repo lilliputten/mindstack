@@ -945,6 +945,18 @@
     "FAQSection": {
       "Description": "Todo lo que necesita saber sobre crear y usar conjuntos de datos de entrenamiento personal",
       "Title": "Preguntas frecuentes",
+      "AIGeneratedContent": {
+        "Answer": "Tienes control total. Puedes editar cualquier elemento generado, regenerar preguntas específicas o eliminarlas por completo. Nada se guarda en tu base de datos hasta que lo apruebes explícitamente. Piensa en la IA como un asistente de borradores, no como un piloto automático.",
+        "Question": "¿Qué pasa si no estoy satisfecho con el contenido generado por IA?"
+      },
+      "DifferenceFromAnki": {
+        "Answer": "Mientras esas herramientas se enfocan en la gestión de tarjetas flash, MindStack enfatiza todo el flujo de trabajo de creación de contenido. Obtienes generación asistida por IA, detección de duplicados, edición en el lugar y una jerarquía estructurada (categorías → temas → preguntas → respuestas). Está diseñado para crear conjuntos de datos de calidad, no solo almacenar tarjetas.",
+        "Question": "¿En qué se diferencia de Anki o Quizlet?"
+      },
+      "DuplicateDetection": {
+        "Answer": "Nuestro algoritmo de similitud beta compara nuevas preguntas y respuestas con las existentes en tu tema usando análisis de texto (incluyendo stemming para mejor coincidencia). Marca posibles duplicados para que puedas decidir si fusionar, reformular o mantener ambos. Nota: Esta función aún está mejorando y funciona mejor con frases claras y distintas.",
+        "Question": "¿Cómo funciona la detección de duplicados?"
+      },
       "FreeToUse": {
         "Answer": "MindStack ofrece una versión gratuita que incluye funciones básicas para crear temas, preguntas y entrenamientos. Características adicionales y límites más altos pueden estar disponibles en planes premium. Consulte nuestra <LinkPricing>página de precios</LinkPricing> para más detalles.",
         "Question": "¿Qué incluye el plan gratuito?"
@@ -953,37 +965,33 @@
         "Answer": "<p>Crear un tema en MindStack es simple:</p><ol><li>Regístrese para obtener una cuenta gratuita</li><li>Navegue a \"Mis Temas\" en el panel de control</li><li>Haga clic en \"Crear Tema\" y complete el título e idioma</li><li>Agregue preguntas manualmente o use la generación de IA</li><li>Revise y valide su contenido</li><li>¡Comience a practicar con entrenamientos!</li></ol>",
         "Question": "¿Cómo creo mi primer tema?"
       },
-      "DuplicateDetection": {
-        "Answer": "Nuestro algoritmo de similitud beta compara nuevas preguntas y respuestas con las existentes en tu tema usando análisis de texto (incluyendo stemming para mejor coincidencia). Marca posibles duplicados para que puedas decidir si fusionar, reformular o mantener ambos. Nota: Esta función aún está mejorando y funciona mejor con frases claras y distintas.",
-        "Question": "¿Cómo funciona la detección de duplicados?"
-      },
-      "AIGeneratedContent": {
-        "Answer": "Tienes control total. Puedes editar cualquier elemento generado, regenerar preguntas específicas o eliminarlas por completo. Nada se guarda en tu base de datos hasta que lo apruebes explícitamente. Piensa en la IA como un asistente de borradores, no como un piloto automático.",
-        "Question": "¿Qué pasa si no estoy satisfecho con el contenido generado por IA?"
-      },
       "ManualQuestions": {
         "Answer": "No. Puedes escribirlas manualmente, usar la IA para generar borradores, o combinar ambos enfoques. La diferencia clave es que el contenido generado permanece en modo de revisión: verificas, editas y apruebas todo antes de que se convierta en parte de tu conjunto de datos de entrenamiento.",
         "Question": "¿Necesito escribir todas las preguntas y respuestas manualmente?"
-      },
-      "DifferenceFromAnki": {
-        "Answer": "Mientras esas herramientas se enfocan en la gestión de tarjetas flash, MindStack enfatiza todo el flujo de trabajo de creación de contenido. Obtienes generación asistida por IA, detección de duplicados, edición en el lugar y una jerarquía estructurada (categorías → temas → preguntas → respuestas). Está diseñado para crear conjuntos de datos de calidad, no solo almacenar tarjetas.",
-        "Question": "¿En qué se diferencia de Anki o Quizlet?"
       },
       "MultipleLanguages": {
         "Answer": "¡Sí! MindStack admite varios idiomas. Puede crear temas en diferentes idiomas y cambiar entre ellos sin problemas. Esto es especialmente útil para el aprendizaje de idiomas o cuando estudia materiales en diferentes idiomas.",
         "Question": "¿MindStack admite varios idiomas?"
       },
-      "PrivacyControl": {
-        "Answer": "Sí. Los temas son privados por defecto. Solo tú puedes verlos y entrenar con ellos. Opcionalmente puedes hacer temas públicos para compartir con la comunidad, pero esta es completamente tu elección.",
-        "Question": "¿Puedo mantener mis temas privados?"
+      "NewCategoryRequest": {
+        "Answer": "Los usuarios registrados pueden enviar solicitudes de creación de categorías a través del formulario integrado en la página de categorías. Nuestro equipo revisa las submissions y agrega categorías relevantes para mantener el sistema organizado.",
+        "Question": "¿Cómo solicito una nueva categoría?"
       },
       "Price": {
         "Answer": "Las funciones básicas son gratuitas para siempre. Los planes premium desbloquean temas ilimitados, análisis avanzados y funciones de IA. Vea la sección de <LinkPricing>precios</LinkPricing>.",
         "Question": "¿Cuánto cuesta?"
       },
+      "PrivacyControl": {
+        "Answer": "Sí. Los temas son privados por defecto. Solo tú puedes verlos y entrenar con ellos. Opcionalmente puedes hacer temas públicos para compartir con la comunidad, pero esta es completamente tu elección.",
+        "Question": "¿Puedo mantener mis temas privados?"
+      },
       "ShareTopics": {
         "Answer": "¡Sí! Puede compartir sus temas con la comunidad o mantenerlos privados. Explore temas creados por otros usuarios para descubrir nuevos materiales de aprendizaje. Este enfoque colaborativo ayuda a todos a aprender juntos.",
         "Question": "¿Puedo compartir mis temas con otros?"
+      },
+      "TelegramBot": {
+        "Answer": "Sí, pero actualmente está limitado solo a autenticación. Estamos trabajando para agregar seguimiento de progreso y soporte de pagos en futuras actualizaciones.",
+        "Question": "¿Hay un bot de Telegram?"
       },
       "TrackProgress": {
         "Answer": "MindStack proporciona estadísticas detalladas y seguimiento de progreso. Puede ver su desempeño en diferentes temas, hacer un seguimiento de la mejora con el tiempo e identificar áreas que necesitan más práctica. El panel muestra su historial de entrenamiento y tasas de éxito.",
@@ -996,14 +1004,6 @@
       "WithoutAccount": {
         "Answer": "Los invitados pueden explorar temas públicos y probar entrenamientos de muestra, pero el progreso no se guarda. Para crear tus propios temas, guardar datos y rastrear historial, necesitarás una cuenta gratuita. El registro toma segundos a través de OAuth (Google, GitHub, Yandex) o email/Telegram OTP.",
         "Question": "¿Puedo usar MindStack sin registrarme?"
-      },
-      "NewCategoryRequest": {
-        "Answer": "Los usuarios registrados pueden enviar solicitudes de creación de categorías a través del formulario integrado en la página de categorías. Nuestro equipo revisa las submissions y agrega categorías relevantes para mantener el sistema organizado.",
-        "Question": "¿Cómo solicito una nueva categoría?"
-      },
-      "TelegramBot": {
-        "Answer": "Sí, pero actualmente está limitado solo a autenticación. Estamos trabajando para agregar seguimiento de progreso y soporte de pagos en futuras actualizaciones.",
-        "Question": "¿Hay un bot de Telegram?"
       }
     },
     "FeaturesSection": {
