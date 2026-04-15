@@ -86,10 +86,33 @@ Rebuild the product positioning around the core value: **MindStack helps users c
 
 ### Step 6. Public Project Documentation Updates
 
-- [ ] Update `README.md` with the approved project goal, user value, and key workflow.
-- [ ] Add/update links to relevant pages and docs (including `/pricing` where appropriate).
-- [ ] Keep wording aligned with approved landing and description drafts.
-- [ ] Update user documentation page (`/docs`), including all possible useful information.
+- [x] Update `README.md` with the approved project goal, user value, and key workflow.
+  - Rewrote overview with "personal knowledge training" positioning
+  - Updated core features to emphasize creation workflow (in-place editing, duplicate detection, generation review)
+  - Added accurate technology stack details (Cloudflare AI, removed Redis reference)
+  - Included pricing page link
+  - Enhanced planned features section with realistic roadmap items
+- [x] Add/update links to relevant pages and docs (including `/pricing` where appropriate).
+  - Added pricing link in Quick Links section
+  - Referenced /pricing in user roles section
+- [x] Keep wording aligned with approved landing and description drafts.
+  - Consistent messaging: "Turn Your Knowledge Into Repeatable Trainings"
+  - Emphasized personal-first approach throughout
+  - Highlighted key differentiators (generation control, duplicate detection, privacy)
+- [x] Update user documentation page (`/docs`), including all possible useful information.
+  - Complete rewrite of DocsContentEn.md (200+ lines → 500+ lines)
+  - Added comprehensive "Getting Started" guide with step-by-step instructions
+  - Explained data hierarchy and creation workflow
+  - Detailed feature explanations (HeadlessEditor, duplicate detection, generation review loop)
+  - User roles and permissions breakdown
+  - Authentication options explained
+  - Payment systems documentation
+  - Expanded FAQ section with creation-focused questions
+  - Technical requirements and troubleshooting guide
+  - Privacy and security information
+- [x] Output files:
+  - Updated: `README.md` - Complete overhaul with new positioning
+  - Updated: `src/app/[locale]/public/docs/DocsContentEn.md` - Comprehensive English documentation
 
 ### Step 7. Changelog Update
 
