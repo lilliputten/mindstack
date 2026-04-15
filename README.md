@@ -4,7 +4,7 @@ Next.js application for creating and running repetition trainings from your own 
 
 ## ℹ️ Build info (auto-generated)
 
-- Project info: v.0.1.4 / 2026.04.14 06:39:10 +0300
+- Project info: v.0.1.5 / 2026.04.15 04:59:01 +0300
 
 ## 🌟 Overview
 

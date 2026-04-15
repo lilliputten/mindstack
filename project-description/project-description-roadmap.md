@@ -143,9 +143,21 @@ Rebuild the product positioning around the core value: **MindStack helps users c
 
 ### Step 8. Changelog Update
 
-- [ ] Add a clear entry in `CHANGELOG.md` describing positioning/content updates.
-- [ ] Mention major documentation and landing copy changes.
-- [ ] Use existing changelog style and date/version format.
+- [x] Add a clear entry in `CHANGELOG.md` describing positioning/content updates.
+  - Created comprehensive v.0.1.5 changelog entry
+  - Documented complete repositioning from "Memory Training" to "Personal Knowledge Training Platform"
+  - Listed all major changes: multi-language docs, metadata updates, landing page enhancements
+- [x] Mention major documentation and landing copy changes.
+  - Added sections: Added, Changed, Fixed, Documentation, Technical
+  - Detailed Russian and Spanish translation creation (550+ lines each)
+  - Documented README.md rewrite and DocsContentEn.md expansion (200→500+ lines)
+  - Noted technology stack keywords addition to package.json
+  - Included FAQ expansion and feature documentation improvements
+- [x] Use existing changelog style and date/version format.
+  - Followed established format with version link and date
+  - Maintained categorization (Added/Changed/Fixed/Documentation/Technical)
+  - Included GitHub issue reference placeholder and compare versions link
+  - Updated timestamp in file header comment
 
 ## Review Workflow
 
