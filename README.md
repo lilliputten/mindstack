@@ -14,12 +14,12 @@ The core promise is simple: **a convenient and controllable way to systematize a
 
 ### Key Differentiators
 
-✅ **Personal-first approach** — Create trainings from your own data, not someone else's curriculum  
-✅ **Generation control** — Review and edit AI-generated content before saving; regenerate until quality meets your standards  
-✅ **Duplicate detection** — Beta similarity algorithms help catch duplicate or near-duplicate items as your dataset grows  
-✅ **In-place editing** — Edit questions and answers directly in the training interface using HeadlessEditor  
-✅ **Privacy by default** — Keep topics private for personal use, share publicly only when you choose  
-✅ **Structured hierarchy** — Categories → Topics → Questions → Answers keeps everything organized  
+✅ **Personal-first approach** — Create trainings from your own data, not someone else's curriculum
+✅ **Generation control** — Review and edit AI-generated content before saving; regenerate until quality meets your standards
+✅ **Duplicate detection** — Beta similarity algorithms help catch duplicate or near-duplicate items as your dataset grows
+✅ **In-place editing** — Edit questions and answers directly in the training interface using HeadlessEditor
+✅ **Privacy by default** — Keep topics private for personal use, share publicly only when you choose
+✅ **Structured hierarchy** — Categories → Topics → Questions → Answers keeps everything organized
 
 ### Quick Links
 
@@ -514,6 +514,8 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - **Vercel Deployment**: [https://mind-stack-trainer.vercel.app/](https://mind-stack-trainer.vercel.app/)
 - **GitHub Repository**: [https://github.com/lilliputten/mindstack/](https://github.com/lilliputten/mindstack/)
 - **Project Reference**: [https://lilliputten.com/projects/2026/mindstack/](https://lilliputten.com/projects/2026/mindstack/)
+
+<a href="https://www.producthunt.com/products/mindstack-personal-knowledge-trainer?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-mindstack-personal-knowledge-trainer" target="_blank" rel="noopener noreferrer"><img alt="MindStack: Personal Knowledge Trainer - Turn Your Knowledge Into Repeatable Trainings | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1124734&amp;theme=light&amp;t=1776288902603"></a>
 
 ---
 
