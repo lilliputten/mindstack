@@ -1,15 +1,16 @@
 import { cn } from '@/lib/utils';
+import { isDev } from '@/config';
 
 export function TailwindIndicator() {
-  if (process.env.NODE_ENV === 'production') {
+  if (!isDev) {
     return null;
   }
 
   return (
     <div
       role="status"
-      // var(--color-background);
       className={cn(
+        isDev && '__TailwindIndicator', // DEBUG
         'fixed',
         'bottom-4',
         'right-4',
@@ -19,7 +20,6 @@ export function TailwindIndicator() {
         'items-center',
         'justify-center',
         'rounded-full',
-        // 'bg-background',
         'bg-[rgb(28,28,30)]',
         'border',
         'border-white/15',
@@ -29,7 +29,8 @@ export function TailwindIndicator() {
         'text-white',
       )}
     >
-      <div className="block sm:hidden">xs</div>
+      <div className="block xs:hidden">xxs</div>
+      <div className="hidden xs:max-sm:block">xs</div>
       <div className="hidden sm:max-md:block">sm</div>
       <div className="hidden md:max-lg:block">md</div>
       <div className="hidden lg:max-xl:block">lg</div>

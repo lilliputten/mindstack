@@ -6,10 +6,9 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { ServerAuthError } from '@/lib/errors';
 import { getCurrentUser } from '@/lib/session';
+import { isDev } from '@/config';
 
 import { TGetAvailableWorkoutsParams, TGetAvailableWorkoutsResults } from '../types';
-
-const isDev = process.env.NODE_ENV === 'development';
 
 interface TOptions {
   noDebug?: boolean;

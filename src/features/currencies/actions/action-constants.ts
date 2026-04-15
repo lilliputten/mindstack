@@ -25,10 +25,10 @@ export const initialRatios: Record<TCurrencyType, number> = {
 };
 
 /** Update ratios once per this amount of time */
-export const updateTimeout = hourMs * 12;
+export const updateTimeout = hourMs * 24;
 /** Time to allow currency fetching process, consider the currency to be
  * updating right now, if the update process has started within this period ago
  */
-export const updatingTimeout = minuteMs * 5;
+export const updatingTimeout = minuteMs * 10;
 /** Caching time for next check, to store the result in the nextjs cache */
-export const revalidateTimeout = hourMs;
+export const revalidateTimeout = hourMs * 4;

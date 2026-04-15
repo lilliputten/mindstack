@@ -2,9 +2,12 @@ import React from 'react';
 
 import { siteTitle, versionInfo } from '@/config/env';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { isDev } from '@/constants';
 
 export function NavFooter() {
+  const t = useT();
+  const rootTitle = t('Pages.RootTitle') || siteTitle;
   // Effect: Show app info in the console
   React.useEffect(() => {
     // NOTE: Show app info
@@ -30,9 +33,9 @@ export function NavFooter() {
           'z-0',
         )}
       />
-      <div className="z-10 flex flex-row items-center gap-3 truncate py-1 opacity-70">
-        <span>{siteTitle} </span>
-        <span className="truncate text-xs">{versionInfo}</span>
+      <div className="z-10 flex flex-row items-center gap-3 truncate py-1 text-sm opacity-70">
+        <span className="truncate">{rootTitle} </span>
+        <span className="truncate opacity-50 max-xs:hidden">{versionInfo?.split(' ')[0]}</span>
       </div>
     </div>
   );

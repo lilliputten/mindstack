@@ -15,7 +15,6 @@ import {
   isDev,
   pricingAliasRoute,
   privacyAliasRoute,
-  siteTitle,
   termsAliasRoute,
 } from '@/config';
 
@@ -28,7 +27,6 @@ export function ContentFooter() {
         isDev && '__Footer', // DEBUG
         'mt-auto w-full pb-6 pt-12',
         'border-t border-theme-700/50',
-        // 'bg-header-gradient',
         'bg-theme-600',
         'text-white',
         'relative',
@@ -47,7 +45,7 @@ export function ContentFooter() {
       <div className="z-1 relative mx-auto mb-6 grid max-w-6xl gap-4 px-6 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="text-sm leading-5">
-            © {currentYear}, {siteTitle}
+            © {currentYear}, {t('Pages.RootTitle')}
             <br />
             {t('ContentFooter.AppDescription')}
             <br />

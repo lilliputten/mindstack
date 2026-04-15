@@ -12,7 +12,7 @@ import { DialogDescription, DialogTitle } from '@/components/ui/Dialog';
 import * as Icons from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import logoSvg from '@/assets/logo/logo-on-dark.svg';
-import { rootAliasRoute, siteTitle } from '@/config';
+import { rootAliasRoute } from '@/config';
 import { isDev } from '@/constants';
 import { clearAllWorkoutsFromDB } from '@/features/workouts/lib';
 
@@ -108,7 +108,12 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
     <>
       {showLogo && (
         <Link href={rootAliasRoute} className="transition hover:opacity-80">
-          <Image src={logoSvg} className="h-24 w-auto" alt={siteTitle} priority={false} />
+          <Image
+            src={logoSvg}
+            className="h-24 w-auto"
+            alt={t('Pages.RootTitle')}
+            priority={false}
+          />
         </Link>
       )}
       <Title

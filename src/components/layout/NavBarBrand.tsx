@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
-import { siteTitle } from '@/config/env';
 import { getAllRouteSynonyms } from '@/lib/routes';
 import { TPropsWithChildrenAndClassName } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useT } from '@/i18n';
 import { Link } from '@/i18n/routing';
 import { TLocale } from '@/i18n/types';
 import logoSvg from '@/assets/logo/logo-with-sign-on-dark.svg';
@@ -46,6 +46,7 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
 }
 
 export function NavBarBrand(props: NavBarBrandProps) {
+  const t = useT();
   return (
     <BrandWrapper {...props} className="h-12">
       <Image
@@ -53,7 +54,7 @@ export function NavBarBrand(props: NavBarBrandProps) {
         src={logoSvg}
         className="h-auto w-48 select-none sm:min-w-48"
         priority={false}
-        alt={siteTitle}
+        alt={t('Pages.RootTitle')}
       />
     </BrandWrapper>
   );
