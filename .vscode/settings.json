@@ -1,3 +1,4 @@
+// vim: ft=jsonc ts=2 sw=2
 {
   "search.excludeFolders": [".next", "dist", ".git", "node_modules", ".venv"],
   "search.exclude": {
@@ -25,6 +26,7 @@
     "*.css": "css",
     "*.scss": "scss"
   },
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.stylelint": "explicit"
   },
@@ -32,5 +34,5 @@
   "i18n-ally.keystyle": "nested",
   "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.sourceLanguage": "en",
-  "i18n-ally.displayLanguage": "es"
+  "i18n-ally.displayLanguage": "es",
 }

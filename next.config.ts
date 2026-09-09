@@ -50,7 +50,7 @@ $defaultTheme: ${defaultThemeColor};
 $themes: ( ${scssThemes} );
 `;
 
-// Prepare all aliases (rewrites and redirects)...
+// Prepare all aliases (rewrites and redirects; TODO: Move to next root helpers)...
 const localeRoutes = localesList.map((locale) => '/' + locale);
 const defalutLocaleRoute = '/' + defaultLocale; // localeRoutes[0];
 const foundAliases: string[] = [];

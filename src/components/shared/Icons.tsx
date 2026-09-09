@@ -289,7 +289,18 @@ export const Linkedin: IconType = ({ ...props }: IconProps) => (
   </svg>
 );
 export const TgStar: IconType = ({ ...props }: IconProps) => (
-  <svg width="14" height="15" viewBox="0 0 14 15" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fab"
+    data-icon="tgstar"
+    role="img"
+    width="14"
+    height="15"
+    viewBox="0 0 14 15"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
