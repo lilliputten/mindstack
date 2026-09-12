@@ -33,7 +33,7 @@ export function getBot(token: string = BOT_TOKEN) {
     bot.use(
       session({
         initial: (): SessionData => ({
-          // Default sesion contents...
+          // Default session contents...
           language_code: undefined,
         }),
         storage: new PrismaAdapter<SessionData>(prisma.telegramSession),
