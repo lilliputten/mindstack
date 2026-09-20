@@ -31,12 +31,32 @@
   // Set linter to eslint...
   "biome.enabled": false,
   "eslint.enable": true,
-  // Set formatter to eslint...
+  // Set formatter to eslint (use "biomejs.biome" for biome, "esbenp.prettier-vscode" for eslint)...
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // Autoformat and fix on save
+  "editor.formatOnSave": true,
   // Configure i18n...
   "i18n-ally.localesPaths": ["src/i18n/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.sourceLanguage": "en",
-  "i18n-ally.displayLanguage": "es",
+  "i18n-ally.displayLanguage": "es"
 }

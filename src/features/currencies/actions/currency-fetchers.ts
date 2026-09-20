@@ -138,7 +138,8 @@ export async function fetchTgStarRatio(): Promise<number> {
       value,
       apiUrl,
     });
-    debugger; // eslint-disable-line no-debugger
+    // Failure possible if testing locally
+    // debugger; // eslint-disable-line no-debugger
     throw error;
   }
 }

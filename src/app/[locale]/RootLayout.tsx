@@ -29,6 +29,7 @@ import { TailwindIndicator } from '@/components/service/TailwindIndicator';
 import { fontDefault, fontHeading, fontMono } from '@/assets/fonts';
 import { debugLocale, isDev } from '@/config';
 import { SettingsContextProvider } from '@/contexts/SettingsContext';
+import { logJsonData } from '@/features/logger/server-actions';
 import { getSettings } from '@/features/settings/actions';
 
 export async function generateMetadata({ params }: TAwaitedLocaleProps) {
@@ -71,6 +72,9 @@ export async function RootLayout(props: TRootLayoutProps) {
     // TODO? -- Redirect to 'notFound' page?
     // Just use the default value
     locale = defaultLocale;
+    // NOTE: ProberHunter: Invalid locale requested
+    const __idMsg = '[RootLayout:ProberHunter] Suspicious locale requested';
+    logJsonData(__idMsg, { locale }); // NOTE: It's the async function, but not awaiting nor catching intentionally!
   }
 
   setRequestLocale(locale);
