@@ -26,7 +26,8 @@ export async function logData(idMsg: string, data?: object, opts: TLogDataOption
   const ipCountry = headers['x-vercel-ip-country'];
   const ipLatitude = headers['x-vercel-ip-latitude']; // "55.6784"
   const ipLongitude = headers['x-vercel-ip-longitude']; // "37.2652"
-  const ipCity = headers['x-vercel-ip-city']?.replace(/%20/g, ' ');
+  const rawCity = /* __debugCity ? 'S%C3%A3o%20Paulo' : */ headers['x-vercel-ip-city'];
+  const ipCity = rawCity ? decodeURIComponent(rawCity) : '';
   const intlLocale = headers['x-next-intl-locale'];
   const now = new Date();
   // const dateTag = formatDateTag(now); // -> 2026-02-06,16:29:56:731

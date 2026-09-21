@@ -13,6 +13,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { LandingContent } from '@/components/screens/LandingContent';
 import { isDev } from '@/constants';
+import { allPossibleLanguageCodesSet } from '@/constants/languages';
 import { LandingPageContextRoot } from '@/contexts/LandingPageContext/LandingPageContextRoot';
 import { getCachedRecentCategories, getRecentCategories } from '@/features/categories/actions';
 import { TCategory } from '@/features/categories/types';
@@ -121,12 +122,20 @@ export async function LandingPage(props: TLandingPageProps) {
     }
   }
 
+  // NOTE: ProberHunter: Ananlyze requested location, check for prober bots (invalid locale
+  // requests: when instead locale in the url passed a vulnerable url, like
+  // `.env`)...
+  const isValidLocale = allPossibleLanguageCodesSet.has(locale);
+  if (!isValidLocale) {
+    const __idMsg = '[LandingPage:ProberHunter] Suspicious locale requested';
+    logJsonData(__idMsg, { locale }); // NOTE: Not awaiting and catching!
+  }
   // DEMO: Sending debug data as json objects (locale is adding to the main log
   // message and `resolvedParams` is sending as attached json) (only for
   // production and not admin users)
-  if (!isDev && user?.role !== 'ADMIN' && !user?.email?.includes('lilliputten')) {
-    const __idMsg = '[LandingPage] Main page visited';
-    logJsonData(__idMsg, { locale } /* , { resolvedParams } */); // NOTE: Not awaiting and catching!
+  else if (!isDev && user?.role !== 'ADMIN' && /* ??? */ !user?.email?.includes('lilliputten')) {
+    const __idMsg = '[LandingPage:DEMO] Main page visited';
+    logJsonData(__idMsg, { locale } /* , { resolvedParams } */); // NOTE: It's the async function, but not awaiting nor catching intentionally!
   }
 
   // Enable static rendering
