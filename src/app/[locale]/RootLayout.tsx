@@ -70,11 +70,11 @@ export async function RootLayout(props: TRootLayoutProps) {
     console.warn('[layout:RootLayout]', error.message);
     // debugger; // eslint-disable-line no-debugger
     // TODO? -- Redirect to 'notFound' page?
-    // Just use the default value
-    locale = defaultLocale;
     // NOTE: ProberHunter: Invalid locale requested
     const __idMsg = '[RootLayout:ProberHunter] Suspicious locale requested';
     logJsonData(__idMsg, { locale }); // NOTE: It's the async function, but not awaiting nor catching intentionally!
+    // Just use the default value
+    locale = defaultLocale;
   }
 
   setRequestLocale(locale);
